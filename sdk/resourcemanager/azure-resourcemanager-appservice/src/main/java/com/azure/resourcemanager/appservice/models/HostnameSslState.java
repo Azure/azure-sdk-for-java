@@ -46,6 +46,10 @@ public final class HostnameSslState {
     @JsonProperty(value = "hostType")
     private HostType hostType;
 
+    /** Creates an instance of HostnameSslState class. */
+    public HostnameSslState() {
+    }
+
     /**
      * Get the name property: Hostname.
      *

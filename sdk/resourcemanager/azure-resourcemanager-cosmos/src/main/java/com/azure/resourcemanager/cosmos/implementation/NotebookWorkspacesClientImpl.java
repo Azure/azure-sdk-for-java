@@ -67,11 +67,10 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface NotebookWorkspacesService {
+    public interface NotebookWorkspacesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotebookWorkspaceListResult>> listByDatabaseAccount(
@@ -85,8 +84,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotebookWorkspaceInner>> get(
@@ -101,8 +99,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -118,8 +115,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -134,8 +130,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/listConnectionInfo")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/listConnectionInfo")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotebookWorkspaceConnectionInfoResultInner>> listConnectionInfo(
@@ -150,8 +145,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/regenerateAuthToken")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/regenerateAuthToken")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> regenerateAuthToken(
@@ -166,8 +160,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/start")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/notebookWorkspaces/{notebookWorkspaceName}/start")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
@@ -485,23 +478,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace for a Cosmos DB account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotebookWorkspaceInner get(
-        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
-        return getAsync(resourceGroupName, accountName, notebookWorkspaceName).block();
-    }
-
-    /**
-     * Gets the notebook workspace for a Cosmos DB account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -512,6 +488,23 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     public Response<NotebookWorkspaceInner> getWithResponse(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName, context).block();
+    }
+
+    /**
+     * Gets the notebook workspace for a Cosmos DB account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param notebookWorkspaceName The name of the notebook workspace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the notebook workspace for a Cosmos DB account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NotebookWorkspaceInner get(
+        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
+        return getWithResponse(resourceGroupName, accountName, notebookWorkspaceName, Context.NONE).getValue();
     }
 
     /**
@@ -730,7 +723,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String accountName,
         NotebookWorkspaceName notebookWorkspaceName,
         NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters)
             .getSyncPoller();
     }
@@ -755,7 +749,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         NotebookWorkspaceName notebookWorkspaceName,
         NotebookWorkspaceCreateUpdateParameters notebookCreateUpdateParameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, accountName, notebookWorkspaceName, notebookCreateUpdateParameters, context)
             .getSyncPoller();
     }
@@ -1023,7 +1018,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
-        return beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
     }
 
     /**
@@ -1041,7 +1036,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
     }
 
     /**
@@ -1247,23 +1242,6 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection info for the given notebook workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NotebookWorkspaceConnectionInfoResultInner listConnectionInfo(
-        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
-        return listConnectionInfoAsync(resourceGroupName, accountName, notebookWorkspaceName).block();
-    }
-
-    /**
-     * Retrieves the connection info for the notebook workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1275,6 +1253,24 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
         return listConnectionInfoWithResponseAsync(resourceGroupName, accountName, notebookWorkspaceName, context)
             .block();
+    }
+
+    /**
+     * Retrieves the connection info for the notebook workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param notebookWorkspaceName The name of the notebook workspace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the connection info for the given notebook workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NotebookWorkspaceConnectionInfoResultInner listConnectionInfo(
+        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
+        return listConnectionInfoWithResponse(resourceGroupName, accountName, notebookWorkspaceName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1442,7 +1438,9 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateAuthToken(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
-        return beginRegenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
+        return this
+            .beginRegenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName)
+            .getSyncPoller();
     }
 
     /**
@@ -1460,7 +1458,8 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRegenerateAuthToken(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
-        return beginRegenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName, context)
+        return this
+            .beginRegenerateAuthTokenAsync(resourceGroupName, accountName, notebookWorkspaceName, context)
             .getSyncPoller();
     }
 
@@ -1701,7 +1700,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName) {
-        return beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName).getSyncPoller();
     }
 
     /**
@@ -1719,7 +1718,7 @@ public final class NotebookWorkspacesClientImpl implements NotebookWorkspacesCli
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context) {
-        return beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, accountName, notebookWorkspaceName, context).getSyncPoller();
     }
 
     /**

@@ -95,6 +95,10 @@ public final class EventGridConnectionProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of EventGridConnectionProperties class. */
+    public EventGridConnectionProperties() {
+    }
+
     /**
      * Get the storageAccountResourceId property: The resource ID of the storage account where the data resides.
      *

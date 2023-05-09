@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for UserSessions Disconnect. */
 public final class UserSessionsDisconnectSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/UserSession_Disconnect_Post.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/UserSession_Disconnect_Post.json
      */
     /**
      * Sample code: UserSession_Disconnect_Post.
@@ -20,6 +18,7 @@ public final class UserSessionsDisconnectSamples {
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
         manager
             .userSessions()
-            .disconnectWithResponse("resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", Context.NONE);
+            .disconnectWithResponse(
+                "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", "1", com.azure.core.util.Context.NONE);
     }
 }

@@ -11,6 +11,7 @@ import com.azure.spring.cloud.service.implementation.passwordless.AzureRedisPass
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -62,11 +63,6 @@ class AzureJedisPasswordlessAutoConfigurationTest {
         this.contextRunner.withPropertyValues("spring.redis.azure.profile.cloud-type = AZURE_CHINA").run((context) -> {
             AzureRedisPasswordlessProperties properties = context.getBean(AzureRedisPasswordlessProperties.class);
             Assertions.assertEquals(REDIS_SCOPE_CHINA, properties.getScopes());
-        });
-
-        this.contextRunner.withPropertyValues("spring.redis.azure.profile.cloud-type = AZURE_GERMANY").run((context) -> {
-            AzureRedisPasswordlessProperties properties = context.getBean(AzureRedisPasswordlessProperties.class);
-            Assertions.assertEquals(REDIS_SCOPE_GERMANY, properties.getScopes());
         });
 
         this.contextRunner.withPropertyValues("spring.redis.azure.profile.cloud-type = AZURE_US_GOVERNMENT").run((context) -> {
@@ -236,6 +232,7 @@ class AzureJedisPasswordlessAutoConfigurationTest {
     }
 
     @Configuration(proxyBeanMethods = false)
+    @EnableConfigurationProperties
     static class CustomConfiguration {
 
         @Bean

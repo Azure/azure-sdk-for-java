@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CentralServerVirtualMachineType. */
+/** Defines the type of central server VM. */
 public final class CentralServerVirtualMachineType extends ExpandableStringEnum<CentralServerVirtualMachineType> {
     /** Static value Primary for CentralServerVirtualMachineType. */
     public static final CentralServerVirtualMachineType PRIMARY = fromString("Primary");
@@ -30,6 +30,15 @@ public final class CentralServerVirtualMachineType extends ExpandableStringEnum<
 
     /** Static value Standby for CentralServerVirtualMachineType. */
     public static final CentralServerVirtualMachineType STANDBY = fromString("Standby");
+
+    /**
+     * Creates a new instance of CentralServerVirtualMachineType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CentralServerVirtualMachineType() {
+    }
 
     /**
      * Creates or finds a CentralServerVirtualMachineType from its string representation.

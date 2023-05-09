@@ -1,0 +1,138 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.farmbeats.azure.net/parties/contoso-party/boundaries/contoso-boundary?api-version=2022-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-verticals-agrifood-farming/1.0.0-beta.3 (17.0.6; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dd1d1278-1adf-44f3-803e-bc022e8f4da9",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-07-31-preview, 2022-11-01-preview",
+      "x-frame-options" : "SAMEORIGIN",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "a88ec8f5-6c1c-4d12-8741-13db99b6f486",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 22 Feb 2023 13:02:44 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "content-security-policy" : "self",
+      "x-content-type-options" : "nosniff",
+      "Vary" : "Accept-Encoding",
+      "x-ms-throttle-information" : "1000",
+      "etag" : "6200d32c-0000-0600-0000-63f611be0000",
+      "Content-Length" : "975",
+      "x-ms-request-id" : "8c78c28c88751a8ef1ac185eabaf1057",
+      "Body" : "{\"geometry\":{\"type\":\"Polygon\",\"coordinates\":[[[73.70457172393799,20.545385304358106],[73.70457172393799,20.545385304358106],[73.70448589324951,20.542411534243367],[73.70877742767334,20.541688176010233],[73.71023654937744,20.545083911372505],[73.70663166046143,20.546992723579137],[73.70457172393799,20.545385304358106]]]},\"crs\":\"WGS84\",\"centroid\":{\"type\":\"Point\",\"coordinates\":[73.70711478791443,20.54418916247634]},\"bbox\":{\"type\":\"Polygon\",\"coordinates\":[[[73.70448589324951,20.541688176010233],[73.70448589324951,20.546992723579137],[73.71023654937744,20.546992723579137],[73.71023654937744,20.541688176010233]]]},\"partyId\":\"contoso-party\",\"area\":{\"unit\":\"Acre\",\"value\":60.405},\"id\":\"contoso-boundary\",\"eTag\":\"6200d32c-0000-0600-0000-63f611be0000\",\"createdDateTime\":\"2023-02-22T10:52:14Z\",\"modifiedDateTime\":\"2023-02-22T13:02:44Z\",\"name\":\"string\",\"description\":\"string\",\"createdBy\":\"9002b50e-dc98-445e-a865-72dce38ecafd\",\"modifiedBy\":\"9002b50e-dc98-445e-a865-72dce38ecafd\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.farmbeats.azure.net/scenes/satellite/ingest-data/contoso-job-35864?api-version=2022-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-verticals-agrifood-farming/1.0.0-beta.3 (17.0.6; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "9a11de62-4bc5-4c4e-a334-b3377c3f0140",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-07-31-preview, 2022-11-01-preview",
+      "x-frame-options" : "SAMEORIGIN",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "72beacd0-a70a-4dd4-be7e-7b4281b1127a",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "Date" : "Wed, 22 Feb 2023 13:02:45 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "operation-location" : "https://bb-prod-wcus-1.farmbeats.azure.net/scenes/satellite/ingest-data/contoso-job-35864?api-version=2022-11-01-preview",
+      "content-security-policy" : "self",
+      "x-content-type-options" : "nosniff",
+      "x-ms-throttle-information" : "1293",
+      "location" : "https://bb-prod-wcus-1.farmbeats.azure.net/scenes/satellite/ingest-data/contoso-job-35864?api-version=2022-11-01-preview",
+      "Content-Length" : "558",
+      "x-ms-request-id" : "12b510d451c9d94276d8e5f71d05bc40",
+      "Body" : "{\"partyId\":\"contoso-party\",\"boundaryId\":\"contoso-boundary\",\"startDateTime\":\"2022-01-01T00:00:00Z\",\"endDateTime\":\"2022-02-01T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"data\":{\"imageNames\":[\"NDVI\"],\"imageFormats\":[\"TIF\"],\"imageResolutions\":[10.0]},\"id\":\"contoso-job-35864\",\"status\":\"Waiting\",\"message\":\"Created job 'contoso-job-35864' to fetch satellite data for boundary 'contoso-boundary' from startDate '01/01/2022' to endDate '02/01/2022' (both inclusive).\",\"createdDateTime\":\"2023-02-22T13:02:44Z\",\"name\":\"string\",\"description\":\"string\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.farmbeats.azure.net/scenes/satellite/ingest-data/contoso-job-35864?api-version=2022-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-verticals-agrifood-farming/1.0.0-beta.3 (17.0.6; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "8251a8ab-9584-48d5-850b-5ec92b8096ff"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-07-31-preview, 2022-11-01-preview",
+      "x-frame-options" : "SAMEORIGIN",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "529be0cf-cd3c-4b57-9ada-c52b78b7f629",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 22 Feb 2023 13:02:46 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "content-security-policy" : "self",
+      "x-content-type-options" : "nosniff",
+      "Vary" : "Accept-Encoding",
+      "x-ms-throttle-information" : "100",
+      "Content-Length" : "637",
+      "x-ms-request-id" : "873456b81ee6f3ee9f7ab5da0984dfcc",
+      "Body" : "{\"partyId\":\"contoso-party\",\"boundaryId\":\"contoso-boundary\",\"startDateTime\":\"2022-01-01T00:00:00Z\",\"endDateTime\":\"2022-02-01T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"data\":{\"imageNames\":[\"NDVI\"],\"imageFormats\":[\"TIF\"],\"imageResolutions\":[10.0]},\"id\":\"contoso-job-35864\",\"status\":\"Waiting\",\"message\":\"Created job 'contoso-job-35864' to fetch satellite data for boundary 'contoso-boundary' from startDate '01/01/2022' to endDate '02/01/2022' (both inclusive).\",\"createdDateTime\":\"2023-02-22T13:02:44Z\",\"lastActionDateTime\":\"2023-02-22T13:02:44Z\",\"startTime\":\"2023-02-22T13:02:44Z\",\"name\":\"string\",\"description\":\"string\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.farmbeats.azure.net/scenes/satellite/ingest-data/contoso-job-35864?api-version=2022-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-verticals-agrifood-farming/1.0.0-beta.3 (17.0.6; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "5476ed80-6396-4a09-87ea-5463192deebf"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-07-31-preview, 2022-11-01-preview",
+      "x-frame-options" : "SAMEORIGIN",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "4cb0a2b5-cb9a-42ca-b0d3-6cd87a49514c",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 22 Feb 2023 13:02:47 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "content-security-policy" : "self",
+      "x-content-type-options" : "nosniff",
+      "Vary" : "Accept-Encoding",
+      "x-ms-throttle-information" : "100",
+      "Content-Length" : "637",
+      "x-ms-request-id" : "0d1f6269719f873362a39119ccf748e7",
+      "Body" : "{\"partyId\":\"contoso-party\",\"boundaryId\":\"contoso-boundary\",\"startDateTime\":\"2022-01-01T00:00:00Z\",\"endDateTime\":\"2022-02-01T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"data\":{\"imageNames\":[\"NDVI\"],\"imageFormats\":[\"TIF\"],\"imageResolutions\":[10.0]},\"id\":\"contoso-job-35864\",\"status\":\"Waiting\",\"message\":\"Created job 'contoso-job-35864' to fetch satellite data for boundary 'contoso-boundary' from startDate '01/01/2022' to endDate '02/01/2022' (both inclusive).\",\"createdDateTime\":\"2023-02-22T13:02:44Z\",\"lastActionDateTime\":\"2023-02-22T13:02:44Z\",\"startTime\":\"2023-02-22T13:02:44Z\",\"name\":\"string\",\"description\":\"string\"}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.farmbeats.azure.net/scenes?provider=Microsoft&partyId=contoso-party&boundaryId=contoso-boundary&source=Sentinel_2_L2A&api-version=2022-11-01-preview",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-verticals-agrifood-farming/1.0.0-beta.3 (17.0.6; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "6d7a4fcc-71e1-465a-b064-c7dbf351fc98"
+    },
+    "Response" : {
+      "api-supported-versions" : "2021-07-31-preview, 2022-11-01-preview",
+      "x-frame-options" : "SAMEORIGIN",
+      "Connection" : "keep-alive",
+      "mise-correlation-id" : "b7611cad-9568-4a92-aa0e-fb0f966693fb",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 22 Feb 2023 13:02:47 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "content-security-policy" : "self",
+      "x-content-type-options" : "nosniff",
+      "Vary" : "Accept-Encoding",
+      "x-ms-throttle-information" : "6500",
+      "Content-Length" : "7383",
+      "x-ms-request-id" : "2671a93703b3c7ea56560ef7abde22e7",
+      "Body" : "{\"value\":[{\"sceneDateTime\":\"2022-02-01T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-02-01%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.6577085256576538,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"dae1a164-ffba-0e16-749e-43eefbe9cebf\",\"eTag\":\"0000a71d-0000-0600-0000-63f5f3ff0000\"},{\"sceneDateTime\":\"2022-01-29T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-29%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.6575567722320557,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"b7de3ec1-c81f-d995-50a2-0f53f89bc3d7\",\"eTag\":\"0000a81d-0000-0600-0000-63f5f3ff0000\"},{\"sceneDateTime\":\"2022-01-27T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-27%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.5855094194412231,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"db64ac3e-f194-7234-b196-a0068e8d3caa\",\"eTag\":\"0000a61d-0000-0600-0000-63f5f3fb0000\"},{\"sceneDateTime\":\"2022-01-24T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-24%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.6118580102920532,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"1ae8a2e5-c07d-9924-7ec7-bb93e57f6ca9\",\"eTag\":\"0000a51d-0000-0600-0000-63f5f3fb0000\"},{\"sceneDateTime\":\"2022-01-22T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-22%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":61.209,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.2613046169281006,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"c70eb0a5-a0cc-1f4a-9fea-db77359ad392\",\"eTag\":\"0000a41d-0000-0600-0000-63f5f3fb0000\"},{\"sceneDateTime\":\"2022-01-19T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-19%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.6795690655708313,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"c5715d58-8e82-c729-1551-41ed78da66c3\",\"eTag\":\"0000a31d-0000-0600-0000-63f5f3fb0000\"},{\"sceneDateTime\":\"2022-01-17T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-17%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.7040629386901855,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"369e719c-ddb5-b2cd-91eb-8c04f9a398ec\",\"eTag\":\"0000a11d-0000-0600-0000-63f5f3fb0000\"},{\"sceneDateTime\":\"2022-01-14T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-14%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.45221132040023804,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"6352bfa2-3146-25ac-8654-cc70f083a45e\",\"eTag\":\"0000a21d-0000-0600-0000-63f5f3fb0000\"},{\"sceneDateTime\":\"2022-01-12T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-12%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.7023664116859436,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"e8e85adc-f7d6-beb8-e006-d8e2cc252ccf\",\"eTag\":\"00009f1d-0000-0600-0000-63f5f3fb0000\"},{\"sceneDateTime\":\"2022-01-09T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-09%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.7272555828094482,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"688f9b43-53bf-f4de-9e89-4513f3fd347b\",\"eTag\":\"0000a01d-0000-0600-0000-63f5f3fb0000\"},{\"sceneDateTime\":\"2022-01-07T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-07%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.4577712118625641,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"bfd1c194-c771-6813-628d-d4da8e519136\",\"eTag\":\"00009e1d-0000-0600-0000-63f5f3fa0000\"},{\"sceneDateTime\":\"2022-01-02T00:00:00Z\",\"provider\":\"Microsoft\",\"source\":\"Sentinel_2_L2A\",\"imageFiles\":[{\"fileLink\":\"https://bb-prod-wcus-1.farmbeats.azure.net/scenes/downloadFiles?api-version=2022-11-01-preview&filePath=Microsoft%2fSentinel_2_L2A%2fcontoso-party%2fcontoso-boundary%2f2022-01-02%2f00-00-00%2fndvi_10.tif\",\"name\":\"NDVI\",\"resolution\":10.0}],\"imageFormat\":\"TIF\",\"cloudCoverPercentage\":0.0,\"darkPixelPercentage\":0.0,\"ndviMedianValue\":0.5438882112503052,\"boundaryId\":\"contoso-boundary\",\"partyId\":\"contoso-party\",\"id\":\"49c6ae86-ac34-aa0a-9764-42a63c2dc681\",\"eTag\":\"00009d1d-0000-0600-0000-63f5f3fa0000\"}]}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

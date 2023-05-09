@@ -79,4 +79,9 @@ public final class ByteArrayContent extends BinaryDataContent {
     public Mono<BinaryDataContent> toReplayableContentAsync() {
         return Mono.just(this);
     }
+
+    @Override
+    public BinaryDataContentType getContentType() {
+        return BinaryDataContentType.BINARY;
+    }
 }

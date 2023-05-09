@@ -6,6 +6,7 @@ package com.azure.resourcemanager.orbital.implementation;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.fluent.models.SpacecraftInner;
 import com.azure.resourcemanager.orbital.models.AvailableContacts;
@@ -48,8 +49,8 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
         }
     }
 
-    public String etag() {
-        return this.innerModel().etag();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public SpacecraftsPropertiesProvisioningState provisioningState() {
@@ -206,26 +207,6 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
         return this;
     }
 
-    public SpacecraftImpl withTags(Map<String, String> tags) {
-        if (isInCreateMode()) {
-            this.innerModel().withTags(tags);
-            return this;
-        } else {
-            this.updateParameters.withTags(tags);
-            return this;
-        }
-    }
-
-    public SpacecraftImpl withProvisioningState(SpacecraftsPropertiesProvisioningState provisioningState) {
-        this.innerModel().withProvisioningState(provisioningState);
-        return this;
-    }
-
-    public SpacecraftImpl withNoradId(String noradId) {
-        this.innerModel().withNoradId(noradId);
-        return this;
-    }
-
     public SpacecraftImpl withTitleLine(String titleLine) {
         this.innerModel().withTitleLine(titleLine);
         return this;
@@ -243,6 +224,26 @@ public final class SpacecraftImpl implements Spacecraft, Spacecraft.Definition, 
 
     public SpacecraftImpl withLinks(List<SpacecraftLink> links) {
         this.innerModel().withLinks(links);
+        return this;
+    }
+
+    public SpacecraftImpl withTags(Map<String, String> tags) {
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateParameters.withTags(tags);
+            return this;
+        }
+    }
+
+    public SpacecraftImpl withProvisioningState(SpacecraftsPropertiesProvisioningState provisioningState) {
+        this.innerModel().withProvisioningState(provisioningState);
+        return this;
+    }
+
+    public SpacecraftImpl withNoradId(String noradId) {
+        this.innerModel().withNoradId(noradId);
         return this;
     }
 

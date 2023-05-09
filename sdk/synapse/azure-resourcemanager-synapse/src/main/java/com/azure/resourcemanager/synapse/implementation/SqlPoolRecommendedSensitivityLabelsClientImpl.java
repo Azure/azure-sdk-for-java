@@ -56,7 +56,7 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolRecommendedSensitivityLabelsService {
+    public interface SqlPoolRecommendedSensitivityLabelsService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Patch(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -216,27 +216,7 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
         String sqlPoolName,
         RecommendedSensitivityLabelUpdateList parameters) {
         return updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Update recommended sensitivity labels states of a given SQL Pool using an operations batch.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param parameters A list of recommended sensitivity label update operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        RecommendedSensitivityLabelUpdateList parameters) {
-        updateAsync(resourceGroupName, workspaceName, sqlPoolName, parameters).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -260,5 +240,25 @@ public final class SqlPoolRecommendedSensitivityLabelsClientImpl implements SqlP
         RecommendedSensitivityLabelUpdateList parameters,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, parameters, context).block();
+    }
+
+    /**
+     * Update recommended sensitivity labels states of a given SQL Pool using an operations batch.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param parameters A list of recommended sensitivity label update operations.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        RecommendedSensitivityLabelUpdateList parameters) {
+        updateWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, Context.NONE);
     }
 }

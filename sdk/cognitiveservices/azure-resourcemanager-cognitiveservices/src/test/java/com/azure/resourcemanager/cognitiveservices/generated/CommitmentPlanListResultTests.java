@@ -7,23 +7,22 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentPlanListResult;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CommitmentPlanListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CommitmentPlanListResult model =
             BinaryData
                 .fromString(
-                    "{\"nextLink\":\"emwabnet\",\"value\":[{\"etag\":\"h\",\"properties\":{\"hostingModel\":\"ConnectedContainer\",\"planType\":\"wiwubm\",\"autoRenew\":false},\"id\":\"dnkwwtppjflcxog\",\"name\":\"okonzmnsikvmkqz\",\"type\":\"qqkdltfzxmhhvhgu\"},{\"etag\":\"dkwobdagx\",\"properties\":{\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"xbxwa\",\"autoRenew\":true},\"id\":\"ndlkzgxhurip\",\"name\":\"bpodxunkbebxm\",\"type\":\"byyntwlrbqt\"},{\"etag\":\"evseotgqrlltmuwl\",\"properties\":{\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"zxb\",\"autoRenew\":false},\"id\":\"fuzmuvpbtt\",\"name\":\"um\",\"type\":\"rp\"},{\"etag\":\"bmnzbtbhjpgl\",\"properties\":{\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"dneu\",\"autoRenew\":false},\"id\":\"dyhtozfikdowwquu\",\"name\":\"xzxcl\",\"type\":\"ithhqzon\"}]}")
+                    "{\"nextLink\":\"hwflu\",\"value\":[{\"etag\":\"hrkwo\",\"kind\":\"yvoqa\",\"sku\":{\"name\":\"iexpbtgiwbwo\",\"tier\":\"Free\",\"size\":\"shrtdtkcnqxwb\",\"family\":\"kulpiujwaasi\",\"capacity\":172575084},\"tags\":{\"wcciuqgbdbu\":\"byuqerpqlp\"},\"location\":\"uvfbtkuwh\",\"properties\":{\"provisioningState\":\"Failed\",\"commitmentPlanGuid\":\"ojoxafnndlp\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"o\",\"autoRenew\":true},\"id\":\"h\",\"name\":\"pkkpw\",\"type\":\"reqnovvqfov\"},{\"etag\":\"ywsuwsy\",\"kind\":\"ndsytgadg\",\"sku\":{\"name\":\"aeaeneqnzarrw\",\"tier\":\"Premium\",\"size\":\"ijfqkacewiipfp\",\"family\":\"ji\",\"capacity\":1113434704},\"tags\":{\"saknynfsyn\":\"tohqkvpuvksgp\"},\"location\":\"ph\",\"properties\":{\"provisioningState\":\"Canceled\",\"commitmentPlanGuid\":\"dlqiyntorzih\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"jswsrmslyz\",\"autoRenew\":true},\"id\":\"ckqqzqioxiysui\",\"name\":\"zynkedya\",\"type\":\"rwyhqmibzyhwitsm\"},{\"etag\":\"ynpcdpumnzgmwznm\",\"kind\":\"iknsorgjh\",\"sku\":{\"name\":\"ldtlwwr\",\"tier\":\"Standard\",\"size\":\"tncvokot\",\"family\":\"xdy\",\"capacity\":2008770544},\"tags\":{\"hadoocrk\":\"cogjltdtbn\",\"amqgxqquezikyw\":\"cikhnv\"},\"location\":\"xkalla\",\"properties\":{\"provisioningState\":\"Creating\",\"commitmentPlanGuid\":\"uipiccjzk\",\"hostingModel\":\"Web\",\"planType\":\"vvcnayr\",\"autoRenew\":true},\"id\":\"mueedndrdvstk\",\"name\":\"qqtch\",\"type\":\"alm\"},{\"etag\":\"d\",\"kind\":\"ygdvwv\",\"sku\":{\"name\":\"iohgwxrtfud\",\"tier\":\"Premium\",\"size\":\"gyqagvrvmnpkuk\",\"family\":\"i\",\"capacity\":2068705398},\"tags\":{\"hfjx\":\"gwimfn\",\"rey\":\"mszkkfo\"},\"location\":\"zi\",\"properties\":{\"provisioningState\":\"Succeeded\",\"commitmentPlanGuid\":\"n\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"xwczelpcire\",\"autoRenew\":false},\"id\":\"nwabfatkldd\",\"name\":\"bjhwuaan\",\"type\":\"zjosp\"}]}")
                 .toObject(CommitmentPlanListResult.class);
-        Assertions.assertEquals("emwabnet", model.nextLink());
+        Assertions.assertEquals("hwflu", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        CommitmentPlanListResult model = new CommitmentPlanListResult().withNextLink("emwabnet");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CommitmentPlanListResult model = new CommitmentPlanListResult().withNextLink("hwflu");
         model = BinaryData.fromObject(model).toObject(CommitmentPlanListResult.class);
-        Assertions.assertEquals("emwabnet", model.nextLink());
+        Assertions.assertEquals("hwflu", model.nextLink());
     }
 }

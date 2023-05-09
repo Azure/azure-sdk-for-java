@@ -15,7 +15,7 @@ public final class FromEachInputFileTests {
         FromEachInputFile model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.FromEachInputFile\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"}]}")
+                    "{\"@odata.type\":\"#Microsoft.Media.FromEachInputFile\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"}]}")
                 .toObject(FromEachInputFile.class);
     }
 
@@ -23,13 +23,7 @@ public final class FromEachInputFileTests {
     public void testSerialize() throws Exception {
         FromEachInputFile model =
             new FromEachInputFile()
-                .withIncludedTracks(
-                    Arrays
-                        .asList(
-                            new TrackDescriptor(),
-                            new TrackDescriptor(),
-                            new TrackDescriptor(),
-                            new TrackDescriptor()));
+                .withIncludedTracks(Arrays.asList(new TrackDescriptor(), new TrackDescriptor(), new TrackDescriptor()));
         model = BinaryData.fromObject(model).toObject(FromEachInputFile.class);
     }
 }

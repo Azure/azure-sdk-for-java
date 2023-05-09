@@ -18,6 +18,10 @@ public final class SqlRoleDefinitionCreateUpdateParameters {
     @JsonProperty(value = "properties")
     private SqlRoleDefinitionResource innerProperties;
 
+    /** Creates an instance of SqlRoleDefinitionCreateUpdateParameters class. */
+    public SqlRoleDefinitionCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update an Azure Cosmos DB SQL Role Definition.
      *

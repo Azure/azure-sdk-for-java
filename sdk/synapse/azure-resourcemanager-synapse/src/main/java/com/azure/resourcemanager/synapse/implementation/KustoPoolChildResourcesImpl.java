@@ -27,17 +27,6 @@ public final class KustoPoolChildResourcesImpl implements KustoPoolChildResource
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameResult checkNameAvailability(
-        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
-        CheckNameResultInner inner =
-            this.serviceClient().checkNameAvailability(workspaceName, kustoPoolName, resourceGroupName, resourceName);
-        if (inner != null) {
-            return new CheckNameResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String workspaceName,
         String kustoPoolName,
@@ -55,6 +44,17 @@ public final class KustoPoolChildResourcesImpl implements KustoPoolChildResource
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CheckNameResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CheckNameResult checkNameAvailability(
+        String workspaceName, String kustoPoolName, String resourceGroupName, DatabaseCheckNameRequest resourceName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(workspaceName, kustoPoolName, resourceGroupName, resourceName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
         } else {
             return null;
         }

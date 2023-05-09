@@ -24,6 +24,10 @@ public final class CassandraTableGetProperties {
     @JsonProperty(value = "options")
     private CassandraTableGetPropertiesOptions options;
 
+    /** Creates an instance of CassandraTableGetProperties class. */
+    public CassandraTableGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

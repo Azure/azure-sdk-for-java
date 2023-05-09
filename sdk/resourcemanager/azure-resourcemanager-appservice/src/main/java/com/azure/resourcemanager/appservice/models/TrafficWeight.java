@@ -28,6 +28,10 @@ public final class TrafficWeight {
     @JsonProperty(value = "latestRevision")
     private Boolean latestRevision;
 
+    /** Creates an instance of TrafficWeight class. */
+    public TrafficWeight() {
+    }
+
     /**
      * Get the revisionName property: Name of a revision.
      *

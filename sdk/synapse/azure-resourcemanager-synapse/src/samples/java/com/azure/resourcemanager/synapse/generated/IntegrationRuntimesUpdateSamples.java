@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeAutoUpdate;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeResource;
 
@@ -23,7 +22,11 @@ public final class IntegrationRuntimesUpdateSamples {
             manager
                 .integrationRuntimes()
                 .getWithResponse(
-                    "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", null, Context.NONE)
+                    "exampleResourceGroup",
+                    "exampleWorkspace",
+                    "exampleIntegrationRuntime",
+                    null,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withAutoUpdate(IntegrationRuntimeAutoUpdate.OFF).withUpdateDelayOffset("\"PT3H\"").apply();
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UserIdentityProperties model. */
 @Fluent
 public final class UserIdentityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserIdentityProperties.class);
-
     /*
      * The principal id of user assigned identity.
      */
@@ -25,6 +21,10 @@ public final class UserIdentityProperties {
      */
     @JsonProperty(value = "clientId")
     private String clientId;
+
+    /** Creates an instance of UserIdentityProperties class. */
+    public UserIdentityProperties() {
+    }
 
     /**
      * Get the principalId property: The principal id of user assigned identity.

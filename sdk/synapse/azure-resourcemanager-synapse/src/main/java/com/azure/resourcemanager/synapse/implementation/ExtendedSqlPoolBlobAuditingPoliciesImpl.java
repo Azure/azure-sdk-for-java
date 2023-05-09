@@ -28,16 +28,6 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesImpl implements ExtendedSq
         this.serviceManager = serviceManager;
     }
 
-    public ExtendedSqlPoolBlobAuditingPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName) {
-        ExtendedSqlPoolBlobAuditingPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
-        if (inner != null) {
-            return new ExtendedSqlPoolBlobAuditingPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ExtendedSqlPoolBlobAuditingPolicy> getWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
         Response<ExtendedSqlPoolBlobAuditingPolicyInner> inner =
@@ -48,6 +38,16 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesImpl implements ExtendedSq
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ExtendedSqlPoolBlobAuditingPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ExtendedSqlPoolBlobAuditingPolicy get(String resourceGroupName, String workspaceName, String sqlPoolName) {
+        ExtendedSqlPoolBlobAuditingPolicyInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
+        if (inner != null) {
+            return new ExtendedSqlPoolBlobAuditingPolicyImpl(inner, this.manager());
         } else {
             return null;
         }

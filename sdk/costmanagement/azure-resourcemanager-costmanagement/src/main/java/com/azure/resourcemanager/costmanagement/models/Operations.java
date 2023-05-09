@@ -16,7 +16,7 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing cost management operations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Operation> list();
+    PagedIterable<CostManagementOperation> list();
 
     /**
      * Lists all of the available cost management REST API operations.
@@ -27,5 +27,5 @@ public interface Operations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of listing cost management operations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Operation> list(Context context);
+    PagedIterable<CostManagementOperation> list(Context context);
 }

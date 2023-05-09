@@ -22,6 +22,10 @@ public final class DeployerVmPackages {
     @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
+    /** Creates an instance of DeployerVmPackages class. */
+    public DeployerVmPackages() {
+    }
+
     /**
      * Get the url property: The URL to the deployer VM packages file.
      *

@@ -17,6 +17,10 @@ public final class VerificationParameter {
     @JsonProperty(value = "verificationType", required = true)
     private VerificationType verificationType;
 
+    /** Creates an instance of VerificationParameter class. */
+    public VerificationParameter() {
+    }
+
     /**
      * Get the verificationType property: Type of verification.
      *

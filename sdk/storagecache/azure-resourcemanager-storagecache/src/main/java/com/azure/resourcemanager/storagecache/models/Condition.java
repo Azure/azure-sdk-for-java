@@ -23,6 +23,10 @@ public final class Condition {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of Condition class. */
+    public Condition() {
+    }
+
     /**
      * Get the timestamp property: The time when the condition was raised.
      *

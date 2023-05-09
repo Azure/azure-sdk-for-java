@@ -7,16 +7,26 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IndexingMode. */
+/** Represents the mode the indexer is executing in. */
 public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
-    /** Static value indexingAllDocs for IndexingMode. */
+    /** The indexer is indexing all documents in the datasource. */
     public static final IndexingMode INDEXING_ALL_DOCS = fromString("indexingAllDocs");
 
-    /** Static value indexingResetDocs for IndexingMode. */
+    /**
+     * The indexer is indexing selective, reset documents in the datasource. The documents being indexed are defined on
+     * indexer status.
+     */
     public static final IndexingMode INDEXING_RESET_DOCS = fromString("indexingResetDocs");
+
+    /**
+     * Creates a new instance of IndexingMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IndexingMode() {}
 
     /**
      * Creates or finds a IndexingMode from its string representation.
@@ -24,7 +34,6 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
      * @param name a name to look for.
      * @return the corresponding IndexingMode.
      */
-    @JsonCreator
     public static IndexingMode fromString(String name) {
         return fromString(name, IndexingMode.class);
     }

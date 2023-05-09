@@ -24,6 +24,10 @@ public final class GremlinDatabaseGetProperties {
     @JsonProperty(value = "options")
     private GremlinDatabaseGetPropertiesOptions options;
 
+    /** Creates an instance of GremlinDatabaseGetProperties class. */
+    public GremlinDatabaseGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

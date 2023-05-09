@@ -30,6 +30,12 @@ public final class RecognizeOptionsInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
+     * Speech language to be recognized, If not set default is en-US
+     */
+    @JsonProperty(value = "speechLanguage")
+    private String speechLanguage;
+
+    /*
      * Defines configurations for DTMF.
      */
     @JsonProperty(value = "dtmfOptions")
@@ -39,7 +45,16 @@ public final class RecognizeOptionsInternal {
      * Defines Ivr choices for recognize.
      */
     @JsonProperty(value = "choices")
-    private List<RecognizeChoice> choices;
+    private List<RecognizeChoiceInternal> choices;
+
+    /*
+     * Defines continuous speech recognition option.
+     */
+    @JsonProperty(value = "speechOptions")
+    private SpeechOptionsInternal speechOptions;
+
+    /** Creates an instance of RecognizeOptionsInternal class. */
+    public RecognizeOptionsInternal() {}
 
     /**
      * Get the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
@@ -102,6 +117,26 @@ public final class RecognizeOptionsInternal {
     }
 
     /**
+     * Get the speechLanguage property: Speech language to be recognized, If not set default is en-US.
+     *
+     * @return the speechLanguage value.
+     */
+    public String getSpeechLanguage() {
+        return this.speechLanguage;
+    }
+
+    /**
+     * Set the speechLanguage property: Speech language to be recognized, If not set default is en-US.
+     *
+     * @param speechLanguage the speechLanguage value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setSpeechLanguage(String speechLanguage) {
+        this.speechLanguage = speechLanguage;
+        return this;
+    }
+
+    /**
      * Get the dtmfOptions property: Defines configurations for DTMF.
      *
      * @return the dtmfOptions value.
@@ -126,7 +161,7 @@ public final class RecognizeOptionsInternal {
      *
      * @return the choices value.
      */
-    public List<RecognizeChoice> getChoices() {
+    public List<RecognizeChoiceInternal> getChoices() {
         return this.choices;
     }
 
@@ -136,8 +171,28 @@ public final class RecognizeOptionsInternal {
      * @param choices the choices value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
-    public RecognizeOptionsInternal setChoices(List<RecognizeChoice> choices) {
+    public RecognizeOptionsInternal setChoices(List<RecognizeChoiceInternal> choices) {
         this.choices = choices;
+        return this;
+    }
+
+    /**
+     * Get the speechOptions property: Defines continuous speech recognition option.
+     *
+     * @return the speechOptions value.
+     */
+    public SpeechOptionsInternal getSpeechOptions() {
+        return this.speechOptions;
+    }
+
+    /**
+     * Set the speechOptions property: Defines continuous speech recognition option.
+     *
+     * @param speechOptions the speechOptions value to set.
+     * @return the RecognizeOptionsInternal object itself.
+     */
+    public RecognizeOptionsInternal setSpeechOptions(SpeechOptionsInternal speechOptions) {
+        this.speechOptions = speechOptions;
         return this;
     }
 }

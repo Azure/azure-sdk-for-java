@@ -69,19 +69,6 @@ public interface DatabaseAccountsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Cosmos DB database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAccountGetResultsInner getByResourceGroup(String resourceGroupName, String accountName);
-
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -91,6 +78,19 @@ public interface DatabaseAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseAccountGetResultsInner> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Cosmos DB database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseAccountGetResultsInner getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
      * Updates the properties of an existing Azure Cosmos DB database account.
@@ -642,19 +642,6 @@ public interface DatabaseAccountsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys for the given database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAccountListKeysResultInner listKeys(String resourceGroupName, String accountName);
-
-    /**
-     * Lists the access keys for the specified Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -664,6 +651,19 @@ public interface DatabaseAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseAccountListKeysResultInner> listKeysWithResponse(
         String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Lists the access keys for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the access keys for the given database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseAccountListKeysResultInner listKeys(String resourceGroupName, String accountName);
 
     /**
      * Lists the connection strings for the specified Azure Cosmos DB database account.
@@ -699,19 +699,6 @@ public interface DatabaseAccountsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection strings for the given database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAccountListConnectionStringsResultInner listConnectionStrings(String resourceGroupName, String accountName);
-
-    /**
-     * Lists the connection strings for the specified Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -721,6 +708,19 @@ public interface DatabaseAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseAccountListConnectionStringsResultInner> listConnectionStringsWithResponse(
         String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Lists the connection strings for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the connection strings for the given database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseAccountListConnectionStringsResultInner listConnectionStrings(String resourceGroupName, String accountName);
 
     /**
      * Offline the specified region for the specified Azure Cosmos DB database account.
@@ -969,19 +969,6 @@ public interface DatabaseAccountsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the read-only access keys for the given database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAccountListReadOnlyKeysResultInner getReadOnlyKeys(String resourceGroupName, String accountName);
-
-    /**
-     * Lists the read-only access keys for the specified Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -991,6 +978,19 @@ public interface DatabaseAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseAccountListReadOnlyKeysResultInner> getReadOnlyKeysWithResponse(
         String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Lists the read-only access keys for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the read-only access keys for the given database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseAccountListReadOnlyKeysResultInner getReadOnlyKeys(String resourceGroupName, String accountName);
 
     /**
      * Lists the read-only access keys for the specified Azure Cosmos DB database account.
@@ -1026,19 +1026,6 @@ public interface DatabaseAccountsClient
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the read-only access keys for the given database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseAccountListReadOnlyKeysResultInner listReadOnlyKeys(String resourceGroupName, String accountName);
-
-    /**
-     * Lists the read-only access keys for the specified Azure Cosmos DB database account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1048,6 +1035,19 @@ public interface DatabaseAccountsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseAccountListReadOnlyKeysResultInner> listReadOnlyKeysWithResponse(
         String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Lists the read-only access keys for the specified Azure Cosmos DB database account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the read-only access keys for the given database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseAccountListReadOnlyKeysResultInner listReadOnlyKeys(String resourceGroupName, String accountName);
 
     /**
      * Regenerates an access key for the specified Azure Cosmos DB database account.
@@ -1191,19 +1191,6 @@ public interface DatabaseAccountsClient
      * letters, numbers, and the '-' character, and must be between 3 and 50 characters.
      *
      * @param accountName Cosmos DB database account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    boolean checkNameExists(String accountName);
-
-    /**
-     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase
-     * letters, numbers, and the '-' character, and must be between 3 and 50 characters.
-     *
-     * @param accountName Cosmos DB database account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1212,6 +1199,19 @@ public interface DatabaseAccountsClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Boolean> checkNameExistsWithResponse(String accountName, Context context);
+
+    /**
+     * Checks that the Azure Cosmos DB account name already exists. A valid account name may contain only lowercase
+     * letters, numbers, and the '-' character, and must be between 3 and 50 characters.
+     *
+     * @param accountName Cosmos DB database account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    boolean checkNameExists(String accountName);
 
     /**
      * Retrieves the metrics determined by the given filter for the given database account.

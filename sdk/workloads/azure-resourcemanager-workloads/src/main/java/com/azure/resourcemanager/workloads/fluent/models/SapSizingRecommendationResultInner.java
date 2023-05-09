@@ -24,6 +24,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class SapSizingRecommendationResultInner {
+    /** Creates an instance of SapSizingRecommendationResultInner class. */
+    public SapSizingRecommendationResultInner() {
+    }
+
     /**
      * Validates the instance.
      *

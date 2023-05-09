@@ -17,6 +17,15 @@ public final class EncryptionKeyStatus extends ExpandableStringEnum<EncryptionKe
     public static final EncryptionKeyStatus ACCESS_DENIED = fromString("AccessDenied");
 
     /**
+     * Creates a new instance of EncryptionKeyStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionKeyStatus() {
+    }
+
+    /**
      * Creates or finds a EncryptionKeyStatus from its string representation.
      *
      * @param name a name to look for.

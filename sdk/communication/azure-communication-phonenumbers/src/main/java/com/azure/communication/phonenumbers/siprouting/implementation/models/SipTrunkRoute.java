@@ -24,15 +24,18 @@ public final class SipTrunkRoute {
     private String name;
 
     /*
-     * Gets or sets regex number pattern for routing calls. .NET regex format is supported.
-     * The regex should match only digits with an optional '+' prefix without spaces.
+     * Gets or sets regex number pattern for routing calls. .NET regex format
+     * is supported.
+     * The regex should match only digits with an optional '+' prefix without
+     * spaces.
      * I.e. "^\+[1-9][0-9]{3,23}$".
      */
     @JsonProperty(value = "numberPattern", required = true)
     private String numberPattern;
 
     /*
-     * Gets or sets list of SIP trunks for routing calls. Trunks are represented as FQDN.
+     * Gets or sets list of SIP trunks for routing calls. Trunks are
+     * represented as FQDN.
      */
     @JsonProperty(value = "trunks")
     private List<String> trunks;

@@ -7,11 +7,10 @@ package com.azure.resourcemanager.recoveryservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.CmkKekIdentity;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CmkKekIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CmkKekIdentity model =
             BinaryData
                 .fromString("{\"useSystemAssignedIdentity\":true,\"userAssignedIdentity\":\"tgrhpdjpjumas\"}")
@@ -20,8 +19,8 @@ public final class CmkKekIdentityTests {
         Assertions.assertEquals("tgrhpdjpjumas", model.userAssignedIdentity());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CmkKekIdentity model =
             new CmkKekIdentity().withUseSystemAssignedIdentity(true).withUserAssignedIdentity("tgrhpdjpjumas");
         model = BinaryData.fromObject(model).toObject(CmkKekIdentity.class);

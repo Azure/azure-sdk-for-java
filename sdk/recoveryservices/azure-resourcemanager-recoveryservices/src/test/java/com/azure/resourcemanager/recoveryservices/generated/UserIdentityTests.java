@@ -6,17 +6,16 @@ package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.UserIdentity;
-import org.junit.jupiter.api.Test;
 
 public final class UserIdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UserIdentity model =
             BinaryData.fromString("{\"principalId\":\"snb\",\"clientId\":\"qabnmoc\"}").toObject(UserIdentity.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UserIdentity model = new UserIdentity();
         model = BinaryData.fromObject(model).toObject(UserIdentity.class);
     }

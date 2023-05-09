@@ -30,7 +30,7 @@ public final class TableLevelSharingProperties {
     private List<String> externalTablesToInclude;
 
     /*
-     * List of external tables exclude from the follower database
+     * List of external tables to exclude from the follower database
      */
     @JsonProperty(value = "externalTablesToExclude")
     private List<String> externalTablesToExclude;
@@ -42,10 +42,26 @@ public final class TableLevelSharingProperties {
     private List<String> materializedViewsToInclude;
 
     /*
-     * List of materialized views exclude from the follower database
+     * List of materialized views to exclude from the follower database
      */
     @JsonProperty(value = "materializedViewsToExclude")
     private List<String> materializedViewsToExclude;
+
+    /*
+     * List of functions to include in the follower database
+     */
+    @JsonProperty(value = "functionsToInclude")
+    private List<String> functionsToInclude;
+
+    /*
+     * List of functions to exclude from the follower database
+     */
+    @JsonProperty(value = "functionsToExclude")
+    private List<String> functionsToExclude;
+
+    /** Creates an instance of TableLevelSharingProperties class. */
+    public TableLevelSharingProperties() {
+    }
 
     /**
      * Get the tablesToInclude property: List of tables to include in the follower database.
@@ -108,7 +124,7 @@ public final class TableLevelSharingProperties {
     }
 
     /**
-     * Get the externalTablesToExclude property: List of external tables exclude from the follower database.
+     * Get the externalTablesToExclude property: List of external tables to exclude from the follower database.
      *
      * @return the externalTablesToExclude value.
      */
@@ -117,7 +133,7 @@ public final class TableLevelSharingProperties {
     }
 
     /**
-     * Set the externalTablesToExclude property: List of external tables exclude from the follower database.
+     * Set the externalTablesToExclude property: List of external tables to exclude from the follower database.
      *
      * @param externalTablesToExclude the externalTablesToExclude value to set.
      * @return the TableLevelSharingProperties object itself.
@@ -148,7 +164,7 @@ public final class TableLevelSharingProperties {
     }
 
     /**
-     * Get the materializedViewsToExclude property: List of materialized views exclude from the follower database.
+     * Get the materializedViewsToExclude property: List of materialized views to exclude from the follower database.
      *
      * @return the materializedViewsToExclude value.
      */
@@ -157,13 +173,53 @@ public final class TableLevelSharingProperties {
     }
 
     /**
-     * Set the materializedViewsToExclude property: List of materialized views exclude from the follower database.
+     * Set the materializedViewsToExclude property: List of materialized views to exclude from the follower database.
      *
      * @param materializedViewsToExclude the materializedViewsToExclude value to set.
      * @return the TableLevelSharingProperties object itself.
      */
     public TableLevelSharingProperties withMaterializedViewsToExclude(List<String> materializedViewsToExclude) {
         this.materializedViewsToExclude = materializedViewsToExclude;
+        return this;
+    }
+
+    /**
+     * Get the functionsToInclude property: List of functions to include in the follower database.
+     *
+     * @return the functionsToInclude value.
+     */
+    public List<String> functionsToInclude() {
+        return this.functionsToInclude;
+    }
+
+    /**
+     * Set the functionsToInclude property: List of functions to include in the follower database.
+     *
+     * @param functionsToInclude the functionsToInclude value to set.
+     * @return the TableLevelSharingProperties object itself.
+     */
+    public TableLevelSharingProperties withFunctionsToInclude(List<String> functionsToInclude) {
+        this.functionsToInclude = functionsToInclude;
+        return this;
+    }
+
+    /**
+     * Get the functionsToExclude property: List of functions to exclude from the follower database.
+     *
+     * @return the functionsToExclude value.
+     */
+    public List<String> functionsToExclude() {
+        return this.functionsToExclude;
+    }
+
+    /**
+     * Set the functionsToExclude property: List of functions to exclude from the follower database.
+     *
+     * @param functionsToExclude the functionsToExclude value to set.
+     * @return the TableLevelSharingProperties object itself.
+     */
+    public TableLevelSharingProperties withFunctionsToExclude(List<String> functionsToExclude) {
+        this.functionsToExclude = functionsToExclude;
         return this;
     }
 

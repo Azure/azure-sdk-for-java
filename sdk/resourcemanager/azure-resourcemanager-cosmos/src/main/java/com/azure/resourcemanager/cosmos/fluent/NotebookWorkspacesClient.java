@@ -104,21 +104,6 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the notebook workspace for a Cosmos DB account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NotebookWorkspaceInner get(
-        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName);
-
-    /**
-     * Gets the notebook workspace for a Cosmos DB account.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,6 +113,21 @@ public interface NotebookWorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NotebookWorkspaceInner> getWithResponse(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context);
+
+    /**
+     * Gets the notebook workspace for a Cosmos DB account.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param notebookWorkspaceName The name of the notebook workspace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the notebook workspace for a Cosmos DB account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NotebookWorkspaceInner get(
+        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName);
 
     /**
      * Creates the notebook workspace for a Cosmos DB account.
@@ -406,21 +406,6 @@ public interface NotebookWorkspacesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param notebookWorkspaceName The name of the notebook workspace resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the connection info for the given notebook workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    NotebookWorkspaceConnectionInfoResultInner listConnectionInfo(
-        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName);
-
-    /**
-     * Retrieves the connection info for the notebook workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param notebookWorkspaceName The name of the notebook workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -430,6 +415,21 @@ public interface NotebookWorkspacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NotebookWorkspaceConnectionInfoResultInner> listConnectionInfoWithResponse(
         String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName, Context context);
+
+    /**
+     * Retrieves the connection info for the notebook workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param notebookWorkspaceName The name of the notebook workspace resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the connection info for the given notebook workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    NotebookWorkspaceConnectionInfoResultInner listConnectionInfo(
+        String resourceGroupName, String accountName, NotebookWorkspaceName notebookWorkspaceName);
 
     /**
      * Regenerates the auth token for the notebook workspace.

@@ -187,7 +187,7 @@ public final class AddonsCreateOrUpdateSamples {
             .addons()
             .define("srm")
             .withExistingPrivateCloud("group1", "cloud1")
-            .withProperties(new AddonSrmProperties().withLicenseKey("41915178-A8FF-4A4D-B683-6D735AF5E3F5"))
+            .withProperties(new AddonSrmProperties().withLicenseKey("fakeTokenPlaceholder"))
             .create();
     }
 
@@ -233,8 +233,6 @@ public final class AddonsCreateOrUpdateSamples {
 ### Addons_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Addons Delete. */
 public final class AddonsDeleteSamples {
     /*
@@ -246,7 +244,7 @@ public final class AddonsDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().delete("group1", "cloud1", "srm", Context.NONE);
+        manager.addons().delete("group1", "cloud1", "srm", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -254,8 +252,6 @@ public final class AddonsDeleteSamples {
 ### Addons_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Addons Get. */
 public final class AddonsGetSamples {
     /*
@@ -267,7 +263,7 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetSRM(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "srm", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "srm", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -279,7 +275,7 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetVR(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "vr", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "vr", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -291,7 +287,7 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetHCX(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "hcx", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "hcx", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -303,7 +299,7 @@ public final class AddonsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsGetArcReg(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().getWithResponse("group1", "cloud1", "arc", Context.NONE);
+        manager.addons().getWithResponse("group1", "cloud1", "arc", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -311,8 +307,6 @@ public final class AddonsGetSamples {
 ### Addons_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Addons List. */
 public final class AddonsListSamples {
     /*
@@ -324,7 +318,7 @@ public final class AddonsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void addonsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.addons().list("group1", "cloud1", Context.NONE);
+        manager.addons().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -351,8 +345,6 @@ public final class AuthorizationsCreateOrUpdateSamples {
 ### Authorizations_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Authorizations Delete. */
 public final class AuthorizationsDeleteSamples {
     /*
@@ -364,7 +356,7 @@ public final class AuthorizationsDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void authorizationsDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.authorizations().delete("group1", "cloud1", "authorization1", Context.NONE);
+        manager.authorizations().delete("group1", "cloud1", "authorization1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -372,8 +364,6 @@ public final class AuthorizationsDeleteSamples {
 ### Authorizations_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Authorizations Get. */
 public final class AuthorizationsGetSamples {
     /*
@@ -385,7 +375,9 @@ public final class AuthorizationsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void authorizationsGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.authorizations().getWithResponse("group1", "cloud1", "authorization1", Context.NONE);
+        manager
+            .authorizations()
+            .getWithResponse("group1", "cloud1", "authorization1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -393,8 +385,6 @@ public final class AuthorizationsGetSamples {
 ### Authorizations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Authorizations List. */
 public final class AuthorizationsListSamples {
     /*
@@ -406,7 +396,7 @@ public final class AuthorizationsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void authorizationsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.authorizations().list("group1", "cloud1", Context.NONE);
+        manager.authorizations().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -439,8 +429,6 @@ public final class CloudLinksCreateOrUpdateSamples {
 ### CloudLinks_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for CloudLinks Delete. */
 public final class CloudLinksDeleteSamples {
     /*
@@ -452,7 +440,7 @@ public final class CloudLinksDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void cloudLinksDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.cloudLinks().delete("group1", "cloud1", "cloudLink1", Context.NONE);
+        manager.cloudLinks().delete("group1", "cloud1", "cloudLink1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -460,8 +448,6 @@ public final class CloudLinksDeleteSamples {
 ### CloudLinks_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for CloudLinks Get. */
 public final class CloudLinksGetSamples {
     /*
@@ -473,7 +459,7 @@ public final class CloudLinksGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void cloudLinksGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.cloudLinks().getWithResponse("group1", "cloud1", "cloudLink1", Context.NONE);
+        manager.cloudLinks().getWithResponse("group1", "cloud1", "cloudLink1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -481,8 +467,6 @@ public final class CloudLinksGetSamples {
 ### CloudLinks_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for CloudLinks List. */
 public final class CloudLinksListSamples {
     /*
@@ -494,7 +478,7 @@ public final class CloudLinksListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void cloudLinksList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.cloudLinks().list("group1", "cloud1", Context.NONE);
+        manager.cloudLinks().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -520,6 +504,7 @@ public final class ClustersCreateOrUpdateSamples {
             .define("cluster1")
             .withExistingPrivateCloud("group1", "cloud1")
             .withSku(new Sku().withName("AV20"))
+            .withClusterSize(3)
             .create();
     }
 }
@@ -528,8 +513,6 @@ public final class ClustersCreateOrUpdateSamples {
 ### Clusters_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Clusters Delete. */
 public final class ClustersDeleteSamples {
     /*
@@ -541,7 +524,7 @@ public final class ClustersDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.clusters().delete("group1", "cloud1", "cluster1", Context.NONE);
+        manager.clusters().delete("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -549,8 +532,6 @@ public final class ClustersDeleteSamples {
 ### Clusters_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Clusters Get. */
 public final class ClustersGetSamples {
     /*
@@ -562,7 +543,7 @@ public final class ClustersGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.clusters().getWithResponse("group1", "cloud1", "cluster1", Context.NONE);
+        manager.clusters().getWithResponse("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -570,8 +551,6 @@ public final class ClustersGetSamples {
 ### Clusters_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Clusters List. */
 public final class ClustersListSamples {
     /*
@@ -583,7 +562,7 @@ public final class ClustersListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.clusters().list("group1", "cloud1", Context.NONE);
+        manager.clusters().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -591,8 +570,6 @@ public final class ClustersListSamples {
 ### Clusters_ListZones
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Clusters ListZones. */
 public final class ClustersListZonesSamples {
     /*
@@ -604,7 +581,7 @@ public final class ClustersListZonesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersListZoneDataStretched(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.clusters().listZonesWithResponse("group1", "cloud1", "cluster1", Context.NONE);
+        manager.clusters().listZonesWithResponse("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -616,7 +593,7 @@ public final class ClustersListZonesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersListZoneData(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.clusters().listZonesWithResponse("group1", "cloud1", "cluster1", Context.NONE);
+        manager.clusters().listZonesWithResponse("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -624,7 +601,6 @@ public final class ClustersListZonesSamples {
 ### Clusters_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.Cluster;
 
 /** Samples for Clusters Update. */
@@ -638,7 +614,11 @@ public final class ClustersUpdateSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void clustersUpdate(com.azure.resourcemanager.avs.AvsManager manager) {
-        Cluster resource = manager.clusters().getWithResponse("group1", "cloud1", "cluster1", Context.NONE).getValue();
+        Cluster resource =
+            manager
+                .clusters()
+                .getWithResponse("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withClusterSize(4).apply();
     }
 }
@@ -676,8 +656,6 @@ public final class DatastoresCreateOrUpdateSamples {
 ### Datastores_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Datastores Delete. */
 public final class DatastoresDeleteSamples {
     /*
@@ -689,7 +667,7 @@ public final class DatastoresDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void datastoresDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.datastores().delete("group1", "cloud1", "cluster1", "datastore1", Context.NONE);
+        manager.datastores().delete("group1", "cloud1", "cluster1", "datastore1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -697,8 +675,6 @@ public final class DatastoresDeleteSamples {
 ### Datastores_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Datastores Get. */
 public final class DatastoresGetSamples {
     /*
@@ -710,7 +686,9 @@ public final class DatastoresGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void datastoresGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.datastores().getWithResponse("group1", "cloud1", "cluster1", "datastore1", Context.NONE);
+        manager
+            .datastores()
+            .getWithResponse("group1", "cloud1", "cluster1", "datastore1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -718,8 +696,6 @@ public final class DatastoresGetSamples {
 ### Datastores_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Datastores List. */
 public final class DatastoresListSamples {
     /*
@@ -731,7 +707,7 @@ public final class DatastoresListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void datastoresList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.datastores().list("group1", "cloud1", "cluster1", Context.NONE);
+        manager.datastores().list("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -765,8 +741,6 @@ public final class GlobalReachConnectionsCreateOrUpdateSamples {
 ### GlobalReachConnections_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for GlobalReachConnections Delete. */
 public final class GlobalReachConnectionsDeleteSamples {
     /*
@@ -778,7 +752,7 @@ public final class GlobalReachConnectionsDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void globalReachConnectionsDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.globalReachConnections().delete("group1", "cloud1", "connection1", Context.NONE);
+        manager.globalReachConnections().delete("group1", "cloud1", "connection1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -786,8 +760,6 @@ public final class GlobalReachConnectionsDeleteSamples {
 ### GlobalReachConnections_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for GlobalReachConnections Get. */
 public final class GlobalReachConnectionsGetSamples {
     /*
@@ -799,7 +771,9 @@ public final class GlobalReachConnectionsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void globalReachConnectionsGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.globalReachConnections().getWithResponse("group1", "cloud1", "connection1", Context.NONE);
+        manager
+            .globalReachConnections()
+            .getWithResponse("group1", "cloud1", "connection1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -807,8 +781,6 @@ public final class GlobalReachConnectionsGetSamples {
 ### GlobalReachConnections_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for GlobalReachConnections List. */
 public final class GlobalReachConnectionsListSamples {
     /*
@@ -820,7 +792,7 @@ public final class GlobalReachConnectionsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void globalReachConnectionsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.globalReachConnections().list("group1", "cloud1", Context.NONE);
+        manager.globalReachConnections().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -847,8 +819,6 @@ public final class HcxEnterpriseSitesCreateOrUpdateSamples {
 ### HcxEnterpriseSites_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for HcxEnterpriseSites Delete. */
 public final class HcxEnterpriseSitesDeleteSamples {
     /*
@@ -860,7 +830,7 @@ public final class HcxEnterpriseSitesDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void hcxEnterpriseSitesDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.hcxEnterpriseSites().deleteWithResponse("group1", "cloud1", "site1", Context.NONE);
+        manager.hcxEnterpriseSites().deleteWithResponse("group1", "cloud1", "site1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -868,8 +838,6 @@ public final class HcxEnterpriseSitesDeleteSamples {
 ### HcxEnterpriseSites_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for HcxEnterpriseSites Get. */
 public final class HcxEnterpriseSitesGetSamples {
     /*
@@ -881,7 +849,7 @@ public final class HcxEnterpriseSitesGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void hcxEnterpriseSitesGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.hcxEnterpriseSites().getWithResponse("group1", "cloud1", "site1", Context.NONE);
+        manager.hcxEnterpriseSites().getWithResponse("group1", "cloud1", "site1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -889,8 +857,6 @@ public final class HcxEnterpriseSitesGetSamples {
 ### HcxEnterpriseSites_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for HcxEnterpriseSites List. */
 public final class HcxEnterpriseSitesListSamples {
     /*
@@ -902,7 +868,7 @@ public final class HcxEnterpriseSitesListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void hcxEnterpriseSitesList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.hcxEnterpriseSites().list("group1", "cloud1", Context.NONE);
+        manager.hcxEnterpriseSites().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -910,8 +876,6 @@ public final class HcxEnterpriseSitesListSamples {
 ### Locations_CheckQuotaAvailability
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Locations CheckQuotaAvailability. */
 public final class LocationsCheckQuotaAvailabilitySamples {
     /*
@@ -923,7 +887,7 @@ public final class LocationsCheckQuotaAvailabilitySamples {
      * @param manager Entry point to AvsManager.
      */
     public static void locationsCheckQuotaAvailability(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.locations().checkQuotaAvailabilityWithResponse("eastus", Context.NONE);
+        manager.locations().checkQuotaAvailabilityWithResponse("eastus", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -931,7 +895,6 @@ public final class LocationsCheckQuotaAvailabilitySamples {
 ### Locations_CheckTrialAvailability
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.Sku;
 
 /** Samples for Locations CheckTrialAvailability. */
@@ -945,7 +908,7 @@ public final class LocationsCheckTrialAvailabilitySamples {
      * @param manager Entry point to AvsManager.
      */
     public static void locationsCheckTrialAvailability(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.locations().checkTrialAvailabilityWithResponse("eastus", null, Context.NONE);
+        manager.locations().checkTrialAvailabilityWithResponse("eastus", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -957,7 +920,10 @@ public final class LocationsCheckTrialAvailabilitySamples {
      * @param manager Entry point to AvsManager.
      */
     public static void locationsCheckTrialAvailabilityWithSku(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.locations().checkTrialAvailabilityWithResponse("eastus", new Sku().withName("avs52t"), Context.NONE);
+        manager
+            .locations()
+            .checkTrialAvailabilityWithResponse(
+                "eastus", new Sku().withName("avs52t"), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -965,8 +931,6 @@ public final class LocationsCheckTrialAvailabilitySamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -978,7 +942,7 @@ public final class OperationsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void operationsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1031,8 +995,6 @@ public final class PlacementPoliciesCreateOrUpdateSamples {
 ### PlacementPolicies_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PlacementPolicies Delete. */
 public final class PlacementPoliciesDeleteSamples {
     /*
@@ -1044,7 +1006,7 @@ public final class PlacementPoliciesDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void placementPoliciesDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.placementPolicies().delete("group1", "cloud1", "cluster1", "policy1", Context.NONE);
+        manager.placementPolicies().delete("group1", "cloud1", "cluster1", "policy1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1052,8 +1014,6 @@ public final class PlacementPoliciesDeleteSamples {
 ### PlacementPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PlacementPolicies Get. */
 public final class PlacementPoliciesGetSamples {
     /*
@@ -1065,7 +1025,9 @@ public final class PlacementPoliciesGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void placementPoliciesGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.placementPolicies().getWithResponse("group1", "cloud1", "cluster1", "policy1", Context.NONE);
+        manager
+            .placementPolicies()
+            .getWithResponse("group1", "cloud1", "cluster1", "policy1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1073,8 +1035,6 @@ public final class PlacementPoliciesGetSamples {
 ### PlacementPolicies_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PlacementPolicies List. */
 public final class PlacementPoliciesListSamples {
     /*
@@ -1086,7 +1046,7 @@ public final class PlacementPoliciesListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void placementPoliciesList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.placementPolicies().list("group1", "cloud1", "cluster1", Context.NONE);
+        manager.placementPolicies().list("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1094,7 +1054,6 @@ public final class PlacementPoliciesListSamples {
 ### PlacementPolicies_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.AffinityStrength;
 import com.azure.resourcemanager.avs.models.AzureHybridBenefitType;
 import com.azure.resourcemanager.avs.models.PlacementPolicy;
@@ -1115,7 +1074,7 @@ public final class PlacementPoliciesUpdateSamples {
         PlacementPolicy resource =
             manager
                 .placementPolicies()
-                .getWithResponse("group1", "cloud1", "cluster1", "policy1", Context.NONE)
+                .getWithResponse("group1", "cloud1", "cluster1", "policy1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -1216,8 +1175,6 @@ public final class PrivateCloudsCreateOrUpdateSamples {
 ### PrivateClouds_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds Delete. */
 public final class PrivateCloudsDeleteSamples {
     /*
@@ -1229,7 +1186,7 @@ public final class PrivateCloudsDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().delete("group1", "cloud1", Context.NONE);
+        manager.privateClouds().delete("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1237,8 +1194,6 @@ public final class PrivateCloudsDeleteSamples {
 ### PrivateClouds_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds GetByResourceGroup. */
 public final class PrivateCloudsGetByResourceGroupSamples {
     /*
@@ -1250,7 +1205,7 @@ public final class PrivateCloudsGetByResourceGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().getByResourceGroupWithResponse("group1", "cloud1", Context.NONE);
+        manager.privateClouds().getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1262,7 +1217,7 @@ public final class PrivateCloudsGetByResourceGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsGetStretched(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().getByResourceGroupWithResponse("group1", "cloud1", Context.NONE);
+        manager.privateClouds().getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1270,8 +1225,6 @@ public final class PrivateCloudsGetByResourceGroupSamples {
 ### PrivateClouds_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds List. */
 public final class PrivateCloudsListSamples {
     /*
@@ -1283,7 +1236,7 @@ public final class PrivateCloudsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsListInSubscription(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().list(Context.NONE);
+        manager.privateClouds().list(com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1295,7 +1248,7 @@ public final class PrivateCloudsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsListInSubscriptionStretched(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().list(Context.NONE);
+        manager.privateClouds().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1303,8 +1256,6 @@ public final class PrivateCloudsListSamples {
 ### PrivateClouds_ListAdminCredentials
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds ListAdminCredentials. */
 public final class PrivateCloudsListAdminCredentialsSamples {
     /*
@@ -1316,7 +1267,7 @@ public final class PrivateCloudsListAdminCredentialsSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsListAdminCredentials(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().listAdminCredentialsWithResponse("group1", "cloud1", Context.NONE);
+        manager.privateClouds().listAdminCredentialsWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1324,8 +1275,6 @@ public final class PrivateCloudsListAdminCredentialsSamples {
 ### PrivateClouds_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds ListByResourceGroup. */
 public final class PrivateCloudsListByResourceGroupSamples {
     /*
@@ -1337,7 +1286,7 @@ public final class PrivateCloudsListByResourceGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().listByResourceGroup("group1", Context.NONE);
+        manager.privateClouds().listByResourceGroup("group1", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -1349,7 +1298,7 @@ public final class PrivateCloudsListByResourceGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsListStretched(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().listByResourceGroup("group1", Context.NONE);
+        manager.privateClouds().listByResourceGroup("group1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1357,8 +1306,6 @@ public final class PrivateCloudsListByResourceGroupSamples {
 ### PrivateClouds_RotateNsxtPassword
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds RotateNsxtPassword. */
 public final class PrivateCloudsRotateNsxtPasswordSamples {
     /*
@@ -1370,7 +1317,7 @@ public final class PrivateCloudsRotateNsxtPasswordSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsRotateNsxtPassword(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().rotateNsxtPassword("group1", "cloud1", Context.NONE);
+        manager.privateClouds().rotateNsxtPassword("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1378,8 +1325,6 @@ public final class PrivateCloudsRotateNsxtPasswordSamples {
 ### PrivateClouds_RotateVcenterPassword
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for PrivateClouds RotateVcenterPassword. */
 public final class PrivateCloudsRotateVcenterPasswordSamples {
     /*
@@ -1391,7 +1336,7 @@ public final class PrivateCloudsRotateVcenterPasswordSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsRotateVcenterPassword(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().rotateVcenterPassword("group1", "cloud1", Context.NONE);
+        manager.privateClouds().rotateVcenterPassword("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1399,7 +1344,6 @@ public final class PrivateCloudsRotateVcenterPasswordSamples {
 ### PrivateClouds_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.Encryption;
 import com.azure.resourcemanager.avs.models.EncryptionKeyVaultProperties;
 import com.azure.resourcemanager.avs.models.EncryptionState;
@@ -1420,7 +1364,10 @@ public final class PrivateCloudsUpdateSamples {
      */
     public static void privateCloudsUpdate(com.azure.resourcemanager.avs.AvsManager manager) {
         PrivateCloud resource =
-            manager.privateClouds().getByResourceGroupWithResponse("group1", "cloud1", Context.NONE).getValue();
+            manager
+                .privateClouds()
+                .getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withIdentity(new PrivateCloudIdentity().withType(ResourceIdentityType.NONE))
@@ -1430,9 +1377,9 @@ public final class PrivateCloudsUpdateSamples {
                     .withStatus(EncryptionState.ENABLED)
                     .withKeyVaultProperties(
                         new EncryptionKeyVaultProperties()
-                            .withKeyName("keyname1")
-                            .withKeyVersion("ver1.0")
-                            .withKeyVaultUrl("https://keyvault1-kmip-kvault.vault.azure.net/")))
+                            .withKeyName("fakeTokenPlaceholder")
+                            .withKeyVersion("fakeTokenPlaceholder")
+                            .withKeyVaultUrl("fakeTokenPlaceholder")))
             .apply();
     }
 
@@ -1446,7 +1393,10 @@ public final class PrivateCloudsUpdateSamples {
      */
     public static void privateCloudsUpdateStretched(com.azure.resourcemanager.avs.AvsManager manager) {
         PrivateCloud resource =
-            manager.privateClouds().getByResourceGroupWithResponse("group1", "cloud1", Context.NONE).getValue();
+            manager
+                .privateClouds()
+                .getByResourceGroupWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withManagementCluster(new ManagementCluster().withClusterSize(4)).apply();
     }
 }
@@ -1455,8 +1405,6 @@ public final class PrivateCloudsUpdateSamples {
 ### ScriptCmdlets_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ScriptCmdlets Get. */
 public final class ScriptCmdletsGetSamples {
     /*
@@ -1471,7 +1419,11 @@ public final class ScriptCmdletsGetSamples {
         manager
             .scriptCmdlets()
             .getWithResponse(
-                "group1", "{privateCloudName}", "{scriptPackageName}", "New-ExternalSsoDomain", Context.NONE);
+                "group1",
+                "{privateCloudName}",
+                "{scriptPackageName}",
+                "New-ExternalSsoDomain",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1479,8 +1431,6 @@ public final class ScriptCmdletsGetSamples {
 ### ScriptCmdlets_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ScriptCmdlets List. */
 public final class ScriptCmdletsListSamples {
     /*
@@ -1492,7 +1442,9 @@ public final class ScriptCmdletsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptCmdletsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptCmdlets().list("group1", "{privateCloudName}", "{scriptPackageName}", Context.NONE);
+        manager
+            .scriptCmdlets()
+            .list("group1", "{privateCloudName}", "{scriptPackageName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1546,8 +1498,6 @@ public final class ScriptExecutionsCreateOrUpdateSamples {
 ### ScriptExecutions_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ScriptExecutions Delete. */
 public final class ScriptExecutionsDeleteSamples {
     /*
@@ -1559,7 +1509,9 @@ public final class ScriptExecutionsDeleteSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptExecutionsDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptExecutions().delete("group1", "cloud1", "{scriptExecutionName}", Context.NONE);
+        manager
+            .scriptExecutions()
+            .delete("group1", "cloud1", "{scriptExecutionName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1567,8 +1519,6 @@ public final class ScriptExecutionsDeleteSamples {
 ### ScriptExecutions_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ScriptExecutions Get. */
 public final class ScriptExecutionsGetSamples {
     /*
@@ -1580,7 +1530,9 @@ public final class ScriptExecutionsGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptExecutionsGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptExecutions().getWithResponse("group1", "cloud1", "addSsoServer", Context.NONE);
+        manager
+            .scriptExecutions()
+            .getWithResponse("group1", "cloud1", "addSsoServer", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1588,7 +1540,6 @@ public final class ScriptExecutionsGetSamples {
 ### ScriptExecutions_GetExecutionLogs
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.ScriptOutputStreamType;
 import java.util.Arrays;
 
@@ -1615,7 +1566,7 @@ public final class ScriptExecutionsGetExecutionLogsSamples {
                         ScriptOutputStreamType.fromString("Warnings"),
                         ScriptOutputStreamType.fromString("Errors"),
                         ScriptOutputStreamType.OUTPUT),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1623,8 +1574,6 @@ public final class ScriptExecutionsGetExecutionLogsSamples {
 ### ScriptExecutions_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ScriptExecutions List. */
 public final class ScriptExecutionsListSamples {
     /*
@@ -1636,7 +1585,7 @@ public final class ScriptExecutionsListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptExecutionsList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptExecutions().list("group1", "{privateCloudName}", Context.NONE);
+        manager.scriptExecutions().list("group1", "{privateCloudName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1644,8 +1593,6 @@ public final class ScriptExecutionsListSamples {
 ### ScriptPackages_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ScriptPackages Get. */
 public final class ScriptPackagesGetSamples {
     /*
@@ -1657,7 +1604,9 @@ public final class ScriptPackagesGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptPackagesGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptPackages().getWithResponse("group1", "{privateCloudName}", "{scriptPackageName}", Context.NONE);
+        manager
+            .scriptPackages()
+            .getWithResponse("group1", "{privateCloudName}", "{scriptPackageName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1665,8 +1614,6 @@ public final class ScriptPackagesGetSamples {
 ### ScriptPackages_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for ScriptPackages List. */
 public final class ScriptPackagesListSamples {
     /*
@@ -1678,7 +1625,7 @@ public final class ScriptPackagesListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void scriptPackagesList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.scriptPackages().list("group1", "{privateCloudName}", Context.NONE);
+        manager.scriptPackages().list("group1", "{privateCloudName}", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1686,8 +1633,6 @@ public final class ScriptPackagesListSamples {
 ### VirtualMachines_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines Get. */
 public final class VirtualMachinesGetSamples {
     /*
@@ -1699,7 +1644,9 @@ public final class VirtualMachinesGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void getVirtualMachine(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.virtualMachines().getWithResponse("group1", "cloud1", "cluster1", "vm-209", Context.NONE);
+        manager
+            .virtualMachines()
+            .getWithResponse("group1", "cloud1", "cluster1", "vm-209", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1707,8 +1654,6 @@ public final class VirtualMachinesGetSamples {
 ### VirtualMachines_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for VirtualMachines List. */
 public final class VirtualMachinesListSamples {
     /*
@@ -1720,7 +1665,7 @@ public final class VirtualMachinesListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void listClusterVirtualMachines(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.virtualMachines().list("group1", "cloud1", "cluster1", Context.NONE);
+        manager.virtualMachines().list("group1", "cloud1", "cluster1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1728,7 +1673,6 @@ public final class VirtualMachinesListSamples {
 ### VirtualMachines_RestrictMovement
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovement;
 import com.azure.resourcemanager.avs.models.VirtualMachineRestrictMovementState;
 
@@ -1751,7 +1695,7 @@ public final class VirtualMachinesRestrictMovementSamples {
                 "cluster1",
                 "vm-209",
                 new VirtualMachineRestrictMovement().withRestrictMovement(VirtualMachineRestrictMovementState.ENABLED),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1968,8 +1912,6 @@ public final class WorkloadNetworksCreateVMGroupSamples {
 ### WorkloadNetworks_DeleteDhcp
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeleteDhcp. */
 public final class WorkloadNetworksDeleteDhcpSamples {
     /*
@@ -1981,7 +1923,7 @@ public final class WorkloadNetworksDeleteDhcpSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deleteDhcp("group1", "cloud1", "dhcp1", Context.NONE);
+        manager.workloadNetworks().deleteDhcp("group1", "cloud1", "dhcp1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1989,8 +1931,6 @@ public final class WorkloadNetworksDeleteDhcpSamples {
 ### WorkloadNetworks_DeleteDnsService
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeleteDnsService. */
 public final class WorkloadNetworksDeleteDnsServiceSamples {
     /*
@@ -2002,7 +1942,9 @@ public final class WorkloadNetworksDeleteDnsServiceSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteDnsService(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deleteDnsService("group1", "dnsService1", "cloud1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .deleteDnsService("group1", "dnsService1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2010,8 +1952,6 @@ public final class WorkloadNetworksDeleteDnsServiceSamples {
 ### WorkloadNetworks_DeleteDnsZone
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeleteDnsZone. */
 public final class WorkloadNetworksDeleteDnsZoneSamples {
     /*
@@ -2023,7 +1963,7 @@ public final class WorkloadNetworksDeleteDnsZoneSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deleteDnsZone("group1", "dnsZone1", "cloud1", Context.NONE);
+        manager.workloadNetworks().deleteDnsZone("group1", "dnsZone1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2031,8 +1971,6 @@ public final class WorkloadNetworksDeleteDnsZoneSamples {
 ### WorkloadNetworks_DeletePortMirroring
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeletePortMirroring. */
 public final class WorkloadNetworksDeletePortMirroringSamples {
     /*
@@ -2044,7 +1982,9 @@ public final class WorkloadNetworksDeletePortMirroringSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeletePortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deletePortMirroring("group1", "portMirroring1", "cloud1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .deletePortMirroring("group1", "portMirroring1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2052,8 +1992,6 @@ public final class WorkloadNetworksDeletePortMirroringSamples {
 ### WorkloadNetworks_DeletePublicIp
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeletePublicIp. */
 public final class WorkloadNetworksDeletePublicIpSamples {
     /*
@@ -2065,7 +2003,7 @@ public final class WorkloadNetworksDeletePublicIpSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeletePublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deletePublicIp("group1", "publicIP1", "cloud1", Context.NONE);
+        manager.workloadNetworks().deletePublicIp("group1", "publicIP1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2073,8 +2011,6 @@ public final class WorkloadNetworksDeletePublicIpSamples {
 ### WorkloadNetworks_DeleteSegment
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeleteSegment. */
 public final class WorkloadNetworksDeleteSegmentSamples {
     /*
@@ -2086,7 +2022,7 @@ public final class WorkloadNetworksDeleteSegmentSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteSegment(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deleteSegment("group1", "cloud1", "segment1", Context.NONE);
+        manager.workloadNetworks().deleteSegment("group1", "cloud1", "segment1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2094,8 +2030,6 @@ public final class WorkloadNetworksDeleteSegmentSamples {
 ### WorkloadNetworks_DeleteVMGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeleteVMGroup. */
 public final class WorkloadNetworksDeleteVMGroupSamples {
     /*
@@ -2107,7 +2041,7 @@ public final class WorkloadNetworksDeleteVMGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteVMGroup(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deleteVMGroup("group1", "vmGroup1", "cloud1", Context.NONE);
+        manager.workloadNetworks().deleteVMGroup("group1", "vmGroup1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2115,7 +2049,6 @@ public final class WorkloadNetworksDeleteVMGroupSamples {
 ### WorkloadNetworks_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkName;
 
 /** Samples for WorkloadNetworks Get. */
@@ -2129,7 +2062,9 @@ public final class WorkloadNetworksGetSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGet(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getWithResponse("group1", "cloud1", WorkloadNetworkName.DEFAULT, Context.NONE);
+        manager
+            .workloadNetworks()
+            .getWithResponse("group1", "cloud1", WorkloadNetworkName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2137,8 +2072,6 @@ public final class WorkloadNetworksGetSamples {
 ### WorkloadNetworks_GetDhcp
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetDhcp. */
 public final class WorkloadNetworksGetDhcpSamples {
     /*
@@ -2150,7 +2083,7 @@ public final class WorkloadNetworksGetDhcpSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getDhcpWithResponse("group1", "dhcp1", "cloud1", Context.NONE);
+        manager.workloadNetworks().getDhcpWithResponse("group1", "dhcp1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2158,8 +2091,6 @@ public final class WorkloadNetworksGetDhcpSamples {
 ### WorkloadNetworks_GetDnsService
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetDnsService. */
 public final class WorkloadNetworksGetDnsServiceSamples {
     /*
@@ -2171,7 +2102,9 @@ public final class WorkloadNetworksGetDnsServiceSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetDnsService(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getDnsServiceWithResponse("group1", "cloud1", "dnsService1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getDnsServiceWithResponse("group1", "cloud1", "dnsService1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2179,8 +2112,6 @@ public final class WorkloadNetworksGetDnsServiceSamples {
 ### WorkloadNetworks_GetDnsZone
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetDnsZone. */
 public final class WorkloadNetworksGetDnsZoneSamples {
     /*
@@ -2192,7 +2123,9 @@ public final class WorkloadNetworksGetDnsZoneSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getDnsZoneWithResponse("group1", "cloud1", "dnsZone1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getDnsZoneWithResponse("group1", "cloud1", "dnsZone1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2200,8 +2133,6 @@ public final class WorkloadNetworksGetDnsZoneSamples {
 ### WorkloadNetworks_GetGateway
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetGateway. */
 public final class WorkloadNetworksGetGatewaySamples {
     /*
@@ -2213,7 +2144,9 @@ public final class WorkloadNetworksGetGatewaySamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetGateway(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getGatewayWithResponse("group1", "cloud1", "gateway1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getGatewayWithResponse("group1", "cloud1", "gateway1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2221,8 +2154,6 @@ public final class WorkloadNetworksGetGatewaySamples {
 ### WorkloadNetworks_GetPortMirroring
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetPortMirroring. */
 public final class WorkloadNetworksGetPortMirroringSamples {
     /*
@@ -2234,7 +2165,9 @@ public final class WorkloadNetworksGetPortMirroringSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetPortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2242,8 +2175,6 @@ public final class WorkloadNetworksGetPortMirroringSamples {
 ### WorkloadNetworks_GetPublicIp
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetPublicIp. */
 public final class WorkloadNetworksGetPublicIpSamples {
     /*
@@ -2255,7 +2186,9 @@ public final class WorkloadNetworksGetPublicIpSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetPublicIP(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getPublicIpWithResponse("group1", "cloud1", "publicIP1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getPublicIpWithResponse("group1", "cloud1", "publicIP1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2263,8 +2196,6 @@ public final class WorkloadNetworksGetPublicIpSamples {
 ### WorkloadNetworks_GetSegment
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetSegment. */
 public final class WorkloadNetworksGetSegmentSamples {
     /*
@@ -2276,7 +2207,9 @@ public final class WorkloadNetworksGetSegmentSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetSegment(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getSegmentWithResponse("group1", "cloud1", "segment1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getSegmentWithResponse("group1", "cloud1", "segment1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2284,8 +2217,6 @@ public final class WorkloadNetworksGetSegmentSamples {
 ### WorkloadNetworks_GetVMGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetVMGroup. */
 public final class WorkloadNetworksGetVMGroupSamples {
     /*
@@ -2297,7 +2228,9 @@ public final class WorkloadNetworksGetVMGroupSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetVMGroup(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getVMGroupWithResponse("group1", "cloud1", "vmGroup1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getVMGroupWithResponse("group1", "cloud1", "vmGroup1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2305,8 +2238,6 @@ public final class WorkloadNetworksGetVMGroupSamples {
 ### WorkloadNetworks_GetVirtualMachine
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks GetVirtualMachine. */
 public final class WorkloadNetworksGetVirtualMachineSamples {
     /*
@@ -2318,7 +2249,9 @@ public final class WorkloadNetworksGetVirtualMachineSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksGetVirtualMachine(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().getVirtualMachineWithResponse("group1", "cloud1", "vm1", Context.NONE);
+        manager
+            .workloadNetworks()
+            .getVirtualMachineWithResponse("group1", "cloud1", "vm1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2326,8 +2259,6 @@ public final class WorkloadNetworksGetVirtualMachineSamples {
 ### WorkloadNetworks_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks List. */
 public final class WorkloadNetworksListSamples {
     /*
@@ -2339,7 +2270,7 @@ public final class WorkloadNetworksListSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksList(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().list("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().list("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2347,8 +2278,6 @@ public final class WorkloadNetworksListSamples {
 ### WorkloadNetworks_ListDhcp
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks ListDhcp. */
 public final class WorkloadNetworksListDhcpSamples {
     /*
@@ -2360,7 +2289,7 @@ public final class WorkloadNetworksListDhcpSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listDhcp("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().listDhcp("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2368,8 +2297,6 @@ public final class WorkloadNetworksListDhcpSamples {
 ### WorkloadNetworks_ListDnsServices
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks ListDnsServices. */
 public final class WorkloadNetworksListDnsServicesSamples {
     /*
@@ -2381,7 +2308,7 @@ public final class WorkloadNetworksListDnsServicesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListDnsServices(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listDnsServices("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().listDnsServices("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2389,8 +2316,6 @@ public final class WorkloadNetworksListDnsServicesSamples {
 ### WorkloadNetworks_ListDnsZones
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks ListDnsZones. */
 public final class WorkloadNetworksListDnsZonesSamples {
     /*
@@ -2402,7 +2327,7 @@ public final class WorkloadNetworksListDnsZonesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListDnsZones(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listDnsZones("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().listDnsZones("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2410,8 +2335,6 @@ public final class WorkloadNetworksListDnsZonesSamples {
 ### WorkloadNetworks_ListGateways
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks ListGateways. */
 public final class WorkloadNetworksListGatewaysSamples {
     /*
@@ -2423,7 +2346,7 @@ public final class WorkloadNetworksListGatewaysSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListGateways(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listGateways("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().listGateways("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2431,8 +2354,6 @@ public final class WorkloadNetworksListGatewaysSamples {
 ### WorkloadNetworks_ListPortMirroring
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks ListPortMirroring. */
 public final class WorkloadNetworksListPortMirroringSamples {
     /*
@@ -2444,7 +2365,7 @@ public final class WorkloadNetworksListPortMirroringSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListPortMirroring(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listPortMirroring("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().listPortMirroring("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2452,8 +2373,6 @@ public final class WorkloadNetworksListPortMirroringSamples {
 ### WorkloadNetworks_ListPublicIPs
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks ListPublicIPs. */
 public final class WorkloadNetworksListPublicIPsSamples {
     /*
@@ -2465,7 +2384,7 @@ public final class WorkloadNetworksListPublicIPsSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListPublicIPs(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listPublicIPs("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().listPublicIPs("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2473,8 +2392,6 @@ public final class WorkloadNetworksListPublicIPsSamples {
 ### WorkloadNetworks_ListSegments
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks ListSegments. */
 public final class WorkloadNetworksListSegmentsSamples {
     /*
@@ -2486,7 +2403,7 @@ public final class WorkloadNetworksListSegmentsSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListSegments(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listSegments("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().listSegments("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2494,8 +2411,6 @@ public final class WorkloadNetworksListSegmentsSamples {
 ### WorkloadNetworks_ListVMGroups
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks ListVMGroups. */
 public final class WorkloadNetworksListVMGroupsSamples {
     /*
@@ -2507,7 +2422,7 @@ public final class WorkloadNetworksListVMGroupsSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListVMGroups(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listVMGroups("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().listVMGroups("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2515,8 +2430,6 @@ public final class WorkloadNetworksListVMGroupsSamples {
 ### WorkloadNetworks_ListVirtualMachines
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks ListVirtualMachines. */
 public final class WorkloadNetworksListVirtualMachinesSamples {
     /*
@@ -2528,7 +2441,7 @@ public final class WorkloadNetworksListVirtualMachinesSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksListVirtualMachines(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().listVirtualMachines("group1", "cloud1", Context.NONE);
+        manager.workloadNetworks().listVirtualMachines("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2536,7 +2449,6 @@ public final class WorkloadNetworksListVirtualMachinesSamples {
 ### WorkloadNetworks_UpdateDhcp
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcp;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDhcpServer;
 
@@ -2552,7 +2464,10 @@ public final class WorkloadNetworksUpdateDhcpSamples {
      */
     public static void workloadNetworksUpdateDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkDhcp resource =
-            manager.workloadNetworks().getDhcpWithResponse("group1", "dhcp1", "cloud1", Context.NONE).getValue();
+            manager
+                .workloadNetworks()
+                .getDhcpWithResponse("group1", "dhcp1", "cloud1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withProperties(
@@ -2565,7 +2480,6 @@ public final class WorkloadNetworksUpdateDhcpSamples {
 ### WorkloadNetworks_UpdateDnsService
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.DnsServiceLogLevelEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsService;
 import java.util.Arrays;
@@ -2584,7 +2498,7 @@ public final class WorkloadNetworksUpdateDnsServiceSamples {
         WorkloadNetworkDnsService resource =
             manager
                 .workloadNetworks()
-                .getDnsServiceWithResponse("group1", "cloud1", "dnsService1", Context.NONE)
+                .getDnsServiceWithResponse("group1", "cloud1", "dnsService1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -2602,7 +2516,6 @@ public final class WorkloadNetworksUpdateDnsServiceSamples {
 ### WorkloadNetworks_UpdateDnsZone
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkDnsZone;
 import java.util.Arrays;
 
@@ -2618,7 +2531,10 @@ public final class WorkloadNetworksUpdateDnsZoneSamples {
      */
     public static void workloadNetworksUpdateDnsZone(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkDnsZone resource =
-            manager.workloadNetworks().getDnsZoneWithResponse("group1", "cloud1", "dnsZone1", Context.NONE).getValue();
+            manager
+                .workloadNetworks()
+                .getDnsZoneWithResponse("group1", "cloud1", "dnsZone1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withDisplayName("dnsZone1")
@@ -2634,7 +2550,6 @@ public final class WorkloadNetworksUpdateDnsZoneSamples {
 ### WorkloadNetworks_UpdatePortMirroring
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.PortMirroringDirectionEnum;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkPortMirroring;
 
@@ -2652,7 +2567,7 @@ public final class WorkloadNetworksUpdatePortMirroringSamples {
         WorkloadNetworkPortMirroring resource =
             manager
                 .workloadNetworks()
-                .getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", Context.NONE)
+                .getPortMirroringWithResponse("group1", "cloud1", "portMirroring1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -2668,7 +2583,6 @@ public final class WorkloadNetworksUpdatePortMirroringSamples {
 ### WorkloadNetworks_UpdateSegments
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegment;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkSegmentSubnet;
 import java.util.Arrays;
@@ -2685,7 +2599,10 @@ public final class WorkloadNetworksUpdateSegmentsSamples {
      */
     public static void workloadNetworksUpdateSegments(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkSegment resource =
-            manager.workloadNetworks().getSegmentWithResponse("group1", "cloud1", "segment1", Context.NONE).getValue();
+            manager
+                .workloadNetworks()
+                .getSegmentWithResponse("group1", "cloud1", "segment1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withConnectedGateway("/infra/tier-1s/gateway")
@@ -2702,7 +2619,6 @@ public final class WorkloadNetworksUpdateSegmentsSamples {
 ### WorkloadNetworks_UpdateVMGroup
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.models.WorkloadNetworkVMGroup;
 import java.util.Arrays;
 
@@ -2718,7 +2634,10 @@ public final class WorkloadNetworksUpdateVMGroupSamples {
      */
     public static void workloadNetworksUpdateVMGroup(com.azure.resourcemanager.avs.AvsManager manager) {
         WorkloadNetworkVMGroup resource =
-            manager.workloadNetworks().getVMGroupWithResponse("group1", "cloud1", "vmGroup1", Context.NONE).getValue();
+            manager
+                .workloadNetworks()
+                .getVMGroupWithResponse("group1", "cloud1", "vmGroup1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource.update().withMembers(Arrays.asList("564d43da-fefc-2a3b-1d92-42855622fa50")).withRevision(1L).apply();
     }
 }

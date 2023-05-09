@@ -49,15 +49,6 @@ public final class MonitorsImpl implements Monitors {
         return Utils.mapPage(inner, inner1 -> new MonitorImpl(inner1, this.manager()));
     }
 
-    public Monitor getByResourceGroup(String resourceGroupName, String monitorName) {
-        MonitorInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, monitorName);
-        if (inner != null) {
-            return new MonitorImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Monitor> getByResourceGroupWithResponse(
         String resourceGroupName, String monitorName, Context context) {
         Response<MonitorInner> inner =
@@ -68,6 +59,15 @@ public final class MonitorsImpl implements Monitors {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new MonitorImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public Monitor getByResourceGroup(String resourceGroupName, String monitorName) {
+        MonitorInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, monitorName);
+        if (inner != null) {
+            return new MonitorImpl(inner, this.manager());
         } else {
             return null;
         }

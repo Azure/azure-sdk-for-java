@@ -24,6 +24,10 @@ public final class PrivateLinkHubProperties {
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionForPrivateLinkHubBasic> privateEndpointConnections;
 
+    /** Creates an instance of PrivateLinkHubProperties class. */
+    public PrivateLinkHubProperties() {
+    }
+
     /**
      * Get the provisioningState property: PrivateLinkHub provisioning state.
      *

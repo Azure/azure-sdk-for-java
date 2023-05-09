@@ -15,7 +15,7 @@ public final class ReportConfigGrouping {
      * Has type of the column to group.
      */
     @JsonProperty(value = "type", required = true)
-    private ReportConfigColumnType type;
+    private QueryColumnType type;
 
     /*
      * The name of the column to group. This version supports subscription lowest possible grain.
@@ -32,7 +32,7 @@ public final class ReportConfigGrouping {
      *
      * @return the type value.
      */
-    public ReportConfigColumnType type() {
+    public QueryColumnType type() {
         return this.type;
     }
 
@@ -42,7 +42,7 @@ public final class ReportConfigGrouping {
      * @param type the type value to set.
      * @return the ReportConfigGrouping object itself.
      */
-    public ReportConfigGrouping withType(ReportConfigColumnType type) {
+    public ReportConfigGrouping withType(QueryColumnType type) {
         this.type = type;
         return this;
     }

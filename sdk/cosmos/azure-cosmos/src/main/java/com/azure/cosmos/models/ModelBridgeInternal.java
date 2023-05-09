@@ -963,5 +963,6 @@ public final class ModelBridgeInternal {
         FeedResponse.initialize();
         PartitionKey.initialize();
         CosmosClientTelemetryConfig.initialize();
+        CosmosContainerIdentity.initialize();
     }
 }

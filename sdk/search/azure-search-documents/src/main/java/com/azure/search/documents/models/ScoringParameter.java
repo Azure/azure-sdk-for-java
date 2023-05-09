@@ -7,9 +7,6 @@ import com.azure.core.models.GeoPoint;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.search.documents.implementation.util.Utility;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,9 +49,7 @@ public final class ScoringParameter {
      * @param values Values of the scoring parameter.
      * @throws NullPointerException if {@code name} or {@code values} is null.
      */
-    @JsonCreator
-    public ScoringParameter(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "values") List<String> values) {
+    public ScoringParameter(String name, List<String> values) {
         Objects.requireNonNull(name);
         Objects.requireNonNull(values);
         this.name = name;
@@ -104,7 +99,6 @@ public final class ScoringParameter {
      * @throws IllegalArgumentException if all values in the list are null or empty.
      */
     @Override
-    @JsonValue
     public String toString() {
         String flattenValue = values.stream().filter(value -> !CoreUtils.isNullOrEmpty(value))
             .map(ScoringParameter::escapeValue).collect(Collectors.joining(COMMA));

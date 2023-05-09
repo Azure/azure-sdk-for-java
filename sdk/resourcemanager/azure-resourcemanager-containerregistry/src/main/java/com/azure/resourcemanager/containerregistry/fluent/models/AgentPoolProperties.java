@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.OS;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of agent pool. */
 @Fluent
 public final class AgentPoolProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolProperties.class);
-
     /*
      * The count of agent machine
      */
@@ -45,6 +41,10 @@ public final class AgentPoolProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of AgentPoolProperties class. */
+    public AgentPoolProperties() {
+    }
 
     /**
      * Get the count property: The count of agent machine.

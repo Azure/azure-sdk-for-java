@@ -3,15 +3,18 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -23,15 +26,18 @@ public class RntbdConnectionStateListener {
     private final RntbdEndpoint endpoint;
     private final RntbdConnectionStateListenerMetrics metrics;
     private final Set<Uri> addressUris;
+    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
+    private final AtomicBoolean endpointValidationInProgress = new AtomicBoolean(false);
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final RntbdEndpoint endpoint) {
+    public RntbdConnectionStateListener(final RntbdEndpoint endpoint, final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
         this.metrics = new RntbdConnectionStateListenerMetrics();
         this.addressUris = ConcurrentHashMap.newKeySet();
+        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
     }
 
     // endregion
@@ -57,6 +63,9 @@ public class RntbdConnectionStateListener {
             } else {
                 this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_FAILURE, exception));
             }
+        } else if (exception instanceof RntbdRequestManager.UnhealthyChannelException) {
+            // A channel is closed due to Rntbd health check
+            this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_FAILURE, exception));
         } else {
             if (logger.isDebugEnabled()) {
                 logger.debug("Will not raise the connection state change event for error", exception);
@@ -68,6 +77,35 @@ public class RntbdConnectionStateListener {
         return this.metrics;
     }
 
+    public void openConnectionIfNeeded() {
+
+        // do not fail here, just log
+        // this attempts to make the open connections flow
+        // best effort
+        if (this.proactiveOpenConnectionsProcessor == null) {
+            logger.warn("proactiveOpenConnectionsProcessor is null");
+            return;
+        }
+
+        // connection state listener submits an open connection task for an endpoint
+        // and only submits the task for that endpoint when the previous task has been
+        // completed
+        // it is okay to lose a task, since each task will attempt to attain a certain no. of
+        // connection as denoted by the min required no. of connections for that endpoint
+        if (this.endpointValidationInProgress.compareAndSet(false, true)) {
+            Mono.fromFuture(this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
+                "",
+                this.endpoint.serviceEndpoint(),
+                this.addressUris.stream().findFirst().get(),
+                this.endpoint.getMinChannelsRequired()
+            ))
+            .doFinally(signalType -> {
+                this.endpointValidationInProgress.compareAndSet(true, false);
+            })
+            .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
+            .subscribe();
+        }
+    }
     // endregion
 
     // region Privates

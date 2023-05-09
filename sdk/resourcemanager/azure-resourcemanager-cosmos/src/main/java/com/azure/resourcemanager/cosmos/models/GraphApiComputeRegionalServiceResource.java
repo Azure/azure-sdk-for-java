@@ -16,6 +16,10 @@ public final class GraphApiComputeRegionalServiceResource extends RegionalServic
     @JsonProperty(value = "graphApiComputeEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String graphApiComputeEndpoint;
 
+    /** Creates an instance of GraphApiComputeRegionalServiceResource class. */
+    public GraphApiComputeRegionalServiceResource() {
+    }
+
     /**
      * Get the graphApiComputeEndpoint property: The regional endpoint for GraphAPICompute.
      *

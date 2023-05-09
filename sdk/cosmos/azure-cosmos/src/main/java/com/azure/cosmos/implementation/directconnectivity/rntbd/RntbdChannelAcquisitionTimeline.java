@@ -18,6 +18,7 @@ public class RntbdChannelAcquisitionTimeline {
     private static final Logger logger = LoggerFactory.getLogger(RntbdChannelAcquisitionTimeline.class);
     private final List<RntbdChannelAcquisitionEvent> events;
     private volatile RntbdChannelAcquisitionEvent currentEvent;
+    private volatile boolean waitForChannelInit = false;
 
     public RntbdChannelAcquisitionTimeline() {
         this.events = new ArrayList<>();
@@ -35,6 +36,9 @@ public class RntbdChannelAcquisitionTimeline {
         if (timeline != null) {
             RntbdChannelAcquisitionEvent newEvent = new RntbdChannelAcquisitionEvent(eventType, Instant.now());
             timeline.addNewEvent(newEvent, clientTelemetry);
+            if (eventType == RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE) {
+                timeline.waitForChannelInit = true;
+            }
 
             return newEvent;
         }
@@ -84,5 +88,9 @@ public class RntbdChannelAcquisitionTimeline {
         if (timeline != null && timeline.currentEvent != null){
             RntbdChannelAcquisitionEvent.addDetail(timeline.currentEvent, detail);
         }
+    }
+
+    public boolean isWaitForChannelInit() {
+        return this.waitForChannelInit;
     }
 }

@@ -7,37 +7,44 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomEntityLookupSkillLanguage. */
+/** The language codes supported for input text by CustomEntityLookupSkill. */
 public final class CustomEntityLookupSkillLanguage extends ExpandableStringEnum<CustomEntityLookupSkillLanguage> {
-    /** Static value da for CustomEntityLookupSkillLanguage. */
+    /** Danish. */
     public static final CustomEntityLookupSkillLanguage DA = fromString("da");
 
-    /** Static value de for CustomEntityLookupSkillLanguage. */
+    /** German. */
     public static final CustomEntityLookupSkillLanguage DE = fromString("de");
 
-    /** Static value en for CustomEntityLookupSkillLanguage. */
+    /** English. */
     public static final CustomEntityLookupSkillLanguage EN = fromString("en");
 
-    /** Static value es for CustomEntityLookupSkillLanguage. */
+    /** Spanish. */
     public static final CustomEntityLookupSkillLanguage ES = fromString("es");
 
-    /** Static value fi for CustomEntityLookupSkillLanguage. */
+    /** Finnish. */
     public static final CustomEntityLookupSkillLanguage FI = fromString("fi");
 
-    /** Static value fr for CustomEntityLookupSkillLanguage. */
+    /** French. */
     public static final CustomEntityLookupSkillLanguage FR = fromString("fr");
 
-    /** Static value it for CustomEntityLookupSkillLanguage. */
+    /** Italian. */
     public static final CustomEntityLookupSkillLanguage IT = fromString("it");
 
-    /** Static value ko for CustomEntityLookupSkillLanguage. */
+    /** Korean. */
     public static final CustomEntityLookupSkillLanguage KO = fromString("ko");
 
-    /** Static value pt for CustomEntityLookupSkillLanguage. */
+    /** Portuguese. */
     public static final CustomEntityLookupSkillLanguage PT = fromString("pt");
+
+    /**
+     * Creates a new instance of CustomEntityLookupSkillLanguage value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CustomEntityLookupSkillLanguage() {}
 
     /**
      * Creates or finds a CustomEntityLookupSkillLanguage from its string representation.
@@ -45,7 +52,6 @@ public final class CustomEntityLookupSkillLanguage extends ExpandableStringEnum<
      * @param name a name to look for.
      * @return the corresponding CustomEntityLookupSkillLanguage.
      */
-    @JsonCreator
     public static CustomEntityLookupSkillLanguage fromString(String name) {
         return fromString(name, CustomEntityLookupSkillLanguage.class);
     }

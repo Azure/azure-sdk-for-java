@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.VpnPacketCaptureStartParameters;
 
 /** Samples for VirtualNetworkGatewayConnections StartPacketCapture. */
 public final class VirtualNetworkGatewayConnectionsStartPacketCaptureSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGatewayConnectionStartPacketCapture.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGatewayConnectionStartPacketCapture.json
      */
     /**
      * Sample code: Start packet capture on virtual network gateway connection without filter.
@@ -24,11 +23,11 @@ public final class VirtualNetworkGatewayConnectionsStartPacketCaptureSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
-            .startPacketCapture("rg1", "vpngwcn1", null, Context.NONE);
+            .startPacketCapture("rg1", "vpngwcn1", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGatewayConnectionStartPacketCaptureFilterData.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGatewayConnectionStartPacketCaptureFilterData.json
      */
     /**
      * Sample code: Start packet capture on virtual network gateway connection with filter.
@@ -51,6 +50,6 @@ public final class VirtualNetworkGatewayConnectionsStartPacketCaptureSamples {
                             + " [{'SourceSubnets': ['20.1.1.0/24'],'DestinationSubnets': ['10.1.1.0/24'],'SourcePort':"
                             + " [500],'DestinationPort': [4500],'Protocol': 6,'TcpFlags':"
                             + " 16,'CaptureSingleDirectionTrafficOnly': true}]}"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

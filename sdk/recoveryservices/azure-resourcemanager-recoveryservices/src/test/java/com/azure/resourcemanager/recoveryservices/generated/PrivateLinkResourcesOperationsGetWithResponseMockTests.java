@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.PrivateLinkResource;
 import java.nio.ByteBuffer;
@@ -62,7 +61,7 @@ public final class PrivateLinkResourcesOperationsGetWithResponseMockTests {
         PrivateLinkResource response =
             manager
                 .privateLinkResourcesOperations()
-                .getWithResponse("umveekgpwozuhkf", "bsjyofdx", "uusdttouwa", Context.NONE)
+                .getWithResponse("umveekgpwozuhkf", "bsjyofdx", "uusdttouwa", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

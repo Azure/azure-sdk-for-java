@@ -14,20 +14,26 @@ public class ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToMa
      * Desired state
      */
     @JsonProperty(value = "desiredState")
-    private ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState desiredState;
+    private DesiredState desiredState;
 
     /*
      * Actual state
      */
     @JsonProperty(value = "actualState", access = JsonProperty.Access.WRITE_ONLY)
-    private ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState actualState;
+    private ActualState actualState;
+
+    /**
+     * Creates an instance of ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity class.
+     */
+    public ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity() {
+    }
 
     /**
      * Get the desiredState property: Desired state.
      *
      * @return the desiredState value.
      */
-    public ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState desiredState() {
+    public DesiredState desiredState() {
         return this.desiredState;
     }
 
@@ -38,7 +44,7 @@ public class ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToMa
      * @return the ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity object itself.
      */
     public ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity withDesiredState(
-        ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityDesiredState desiredState) {
+        DesiredState desiredState) {
         this.desiredState = desiredState;
         return this;
     }
@@ -48,7 +54,7 @@ public class ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToMa
      *
      * @return the actualState value.
      */
-    public ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentityActualState actualState() {
+    public ActualState actualState() {
         return this.actualState;
     }
 

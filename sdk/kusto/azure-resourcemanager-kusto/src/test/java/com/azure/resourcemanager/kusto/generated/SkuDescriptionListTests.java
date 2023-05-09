@@ -6,20 +6,19 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.SkuDescriptionList;
-import org.junit.jupiter.api.Test;
 
 public final class SkuDescriptionListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SkuDescriptionList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"resourceType\":\"xujwbhqwalmuzyo\",\"name\":\"epdkzja\",\"tier\":\"ux\",\"locations\":[\"wbavxbniwdj\"],\"locationInfo\":[],\"restrictions\":[]}]}")
+                    "{\"value\":[{\"resourceType\":\"tgzfbishcbkh\",\"name\":\"deyeamdphagalpbu\",\"tier\":\"gipwhonowkg\",\"locations\":[\"ankixzbinjeput\",\"mryw\",\"uzoqft\"],\"locationInfo\":[],\"restrictions\":[\"datan\",\"datacqvyxlwhzlsico\",\"dataoqqnwvlryav\"]},{\"resourceType\":\"heun\",\"name\":\"qhgyxzkonocukok\",\"tier\":\"axuconuq\",\"locations\":[\"kbeype\",\"rmjmwvvjektc\"],\"locationInfo\":[],\"restrictions\":[\"datawlrsffrzpwv\",\"dataqdqgbi\"]}]}")
                 .toObject(SkuDescriptionList.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuDescriptionList model = new SkuDescriptionList();
         model = BinaryData.fromObject(model).toObject(SkuDescriptionList.class);
     }

@@ -18,6 +18,10 @@ public final class IpFirewallRuleInfoInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private IpFirewallRuleProperties innerProperties;
 
+    /** Creates an instance of IpFirewallRuleInfoInner class. */
+    public IpFirewallRuleInfoInner() {
+    }
+
     /**
      * Get the innerProperties property: IP firewall rule properties.
      *

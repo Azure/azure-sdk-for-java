@@ -217,7 +217,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -283,7 +283,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -429,7 +429,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveOutputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveOutputName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -491,7 +491,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveOutputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveOutputName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -621,7 +621,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -695,7 +695,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -985,7 +985,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveOutputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveOutputName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1047,7 +1047,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveOutputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveOutputName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1278,7 +1278,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1335,7 +1335,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1454,7 +1454,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1526,7 +1526,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

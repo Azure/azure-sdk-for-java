@@ -26,6 +26,10 @@ public final class SqlStoredProcedureCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
+    /** Creates an instance of SqlStoredProcedureCreateUpdateProperties class. */
+    public SqlStoredProcedureCreateUpdateProperties() {
+    }
+
     /**
      * Get the resource property: The standard JSON format of a storedProcedure.
      *

@@ -75,6 +75,8 @@ import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.lang.reflect.Field;
@@ -278,13 +280,19 @@ public class CustomAnalyzerTests extends SearchTestBase {
         searchIndexClient.createIndex(index);
         indexesToCleanup.add(index.getName());
 
-        LEXICAL_ANALYZER_NAMES.parallelStream()
-            .map(an -> new AnalyzeTextOptions("One two", an))
-            .forEach(r -> searchIndexAsyncClient.analyzeText(index.getName(), r).blockLast());
+        Flux.fromIterable(LEXICAL_ANALYZER_NAMES)
+            .parallel()
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(an -> searchIndexAsyncClient.analyzeText(index.getName(), new AnalyzeTextOptions("One two", an)))
+            .then()
+            .block();
 
-        LEXICAL_TOKENIZER_NAMES.parallelStream()
-            .map(tn -> new AnalyzeTextOptions("One two", tn))
-            .forEach(r -> searchIndexAsyncClient.analyzeText(index.getName(), r).blockLast());
+        Flux.fromIterable(LEXICAL_TOKENIZER_NAMES)
+            .parallel()
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(tn -> searchIndexAsyncClient.analyzeText(index.getName(), new AnalyzeTextOptions("One two", tn)))
+            .then()
+            .block();
     }
 
     @Test
@@ -857,7 +865,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
                     .setMaxGram(3),
                 new PatternCaptureTokenFilter(generateName(), Collections.singletonList(".*"))
                     .setPreserveOriginal(false),
-                new PatternReplaceTokenFilter(generateName(), "abc", "132"),
+                new PatternReplaceTokenFilter(generateName(), "abc", "123"),
                 new PhoneticTokenFilter(generateName())
                     .setEncoder(PhoneticEncoder.SOUNDEX)
                     .setOriginalTokensReplaced(false),
@@ -901,7 +909,7 @@ public class CustomAnalyzerTests extends SearchTestBase {
             .setCharFilters(new MappingCharFilter(customCharFilterName.toString(),
                     Collections.singletonList("a => b")), // One custom char filter for CustomeAnalyer above.
                 new MappingCharFilter(generateName(), Arrays.asList("s => $", "S => $")),
-                new PatternReplaceCharFilter(generateName(), "abc", "132"));
+                new PatternReplaceCharFilter(generateName(), "abc", "123"));
     }
 
     SearchIndex createIndexWithSpecialDefaults() {

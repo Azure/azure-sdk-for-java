@@ -14,6 +14,15 @@ public final class ApplicationType extends ExpandableStringEnum<ApplicationType>
     public static final ApplicationType SAP_HANA = fromString("SAP-HANA");
 
     /**
+     * Creates a new instance of ApplicationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationType() {
+    }
+
+    /**
      * Creates or finds a ApplicationType from its string representation.
      *
      * @param name a name to look for.

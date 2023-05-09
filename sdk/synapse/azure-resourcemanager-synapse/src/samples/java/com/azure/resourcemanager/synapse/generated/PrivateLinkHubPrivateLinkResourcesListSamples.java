@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkHubPrivateLinkResources List. */
 public final class PrivateLinkHubPrivateLinkResourcesListSamples {
     /*
@@ -20,6 +18,6 @@ public final class PrivateLinkHubPrivateLinkResourcesListSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .privateLinkHubPrivateLinkResources()
-            .list("ExampleResourceGroup", "ExamplePrivateLinkHub", Context.NONE);
+            .list("ExampleResourceGroup", "ExamplePrivateLinkHub", com.azure.core.util.Context.NONE);
     }
 }

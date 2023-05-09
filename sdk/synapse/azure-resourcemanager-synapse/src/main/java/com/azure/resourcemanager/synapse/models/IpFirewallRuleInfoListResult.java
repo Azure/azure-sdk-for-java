@@ -24,6 +24,10 @@ public final class IpFirewallRuleInfoListResult {
     @JsonProperty(value = "value")
     private List<IpFirewallRuleInfoInner> value;
 
+    /** Creates an instance of IpFirewallRuleInfoListResult class. */
+    public IpFirewallRuleInfoListResult() {
+    }
+
     /**
      * Get the nextLink property: Link to next page of results.
      *

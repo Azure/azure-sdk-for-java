@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.AgentProperties;
 import com.azure.resourcemanager.containerregistry.models.Credentials;
 import com.azure.resourcemanager.containerregistry.models.PlatformUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.TaskStatus;
 import com.azure.resourcemanager.containerregistry.models.TaskStepUpdateParameters;
 import com.azure.resourcemanager.containerregistry.models.TriggerUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties for updating a task. */
 @Fluent
 public final class TaskPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaskPropertiesUpdateParameters.class);
-
     /*
      * The current status of task.
      */
@@ -63,18 +59,20 @@ public final class TaskPropertiesUpdateParameters {
     private TriggerUpdateParameters trigger;
 
     /*
-     * The parameters that describes a set of credentials that will be used
-     * when this run is invoked.
+     * The parameters that describes a set of credentials that will be used when this run is invoked.
      */
     @JsonProperty(value = "credentials")
     private Credentials credentials;
 
     /*
-     * The template that describes the repository and tag information for run
-     * log artifact.
+     * The template that describes the repository and tag information for run log artifact.
      */
     @JsonProperty(value = "logTemplate")
     private String logTemplate;
+
+    /** Creates an instance of TaskPropertiesUpdateParameters class. */
+    public TaskPropertiesUpdateParameters() {
+    }
 
     /**
      * Get the status property: The current status of task.

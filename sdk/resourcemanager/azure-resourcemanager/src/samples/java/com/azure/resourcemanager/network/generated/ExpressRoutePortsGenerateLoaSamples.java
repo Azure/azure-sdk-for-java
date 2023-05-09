@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.GenerateExpressRoutePortsLoaRequest;
 
 /** Samples for ExpressRoutePorts GenerateLoa. */
 public final class ExpressRoutePortsGenerateLoaSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/GenerateExpressRoutePortsLOA.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/GenerateExpressRoutePortsLOA.json
      */
     /**
      * Sample code: GenerateExpressRoutePortLOA.
@@ -27,6 +26,6 @@ public final class ExpressRoutePortsGenerateLoaSamples {
                 "rg1",
                 "portName",
                 new GenerateExpressRoutePortsLoaRequest().withCustomerName("customerName"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -34,6 +34,10 @@ public final class OptimizedAutoscale {
     @JsonProperty(value = "maximum", required = true)
     private int maximum;
 
+    /** Creates an instance of OptimizedAutoscale class. */
+    public OptimizedAutoscale() {
+    }
+
     /**
      * Get the version property: The version of the template defined, for instance 1.
      *

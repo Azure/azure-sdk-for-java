@@ -8,13 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SourceRegistryLoginMode. */
+/**
+ * The authentication mode which determines the source registry login scope. The credentials for the source registry
+ * will be generated using the given scope. These credentials will be used to login to the source registry during the
+ * run.
+ */
 public final class SourceRegistryLoginMode extends ExpandableStringEnum<SourceRegistryLoginMode> {
     /** Static value None for SourceRegistryLoginMode. */
     public static final SourceRegistryLoginMode NONE = fromString("None");
 
     /** Static value Default for SourceRegistryLoginMode. */
     public static final SourceRegistryLoginMode DEFAULT = fromString("Default");
+
+    /**
+     * Creates a new instance of SourceRegistryLoginMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SourceRegistryLoginMode() {
+    }
 
     /**
      * Creates or finds a SourceRegistryLoginMode from its string representation.
@@ -27,7 +40,11 @@ public final class SourceRegistryLoginMode extends ExpandableStringEnum<SourceRe
         return fromString(name, SourceRegistryLoginMode.class);
     }
 
-    /** @return known SourceRegistryLoginMode values. */
+    /**
+     * Gets known SourceRegistryLoginMode values.
+     *
+     * @return known SourceRegistryLoginMode values.
+     */
     public static Collection<SourceRegistryLoginMode> values() {
         return values(SourceRegistryLoginMode.class);
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AppServiceCertificateOrders GetCertificate. */
 public final class AppServiceCertificateOrdersGetCertificateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/GetAppServiceCertificate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/GetAppServiceCertificate.json
      */
     /**
      * Sample code: Get App Service Certificate.
@@ -22,6 +20,7 @@ public final class AppServiceCertificateOrdersGetCertificateSamples {
             .manager()
             .serviceClient()
             .getAppServiceCertificateOrders()
-            .getCertificateWithResponse("testrg123", "SampleCertificateOrderName", "SampleCertName1", Context.NONE);
+            .getCertificateWithResponse(
+                "testrg123", "SampleCertificateOrderName", "SampleCertName1", com.azure.core.util.Context.NONE);
     }
 }

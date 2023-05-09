@@ -151,6 +151,13 @@ public interface SqlPoolBlobAuditingPolicy {
     Boolean isAzureMonitorTargetEnabled();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.SqlPoolBlobAuditingPolicyInner object.
      *
      * @return the inner object.
@@ -405,9 +412,7 @@ public interface SqlPoolBlobAuditingPolicy {
         extends UpdateStages.WithState,
             UpdateStages.WithStorageEndpoint,
             UpdateStages.WithStorageAccountAccessKey,
-            UpdateStages.WithRetentionDays,
             UpdateStages.WithAuditActionsAndGroups,
-            UpdateStages.WithStorageAccountSubscriptionId,
             UpdateStages.WithIsStorageSecondaryKeyInUse,
             UpdateStages.WithIsAzureMonitorTargetEnabled {
         /**
@@ -462,17 +467,6 @@ public interface SqlPoolBlobAuditingPolicy {
              * @return the next definition stage.
              */
             Update withStorageAccountAccessKey(String storageAccountAccessKey);
-        }
-        /** The stage of the SqlPoolBlobAuditingPolicy update allowing to specify retentionDays. */
-        interface WithRetentionDays {
-            /**
-             * Specifies the retentionDays property: Specifies the number of days to keep in the audit logs in the
-             * storage account..
-             *
-             * @param retentionDays Specifies the number of days to keep in the audit logs in the storage account.
-             * @return the next definition stage.
-             */
-            Update withRetentionDays(Integer retentionDays);
         }
         /** The stage of the SqlPoolBlobAuditingPolicy update allowing to specify auditActionsAndGroups. */
         interface WithAuditActionsAndGroups {
@@ -557,16 +551,6 @@ public interface SqlPoolBlobAuditingPolicy {
              * @return the next definition stage.
              */
             Update withAuditActionsAndGroups(List<String> auditActionsAndGroups);
-        }
-        /** The stage of the SqlPoolBlobAuditingPolicy update allowing to specify storageAccountSubscriptionId. */
-        interface WithStorageAccountSubscriptionId {
-            /**
-             * Specifies the storageAccountSubscriptionId property: Specifies the blob storage subscription Id..
-             *
-             * @param storageAccountSubscriptionId Specifies the blob storage subscription Id.
-             * @return the next definition stage.
-             */
-            Update withStorageAccountSubscriptionId(UUID storageAccountSubscriptionId);
         }
         /** The stage of the SqlPoolBlobAuditingPolicy update allowing to specify isStorageSecondaryKeyInUse. */
         interface WithIsStorageSecondaryKeyInUse {

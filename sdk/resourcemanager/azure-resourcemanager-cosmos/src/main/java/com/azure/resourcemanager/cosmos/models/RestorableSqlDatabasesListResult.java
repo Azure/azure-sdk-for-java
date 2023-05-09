@@ -18,6 +18,10 @@ public final class RestorableSqlDatabasesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableSqlDatabaseGetResultInner> value;
 
+    /** Creates an instance of RestorableSqlDatabasesListResult class. */
+    public RestorableSqlDatabasesListResult() {
+    }
+
     /**
      * Get the value property: List of SQL database events and their properties.
      *

@@ -51,7 +51,7 @@ public class DataSourceTests extends SearchTestBase {
     private static final String FAKE_COSMOS_CONNECTION_STRING =
         "AccountEndpoint=https://NotaRealAccount.documents.azure.com;AccountKey=fake;Database=someFakeDatabase";
     public static final String FAKE_AZURE_SQL_CONNECTION_STRING =
-        "Server=tcp:fakeUri,1433;Database=fakeDatabase;User ID=reader;Password=fakePasswordPlaceholder;"
+        "Server=tcp:fakeUri,1433;Database=fakeDatabase;User ID=reader;Password=fakePassword;"
             + "Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
 
     private final List<String> dataSourcesToDelete = new ArrayList<>();
@@ -259,7 +259,7 @@ public class DataSourceTests extends SearchTestBase {
         SearchIndexerDataSourceConnection updatedActual = client.createOrUpdateDataSourceConnection(updatedExpected);
 
         updatedExpected.setConnectionString(null); // Create doesn't return connection strings.
-        TestHelpers.assertObjectEquals(updatedExpected, updatedActual, false, "etag", "@odata.etag");
+        TestHelpers.assertObjectEquals(updatedExpected, updatedActual, false, "etag", "@odata.etag", "@odata.type");
     }
 
     @Test
@@ -280,7 +280,8 @@ public class DataSourceTests extends SearchTestBase {
         StepVerifier.create(asyncClient.createOrUpdateDataSourceConnection(updatedExpected))
             .assertNext(actual ->
                 // Create doesn't return connection strings.
-                assertObjectEquals(updatedExpected.setConnectionString(null), actual, false, "etag", "@odata.etag"))
+                assertObjectEquals(updatedExpected.setConnectionString(null), actual, false, "etag", "@odata.etag",
+                    "@odata.type"))
             .verifyComplete();
     }
 
@@ -656,7 +657,7 @@ public class DataSourceTests extends SearchTestBase {
         SearchIndexerDataSourceConnection expectedDataSource = createTestBlobDataSource(null);
         dataSourcesToDelete.add(expectedDataSource.getName());
         Response<SearchIndexerDataSourceConnection> response = client
-            .createDataSourceConnectionWithResponse(expectedDataSource, null);
+            .createDataSourceConnectionWithResponse(expectedDataSource, Context.NONE);
 
         assertEquals(expectedDataSource.getName(), response.getValue().getName());
         assertEquals(HttpURLConnection.HTTP_CREATED, response.getStatusCode());

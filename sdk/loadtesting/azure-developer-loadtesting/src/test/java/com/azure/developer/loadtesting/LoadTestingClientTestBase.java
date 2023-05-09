@@ -21,7 +21,8 @@ import java.util.Map;
 import reactor.core.publisher.Mono;
 
 class LoadTestingClientTestBase extends TestBase {
-    protected LoadTestingClientBuilder builder;
+    protected LoadTestAdministrationClientBuilder adminBuilder;
+    protected LoadTestRunClientBuilder testRunBuilder;
 
     protected static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -47,23 +48,37 @@ class LoadTestingClientTestBase extends TestBase {
 
     @Override
     protected void beforeTest() {
-        LoadTestingClientBuilder loadTestingClientBuilder =
-                new LoadTestingClientBuilder()
+        LoadTestAdministrationClientBuilder loadTestAdministrationClientBuilder =
+                new LoadTestAdministrationClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
+                        .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        LoadTestRunClientBuilder loadTestRunClientBuilder =
+                new LoadTestRunClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", defaultEndpoint))
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            loadTestingClientBuilder
+            loadTestAdministrationClientBuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            loadTestRunClientBuilder
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            loadTestingClientBuilder
+            loadTestAdministrationClientBuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(getTokenCredential());
+            loadTestRunClientBuilder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .credential(getTokenCredential());
         } else if (getTestMode() == TestMode.LIVE) {
-            loadTestingClientBuilder.credential(getTokenCredential());
+            loadTestAdministrationClientBuilder.credential(getTokenCredential());
+            loadTestRunClientBuilder.credential(getTokenCredential());
         }
-        builder = loadTestingClientBuilder;
+
+        adminBuilder = loadTestAdministrationClientBuilder;
+        testRunBuilder = loadTestRunClientBuilder;
     }
 
     // Helpers

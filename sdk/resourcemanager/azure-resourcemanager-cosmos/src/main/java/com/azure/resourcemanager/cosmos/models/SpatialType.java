@@ -23,6 +23,15 @@ public final class SpatialType extends ExpandableStringEnum<SpatialType> {
     public static final SpatialType MULTI_POLYGON = fromString("MultiPolygon");
 
     /**
+     * Creates a new instance of SpatialType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SpatialType() {
+    }
+
+    /**
      * Creates or finds a SpatialType from its string representation.
      *
      * @param name a name to look for.

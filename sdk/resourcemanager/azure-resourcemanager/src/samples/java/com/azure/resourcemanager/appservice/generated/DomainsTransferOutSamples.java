@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Domains TransferOut. */
 public final class DomainsTransferOutSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/TransferOutDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-09-01/examples/TransferOutDomain.json
      */
     /**
      * Sample code: Transfer out domain.
@@ -22,6 +20,6 @@ public final class DomainsTransferOutSamples {
             .manager()
             .serviceClient()
             .getDomains()
-            .transferOutWithResponse("testrg123", "example.com", Context.NONE);
+            .transferOutWithResponse("testrg123", "example.com", com.azure.core.util.Context.NONE);
     }
 }

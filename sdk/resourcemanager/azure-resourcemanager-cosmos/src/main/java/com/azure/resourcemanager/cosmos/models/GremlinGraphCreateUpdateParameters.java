@@ -19,6 +19,10 @@ public final class GremlinGraphCreateUpdateParameters extends ArmResourcePropert
     @JsonProperty(value = "properties", required = true)
     private GremlinGraphCreateUpdateProperties innerProperties = new GremlinGraphCreateUpdateProperties();
 
+    /** Creates an instance of GremlinGraphCreateUpdateParameters class. */
+    public GremlinGraphCreateUpdateParameters() {
+    }
+
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB Gremlin graph.
      *

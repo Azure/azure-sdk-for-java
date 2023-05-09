@@ -7,53 +7,57 @@ package com.azure.resourcemanager.workloads.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the SAP message server properties. */
+/** Defines the SAP Message Server properties. */
 @Immutable
 public final class MessageServerProperties {
     /*
-     * The message server port.
+     * Message Server port.
      */
     @JsonProperty(value = "msPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long msPort;
 
     /*
-     * The message server internal MS port.
+     * Message Server internal MS port.
      */
     @JsonProperty(value = "internalMsPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long internalMsPort;
 
     /*
-     * The message server http port.
+     * Message Server HTTP Port.
      */
     @JsonProperty(value = "httpPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long httpPort;
 
     /*
-     * The message server https port.
+     * Message Server HTTPS Port.
      */
     @JsonProperty(value = "httpsPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long httpsPort;
 
     /*
-     * The message server SAP host name.
+     * Message Server SAP Hostname.
      */
     @JsonProperty(value = "hostname", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
-     * The message server IP Address.
+     * Message server IP Address.
      */
     @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
-     * Defines the SAP Instance health.
+     * Defines the health of SAP Instances.
      */
     @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
 
+    /** Creates an instance of MessageServerProperties class. */
+    public MessageServerProperties() {
+    }
+
     /**
-     * Get the msPort property: The message server port.
+     * Get the msPort property: Message Server port.
      *
      * @return the msPort value.
      */
@@ -62,7 +66,7 @@ public final class MessageServerProperties {
     }
 
     /**
-     * Get the internalMsPort property: The message server internal MS port.
+     * Get the internalMsPort property: Message Server internal MS port.
      *
      * @return the internalMsPort value.
      */
@@ -71,7 +75,7 @@ public final class MessageServerProperties {
     }
 
     /**
-     * Get the httpPort property: The message server http port.
+     * Get the httpPort property: Message Server HTTP Port.
      *
      * @return the httpPort value.
      */
@@ -80,7 +84,7 @@ public final class MessageServerProperties {
     }
 
     /**
-     * Get the httpsPort property: The message server https port.
+     * Get the httpsPort property: Message Server HTTPS Port.
      *
      * @return the httpsPort value.
      */
@@ -89,7 +93,7 @@ public final class MessageServerProperties {
     }
 
     /**
-     * Get the hostname property: The message server SAP host name.
+     * Get the hostname property: Message Server SAP Hostname.
      *
      * @return the hostname value.
      */
@@ -98,7 +102,7 @@ public final class MessageServerProperties {
     }
 
     /**
-     * Get the ipAddress property: The message server IP Address.
+     * Get the ipAddress property: Message server IP Address.
      *
      * @return the ipAddress value.
      */
@@ -107,7 +111,7 @@ public final class MessageServerProperties {
     }
 
     /**
-     * Get the health property: Defines the SAP Instance health.
+     * Get the health property: Defines the health of SAP Instances.
      *
      * @return the health value.
      */

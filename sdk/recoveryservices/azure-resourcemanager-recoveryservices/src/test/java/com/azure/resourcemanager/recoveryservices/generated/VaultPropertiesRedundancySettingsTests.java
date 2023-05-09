@@ -6,11 +6,10 @@ package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesRedundancySettings;
-import org.junit.jupiter.api.Test;
 
 public final class VaultPropertiesRedundancySettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VaultPropertiesRedundancySettings model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class VaultPropertiesRedundancySettingsTests {
                 .toObject(VaultPropertiesRedundancySettings.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VaultPropertiesRedundancySettings model = new VaultPropertiesRedundancySettings();
         model = BinaryData.fromObject(model).toObject(VaultPropertiesRedundancySettings.class);
     }

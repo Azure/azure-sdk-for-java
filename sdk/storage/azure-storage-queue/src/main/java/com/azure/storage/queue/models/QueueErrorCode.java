@@ -185,6 +185,14 @@ public final class QueueErrorCode extends ExpandableStringEnum<QueueErrorCode> {
     public static final QueueErrorCode FEATURE_VERSION_MISMATCH = fromString("FeatureVersionMismatch");
 
     /**
+     * Creates a new instance of QueueErrorCode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public QueueErrorCode() {}
+
+    /**
      * Creates or finds a QueueErrorCode from its string representation.
      *
      * @param name a name to look for.

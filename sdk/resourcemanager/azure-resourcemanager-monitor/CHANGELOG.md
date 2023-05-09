@@ -1,6 +1,6 @@
 # Release History
 
-## 2.24.0-beta.1 (Unreleased)
+## 2.27.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.27.0-beta.1 (2023-04-28)
+
+Preview release for `api-version` `2022-08-01-preview`.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.25.0 (2023-03-24)
+
+### Bugs Fixed
+
+- Fixed a bug that `DiagnosticSetting` initialization failed, when category group exists in `LogSettings`.
+
+## 2.24.0 (2023-02-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.23.0 (2023-01-27)
 

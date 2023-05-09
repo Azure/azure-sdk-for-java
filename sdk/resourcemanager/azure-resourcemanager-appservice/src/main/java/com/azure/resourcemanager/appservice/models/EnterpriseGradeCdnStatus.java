@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnterpriseGradeCdnStatus. */
+/** State indicating the status of the enterprise grade CDN serving traffic to the static web app. */
 public final class EnterpriseGradeCdnStatus extends ExpandableStringEnum<EnterpriseGradeCdnStatus> {
     /** Static value Enabled for EnterpriseGradeCdnStatus. */
     public static final EnterpriseGradeCdnStatus ENABLED = fromString("Enabled");
@@ -21,6 +21,15 @@ public final class EnterpriseGradeCdnStatus extends ExpandableStringEnum<Enterpr
 
     /** Static value Disabling for EnterpriseGradeCdnStatus. */
     public static final EnterpriseGradeCdnStatus DISABLING = fromString("Disabling");
+
+    /**
+     * Creates a new instance of EnterpriseGradeCdnStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EnterpriseGradeCdnStatus() {
+    }
 
     /**
      * Creates or finds a EnterpriseGradeCdnStatus from its string representation.

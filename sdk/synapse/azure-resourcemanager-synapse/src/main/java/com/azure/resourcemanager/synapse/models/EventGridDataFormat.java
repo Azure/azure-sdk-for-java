@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventGridDataFormat. */
+/** The data format of the message. Optionally the data format can be added to each message. */
 public final class EventGridDataFormat extends ExpandableStringEnum<EventGridDataFormat> {
     /** Static value MULTIJSON for EventGridDataFormat. */
     public static final EventGridDataFormat MULTIJSON = fromString("MULTIJSON");
@@ -59,6 +59,15 @@ public final class EventGridDataFormat extends ExpandableStringEnum<EventGridDat
     public static final EventGridDataFormat W3CLOGFILE = fromString("W3CLOGFILE");
 
     /**
+     * Creates a new instance of EventGridDataFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventGridDataFormat() {
+    }
+
+    /**
      * Creates or finds a EventGridDataFormat from its string representation.
      *
      * @param name a name to look for.
@@ -69,7 +78,11 @@ public final class EventGridDataFormat extends ExpandableStringEnum<EventGridDat
         return fromString(name, EventGridDataFormat.class);
     }
 
-    /** @return known EventGridDataFormat values. */
+    /**
+     * Gets known EventGridDataFormat values.
+     *
+     * @return known EventGridDataFormat values.
+     */
     public static Collection<EventGridDataFormat> values() {
         return values(EventGridDataFormat.class);
     }

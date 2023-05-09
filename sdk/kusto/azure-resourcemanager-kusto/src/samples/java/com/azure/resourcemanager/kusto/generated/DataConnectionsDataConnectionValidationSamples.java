@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionValidationInner;
 import com.azure.resourcemanager.kusto.models.BlobStorageEventType;
 import com.azure.resourcemanager.kusto.models.Compression;
@@ -17,7 +16,7 @@ import com.azure.resourcemanager.kusto.models.EventHubDataFormat;
 /** Samples for DataConnections DataConnectionValidation. */
 public final class DataConnectionsDataConnectionValidationSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDataConnectionValidationAsync.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoDataConnectionValidationAsync.json
      */
     /**
      * Sample code: KustoDataConnectionValidation.
@@ -44,11 +43,11 @@ public final class DataConnectionsDataConnectionValidationSamples {
                             .withCompression(Compression.NONE)
                             .withManagedIdentityResourceId(
                                 "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDataConnectionEventGridValidationAsync.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoDataConnectionEventGridValidationAsync.json
      */
     /**
      * Sample code: KustoDataConnectionEventGridValidation.
@@ -81,6 +80,6 @@ public final class DataConnectionsDataConnectionValidationSamples {
                             .withManagedIdentityResourceId(
                                 "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.ManagedIdentity/userAssignedIdentities/managedidentityTest1")
                             .withDatabaseRouting(DatabaseRouting.SINGLE)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

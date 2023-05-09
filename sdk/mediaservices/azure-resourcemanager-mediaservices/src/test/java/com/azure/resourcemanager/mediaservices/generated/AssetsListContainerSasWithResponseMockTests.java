@@ -32,7 +32,7 @@ public final class AssetsListContainerSasWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"assetContainerSasUrls\":[\"bpfgzdj\",\"xvzflbqv\"]}";
+        String responseStr = "{\"assetContainerSasUrls\":[\"kzhajqglcfhm\",\"rqryxynqn\",\"rd\",\"sovwxznptgoeiyb\"]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,15 +64,15 @@ public final class AssetsListContainerSasWithResponseMockTests {
             manager
                 .assets()
                 .listContainerSasWithResponse(
-                    "hfcf",
-                    "wrxgkneuvy",
-                    "nzqodfvpg",
+                    "jng",
+                    "qdqx",
+                    "bjwgnyfus",
                     new ListContainerSasInput()
                         .withPermissions(AssetContainerPermission.READ_WRITE)
-                        .withExpiryTime(OffsetDateTime.parse("2021-02-22T17:56:41Z")),
+                        .withExpiryTime(OffsetDateTime.parse("2021-10-02T06:50:13Z")),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("bpfgzdj", response.assetContainerSasUrls().get(0));
+        Assertions.assertEquals("kzhajqglcfhm", response.assetContainerSasUrls().get(0));
     }
 }

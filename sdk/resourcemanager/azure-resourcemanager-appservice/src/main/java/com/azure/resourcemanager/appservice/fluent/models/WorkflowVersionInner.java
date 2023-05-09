@@ -26,6 +26,10 @@ public final class WorkflowVersionInner extends WorkflowResource {
     @JsonProperty(value = "properties")
     private WorkflowVersionProperties innerProperties;
 
+    /** Creates an instance of WorkflowVersionInner class. */
+    public WorkflowVersionInner() {
+    }
+
     /**
      * Get the innerProperties property: The workflow version properties.
      *

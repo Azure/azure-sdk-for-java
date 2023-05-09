@@ -20,6 +20,10 @@ public final class SqlDatabaseGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private SqlDatabaseGetProperties innerProperties;
 
+    /** Creates an instance of SqlDatabaseGetResultsInner class. */
+    public SqlDatabaseGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB SQL database.
      *

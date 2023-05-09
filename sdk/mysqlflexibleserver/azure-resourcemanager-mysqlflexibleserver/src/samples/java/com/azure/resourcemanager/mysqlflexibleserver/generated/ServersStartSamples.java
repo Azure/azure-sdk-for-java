@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.mysqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Servers Start. */
 public final class ServersStartSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/stable/2021-05-01/examples/ServerStart.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ServerStart.json
      */
     /**
      * Sample code: Start a server.
@@ -17,6 +15,6 @@ public final class ServersStartSamples {
      * @param manager Entry point to MySqlManager.
      */
     public static void startAServer(com.azure.resourcemanager.mysqlflexibleserver.MySqlManager manager) {
-        manager.servers().start("TestGroup", "testserver", Context.NONE);
+        manager.servers().start("TestGroup", "testserver", com.azure.core.util.Context.NONE);
     }
 }

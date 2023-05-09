@@ -28,6 +28,10 @@ public final class MaintenanceWindowTimeRange {
     @JsonProperty(value = "duration")
     private String duration;
 
+    /** Creates an instance of MaintenanceWindowTimeRange class. */
+    public MaintenanceWindowTimeRange() {
+    }
+
     /**
      * Get the dayOfWeek property: Day of maintenance window.
      *

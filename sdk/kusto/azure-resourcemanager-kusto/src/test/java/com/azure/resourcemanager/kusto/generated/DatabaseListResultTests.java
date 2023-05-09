@@ -9,30 +9,23 @@ import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.kusto.models.DatabaseListResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DatabaseListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DatabaseListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"kind\":\"Database\",\"location\":\"laocqxtccmg\",\"id\":\"udxytlmoyrx\",\"name\":\"wfudwpzntxhdzhl\",\"type\":\"qj\"},{\"kind\":\"Database\",\"location\":\"ck\",\"id\":\"rlhrxs\",\"name\":\"kyv\",\"type\":\"ycanuzbpzkafku\"},{\"kind\":\"Database\",\"location\":\"crnwbmeh\",\"id\":\"seyvj\",\"name\":\"srtslhspkdeem\",\"type\":\"ofmxagkvtmelmqkr\"}]}")
+                    "{\"value\":[{\"kind\":\"Database\",\"location\":\"s\",\"id\":\"bpg\",\"name\":\"xytxhpzxbz\",\"type\":\"fzab\"}]}")
                 .toObject(DatabaseListResult.class);
-        Assertions.assertEquals("laocqxtccmg", model.value().get(0).location());
+        Assertions.assertEquals("s", model.value().get(0).location());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DatabaseListResult model =
-            new DatabaseListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DatabaseInner().withLocation("laocqxtccmg"),
-                            new DatabaseInner().withLocation("ck"),
-                            new DatabaseInner().withLocation("crnwbmeh")));
+            new DatabaseListResult().withValue(Arrays.asList(new DatabaseInner().withLocation("s")));
         model = BinaryData.fromObject(model).toObject(DatabaseListResult.class);
-        Assertions.assertEquals("laocqxtccmg", model.value().get(0).location());
+        Assertions.assertEquals("s", model.value().get(0).location());
     }
 }

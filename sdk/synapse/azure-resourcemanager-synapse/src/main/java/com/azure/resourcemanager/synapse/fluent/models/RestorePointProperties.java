@@ -36,6 +36,10 @@ public final class RestorePointProperties {
     @JsonProperty(value = "restorePointLabel", access = JsonProperty.Access.WRITE_ONLY)
     private String restorePointLabel;
 
+    /** Creates an instance of RestorePointProperties class. */
+    public RestorePointProperties() {
+    }
+
     /**
      * Get the restorePointType property: The type of restore point.
      *

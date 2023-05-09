@@ -8,7 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Spark pool library version requirements Library requirements for a Big Data pool powered by Apache Spark. */
+/**
+ * Spark pool library version requirements
+ *
+ * <p>Library requirements for a Big Data pool powered by Apache Spark.
+ */
 @Fluent
 public final class LibraryRequirements {
     /*
@@ -28,6 +32,10 @@ public final class LibraryRequirements {
      */
     @JsonProperty(value = "filename")
     private String filename;
+
+    /** Creates an instance of LibraryRequirements class. */
+    public LibraryRequirements() {
+    }
 
     /**
      * Get the time property: The last update time of the library requirements file.

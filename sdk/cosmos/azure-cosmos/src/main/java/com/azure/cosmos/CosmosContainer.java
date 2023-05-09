@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -29,10 +31,14 @@ import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
+import java.time.Duration;
 import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -43,6 +49,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class CosmosContainer {
 
+    private static final Logger logger = LoggerFactory.getLogger(CosmosContainer.class);
     final CosmosAsyncContainer asyncContainer;
     private final CosmosDatabase database;
     private final String id;
@@ -783,7 +790,7 @@ public class CosmosContainer {
         this.asyncContainer.enableGlobalThroughputControlGroup(groupConfig, globalControlConfig);
     }
 
-    /***
+    /**
      *  Initializes the container by warming up the caches and connections for the current read region.
      *
      *  <p>
@@ -791,21 +798,37 @@ public class CosmosContainer {
      *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
      *  </p>
      *
+     *  @deprecated use {@link CosmosClientBuilder#openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig)} instead.
+     *
      */
+    @Deprecated
     public void openConnectionsAndInitCaches() {
         blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches());
+    }
+
+    /**
+     *  Initializes the container by warming up the caches and connections to a specified no. of proactive connection regions.
+     *  For more information about proactive connection regions, see {@link CosmosContainerProactiveInitConfig#getProactiveConnectionRegionsCount()}
+     *
+     *  <p>
+     *  <br>NOTE: This API ideally should be called only once during application initialization before any workload.
+     *  <br>In case of any transient error, caller should consume the error and continue the regular workload.
+     *  </p>
+     *
+     * @param numProactiveConnectionRegions the no of regions to proactively connect to from the preferred list of regions
+     * @deprecated use {@link CosmosClientBuilder#openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig)} instead.
+     */
+    @Deprecated
+    public void openConnectionsAndInitCaches(int numProactiveConnectionRegions) {
+        blockVoidResponse(this.asyncContainer.openConnectionsAndInitCaches(numProactiveConnectionRegions));
     }
 
     private void blockVoidResponse(Mono<Void> voidMono) {
         try {
             voidMono.block();
         } catch (Exception ex) {
-            final Throwable throwable = Exceptions.unwrap(ex);
-            if (throwable instanceof CosmosException) {
-                throw (CosmosException) throwable;
-            } else {
-                throw Exceptions.propagate(ex);
-            }
+            // swallow exceptions here
+            logger.warn("The void flux did not complete successfully", ex);
         }
     }
 }

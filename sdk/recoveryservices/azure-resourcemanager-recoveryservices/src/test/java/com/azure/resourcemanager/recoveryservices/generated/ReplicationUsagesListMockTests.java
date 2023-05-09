@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.models.ReplicationUsage;
 import java.nio.ByteBuffer;
@@ -62,7 +61,7 @@ public final class ReplicationUsagesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ReplicationUsage> response =
-            manager.replicationUsages().list("riplrbpbewtg", "fgb", Context.NONE);
+            manager.replicationUsages().list("riplrbpbewtg", "fgb", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(658652165, response.iterator().next().monitoringSummary().unHealthyVmCount());
         Assertions.assertEquals(1261477123, response.iterator().next().monitoringSummary().unHealthyProviderCount());

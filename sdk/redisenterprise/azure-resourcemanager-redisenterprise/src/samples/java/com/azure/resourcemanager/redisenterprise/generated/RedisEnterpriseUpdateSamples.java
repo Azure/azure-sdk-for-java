@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redisenterprise.models.Cluster;
 import com.azure.resourcemanager.redisenterprise.models.Sku;
 import com.azure.resourcemanager.redisenterprise.models.SkuName;
@@ -15,7 +14,7 @@ import java.util.Map;
 /** Samples for RedisEnterprise Update. */
 public final class RedisEnterpriseUpdateSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseUpdate.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseUpdate.json
      */
     /**
      * Sample code: RedisEnterpriseUpdate.
@@ -24,7 +23,10 @@ public final class RedisEnterpriseUpdateSamples {
      */
     public static void redisEnterpriseUpdate(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
         Cluster resource =
-            manager.redisEnterprises().getByResourceGroupWithResponse("rg1", "cache1", Context.NONE).getValue();
+            manager
+                .redisEnterprises()
+                .getByResourceGroupWithResponse("rg1", "cache1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withTags(mapOf("tag1", "value1"))

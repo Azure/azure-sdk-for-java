@@ -21,7 +21,6 @@ import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
-import com.azure.security.keyvault.keys.models.CreateOkpKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
 import com.azure.security.keyvault.keys.models.ImportKeyOptions;
@@ -63,7 +62,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  */
 @ServiceClient(builder = KeyClientBuilder.class, isAsync = true, serviceInterfaces = KeyClientImpl.KeyService.class)
 public final class KeyAsyncClient {
-    private final ClientLogger logger = new ClientLogger(KeyAsyncClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeyAsyncClient.class);
+
     private final KeyClientImpl implClient;
 
     /**
@@ -139,8 +139,7 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link KeyType keyType} indicates the type of {@link KeyVaultKey key} to create. Possible values include:
      * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
-     * {@link KeyType#OCT OCT}, {@link KeyType#OCT_HSM OCT-HSM}, {@link KeyType#OKP OKP} and
-     * {@link KeyType#OKP_HSM OKP-HSM}.</p>
+     * {@link KeyType#OCT OCT}, and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey EC key}. Subscribes to the call asynchronously and prints out the newly
@@ -169,7 +168,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.createKeyWithResponseAsync(name, keyType, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -181,8 +180,7 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link KeyType keyType} indicates the type of {@link KeyVaultKey key} to create. Possible values include:
      * {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA}, {@link KeyType#RSA_HSM RSA-HSM},
-     * {@link KeyType#OCT OCT}, {@link KeyType#OCT_HSM OCT-HSM}, {@link KeyType#OKP OKP} and
-     * {@link KeyType#OKP_HSM OKP-HSM}.</p>
+     * {@link KeyType#OCT OCT}, and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey EC key}. Subscribes to the call asynchronously and prints out the newly
@@ -217,7 +215,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.createKeyWithResponseAsync(createKeyOptions, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -234,8 +232,7 @@ public final class KeyAsyncClient {
      *
      * <p>The {@link CreateKeyOptions#getKeyType() keyType} indicates the type of {@link KeyVaultKey key} to create.
      * Possible values include: {@link KeyType#EC EC}, {@link KeyType#EC_HSM EC-HSM}, {@link KeyType#RSA RSA},
-     * {@link KeyType#RSA_HSM RSA-HSM}, {@link KeyType#OCT OCT}, {@link KeyType#OCT_HSM OCT-HSM},
-     * {@link KeyType#OKP OKP} and {@link KeyType#OKP_HSM OKP-HSM}.</p>
+     * {@link KeyType#RSA_HSM RSA-HSM}, {@link KeyType#OCT OCT}, and {@link KeyType#OCT_HSM OCT-HSM}.</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey RSA key} which activates in one day and expires in one year. Subscribes to
@@ -269,7 +266,7 @@ public final class KeyAsyncClient {
         try {
             return createKeyWithResponse(createKeyOptions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -322,7 +319,7 @@ public final class KeyAsyncClient {
         try {
             return createRsaKeyWithResponse(createRsaKeyOptions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -375,7 +372,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.createRsaKeyWithResponseAsync(createRsaKeyOptions, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -428,7 +425,7 @@ public final class KeyAsyncClient {
         try {
             return createEcKeyWithResponse(createEcKeyOptions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -483,7 +480,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.createEcKeyWithResponseAsync(createEcKeyOptions, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -532,7 +529,7 @@ public final class KeyAsyncClient {
         try {
             return createOctKeyWithResponse(createOctKeyOptions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -582,70 +579,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.createOctKeyWithResponseAsync(createOctKeyOptions, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    /**
-     * Creates and stores a new {@link KeyVaultKey OKP key} in the key vault. If a {@link KeyVaultKey key} with the
-     * provided name already exists, Azure Key Vault creates a new version of the key. This operation requires the
-     * {@code keys/create} permission.
-     *
-     * <p>The {@link CreateOkpKeyOptions} parameter is required. The {@link CreateOkpKeyOptions#getExpiresOn() expires}
-     * and {@link CreateOkpKeyOptions#getNotBefore() notBefore} values are optional. The
-     * {@link CreateOkpKeyOptions#isEnabled() enabled} field is set to {@code true} by Azure Key Vault, if not
-     * specified.</p>
-     *
-     * <p>The {@link CreateOkpKeyOptions#getKeyType() keyType} indicates the type of {@link KeyVaultKey} key to create.
-     * Possible values include: {@link KeyType#OKP OKP} and {@link KeyType#OKP_HSM OKP-HSM}.</p>
-     *
-     * @param createOkpKeyOptions The {@link CreateOkpKeyOptions options object} containing information about the
-     * {@link KeyVaultKey OKP key} being created.
-     *
-     * @return A {@link Mono} containing the {@link KeyVaultKey created key}.
-     *
-     * @throws HttpResponseException If {@link CreateOkpKeyOptions#getName()} is an empty string.
-     * @throws NullPointerException If {@code ecKeyCreateOptions} is {@code null}.
-     * @throws ResourceModifiedException If {@code ecKeyCreateOptions} is malformed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<KeyVaultKey> createOkpKey(CreateOkpKeyOptions createOkpKeyOptions) {
-        try {
-            return createOkpKeyWithResponse(createOkpKeyOptions).flatMap(FluxUtil::toMono);
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    /**
-     * Creates and stores a new {@link KeyVaultKey OKP key} in the key vault. If a {@link KeyVaultKey key} with
-     * the provided name already exists, Azure Key Vault creates a new version of the key. This operation requires
-     * the {@code keys/create} permission.
-     *
-     * <p>The {@link CreateOkpKeyOptions} parameter is required. The {@link CreateOkpKeyOptions#getExpiresOn() expires}
-     * and {@link CreateOkpKeyOptions#getNotBefore() notBefore} values are optional. The
-     * {@link CreateOkpKeyOptions#isEnabled() enabled} field is set to {@code true} by Azure Key Vault, if not
-     * specified.</p>
-     *
-     * <p>The {@link CreateOkpKeyOptions#getKeyType() keyType} indicates the type of {@link KeyVaultKey} key to create.
-     * Possible values include: {@link KeyType#OKP OKP} and {@link KeyType#OKP_HSM OKP-HSM}.</p>
-     *
-     * @param createOkpKeyOptions The {@link CreateOkpKeyOptions options object} containing information about the
-     * {@link KeyVaultKey OKP key} being created.
-     *
-     * @return A {@link Mono} containing a {@link Response} whose {@link Response#getValue() value} contains the
-     * {@link KeyVaultKey created key}.
-     *
-     * @throws HttpResponseException If {@link CreateOkpKeyOptions#getName()} is an empty string.
-     * @throws NullPointerException If {@code createOkpKeyOptions} is {@code null}.
-     * @throws ResourceModifiedException If {@code createOkpKeyOptions} is malformed.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<KeyVaultKey>> createOkpKeyWithResponse(CreateOkpKeyOptions createOkpKeyOptions) {
-        try {
-            return withContext(context -> implClient.createOkpKeyWithResponseAsync(createOkpKeyOptions, context));
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -681,7 +615,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.importKeyWithResponseAsync(name, keyMaterial, context)).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -726,7 +660,7 @@ public final class KeyAsyncClient {
         try {
             return importKeyWithResponse(importKeyOptions).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -772,7 +706,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.importKeyWithResponseAsync(importKeyOptions, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -812,7 +746,7 @@ public final class KeyAsyncClient {
         try {
             return getKeyWithResponse(name, version).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -853,7 +787,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.getKeyWithResponseAsync(name, version == null ? "" : version, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -888,7 +822,7 @@ public final class KeyAsyncClient {
         try {
             return getKeyWithResponse(name, "").flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -940,7 +874,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.updateKeyPropertiesWithResponseAsync(keyProperties, context, keyOperations));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -989,7 +923,7 @@ public final class KeyAsyncClient {
         try {
             return updateKeyPropertiesWithResponse(keyProperties, keyOperations).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1057,7 +991,7 @@ public final class KeyAsyncClient {
         try {
             return getDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1090,7 +1024,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.getDeletedKeyWithResponseAsync(name, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1122,7 +1056,7 @@ public final class KeyAsyncClient {
         try {
             return purgeDeletedKeyWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1155,7 +1089,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.purgeDeletedKeyWithResponseAsync(name, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1228,7 +1162,7 @@ public final class KeyAsyncClient {
         try {
             return backupKeyWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1270,7 +1204,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.backupKeyWithResponseAsync(name, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1312,7 +1246,7 @@ public final class KeyAsyncClient {
         try {
             return restoreKeyBackupWithResponse(backup).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1355,7 +1289,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.restoreKeyBackupWithResponseAsync(backup, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1475,7 +1409,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.getRandomBytesWithResponseAsync(count, context).flatMap(FluxUtil::toMono));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1504,7 +1438,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.getRandomBytesWithResponseAsync(count, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1540,7 +1474,7 @@ public final class KeyAsyncClient {
             return releaseKeyWithResponse(name, "", targetAttestationToken, new ReleaseKeyOptions())
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1579,7 +1513,7 @@ public final class KeyAsyncClient {
             return releaseKeyWithResponse(name, version, targetAttestationToken, new ReleaseKeyOptions())
                 .flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1630,7 +1564,7 @@ public final class KeyAsyncClient {
                 implClient.releaseKeyWithResponseAsync(name, version, targetAttestationToken, releaseKeyOptions,
                     context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1662,7 +1596,7 @@ public final class KeyAsyncClient {
         try {
             return rotateKeyWithResponse(name).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1697,7 +1631,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.rotateKeyWithResponseAsync(name, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1729,7 +1663,7 @@ public final class KeyAsyncClient {
         try {
             return getKeyRotationPolicyWithResponse(keyName).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1764,7 +1698,7 @@ public final class KeyAsyncClient {
         try {
             return withContext(context -> implClient.getKeyRotationPolicyWithResponseAsync(keyName, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1810,7 +1744,7 @@ public final class KeyAsyncClient {
         try {
             return updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy).flatMap(FluxUtil::toMono);
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 
@@ -1861,7 +1795,7 @@ public final class KeyAsyncClient {
             return withContext(context ->
                 implClient.updateKeyRotationPolicyWithResponseAsync(keyName, keyRotationPolicy, context));
         } catch (RuntimeException e) {
-            return monoError(logger, e);
+            return monoError(LOGGER, e);
         }
     }
 }

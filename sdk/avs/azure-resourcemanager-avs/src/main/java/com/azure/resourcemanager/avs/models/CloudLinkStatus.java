@@ -26,6 +26,15 @@ public final class CloudLinkStatus extends ExpandableStringEnum<CloudLinkStatus>
     public static final CloudLinkStatus DISCONNECTED = fromString("Disconnected");
 
     /**
+     * Creates a new instance of CloudLinkStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CloudLinkStatus() {
+    }
+
+    /**
      * Creates or finds a CloudLinkStatus from its string representation.
      *
      * @param name a name to look for.

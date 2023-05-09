@@ -29,6 +29,10 @@ public final class FunctionAppMajorVersion {
     @JsonProperty(value = "minorVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<FunctionAppMinorVersion> minorVersions;
 
+    /** Creates an instance of FunctionAppMajorVersion class. */
+    public FunctionAppMajorVersion() {
+    }
+
     /**
      * Get the displayText property: Function App stack major version (display only).
      *

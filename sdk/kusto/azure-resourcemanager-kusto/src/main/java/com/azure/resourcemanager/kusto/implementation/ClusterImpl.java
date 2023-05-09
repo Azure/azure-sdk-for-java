@@ -518,6 +518,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withLanguageExtensions(LanguageExtensionsList languageExtensions) {
+        if (isInCreateMode()) {
+            this.innerModel().withLanguageExtensions(languageExtensions);
+            return this;
+        } else {
+            this.updateParameters.withLanguageExtensions(languageExtensions);
+            return this;
+        }
+    }
+
     public ClusterImpl withEnableDoubleEncryption(Boolean enableDoubleEncryption) {
         if (isInCreateMode()) {
             this.innerModel().withEnableDoubleEncryption(enableDoubleEncryption);

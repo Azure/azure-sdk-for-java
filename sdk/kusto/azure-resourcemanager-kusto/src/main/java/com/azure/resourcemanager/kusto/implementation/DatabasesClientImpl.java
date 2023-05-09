@@ -71,7 +71,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "KustoManagementClien")
-    private interface DatabasesService {
+    public interface DatabasesService {
         @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Kusto/clusters"
@@ -356,23 +356,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param resourceName The name of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameResultInner checkNameAvailability(
-        String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
-        return checkNameAvailabilityAsync(resourceGroupName, clusterName, resourceName).block();
-    }
-
-    /**
-     * Checks that the databases resource name is valid and is not already in use.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -383,6 +366,23 @@ public final class DatabasesClientImpl implements DatabasesClient {
     public Response<CheckNameResultInner> checkNameAvailabilityWithResponse(
         String resourceGroupName, String clusterName, CheckNameRequest resourceName, Context context) {
         return checkNameAvailabilityWithResponseAsync(resourceGroupName, clusterName, resourceName, context).block();
+    }
+
+    /**
+     * Checks that the databases resource name is valid and is not already in use.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param resourceName The name of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result returned from a check name availability request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckNameResultInner checkNameAvailability(
+        String resourceGroupName, String clusterName, CheckNameRequest resourceName) {
+        return checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -678,22 +678,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param resourceGroupName The name of the resource group containing the Kusto cluster.
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner get(String resourceGroupName, String clusterName, String databaseName) {
-        return getAsync(resourceGroupName, clusterName, databaseName).block();
-    }
-
-    /**
-     * Returns a database.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -704,6 +688,22 @@ public final class DatabasesClientImpl implements DatabasesClient {
     public Response<DatabaseInner> getWithResponse(
         String resourceGroupName, String clusterName, String databaseName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, context).block();
+    }
+
+    /**
+     * Returns a database.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Kusto database.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabaseInner get(String resourceGroupName, String clusterName, String databaseName) {
+        return getWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE).getValue();
     }
 
     /**
@@ -879,6 +879,34 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of class representing a Kusto database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+        final CallerRole callerRole = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole);
+        return this
+            .client
+            .<DatabaseInner, DatabaseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DatabaseInner.class,
+                DatabaseInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Creates or updates a database.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
      *     allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
@@ -912,8 +940,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
-     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -921,12 +947,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
+        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+        final CallerRole callerRole = null;
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
             .getSyncPoller();
     }
 
@@ -953,7 +977,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
         DatabaseInner parameters,
         CallerRole callerRole,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
             .getSyncPoller();
     }
 
@@ -1030,30 +1055,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         return beginCreateOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates a database.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
-     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole) {
-        return createOrUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole).block();
     }
 
     /**
@@ -1275,6 +1276,34 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of class representing a Kusto database.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
+        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+        final CallerRole callerRole = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole);
+        return this
+            .client
+            .<DatabaseInner, DatabaseInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                DatabaseInner.class,
+                DatabaseInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Updates a database.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param parameters The database parameters supplied to the Update operation.
      * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
      *     allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
@@ -1307,8 +1336,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
-     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1316,12 +1343,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole).getSyncPoller();
+        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+        final CallerRole callerRole = null;
+        return this
+            .beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole)
+            .getSyncPoller();
     }
 
     /**
@@ -1347,7 +1373,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
         DatabaseInner parameters,
         CallerRole callerRole,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
+        return this
+            .beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
             .getSyncPoller();
     }
 
@@ -1424,30 +1451,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
         return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates a database.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param parameters The database parameters supplied to the Update operation.
-     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
-     *     allows the caller to exclude the caller from Admins list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner update(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabaseInner parameters,
-        CallerRole callerRole) {
-        return updateAsync(resourceGroupName, clusterName, databaseName, parameters, callerRole).block();
     }
 
     /**
@@ -1657,7 +1660,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String databaseName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName).getSyncPoller();
     }
 
     /**
@@ -1675,7 +1678,7 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String databaseName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName, context).getSyncPoller();
     }
 
     /**
@@ -2091,27 +2094,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param databasePrincipalsToAdd List of database principals to add.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabasePrincipalListResultInner addPrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToAdd) {
-        return addPrincipalsAsync(resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd).block();
-    }
-
-    /**
-     * Add Database principals permissions.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param databasePrincipalsToAdd List of database principals to add.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2128,6 +2110,29 @@ public final class DatabasesClientImpl implements DatabasesClient {
         return addPrincipalsWithResponseAsync(
                 resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd, context)
             .block();
+    }
+
+    /**
+     * Add Database principals permissions.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param databasePrincipalsToAdd List of database principals to add.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabasePrincipalListResultInner addPrincipals(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabasePrincipalListRequest databasePrincipalsToAdd) {
+        return addPrincipalsWithResponse(
+                resourceGroupName, clusterName, databaseName, databasePrincipalsToAdd, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -2293,27 +2298,6 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param databasePrincipalsToRemove List of database principals to remove.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabasePrincipalListResultInner removePrincipals(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        DatabasePrincipalListRequest databasePrincipalsToRemove) {
-        return removePrincipalsAsync(resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove).block();
-    }
-
-    /**
-     * Remove Database principals permissions.
-     *
-     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
-     * @param clusterName The name of the Kusto cluster.
-     * @param databaseName The name of the database in the Kusto cluster.
-     * @param databasePrincipalsToRemove List of database principals to remove.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2330,5 +2314,28 @@ public final class DatabasesClientImpl implements DatabasesClient {
         return removePrincipalsWithResponseAsync(
                 resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove, context)
             .block();
+    }
+
+    /**
+     * Remove Database principals permissions.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param databasePrincipalsToRemove List of database principals to remove.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list Kusto database principals operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabasePrincipalListResultInner removePrincipals(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabasePrincipalListRequest databasePrincipalsToRemove) {
+        return removePrincipalsWithResponse(
+                resourceGroupName, clusterName, databaseName, databasePrincipalsToRemove, Context.NONE)
+            .getValue();
     }
 }

@@ -31,12 +31,16 @@ public class CacheIdentity {
     private CacheIdentityType type;
 
     /*
-     * A dictionary where each key is a user assigned identity resource ID, and
-     * each key's value is an empty dictionary.
+     * A dictionary where each key is a user assigned identity resource ID, and each key's value is an empty
+     * dictionary.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserAssignedIdentitiesValue> userAssignedIdentities;
+
+    /** Creates an instance of CacheIdentity class. */
+    public CacheIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal ID for the system-assigned identity of the cache.

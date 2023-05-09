@@ -17,6 +17,15 @@ public final class CompositePathSortOrder extends ExpandableStringEnum<Composite
     public static final CompositePathSortOrder DESCENDING = fromString("descending");
 
     /**
+     * Creates a new instance of CompositePathSortOrder value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CompositePathSortOrder() {
+    }
+
+    /**
      * Creates or finds a CompositePathSortOrder from its string representation.
      *
      * @param name a name to look for.

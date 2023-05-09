@@ -26,7 +26,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.costmanagement.fluent.OperationsClient;
-import com.azure.resourcemanager.costmanagement.fluent.models.OperationInner;
+import com.azure.resourcemanager.costmanagement.fluent.models.CostManagementOperationInner;
 import com.azure.resourcemanager.costmanagement.models.OperationListResult;
 import reactor.core.publisher.Mono;
 
@@ -86,7 +86,7 @@ public final class OperationsClientImpl implements OperationsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OperationInner>> listSinglePageAsync() {
+    private Mono<PagedResponse<CostManagementOperationInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -97,7 +97,7 @@ public final class OperationsClientImpl implements OperationsClient {
         return FluxUtil
             .withContext(
                 context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .<PagedResponse<OperationInner>>map(
+            .<PagedResponse<CostManagementOperationInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -120,7 +120,7 @@ public final class OperationsClientImpl implements OperationsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OperationInner>> listSinglePageAsync(Context context) {
+    private Mono<PagedResponse<CostManagementOperationInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -150,7 +150,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return result of listing cost management operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OperationInner> listAsync() {
+    private PagedFlux<CostManagementOperationInner> listAsync() {
         return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -164,7 +164,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return result of listing cost management operations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OperationInner> listAsync(Context context) {
+    private PagedFlux<CostManagementOperationInner> listAsync(Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
@@ -177,7 +177,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return result of listing cost management operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationInner> list() {
+    public PagedIterable<CostManagementOperationInner> list() {
         return new PagedIterable<>(listAsync());
     }
 
@@ -191,7 +191,7 @@ public final class OperationsClientImpl implements OperationsClient {
      * @return result of listing cost management operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OperationInner> list(Context context) {
+    public PagedIterable<CostManagementOperationInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
     }
 
@@ -207,7 +207,7 @@ public final class OperationsClientImpl implements OperationsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink) {
+    private Mono<PagedResponse<CostManagementOperationInner>> listNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
@@ -220,7 +220,7 @@ public final class OperationsClientImpl implements OperationsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OperationInner>>map(
+            .<PagedResponse<CostManagementOperationInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(),
@@ -245,7 +245,8 @@ public final class OperationsClientImpl implements OperationsClient {
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<OperationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<CostManagementOperationInner>> listNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolReplicationLinks GetByName. */
 public final class SqlPoolReplicationLinksGetByNameSamples {
     /*
@@ -21,6 +19,10 @@ public final class SqlPoolReplicationLinksGetByNameSamples {
         manager
             .sqlPoolReplicationLinks()
             .getByNameWithResponse(
-                "sqlcrudtest-4799", "sqlcrudtest-6440", "testdb", "5b301b68-03f6-4b26-b0f4-73ebb8634238", Context.NONE);
+                "sqlcrudtest-4799",
+                "sqlcrudtest-6440",
+                "testdb",
+                "5b301b68-03f6-4b26-b0f4-73ebb8634238",
+                com.azure.core.util.Context.NONE);
     }
 }

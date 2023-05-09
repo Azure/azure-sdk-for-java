@@ -10,45 +10,44 @@ import com.azure.resourcemanager.cognitiveservices.models.QuotaUsageStatus;
 import com.azure.resourcemanager.cognitiveservices.models.UnitType;
 import com.azure.resourcemanager.cognitiveservices.models.Usage;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UsageTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Usage model =
             BinaryData
                 .fromString(
-                    "{\"unit\":\"Percent\",\"name\":{\"value\":\"wooc\",\"localizedValue\":\"bonqvpkvlrxnjeas\"},\"quotaPeriod\":\"pheoflokeyy\",\"limit\":8.258695733393173,\"currentValue\":56.75923754933715,\"nextResetTime\":\"tgrhpdjpjumas\",\"status\":\"Included\"}")
+                    "{\"unit\":\"Milliseconds\",\"name\":{\"value\":\"kqsleyyvxy\",\"localizedValue\":\"pkc\"},\"quotaPeriod\":\"tpngjcrcczsqpjh\",\"limit\":15.683771184024254,\"currentValue\":5.670664395942426,\"nextResetTime\":\"sounqecanoaeu\",\"status\":\"Included\"}")
                 .toObject(Usage.class);
-        Assertions.assertEquals(UnitType.PERCENT, model.unit());
-        Assertions.assertEquals("wooc", model.name().value());
-        Assertions.assertEquals("bonqvpkvlrxnjeas", model.name().localizedValue());
-        Assertions.assertEquals("pheoflokeyy", model.quotaPeriod());
-        Assertions.assertEquals(8.258695733393173D, model.limit());
-        Assertions.assertEquals(56.75923754933715D, model.currentValue());
-        Assertions.assertEquals("tgrhpdjpjumas", model.nextResetTime());
+        Assertions.assertEquals(UnitType.MILLISECONDS, model.unit());
+        Assertions.assertEquals("kqsleyyvxy", model.name().value());
+        Assertions.assertEquals("pkc", model.name().localizedValue());
+        Assertions.assertEquals("tpngjcrcczsqpjh", model.quotaPeriod());
+        Assertions.assertEquals(15.683771184024254D, model.limit());
+        Assertions.assertEquals(5.670664395942426D, model.currentValue());
+        Assertions.assertEquals("sounqecanoaeu", model.nextResetTime());
         Assertions.assertEquals(QuotaUsageStatus.INCLUDED, model.status());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Usage model =
             new Usage()
-                .withUnit(UnitType.PERCENT)
-                .withName(new MetricName().withValue("wooc").withLocalizedValue("bonqvpkvlrxnjeas"))
-                .withQuotaPeriod("pheoflokeyy")
-                .withLimit(8.258695733393173D)
-                .withCurrentValue(56.75923754933715D)
-                .withNextResetTime("tgrhpdjpjumas")
+                .withUnit(UnitType.MILLISECONDS)
+                .withName(new MetricName().withValue("kqsleyyvxy").withLocalizedValue("pkc"))
+                .withQuotaPeriod("tpngjcrcczsqpjh")
+                .withLimit(15.683771184024254D)
+                .withCurrentValue(5.670664395942426D)
+                .withNextResetTime("sounqecanoaeu")
                 .withStatus(QuotaUsageStatus.INCLUDED);
         model = BinaryData.fromObject(model).toObject(Usage.class);
-        Assertions.assertEquals(UnitType.PERCENT, model.unit());
-        Assertions.assertEquals("wooc", model.name().value());
-        Assertions.assertEquals("bonqvpkvlrxnjeas", model.name().localizedValue());
-        Assertions.assertEquals("pheoflokeyy", model.quotaPeriod());
-        Assertions.assertEquals(8.258695733393173D, model.limit());
-        Assertions.assertEquals(56.75923754933715D, model.currentValue());
-        Assertions.assertEquals("tgrhpdjpjumas", model.nextResetTime());
+        Assertions.assertEquals(UnitType.MILLISECONDS, model.unit());
+        Assertions.assertEquals("kqsleyyvxy", model.name().value());
+        Assertions.assertEquals("pkc", model.name().localizedValue());
+        Assertions.assertEquals("tpngjcrcczsqpjh", model.quotaPeriod());
+        Assertions.assertEquals(15.683771184024254D, model.limit());
+        Assertions.assertEquals(5.670664395942426D, model.currentValue());
+        Assertions.assertEquals("sounqecanoaeu", model.nextResetTime());
         Assertions.assertEquals(QuotaUsageStatus.INCLUDED, model.status());
     }
 }

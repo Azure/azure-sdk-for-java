@@ -4,8 +4,12 @@
 package com.azure.core.implementation.jackson;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import java.time.Duration;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -16,193 +20,52 @@ public class DurationSerializerTests {
         assertNull(DurationSerializer.toString(null));
     }
 
-    @Test
-    public void toStringWith0Milliseconds() {
-        assertEquals("PT0S", DurationSerializer.toString(Duration.ofMillis(0)));
+    @ParameterizedTest
+    @MethodSource("toStringTestSupplier")
+    public void toStringTest(Duration duration, String expected) {
+        assertEquals(expected, DurationSerializer.toString(duration));
     }
 
-    @Test
-    public void toStringWith1Milliseconds() {
-        assertEquals("PT0.001S", DurationSerializer.toString(Duration.ofMillis(1)));
-    }
-
-    @Test
-    public void toStringWith9Milliseconds() {
-        assertEquals("PT0.009S", DurationSerializer.toString(Duration.ofMillis(9)));
-    }
-
-    @Test
-    public void toStringWith10Milliseconds() {
-        assertEquals("PT0.01S", DurationSerializer.toString(Duration.ofMillis(10)));
-    }
-
-    @Test
-    public void toStringWith11Milliseconds() {
-        assertEquals("PT0.011S", DurationSerializer.toString(Duration.ofMillis(11)));
-    }
-
-    @Test
-    public void toStringWith99Milliseconds() {
-        assertEquals("PT0.099S", DurationSerializer.toString(Duration.ofMillis(99)));
-    }
-
-    @Test
-    public void toStringWith100Milliseconds() {
-        assertEquals("PT0.1S", DurationSerializer.toString(Duration.ofMillis(100)));
-    }
-
-    @Test
-    public void toStringWith101Milliseconds() {
-        assertEquals("PT0.101S", DurationSerializer.toString(Duration.ofMillis(101)));
-    }
-
-    @Test
-    public void toStringWith999Milliseconds() {
-        assertEquals("PT0.999S", DurationSerializer.toString(Duration.ofMillis(999)));
-    }
-
-    @Test
-    public void toStringWith10illiseconds() {
-        assertEquals("PT1S", DurationSerializer.toString(Duration.ofMillis(1000)));
-    }
-
-    @Test
-    public void toStringWith1Second() {
-        assertEquals("PT1S", DurationSerializer.toString(Duration.ofSeconds(1)));
-    }
-
-    @Test
-    public void toStringWith9Seconds() {
-        assertEquals("PT9S", DurationSerializer.toString(Duration.ofSeconds(9)));
-    }
-
-    @Test
-    public void toStringWith10Seconds() {
-        assertEquals("PT10S", DurationSerializer.toString(Duration.ofSeconds(10)));
-    }
-
-    @Test
-    public void toStringWith11Seconds() {
-        assertEquals("PT11S", DurationSerializer.toString(Duration.ofSeconds(11)));
-    }
-
-    @Test
-    public void toStringWith59Seconds() {
-        assertEquals("PT59S", DurationSerializer.toString(Duration.ofSeconds(59)));
-    }
-
-    @Test
-    public void toStringWith60Seconds() {
-        assertEquals("PT1M", DurationSerializer.toString(Duration.ofSeconds(60)));
-    }
-
-    @Test
-    public void toStringWith61Seconds() {
-        assertEquals("PT1M1S", DurationSerializer.toString(Duration.ofSeconds(61)));
-    }
-
-    @Test
-    public void toStringWith1Minute() {
-        assertEquals("PT1M", DurationSerializer.toString(Duration.ofMinutes(1)));
-    }
-
-    @Test
-    public void toStringWith9Minutes() {
-        assertEquals("PT9M", DurationSerializer.toString(Duration.ofMinutes(9)));
-    }
-
-    @Test
-    public void toStringWith10Minutes() {
-        assertEquals("PT10M", DurationSerializer.toString(Duration.ofMinutes(10)));
-    }
-
-    @Test
-    public void toStringWith11Minutes() {
-        assertEquals("PT11M", DurationSerializer.toString(Duration.ofMinutes(11)));
-    }
-
-    @Test
-    public void toStringWith59Minutes() {
-        assertEquals("PT59M", DurationSerializer.toString(Duration.ofMinutes(59)));
-    }
-
-    @Test
-    public void toStringWith60Minutes() {
-        assertEquals("PT1H", DurationSerializer.toString(Duration.ofMinutes(60)));
-    }
-
-    @Test
-    public void toStringWith61Minutes() {
-        assertEquals("PT1H1M", DurationSerializer.toString(Duration.ofMinutes(61)));
-    }
-
-    @Test
-    public void toStringWith1Hour() {
-        assertEquals("PT1H", DurationSerializer.toString(Duration.ofHours(1)));
-    }
-
-    @Test
-    public void toStringWith9Hours() {
-        assertEquals("PT9H", DurationSerializer.toString(Duration.ofHours(9)));
-    }
-
-    @Test
-    public void toStringWith10Hours() {
-        assertEquals("PT10H", DurationSerializer.toString(Duration.ofHours(10)));
-    }
-
-    @Test
-    public void toStringWith11Hours() {
-        assertEquals("PT11H", DurationSerializer.toString(Duration.ofHours(11)));
-    }
-
-    @Test
-    public void toStringWith23Hours() {
-        assertEquals("PT23H", DurationSerializer.toString(Duration.ofHours(23)));
-    }
-
-    @Test
-    public void toStringWith24Hours() {
-        assertEquals("P1D", DurationSerializer.toString(Duration.ofHours(24)));
-    }
-
-    @Test
-    public void toStringWith25Hours() {
-        assertEquals("P1DT1H", DurationSerializer.toString(Duration.ofHours(25)));
-    }
-
-    @Test
-    public void toStringWith1Day() {
-        assertEquals("P1D", DurationSerializer.toString(Duration.ofDays(1)));
-    }
-
-    @Test
-    public void toStringWith9Days() {
-        assertEquals("P9D", DurationSerializer.toString(Duration.ofDays(9)));
-    }
-
-    @Test
-    public void toStringWith10Days() {
-        assertEquals("P10D", DurationSerializer.toString(Duration.ofDays(10)));
-    }
-
-    @Test
-    public void toStringWith11Days() {
-        assertEquals("P11D", DurationSerializer.toString(Duration.ofDays(11)));
-    }
-
-    @Test
-    public void toStringWith99Days() {
-        assertEquals("P99D", DurationSerializer.toString(Duration.ofDays(99)));
-    }
-
-    @Test
-    public void toStringWith100Days() {
-        assertEquals("P100D", DurationSerializer.toString(Duration.ofDays(100)));
-    }
-
-    @Test
-    public void toStringWith101Days() {
-        assertEquals("P101D", DurationSerializer.toString(Duration.ofDays(101)));
+    private static Stream<Arguments> toStringTestSupplier() {
+        return Stream.of(
+            Arguments.of(Duration.ofMillis(0), "PT0S"),
+            Arguments.of(Duration.ofMillis(1), "PT0.001S"),
+            Arguments.of(Duration.ofMillis(9), "PT0.009S"),
+            Arguments.of(Duration.ofMillis(10), "PT0.01S"),
+            Arguments.of(Duration.ofMillis(11), "PT0.011S"),
+            Arguments.of(Duration.ofMillis(99), "PT0.099S"),
+            Arguments.of(Duration.ofMillis(100), "PT0.1S"),
+            Arguments.of(Duration.ofMillis(101), "PT0.101S"),
+            Arguments.of(Duration.ofMillis(999), "PT0.999S"),
+            Arguments.of(Duration.ofMillis(1000), "PT1S"),
+            Arguments.of(Duration.ofSeconds(1), "PT1S"),
+            Arguments.of(Duration.ofSeconds(9), "PT9S"),
+            Arguments.of(Duration.ofSeconds(10), "PT10S"),
+            Arguments.of(Duration.ofSeconds(11), "PT11S"),
+            Arguments.of(Duration.ofSeconds(59), "PT59S"),
+            Arguments.of(Duration.ofSeconds(60), "PT1M"),
+            Arguments.of(Duration.ofSeconds(61), "PT1M1S"),
+            Arguments.of(Duration.ofMinutes(1), "PT1M"),
+            Arguments.of(Duration.ofMinutes(9), "PT9M"),
+            Arguments.of(Duration.ofMinutes(10), "PT10M"),
+            Arguments.of(Duration.ofMinutes(11), "PT11M"),
+            Arguments.of(Duration.ofMinutes(59), "PT59M"),
+            Arguments.of(Duration.ofMinutes(60), "PT1H"),
+            Arguments.of(Duration.ofMinutes(61), "PT1H1M"),
+            Arguments.of(Duration.ofHours(1), "PT1H"),
+            Arguments.of(Duration.ofHours(9), "PT9H"),
+            Arguments.of(Duration.ofHours(10), "PT10H"),
+            Arguments.of(Duration.ofHours(11), "PT11H"),
+            Arguments.of(Duration.ofHours(23), "PT23H"),
+            Arguments.of(Duration.ofHours(24), "P1D"),
+            Arguments.of(Duration.ofHours(25), "P1DT1H"),
+            Arguments.of(Duration.ofDays(1), "P1D"),
+            Arguments.of(Duration.ofDays(9), "P9D"),
+            Arguments.of(Duration.ofDays(10), "P10D"),
+            Arguments.of(Duration.ofDays(11), "P11D"),
+            Arguments.of(Duration.ofDays(99), "P99D"),
+            Arguments.of(Duration.ofDays(100), "P100D"),
+            Arguments.of(Duration.ofDays(101), "P101D")
+        );
     }
 }

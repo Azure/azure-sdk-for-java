@@ -34,6 +34,10 @@ public final class DatabaseAccountKeysMetadata {
     @JsonProperty(value = "secondaryReadonlyMasterKey", access = JsonProperty.Access.WRITE_ONLY)
     private AccountKeyMetadata secondaryReadonlyMasterKey;
 
+    /** Creates an instance of DatabaseAccountKeysMetadata class. */
+    public DatabaseAccountKeysMetadata() {
+    }
+
     /**
      * Get the primaryMasterKey property: The metadata related to the Primary Read-Write Key for the given Cosmos DB
      * database account.

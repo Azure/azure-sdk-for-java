@@ -34,7 +34,6 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.implementation.UploadUtils;
@@ -93,7 +92,6 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
  */
 @ServiceClient(builder = EncryptedBlobClientBuilder.class, isAsync = true)
 public class EncryptedBlobAsyncClient extends BlobAsyncClient {
-    static final int BLOB_DEFAULT_UPLOAD_BLOCK_SIZE = 4 * Constants.MB;
     private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobAsyncClient.class);
 
     /**
@@ -109,6 +107,26 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
     private final EncryptionVersion encryptionVersion;
 
     private final boolean requiresEncryption;
+
+    EncryptionScope getEncryptionScopeInternal() {
+        return encryptionScope;
+    }
+
+    AsyncKeyEncryptionKey getKeyWrapper() {
+        return keyWrapper;
+    }
+
+    String getKeyWrapAlgorithm() {
+        return keyWrapAlgorithm;
+    }
+
+    EncryptionVersion getEncryptionVersion() {
+        return encryptionVersion;
+    }
+
+    boolean isRequiresEncryption() {
+        return requiresEncryption;
+    }
 
     /**
      * Package-private constructor for use by {@link EncryptedBlobClientBuilder}.
@@ -418,9 +436,14 @@ public class EncryptedBlobAsyncClient extends BlobAsyncClient {
             // Can't use a Collections.emptyMap() because we add metadata for encryption.
             final Map<String, String> metadataFinal = options.getMetadata() == null
                 ? new HashMap<>() : options.getMetadata();
-            Flux<ByteBuffer> data = options.getDataFlux() == null ? Utility.convertStreamToByteBuffer(
-                options.getDataStream(), options.getLength(), BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, false)
-                : options.getDataFlux();
+
+            final ParallelTransferOptions parallelTransferOptions =
+                ModelHelper.populateAndApplyDefaults(options.getParallelTransferOptions());
+
+            Flux<ByteBuffer> data = options.getDataFlux();
+            data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
+                parallelTransferOptions.getBlockSizeLong(), options.getDataStream());
+
             Flux<ByteBuffer> dataFinal = prepareToSendEncryptedRequest(data, metadataFinal);
             return super.uploadWithResponse(new BlobParallelUploadOptions(dataFinal)
                 .setParallelTransferOptions(options.getParallelTransferOptions()).setHeaders(options.getHeaders())

@@ -18,6 +18,27 @@ public interface StartMenuItemsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return startMenuItemList as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<StartMenuItemInner> listAsync(
+        String resourceGroupName,
+        String applicationGroupName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip);
+
+    /**
+     * List start menu items in the given application group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -44,6 +65,9 @@ public interface StartMenuItemsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -51,5 +75,11 @@ public interface StartMenuItemsClient {
      * @return startMenuItemList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StartMenuItemInner> list(String resourceGroupName, String applicationGroupName, Context context);
+    PagedIterable<StartMenuItemInner> list(
+        String resourceGroupName,
+        String applicationGroupName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context);
 }

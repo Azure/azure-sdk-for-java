@@ -17,6 +17,10 @@ public final class HybridConnectionInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private HybridConnectionProperties innerProperties;
 
+    /** Creates an instance of HybridConnectionInner class. */
+    public HybridConnectionInner() {
+    }
+
     /**
      * Get the innerProperties property: HybridConnection resource specific properties.
      *

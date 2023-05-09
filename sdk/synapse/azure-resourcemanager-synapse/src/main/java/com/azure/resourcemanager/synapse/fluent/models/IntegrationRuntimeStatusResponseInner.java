@@ -24,6 +24,10 @@ public final class IntegrationRuntimeStatusResponseInner {
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntimeStatus properties;
 
+    /** Creates an instance of IntegrationRuntimeStatusResponseInner class. */
+    public IntegrationRuntimeStatusResponseInner() {
+    }
+
     /**
      * Get the name property: The integration runtime name.
      *

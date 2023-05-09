@@ -146,13 +146,6 @@ public interface ApplicationGroup {
     ApplicationGroupType applicationGroupType();
 
     /**
-     * Gets the migrationRequest property: The registration info of HostPool.
-     *
-     * @return the migrationRequest value.
-     */
-    MigrationRequestProperties migrationRequest();
-
-    /**
      * Gets the cloudPcResource property: Is cloud pc resource.
      *
      * @return the cloudPcResource value.
@@ -261,8 +254,7 @@ public interface ApplicationGroup {
                 DefinitionStages.WithSku,
                 DefinitionStages.WithPlan,
                 DefinitionStages.WithDescription,
-                DefinitionStages.WithFriendlyName,
-                DefinitionStages.WithMigrationRequest {
+                DefinitionStages.WithFriendlyName {
             /**
              * Executes the create request.
              *
@@ -366,16 +358,6 @@ public interface ApplicationGroup {
              * @return the next definition stage.
              */
             WithCreate withFriendlyName(String friendlyName);
-        }
-        /** The stage of the ApplicationGroup definition allowing to specify migrationRequest. */
-        interface WithMigrationRequest {
-            /**
-             * Specifies the migrationRequest property: The registration info of HostPool..
-             *
-             * @param migrationRequest The registration info of HostPool.
-             * @return the next definition stage.
-             */
-            WithCreate withMigrationRequest(MigrationRequestProperties migrationRequest);
         }
     }
     /**

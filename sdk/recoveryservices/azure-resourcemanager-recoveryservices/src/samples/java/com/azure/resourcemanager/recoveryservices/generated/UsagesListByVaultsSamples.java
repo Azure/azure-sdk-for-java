@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Usages ListByVaults. */
 public final class UsagesListByVaultsSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/ListUsages.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/ListUsages.json
      */
     /**
      * Sample code: Gets vault usages.
@@ -17,6 +15,8 @@ public final class UsagesListByVaultsSamples {
      * @param manager Entry point to RecoveryServicesManager.
      */
     public static void getsVaultUsages(com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
-        manager.usages().listByVaults("Default-RecoveryServices-ResourceGroup", "swaggerExample", Context.NONE);
+        manager
+            .usages()
+            .listByVaults("Default-RecoveryServices-ResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }

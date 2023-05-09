@@ -8,7 +8,6 @@ import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ContainerRepositoryProperties;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
@@ -55,7 +54,7 @@ public class ContainerRepositoryAsyncIntegrationTests extends ContainerRegistryC
             return;
         }
 
-        client = getContainerRepository(new NettyAsyncHttpClientBuilder().build());
+        client = getContainerRepository(HttpClient.createDefault());
         client.updateProperties(defaultRepoWriteableProperties);
     }
 

@@ -25,6 +25,10 @@ public final class IntegrationRuntimeListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of IntegrationRuntimeListResponse class. */
+    public IntegrationRuntimeListResponse() {
+    }
+
     /**
      * Get the value property: List of integration runtimes.
      *

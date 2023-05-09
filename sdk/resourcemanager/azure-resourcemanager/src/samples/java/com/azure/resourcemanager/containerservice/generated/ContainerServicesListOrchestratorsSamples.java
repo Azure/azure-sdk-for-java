@@ -7,7 +7,7 @@ package com.azure.resourcemanager.containerservice.generated;
 /** Samples for ContainerServices ListOrchestrators. */
 public final class ContainerServicesListOrchestratorsSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2019-08-01/examples/ContainerServiceListOrchestrators.json
+     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2019-08-01/examples/ContainerServiceListOrchestrators.json
      */
     /**
      * Sample code: List Container Service Orchestrators.

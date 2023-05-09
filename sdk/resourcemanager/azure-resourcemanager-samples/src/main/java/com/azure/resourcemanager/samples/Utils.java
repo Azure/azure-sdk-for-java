@@ -509,6 +509,7 @@ public final class Utils {
                 .append("\n\tTags: ").append(resource.tags())
                 .append("\n\tHardwareProfile: ")
                 .append("\n\t\tSize: ").append(resource.size())
+                .append("\n\ttimeCreated: ").append(resource.timeCreated())
                 .append(storageProfile)
                 .append(osProfile)
                 .append(networkProfile)
@@ -2580,6 +2581,14 @@ public final class Utils {
             builder.append("\n\t\tPermission Not Actions: " + permission.notActions().size());
             for (String notAction : permission.notActions()) {
                 builder.append("\n\t\t\tName :").append(notAction);
+            }
+            builder.append("\n\t\tPermission Data Actions: " + permission.dataActions().size());
+            for (String dataActions : permission.dataActions()) {
+                builder.append("\n\t\t\tName :").append(dataActions);
+            }
+            builder.append("\n\t\tPermission Not Data Actions: " + permission.notDataActions().size());
+            for (String notDataActions : permission.notDataActions()) {
+                builder.append("\n\t\t\tName :").append(notDataActions);
             }
         }
 

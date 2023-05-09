@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for KustoPools Stop. */
 public final class KustoPoolsStopSamples {
     /*
@@ -17,6 +15,8 @@ public final class KustoPoolsStopSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsStop(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPools().stop("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager
+            .kustoPools()
+            .stop("kustorptest", "kustoclusterrptest4", "kustorptest", com.azure.core.util.Context.NONE);
     }
 }

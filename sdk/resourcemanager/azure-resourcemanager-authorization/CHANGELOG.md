@@ -1,6 +1,6 @@
 # Release History
 
-## 2.24.0-beta.1 (Unreleased)
+## 2.27.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,28 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.25.0 (2023-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.24.0 (2023-02-17)
+
+### Bugs Fixed
+
+- Fixed a bug that `Permission.dataActions()` and `Permission.notDataActions()` return wrong results.
 
 ## 2.23.0 (2023-01-27)
 

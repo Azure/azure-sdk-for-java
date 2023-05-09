@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of SqlPoolUsages. */
 public interface SqlPoolUsages {
     /**
-     * Gets SQL pool usages.
+     * Gets SQL pool usages
+     *
+     * <p>Gets SQL pool usages.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -23,7 +25,9 @@ public interface SqlPoolUsages {
     PagedIterable<SqlPoolUsage> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
-     * Gets SQL pool usages.
+     * Gets SQL pool usages
+     *
+     * <p>Gets SQL pool usages.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

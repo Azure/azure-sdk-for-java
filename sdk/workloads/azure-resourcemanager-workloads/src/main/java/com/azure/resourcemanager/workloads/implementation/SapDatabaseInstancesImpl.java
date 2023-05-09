@@ -15,6 +15,7 @@ import com.azure.resourcemanager.workloads.fluent.models.SapDatabaseInstanceInne
 import com.azure.resourcemanager.workloads.models.OperationStatusResult;
 import com.azure.resourcemanager.workloads.models.SapDatabaseInstance;
 import com.azure.resourcemanager.workloads.models.SapDatabaseInstances;
+import com.azure.resourcemanager.workloads.models.StopRequest;
 
 public final class SapDatabaseInstancesImpl implements SapDatabaseInstances {
     private static final ClientLogger LOGGER = new ClientLogger(SapDatabaseInstancesImpl.class);
@@ -29,17 +30,6 @@ public final class SapDatabaseInstancesImpl implements SapDatabaseInstances {
         this.serviceManager = serviceManager;
     }
 
-    public SapDatabaseInstance get(
-        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
-        SapDatabaseInstanceInner inner =
-            this.serviceClient().get(resourceGroupName, sapVirtualInstanceName, databaseInstanceName);
-        if (inner != null) {
-            return new SapDatabaseInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SapDatabaseInstance> getWithResponse(
         String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context) {
         Response<SapDatabaseInstanceInner> inner =
@@ -52,6 +42,17 @@ public final class SapDatabaseInstancesImpl implements SapDatabaseInstances {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SapDatabaseInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SapDatabaseInstance get(
+        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
+        SapDatabaseInstanceInner inner =
+            this.serviceClient().get(resourceGroupName, sapVirtualInstanceName, databaseInstanceName);
+        if (inner != null) {
+            return new SapDatabaseInstanceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -90,6 +91,58 @@ public final class SapDatabaseInstancesImpl implements SapDatabaseInstances {
         PagedIterable<SapDatabaseInstanceInner> inner =
             this.serviceClient().list(resourceGroupName, sapVirtualInstanceName, context);
         return Utils.mapPage(inner, inner1 -> new SapDatabaseInstanceImpl(inner1, this.manager()));
+    }
+
+    public OperationStatusResult startInstance(
+        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
+        OperationStatusResultInner inner =
+            this.serviceClient().startInstance(resourceGroupName, sapVirtualInstanceName, databaseInstanceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult startInstance(
+        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName, Context context) {
+        OperationStatusResultInner inner =
+            this
+                .serviceClient()
+                .startInstance(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult stopInstance(
+        String resourceGroupName, String sapVirtualInstanceName, String databaseInstanceName) {
+        OperationStatusResultInner inner =
+            this.serviceClient().stopInstance(resourceGroupName, sapVirtualInstanceName, databaseInstanceName);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatusResult stopInstance(
+        String resourceGroupName,
+        String sapVirtualInstanceName,
+        String databaseInstanceName,
+        StopRequest body,
+        Context context) {
+        OperationStatusResultInner inner =
+            this
+                .serviceClient()
+                .stopInstance(resourceGroupName, sapVirtualInstanceName, databaseInstanceName, body, context);
+        if (inner != null) {
+            return new OperationStatusResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public SapDatabaseInstance getById(String id) {

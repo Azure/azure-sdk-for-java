@@ -55,7 +55,7 @@ public final class LocationsClientImpl implements LocationsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface LocationsService {
+    public interface LocationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations")
         @ExpectedResponses({200})
@@ -315,20 +315,6 @@ public final class LocationsClientImpl implements LocationsClient {
      * Get the properties of an existing Cosmos DB location.
      *
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of an existing Cosmos DB location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LocationGetResultInner get(String location) {
-        return getAsync(location).block();
-    }
-
-    /**
-     * Get the properties of an existing Cosmos DB location.
-     *
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -338,5 +324,19 @@ public final class LocationsClientImpl implements LocationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LocationGetResultInner> getWithResponse(String location, Context context) {
         return getWithResponseAsync(location, context).block();
+    }
+
+    /**
+     * Get the properties of an existing Cosmos DB location.
+     *
+     * @param location Cosmos DB region, with spaces between words and each word capitalized.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of an existing Cosmos DB location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LocationGetResultInner get(String location) {
+        return getWithResponse(location, Context.NONE).getValue();
     }
 }

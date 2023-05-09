@@ -1,0 +1,60 @@
+Service: core
+
+Project: sdk/core/azure-core-perf
+
+PrimaryPackage: 'com.azure:azure-core'
+
+PackageVersions:
+- 'com.azure:azure-core': 1.36.0
+  'com.azure:azure-core-http-netty': 1.13.0
+  'com.azure:azure-core-http-okhttp': 1.11.6
+- 'com.azure:azure-core': source
+  'com.azure:azure-core-http-netty': source
+  'com.azure:azure-core-http-okhttp': source
+
+Tests:
+- Test: jsonsend
+  Class: jsonsend
+  Arguments: &sizes
+  - --size 10 --parallel 64 --backend-type blobs
+  - --size 1000 --parallel 64 --backend-type blobs
+
+- Test: jsonreceive
+  Class: jsonreceive
+  Arguments: *sizes
+
+- Test: xmlsend
+  Class: xmlsend
+  Arguments: *sizes
+
+- Test: xmlreceive
+  Class: xmlreceive
+  Arguments: *sizes
+
+- Test: binarydatasend
+  Class: binarydatasend
+  Arguments:
+  - --size 10240 --binary-data-source bytes --parallel 64 --backend-type blobs
+  - --size 10240 --binary-data-source file --parallel 64 --backend-type blobs
+  - --size 10240 --binary-data-source flux --parallel 64 --backend-type blobs
+  - --size 10240 --binary-data-source stream --parallel 64 --backend-type blobs
+  - --size 10485760 --binary-data-source bytes --parallel 32 --backend-type blobs
+  - --size 10485760 --binary-data-source file --parallel 32 --backend-type blobs
+  - --size 10485760 --binary-data-source flux --parallel 32 --backend-type blobs
+  - --size 10485760 --binary-data-source stream --parallel 32 --backend-type blobs
+  - --size 10240 --binary-data-source bytes --parallel 64 --backend-type blobs --http-client okhttp
+  - --size 10240 --binary-data-source file --parallel 64 --backend-type blobs --http-client okhttp
+  - --size 10240 --binary-data-source flux --parallel 64 --backend-type blobs --http-client okhttp
+  - --size 10240 --binary-data-source stream --parallel 64 --backend-type blobs --http-client okhttp
+  - --size 10485760 --binary-data-source bytes --parallel 32 --backend-type blobs --http-client okhttp
+  - --size 10485760 --binary-data-source file --parallel 32 --backend-type blobs --http-client okhttp
+  - --size 10485760 --binary-data-source flux --parallel 32 --backend-type blobs --http-client okhttp
+  - --size 10485760 --binary-data-source stream --parallel 32 --backend-type blobs --http-client okhttp
+
+- Test: binarydatareceive
+  Class: binarydatareceive
+  Arguments:
+  - --size 10240 --parallel 64 --backend-type blobs
+  - --size 10485760 --parallel 32 --backend-type blobs
+  - --size 10240 --parallel 64 --backend-type blobs --http-client okhttp
+  - --size 10485760 --parallel 32 --backend-type blobs --http-client okhttp

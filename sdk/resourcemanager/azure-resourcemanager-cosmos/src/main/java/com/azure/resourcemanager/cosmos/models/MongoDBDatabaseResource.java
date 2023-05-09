@@ -17,6 +17,10 @@ public class MongoDBDatabaseResource {
     @JsonProperty(value = "id", required = true)
     private String id;
 
+    /** Creates an instance of MongoDBDatabaseResource class. */
+    public MongoDBDatabaseResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB MongoDB database.
      *

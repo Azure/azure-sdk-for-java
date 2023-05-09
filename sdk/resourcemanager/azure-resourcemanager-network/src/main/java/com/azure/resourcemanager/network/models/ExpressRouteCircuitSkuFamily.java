@@ -17,6 +17,15 @@ public final class ExpressRouteCircuitSkuFamily extends ExpandableStringEnum<Exp
     public static final ExpressRouteCircuitSkuFamily METERED_DATA = fromString("MeteredData");
 
     /**
+     * Creates a new instance of ExpressRouteCircuitSkuFamily value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteCircuitSkuFamily() {
+    }
+
+    /**
      * Creates or finds a ExpressRouteCircuitSkuFamily from its string representation.
      *
      * @param name a name to look for.

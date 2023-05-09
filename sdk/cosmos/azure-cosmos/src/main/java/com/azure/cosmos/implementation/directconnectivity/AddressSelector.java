@@ -3,10 +3,12 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -60,7 +62,7 @@ public class AddressSelector {
             // Primary endpoint (of the desired protocol) was not found.
             throw new GoneException(String.format("The requested resource is no longer available at the server. Returned addresses are {%s}",
                                                   String.join(",", replicaAddresses.stream()
-                                                      .map(address -> address.getPhysicalUri().getURIAsString()).collect(Collectors.toList()))), null);
+                                                      .map(address -> address.getPhysicalUri().getURIAsString()).collect(Collectors.toList()))));
         }
 
         return primaryAddress.getPhysicalUri();
@@ -85,7 +87,7 @@ public class AddressSelector {
         );
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
-        return this.addressResolver.openConnectionsAndInitCaches(containerLink);
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.addressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 }

@@ -22,7 +22,8 @@ output-folder: ../
 namespace: com.azure.data.schemaregistry
 generate-client-as-impl: true
 service-interface-as-public: true
-sync-methods: none
+enable-sync-stack: true
+generic-response-type: true
 license-header: MICROSOFT_MIT_SMALL
 context-client-method-parameter: true
 models-subpackage: implementation.models
@@ -32,72 +33,72 @@ models-subpackage: implementation.models
 
 ```yaml
 directive:
-  from: swagger-document
-  where: $.paths["/$schemaGroups/{groupName}/schemas/{schemaName}:get-id"].post
-  transform: >
-    $.parameters.push({
-      "name": "Content-Type",
-      "in": "header",
-      "description": "Content type of the schema.",
-      "required": true,
-      "type": "string",
-      "enum": [
-        "application/json; serialization=Avro",
-        "application/json; serialization=Json",
-        "text/plain; charset=utf-8"
-      ],
-      "x-ms-enum": {
-        "name": "SchemaFormat",
-        "modelAsString": true
-       }});
+    from: swagger-document
+    where: $.paths["/$schemaGroups/{groupName}/schemas/{schemaName}:get-id"].post
+    transform: >
+        $.parameters.push({
+          "name": "Content-Type",
+          "in": "header",
+          "description": "Content type of the schema.",
+          "required": true,
+          "type": "string",
+          "enum": [
+            "application/json; serialization=Avro",
+            "application/json; serialization=Json",
+            "text/plain; charset=utf-8"
+          ],
+          "x-ms-enum": {
+            "name": "SchemaFormat",
+            "modelAsString": true
+           }});
 ```
 
 ### Add Content-Type header to Register operation
 
 ```yaml
 directive:
-  from: swagger-document
-  where: $.paths["/$schemaGroups/{groupName}/schemas/{schemaName}"].put
-  transform: >
-    $.parameters.push({
-      "name": "Content-Type",
-      "in": "header",
-      "description": "Content type of the schema.",
-      "required": true,
-      "type": "string"});
+    from: swagger-document
+    where: $.paths["/$schemaGroups/{groupName}/schemas/{schemaName}"].put
+    transform: >
+        $.parameters.push({
+          "name": "Content-Type",
+          "in": "header",
+          "description": "Content type of the schema.",
+          "required": true,
+          "type": "string"});
 ```
 
 ### Enrich Content-Type header in response headers for operations returning the schema
 
 ```yaml
 directive:
-  from: swagger-document
-  where: $.paths["/$schemaGroups/$schemas/{id}"].get.responses["200"].headers
-  transform: >
-    $["Content-Type"]["enum"] = [
-        "application/json; serialization=Avro",
-        "application/json; serialization=Json",
-        "text/plain; charset=utf-8"
-       ];
-    $["Content-Type"]["x-ms-enum"] = {
-      "name": "SchemaFormat",
-      "modelAsString": true
-    };  
+    from: swagger-document
+    where: $.paths["/$schemaGroups/$schemas/{id}"].get.responses["200"].headers
+    transform: >
+        $["Content-Type"]["enum"] = [
+            "application/json; serialization=Avro",
+            "application/json; serialization=Json",
+            "text/plain; charset=utf-8"
+           ];
+        $["Content-Type"]["x-ms-enum"] = {
+          "name": "SchemaFormat",
+          "modelAsString": true
+        };  
 ```
 
 ```yaml
 directive:
-  from: swagger-document
-  where: $.paths["/$schemaGroups/{groupName}/schemas/{schemaName}/versions/{schemaVersion}"].get.responses["200"].headers
-  transform: >
-    $["Content-Type"]["enum"] = [
-        "application/json; serialization=Avro",
-        "application/json; serialization=Json",
-        "text/plain; charset=utf-8"
-       ];
-    $["Content-Type"]["x-ms-enum"] = {
-      "name": "SchemaFormat",
-      "modelAsString": true
-    };  
+    from: swagger-document
+    where: $.paths["/$schemaGroups/{groupName}/schemas/{schemaName}/versions/{schemaVersion}"].get.responses["200"].headers
+    transform: >
+        $["Content-Type"]["enum"] = [
+            "application/json; serialization=Avro",
+            "application/json; serialization=Json",
+            "text/plain; charset=utf-8"
+           ];
+        $["Content-Type"]["x-ms-enum"] = {
+          "name": "SchemaFormat",
+          "modelAsString": true
+        };  
 ```
 

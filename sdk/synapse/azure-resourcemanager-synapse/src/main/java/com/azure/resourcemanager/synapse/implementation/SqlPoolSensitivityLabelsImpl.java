@@ -43,11 +43,6 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
         return Utils.mapPage(inner, inner1 -> new SensitivityLabelImpl(inner1, this.manager()));
     }
 
-    public void update(
-        String resourceGroupName, String workspaceName, String sqlPoolName, SensitivityLabelUpdateList parameters) {
-        this.serviceClient().update(resourceGroupName, workspaceName, sqlPoolName, parameters);
-    }
-
     public Response<Void> updateWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -57,6 +52,11 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
         return this
             .serviceClient()
             .updateWithResponse(resourceGroupName, workspaceName, sqlPoolName, parameters, context);
+    }
+
+    public void update(
+        String resourceGroupName, String workspaceName, String sqlPoolName, SensitivityLabelUpdateList parameters) {
+        this.serviceClient().update(resourceGroupName, workspaceName, sqlPoolName, parameters);
     }
 
     public PagedIterable<SensitivityLabel> listRecommended(
@@ -88,16 +88,6 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
         return Utils.mapPage(inner, inner1 -> new SensitivityLabelImpl(inner1, this.manager()));
     }
 
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String schemaName,
-        String tableName,
-        String columnName) {
-        this.serviceClient().delete(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
-    }
-
     public Response<Void> deleteWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -112,30 +102,14 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
                 resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context);
     }
 
-    public SensitivityLabel get(
+    public void delete(
         String resourceGroupName,
         String workspaceName,
         String sqlPoolName,
         String schemaName,
         String tableName,
-        String columnName,
-        SensitivityLabelSource sensitivityLabelSource) {
-        SensitivityLabelInner inner =
-            this
-                .serviceClient()
-                .get(
-                    resourceGroupName,
-                    workspaceName,
-                    sqlPoolName,
-                    schemaName,
-                    tableName,
-                    columnName,
-                    sensitivityLabelSource);
-        if (inner != null) {
-            return new SensitivityLabelImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        String columnName) {
+        this.serviceClient().delete(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
     }
 
     public Response<SensitivityLabel> getWithResponse(
@@ -170,16 +144,30 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
         }
     }
 
-    public void enableRecommendation(
+    public SensitivityLabel get(
         String resourceGroupName,
         String workspaceName,
         String sqlPoolName,
         String schemaName,
         String tableName,
-        String columnName) {
-        this
-            .serviceClient()
-            .enableRecommendation(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
+        String columnName,
+        SensitivityLabelSource sensitivityLabelSource) {
+        SensitivityLabelInner inner =
+            this
+                .serviceClient()
+                .get(
+                    resourceGroupName,
+                    workspaceName,
+                    sqlPoolName,
+                    schemaName,
+                    tableName,
+                    columnName,
+                    sensitivityLabelSource);
+        if (inner != null) {
+            return new SensitivityLabelImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> enableRecommendationWithResponse(
@@ -196,7 +184,7 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
                 resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context);
     }
 
-    public void disableRecommendation(
+    public void enableRecommendation(
         String resourceGroupName,
         String workspaceName,
         String sqlPoolName,
@@ -205,7 +193,7 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
         String columnName) {
         this
             .serviceClient()
-            .disableRecommendation(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
+            .enableRecommendation(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
     }
 
     public Response<Void> disableRecommendationWithResponse(
@@ -220,6 +208,18 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
             .serviceClient()
             .disableRecommendationWithResponse(
                 resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName, context);
+    }
+
+    public void disableRecommendation(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String schemaName,
+        String tableName,
+        String columnName) {
+        this
+            .serviceClient()
+            .disableRecommendation(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName, columnName);
     }
 
     public void deleteById(String id) {

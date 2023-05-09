@@ -7,7 +7,6 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.WebhookPropertiesCreateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The parameters for creating a webhook. */
 @Fluent
 public final class WebhookCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookCreateParameters.class);
-
     /*
      * The tags for the webhook.
      */
@@ -26,8 +23,7 @@ public final class WebhookCreateParameters {
     private Map<String, String> tags;
 
     /*
-     * The location of the webhook. This cannot be changed after the resource
-     * is created.
+     * The location of the webhook. This cannot be changed after the resource is created.
      */
     @JsonProperty(value = "location", required = true)
     private String location;
@@ -37,6 +33,10 @@ public final class WebhookCreateParameters {
      */
     @JsonProperty(value = "properties")
     private WebhookPropertiesCreateParameters innerProperties;
+
+    /** Creates an instance of WebhookCreateParameters class. */
+    public WebhookCreateParameters() {
+    }
 
     /**
      * Get the tags property: The tags for the webhook.
@@ -213,7 +213,7 @@ public final class WebhookCreateParameters {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model WebhookCreateParameters"));
@@ -222,4 +222,6 @@ public final class WebhookCreateParameters {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebhookCreateParameters.class);
 }

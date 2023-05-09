@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Registries GetBuildSourceUploadUrl. */
 public final class RegistriesGetBuildSourceUploadUrlSamples {
     /*
@@ -22,6 +20,6 @@ public final class RegistriesGetBuildSourceUploadUrlSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .getBuildSourceUploadUrlWithResponse("myResourceGroup", "myRegistry", Context.NONE);
+            .getBuildSourceUploadUrlWithResponse("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }
 }

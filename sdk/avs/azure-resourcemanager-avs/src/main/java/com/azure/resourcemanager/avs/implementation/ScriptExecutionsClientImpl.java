@@ -66,7 +66,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientScriptExecu")
-    private interface ScriptExecutionsService {
+    public interface ScriptExecutionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
@@ -716,7 +716,8 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
         String privateCloudName,
         String scriptExecutionName,
         ScriptExecutionInner scriptExecution) {
-        return beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution)
             .getSyncPoller();
     }
 
@@ -740,7 +741,8 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
         String scriptExecutionName,
         ScriptExecutionInner scriptExecution,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, privateCloudName, scriptExecutionName, scriptExecution, context)
             .getSyncPoller();
     }
@@ -1006,7 +1008,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String scriptExecutionName) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, scriptExecutionName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, scriptExecutionName).getSyncPoller();
     }
 
     /**
@@ -1024,7 +1026,7 @@ public final class ScriptExecutionsClientImpl implements ScriptExecutionsClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String scriptExecutionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, privateCloudName, scriptExecutionName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, privateCloudName, scriptExecutionName, context).getSyncPoller();
     }
 
     /**

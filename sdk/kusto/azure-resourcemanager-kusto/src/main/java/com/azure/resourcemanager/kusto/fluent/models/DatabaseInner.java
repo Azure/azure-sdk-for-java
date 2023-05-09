@@ -32,6 +32,10 @@ public class DatabaseInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of DatabaseInner class. */
+    public DatabaseInner() {
+    }
+
     /**
      * Get the location property: Resource location.
      *

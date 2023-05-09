@@ -29,7 +29,7 @@ public final class TextSourceInternal {
      * Voice gender type
      */
     @JsonProperty(value = "voiceGender")
-    private GenderType voiceGender;
+    private GenderTypeInternal voiceGender;
 
     /*
      * Voice name to be played
@@ -39,6 +39,9 @@ public final class TextSourceInternal {
      */
     @JsonProperty(value = "voiceName")
     private String voiceName;
+
+    /** Creates an instance of TextSourceInternal class. */
+    public TextSourceInternal() {}
 
     /**
      * Get the text property: Text for the cognitive service to be played.
@@ -89,7 +92,7 @@ public final class TextSourceInternal {
      *
      * @return the voiceGender value.
      */
-    public GenderType getVoiceGender() {
+    public GenderTypeInternal getVoiceGender() {
         return this.voiceGender;
     }
 
@@ -99,7 +102,7 @@ public final class TextSourceInternal {
      * @param voiceGender the voiceGender value to set.
      * @return the TextSourceInternal object itself.
      */
-    public TextSourceInternal setVoiceGender(GenderType voiceGender) {
+    public TextSourceInternal setVoiceGender(GenderTypeInternal voiceGender) {
         this.voiceGender = voiceGender;
         return this;
     }

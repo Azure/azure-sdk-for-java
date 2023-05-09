@@ -20,6 +20,15 @@ public final class VpnPolicyMemberAttributeType extends ExpandableStringEnum<Vpn
     public static final VpnPolicyMemberAttributeType RADIUS_AZURE_GROUP_ID = fromString("RadiusAzureGroupId");
 
     /**
+     * Creates a new instance of VpnPolicyMemberAttributeType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VpnPolicyMemberAttributeType() {
+    }
+
+    /**
      * Creates or finds a VpnPolicyMemberAttributeType from its string representation.
      *
      * @param name a name to look for.

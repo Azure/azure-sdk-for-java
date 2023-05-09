@@ -22,6 +22,10 @@ public final class Role {
     @JsonProperty(value = "role")
     private String role;
 
+    /** Creates an instance of Role class. */
+    public Role() {
+    }
+
     /**
      * Get the db property: The database name the role is applied.
      *

@@ -17,6 +17,9 @@ public final class MetricDataList {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<MetricSeriesData> value;
 
+    /** Creates an instance of MetricDataList class. */
+    public MetricDataList() {}
+
     /**
      * Get the value property: The value property.
      *

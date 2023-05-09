@@ -6,10 +6,12 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
@@ -65,7 +67,7 @@ public class SchemaRegistryAsyncClientCustomTests extends TestBase {
             .fullyQualifiedNamespace(endpoint);
 
         if (interceptorManager.isPlaybackMode()) {
-            builder.httpClient(interceptorManager.getPlaybackClient());
+            builder.httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
         } else {
             builder.addPolicy(new RetryPolicy())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -78,6 +80,13 @@ public class SchemaRegistryAsyncClientCustomTests extends TestBase {
     @Override
     protected void afterTest() {
         Mockito.framework().clearInlineMock(this);
+    }
+
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient)
+            .assertAsync()
+            .skipRequest((httpRequest, context) -> false)
+            .build();
     }
 
     /**

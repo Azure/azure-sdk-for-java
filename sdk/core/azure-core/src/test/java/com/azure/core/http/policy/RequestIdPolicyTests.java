@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.SyncAsyncExtension;
 import com.azure.core.SyncAsyncTest;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -18,11 +19,12 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+
+import static com.azure.core.CoreTestUtils.createUrl;
 
 public class RequestIdPolicyTests {
 
@@ -33,6 +35,7 @@ public class RequestIdPolicyTests {
         }
 
         @Override
+        @Deprecated
         public String getHeaderValue(String name) {
             return null;
         }
@@ -63,8 +66,6 @@ public class RequestIdPolicyTests {
         }
     };
 
-    private static final String REQUEST_ID_HEADER = "x-ms-client-request-id";
-
     @SyncAsyncTest
     public void newRequestIdForEachCall() throws Exception {
         HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -73,12 +74,12 @@ public class RequestIdPolicyTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (firstRequestId != null) {
-                        String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                        String newRequestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
                         Assertions.assertNotNull(newRequestId);
                         Assertions.assertNotEquals(newRequestId, firstRequestId);
                     }
 
-                    firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                    firstRequestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
                     if (firstRequestId == null) {
                         Assertions.fail();
                     }
@@ -103,11 +104,11 @@ public class RequestIdPolicyTests {
                 @Override
                 public Mono<HttpResponse> send(HttpRequest request) {
                     if (firstRequestId != null) {
-                        String newRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                        String newRequestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
                         Assertions.assertNotNull(newRequestId);
                         Assertions.assertEquals(newRequestId, firstRequestId);
                     }
-                    firstRequestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+                    firstRequestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
                     if (firstRequestId == null) {
                         Assertions.fail();
                     }
@@ -124,6 +125,6 @@ public class RequestIdPolicyTests {
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
-        return new HttpRequest(HttpMethod.GET, new URL(url));
+        return new HttpRequest(HttpMethod.GET, createUrl(url));
     }
 }

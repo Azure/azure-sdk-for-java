@@ -35,7 +35,7 @@ public final class DeploymentsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"etag\":\"yftumrtwna\",\"properties\":{\"provisioningState\":\"Succeeded\",\"model\":{\"format\":\"wkojgcyztsfmzn\",\"name\":\"eqphchqnrnr\",\"version\":\"ehuwrykqgaifmvik\"},\"scaleSettings\":{\"scaleType\":\"Manual\",\"capacity\":2009278020,\"activeCapacity\":741141390},\"capabilities\":{\"hnjivo\":\"znxcvds\"},\"raiPolicyName\":\"tnovqfzgemjdftul\",\"callRateLimit\":{\"count\":54.28624,\"renewalPeriod\":33.39791,\"rules\":[]}},\"id\":\"amtmcz\",\"name\":\"o\",\"type\":\"ejwcwwqiok\"}";
+            "{\"etag\":\"trnegvmnvuqeqvld\",\"properties\":{\"provisioningState\":\"Succeeded\",\"model\":{\"format\":\"bkkd\",\"name\":\"lves\",\"version\":\"jlxr\"},\"scaleSettings\":{\"scaleType\":\"Manual\",\"capacity\":646254417,\"activeCapacity\":848547164},\"capabilities\":{\"evufuztck\":\"hpxlktwkuziycs\",\"wmmrq\":\"yhjtqedcgzu\",\"zgkrvqe\":\"zrrjvpgly\"},\"raiPolicyName\":\"toepryu\",\"callRateLimit\":{\"count\":13.608098,\"renewalPeriod\":23.045176,\"rules\":[]}},\"id\":\"dmovzvfva\",\"name\":\"wzqa\",\"type\":\"f\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,24 +66,27 @@ public final class DeploymentsCreateOrUpdateMockTests {
         Deployment response =
             manager
                 .deployments()
-                .define("hirctymoxoftpipi")
-                .withExistingAccount("rymsgaojfmw", "cotmr")
+                .define("widf")
+                .withExistingAccount("uqypfcvle", "chpqbmfpjba")
                 .withProperties(
                     new DeploymentProperties()
                         .withModel(
-                            new DeploymentModel().withFormat("ihhyuspskasd").withName("mfwdgzxu").withVersion("cvpa"))
+                            new DeploymentModel()
+                                .withFormat("fhoqca")
+                                .withName("wdaomdjvlpjxxkzb")
+                                .withVersion("sgeivsiy"))
                         .withScaleSettings(
                             new DeploymentScaleSettings()
                                 .withScaleType(DeploymentScaleType.STANDARD)
-                                .withCapacity(866301348))
-                        .withRaiPolicyName("g"))
+                                .withCapacity(1333047825))
+                        .withRaiPolicyName("lvofqzhvfcibyfmo"))
                 .create();
 
-        Assertions.assertEquals("wkojgcyztsfmzn", response.properties().model().format());
-        Assertions.assertEquals("eqphchqnrnr", response.properties().model().name());
-        Assertions.assertEquals("ehuwrykqgaifmvik", response.properties().model().version());
+        Assertions.assertEquals("bkkd", response.properties().model().format());
+        Assertions.assertEquals("lves", response.properties().model().name());
+        Assertions.assertEquals("jlxr", response.properties().model().version());
         Assertions.assertEquals(DeploymentScaleType.MANUAL, response.properties().scaleSettings().scaleType());
-        Assertions.assertEquals(2009278020, response.properties().scaleSettings().capacity());
-        Assertions.assertEquals("tnovqfzgemjdftul", response.properties().raiPolicyName());
+        Assertions.assertEquals(646254417, response.properties().scaleSettings().capacity());
+        Assertions.assertEquals("toepryu", response.properties().raiPolicyName());
     }
 }

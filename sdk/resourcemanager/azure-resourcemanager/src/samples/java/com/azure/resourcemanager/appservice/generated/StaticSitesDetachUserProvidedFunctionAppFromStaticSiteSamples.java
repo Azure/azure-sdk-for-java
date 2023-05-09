@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites DetachUserProvidedFunctionAppFromStaticSite. */
 public final class StaticSitesDetachUserProvidedFunctionAppFromStaticSiteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DetachUserProvidedFunctionAppFromStaticSite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DetachUserProvidedFunctionAppFromStaticSite.json
      */
     /**
      * Sample code: Detach the user provided function app from the static site.
@@ -24,6 +22,6 @@ public final class StaticSitesDetachUserProvidedFunctionAppFromStaticSiteSamples
             .serviceClient()
             .getStaticSites()
             .detachUserProvidedFunctionAppFromStaticSiteWithResponse(
-                "rg", "testStaticSite0", "testFunctionApp", Context.NONE);
+                "rg", "testStaticSite0", "testFunctionApp", com.azure.core.util.Context.NONE);
     }
 }

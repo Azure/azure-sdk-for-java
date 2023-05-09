@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerRecoverableSqlPools List. */
 public final class WorkspaceManagedSqlServerRecoverableSqlPoolsListSamples {
     /*
@@ -17,6 +15,8 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsListSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listRecoverableSqlPoolsForTheServer(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerRecoverableSqlPools().list("wsg-7398", "testWorkspace", Context.NONE);
+        manager
+            .workspaceManagedSqlServerRecoverableSqlPools()
+            .list("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }

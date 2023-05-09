@@ -10,6 +10,44 @@
 
 ### Other Changes
 
+## 1.4.4 (2023-04-18)
+
+### Breaking Changes
+
+- Fixed the bug that multiple authentications coexist per builder. App Configuration client builder should only
+  support single authentication per builder instance.
+- Moved the validation of authentication to client builder's `build()` method.
+
+### Bugs Fixed
+
+- Fixed a race condition of invalid signature issue by not sharing `Mac` instance in class-level per request operation.
+  `Mac` isn't thread-safe, multiple threads could use it at once.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+
+## 1.4.3 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 1.4.2 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+
 ## 1.4.1 (2023-01-17)
 
 ### Bugs Fixed

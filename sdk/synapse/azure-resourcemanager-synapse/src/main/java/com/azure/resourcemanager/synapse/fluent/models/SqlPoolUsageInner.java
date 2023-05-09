@@ -53,6 +53,10 @@ public final class SqlPoolUsageInner {
     @JsonProperty(value = "nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextResetTime;
 
+    /** Creates an instance of SqlPoolUsageInner class. */
+    public SqlPoolUsageInner() {
+    }
+
     /**
      * Get the name property: The name of the usage metric.
      *

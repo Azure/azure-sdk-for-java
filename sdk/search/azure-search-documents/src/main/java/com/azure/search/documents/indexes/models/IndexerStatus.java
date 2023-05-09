@@ -6,18 +6,15 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for IndexerStatus. */
+/** Represents the overall indexer status. */
 public enum IndexerStatus {
-    /** Enum value unknown. */
+    /** Indicates that the indexer is in an unknown state. */
     UNKNOWN("unknown"),
 
-    /** Enum value error. */
+    /** Indicates that the indexer experienced an error that cannot be corrected without human intervention. */
     ERROR("error"),
 
-    /** Enum value running. */
+    /** Indicates that the indexer is running normally. */
     RUNNING("running");
 
     /** The actual serialized value for a IndexerStatus instance. */
@@ -33,7 +30,6 @@ public enum IndexerStatus {
      * @param value the serialized value to parse.
      * @return the parsed IndexerStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static IndexerStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -47,7 +43,7 @@ public enum IndexerStatus {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

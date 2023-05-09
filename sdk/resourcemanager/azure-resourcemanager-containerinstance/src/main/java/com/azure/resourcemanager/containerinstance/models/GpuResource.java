@@ -23,6 +23,10 @@ public final class GpuResource {
     @JsonProperty(value = "sku", required = true)
     private GpuSku sku;
 
+    /** Creates an instance of GpuResource class. */
+    public GpuResource() {
+    }
+
     /**
      * Get the count property: The count of the GPU resource.
      *

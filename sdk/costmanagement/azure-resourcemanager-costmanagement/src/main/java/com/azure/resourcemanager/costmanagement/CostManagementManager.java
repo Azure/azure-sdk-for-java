@@ -25,19 +25,37 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.costmanagement.fluent.CostManagementClient;
 import com.azure.resourcemanager.costmanagement.implementation.AlertsImpl;
+import com.azure.resourcemanager.costmanagement.implementation.BenefitRecommendationsImpl;
+import com.azure.resourcemanager.costmanagement.implementation.BenefitUtilizationSummariesImpl;
 import com.azure.resourcemanager.costmanagement.implementation.CostManagementClientBuilder;
 import com.azure.resourcemanager.costmanagement.implementation.DimensionsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.ExportsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.ForecastsImpl;
+import com.azure.resourcemanager.costmanagement.implementation.GenerateCostDetailsReportsImpl;
+import com.azure.resourcemanager.costmanagement.implementation.GenerateDetailedCostReportOperationResultsImpl;
+import com.azure.resourcemanager.costmanagement.implementation.GenerateDetailedCostReportOperationStatusImpl;
+import com.azure.resourcemanager.costmanagement.implementation.GenerateDetailedCostReportsImpl;
+import com.azure.resourcemanager.costmanagement.implementation.GenerateReservationDetailsReportsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.OperationsImpl;
+import com.azure.resourcemanager.costmanagement.implementation.PriceSheetsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.QueriesImpl;
+import com.azure.resourcemanager.costmanagement.implementation.ScheduledActionsImpl;
 import com.azure.resourcemanager.costmanagement.implementation.ViewsImpl;
 import com.azure.resourcemanager.costmanagement.models.Alerts;
+import com.azure.resourcemanager.costmanagement.models.BenefitRecommendations;
+import com.azure.resourcemanager.costmanagement.models.BenefitUtilizationSummaries;
 import com.azure.resourcemanager.costmanagement.models.Dimensions;
 import com.azure.resourcemanager.costmanagement.models.Exports;
 import com.azure.resourcemanager.costmanagement.models.Forecasts;
+import com.azure.resourcemanager.costmanagement.models.GenerateCostDetailsReports;
+import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostReportOperationResults;
+import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostReportOperationStatus;
+import com.azure.resourcemanager.costmanagement.models.GenerateDetailedCostReports;
+import com.azure.resourcemanager.costmanagement.models.GenerateReservationDetailsReports;
 import com.azure.resourcemanager.costmanagement.models.Operations;
+import com.azure.resourcemanager.costmanagement.models.PriceSheets;
 import com.azure.resourcemanager.costmanagement.models.Queries;
+import com.azure.resourcemanager.costmanagement.models.ScheduledActions;
 import com.azure.resourcemanager.costmanagement.models.Views;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
@@ -46,8 +64,13 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to CostManagementManager. */
+/**
+ * Entry point to CostManagementManager. CostManagement management client provides access to CostManagement resources
+ * for Azure Enterprise Subscriptions.
+ */
 public final class CostManagementManager {
+    private Operations operations;
+
     private Views views;
 
     private Alerts alerts;
@@ -58,9 +81,25 @@ public final class CostManagementManager {
 
     private Queries queries;
 
-    private Operations operations;
+    private GenerateReservationDetailsReports generateReservationDetailsReports;
 
     private Exports exports;
+
+    private GenerateCostDetailsReports generateCostDetailsReports;
+
+    private GenerateDetailedCostReports generateDetailedCostReports;
+
+    private GenerateDetailedCostReportOperationResults generateDetailedCostReportOperationResults;
+
+    private GenerateDetailedCostReportOperationStatus generateDetailedCostReportOperationStatus;
+
+    private PriceSheets priceSheets;
+
+    private ScheduledActions scheduledActions;
+
+    private BenefitRecommendations benefitRecommendations;
+
+    private BenefitUtilizationSummaries benefitUtilizationSummaries;
 
     private final CostManagementClient clientObject;
 
@@ -226,7 +265,7 @@ public final class CostManagementManager {
                 .append("-")
                 .append("com.azure.resourcemanager.costmanagement")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -281,6 +320,18 @@ public final class CostManagementManager {
                     .build();
             return new CostManagementManager(httpPipeline, profile, defaultPollInterval);
         }
+    }
+
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+        }
+        return operations;
     }
 
     /**
@@ -344,15 +395,16 @@ public final class CostManagementManager {
     }
 
     /**
-     * Gets the resource collection API of Operations.
+     * Gets the resource collection API of GenerateReservationDetailsReports.
      *
-     * @return Resource collection API of Operations.
+     * @return Resource collection API of GenerateReservationDetailsReports.
      */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    public GenerateReservationDetailsReports generateReservationDetailsReports() {
+        if (this.generateReservationDetailsReports == null) {
+            this.generateReservationDetailsReports =
+                new GenerateReservationDetailsReportsImpl(clientObject.getGenerateReservationDetailsReports(), this);
         }
-        return operations;
+        return generateReservationDetailsReports;
     }
 
     /**
@@ -365,6 +417,110 @@ public final class CostManagementManager {
             this.exports = new ExportsImpl(clientObject.getExports(), this);
         }
         return exports;
+    }
+
+    /**
+     * Gets the resource collection API of GenerateCostDetailsReports.
+     *
+     * @return Resource collection API of GenerateCostDetailsReports.
+     */
+    public GenerateCostDetailsReports generateCostDetailsReports() {
+        if (this.generateCostDetailsReports == null) {
+            this.generateCostDetailsReports =
+                new GenerateCostDetailsReportsImpl(clientObject.getGenerateCostDetailsReports(), this);
+        }
+        return generateCostDetailsReports;
+    }
+
+    /**
+     * Gets the resource collection API of GenerateDetailedCostReports.
+     *
+     * @return Resource collection API of GenerateDetailedCostReports.
+     */
+    public GenerateDetailedCostReports generateDetailedCostReports() {
+        if (this.generateDetailedCostReports == null) {
+            this.generateDetailedCostReports =
+                new GenerateDetailedCostReportsImpl(clientObject.getGenerateDetailedCostReports(), this);
+        }
+        return generateDetailedCostReports;
+    }
+
+    /**
+     * Gets the resource collection API of GenerateDetailedCostReportOperationResults.
+     *
+     * @return Resource collection API of GenerateDetailedCostReportOperationResults.
+     */
+    public GenerateDetailedCostReportOperationResults generateDetailedCostReportOperationResults() {
+        if (this.generateDetailedCostReportOperationResults == null) {
+            this.generateDetailedCostReportOperationResults =
+                new GenerateDetailedCostReportOperationResultsImpl(
+                    clientObject.getGenerateDetailedCostReportOperationResults(), this);
+        }
+        return generateDetailedCostReportOperationResults;
+    }
+
+    /**
+     * Gets the resource collection API of GenerateDetailedCostReportOperationStatus.
+     *
+     * @return Resource collection API of GenerateDetailedCostReportOperationStatus.
+     */
+    public GenerateDetailedCostReportOperationStatus generateDetailedCostReportOperationStatus() {
+        if (this.generateDetailedCostReportOperationStatus == null) {
+            this.generateDetailedCostReportOperationStatus =
+                new GenerateDetailedCostReportOperationStatusImpl(
+                    clientObject.getGenerateDetailedCostReportOperationStatus(), this);
+        }
+        return generateDetailedCostReportOperationStatus;
+    }
+
+    /**
+     * Gets the resource collection API of PriceSheets.
+     *
+     * @return Resource collection API of PriceSheets.
+     */
+    public PriceSheets priceSheets() {
+        if (this.priceSheets == null) {
+            this.priceSheets = new PriceSheetsImpl(clientObject.getPriceSheets(), this);
+        }
+        return priceSheets;
+    }
+
+    /**
+     * Gets the resource collection API of ScheduledActions. It manages ScheduledAction.
+     *
+     * @return Resource collection API of ScheduledActions.
+     */
+    public ScheduledActions scheduledActions() {
+        if (this.scheduledActions == null) {
+            this.scheduledActions = new ScheduledActionsImpl(clientObject.getScheduledActions(), this);
+        }
+        return scheduledActions;
+    }
+
+    /**
+     * Gets the resource collection API of BenefitRecommendations.
+     *
+     * @return Resource collection API of BenefitRecommendations.
+     */
+    public BenefitRecommendations benefitRecommendations() {
+        if (this.benefitRecommendations == null) {
+            this.benefitRecommendations =
+                new BenefitRecommendationsImpl(clientObject.getBenefitRecommendations(), this);
+        }
+        return benefitRecommendations;
+    }
+
+    /**
+     * Gets the resource collection API of BenefitUtilizationSummaries.
+     *
+     * @return Resource collection API of BenefitUtilizationSummaries.
+     */
+    public BenefitUtilizationSummaries benefitUtilizationSummaries() {
+        if (this.benefitUtilizationSummaries == null) {
+            this.benefitUtilizationSummaries =
+                new BenefitUtilizationSummariesImpl(clientObject.getBenefitUtilizationSummaries(), this);
+        }
+        return benefitUtilizationSummaries;
     }
 
     /**

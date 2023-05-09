@@ -8,30 +8,30 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.CheckSkuAvailabilityParameter;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckSkuAvailabilityParameterTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CheckSkuAvailabilityParameter model =
             BinaryData
-                .fromString("{\"skus\":[\"sucocmnyyazttbtw\",\"rq\"],\"kind\":\"uedck\",\"type\":\"ywbiexzfeyueax\"}")
+                .fromString(
+                    "{\"skus\":[\"uwbc\",\"nwbmeh\",\"seyvj\"],\"kind\":\"srtslhspkdeem\",\"type\":\"ofmxagkvtmelmqkr\"}")
                 .toObject(CheckSkuAvailabilityParameter.class);
-        Assertions.assertEquals("sucocmnyyazttbtw", model.skus().get(0));
-        Assertions.assertEquals("uedck", model.kind());
-        Assertions.assertEquals("ywbiexzfeyueax", model.type());
+        Assertions.assertEquals("uwbc", model.skus().get(0));
+        Assertions.assertEquals("srtslhspkdeem", model.kind());
+        Assertions.assertEquals("ofmxagkvtmelmqkr", model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CheckSkuAvailabilityParameter model =
             new CheckSkuAvailabilityParameter()
-                .withSkus(Arrays.asList("sucocmnyyazttbtw", "rq"))
-                .withKind("uedck")
-                .withType("ywbiexzfeyueax");
+                .withSkus(Arrays.asList("uwbc", "nwbmeh", "seyvj"))
+                .withKind("srtslhspkdeem")
+                .withType("ofmxagkvtmelmqkr");
         model = BinaryData.fromObject(model).toObject(CheckSkuAvailabilityParameter.class);
-        Assertions.assertEquals("sucocmnyyazttbtw", model.skus().get(0));
-        Assertions.assertEquals("uedck", model.kind());
-        Assertions.assertEquals("ywbiexzfeyueax", model.type());
+        Assertions.assertEquals("uwbc", model.skus().get(0));
+        Assertions.assertEquals("srtslhspkdeem", model.kind());
+        Assertions.assertEquals("ofmxagkvtmelmqkr", model.type());
     }
 }

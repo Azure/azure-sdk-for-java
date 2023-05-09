@@ -49,6 +49,10 @@ public final class UserSessionProperties {
     @JsonProperty(value = "createTime")
     private OffsetDateTime createTime;
 
+    /** Creates an instance of UserSessionProperties class. */
+    public UserSessionProperties() {
+    }
+
     /**
      * Get the objectId property: ObjectId of user session. (internal use).
      *

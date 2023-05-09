@@ -17,41 +17,33 @@ public final class LiveEventTranscriptionTests {
         LiveEventTranscription model =
             BinaryData
                 .fromString(
-                    "{\"language\":\"tkwqqtchealm\",\"inputTrackSelection\":[{\"property\":\"aayg\",\"operation\":\"wvgpiohg\",\"value\":\"rtfudxepxg\"},{\"property\":\"agvrvmnpkuk\",\"operation\":\"i\",\"value\":\"blxgwimf\"},{\"property\":\"hfjx\",\"operation\":\"szkkfoqre\",\"value\":\"kzikfjawneaivxwc\"}],\"outputTranscriptionTrack\":{\"trackName\":\"lpcirelsf\"}}")
+                    "{\"language\":\"yqagvrvm\",\"inputTrackSelection\":[{\"property\":\"kghimdblxgwimfnj\",\"operation\":\"j\",\"value\":\"mszkkfo\"}],\"outputTranscriptionTrack\":{\"trackName\":\"eyfkzikfja\"}}")
                 .toObject(LiveEventTranscription.class);
-        Assertions.assertEquals("tkwqqtchealm", model.language());
-        Assertions.assertEquals("aayg", model.inputTrackSelection().get(0).property());
-        Assertions.assertEquals("wvgpiohg", model.inputTrackSelection().get(0).operation());
-        Assertions.assertEquals("rtfudxepxg", model.inputTrackSelection().get(0).value());
-        Assertions.assertEquals("lpcirelsf", model.outputTranscriptionTrack().trackName());
+        Assertions.assertEquals("yqagvrvm", model.language());
+        Assertions.assertEquals("kghimdblxgwimfnj", model.inputTrackSelection().get(0).property());
+        Assertions.assertEquals("j", model.inputTrackSelection().get(0).operation());
+        Assertions.assertEquals("mszkkfo", model.inputTrackSelection().get(0).value());
+        Assertions.assertEquals("eyfkzikfja", model.outputTranscriptionTrack().trackName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         LiveEventTranscription model =
             new LiveEventTranscription()
-                .withLanguage("tkwqqtchealm")
+                .withLanguage("yqagvrvm")
                 .withInputTrackSelection(
                     Arrays
                         .asList(
                             new LiveEventInputTrackSelection()
-                                .withProperty("aayg")
-                                .withOperation("wvgpiohg")
-                                .withValue("rtfudxepxg"),
-                            new LiveEventInputTrackSelection()
-                                .withProperty("agvrvmnpkuk")
-                                .withOperation("i")
-                                .withValue("blxgwimf"),
-                            new LiveEventInputTrackSelection()
-                                .withProperty("hfjx")
-                                .withOperation("szkkfoqre")
-                                .withValue("kzikfjawneaivxwc")))
-                .withOutputTranscriptionTrack(new LiveEventOutputTranscriptionTrack().withTrackName("lpcirelsf"));
+                                .withProperty("kghimdblxgwimfnj")
+                                .withOperation("j")
+                                .withValue("mszkkfo")))
+                .withOutputTranscriptionTrack(new LiveEventOutputTranscriptionTrack().withTrackName("eyfkzikfja"));
         model = BinaryData.fromObject(model).toObject(LiveEventTranscription.class);
-        Assertions.assertEquals("tkwqqtchealm", model.language());
-        Assertions.assertEquals("aayg", model.inputTrackSelection().get(0).property());
-        Assertions.assertEquals("wvgpiohg", model.inputTrackSelection().get(0).operation());
-        Assertions.assertEquals("rtfudxepxg", model.inputTrackSelection().get(0).value());
-        Assertions.assertEquals("lpcirelsf", model.outputTranscriptionTrack().trackName());
+        Assertions.assertEquals("yqagvrvm", model.language());
+        Assertions.assertEquals("kghimdblxgwimfnj", model.inputTrackSelection().get(0).property());
+        Assertions.assertEquals("j", model.inputTrackSelection().get(0).operation());
+        Assertions.assertEquals("mszkkfo", model.inputTrackSelection().get(0).value());
+        Assertions.assertEquals("eyfkzikfja", model.outputTranscriptionTrack().trackName());
     }
 }

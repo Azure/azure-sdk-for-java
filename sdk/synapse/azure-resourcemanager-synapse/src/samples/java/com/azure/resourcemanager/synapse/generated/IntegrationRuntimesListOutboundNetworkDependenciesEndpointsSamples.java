@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes ListOutboundNetworkDependenciesEndpoints. */
 public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSamples {
     /*
@@ -20,6 +18,9 @@ public final class IntegrationRuntimesListOutboundNetworkDependenciesEndpointsSa
         manager
             .integrationRuntimes()
             .listOutboundNetworkDependenciesEndpointsWithResponse(
-                "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

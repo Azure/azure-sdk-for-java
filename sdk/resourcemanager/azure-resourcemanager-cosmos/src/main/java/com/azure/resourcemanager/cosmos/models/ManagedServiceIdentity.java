@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** Identity for the resource. */
 @Fluent
-public class ManagedServiceIdentity {
+public final class ManagedServiceIdentity {
     /*
      * The principal id of the system assigned identity. This property will only be provided for a system assigned
      * identity.
@@ -42,6 +42,10 @@ public class ManagedServiceIdentity {
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ManagedServiceIdentityUserAssignedIdentities> userAssignedIdentities;
+
+    /** Creates an instance of ManagedServiceIdentity class. */
+    public ManagedServiceIdentity() {
+    }
 
     /**
      * Get the principalId property: The principal id of the system assigned identity. This property will only be

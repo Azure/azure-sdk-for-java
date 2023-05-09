@@ -6,75 +6,72 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for SnowballTokenFilterLanguage. */
+/** The language to use for a Snowball token filter. */
 public enum SnowballTokenFilterLanguage {
-    /** Enum value armenian. */
+    /** Selects the Lucene Snowball stemming tokenizer for Armenian. */
     ARMENIAN("armenian"),
 
-    /** Enum value basque. */
+    /** Selects the Lucene Snowball stemming tokenizer for Basque. */
     BASQUE("basque"),
 
-    /** Enum value catalan. */
+    /** Selects the Lucene Snowball stemming tokenizer for Catalan. */
     CATALAN("catalan"),
 
-    /** Enum value danish. */
+    /** Selects the Lucene Snowball stemming tokenizer for Danish. */
     DANISH("danish"),
 
-    /** Enum value dutch. */
+    /** Selects the Lucene Snowball stemming tokenizer for Dutch. */
     DUTCH("dutch"),
 
-    /** Enum value english. */
+    /** Selects the Lucene Snowball stemming tokenizer for English. */
     ENGLISH("english"),
 
-    /** Enum value finnish. */
+    /** Selects the Lucene Snowball stemming tokenizer for Finnish. */
     FINNISH("finnish"),
 
-    /** Enum value french. */
+    /** Selects the Lucene Snowball stemming tokenizer for French. */
     FRENCH("french"),
 
-    /** Enum value german. */
+    /** Selects the Lucene Snowball stemming tokenizer for German. */
     GERMAN("german"),
 
-    /** Enum value german2. */
+    /** Selects the Lucene Snowball stemming tokenizer that uses the German variant algorithm. */
     GERMAN2("german2"),
 
-    /** Enum value hungarian. */
+    /** Selects the Lucene Snowball stemming tokenizer for Hungarian. */
     HUNGARIAN("hungarian"),
 
-    /** Enum value italian. */
+    /** Selects the Lucene Snowball stemming tokenizer for Italian. */
     ITALIAN("italian"),
 
-    /** Enum value kp. */
+    /** Selects the Lucene Snowball stemming tokenizer for Dutch that uses the Kraaij-Pohlmann stemming algorithm. */
     KP("kp"),
 
-    /** Enum value lovins. */
+    /** Selects the Lucene Snowball stemming tokenizer for English that uses the Lovins stemming algorithm. */
     LOVINS("lovins"),
 
-    /** Enum value norwegian. */
+    /** Selects the Lucene Snowball stemming tokenizer for Norwegian. */
     NORWEGIAN("norwegian"),
 
-    /** Enum value porter. */
+    /** Selects the Lucene Snowball stemming tokenizer for English that uses the Porter stemming algorithm. */
     PORTER("porter"),
 
-    /** Enum value portuguese. */
+    /** Selects the Lucene Snowball stemming tokenizer for Portuguese. */
     PORTUGUESE("portuguese"),
 
-    /** Enum value romanian. */
+    /** Selects the Lucene Snowball stemming tokenizer for Romanian. */
     ROMANIAN("romanian"),
 
-    /** Enum value russian. */
+    /** Selects the Lucene Snowball stemming tokenizer for Russian. */
     RUSSIAN("russian"),
 
-    /** Enum value spanish. */
+    /** Selects the Lucene Snowball stemming tokenizer for Spanish. */
     SPANISH("spanish"),
 
-    /** Enum value swedish. */
+    /** Selects the Lucene Snowball stemming tokenizer for Swedish. */
     SWEDISH("swedish"),
 
-    /** Enum value turkish. */
+    /** Selects the Lucene Snowball stemming tokenizer for Turkish. */
     TURKISH("turkish");
 
     /** The actual serialized value for a SnowballTokenFilterLanguage instance. */
@@ -90,7 +87,6 @@ public enum SnowballTokenFilterLanguage {
      * @param value the serialized value to parse.
      * @return the parsed SnowballTokenFilterLanguage object, or null if unable to parse.
      */
-    @JsonCreator
     public static SnowballTokenFilterLanguage fromString(String value) {
         if (value == null) {
             return null;
@@ -104,7 +100,7 @@ public enum SnowballTokenFilterLanguage {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

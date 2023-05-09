@@ -132,20 +132,6 @@ public interface RestorableDatabaseAccountsClient {
      *
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Cosmos DB restorable database account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorableDatabaseAccountGetResultInner getByLocation(String location, String instanceId);
-
-    /**
-     * Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
-     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
-     *
-     * @param location Cosmos DB region, with spaces between words and each word capitalized.
-     * @param instanceId The instanceId GUID of a restorable database account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -155,4 +141,18 @@ public interface RestorableDatabaseAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RestorableDatabaseAccountGetResultInner> getByLocationWithResponse(
         String location, String instanceId, Context context);
+
+    /**
+     * Retrieves the properties of an existing Azure Cosmos DB restorable database account. This call requires
+     * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/read/*' permission.
+     *
+     * @param location Cosmos DB region, with spaces between words and each word capitalized.
+     * @param instanceId The instanceId GUID of a restorable database account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Azure Cosmos DB restorable database account.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RestorableDatabaseAccountGetResultInner getByLocation(String location, String instanceId);
 }

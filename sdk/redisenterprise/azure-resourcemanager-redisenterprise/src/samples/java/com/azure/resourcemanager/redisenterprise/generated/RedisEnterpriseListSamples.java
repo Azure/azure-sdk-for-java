@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RedisEnterprise List. */
 public final class RedisEnterpriseListSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseList.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseList.json
      */
     /**
      * Sample code: RedisEnterpriseList.
@@ -17,6 +15,6 @@ public final class RedisEnterpriseListSamples {
      * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void redisEnterpriseList(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.redisEnterprises().list(Context.NONE);
+        manager.redisEnterprises().list(com.azure.core.util.Context.NONE);
     }
 }

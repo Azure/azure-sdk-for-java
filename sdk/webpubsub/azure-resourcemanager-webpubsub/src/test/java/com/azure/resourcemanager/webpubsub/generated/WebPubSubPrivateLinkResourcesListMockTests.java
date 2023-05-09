@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkResource;
 import java.nio.ByteBuffer;
@@ -62,7 +61,7 @@ public final class WebPubSubPrivateLinkResourcesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PrivateLinkResource> response =
-            manager.webPubSubPrivateLinkResources().list("ibreb", "aays", Context.NONE);
+            manager.webPubSubPrivateLinkResources().list("ibreb", "aays", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("xqtnq", response.iterator().next().groupId());
         Assertions.assertEquals("zlwfffiakp", response.iterator().next().requiredMembers().get(0));

@@ -12,9 +12,9 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager;
 import com.azure.resourcemanager.cognitiveservices.models.AccountModel;
+import com.azure.resourcemanager.cognitiveservices.models.ModelLifecycleStatus;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -33,7 +33,7 @@ public final class AccountsListModelsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"baseModel\":{\"format\":\"ramxjezwlwnw\",\"name\":\"qlcvydy\",\"version\":\"tdooaoj\",\"callRateLimit\":{\"count\":20.04649,\"renewalPeriod\":45.65934,\"rules\":[]}},\"maxCapacity\":2101936696,\"capabilities\":{\"emmsbvdkc\":\"nuj\",\"fw\":\"odtji\",\"jvefkdlfoakggkfp\":\"lfltka\",\"qjnsjervtia\":\"gaowpulpqblylsyx\"},\"deprecation\":{\"fineTune\":\"dszue\",\"inference\":\"sbzkf\"},\"format\":\"yvpnqicvinvkjj\",\"name\":\"xrbuukzclew\",\"version\":\"mlwpazt\",\"callRateLimit\":{\"count\":10.191661,\"renewalPeriod\":83.19924,\"rules\":[]}}]}";
+            "{\"value\":[{\"baseModel\":{\"format\":\"qwkyhkobop\",\"name\":\"edkowepbqpcrfk\",\"version\":\"ccsnjvcdwxlpq\",\"callRateLimit\":{\"count\":9.936148,\"renewalPeriod\":19.544666,\"rules\":[]}},\"maxCapacity\":819440507,\"capabilities\":{\"gwfqatmt\":\"i\"},\"finetuneCapabilities\":{\"gikdgsz\":\"mdvy\",\"birryuzhl\":\"w\",\"qrvqq\":\"kj\"},\"deprecation\":{\"fineTune\":\"jinrvgoupmfiibfg\",\"inference\":\"ioolvrwxkvtkkgll\"},\"lifecycleStatus\":\"Preview\",\"format\":\"vjayvblmhvkzu\",\"name\":\"xvvy\",\"version\":\"s\",\"callRateLimit\":{\"count\":70.21916,\"renewalPeriod\":77.12166,\"rules\":[]}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,17 +61,20 @@ public final class AccountsListModelsMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<AccountModel> response = manager.accounts().listModels("xoruzfgsquyfxrx", "l", Context.NONE);
+        PagedIterable<AccountModel> response =
+            manager.accounts().listModels("ccelve", "rypqlmfeo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yvpnqicvinvkjj", response.iterator().next().format());
-        Assertions.assertEquals("xrbuukzclew", response.iterator().next().name());
-        Assertions.assertEquals("mlwpazt", response.iterator().next().version());
-        Assertions.assertEquals("ramxjezwlwnw", response.iterator().next().baseModel().format());
-        Assertions.assertEquals("qlcvydy", response.iterator().next().baseModel().name());
-        Assertions.assertEquals("tdooaoj", response.iterator().next().baseModel().version());
-        Assertions.assertEquals(2101936696, response.iterator().next().maxCapacity());
-        Assertions.assertEquals("nuj", response.iterator().next().capabilities().get("emmsbvdkc"));
-        Assertions.assertEquals("dszue", response.iterator().next().deprecation().fineTune());
-        Assertions.assertEquals("sbzkf", response.iterator().next().deprecation().inference());
+        Assertions.assertEquals("vjayvblmhvkzu", response.iterator().next().format());
+        Assertions.assertEquals("xvvy", response.iterator().next().name());
+        Assertions.assertEquals("s", response.iterator().next().version());
+        Assertions.assertEquals("qwkyhkobop", response.iterator().next().baseModel().format());
+        Assertions.assertEquals("edkowepbqpcrfk", response.iterator().next().baseModel().name());
+        Assertions.assertEquals("ccsnjvcdwxlpq", response.iterator().next().baseModel().version());
+        Assertions.assertEquals(819440507, response.iterator().next().maxCapacity());
+        Assertions.assertEquals("i", response.iterator().next().capabilities().get("gwfqatmt"));
+        Assertions.assertEquals("mdvy", response.iterator().next().finetuneCapabilities().get("gikdgsz"));
+        Assertions.assertEquals("jinrvgoupmfiibfg", response.iterator().next().deprecation().fineTune());
+        Assertions.assertEquals("ioolvrwxkvtkkgll", response.iterator().next().deprecation().inference());
+        Assertions.assertEquals(ModelLifecycleStatus.PREVIEW, response.iterator().next().lifecycleStatus());
     }
 }

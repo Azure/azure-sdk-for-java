@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The SqlContainerGetPropertiesOptions model. */
 @Fluent
 public final class SqlContainerGetPropertiesOptions extends OptionsResource {
+    /** Creates an instance of SqlContainerGetPropertiesOptions class. */
+    public SqlContainerGetPropertiesOptions() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public SqlContainerGetPropertiesOptions withThroughput(Integer throughput) {

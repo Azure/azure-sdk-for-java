@@ -38,7 +38,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
         manager
             .contentKeyPolicies()
             .define("PolicyCreatedWithMultipleOptions")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDescription("ArmPolicyDescription")
             .withOptions(
                 Arrays
@@ -77,7 +77,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
         manager
             .contentKeyPolicies()
             .define("PolicyWithClearKeyOptionAndSwtTokenRestriction")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDescription("ArmPolicyDescription")
             .withOptions(
                 Arrays
@@ -109,7 +109,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
         manager
             .contentKeyPolicies()
             .define("PolicyWithPlayReadyOptionAndOpenRestriction")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDescription("ArmPolicyDescription")
             .withOptions(
                 Arrays
@@ -157,7 +157,7 @@ public final class ContentKeyPoliciesCreateOrUpdateSamples {
         manager
             .contentKeyPolicies()
             .define("PolicyWithWidevineOptionAndJwtTokenRestriction")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDescription("ArmPolicyDescription")
             .withOptions(
                 Arrays

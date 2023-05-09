@@ -10,6 +10,10 @@ import com.azure.core.management.ProxyResource;
 /** A Sql pool table resource. */
 @Immutable
 public final class SqlPoolTableInner extends ProxyResource {
+    /** Creates an instance of SqlPoolTableInner class. */
+    public SqlPoolTableInner() {
+    }
+
     /**
      * Validates the instance.
      *

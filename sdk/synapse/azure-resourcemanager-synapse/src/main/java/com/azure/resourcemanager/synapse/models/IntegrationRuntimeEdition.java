@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeEdition. */
+/** The edition for the SSIS Integration Runtime. */
 public final class IntegrationRuntimeEdition extends ExpandableStringEnum<IntegrationRuntimeEdition> {
     /** Static value Standard for IntegrationRuntimeEdition. */
     public static final IntegrationRuntimeEdition STANDARD = fromString("Standard");
 
     /** Static value Enterprise for IntegrationRuntimeEdition. */
     public static final IntegrationRuntimeEdition ENTERPRISE = fromString("Enterprise");
+
+    /**
+     * Creates a new instance of IntegrationRuntimeEdition value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeEdition() {
+    }
 
     /**
      * Creates or finds a IntegrationRuntimeEdition from its string representation.
@@ -27,7 +36,11 @@ public final class IntegrationRuntimeEdition extends ExpandableStringEnum<Integr
         return fromString(name, IntegrationRuntimeEdition.class);
     }
 
-    /** @return known IntegrationRuntimeEdition values. */
+    /**
+     * Gets known IntegrationRuntimeEdition values.
+     *
+     * @return known IntegrationRuntimeEdition values.
+     */
     public static Collection<IntegrationRuntimeEdition> values() {
         return values(IntegrationRuntimeEdition.class);
     }

@@ -28,6 +28,10 @@ public final class CassandraTableGetPropertiesResource extends CassandraTableRes
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of CassandraTableGetPropertiesResource class. */
+    public CassandraTableGetPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

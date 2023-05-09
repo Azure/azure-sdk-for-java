@@ -22,7 +22,7 @@ public final class TracksUpdateSamples {
             manager
                 .tracks()
                 .getWithResponse(
-                    "contoso", "contosomedia", "ClimbingMountRainer", "text1", com.azure.core.util.Context.NONE)
+                    "contosorg", "contosomedia", "ClimbingMountRainer", "text1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTrack(new TextTrack().withDisplayName("A new name")).apply();
     }

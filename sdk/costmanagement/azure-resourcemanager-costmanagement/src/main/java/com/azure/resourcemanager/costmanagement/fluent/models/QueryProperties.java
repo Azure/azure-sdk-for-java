@@ -9,7 +9,7 @@ import com.azure.resourcemanager.costmanagement.models.QueryColumn;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The QueryProperties model. */
+/** Query properties. */
 @Fluent
 public final class QueryProperties {
     /*

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPools Resume. */
 public final class SqlPoolsResumeSamples {
     /*
@@ -17,6 +15,8 @@ public final class SqlPoolsResumeSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void resumeASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPools().resume("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", Context.NONE);
+        manager
+            .sqlPools()
+            .resume("sqlcrudtest-6852", "sqlcrudtest-2080", "sqlcrudtest-9187", com.azure.core.util.Context.NONE);
     }
 }

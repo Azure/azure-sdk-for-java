@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworkGateways GetVpnProfilePackageUrl. */
 public final class VirtualNetworkGatewaysGetVpnProfilePackageUrlSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/VirtualNetworkGatewayGetVpnProfilePackageUrl.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VirtualNetworkGatewayGetVpnProfilePackageUrl.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayVPNProfilePackageURL.
@@ -23,6 +21,6 @@ public final class VirtualNetworkGatewaysGetVpnProfilePackageUrlSamples {
             .manager()
             .serviceClient()
             .getVirtualNetworkGateways()
-            .getVpnProfilePackageUrl("rg1", "vpngw", Context.NONE);
+            .getVpnProfilePackageUrl("rg1", "vpngw", com.azure.core.util.Context.NONE);
     }
 }

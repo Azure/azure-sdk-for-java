@@ -6,7 +6,6 @@ package com.azure.core.implementation.http.rest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.regex.Pattern;
 
 /**
  * A range replace substitution is a substitution that replaces a range of characters in a String with the supplied
@@ -15,7 +14,7 @@ import java.util.regex.Pattern;
  * {@code https://myhost.com}.
  * <p>
  * Before the introduction of this replacement {@link String#replace(CharSequence, CharSequence)} was used which would
- * generate a {@link Pattern} to perform replacing.
+ * generate a {@code Pattern} to perform replacing.
  */
 public class RangeReplaceSubstitution extends Substitution {
     private final List<Range> ranges;

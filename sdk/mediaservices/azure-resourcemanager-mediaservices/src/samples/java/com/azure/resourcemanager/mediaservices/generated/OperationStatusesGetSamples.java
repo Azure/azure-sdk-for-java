@@ -19,7 +19,7 @@ public final class OperationStatusesGetSamples {
         manager
             .operationStatuses()
             .getWithResponse(
-                "contoso",
+                "contosorg",
                 "contosomedia",
                 "ClimbingMountRainer",
                 "text1",
@@ -40,7 +40,7 @@ public final class OperationStatusesGetSamples {
         manager
             .operationStatuses()
             .getWithResponse(
-                "contoso",
+                "contosorg",
                 "contosomedia",
                 "ClimbingMountRainer",
                 "text1",
@@ -61,7 +61,7 @@ public final class OperationStatusesGetSamples {
         manager
             .operationStatuses()
             .getWithResponse(
-                "contoso",
+                "contosorg",
                 "contosomedia",
                 "ClimbingMountRainer",
                 "text1",

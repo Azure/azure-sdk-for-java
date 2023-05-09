@@ -18,6 +18,10 @@ public final class DataConnectionListResult {
     @JsonProperty(value = "value")
     private List<DataConnectionInner> value;
 
+    /** Creates an instance of DataConnectionListResult class. */
+    public DataConnectionListResult() {
+    }
+
     /**
      * Get the value property: The list of Kusto data connections.
      *

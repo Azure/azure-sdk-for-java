@@ -16,25 +16,24 @@ public final class TransportStreamFormatTests {
         TransportStreamFormat model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.TransportStreamFormat\",\"outputFiles\":[{\"labels\":[\"ntiew\"]},{\"labels\":[\"cv\"]},{\"labels\":[\"uwrbehwagoh\",\"uffkmrqemvvh\",\"xtdr\"]}],\"filenamePattern\":\"futacoebjvewzc\"}")
+                    "{\"@odata.type\":\"#Microsoft.Media.TransportStreamFormat\",\"outputFiles\":[{\"labels\":[\"clrcivtsox\",\"rkenx\"]},{\"labels\":[\"yyefrpmpdnqqs\"]}],\"filenamePattern\":\"awaoqvmmbnpqfrt\"}")
                 .toObject(TransportStreamFormat.class);
-        Assertions.assertEquals("futacoebjvewzc", model.filenamePattern());
-        Assertions.assertEquals("ntiew", model.outputFiles().get(0).labels().get(0));
+        Assertions.assertEquals("awaoqvmmbnpqfrt", model.filenamePattern());
+        Assertions.assertEquals("clrcivtsox", model.outputFiles().get(0).labels().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TransportStreamFormat model =
             new TransportStreamFormat()
-                .withFilenamePattern("futacoebjvewzc")
+                .withFilenamePattern("awaoqvmmbnpqfrt")
                 .withOutputFiles(
                     Arrays
                         .asList(
-                            new OutputFile().withLabels(Arrays.asList("ntiew")),
-                            new OutputFile().withLabels(Arrays.asList("cv")),
-                            new OutputFile().withLabels(Arrays.asList("uwrbehwagoh", "uffkmrqemvvh", "xtdr"))));
+                            new OutputFile().withLabels(Arrays.asList("clrcivtsox", "rkenx")),
+                            new OutputFile().withLabels(Arrays.asList("yyefrpmpdnqqs"))));
         model = BinaryData.fromObject(model).toObject(TransportStreamFormat.class);
-        Assertions.assertEquals("futacoebjvewzc", model.filenamePattern());
-        Assertions.assertEquals("ntiew", model.outputFiles().get(0).labels().get(0));
+        Assertions.assertEquals("awaoqvmmbnpqfrt", model.filenamePattern());
+        Assertions.assertEquals("clrcivtsox", model.outputFiles().get(0).labels().get(0));
     }
 }

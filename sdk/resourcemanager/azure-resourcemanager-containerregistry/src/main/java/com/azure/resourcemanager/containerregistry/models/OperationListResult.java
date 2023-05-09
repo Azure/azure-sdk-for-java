@@ -5,31 +5,29 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.OperationDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of a request to list container registry operations. */
 @Fluent
 public final class OperationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationListResult.class);
-
     /*
-     * The list of container registry operations. Since this list may be
-     * incomplete, the nextLink field should be used to request the next list
-     * of operations.
+     * The list of container registry operations. Since this list may be incomplete, the nextLink field should be used
+     * to request the next list of operations.
      */
     @JsonProperty(value = "value")
     private List<OperationDefinitionInner> value;
 
     /*
-     * The URI that can be used to request the next list of container registry
-     * operations.
+     * The URI that can be used to request the next list of container registry operations.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of OperationListResult class. */
+    public OperationListResult() {
+    }
 
     /**
      * Get the value property: The list of container registry operations. Since this list may be incomplete, the

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookCreateParameters;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
@@ -15,7 +14,7 @@ import java.util.Map;
 /** Samples for Webhooks Create. */
 public final class WebhooksCreateSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/WebhookCreate.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/WebhookCreate.json
      */
     /**
      * Sample code: WebhookCreate.
@@ -33,15 +32,14 @@ public final class WebhooksCreateSamples {
                 "myRegistry",
                 "myWebhook",
                 new WebhookCreateParameters()
-                    .withTags(mapOf("key", "value"))
+                    .withTags(mapOf("key", "fakeTokenPlaceholder"))
                     .withLocation("westus")
                     .withServiceUri("http://myservice.com")
-                    .withCustomHeaders(
-                        mapOf("Authorization", "Basic FakeCredentialPlaceholder"))
+                    .withCustomHeaders(mapOf("Authorization", "fakeTokenPlaceholder"))
                     .withStatus(WebhookStatus.ENABLED)
                     .withScope("myRepository")
                     .withActions(Arrays.asList(WebhookAction.PUSH)),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

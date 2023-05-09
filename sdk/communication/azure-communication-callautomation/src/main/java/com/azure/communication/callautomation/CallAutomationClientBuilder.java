@@ -6,6 +6,7 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImplBuilder;
 import com.azure.communication.callautomation.implementation.CustomHmacAuthenticationPolicy;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -81,6 +82,7 @@ public final class CallAutomationClientBuilder implements
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
     private RetryOptions retryOptions;
+    private CommunicationUserIdentifier sourceIdentity;
 
     /**
      * Public default constructor
@@ -165,6 +167,16 @@ public final class CallAutomationClientBuilder implements
     }
 
     /**
+     * Set Source Identity used to create and answer call
+     * @param sourceIdentity {@link CommunicationUserIdentifier} to used to create and answer call.
+     * @return {@link CallAutomationClientBuilder} object.
+     */
+    public CallAutomationClientBuilder sourceIdentity(CommunicationUserIdentifier sourceIdentity) {
+        this.sourceIdentity = sourceIdentity;
+        return this;
+    }
+
+    /**
      * Sets the retry policy to use (using the RetryPolicy type).
      * <p>
      * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
@@ -234,7 +246,7 @@ public final class CallAutomationClientBuilder implements
     }
 
     /**
-     * Sets the {@link CallingServerServiceVersion} that is used when making API requests.
+     * Sets the {@link CallAutomationServiceVersion} that is used when making API requests.
      * <p>
      * If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
@@ -242,10 +254,10 @@ public final class CallAutomationClientBuilder implements
      * <p>
      * Targeting a specific service version may also mean that the service will return an error for newer APIs.
      *
-     * @param version {@link CallingServerServiceVersion} of the service to be used when making requests.
+     * @param version {@link CallAutomationServiceVersion} of the service to be used when making requests.
      * @return Updated CallAutomationClientBuilder object
      */
-    public CallAutomationClientBuilder serviceVersion(CallingServerServiceVersion version) {
+    public CallAutomationClientBuilder serviceVersion(CallAutomationServiceVersion version) {
         return this;
     }
 
@@ -298,7 +310,7 @@ public final class CallAutomationClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public CallAutomationAsyncClient buildAsyncClient() {
-        return new CallAutomationAsyncClient(createServiceImpl());
+        return new CallAutomationAsyncClient(createServiceImpl(), sourceIdentity);
     }
 
     /**
@@ -325,14 +337,13 @@ public final class CallAutomationClientBuilder implements
             "false");
         isCustomEndpointUsed = Objects.equals(customEndpointEnabled, "true");
 
+        if (!(isConnectionStringSet && isEndpointSet && isCustomEndpointUsed)) {
+            isCustomEndpointUsed = false;
+        }
+
         if (isConnectionStringSet && isEndpointSet && !isCustomEndpointUsed) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both 'connectionString' and 'endpoint' are set. Just one may be used."));
-        }
-
-        if (((!isConnectionStringSet && !isTokenCredentialSet) || !isEndpointSet) && isCustomEndpointUsed) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Custom Endpoint mode requires 'ConnectionString/TokenCredential' and 'Endpoint' both to be set. Requirement is not fulfilled, changing back to normal mode."));
         }
 
         if (isConnectionStringSet && isAzureKeyCredentialSet) {
@@ -387,6 +398,7 @@ public final class CallAutomationClientBuilder implements
      * @param clientOptions object to be applied.
      * @return Updated {@link CallAutomationClientBuilder} object.
      */
+    @Override
     public CallAutomationClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
         return this;

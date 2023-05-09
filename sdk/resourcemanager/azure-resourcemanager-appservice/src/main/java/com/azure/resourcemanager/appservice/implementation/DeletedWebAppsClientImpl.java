@@ -55,7 +55,7 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface DeletedWebAppsService {
+    public interface DeletedWebAppsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites")
         @ExpectedResponses({200})
@@ -115,7 +115,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription.
+     * Get all deleted apps for a subscription.
+     *
+     * <p>Description for Get all deleted apps for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -159,7 +161,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription.
+     * Get all deleted apps for a subscription.
+     *
+     * <p>Description for Get all deleted apps for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,7 +206,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription.
+     * Get all deleted apps for a subscription.
+     *
+     * <p>Description for Get all deleted apps for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -214,7 +220,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription.
+     * Get all deleted apps for a subscription.
+     *
+     * <p>Description for Get all deleted apps for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,7 +237,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription.
+     * Get all deleted apps for a subscription.
+     *
+     * <p>Description for Get all deleted apps for a subscription.
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -241,7 +251,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription.
+     * Get all deleted apps for a subscription.
+     *
+     * <p>Description for Get all deleted apps for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -255,7 +267,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription at location.
+     * Get all deleted apps for a subscription at location
+     *
+     * <p>Description for Get all deleted apps for a subscription at location.
      *
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -305,7 +319,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription at location.
+     * Get all deleted apps for a subscription at location
+     *
+     * <p>Description for Get all deleted apps for a subscription at location.
      *
      * @param location The location parameter.
      * @param context The context to associate with this operation.
@@ -353,7 +369,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription at location.
+     * Get all deleted apps for a subscription at location
+     *
+     * <p>Description for Get all deleted apps for a subscription at location.
      *
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -368,7 +386,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription at location.
+     * Get all deleted apps for a subscription at location
+     *
+     * <p>Description for Get all deleted apps for a subscription at location.
      *
      * @param location The location parameter.
      * @param context The context to associate with this operation.
@@ -385,7 +405,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription at location.
+     * Get all deleted apps for a subscription at location
+     *
+     * <p>Description for Get all deleted apps for a subscription at location.
      *
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -399,7 +421,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get all deleted apps for a subscription at location.
+     * Get all deleted apps for a subscription at location
+     *
+     * <p>Description for Get all deleted apps for a subscription at location.
      *
      * @param location The location parameter.
      * @param context The context to associate with this operation.
@@ -414,7 +438,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get deleted app for a subscription at location.
+     * Get deleted app for a subscription at location.
+     *
+     * <p>Description for Get deleted app for a subscription at location.
      *
      * @param location The location parameter.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
@@ -461,7 +487,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get deleted app for a subscription at location.
+     * Get deleted app for a subscription at location.
+     *
+     * <p>Description for Get deleted app for a subscription at location.
      *
      * @param location The location parameter.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
@@ -506,7 +534,9 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
-     * Description for Get deleted app for a subscription at location.
+     * Get deleted app for a subscription at location.
+     *
+     * <p>Description for Get deleted app for a subscription at location.
      *
      * @param location The location parameter.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
@@ -518,33 +548,13 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSiteInner> getDeletedWebAppByLocationAsync(String location, String deletedSiteId) {
         return getDeletedWebAppByLocationWithResponseAsync(location, deletedSiteId)
-            .flatMap(
-                (Response<DeletedSiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Description for Get deleted app for a subscription at location.
+     * Get deleted app for a subscription at location.
      *
-     * @param location The location parameter.
-     * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedSiteInner getDeletedWebAppByLocation(String location, String deletedSiteId) {
-        return getDeletedWebAppByLocationAsync(location, deletedSiteId).block();
-    }
-
-    /**
-     * Description for Get deleted app for a subscription at location.
+     * <p>Description for Get deleted app for a subscription at location.
      *
      * @param location The location parameter.
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
@@ -561,9 +571,27 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     }
 
     /**
+     * Get deleted app for a subscription at location.
+     *
+     * <p>Description for Get deleted app for a subscription at location.
+     *
+     * @param location The location parameter.
+     * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deleted app.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedSiteInner getDeletedWebAppByLocation(String location, String deletedSiteId) {
+        return getDeletedWebAppByLocationWithResponse(location, deletedSiteId, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -598,7 +626,8 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -634,7 +663,8 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -669,7 +699,8 @@ public final class DeletedWebAppsClientImpl implements DeletedWebAppsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.

@@ -27,7 +27,10 @@ public final class DtmfOptionsInternal {
      * List of tones that will stop recognizing.
      */
     @JsonProperty(value = "stopTones")
-    private List<DtmfTone> stopTones;
+    private List<DtmfToneInternal> stopTones;
+
+    /** Creates an instance of DtmfOptionsInternal class. */
+    public DtmfOptionsInternal() {}
 
     /**
      * Get the interToneTimeoutInSeconds property: Time to wait between DTMF inputs to stop recognizing.
@@ -74,7 +77,7 @@ public final class DtmfOptionsInternal {
      *
      * @return the stopTones value.
      */
-    public List<DtmfTone> getStopTones() {
+    public List<DtmfToneInternal> getStopTones() {
         return this.stopTones;
     }
 
@@ -84,7 +87,7 @@ public final class DtmfOptionsInternal {
      * @param stopTones the stopTones value to set.
      * @return the DtmfOptionsInternal object itself.
      */
-    public DtmfOptionsInternal setStopTones(List<DtmfTone> stopTones) {
+    public DtmfOptionsInternal setStopTones(List<DtmfToneInternal> stopTones) {
         this.stopTones = stopTones;
         return this;
     }

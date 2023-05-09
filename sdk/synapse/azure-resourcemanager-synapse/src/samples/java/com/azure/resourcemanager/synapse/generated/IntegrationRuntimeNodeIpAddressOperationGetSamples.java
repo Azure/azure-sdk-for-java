@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimeNodeIpAddressOperation Get. */
 public final class IntegrationRuntimeNodeIpAddressOperationGetSamples {
     /*
@@ -20,6 +18,10 @@ public final class IntegrationRuntimeNodeIpAddressOperationGetSamples {
         manager
             .integrationRuntimeNodeIpAddressOperations()
             .getWithResponse(
-                "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", "Node_1", Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                "Node_1",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -17,6 +17,10 @@ public final class RegionForOnlineOffline {
     @JsonProperty(value = "region", required = true)
     private String region;
 
+    /** Creates an instance of RegionForOnlineOffline class. */
+    public RegionForOnlineOffline() {
+    }
+
     /**
      * Get the region property: Cosmos DB region, with spaces between words and each word capitalized.
      *

@@ -32,6 +32,10 @@ public final class ManagedCassandraReaperStatus {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> repairSchedules;
 
+    /** Creates an instance of ManagedCassandraReaperStatus class. */
+    public ManagedCassandraReaperStatus() {
+    }
+
     /**
      * Get the healthy property: The healthy property.
      *

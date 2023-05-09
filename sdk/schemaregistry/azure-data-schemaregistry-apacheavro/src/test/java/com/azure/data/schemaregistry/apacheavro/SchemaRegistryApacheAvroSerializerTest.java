@@ -13,6 +13,7 @@ import com.azure.core.models.MessageContent;
 import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestContextManager;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
@@ -63,6 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -79,6 +81,7 @@ public class SchemaRegistryApacheAvroSerializerTest {
     private static final DecoderFactory DECODER_FACTORY = DecoderFactory.get();
     private static final EncoderFactory ENCODER_FACTORY = EncoderFactory.get();
 
+    private final TestMode testMode = TestingHelpers.getTestMode();
     private InterceptorManager interceptorManager;
     private AutoCloseable mocksCloseable;
     private TestInfo testInfo;
@@ -316,6 +319,8 @@ public class SchemaRegistryApacheAvroSerializerTest {
      */
     @Test
     public void serializeFromPortal() {
+        assumeTrue(testMode == TestMode.PLAYBACK, "Test is only run in PLAYBACK mode.");
+
         // Arrange
         final Schema schema = SchemaBuilder.record("Person").namespace("com.example")
             .fields()
@@ -358,6 +363,8 @@ public class SchemaRegistryApacheAvroSerializerTest {
      */
     @Test
     public void serializeForwardCompatibility() {
+        assumeTrue(testMode == TestMode.PLAYBACK, "Test is only run in PLAYBACK mode.");
+
         // Arrange
         final SchemaRegistryAsyncClient client = getSchemaRegistryClient(testInfo, TestMode.PLAYBACK);
         final SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()

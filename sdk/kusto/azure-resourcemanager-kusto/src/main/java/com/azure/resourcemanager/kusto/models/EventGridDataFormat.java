@@ -59,6 +59,15 @@ public final class EventGridDataFormat extends ExpandableStringEnum<EventGridDat
     public static final EventGridDataFormat W3CLOGFILE = fromString("W3CLOGFILE");
 
     /**
+     * Creates a new instance of EventGridDataFormat value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventGridDataFormat() {
+    }
+
+    /**
      * Creates or finds a EventGridDataFormat from its string representation.
      *
      * @param name a name to look for.

@@ -54,7 +54,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolMaintenanceWindowsService {
+    public interface SqlPoolMaintenanceWindowsService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -228,32 +228,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
     private Mono<MaintenanceWindowsInner> getAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName)
-            .flatMap(
-                (Response<MaintenanceWindowsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a SQL pool's Maintenance Windows.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param maintenanceWindowName Maintenance window name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SQL pool's Maintenance Windows.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public MaintenanceWindowsInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -278,6 +253,25 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, context)
             .block();
+    }
+
+    /**
+     * Get a SQL pool's Maintenance Windows.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param maintenanceWindowName Maintenance window name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SQL pool's Maintenance Windows.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public MaintenanceWindowsInner get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String maintenanceWindowName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -439,29 +433,7 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         MaintenanceWindowsInner parameters) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Creates or updates a Sql pool's maintenance windows settings.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param maintenanceWindowName Maintenance window name.
-     * @param parameters The required parameters for creating or updating Maintenance Windows settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String maintenanceWindowName,
-        MaintenanceWindowsInner parameters) {
-        createOrUpdateAsync(resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -489,5 +461,28 @@ public final class SqlPoolMaintenanceWindowsClientImpl implements SqlPoolMainten
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a Sql pool's maintenance windows settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param maintenanceWindowName Maintenance window name.
+     * @param parameters The required parameters for creating or updating Maintenance Windows settings.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void createOrUpdate(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String maintenanceWindowName,
+        MaintenanceWindowsInner parameters) {
+        createOrUpdateWithResponse(
+            resourceGroupName, workspaceName, sqlPoolName, maintenanceWindowName, parameters, Context.NONE);
     }
 }

@@ -9,24 +9,44 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.data.tables.implementation.AzureTableImpl;
+import com.azure.data.tables.implementation.AzureTableImplBuilder;
+import com.azure.data.tables.implementation.TableAccountSasGenerator;
+import com.azure.data.tables.implementation.TableItemAccessHelper;
+import com.azure.data.tables.implementation.TablePaged;
+import com.azure.data.tables.implementation.TableSasUtils;
 import com.azure.data.tables.implementation.TableUtils;
+import com.azure.data.tables.implementation.models.OdataMetadataFormat;
+import com.azure.data.tables.implementation.models.QueryOptions;
 import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
+import com.azure.data.tables.implementation.models.TableQueryResponse;
+import com.azure.data.tables.implementation.models.TableResponseProperties;
+import com.azure.data.tables.implementation.models.TableServiceStats;
+import com.azure.data.tables.implementation.models.TablesQueryHeaders;
 import com.azure.data.tables.models.ListTablesOptions;
 import com.azure.data.tables.models.TableItem;
 import com.azure.data.tables.models.TableServiceException;
 import com.azure.data.tables.models.TableServiceProperties;
 import com.azure.data.tables.models.TableServiceStatistics;
 import com.azure.data.tables.sas.TableAccountSasSignatureValues;
-import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.Duration;
+import java.util.List;
+import java.util.OptionalLong;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
-import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalTimeout;
 
 /**
  * Provides a synchronous service client for accessing the Azure Tables service.
@@ -52,10 +72,32 @@ import static com.azure.data.tables.implementation.TableUtils.blockWithOptionalT
  */
 @ServiceClient(builder = TableServiceClientBuilder.class)
 public final class TableServiceClient {
-    private final TableServiceAsyncClient client;
 
-    TableServiceClient(TableServiceAsyncClient client) {
-        this.client = client;
+    private static final ExecutorService THREAD_POOL = TableUtils.getThreadPoolWithShutdownHook();
+    private final ClientLogger logger = new ClientLogger(TableServiceClient.class);
+    private final AzureTableImpl implementation;
+    private final String accountName;
+    private final HttpPipeline pipeline;
+
+    TableServiceClient(HttpPipeline pipeline, String url, TableServiceVersion serviceVersion,
+                            SerializerAdapter serializerAdapter) {
+
+        try {
+            final URI uri = URI.create(url);
+            this.accountName = uri.getHost().split("\\.", 2)[0];
+
+            logger.verbose("Table Service URI: {}", uri);
+        } catch (NullPointerException | IllegalArgumentException ex) {
+            throw logger.logExceptionAsError(ex);
+        }
+
+        this.implementation = new AzureTableImplBuilder()
+            .serializerAdapter(serializerAdapter)
+            .url(url)
+            .pipeline(pipeline)
+            .version(serviceVersion.getVersion())
+            .buildClient();
+        this.pipeline = implementation.getHttpPipeline();
     }
 
     /**
@@ -64,7 +106,7 @@ public final class TableServiceClient {
      * @return The name of the account containing the table.
      */
     public String getAccountName() {
-        return client.getAccountName();
+        return accountName;
     }
 
     /**
@@ -73,7 +115,7 @@ public final class TableServiceClient {
      * @return The endpoint for the Tables service.
      */
     public String getServiceEndpoint() {
-        return client.getServiceEndpoint();
+        return implementation.getUrl();
     }
 
     /**
@@ -82,7 +124,7 @@ public final class TableServiceClient {
      * @return The REST API version used by this client.
      */
     public TableServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+        return TableServiceVersion.fromString(implementation.getVersion());
     }
 
     /**
@@ -91,7 +133,7 @@ public final class TableServiceClient {
      * @return This client's {@link HttpPipeline}.
      */
     HttpPipeline getHttpPipeline() {
-        return client.getHttpPipeline();
+        return this.pipeline;
     }
 
     /**
@@ -109,7 +151,14 @@ public final class TableServiceClient {
      * {@link AzureNamedKeyCredential}.
      */
     public String generateAccountSas(TableAccountSasSignatureValues tableAccountSasSignatureValues) {
-        return client.generateAccountSas(tableAccountSasSignatureValues);
+        AzureNamedKeyCredential azureNamedKeyCredential = TableSasUtils.extractNamedKeyCredential(getHttpPipeline());
+
+        if (azureNamedKeyCredential == null) {
+            throw logger.logExceptionAsError(new IllegalStateException("Cannot generate a SAS token with a client that"
+                + " is not authenticated with an AzureNamedKeyCredential."));
+        }
+
+        return new TableAccountSasGenerator(tableAccountSasSignatureValues, azureNamedKeyCredential).getSas();
     }
 
     /**
@@ -124,7 +173,13 @@ public final class TableServiceClient {
      * @throws IllegalArgumentException If {@code tableName} is {@code null} or empty.
      */
     public TableClient getTableClient(String tableName) {
-        return new TableClient(client.getTableClient(tableName));
+        return new TableClientBuilder()
+            .pipeline(this.implementation.getHttpPipeline())
+            .serviceVersion(this.getServiceVersion())
+            .endpoint(this.getServiceEndpoint())
+            .tableName(tableName)
+            .buildClient();
+
     }
 
     /**
@@ -179,21 +234,24 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableWithResponse(String tableName, Duration timeout, Context context) {
-        return blockWithOptionalTimeout(createTableWithResponse(tableName, context), timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<TableClient>> callable = () -> createTableWithResponse(tableName, context);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
+        }
     }
 
-    Mono<Response<TableClient>> createTableWithResponse(String tableName, Context context) {
-        context = context == null ? Context.NONE : context;
+    Response<TableClient> createTableWithResponse(String tableName, Context context) {
+        context = TableUtils.setContext(context, true);
         final TableProperties properties = new TableProperties().setTableName(tableName);
 
-        try {
-            return client.getImplementation().getTables().createWithResponseAsync(properties, null,
-                ResponseFormat.RETURN_NO_CONTENT, null, context)
-                .onErrorMap(TableUtils::mapThrowableToTableServiceException)
-                .map(response -> new SimpleResponse<>(response, getTableClient(tableName)));
-        } catch (RuntimeException ex) {
-            return monoError(client.getLogger(), ex);
-        }
+        return new SimpleResponse<>(implementation.getTables()
+            .createWithResponse(properties, null, ResponseFormat.RETURN_NO_CONTENT, null, context),
+            getTableClient(tableName));
     }
 
     /**
@@ -249,18 +307,31 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Duration timeout,
                                                                     Context context) {
-        return blockWithOptionalTimeout(createTableIfNotExistsWithResponse(tableName, context), timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<TableClient>> callable = () -> createTableIfNotExistsWithResponse(tableName, context);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception e) {
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
+        }
     }
 
-    Mono<Response<TableClient>> createTableIfNotExistsWithResponse(String tableName, Context context) {
-        return createTableWithResponse(tableName, context).onErrorResume(e -> e instanceof TableServiceException
+    Response<TableClient> createTableIfNotExistsWithResponse(String tableName, Context context) throws Exception {
+        try {
+            return createTableWithResponse(tableName, null, null);
+        } catch (Exception e) {
+            if (e instanceof TableServiceException
                 && ((TableServiceException) e).getResponse() != null
-                && ((TableServiceException) e).getResponse().getStatusCode() == 409,
-            e -> {
+                && ((TableServiceException) e).getResponse().getStatusCode() == 409) {
                 HttpResponse response = ((TableServiceException) e).getResponse();
-                return Mono.just(new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-                    response.getHeaders(), null));
-            });
+                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), null);
+            }
+
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -285,7 +356,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTable(String tableName) {
-        client.deleteTable(tableName).block();
+        deleteTableWithResponse(tableName, null, null);
     }
 
     /**
@@ -317,7 +388,29 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTableWithResponse(String tableName, Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.deleteTableWithResponse(tableName, context), timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<Void>> callable = () -> deleteTableWithResponse(tableName, context);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception e) {
+            Exception exception = (Exception) TableUtils.mapThrowableToTableServiceException(e);
+            if (exception instanceof TableServiceException
+                && ((TableServiceException) exception).getResponse().getStatusCode() == 404) {
+                HttpResponse httpResponse = ((TableServiceException) exception).getResponse();
+                return new SimpleResponse<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
+                    httpResponse.getHeaders(), null);
+            }
+
+            throw logger.logExceptionAsError(new RuntimeException(exception));
+        }
+    }
+
+    Response<Void> deleteTableWithResponse(String tableName, Context context) {
+        context = TableUtils.setContext(context, true);
+        return new SimpleResponse<>(
+            implementation.getTables().deleteWithResponse(tableName, null, context), null);
     }
 
     /**
@@ -340,7 +433,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables() {
-        return new PagedIterable<>(client.listTables());
+        return listTables(new ListTablesOptions(), null, null);
     }
 
     /**
@@ -373,8 +466,59 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TableItem> listTables(ListTablesOptions options, Duration timeout, Context context) {
-        return new PagedIterable<>(client.listTables(options, context, timeout));
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<PagedIterable<TableItem>> callable = () -> listTables(options, context);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception e) {
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
+        }
     }
+
+    private PagedIterable<TableItem> listTables(ListTablesOptions options, Context context) {
+        return new PagedIterable<TableItem>(
+            () -> listTablesFirstPage(context, options),
+            token -> listTablesNextPage(token, context, options)
+        );
+    }
+
+    private PagedResponse<TableItem> listTablesFirstPage(Context context, ListTablesOptions options) {
+        return listTables(null, context, options);
+    }
+
+    private PagedResponse<TableItem> listTablesNextPage(String token, Context context, ListTablesOptions options) {
+        return listTables(token, context, options);
+    }
+
+    private PagedResponse<TableItem> listTables(String nextTableName, Context context, ListTablesOptions options) {
+        context = TableUtils.setContext(context, true);
+        QueryOptions queryOptions = new QueryOptions()
+            .setFilter(options.getFilter())
+            .setTop(options.getTop())
+            .setFormat(OdataMetadataFormat.APPLICATION_JSON_ODATA_FULLMETADATA);
+
+        ResponseBase<TablesQueryHeaders, TableQueryResponse> response =
+            implementation.getTables().queryWithResponse(null, nextTableName, queryOptions, context);
+        TableQueryResponse tableQueryResponse = response.getValue();
+
+        if (tableQueryResponse == null) {
+            return null;
+        }
+
+        List<TableResponseProperties> tableResponsePropertiesList = tableQueryResponse.getValue();
+
+        if (tableResponsePropertiesList == null) {
+            return null;
+        }
+
+        final List<TableItem> tables = tableResponsePropertiesList.stream()
+            .map(TableItemAccessHelper::createItem).collect(Collectors.toList());
+
+        return new TablePaged(response, tables, response.getDeserializedHeaders().getXMsContinuationNextTableName());
+    }
+
 
     /**
      * Gets the properties of the account's Table service, including properties for Analytics and CORS (Cross-Origin
@@ -398,7 +542,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableServiceProperties getProperties() {
-        return client.getProperties().block();
+        return getPropertiesWithResponse(null, null).getValue();
     }
 
     /**
@@ -430,7 +574,22 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.getPropertiesWithResponse(context), timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<TableServiceProperties>> callable = () -> getPropertiesWithResponse(context);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception ex) {
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(ex));
+        }
+    }
+
+    Response<TableServiceProperties> getPropertiesWithResponse(Context context) {
+        context = TableUtils.setContext(context, true);
+        Response<com.azure.data.tables.implementation.models.TableServiceProperties> response =
+            this.implementation.getServices().getPropertiesWithResponse(null, null, context);
+        return new SimpleResponse<>(response, TableUtils.toTableServiceProperties(response.getValue()));
     }
 
     /**
@@ -466,7 +625,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setProperties(TableServiceProperties tableServiceProperties) {
-        client.setProperties(tableServiceProperties).block();
+        setPropertiesWithResponse(tableServiceProperties, null, null);
     }
 
     /**
@@ -510,7 +669,23 @@ public final class TableServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Duration timeout,
                                                     Context context) {
-        return blockWithOptionalTimeout(client.setPropertiesWithResponse(tableServiceProperties, context), timeout);
+
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<Void>> callable = () -> setPropertiesWithResponse(tableServiceProperties, context);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception e) {
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
+        }
+    }
+
+    Response<Void> setPropertiesWithResponse(TableServiceProperties tableServiceProperties, Context context) {
+        context = TableUtils.setContext(context, true);
+        return new SimpleResponse<>(this.implementation.getServices()
+            .setPropertiesWithResponse(TableUtils.toImplTableServiceProperties(tableServiceProperties), null,
+                null, context), null);
     }
 
     /**
@@ -535,7 +710,7 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TableServiceStatistics getStatistics() {
-        return client.getStatistics().block();
+        return getStatisticsWithResponse(null, null).getValue();
     }
 
     /**
@@ -568,6 +743,23 @@ public final class TableServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TableServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
-        return blockWithOptionalTimeout(client.getStatisticsWithResponse(context), timeout);
+        OptionalLong timeoutInMillis = TableUtils.setTimeout(timeout);
+        Callable<Response<TableServiceStatistics>> callable = () -> getStatisticsWithResponse(context);
+        try {
+            return timeoutInMillis.isPresent()
+                ? THREAD_POOL.submit(callable).get(timeoutInMillis.getAsLong(), TimeUnit.MILLISECONDS)
+                : callable.call();
+        } catch (Exception e) {
+            throw logger.logExceptionAsError((RuntimeException) TableUtils.mapThrowableToTableServiceException(e));
+        }
     }
+
+
+    Response<TableServiceStatistics> getStatisticsWithResponse(Context context) {
+        context = TableUtils.setContext(context, true);
+        Response<TableServiceStats> response = this.implementation.getServices().getStatisticsWithResponse(
+            null, null, context);
+        return new SimpleResponse<>(response, TableUtils.toTableServiceStatistics(response.getValue()));
+    }
+
 }

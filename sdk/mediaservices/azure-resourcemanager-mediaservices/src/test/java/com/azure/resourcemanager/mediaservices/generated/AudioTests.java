@@ -14,26 +14,22 @@ public final class AudioTests {
         Audio model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.Audio\",\"channels\":749799353,\"samplingRate\":1507022412,\"bitrate\":655143714,\"label\":\"lazszrn\"}")
+                    "{\"@odata.type\":\"#Microsoft.Media.Audio\",\"channels\":1521698279,\"samplingRate\":181907688,\"bitrate\":1490007773,\"label\":\"isze\"}")
                 .toObject(Audio.class);
-        Assertions.assertEquals("lazszrn", model.label());
-        Assertions.assertEquals(749799353, model.channels());
-        Assertions.assertEquals(1507022412, model.samplingRate());
-        Assertions.assertEquals(655143714, model.bitrate());
+        Assertions.assertEquals("isze", model.label());
+        Assertions.assertEquals(1521698279, model.channels());
+        Assertions.assertEquals(181907688, model.samplingRate());
+        Assertions.assertEquals(1490007773, model.bitrate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         Audio model =
-            new Audio()
-                .withLabel("lazszrn")
-                .withChannels(749799353)
-                .withSamplingRate(1507022412)
-                .withBitrate(655143714);
+            new Audio().withLabel("isze").withChannels(1521698279).withSamplingRate(181907688).withBitrate(1490007773);
         model = BinaryData.fromObject(model).toObject(Audio.class);
-        Assertions.assertEquals("lazszrn", model.label());
-        Assertions.assertEquals(749799353, model.channels());
-        Assertions.assertEquals(1507022412, model.samplingRate());
-        Assertions.assertEquals(655143714, model.bitrate());
+        Assertions.assertEquals("isze", model.label());
+        Assertions.assertEquals(1521698279, model.channels());
+        Assertions.assertEquals(181907688, model.samplingRate());
+        Assertions.assertEquals(1490007773, model.bitrate());
     }
 }

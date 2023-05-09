@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.AgentPoolPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The parameters for updating an agent pool. */
 @Fluent
 public final class AgentPoolUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolUpdateParameters.class);
-
     /*
      * The properties associated with the agent pool
      */
@@ -29,6 +25,10 @@ public final class AgentPoolUpdateParameters {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /** Creates an instance of AgentPoolUpdateParameters class. */
+    public AgentPoolUpdateParameters() {
+    }
 
     /**
      * Get the innerProperties property: The properties associated with the agent pool.

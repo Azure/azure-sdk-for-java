@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Runs GetLogSasUrl. */
 public final class RunsGetLogSasUrlSamples {
     /*
@@ -23,6 +21,9 @@ public final class RunsGetLogSasUrlSamples {
             .serviceClient()
             .getRuns()
             .getLogSasUrlWithResponse(
-                "myResourceGroup", "myRegistry", "0accec26-d6de-4757-8e74-d080f38eaaab", Context.NONE);
+                "myResourceGroup",
+                "myRegistry",
+                "0accec26-d6de-4757-8e74-d080f38eaaab",
+                com.azure.core.util.Context.NONE);
     }
 }

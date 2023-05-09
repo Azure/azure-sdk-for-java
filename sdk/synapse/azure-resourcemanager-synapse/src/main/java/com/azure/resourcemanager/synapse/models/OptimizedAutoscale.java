@@ -17,8 +17,7 @@ public final class OptimizedAutoscale {
     private int version;
 
     /*
-     * A boolean value that indicate if the optimized autoscale feature is
-     * enabled or not.
+     * A boolean value that indicate if the optimized autoscale feature is enabled or not.
      */
     @JsonProperty(value = "isEnabled", required = true)
     private boolean isEnabled;
@@ -34,6 +33,10 @@ public final class OptimizedAutoscale {
      */
     @JsonProperty(value = "maximum", required = true)
     private int maximum;
+
+    /** Creates an instance of OptimizedAutoscale class. */
+    public OptimizedAutoscale() {
+    }
 
     /**
      * Get the version property: The version of the template defined, for instance 1.

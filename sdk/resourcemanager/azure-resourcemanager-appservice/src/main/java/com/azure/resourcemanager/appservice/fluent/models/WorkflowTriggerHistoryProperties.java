@@ -87,6 +87,10 @@ public final class WorkflowTriggerHistoryProperties {
     @JsonProperty(value = "run", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceReference run;
 
+    /** Creates an instance of WorkflowTriggerHistoryProperties class. */
+    public WorkflowTriggerHistoryProperties() {
+    }
+
     /**
      * Get the startTime property: Gets the start time.
      *

@@ -20,6 +20,15 @@ public final class IndexingMode extends ExpandableStringEnum<IndexingMode> {
     public static final IndexingMode NONE = fromString("none");
 
     /**
+     * Creates a new instance of IndexingMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IndexingMode() {
+    }
+
+    /**
      * Creates or finds a IndexingMode from its string representation.
      *
      * @param name a name to look for.

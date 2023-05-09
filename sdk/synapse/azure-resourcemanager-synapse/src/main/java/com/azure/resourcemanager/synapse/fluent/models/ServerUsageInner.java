@@ -53,6 +53,10 @@ public final class ServerUsageInner {
     @JsonProperty(value = "nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime nextResetTime;
 
+    /** Creates an instance of ServerUsageInner class. */
+    public ServerUsageInner() {
+    }
+
     /**
      * Get the name property: Name of the server usage metric.
      *

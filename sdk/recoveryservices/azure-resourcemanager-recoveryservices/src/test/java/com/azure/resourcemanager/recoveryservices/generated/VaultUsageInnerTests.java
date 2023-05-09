@@ -10,11 +10,10 @@ import com.azure.resourcemanager.recoveryservices.models.NameInfo;
 import com.azure.resourcemanager.recoveryservices.models.UsagesUnit;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VaultUsageInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VaultUsageInner model =
             BinaryData
                 .fromString(
@@ -29,8 +28,8 @@ public final class VaultUsageInnerTests {
         Assertions.assertEquals("rpabg", model.name().localizedValue());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VaultUsageInner model =
             new VaultUsageInner()
                 .withUnit(UsagesUnit.BYTES)

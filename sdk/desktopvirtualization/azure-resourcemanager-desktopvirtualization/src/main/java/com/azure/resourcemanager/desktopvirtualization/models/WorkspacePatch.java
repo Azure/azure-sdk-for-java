@@ -27,6 +27,10 @@ public final class WorkspacePatch {
     @JsonProperty(value = "properties")
     private WorkspacePatchProperties innerProperties;
 
+    /** Creates an instance of WorkspacePatch class. */
+    public WorkspacePatch() {
+    }
+
     /**
      * Get the tags property: tags to be updated.
      *
@@ -122,29 +126,6 @@ public final class WorkspacePatch {
             this.innerProperties = new WorkspacePatchProperties();
         }
         this.innerProperties().withApplicationGroupReferences(applicationGroupReferences);
-        return this;
-    }
-
-    /**
-     * Get the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
-     *
-     * @return the publicNetworkAccess value.
-     */
-    public PublicNetworkAccess publicNetworkAccess() {
-        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
-    }
-
-    /**
-     * Set the publicNetworkAccess property: Enabled to allow this resource to be access from the public network.
-     *
-     * @param publicNetworkAccess the publicNetworkAccess value to set.
-     * @return the WorkspacePatch object itself.
-     */
-    public WorkspacePatch withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WorkspacePatchProperties();
-        }
-        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 

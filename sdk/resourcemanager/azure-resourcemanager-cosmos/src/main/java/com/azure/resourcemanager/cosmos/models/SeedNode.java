@@ -16,6 +16,10 @@ public final class SeedNode {
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
+    /** Creates an instance of SeedNode class. */
+    public SeedNode() {
+    }
+
     /**
      * Get the ipAddress property: IP address of this seed node.
      *

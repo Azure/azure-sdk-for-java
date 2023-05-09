@@ -23,11 +23,10 @@ import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesRedundan
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PatchVaultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PatchVault model =
             BinaryData
                 .fromString(
@@ -49,8 +48,8 @@ public final class PatchVaultTests {
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PatchVault model =
             new PatchVault()
                 .withLocation("xnehmpvec")

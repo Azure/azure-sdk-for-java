@@ -25,6 +25,10 @@ public final class SqlPoolUsageListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of SqlPoolUsageListResult class. */
+    public SqlPoolUsageListResult() {
+    }
+
     /**
      * Get the value property: The list of usages for the Sql pool.
      *

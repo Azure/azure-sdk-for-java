@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetworkProfiles List. */
 public final class NetworkProfilesListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/NetworkProfileListAll.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/NetworkProfileListAll.json
      */
     /**
      * Sample code: List all network profiles.
@@ -17,6 +15,6 @@ public final class NetworkProfilesListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllNetworkProfiles(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getNetworkProfiles().list(Context.NONE);
+        azure.networks().manager().serviceClient().getNetworkProfiles().list(com.azure.core.util.Context.NONE);
     }
 }

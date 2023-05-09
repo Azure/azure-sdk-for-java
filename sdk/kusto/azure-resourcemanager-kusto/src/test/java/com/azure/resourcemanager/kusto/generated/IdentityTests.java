@@ -11,34 +11,35 @@ import com.azure.resourcemanager.kusto.models.IdentityUserAssignedIdentities;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdentityTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Identity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"uwfzitonpe\",\"tenantId\":\"pjkjlxofpdv\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"kpode\":{\"principalId\":\"ypininm\",\"clientId\":\"huyb\"},\"o\":{\"principalId\":\"oginuvamiheognar\",\"clientId\":\"xth\"},\"bwjzr\":{\"principalId\":\"si\",\"clientId\":\"evcciqihnhun\"}}}")
+                    "{\"principalId\":\"parcry\",\"tenantId\":\"nzwuxzd\",\"type\":\"None\",\"userAssignedIdentities\":{\"tijbpzvgnwzsymgl\":{\"principalId\":\"lhmwhfpmrqobm\",\"clientId\":\"kknryrtihf\"},\"s\":{\"principalId\":\"fcyzkohdbihanufh\",\"clientId\":\"bj\"},\"npqxuh\":{\"principalId\":\"ithxqhabifpi\",\"clientId\":\"wczbys\"},\"tfwvukxgaudc\":{\"principalId\":\"y\",\"clientId\":\"iwbybrkxvdumjg\"}}}")
                 .toObject(Identity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Identity model =
             new Identity()
-                .withType(IdentityType.SYSTEM_ASSIGNED)
+                .withType(IdentityType.NONE)
                 .withUserAssignedIdentities(
                     mapOf(
-                        "kpode",
+                        "tijbpzvgnwzsymgl",
                         new IdentityUserAssignedIdentities(),
-                        "o",
+                        "s",
                         new IdentityUserAssignedIdentities(),
-                        "bwjzr",
+                        "npqxuh",
+                        new IdentityUserAssignedIdentities(),
+                        "tfwvukxgaudc",
                         new IdentityUserAssignedIdentities()));
         model = BinaryData.fromObject(model).toObject(Identity.class);
-        Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, model.type());
+        Assertions.assertEquals(IdentityType.NONE, model.type());
     }
 
     @SuppressWarnings("unchecked")

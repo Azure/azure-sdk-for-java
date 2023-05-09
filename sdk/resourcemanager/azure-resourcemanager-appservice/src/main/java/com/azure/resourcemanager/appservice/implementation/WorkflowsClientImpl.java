@@ -52,11 +52,10 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface WorkflowsService {
+    public interface WorkflowsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/regenerateAccessKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/regenerateAccessKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> regenerateAccessKey(
@@ -72,8 +71,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}"
-                + "/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/validate")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/validate")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> validate(
@@ -226,24 +224,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     public Mono<Void> regenerateAccessKeyAsync(
         String resourceGroupName, String name, String workflowName, RegenerateActionParameter keyType) {
         return regenerateAccessKeyWithResponseAsync(resourceGroupName, name, workflowName, keyType)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Regenerates the callback URL access key for request triggers.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param keyType The access key type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void regenerateAccessKey(
-        String resourceGroupName, String name, String workflowName, RegenerateActionParameter keyType) {
-        regenerateAccessKeyAsync(resourceGroupName, name, workflowName, keyType).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -267,6 +248,23 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
         RegenerateActionParameter keyType,
         Context context) {
         return regenerateAccessKeyWithResponseAsync(resourceGroupName, name, workflowName, keyType, context).block();
+    }
+
+    /**
+     * Regenerates the callback URL access key for request triggers.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param keyType The access key type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void regenerateAccessKey(
+        String resourceGroupName, String name, String workflowName, RegenerateActionParameter keyType) {
+        regenerateAccessKeyWithResponse(resourceGroupName, name, workflowName, keyType, Context.NONE);
     }
 
     /**
@@ -402,23 +400,7 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateAsync(String resourceGroupName, String name, String workflowName, Workflow validate) {
         return validateWithResponseAsync(resourceGroupName, name, workflowName, validate)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Validates the workflow definition.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param validate The workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void validate(String resourceGroupName, String name, String workflowName, Workflow validate) {
-        validateAsync(resourceGroupName, name, workflowName, validate).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -438,5 +420,21 @@ public final class WorkflowsClientImpl implements WorkflowsClient {
     public Response<Void> validateWithResponse(
         String resourceGroupName, String name, String workflowName, Workflow validate, Context context) {
         return validateWithResponseAsync(resourceGroupName, name, workflowName, validate, context).block();
+    }
+
+    /**
+     * Validates the workflow definition.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param validate The workflow.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void validate(String resourceGroupName, String name, String workflowName, Workflow validate) {
+        validateWithResponse(resourceGroupName, name, workflowName, validate, Context.NONE);
     }
 }

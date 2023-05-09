@@ -11,11 +11,10 @@ import com.azure.resourcemanager.cognitiveservices.models.NetworkRuleSet;
 import com.azure.resourcemanager.cognitiveservices.models.VirtualNetworkRule;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NetworkRuleSetTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         NetworkRuleSet model =
             BinaryData
                 .fromString(
@@ -28,8 +27,8 @@ public final class NetworkRuleSetTests {
         Assertions.assertEquals(true, model.virtualNetworkRules().get(0).ignoreMissingVnetServiceEndpoint());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NetworkRuleSet model =
             new NetworkRuleSet()
                 .withDefaultAction(NetworkRuleAction.DENY)

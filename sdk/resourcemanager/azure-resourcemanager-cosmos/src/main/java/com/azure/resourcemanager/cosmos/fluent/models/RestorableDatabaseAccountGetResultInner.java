@@ -44,6 +44,10 @@ public final class RestorableDatabaseAccountGetResultInner {
     @JsonProperty(value = "location")
     private String location;
 
+    /** Creates an instance of RestorableDatabaseAccountGetResultInner class. */
+    public RestorableDatabaseAccountGetResultInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of a restorable database account.
      *
@@ -168,6 +172,31 @@ public final class RestorableDatabaseAccountGetResultInner {
             this.innerProperties = new RestorableDatabaseAccountProperties();
         }
         this.innerProperties().withDeletionTime(deletionTime);
+        return this;
+    }
+
+    /**
+     * Get the oldestRestorableTime property: The least recent time at which the database account can be restored to
+     * (ISO-8601 format).
+     *
+     * @return the oldestRestorableTime value.
+     */
+    public OffsetDateTime oldestRestorableTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().oldestRestorableTime();
+    }
+
+    /**
+     * Set the oldestRestorableTime property: The least recent time at which the database account can be restored to
+     * (ISO-8601 format).
+     *
+     * @param oldestRestorableTime the oldestRestorableTime value to set.
+     * @return the RestorableDatabaseAccountGetResultInner object itself.
+     */
+    public RestorableDatabaseAccountGetResultInner withOldestRestorableTime(OffsetDateTime oldestRestorableTime) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorableDatabaseAccountProperties();
+        }
+        this.innerProperties().withOldestRestorableTime(oldestRestorableTime);
         return this;
     }
 

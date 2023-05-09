@@ -5,12 +5,6 @@ package com.azure.core.implementation.jackson;
 
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
-import com.azure.core.implementation.util.ByteArrayContent;
-import com.azure.core.implementation.util.FileContent;
-import com.azure.core.implementation.util.FluxByteBufferContent;
-import com.azure.core.implementation.util.InputStreamContent;
-import com.azure.core.implementation.util.SerializableContent;
-import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -44,16 +38,22 @@ final class BinaryDataSerializer extends JsonSerializer<BinaryData> {
         }
 
         BinaryDataContent content = BinaryDataHelper.getContent(value);
-        if (content instanceof ByteArrayContent || content instanceof FileContent
-            || content instanceof FluxByteBufferContent || content instanceof InputStreamContent) {
-            gen.writeBinary(content.toBytes());
-        } else if (content instanceof SerializableContent) {
-            gen.writeRawValue(content.toString());
-        } else if (content instanceof StringContent) {
-            gen.writeString(content.toString());
-        } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "Unsupported BinaryData content type: " + content.getClass().getName()));
+        switch (content.getContentType()) {
+            case BINARY:
+                gen.writeBinary(content.toBytes());
+                break;
+
+            case OBJECT:
+                gen.writeRawValue(content.toString());
+                break;
+
+            case TEXT:
+                gen.writeString(content.toString());
+                break;
+
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
+                    "Unsupported BinaryData content type: " + content.getClass().getName()));
         }
     }
 }

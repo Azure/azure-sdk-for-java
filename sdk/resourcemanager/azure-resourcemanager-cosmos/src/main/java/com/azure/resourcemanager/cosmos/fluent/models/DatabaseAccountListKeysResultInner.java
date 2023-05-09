@@ -22,6 +22,10 @@ public final class DatabaseAccountListKeysResultInner extends DatabaseAccountLis
     @JsonProperty(value = "secondaryMasterKey", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryMasterKey;
 
+    /** Creates an instance of DatabaseAccountListKeysResultInner class. */
+    public DatabaseAccountListKeysResultInner() {
+    }
+
     /**
      * Get the primaryMasterKey property: Base 64 encoded value of the primary read-write key.
      *

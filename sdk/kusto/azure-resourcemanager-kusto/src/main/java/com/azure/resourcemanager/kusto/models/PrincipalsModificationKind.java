@@ -20,6 +20,15 @@ public final class PrincipalsModificationKind extends ExpandableStringEnum<Princ
     public static final PrincipalsModificationKind NONE = fromString("None");
 
     /**
+     * Creates a new instance of PrincipalsModificationKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PrincipalsModificationKind() {
+    }
+
+    /**
      * Creates or finds a PrincipalsModificationKind from its string representation.
      *
      * @param name a name to look for.

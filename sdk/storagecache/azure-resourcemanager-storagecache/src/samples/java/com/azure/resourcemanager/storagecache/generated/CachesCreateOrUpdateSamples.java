@@ -31,7 +31,7 @@ import java.util.Map;
 /** Samples for Caches CreateOrUpdate. */
 public final class CachesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/Caches_CreateOrUpdate_ldap_only.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_CreateOrUpdate_ldap_only.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate_ldap_only.
@@ -48,6 +48,7 @@ public final class CachesCreateOrUpdateSamples {
             .withTags(mapOf("Dept", "Contoso"))
             .withSku(new CacheSku().withName("Standard_2G"))
             .withCacheSizeGB(3072)
+            .withScalingFactor(1.0D)
             .withSubnet(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1")
             .withUpgradeSettings(
@@ -58,7 +59,7 @@ public final class CachesCreateOrUpdateSamples {
                 new CacheEncryptionSettings()
                     .withKeyEncryptionKey(
                         new KeyVaultKeyReference()
-                            .withKeyUrl("https://keyvault-cmk.vault.azure.net/keys/key2048/test")
+                            .withKeyUrl("fakeTokenPlaceholder")
                             .withSourceVault(
                                 new KeyVaultKeyReferenceSourceVault()
                                     .withId(
@@ -90,12 +91,12 @@ public final class CachesCreateOrUpdateSamples {
                             .withCredentials(
                                 new CacheUsernameDownloadSettingsCredentials()
                                     .withBindDn("cn=ldapadmin,dc=contosoad,dc=contoso,dc=local")
-                                    .withBindPassword("<bindPassword>"))))
+                                    .withBindPassword("fakeTokenPlaceholder"))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/Caches_CreateOrUpdate.json
+     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-03-01-preview/examples/Caches_CreateOrUpdate.json
      */
     /**
      * Sample code: Caches_CreateOrUpdate.
@@ -118,6 +119,7 @@ public final class CachesCreateOrUpdateSamples {
                             new UserAssignedIdentitiesValue())))
             .withSku(new CacheSku().withName("Standard_2G"))
             .withCacheSizeGB(3072)
+            .withScalingFactor(1.0D)
             .withSubnet(
                 "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/scgroup/providers/Microsoft.Network/virtualNetworks/scvnet/subnets/sub1")
             .withUpgradeSettings(
@@ -128,7 +130,7 @@ public final class CachesCreateOrUpdateSamples {
                 new CacheEncryptionSettings()
                     .withKeyEncryptionKey(
                         new KeyVaultKeyReference()
-                            .withKeyUrl("https://keyvault-cmk.vault.azure.net/keys/key2047/test")
+                            .withKeyUrl("fakeTokenPlaceholder")
                             .withSourceVault(
                                 new KeyVaultKeyReferenceSourceVault()
                                     .withId(
@@ -161,7 +163,7 @@ public final class CachesCreateOrUpdateSamples {
                             .withCredentials(
                                 new CacheActiveDirectorySettingsCredentials()
                                     .withUsername("consotoAdmin")
-                                    .withPassword("<password>")))
+                                    .withPassword("fakeTokenPlaceholder")))
                     .withUsernameDownload(
                         new CacheUsernameDownloadSettings()
                             .withExtendedGroups(true)
@@ -171,7 +173,7 @@ public final class CachesCreateOrUpdateSamples {
                             .withCredentials(
                                 new CacheUsernameDownloadSettingsCredentials()
                                     .withBindDn("cn=ldapadmin,dc=contosoad,dc=contoso,dc=local")
-                                    .withBindPassword("<bindPassword>"))))
+                                    .withBindPassword("fakeTokenPlaceholder"))))
             .create();
     }
 

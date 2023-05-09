@@ -16,6 +16,10 @@ public final class SqlDedicatedGatewayRegionalServiceResource extends RegionalSe
     @JsonProperty(value = "sqlDedicatedGatewayEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String sqlDedicatedGatewayEndpoint;
 
+    /** Creates an instance of SqlDedicatedGatewayRegionalServiceResource class. */
+    public SqlDedicatedGatewayRegionalServiceResource() {
+    }
+
     /**
      * Get the sqlDedicatedGatewayEndpoint property: The regional endpoint for SqlDedicatedGateway.
      *

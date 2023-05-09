@@ -21,7 +21,7 @@ import java.util.List;
 @Fluent
 public final class StorageTargetProperties {
     /*
-     * List of Cache namespace junctions to target for namespace associations.
+     * List of cache namespace junctions to target for namespace associations.
      */
     @JsonProperty(value = "junctions")
     private List<NamespaceJunction> junctions;
@@ -75,8 +75,12 @@ public final class StorageTargetProperties {
     @JsonProperty(value = "allocationPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer allocationPercentage;
 
+    /** Creates an instance of StorageTargetProperties class. */
+    public StorageTargetProperties() {
+    }
+
     /**
-     * Get the junctions property: List of Cache namespace junctions to target for namespace associations.
+     * Get the junctions property: List of cache namespace junctions to target for namespace associations.
      *
      * @return the junctions value.
      */
@@ -85,7 +89,7 @@ public final class StorageTargetProperties {
     }
 
     /**
-     * Set the junctions property: List of Cache namespace junctions to target for namespace associations.
+     * Set the junctions property: List of cache namespace junctions to target for namespace associations.
      *
      * @param junctions the junctions value to set.
      * @return the StorageTargetProperties object itself.

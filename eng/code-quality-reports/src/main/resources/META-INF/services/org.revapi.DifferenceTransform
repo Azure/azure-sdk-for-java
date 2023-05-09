@@ -1,1 +1,2 @@
+com.azure.tools.revapi.transforms.AzureSdkAllowedExternalApis
 com.azure.tools.revapi.transforms.TransitiveCoreChangesTransform

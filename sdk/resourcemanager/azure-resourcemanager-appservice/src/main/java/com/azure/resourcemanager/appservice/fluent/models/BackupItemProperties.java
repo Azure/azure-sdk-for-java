@@ -87,8 +87,7 @@ public final class BackupItemProperties {
     private OffsetDateTime finishedTimestamp;
 
     /*
-     * Unique correlation identifier. Please use this along with the timestamp
-     * while communicating with Azure support.
+     * Unique correlation identifier. Please use this along with the timestamp while communicating with Azure support.
      */
     @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
@@ -98,6 +97,10 @@ public final class BackupItemProperties {
      */
     @JsonProperty(value = "websiteSizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long websiteSizeInBytes;
+
+    /** Creates an instance of BackupItemProperties class. */
+    public BackupItemProperties() {
+    }
 
     /**
      * Get the backupId property: Id of the backup.

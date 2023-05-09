@@ -123,21 +123,6 @@ public interface WorkflowTriggersClient {
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowTriggerInner get(String resourceGroupName, String name, String workflowName, String triggerName);
-
-    /**
-     * Gets a workflow trigger.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param triggerName The workflow trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,6 +132,21 @@ public interface WorkflowTriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkflowTriggerInner> getWithResponse(
         String resourceGroupName, String name, String workflowName, String triggerName, Context context);
+
+    /**
+     * Gets a workflow trigger.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param triggerName The workflow trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workflow trigger.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkflowTriggerInner get(String resourceGroupName, String name, String workflowName, String triggerName);
 
     /**
      * Get the callback URL for a workflow trigger.
@@ -188,22 +188,6 @@ public interface WorkflowTriggersClient {
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback URL for a workflow trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkflowTriggerCallbackUrlInner listCallbackUrl(
-        String resourceGroupName, String name, String workflowName, String triggerName);
-
-    /**
-     * Get the callback URL for a workflow trigger.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param triggerName The workflow trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -213,6 +197,22 @@ public interface WorkflowTriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(
         String resourceGroupName, String name, String workflowName, String triggerName, Context context);
+
+    /**
+     * Get the callback URL for a workflow trigger.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param triggerName The workflow trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the callback URL for a workflow trigger.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkflowTriggerCallbackUrlInner listCallbackUrl(
+        String resourceGroupName, String name, String workflowName, String triggerName);
 
     /**
      * Runs a workflow trigger.
@@ -362,21 +362,6 @@ public interface WorkflowTriggersClient {
      * @param name Site name.
      * @param workflowName The workflow name.
      * @param triggerName The workflow trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the trigger schema as JSON.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    JsonSchemaInner getSchemaJson(String resourceGroupName, String name, String workflowName, String triggerName);
-
-    /**
-     * Get the trigger schema as JSON.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param triggerName The workflow trigger name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -386,4 +371,19 @@ public interface WorkflowTriggersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<JsonSchemaInner> getSchemaJsonWithResponse(
         String resourceGroupName, String name, String workflowName, String triggerName, Context context);
+
+    /**
+     * Get the trigger schema as JSON.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param triggerName The workflow trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the trigger schema as JSON.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    JsonSchemaInner getSchemaJson(String resourceGroupName, String name, String workflowName, String triggerName);
 }

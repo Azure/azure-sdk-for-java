@@ -20,6 +20,15 @@ public final class FirewallPolicySkuTier extends ExpandableStringEnum<FirewallPo
     public static final FirewallPolicySkuTier BASIC = fromString("Basic");
 
     /**
+     * Creates a new instance of FirewallPolicySkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicySkuTier() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicySkuTier from its string representation.
      *
      * @param name a name to look for.

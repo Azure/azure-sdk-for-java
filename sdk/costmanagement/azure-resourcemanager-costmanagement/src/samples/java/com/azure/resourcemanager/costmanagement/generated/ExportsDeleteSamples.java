@@ -7,7 +7,7 @@ package com.azure.resourcemanager.costmanagement.generated;
 /** Samples for Exports Delete. */
 public final class ExportsDeleteSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteByBillingAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByBillingAccount.json
      */
     /**
      * Sample code: ExportDeleteByBillingAccount.
@@ -23,7 +23,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteByManagementGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByManagementGroup.json
      */
     /**
      * Sample code: ExportDeleteByManagementGroup.
@@ -41,7 +41,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByResourceGroup.json
      */
     /**
      * Sample code: ExportDeleteByResourceGroup.
@@ -59,7 +59,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteByDepartment.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByDepartment.json
      */
     /**
      * Sample code: ExportDeleteByDepartment.
@@ -77,7 +77,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteBySubscription.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteBySubscription.json
      */
     /**
      * Sample code: ExportDeleteBySubscription.
@@ -93,7 +93,7 @@ public final class ExportsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportDeleteByEnrollmentAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportDeleteByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportDeleteByEnrollmentAccount.

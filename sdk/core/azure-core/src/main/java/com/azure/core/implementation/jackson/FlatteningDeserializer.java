@@ -34,7 +34,7 @@ import java.util.regex.Pattern;
 
 /**
  * Custom serializer for deserializing complex types with wrapped properties. For example, a property with annotation
- *
+ * <p>
  * {@code @JsonProperty(value = "properties.name")} will be mapped to a top level "name" property in the POJO model.
  */
 final class FlatteningDeserializer extends StdDeserializer<Object> implements ResolvableDeserializer {

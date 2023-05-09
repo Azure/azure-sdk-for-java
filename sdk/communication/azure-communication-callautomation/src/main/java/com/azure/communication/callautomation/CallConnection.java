@@ -4,18 +4,18 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.AddParticipantsOptions;
-import com.azure.communication.callautomation.models.AddParticipantsResult;
+import com.azure.communication.callautomation.models.AddParticipantOptions;
+import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
+import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
-import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
-import com.azure.communication.callautomation.models.RemoveParticipantsResult;
+import com.azure.communication.callautomation.models.RemoveParticipantOptions;
+import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
-import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -23,13 +23,12 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-
-import java.util.List;
+import com.azure.core.exception.HttpResponseException;
 
 /**
  * CallConnection for mid-call actions
  */
-public class CallConnection {
+public final class CallConnection {
     private final CallConnectionAsync callConnectionAsync;
 
     CallConnection(CallConnectionAsync callConnectionAsync) {
@@ -39,7 +38,7 @@ public class CallConnection {
     /**
      * Get call connection properties.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -52,7 +51,7 @@ public class CallConnection {
      * Get call connection properties.
      *
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response payload for a successful get call connection request.
      */
@@ -65,13 +64,12 @@ public class CallConnection {
      * Hangup a call.
      *
      * @param isForEveryone determine if the call is handed up for all participants.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful hangup request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void hangUp(boolean isForEveryone) {
-        return callConnectionAsync.hangUp(isForEveryone).block();
+    public void hangUp(boolean isForEveryone) {
+        callConnectionAsync.hangUp(isForEveryone).block();
     }
 
     /**
@@ -79,9 +77,9 @@ public class CallConnection {
      *
      * @param hangUpOptions options to hang up
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful hangup request.
+     * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> hangUpWithResponse(HangUpOptions hangUpOptions, Context context) {
@@ -91,36 +89,36 @@ public class CallConnection {
     /**
      * Get a specific participant.
      *
-     * @param participantMri The participant.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param targetParticipant The participant to retrieve.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return The desired call participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallParticipant getParticipant(String participantMri) {
-        return callConnectionAsync.getParticipant(participantMri).block();
+    public CallParticipant getParticipant(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.getParticipant(targetParticipant).block();
     }
 
     /**
      * Get all participants.
      *
-     * @param participantMri The participant.
+     * @param targetParticipant The participant to retrieve.
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return Response with the desired call participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallParticipant> getParticipantWithResponse(String participantMri, Context context) {
-        return callConnectionAsync.getParticipantWithResponseInternal(participantMri, context).block();
+    public Response<CallParticipant> getParticipantWithResponse(CommunicationIdentifier targetParticipant, Context context) {
+        return callConnectionAsync.getParticipantWithResponseInternal(targetParticipant, context).block();
     }
 
     /**
      * Get all participants.
      *
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return A list of all participants in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ListParticipantsResult listParticipants() {
@@ -131,9 +129,9 @@ public class CallConnection {
      * Get all participants.
      *
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful get call connection request.
+     * @return Response with a list of all participants in the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ListParticipantsResult> listParticipantsWithResponse(Context context) {
@@ -143,84 +141,84 @@ public class CallConnection {
     /**
      * Transfer the call to a participant.
      *
-     * @param targetParticipant A {@link CommunicationIdentifier} representing the target participant of this transfer.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param targetParticipant A {@link CommunicationIdentifier} representing the targetParticipant participant of this transfer.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for a successful call termination request.
+     * @return Result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResult transferToParticipantCall(CommunicationIdentifier targetParticipant) {
-        return callConnectionAsync.transferToParticipantCall(targetParticipant).block();
+    public TransferCallResult transferCallToParticipant(CommunicationIdentifier targetParticipant) {
+        return callConnectionAsync.transferCallToParticipant(targetParticipant).block();
     }
 
     /**
      * Transfer the call to a participant.
      *
-     * @param transferToParticipantCallOptions Options bag for transferToParticipantCall
+     * @param transferCallToParticipantOptions Options bag for transferToParticipantCall
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful call termination request.
+     * @return Response with result of transferring the call to a designated participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransferCallResult> transferToParticipantCallWithResponse(
-        TransferToParticipantCallOptions transferToParticipantCallOptions, Context context) {
-        return callConnectionAsync.transferToParticipantCallWithResponseInternal(transferToParticipantCallOptions, context).block();
+    public Response<TransferCallResult> transferCallToParticipantWithResponse(
+        TransferCallToParticipantOptions transferCallToParticipantOptions, Context context) {
+        return callConnectionAsync.transferCallToParticipantWithResponseInternal(transferCallToParticipantOptions, context).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param participants The list of participants to invite.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param participant participant to invite.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Result of adding a participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AddParticipantsResult addParticipants(List<CommunicationIdentifier> participants) {
-        return callConnectionAsync.addParticipants(participants).block();
+    public AddParticipantResult addParticipant(CallInvite participant) {
+        return callConnectionAsync.addParticipant(participant).block();
     }
 
     /**
      * Add a participant to the call.
      *
-     * @param addParticipantsOptions Options bag for addParticipants
+     * @param addParticipantOptions Options bag for addParticipant
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Response with result of adding a participant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AddParticipantsResult> addParticipantsWithResponse(AddParticipantsOptions addParticipantsOptions,
+    public Response<AddParticipantResult> addParticipantWithResponse(AddParticipantOptions addParticipantOptions,
                                                                        Context context) {
-        return callConnectionAsync.addParticipantsWithResponseInternal(addParticipantsOptions, context).block();
+        return callConnectionAsync.addParticipantWithResponseInternal(addParticipantOptions, context).block();
     }
 
     /**
-     * Remove a list of participants from the call.
+     * Remove a participant from the call.
      *
-     * @param participantsToRemove The identifier list of the participant to be removed.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @param participantToRemove participant to be removed.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Result of removing a participant from the call
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RemoveParticipantsResult removeParticipants(List<CommunicationIdentifier> participantsToRemove) {
-        return callConnectionAsync.removeParticipants(participantsToRemove).block();
+    public RemoveParticipantResult removeParticipant(CommunicationIdentifier participantToRemove) {
+        return callConnectionAsync.removeParticipant(participantToRemove).block();
     }
 
     /**
-     * Remove a list of participant from the call.
+     * Remove a participant from the call.
      *
-     * @param removeParticipantsOptions The options for removing participants.
+     * @param removeParticipantOptions The options for removing participant.
      * @param context A {@link Context} representing the request context.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful add participant request.
+     * @return Response with result of removing a participant from the call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RemoveParticipantsResult> removeParticipantsWithResponse(RemoveParticipantsOptions removeParticipantsOptions, Context context) {
-        return callConnectionAsync.removeParticipantsWithResponseInternal(removeParticipantsOptions, context).block();
+    public Response<RemoveParticipantResult> removeParticipantWithResponse(RemoveParticipantOptions removeParticipantOptions, Context context) {
+        return callConnectionAsync.removeParticipantWithResponseInternal(removeParticipantOptions, context).block();
     }
 
     /**
@@ -270,7 +268,7 @@ public class CallConnection {
     /***
      * Returns an object of CallContent
      *
-     * @return a CallContentAsync.
+     * @return a CallMediaAsync.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMedia getCallMedia() {

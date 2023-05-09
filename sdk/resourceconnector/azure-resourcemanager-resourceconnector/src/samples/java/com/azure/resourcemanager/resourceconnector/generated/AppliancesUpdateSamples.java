@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.resourceconnector.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourceconnector.models.Appliance;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Appliances Update. */
 public final class AppliancesUpdateSamples {
     /*
-     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/preview/2022-04-15-preview/examples/AppliancesPatch.json
+     * x-ms-original-file: specification/resourceconnector/resource-manager/Microsoft.ResourceConnector/stable/2022-10-27/examples/AppliancesPatch.json
      */
     /**
      * Sample code: Update Appliance.
@@ -23,7 +22,7 @@ public final class AppliancesUpdateSamples {
         Appliance resource =
             manager
                 .appliances()
-                .getByResourceGroupWithResponse("testresourcegroup", "appliance01", Context.NONE)
+                .getByResourceGroupWithResponse("testresourcegroup", "appliance01", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("key", "value")).apply();
     }

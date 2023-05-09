@@ -56,11 +56,10 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface RestorableSqlContainersService {
+    public interface RestorableSqlContainersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}"
-                + "/restorableDatabaseAccounts/{instanceId}/restorableSqlContainers")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlContainers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RestorableSqlContainersListResult>> list(
@@ -84,8 +83,8 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -144,8 +143,8 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -207,8 +206,8 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -252,8 +251,8 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -302,8 +301,8 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

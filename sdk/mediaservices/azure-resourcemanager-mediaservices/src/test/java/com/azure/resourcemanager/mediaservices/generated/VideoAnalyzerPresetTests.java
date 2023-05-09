@@ -18,27 +18,28 @@ public final class VideoAnalyzerPresetTests {
         VideoAnalyzerPreset model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.VideoAnalyzerPreset\",\"insightsToExtract\":\"VideoInsightsOnly\",\"audioLanguage\":\"qzfavyv\",\"mode\":\"Basic\",\"experimentalOptions\":{\"yjkqabqgzslesjcb\":\"aryeu\"}}")
+                    "{\"@odata.type\":\"#Microsoft.Media.VideoAnalyzerPreset\",\"insightsToExtract\":\"AudioInsightsOnly\",\"audioLanguage\":\"bhu\",\"mode\":\"Basic\",\"experimentalOptions\":{\"slynsqyrpfoo\":\"yue\",\"zdzgtilaxhnfhqly\":\"rlttymsjnygqdnfw\",\"xxrtikvc\":\"ijouwivkxoyzunb\"}}")
                 .toObject(VideoAnalyzerPreset.class);
-        Assertions.assertEquals("qzfavyv", model.audioLanguage());
+        Assertions.assertEquals("bhu", model.audioLanguage());
         Assertions.assertEquals(AudioAnalysisMode.BASIC, model.mode());
-        Assertions.assertEquals("aryeu", model.experimentalOptions().get("yjkqabqgzslesjcb"));
-        Assertions.assertEquals(InsightsType.VIDEO_INSIGHTS_ONLY, model.insightsToExtract());
+        Assertions.assertEquals("yue", model.experimentalOptions().get("slynsqyrpfoo"));
+        Assertions.assertEquals(InsightsType.AUDIO_INSIGHTS_ONLY, model.insightsToExtract());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VideoAnalyzerPreset model =
             new VideoAnalyzerPreset()
-                .withAudioLanguage("qzfavyv")
+                .withAudioLanguage("bhu")
                 .withMode(AudioAnalysisMode.BASIC)
-                .withExperimentalOptions(mapOf("yjkqabqgzslesjcb", "aryeu"))
-                .withInsightsToExtract(InsightsType.VIDEO_INSIGHTS_ONLY);
+                .withExperimentalOptions(
+                    mapOf("slynsqyrpfoo", "yue", "zdzgtilaxhnfhqly", "rlttymsjnygqdnfw", "xxrtikvc", "ijouwivkxoyzunb"))
+                .withInsightsToExtract(InsightsType.AUDIO_INSIGHTS_ONLY);
         model = BinaryData.fromObject(model).toObject(VideoAnalyzerPreset.class);
-        Assertions.assertEquals("qzfavyv", model.audioLanguage());
+        Assertions.assertEquals("bhu", model.audioLanguage());
         Assertions.assertEquals(AudioAnalysisMode.BASIC, model.mode());
-        Assertions.assertEquals("aryeu", model.experimentalOptions().get("yjkqabqgzslesjcb"));
-        Assertions.assertEquals(InsightsType.VIDEO_INSIGHTS_ONLY, model.insightsToExtract());
+        Assertions.assertEquals("yue", model.experimentalOptions().get("slynsqyrpfoo"));
+        Assertions.assertEquals(InsightsType.AUDIO_INSIGHTS_ONLY, model.insightsToExtract());
     }
 
     @SuppressWarnings("unchecked")

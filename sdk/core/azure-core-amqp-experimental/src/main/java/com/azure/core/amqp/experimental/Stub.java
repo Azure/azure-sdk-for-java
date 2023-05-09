@@ -7,4 +7,9 @@ package com.azure.core.amqp.experimental;
  * Stub class so the package isn't empty.
  */
 public class Stub {
+    /**
+     * Creates an instance of {@link Stub}.
+     */
+    public Stub() {
+    }
 }

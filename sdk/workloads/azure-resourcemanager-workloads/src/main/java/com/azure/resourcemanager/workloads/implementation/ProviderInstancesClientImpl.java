@@ -64,11 +64,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "WorkloadsClientProvi")
-    private interface ProviderInstancesService {
+    public interface ProviderInstancesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
-                + "/{monitorName}/providerInstances")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProviderInstanceListResult>> list(
@@ -82,8 +81,7 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
-                + "/{monitorName}/providerInstances/{providerInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances/{providerInstanceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProviderInstanceInner>> get(
@@ -98,8 +96,7 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
-                + "/{monitorName}/providerInstances/{providerInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances/{providerInstanceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -115,8 +112,7 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors"
-                + "/{monitorName}/providerInstances/{providerInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/monitors/{monitorName}/providerInstances/{providerInstanceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -141,8 +137,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each
-     * provider instances.
+     * Gets a list of provider instances in the specified SAP monitor.
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -200,8 +198,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each
-     * provider instances.
+     * Gets a list of provider instances in the specified SAP monitor.
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -257,8 +257,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each
-     * provider instances.
+     * Gets a list of provider instances in the specified SAP monitor.
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -274,8 +276,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each
-     * provider instances.
+     * Gets a list of provider instances in the specified SAP monitor.
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -293,8 +297,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each
-     * provider instances.
+     * Gets a list of provider instances in the specified SAP monitor.
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -310,8 +316,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of each
-     * provider instances.
+     * Gets a list of provider instances in the specified SAP monitor.
+     *
+     * <p>Gets a list of provider instances in the specified SAP monitor. The operations returns various properties of
+     * each provider instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -328,7 +336,9 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * Gets properties of a provider instance.
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
      * resource name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -384,7 +394,9 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * Gets properties of a provider instance.
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
      * resource name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -438,7 +450,9 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * Gets properties of a provider instance.
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
      * resource name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -458,25 +472,9 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
-     * resource name.
+     * Gets properties of a provider instance.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the SAP monitor resource.
-     * @param providerInstanceName Name of the provider instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
-     *     resource name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProviderInstanceInner get(String resourceGroupName, String monitorName, String providerInstanceName) {
-        return getAsync(resourceGroupName, monitorName, providerInstanceName).block();
-    }
-
-    /**
-     * Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
      * resource name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -496,7 +494,30 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Gets properties of a provider instance.
+     *
+     * <p>Gets properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     * resource name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the SAP monitor resource.
+     * @param providerInstanceName Name of the provider instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a provider instance for the specified subscription, resource group, SAP monitor name, and
+     *     resource name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProviderInstanceInner get(String resourceGroupName, String monitorName, String providerInstanceName) {
+        return getWithResponse(resourceGroupName, monitorName, providerInstanceName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a provider instance.
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -564,7 +585,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Creates a provider instance.
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -631,7 +655,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Creates a provider instance.
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -661,7 +688,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Creates a provider instance.
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -691,7 +721,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Creates a provider instance.
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -708,12 +741,16 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
         String monitorName,
         String providerInstanceName,
         ProviderInstanceInner providerInstanceParameter) {
-        return beginCreateAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter)
+        return this
+            .beginCreateAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter)
             .getSyncPoller();
     }
 
     /**
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Creates a provider instance.
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -732,13 +769,16 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
         String providerInstanceName,
         ProviderInstanceInner providerInstanceParameter,
         Context context) {
-        return beginCreateAsync(
-                resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, context)
+        return this
+            .beginCreateAsync(resourceGroupName, monitorName, providerInstanceName, providerInstanceParameter, context)
             .getSyncPoller();
     }
 
     /**
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Creates a provider instance.
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -761,7 +801,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Creates a provider instance.
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -787,7 +830,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Creates a provider instance.
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -808,7 +854,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Creates a provider instance.
+     *
+     * <p>Creates a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -832,7 +881,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Deletes a provider instance.
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -887,7 +939,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Deletes a provider instance.
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -940,7 +995,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Deletes a provider instance.
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -966,7 +1024,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Deletes a provider instance.
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -994,7 +1055,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Deletes a provider instance.
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1007,11 +1071,14 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
         String resourceGroupName, String monitorName, String providerInstanceName) {
-        return beginDeleteAsync(resourceGroupName, monitorName, providerInstanceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, monitorName, providerInstanceName).getSyncPoller();
     }
 
     /**
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Deletes a provider instance.
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1025,11 +1092,14 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
         String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, providerInstanceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, monitorName, providerInstanceName, context).getSyncPoller();
     }
 
     /**
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Deletes a provider instance.
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1048,7 +1118,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Deletes a provider instance.
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1068,7 +1141,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Deletes a provider instance.
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1085,7 +1161,10 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     }
 
     /**
-     * Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource name.
+     * Deletes a provider instance.
+     *
+     * <p>Deletes a provider instance for the specified subscription, resource group, SAP monitor name, and resource
+     * name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -1105,7 +1184,8 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1141,7 +1221,8 @@ public final class ProviderInstancesClientImpl implements ProviderInstancesClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

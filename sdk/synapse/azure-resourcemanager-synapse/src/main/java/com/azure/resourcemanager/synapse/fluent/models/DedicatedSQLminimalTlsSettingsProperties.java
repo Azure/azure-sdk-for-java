@@ -16,6 +16,10 @@ public final class DedicatedSQLminimalTlsSettingsProperties {
     @JsonProperty(value = "minimalTlsVersion")
     private String minimalTlsVersion;
 
+    /** Creates an instance of DedicatedSQLminimalTlsSettingsProperties class. */
+    public DedicatedSQLminimalTlsSettingsProperties() {
+    }
+
     /**
      * Get the minimalTlsVersion property: The minimal tls version of the sql server.
      *

@@ -43,20 +43,6 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
         return Utils.mapPage(inner, inner1 -> new SqlPoolSecurityAlertPolicyImpl(inner1, this.manager()));
     }
 
-    public SqlPoolSecurityAlertPolicy get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        SecurityAlertPolicyName securityAlertPolicyName) {
-        SqlPoolSecurityAlertPolicyInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName);
-        if (inner != null) {
-            return new SqlPoolSecurityAlertPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SqlPoolSecurityAlertPolicy> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -73,6 +59,20 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SqlPoolSecurityAlertPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlPoolSecurityAlertPolicy get(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        SecurityAlertPolicyName securityAlertPolicyName) {
+        SqlPoolSecurityAlertPolicyInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName);
+        if (inner != null) {
+            return new SqlPoolSecurityAlertPolicyImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -101,9 +101,8 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
-        SecurityAlertPolicyName securityAlertPolicyName =
-            SecurityAlertPolicyName.fromString(Utils.getValueFromIdByName(id, "securityAlertPolicies"));
-        if (securityAlertPolicyName == null) {
+        String securityAlertPolicyNameLocal = Utils.getValueFromIdByName(id, "securityAlertPolicies");
+        if (securityAlertPolicyNameLocal == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -112,6 +111,8 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
                                 "The resource ID '%s' is not valid. Missing path segment 'securityAlertPolicies'.",
                                 id)));
         }
+        SecurityAlertPolicyName securityAlertPolicyName =
+            SecurityAlertPolicyName.fromString(securityAlertPolicyNameLocal);
         return this
             .getWithResponse(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName, Context.NONE)
             .getValue();
@@ -140,9 +141,8 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
-        SecurityAlertPolicyName securityAlertPolicyName =
-            SecurityAlertPolicyName.fromString(Utils.getValueFromIdByName(id, "securityAlertPolicies"));
-        if (securityAlertPolicyName == null) {
+        String securityAlertPolicyNameLocal = Utils.getValueFromIdByName(id, "securityAlertPolicies");
+        if (securityAlertPolicyNameLocal == null) {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
@@ -151,6 +151,8 @@ public final class SqlPoolSecurityAlertPoliciesImpl implements SqlPoolSecurityAl
                                 "The resource ID '%s' is not valid. Missing path segment 'securityAlertPolicies'.",
                                 id)));
         }
+        SecurityAlertPolicyName securityAlertPolicyName =
+            SecurityAlertPolicyName.fromString(securityAlertPolicyNameLocal);
         return this.getWithResponse(resourceGroupName, workspaceName, sqlPoolName, securityAlertPolicyName, context);
     }
 

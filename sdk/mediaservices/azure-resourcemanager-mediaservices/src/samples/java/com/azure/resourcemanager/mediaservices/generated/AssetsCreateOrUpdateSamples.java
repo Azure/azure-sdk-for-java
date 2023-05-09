@@ -18,7 +18,7 @@ public final class AssetsCreateOrUpdateSamples {
         manager
             .assets()
             .define("ClimbingMountLogan")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withDescription("A documentary showing the ascent of Mount Logan")
             .withStorageAccountName("storage0")
             .create();

@@ -22,6 +22,10 @@ public final class RecurrenceScheduleOccurrence {
     @JsonProperty(value = "occurrence")
     private Integer occurrence;
 
+    /** Creates an instance of RecurrenceScheduleOccurrence class. */
+    public RecurrenceScheduleOccurrence() {
+    }
+
     /**
      * Get the day property: The day of the week.
      *

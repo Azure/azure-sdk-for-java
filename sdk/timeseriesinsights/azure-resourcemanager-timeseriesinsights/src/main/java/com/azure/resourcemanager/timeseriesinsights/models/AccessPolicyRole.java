@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AccessPolicyRole. */
+/** A role defining the data plane operations that a principal can perform on a Time Series Insights client. */
 public final class AccessPolicyRole extends ExpandableStringEnum<AccessPolicyRole> {
     /** Static value Reader for AccessPolicyRole. */
     public static final AccessPolicyRole READER = fromString("Reader");
 
     /** Static value Contributor for AccessPolicyRole. */
     public static final AccessPolicyRole CONTRIBUTOR = fromString("Contributor");
+
+    /**
+     * Creates a new instance of AccessPolicyRole value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessPolicyRole() {
+    }
 
     /**
      * Creates or finds a AccessPolicyRole from its string representation.
@@ -27,7 +36,11 @@ public final class AccessPolicyRole extends ExpandableStringEnum<AccessPolicyRol
         return fromString(name, AccessPolicyRole.class);
     }
 
-    /** @return known AccessPolicyRole values. */
+    /**
+     * Gets known AccessPolicyRole values.
+     *
+     * @return known AccessPolicyRole values.
+     */
     public static Collection<AccessPolicyRole> values() {
         return values(AccessPolicyRole.class);
     }

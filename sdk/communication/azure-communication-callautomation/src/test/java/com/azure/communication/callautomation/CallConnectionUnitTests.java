@@ -4,21 +4,22 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsResponseInternal;
-import com.azure.communication.callautomation.implementation.models.RemoveParticipantsResponseInternal;
+import com.azure.communication.callautomation.implementation.models.RemoveParticipantResponseInternal;
 import com.azure.communication.callautomation.implementation.models.TransferCallResponseInternal;
 import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsResponseInternal;
-import com.azure.communication.callautomation.models.AddParticipantsOptions;
-import com.azure.communication.callautomation.models.AddParticipantsResult;
+import com.azure.communication.callautomation.models.AddParticipantOptions;
+import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
+import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
-import com.azure.communication.callautomation.models.RemoveParticipantsOptions;
-import com.azure.communication.callautomation.models.RemoveParticipantsResult;
+import com.azure.communication.callautomation.models.RemoveParticipantOptions;
+import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
-import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
+import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsOptions;
 import com.azure.communication.callautomation.models.UnmuteParticipantsResult;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -30,6 +31,7 @@ import java.util.ArrayList;
 
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Collections;
+import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -113,7 +115,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        CallParticipant callParticipant = callConnection.getParticipant(CALL_CALLER_ID);
+        CallParticipant callParticipant = callConnection.getParticipant(USER_1);
 
         assertNotNull(callParticipant);
         assertEquals(CALL_CALLER_ID, ((CommunicationUserIdentifier) callParticipant.getIdentifier()).getId());
@@ -127,7 +129,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        Response<CallParticipant> callParticipantResponse = callConnection.getParticipantWithResponse(CALL_CALLER_ID, Context.NONE);
+        Response<CallParticipant> callParticipantResponse = callConnection.getParticipantWithResponse(USER_1, Context.NONE);
 
         assertNotNull(callParticipantResponse);
         assertEquals(200, callParticipantResponse.getStatusCode());
@@ -179,8 +181,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
                     .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
-
-        TransferCallResult transferCallResult = callConnection.transferToParticipantCall(new CommunicationUserIdentifier(CALL_TARGET_ID));
+        TransferCallResult transferCallResult = callConnection.transferCallToParticipant(new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         assertNotNull(transferCallResult);
         assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
@@ -194,9 +195,8 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
                     .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
-
-        Response<TransferCallResult> transferCallResultResponse = callConnection.transferToParticipantCallWithResponse(
-            new TransferToParticipantCallOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
+        Response<TransferCallResult> transferCallResultResponse = callConnection.transferCallToParticipantWithResponse(
+            new TransferCallToParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID), null)
                 .setOperationContext(CALL_OPERATION_CONTEXT), Context.NONE);
 
         assertNotNull(transferCallResultResponse);
@@ -212,13 +212,12 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )
         )).getCallConnection(CALL_CONNECTION_ID);
 
-        AddParticipantsResult addParticipantsResult = callConnection.addParticipants(
-            new ArrayList<>(Collections.singletonList(
-                new CommunicationUserIdentifier(CALL_TARGET_ID))));
+        AddParticipantResult addParticipantsResult = callConnection.addParticipant(
+            new CallInvite(
+                new CommunicationUserIdentifier(CALL_TARGET_ID)));
         assertNotNull(addParticipantsResult);
         assertEquals(CALL_TARGET_ID, ((CommunicationUserIdentifier) addParticipantsResult
-            .getParticipants()
-            .get(0)
+            .getParticipant()
             .getIdentifier())
             .getId());
     }
@@ -231,10 +230,11 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )
         )).getCallConnection(CALL_CONNECTION_ID);
 
-        Response<AddParticipantsResult> addParticipantsResultResponse = callConnection.addParticipantsWithResponse(
-            new AddParticipantsOptions(new ArrayList<>(Collections.singletonList(
-                new CommunicationUserIdentifier(CALL_TARGET_ID))))
-                .setOperationContext(CALL_OPERATION_CONTEXT), Context.NONE);
+        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier(CALL_TARGET_ID), new HashMap<String, String>());
+        Response<AddParticipantResult> addParticipantsResultResponse = callConnection.addParticipantWithResponse(
+            new AddParticipantOptions(callInvite)
+                .setOperationContext(CALL_OPERATION_CONTEXT),
+                Context.NONE);
 
         assertNotNull(addParticipantsResultResponse);
         assertEquals(202, addParticipantsResultResponse.getStatusCode());
@@ -245,13 +245,13 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     public void removeParticipants() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new RemoveParticipantsResponseInternal()
+                new SimpleEntry<>(serializeObject(new RemoveParticipantResponseInternal()
                     .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        RemoveParticipantsResult removeParticipantsResult = callConnection.removeParticipants(
-            new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID))));
+        RemoveParticipantResult removeParticipantsResult = callConnection.removeParticipant(
+            new CommunicationUserIdentifier(CALL_TARGET_ID));
 
         assertNotNull(removeParticipantsResult);
         assertEquals(CALL_OPERATION_CONTEXT, removeParticipantsResult.getOperationContext());
@@ -261,15 +261,15 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     public void removeParticipantsWithResponse() {
         CallConnection callConnection = getCallAutomationClient(new ArrayList<>(
             Collections.singletonList(
-                new SimpleEntry<>(serializeObject(new RemoveParticipantsResponseInternal()
+                new SimpleEntry<>(serializeObject(new RemoveParticipantResponseInternal()
                     .setOperationContext(CALL_OPERATION_CONTEXT)), 202)
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        RemoveParticipantsOptions removeParticipantsOptions = new RemoveParticipantsOptions(
-            new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID))))
+        RemoveParticipantOptions removeParticipantsOptions = new RemoveParticipantOptions(
+            new CommunicationUserIdentifier(CALL_TARGET_ID))
             .setOperationContext(CALL_OPERATION_CONTEXT);
-        Response<RemoveParticipantsResult> removeParticipantsResultResponse = callConnection.removeParticipantsWithResponse(
+        Response<RemoveParticipantResult> removeParticipantsResultResponse = callConnection.removeParticipantWithResponse(
             removeParticipantsOptions, Context.NONE);
 
 

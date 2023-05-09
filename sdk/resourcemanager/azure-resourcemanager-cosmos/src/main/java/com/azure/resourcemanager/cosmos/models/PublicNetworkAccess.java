@@ -16,6 +16,18 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
     /** Static value Disabled for PublicNetworkAccess. */
     public static final PublicNetworkAccess DISABLED = fromString("Disabled");
 
+    /** Static value SecuredByPerimeter for PublicNetworkAccess. */
+    public static final PublicNetworkAccess SECURED_BY_PERIMETER = fromString("SecuredByPerimeter");
+
+    /**
+     * Creates a new instance of PublicNetworkAccess value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicNetworkAccess() {
+    }
+
     /**
      * Creates or finds a PublicNetworkAccess from its string representation.
      *

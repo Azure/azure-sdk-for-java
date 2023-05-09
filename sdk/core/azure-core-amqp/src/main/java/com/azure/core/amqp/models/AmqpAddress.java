@@ -12,7 +12,7 @@ import java.util.Objects;
  * <!-- src_embed com.azure.core.amqp.models.AmqpAddress.createAndGet -->
  * <pre>
  * AmqpAddress amqpAddress = new AmqpAddress&#40;&quot;my-address&quot;&#41;;
- * &#47;&#47; Retrieve Adderss
+ * &#47;&#47; Retrieve Address
  * String address = amqpAddress.toString&#40;&#41;;
  * System.out.println&#40;&quot;Address &quot; + address&#41;;
  * </pre>

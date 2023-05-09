@@ -27,16 +27,6 @@ public final class BigDataPoolsImpl implements BigDataPools {
         this.serviceManager = serviceManager;
     }
 
-    public BigDataPoolResourceInfo get(String resourceGroupName, String workspaceName, String bigDataPoolName) {
-        BigDataPoolResourceInfoInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, bigDataPoolName);
-        if (inner != null) {
-            return new BigDataPoolResourceInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BigDataPoolResourceInfo> getWithResponse(
         String resourceGroupName, String workspaceName, String bigDataPoolName, Context context) {
         Response<BigDataPoolResourceInfoInner> inner =
@@ -52,12 +42,35 @@ public final class BigDataPoolsImpl implements BigDataPools {
         }
     }
 
-    public Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName) {
-        return this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName);
+    public BigDataPoolResourceInfo get(String resourceGroupName, String workspaceName, String bigDataPoolName) {
+        BigDataPoolResourceInfoInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, bigDataPoolName);
+        if (inner != null) {
+            return new BigDataPoolResourceInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public Object delete(String resourceGroupName, String workspaceName, String bigDataPoolName, Context context) {
-        return this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName, context);
+    public BigDataPoolResourceInfo delete(String resourceGroupName, String workspaceName, String bigDataPoolName) {
+        BigDataPoolResourceInfoInner inner =
+            this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName);
+        if (inner != null) {
+            return new BigDataPoolResourceInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public BigDataPoolResourceInfo delete(
+        String resourceGroupName, String workspaceName, String bigDataPoolName, Context context) {
+        BigDataPoolResourceInfoInner inner =
+            this.serviceClient().delete(resourceGroupName, workspaceName, bigDataPoolName, context);
+        if (inner != null) {
+            return new BigDataPoolResourceInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public PagedIterable<BigDataPoolResourceInfo> listByWorkspace(String resourceGroupName, String workspaceName) {
@@ -125,7 +138,7 @@ public final class BigDataPoolsImpl implements BigDataPools {
         return this.getWithResponse(resourceGroupName, workspaceName, bigDataPoolName, context);
     }
 
-    public Object deleteById(String id) {
+    public BigDataPoolResourceInfo deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER
@@ -151,7 +164,7 @@ public final class BigDataPoolsImpl implements BigDataPools {
         return this.delete(resourceGroupName, workspaceName, bigDataPoolName, Context.NONE);
     }
 
-    public Object deleteByIdWithResponse(String id, Context context) {
+    public BigDataPoolResourceInfo deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER

@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  * Claims-based security (CBS) node that authorizes connections with AMQP services.
  *
  * @see <a href="https://www.oasis-open.org/committees/download.php/62097/amqp-cbs-v1.0-wd05.doc">
- * AMPQ Claims-based Security v1.0</a>
+ * AMQP Claims-based Security v1.0</a>
  */
 public interface ClaimsBasedSecurityNode extends AutoCloseable, AsyncCloseable {
     /**

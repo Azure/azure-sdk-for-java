@@ -35,6 +35,10 @@ public final class RestorableSqlDatabaseGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of RestorableSqlDatabaseGetResultInner class. */
+    public RestorableSqlDatabaseGetResultInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of a SQL database event.
      *

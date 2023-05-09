@@ -57,15 +57,15 @@ public final class BackupVaultResourceInner extends DppTrackedResource {
 
     /** {@inheritDoc} */
     @Override
-    public BackupVaultResourceInner withEtag(String etag) {
-        super.withEtag(etag);
+    public BackupVaultResourceInner withIdentity(DppIdentityDetails identity) {
+        super.withIdentity(identity);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public BackupVaultResourceInner withIdentity(DppIdentityDetails identity) {
-        super.withIdentity(identity);
+    public BackupVaultResourceInner withEtag(String etag) {
+        super.withEtag(etag);
         return this;
     }
 

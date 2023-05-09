@@ -28,6 +28,10 @@ public final class AutoscaleSettingsResource {
     @JsonProperty(value = "targetMaxThroughput", access = JsonProperty.Access.WRITE_ONLY)
     private Integer targetMaxThroughput;
 
+    /** Creates an instance of AutoscaleSettingsResource class. */
+    public AutoscaleSettingsResource() {
+    }
+
     /**
      * Get the maxThroughput property: Represents maximum throughput container can scale up to.
      *

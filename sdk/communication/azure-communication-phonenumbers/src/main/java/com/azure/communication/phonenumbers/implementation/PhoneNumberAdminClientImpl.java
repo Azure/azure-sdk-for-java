@@ -14,15 +14,11 @@ import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the PhoneNumberAdminClient type. */
 public final class PhoneNumberAdminClientImpl {
-    /**
-     * The communication resource, for example
-     * https://resourcename.communication.azure.com.
-     */
+    /** The communication resource, for example https://resourcename.communication.azure.com. */
     private final String endpoint;
 
     /**
-     * Gets The communication resource, for example
-     * https://resourcename.communication.azure.com.
+     * Gets The communication resource, for example https://resourcename.communication.azure.com.
      *
      * @return the endpoint value.
      */
@@ -100,7 +96,7 @@ public final class PhoneNumberAdminClientImpl {
     /**
      * Initializes an instance of PhoneNumberAdminClient client.
      *
-     * @param httpPipeline      The HTTP pipeline to send requests through.
+     * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      */
     PhoneNumberAdminClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint) {

@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The MongoDBCollectionGetPropertiesOptions model. */
 @Fluent
 public final class MongoDBCollectionGetPropertiesOptions extends OptionsResource {
+    /** Creates an instance of MongoDBCollectionGetPropertiesOptions class. */
+    public MongoDBCollectionGetPropertiesOptions() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public MongoDBCollectionGetPropertiesOptions withThroughput(Integer throughput) {

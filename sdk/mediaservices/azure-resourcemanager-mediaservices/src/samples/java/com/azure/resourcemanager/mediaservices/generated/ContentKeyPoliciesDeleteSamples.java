@@ -18,7 +18,7 @@ public final class ContentKeyPoliciesDeleteSamples {
         manager
             .contentKeyPolicies()
             .deleteWithResponse(
-                "contoso",
+                "contosorg",
                 "contosomedia",
                 "PolicyWithPlayReadyOptionAndOpenRestriction",
                 com.azure.core.util.Context.NONE);

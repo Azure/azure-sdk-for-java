@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.resources.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentInner;
 import com.azure.resourcemanager.resources.models.DeploymentMode;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** Samples for Deployments CreateOrUpdateAtScope. */
 public final class DeploymentsCreateOrUpdateAtScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PutDeploymentAtScope.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutDeploymentAtScope.json
      */
     /**
      * Sample code: Create deployment at a given scope.
@@ -45,8 +44,8 @@ public final class DeploymentsCreateOrUpdateAtScopeSamples {
                                     .createDefaultManagementSerializerAdapter()
                                     .deserialize("{}", Object.class, SerializerEncoding.JSON))
                             .withMode(DeploymentMode.INCREMENTAL))
-                    .withTags(mapOf("tagKey1", "tag-value-1", "tagKey2", "tag-value-2")),
-                Context.NONE);
+                    .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

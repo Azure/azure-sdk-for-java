@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkloadNetworks DeleteDhcp. */
 public final class WorkloadNetworksDeleteDhcpSamples {
     /*
@@ -17,6 +15,6 @@ public final class WorkloadNetworksDeleteDhcpSamples {
      * @param manager Entry point to AvsManager.
      */
     public static void workloadNetworksDeleteDhcp(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.workloadNetworks().deleteDhcp("group1", "cloud1", "dhcp1", Context.NONE);
+        manager.workloadNetworks().deleteDhcp("group1", "cloud1", "dhcp1", com.azure.core.util.Context.NONE);
     }
 }

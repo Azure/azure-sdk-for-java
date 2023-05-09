@@ -49,11 +49,9 @@ import java.util.Objects;
  * </p>
  *
  * <!-- src_embed com.azure.communication.phonenumbers.builder.instantiation -->
- * 
  * <pre>
  * PhoneNumbersClientBuilder builder = new PhoneNumbersClientBuilder&#40;&#41;;
  * </pre>
- * 
  * <!-- end com.azure.communication.phonenumbers.builder.instantiation -->
  *
  * <p>
@@ -62,15 +60,13 @@ import java.util.Objects;
  * </p>
  *
  * <!-- src_embed com.azure.communication.phonenumbers.client.instantiation -->
- * 
  * <pre>
  * PhoneNumbersClient phoneNumberClient = new PhoneNumbersClientBuilder&#40;&#41;
- *         .endpoint&#40;endpoint&#41;
- *         .credential&#40;keyCredential&#41;
- *         .httpClient&#40;httpClient&#41;
- *         .buildClient&#40;&#41;;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;keyCredential&#41;
+ *     .httpClient&#40;httpClient&#41;
+ *     .buildClient&#40;&#41;;
  * </pre>
- * 
  * <!-- end com.azure.communication.phonenumbers.client.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = { PhoneNumbersClient.class, PhoneNumbersAsyncClient.class })

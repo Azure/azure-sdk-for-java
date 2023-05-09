@@ -24,6 +24,10 @@ public final class CassandraKeyspaceGetProperties {
     @JsonProperty(value = "options")
     private CassandraKeyspaceGetPropertiesOptions options;
 
+    /** Creates an instance of CassandraKeyspaceGetProperties class. */
+    public CassandraKeyspaceGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

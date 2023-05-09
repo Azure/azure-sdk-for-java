@@ -24,6 +24,15 @@ public final class ExpressRouteAuthorizationProvisioningState
     public static final ExpressRouteAuthorizationProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of ExpressRouteAuthorizationProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpressRouteAuthorizationProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ExpressRouteAuthorizationProvisioningState from its string representation.
      *
      * @param name a name to look for.

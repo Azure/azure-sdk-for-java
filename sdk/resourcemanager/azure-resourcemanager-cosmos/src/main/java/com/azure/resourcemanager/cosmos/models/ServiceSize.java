@@ -20,6 +20,15 @@ public final class ServiceSize extends ExpandableStringEnum<ServiceSize> {
     public static final ServiceSize COSMOS_D16S = fromString("Cosmos.D16s");
 
     /**
+     * Creates a new instance of ServiceSize value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceSize() {
+    }
+
+    /**
      * Creates or finds a ServiceSize from its string representation.
      *
      * @param name a name to look for.

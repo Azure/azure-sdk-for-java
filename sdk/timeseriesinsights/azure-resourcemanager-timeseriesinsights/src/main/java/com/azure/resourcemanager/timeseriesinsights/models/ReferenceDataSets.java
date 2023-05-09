@@ -17,6 +17,23 @@ public interface ReferenceDataSets {
      *     group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
      *     environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the reference data set with the specified name in the specified environment along with {@link Response}.
+     */
+    Response<ReferenceDataSetResource> getWithResponse(
+        String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
+
+    /**
+     * Gets the reference data set with the specified name in the specified environment.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     *     group.
+     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
+     *     environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -25,7 +42,8 @@ public interface ReferenceDataSets {
     ReferenceDataSetResource get(String resourceGroupName, String environmentName, String referenceDataSetName);
 
     /**
-     * Gets the reference data set with the specified name in the specified environment.
+     * Deletes the reference data set with the specified name in the specified subscription, resource group, and
+     * environment.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
@@ -36,9 +54,9 @@ public interface ReferenceDataSets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
+     * @return the {@link Response}.
      */
-    Response<ReferenceDataSetResource> getWithResponse(
+    Response<Void> deleteWithResponse(
         String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
 
     /**
@@ -57,22 +75,20 @@ public interface ReferenceDataSets {
     void delete(String resourceGroupName, String environmentName, String referenceDataSetName);
 
     /**
-     * Deletes the reference data set with the specified name in the specified subscription, resource group, and
-     * environment.
+     * Lists all the available reference data sets associated with the subscription and within the specified resource
+     * group and environment.
      *
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
      *     group.
-     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response of the List Reference Data Sets operation along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context);
+    Response<ReferenceDataSetListResponse> listByEnvironmentWithResponse(
+        String resourceGroupName, String environmentName, Context context);
 
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
@@ -89,29 +105,13 @@ public interface ReferenceDataSets {
     ReferenceDataSetListResponse listByEnvironment(String resourceGroupName, String environmentName);
 
     /**
-     * Lists all the available reference data sets associated with the subscription and within the specified resource
-     * group and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Reference Data Sets operation.
-     */
-    Response<ReferenceDataSetListResponse> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context);
-
-    /**
      * Gets the reference data set with the specified name in the specified environment.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
+     * @return the reference data set with the specified name in the specified environment along with {@link Response}.
      */
     ReferenceDataSetResource getById(String id);
 
@@ -123,7 +123,7 @@ public interface ReferenceDataSets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
+     * @return the reference data set with the specified name in the specified environment along with {@link Response}.
      */
     Response<ReferenceDataSetResource> getByIdWithResponse(String id, Context context);
 
@@ -147,7 +147,7 @@ public interface ReferenceDataSets {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WorkspaceManagedSqlServerSecurityAlertPolicy List. */
 public final class WorkspaceManagedSqlServerSecurityAlertPolicyListSamples {
     /*
@@ -18,6 +16,8 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyListSamples {
      */
     public static void getWorkspaceManagedSqlServerSSecurityAlertPolicy(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.workspaceManagedSqlServerSecurityAlertPolicies().list("wsg-7398", "testWorkspace", Context.NONE);
+        manager
+            .workspaceManagedSqlServerSecurityAlertPolicies()
+            .list("wsg-7398", "testWorkspace", com.azure.core.util.Context.NONE);
     }
 }

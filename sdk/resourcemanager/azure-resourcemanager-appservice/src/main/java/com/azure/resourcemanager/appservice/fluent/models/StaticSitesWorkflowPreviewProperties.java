@@ -22,6 +22,10 @@ public final class StaticSitesWorkflowPreviewProperties {
     @JsonProperty(value = "contents", access = JsonProperty.Access.WRITE_ONLY)
     private String contents;
 
+    /** Creates an instance of StaticSitesWorkflowPreviewProperties class. */
+    public StaticSitesWorkflowPreviewProperties() {
+    }
+
     /**
      * Get the path property: The path for the workflow file to be generated.
      *

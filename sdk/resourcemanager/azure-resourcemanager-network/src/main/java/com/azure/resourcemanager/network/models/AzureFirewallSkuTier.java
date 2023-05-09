@@ -20,6 +20,15 @@ public final class AzureFirewallSkuTier extends ExpandableStringEnum<AzureFirewa
     public static final AzureFirewallSkuTier BASIC = fromString("Basic");
 
     /**
+     * Creates a new instance of AzureFirewallSkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AzureFirewallSkuTier() {
+    }
+
+    /**
      * Creates or finds a AzureFirewallSkuTier from its string representation.
      *
      * @param name a name to look for.

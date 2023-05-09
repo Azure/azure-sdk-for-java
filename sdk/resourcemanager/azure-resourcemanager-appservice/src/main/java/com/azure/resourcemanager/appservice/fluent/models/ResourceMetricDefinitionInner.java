@@ -20,6 +20,10 @@ public final class ResourceMetricDefinitionInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private ResourceMetricDefinitionProperties innerProperties;
 
+    /** Creates an instance of ResourceMetricDefinitionInner class. */
+    public ResourceMetricDefinitionInner() {
+    }
+
     /**
      * Get the innerProperties property: ResourceMetricDefinition resource specific properties.
      *

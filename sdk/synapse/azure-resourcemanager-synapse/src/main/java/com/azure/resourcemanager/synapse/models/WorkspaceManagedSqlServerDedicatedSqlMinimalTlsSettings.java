@@ -12,7 +12,9 @@ import com.azure.resourcemanager.synapse.fluent.models.DedicatedSQLminimalTlsSet
 /** Resource collection API of WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings. */
 public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings {
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -30,7 +32,9 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings {
         DedicatedSQLminimalTlsSettingsInner parameters);
 
     /**
-     * Update workspace managed sql server's minimal tls settings.
+     * Update server's tls settings.
+     *
+     * <p>Update workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -50,21 +54,9 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings {
         Context context);
 
     /**
-     * Get workspace managed sql server's minimal tls settings.
+     * Get server's minimal tls settings.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace managed sql server's minimal tls settings.
-     */
-    DedicatedSQLminimalTlsSettings get(
-        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName);
-
-    /**
-     * Get workspace managed sql server's minimal tls settings.
+     * <p>Get workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -79,7 +71,25 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings {
         String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName, Context context);
 
     /**
-     * List workspace managed sql server's minimal tls settings.
+     * Get server's minimal tls settings.
+     *
+     * <p>Get workspace managed sql server's minimal tls settings.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param dedicatedSQLminimalTlsSettingsName The name of the dedicated sql minimal tls settings.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workspace managed sql server's minimal tls settings.
+     */
+    DedicatedSQLminimalTlsSettings get(
+        String resourceGroupName, String workspaceName, String dedicatedSQLminimalTlsSettingsName);
+
+    /**
+     * List workspace server's minimal tls settings.
+     *
+     * <p>List workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -92,7 +102,9 @@ public interface WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings {
     PagedIterable<DedicatedSQLminimalTlsSettings> list(String resourceGroupName, String workspaceName);
 
     /**
-     * List workspace managed sql server's minimal tls settings.
+     * List workspace server's minimal tls settings.
+     *
+     * <p>List workspace managed sql server's minimal tls settings.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.

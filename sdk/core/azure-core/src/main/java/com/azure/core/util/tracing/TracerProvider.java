@@ -7,7 +7,7 @@ import com.azure.core.util.TracingOptions;
 
 /**
  * Resolves and provides {@link Tracer} implementation.
- *
+ * <p>
  * This class is intended to be used by Azure client libraries and provides abstraction over possible tracing implementations.
  * Application developers should use tracing libraries such as OpenTelemetry or Spring tracing.
  */

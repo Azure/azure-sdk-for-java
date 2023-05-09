@@ -111,14 +111,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .create();
 
         PurchasePlan plan = new PurchasePlan()
-            .withName("access_server_byol")
+            .withName("openvpnas")
             .withPublisher("openvpn")
             .withProduct("openvpnas");
 
         ImageReference imageReference = new ImageReference()
             .withPublisher("openvpn")
             .withOffer("openvpnas")
-            .withSku("access_server_byol")
+            .withSku("openvpnas")
             .withVersion("latest");
 
         VirtualMachineScaleSet virtualMachineScaleSet =
@@ -141,7 +141,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
 
         VirtualMachineScaleSet currentVirtualMachineScaleSet = this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
         // assertion for purchase plan
-        Assertions.assertEquals("access_server_byol", currentVirtualMachineScaleSet.plan().name());
+        Assertions.assertEquals("openvpnas", currentVirtualMachineScaleSet.plan().name());
         Assertions.assertEquals("openvpn", currentVirtualMachineScaleSet.plan().publisher());
         Assertions.assertEquals("openvpnas", currentVirtualMachineScaleSet.plan().product());
 
@@ -1269,6 +1269,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         VirtualMachineScaleSet vmss = computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
         List<VirtualMachineScaleSetVM> vmInstances = vmss.virtualMachines().list(null, VirtualMachineScaleSetVMExpandType.INSTANCE_VIEW).stream().collect(Collectors.toList());
         Assertions.assertEquals(3, vmInstances.size());
+        Assertions.assertTrue(vmInstances.stream().allMatch(vm -> vm.timeCreated() != null));
         List<PowerState> powerStates = vmInstances.stream().map(VirtualMachineScaleSetVM::powerState).collect(Collectors.toList());
         Assertions.assertEquals(Arrays.asList(PowerState.RUNNING, PowerState.RUNNING, PowerState.RUNNING), powerStates);
 
@@ -1282,6 +1283,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         // check single VM
         VirtualMachineScaleSetVM vmInstance0 = vmss.virtualMachines().getInstance(firstInstanceId);
         Assertions.assertEquals(PowerState.DEALLOCATED, vmInstance0.powerState());
+        Assertions.assertNotNull(vmInstance0.timeCreated());
     }
 
     @Test
@@ -1853,12 +1855,35 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
             .withRootUsername("jvuser")
             .withSsh(sshPublicKey())
-            .withUpgradeMode(UpgradeMode.AUTOMATIC)
+            .withUpgradeMode(UpgradeMode.MANUAL)
             .withEphemeralOSDisk()
             .withPlacement(DiffDiskPlacement.CACHE_DISK)
-            .withCapacity(2)
+            .withCapacity(1)
             .create();
         Assertions.assertTrue(uniformVMSS.isEphemeralOSDisk());
+
+        // somehow newly created vmss with ephemeral OS disk has outdated VMs and there's a delay before vmss detects that
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+        // update VMs to latest model, create baseline
+        uniformVMSS.virtualMachines().updateInstances(
+            uniformVMSS.virtualMachines()
+                .list()
+                .stream()
+                .map(VirtualMachineScaleSetVM::instanceId)
+                .toArray(String[]::new));
+
+        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
+
+        // scale up vmss
+        uniformVMSS.update()
+            .withCapacity(2)
+            .apply();
+
+        ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+
+        // verify that scaling up won't result in outdated VMs
+        Assertions.assertTrue(uniformVMSS.virtualMachines().list().stream().allMatch(VirtualMachineScaleSetVM::isLatestScaleSetUpdateApplied));
 
         // flex vmss with ephemeral os disk
         Network network2 =

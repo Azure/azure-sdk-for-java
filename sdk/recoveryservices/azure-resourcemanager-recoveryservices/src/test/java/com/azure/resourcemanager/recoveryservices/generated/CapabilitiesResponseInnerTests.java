@@ -11,11 +11,10 @@ import com.azure.resourcemanager.recoveryservices.models.DnsZoneResponse;
 import com.azure.resourcemanager.recoveryservices.models.VaultSubResourceType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CapabilitiesResponseInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CapabilitiesResponseInner model =
             BinaryData
                 .fromString(
@@ -25,8 +24,8 @@ public final class CapabilitiesResponseInnerTests {
         Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP, model.properties().dnsZones().get(0).subResource());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CapabilitiesResponseInner model =
             new CapabilitiesResponseInner()
                 .withType("jrwzox")

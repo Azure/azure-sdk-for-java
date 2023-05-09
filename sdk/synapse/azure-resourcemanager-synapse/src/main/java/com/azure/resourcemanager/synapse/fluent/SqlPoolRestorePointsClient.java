@@ -17,7 +17,9 @@ import com.azure.resourcemanager.synapse.models.CreateSqlPoolRestorePointDefinit
 /** An instance of this class provides access to all the operations defined in SqlPoolRestorePointsClient. */
 public interface SqlPoolRestorePointsClient {
     /**
-     * Get SQL pool backup information.
+     * Get SQL pool backup
+     *
+     * <p>Get SQL pool backup information.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -31,7 +33,9 @@ public interface SqlPoolRestorePointsClient {
     PagedIterable<RestorePointInner> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
-     * Get SQL pool backup information.
+     * Get SQL pool backup
+     *
+     * <p>Get SQL pool backup information.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -133,21 +137,6 @@ public interface SqlPoolRestorePointsClient {
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
      * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorePointInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName);
-
-    /**
-     * Gets a restore point.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param restorePointName The name of the restore point.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -159,7 +148,7 @@ public interface SqlPoolRestorePointsClient {
         String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
 
     /**
-     * Deletes a restore point.
+     * Gets a restore point.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -168,9 +157,10 @@ public interface SqlPoolRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a restore point.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName);
+    RestorePointInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName);
 
     /**
      * Deletes a restore point.
@@ -188,4 +178,18 @@ public interface SqlPoolRestorePointsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
+
+    /**
+     * Deletes a restore point.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName);
 }

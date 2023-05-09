@@ -29,6 +29,10 @@ public final class CentralServerConfiguration {
     @JsonProperty(value = "instanceCount", required = true)
     private long instanceCount;
 
+    /** Creates an instance of CentralServerConfiguration class. */
+    public CentralServerConfiguration() {
+    }
+
     /**
      * Get the subnetId property: The subnet id.
      *

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.kusto.models.LanguageExtensionImageName;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionName;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -16,6 +17,16 @@ public final class LanguageExtensionInner {
      */
     @JsonProperty(value = "languageExtensionName")
     private LanguageExtensionName languageExtensionName;
+
+    /*
+     * The language extension image name.
+     */
+    @JsonProperty(value = "languageExtensionImageName")
+    private LanguageExtensionImageName languageExtensionImageName;
+
+    /** Creates an instance of LanguageExtensionInner class. */
+    public LanguageExtensionInner() {
+    }
 
     /**
      * Get the languageExtensionName property: The language extension name.
@@ -34,6 +45,27 @@ public final class LanguageExtensionInner {
      */
     public LanguageExtensionInner withLanguageExtensionName(LanguageExtensionName languageExtensionName) {
         this.languageExtensionName = languageExtensionName;
+        return this;
+    }
+
+    /**
+     * Get the languageExtensionImageName property: The language extension image name.
+     *
+     * @return the languageExtensionImageName value.
+     */
+    public LanguageExtensionImageName languageExtensionImageName() {
+        return this.languageExtensionImageName;
+    }
+
+    /**
+     * Set the languageExtensionImageName property: The language extension image name.
+     *
+     * @param languageExtensionImageName the languageExtensionImageName value to set.
+     * @return the LanguageExtensionInner object itself.
+     */
+    public LanguageExtensionInner withLanguageExtensionImageName(
+        LanguageExtensionImageName languageExtensionImageName) {
+        this.languageExtensionImageName = languageExtensionImageName;
         return this;
     }
 

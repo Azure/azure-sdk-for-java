@@ -11,8 +11,10 @@ import com.azure.core.util.Context;
 /** Resource collection API of Monitors. */
 public interface Monitors {
     /**
-     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-     * monitor.
+     * Gets a list of SAP monitors in the specified subscription.
+     *
+     * <p>Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each
+     * SAP monitor.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -21,8 +23,10 @@ public interface Monitors {
     PagedIterable<Monitor> list();
 
     /**
-     * Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each SAP
-     * monitor.
+     * Gets a list of SAP monitors in the specified subscription.
+     *
+     * <p>Gets a list of SAP monitors in the specified subscription. The operations returns various properties of each
+     * SAP monitor.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,7 +37,9 @@ public interface Monitors {
     PagedIterable<Monitor> list(Context context);
 
     /**
-     * Gets a list of SAP monitors in the specified resource group.
+     * Gets a list of SAP monitors
+     *
+     * <p>Gets a list of SAP monitors in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +50,9 @@ public interface Monitors {
     PagedIterable<Monitor> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Gets a list of SAP monitors in the specified resource group.
+     * Gets a list of SAP monitors
+     *
+     * <p>Gets a list of SAP monitors in the specified resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
@@ -56,19 +64,9 @@ public interface Monitors {
     PagedIterable<Monitor> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     * Gets properties of a SAP monitor.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Name of the SAP monitor resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name.
-     */
-    Monitor getByResourceGroup(String resourceGroupName, String monitorName);
-
-    /**
-     * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     * <p>Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -82,7 +80,23 @@ public interface Monitors {
     Response<Monitor> getByResourceGroupWithResponse(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
+     * Gets properties of a SAP monitor.
+     *
+     * <p>Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Name of the SAP monitor resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     */
+    Monitor getByResourceGroup(String resourceGroupName, String monitorName);
+
+    /**
+     * Deletes a SAP monitor.
+     *
+     * <p>Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -94,7 +108,9 @@ public interface Monitors {
     OperationStatusResult deleteByResourceGroup(String resourceGroupName, String monitorName);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
+     * Deletes a SAP monitor.
+     *
+     * <p>Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Name of the SAP monitor resource.
@@ -107,7 +123,9 @@ public interface Monitors {
     OperationStatusResult delete(String resourceGroupName, String monitorName, Context context);
 
     /**
-     * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     * Gets properties of a SAP monitor.
+     *
+     * <p>Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +137,9 @@ public interface Monitors {
     Monitor getById(String id);
 
     /**
-     * Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
+     * Gets properties of a SAP monitor.
+     *
+     * <p>Gets properties of a SAP monitor for the specified subscription, resource group, and resource name.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -132,7 +152,9 @@ public interface Monitors {
     Response<Monitor> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
+     * Deletes a SAP monitor.
+     *
+     * <p>Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +165,9 @@ public interface Monitors {
     OperationStatusResult deleteById(String id);
 
     /**
-     * Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
+     * Deletes a SAP monitor.
+     *
+     * <p>Deletes a SAP monitor with the specified subscription, resource group, and SAP monitor name.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

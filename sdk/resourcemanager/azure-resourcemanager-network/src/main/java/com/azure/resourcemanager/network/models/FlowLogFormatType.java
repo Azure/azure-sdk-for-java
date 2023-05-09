@@ -14,6 +14,15 @@ public final class FlowLogFormatType extends ExpandableStringEnum<FlowLogFormatT
     public static final FlowLogFormatType JSON = fromString("JSON");
 
     /**
+     * Creates a new instance of FlowLogFormatType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FlowLogFormatType() {
+    }
+
+    /**
      * Creates or finds a FlowLogFormatType from its string representation.
      *
      * @param name a name to look for.

@@ -4,11 +4,9 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.synapse.models.SqlPoolSecurityAlertPolicy;
-import java.util.Arrays;
 
 /** Samples for SqlPoolSecurityAlertPolicies CreateOrUpdate. */
 public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
@@ -26,13 +24,15 @@ public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
             manager
                 .sqlPoolSecurityAlertPolicies()
                 .getWithResponse(
-                    "securityalert-4799", "securityalert-6440", "testdb", SecurityAlertPolicyName.DEFAULT, Context.NONE)
+                    "securityalert-4799",
+                    "securityalert-6440",
+                    "testdb",
+                    SecurityAlertPolicyName.DEFAULT,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
             .withState(SecurityAlertPolicyState.ENABLED)
-            .withDisabledAlerts(Arrays.asList("Sql_Injection", "Usage_Anomaly"))
-            .withEmailAddresses(Arrays.asList("test@microsoft.com", "user@microsoft.com"))
             .withEmailAccountAdmins(true)
             .withStorageEndpoint("https://mystorage.blob.core.windows.net")
             .withStorageAccountAccessKey(
@@ -55,7 +55,11 @@ public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
             manager
                 .sqlPoolSecurityAlertPolicies()
                 .getWithResponse(
-                    "securityalert-4799", "securityalert-6440", "testdb", SecurityAlertPolicyName.DEFAULT, Context.NONE)
+                    "securityalert-4799",
+                    "securityalert-6440",
+                    "testdb",
+                    SecurityAlertPolicyName.DEFAULT,
+                    com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withState(SecurityAlertPolicyState.ENABLED).apply();
     }

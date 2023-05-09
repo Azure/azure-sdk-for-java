@@ -329,6 +329,7 @@ public final class AzureMonitorExporterBuilder {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+                .tracer(new NoopTracer())
             .build();
     }
 

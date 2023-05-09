@@ -35,6 +35,10 @@ public final class RestorableMongodbDatabaseGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of RestorableMongodbDatabaseGetResultInner class. */
+    public RestorableMongodbDatabaseGetResultInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of a MongoDB database event.
      *

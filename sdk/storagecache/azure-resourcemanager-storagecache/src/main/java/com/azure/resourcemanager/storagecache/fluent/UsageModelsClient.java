@@ -13,24 +13,24 @@ import com.azure.resourcemanager.storagecache.fluent.models.UsageModelInner;
 /** An instance of this class provides access to all the operations defined in UsageModelsClient. */
 public interface UsageModelsClient {
     /**
-     * Get the list of Cache Usage Models available to this subscription.
+     * Get the list of cache usage models available to this subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Cache Usage Models available to this subscription as paginated response with {@link
+     * @return the list of cache usage models available to this subscription as paginated response with {@link
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UsageModelInner> list();
 
     /**
-     * Get the list of Cache Usage Models available to this subscription.
+     * Get the list of cache usage models available to this subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Cache Usage Models available to this subscription as paginated response with {@link
+     * @return the list of cache usage models available to this subscription as paginated response with {@link
      *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)

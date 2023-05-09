@@ -23,6 +23,10 @@ public final class EndpointDependency {
     @JsonProperty(value = "endpointDetails")
     private List<EndpointDetail> endpointDetails;
 
+    /** Creates an instance of EndpointDependency class. */
+    public EndpointDependency() {
+    }
+
     /**
      * Get the domainName property: The domain name of the dependency.
      *

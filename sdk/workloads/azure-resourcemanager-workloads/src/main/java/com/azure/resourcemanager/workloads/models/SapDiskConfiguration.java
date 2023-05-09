@@ -6,189 +6,66 @@ package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
-/** The SAP Disk Configuration. */
+/**
+ * The SAP Disk Configuration contains 'recommended disk' details and list of supported disks detail for a volume type.
+ */
 @Fluent
 public final class SapDiskConfiguration {
     /*
-     * The volume name.
+     * The recommended disk details for a given VM Sku.
      */
-    @JsonProperty(value = "volume")
-    private String volume;
+    @JsonProperty(value = "recommendedConfiguration")
+    private DiskVolumeConfiguration recommendedConfiguration;
 
     /*
-     * The disk type.
+     * The list of supported disks for a given VM Sku.
      */
-    @JsonProperty(value = "diskType")
-    private String diskType;
+    @JsonProperty(value = "supportedConfigurations")
+    private List<DiskDetails> supportedConfigurations;
 
-    /*
-     * The disk count.
-     */
-    @JsonProperty(value = "diskCount")
-    private Long diskCount;
-
-    /*
-     * The disk size in GB.
-     */
-    @JsonProperty(value = "diskSizeGB")
-    private Long diskSizeGB;
-
-    /*
-     * The disk Iops.
-     */
-    @JsonProperty(value = "diskIopsReadWrite")
-    private Long diskIopsReadWrite;
-
-    /*
-     * The disk provisioned throughput in MBps.
-     */
-    @JsonProperty(value = "diskMBpsReadWrite")
-    private Long diskMBpsReadWrite;
-
-    /*
-     * The disk storage type
-     */
-    @JsonProperty(value = "diskStorageType")
-    private String diskStorageType;
-
-    /**
-     * Get the volume property: The volume name.
-     *
-     * @return the volume value.
-     */
-    public String volume() {
-        return this.volume;
+    /** Creates an instance of SapDiskConfiguration class. */
+    public SapDiskConfiguration() {
     }
 
     /**
-     * Set the volume property: The volume name.
+     * Get the recommendedConfiguration property: The recommended disk details for a given VM Sku.
      *
-     * @param volume the volume value to set.
+     * @return the recommendedConfiguration value.
+     */
+    public DiskVolumeConfiguration recommendedConfiguration() {
+        return this.recommendedConfiguration;
+    }
+
+    /**
+     * Set the recommendedConfiguration property: The recommended disk details for a given VM Sku.
+     *
+     * @param recommendedConfiguration the recommendedConfiguration value to set.
      * @return the SapDiskConfiguration object itself.
      */
-    public SapDiskConfiguration withVolume(String volume) {
-        this.volume = volume;
+    public SapDiskConfiguration withRecommendedConfiguration(DiskVolumeConfiguration recommendedConfiguration) {
+        this.recommendedConfiguration = recommendedConfiguration;
         return this;
     }
 
     /**
-     * Get the diskType property: The disk type.
+     * Get the supportedConfigurations property: The list of supported disks for a given VM Sku.
      *
-     * @return the diskType value.
+     * @return the supportedConfigurations value.
      */
-    public String diskType() {
-        return this.diskType;
+    public List<DiskDetails> supportedConfigurations() {
+        return this.supportedConfigurations;
     }
 
     /**
-     * Set the diskType property: The disk type.
+     * Set the supportedConfigurations property: The list of supported disks for a given VM Sku.
      *
-     * @param diskType the diskType value to set.
+     * @param supportedConfigurations the supportedConfigurations value to set.
      * @return the SapDiskConfiguration object itself.
      */
-    public SapDiskConfiguration withDiskType(String diskType) {
-        this.diskType = diskType;
-        return this;
-    }
-
-    /**
-     * Get the diskCount property: The disk count.
-     *
-     * @return the diskCount value.
-     */
-    public Long diskCount() {
-        return this.diskCount;
-    }
-
-    /**
-     * Set the diskCount property: The disk count.
-     *
-     * @param diskCount the diskCount value to set.
-     * @return the SapDiskConfiguration object itself.
-     */
-    public SapDiskConfiguration withDiskCount(Long diskCount) {
-        this.diskCount = diskCount;
-        return this;
-    }
-
-    /**
-     * Get the diskSizeGB property: The disk size in GB.
-     *
-     * @return the diskSizeGB value.
-     */
-    public Long diskSizeGB() {
-        return this.diskSizeGB;
-    }
-
-    /**
-     * Set the diskSizeGB property: The disk size in GB.
-     *
-     * @param diskSizeGB the diskSizeGB value to set.
-     * @return the SapDiskConfiguration object itself.
-     */
-    public SapDiskConfiguration withDiskSizeGB(Long diskSizeGB) {
-        this.diskSizeGB = diskSizeGB;
-        return this;
-    }
-
-    /**
-     * Get the diskIopsReadWrite property: The disk Iops.
-     *
-     * @return the diskIopsReadWrite value.
-     */
-    public Long diskIopsReadWrite() {
-        return this.diskIopsReadWrite;
-    }
-
-    /**
-     * Set the diskIopsReadWrite property: The disk Iops.
-     *
-     * @param diskIopsReadWrite the diskIopsReadWrite value to set.
-     * @return the SapDiskConfiguration object itself.
-     */
-    public SapDiskConfiguration withDiskIopsReadWrite(Long diskIopsReadWrite) {
-        this.diskIopsReadWrite = diskIopsReadWrite;
-        return this;
-    }
-
-    /**
-     * Get the diskMBpsReadWrite property: The disk provisioned throughput in MBps.
-     *
-     * @return the diskMBpsReadWrite value.
-     */
-    public Long diskMBpsReadWrite() {
-        return this.diskMBpsReadWrite;
-    }
-
-    /**
-     * Set the diskMBpsReadWrite property: The disk provisioned throughput in MBps.
-     *
-     * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
-     * @return the SapDiskConfiguration object itself.
-     */
-    public SapDiskConfiguration withDiskMBpsReadWrite(Long diskMBpsReadWrite) {
-        this.diskMBpsReadWrite = diskMBpsReadWrite;
-        return this;
-    }
-
-    /**
-     * Get the diskStorageType property: The disk storage type.
-     *
-     * @return the diskStorageType value.
-     */
-    public String diskStorageType() {
-        return this.diskStorageType;
-    }
-
-    /**
-     * Set the diskStorageType property: The disk storage type.
-     *
-     * @param diskStorageType the diskStorageType value to set.
-     * @return the SapDiskConfiguration object itself.
-     */
-    public SapDiskConfiguration withDiskStorageType(String diskStorageType) {
-        this.diskStorageType = diskStorageType;
+    public SapDiskConfiguration withSupportedConfigurations(List<DiskDetails> supportedConfigurations) {
+        this.supportedConfigurations = supportedConfigurations;
         return this;
     }
 
@@ -198,5 +75,11 @@ public final class SapDiskConfiguration {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (recommendedConfiguration() != null) {
+            recommendedConfiguration().validate();
+        }
+        if (supportedConfigurations() != null) {
+            supportedConfigurations().forEach(e -> e.validate());
+        }
     }
 }

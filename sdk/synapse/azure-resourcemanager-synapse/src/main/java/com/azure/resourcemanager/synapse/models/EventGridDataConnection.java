@@ -22,6 +22,10 @@ public final class EventGridDataConnection extends DataConnectionInner {
     @JsonProperty(value = "properties")
     private EventGridConnectionProperties innerProperties;
 
+    /** Creates an instance of EventGridDataConnection class. */
+    public EventGridDataConnection() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the Event Grid data connection.
      *

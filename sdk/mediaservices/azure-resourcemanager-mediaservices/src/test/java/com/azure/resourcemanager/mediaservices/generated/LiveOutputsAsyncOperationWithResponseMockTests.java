@@ -31,7 +31,7 @@ public final class LiveOutputsAsyncOperationWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"name\":\"uporqzdfu\",\"status\":\"Failed\"}";
+        String responseStr = "{\"name\":\"iqge\",\"status\":\"InProgress\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,10 +62,10 @@ public final class LiveOutputsAsyncOperationWithResponseMockTests {
         AsyncOperationResult response =
             manager
                 .liveOutputs()
-                .asyncOperationWithResponse("n", "hgovfgp", "kqmhhaowjr", com.azure.core.util.Context.NONE)
+                .asyncOperationWithResponse("xetlgydlhqv", "n", "pxy", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("uporqzdfu", response.name());
-        Assertions.assertEquals(AsyncOperationStatus.FAILED, response.status());
+        Assertions.assertEquals("iqge", response.name());
+        Assertions.assertEquals(AsyncOperationStatus.IN_PROGRESS, response.status());
     }
 }

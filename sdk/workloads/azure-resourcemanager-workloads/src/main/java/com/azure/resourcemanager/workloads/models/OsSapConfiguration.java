@@ -22,6 +22,10 @@ public final class OsSapConfiguration {
     @JsonProperty(value = "sapFqdn")
     private String sapFqdn;
 
+    /** Creates an instance of OsSapConfiguration class. */
+    public OsSapConfiguration() {
+    }
+
     /**
      * Get the deployerVmPackages property: The url and storage account ID where deployer VM packages are uploaded.
      *

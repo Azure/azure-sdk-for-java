@@ -17,6 +17,15 @@ public final class EncryptionVersionType extends ExpandableStringEnum<Encryption
     public static final EncryptionVersionType AUTO_DETECTED = fromString("AutoDetected");
 
     /**
+     * Creates a new instance of EncryptionVersionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EncryptionVersionType() {
+    }
+
+    /**
      * Creates or finds a EncryptionVersionType from its string representation.
      *
      * @param name a name to look for.

@@ -20,6 +20,15 @@ public final class DdosSettingsProtectionMode extends ExpandableStringEnum<DdosS
     public static final DdosSettingsProtectionMode DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of DdosSettingsProtectionMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DdosSettingsProtectionMode() {
+    }
+
+    /**
      * Creates or finds a DdosSettingsProtectionMode from its string representation.
      *
      * @param name a name to look for.

@@ -16,6 +16,10 @@ public final class PurviewConfiguration {
     @JsonProperty(value = "purviewResourceId")
     private String purviewResourceId;
 
+    /** Creates an instance of PurviewConfiguration class. */
+    public PurviewConfiguration() {
+    }
+
     /**
      * Get the purviewResourceId property: Purview Resource ID.
      *

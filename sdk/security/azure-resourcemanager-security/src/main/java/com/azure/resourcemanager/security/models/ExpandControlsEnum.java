@@ -14,6 +14,15 @@ public final class ExpandControlsEnum extends ExpandableStringEnum<ExpandControl
     public static final ExpandControlsEnum DEFINITION = fromString("definition");
 
     /**
+     * Creates a new instance of ExpandControlsEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExpandControlsEnum() {
+    }
+
+    /**
      * Creates or finds a ExpandControlsEnum from its string representation.
      *
      * @param name a name to look for.

@@ -18,6 +18,10 @@ public final class DataConnectionValidationListResultInner {
     @JsonProperty(value = "value")
     private List<DataConnectionValidationResult> value;
 
+    /** Creates an instance of DataConnectionValidationListResultInner class. */
+    public DataConnectionValidationListResultInner() {
+    }
+
     /**
      * Get the value property: The list of Kusto data connection validation errors.
      *

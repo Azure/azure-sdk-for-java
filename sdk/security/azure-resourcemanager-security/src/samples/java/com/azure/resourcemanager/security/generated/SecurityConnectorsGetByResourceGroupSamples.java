@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityConnectors GetByResourceGroup. */
 public final class SecurityConnectorsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-08-01-preview/examples/SecurityConnectors/GetSecurityConnectorSingleResource_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-03-01-preview/examples/SecurityConnectors/GetSecurityConnectorSingleResource_example.json
      */
     /**
      * Sample code: Retrieve a security connector.
@@ -19,6 +17,7 @@ public final class SecurityConnectorsGetByResourceGroupSamples {
     public static void retrieveASecurityConnector(com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .securityConnectors()
-            .getByResourceGroupWithResponse("exampleResourceGroup", "exampleSecurityConnectorName", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "exampleResourceGroup", "exampleSecurityConnectorName", com.azure.core.util.Context.NONE);
     }
 }

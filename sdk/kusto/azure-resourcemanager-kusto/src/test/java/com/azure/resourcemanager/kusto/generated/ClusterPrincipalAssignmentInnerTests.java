@@ -9,34 +9,33 @@ import com.azure.resourcemanager.kusto.fluent.models.ClusterPrincipalAssignmentI
 import com.azure.resourcemanager.kusto.models.ClusterPrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterPrincipalAssignmentInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClusterPrincipalAssignmentInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"principalId\":\"dkcglhsl\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"dyggdtjixhbku\",\"principalType\":\"App\",\"tenantName\":\"wey\",\"principalName\":\"menevfyexfwh\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"bvyvdcsity\"},\"id\":\"naamde\",\"name\":\"tehfiqscjeypvh\",\"type\":\"zrkgqhcjrefovg\"}")
+                    "{\"properties\":{\"principalId\":\"sszdnru\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"uhmuouqfprwzwbn\",\"principalType\":\"Group\",\"tenantName\":\"tnwu\",\"principalName\":\"gazxuf\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"kyfi\"},\"id\":\"rfidfvzwdz\",\"name\":\"htymw\",\"type\":\"sdkf\"}")
                 .toObject(ClusterPrincipalAssignmentInner.class);
-        Assertions.assertEquals("dkcglhsl", model.principalId());
+        Assertions.assertEquals("sszdnru", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.role());
-        Assertions.assertEquals("dyggdtjixhbku", model.tenantId());
-        Assertions.assertEquals(PrincipalType.APP, model.principalType());
+        Assertions.assertEquals("uhmuouqfprwzwbn", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClusterPrincipalAssignmentInner model =
             new ClusterPrincipalAssignmentInner()
-                .withPrincipalId("dkcglhsl")
+                .withPrincipalId("sszdnru")
                 .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
-                .withTenantId("dyggdtjixhbku")
-                .withPrincipalType(PrincipalType.APP);
+                .withTenantId("uhmuouqfprwzwbn")
+                .withPrincipalType(PrincipalType.GROUP);
         model = BinaryData.fromObject(model).toObject(ClusterPrincipalAssignmentInner.class);
-        Assertions.assertEquals("dkcglhsl", model.principalId());
+        Assertions.assertEquals("sszdnru", model.principalId());
         Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, model.role());
-        Assertions.assertEquals("dyggdtjixhbku", model.tenantId());
-        Assertions.assertEquals(PrincipalType.APP, model.principalType());
+        Assertions.assertEquals("uhmuouqfprwzwbn", model.tenantId());
+        Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 }

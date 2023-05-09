@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes Get. */
 public final class IntegrationRuntimesGetSamples {
     /*
@@ -20,6 +18,10 @@ public final class IntegrationRuntimesGetSamples {
         manager
             .integrationRuntimes()
             .getWithResponse(
-                "exampleResourceGroup", "exampleWorkspace", "exampleIntegrationRuntime", null, Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleIntegrationRuntime",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 }

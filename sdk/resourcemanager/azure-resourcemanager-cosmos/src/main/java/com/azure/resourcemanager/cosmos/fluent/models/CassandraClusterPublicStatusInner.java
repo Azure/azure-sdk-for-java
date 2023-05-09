@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.CassandraClusterPublicStatusDataCentersItem;
+import com.azure.resourcemanager.cosmos.models.CassandraError;
 import com.azure.resourcemanager.cosmos.models.ConnectionError;
 import com.azure.resourcemanager.cosmos.models.ManagedCassandraReaperStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,10 +34,20 @@ public final class CassandraClusterPublicStatusInner {
     private List<ConnectionError> connectionErrors;
 
     /*
+     * List relevant information about any errors about cluster, data center and connection error.
+     */
+    @JsonProperty(value = "errors")
+    private List<CassandraError> errors;
+
+    /*
      * List of the status of each datacenter in this cluster.
      */
     @JsonProperty(value = "dataCenters")
     private List<CassandraClusterPublicStatusDataCentersItem> dataCenters;
+
+    /** Creates an instance of CassandraClusterPublicStatusInner class. */
+    public CassandraClusterPublicStatusInner() {
+    }
 
     /**
      * Get the etag property: The eTag property.
@@ -99,6 +110,28 @@ public final class CassandraClusterPublicStatusInner {
     }
 
     /**
+     * Get the errors property: List relevant information about any errors about cluster, data center and connection
+     * error.
+     *
+     * @return the errors value.
+     */
+    public List<CassandraError> errors() {
+        return this.errors;
+    }
+
+    /**
+     * Set the errors property: List relevant information about any errors about cluster, data center and connection
+     * error.
+     *
+     * @param errors the errors value to set.
+     * @return the CassandraClusterPublicStatusInner object itself.
+     */
+    public CassandraClusterPublicStatusInner withErrors(List<CassandraError> errors) {
+        this.errors = errors;
+        return this;
+    }
+
+    /**
      * Get the dataCenters property: List of the status of each datacenter in this cluster.
      *
      * @return the dataCenters value.
@@ -130,6 +163,9 @@ public final class CassandraClusterPublicStatusInner {
         }
         if (connectionErrors() != null) {
             connectionErrors().forEach(e -> e.validate());
+        }
+        if (errors() != null) {
+            errors().forEach(e -> e.validate());
         }
         if (dataCenters() != null) {
             dataCenters().forEach(e -> e.validate());

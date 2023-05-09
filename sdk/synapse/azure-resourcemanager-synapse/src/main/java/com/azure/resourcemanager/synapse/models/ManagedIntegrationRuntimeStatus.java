@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.synapse.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.ManagedIntegrationRuntimeStatusTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -16,7 +16,7 @@ import java.util.List;
 /** Managed integration runtime status. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Managed")
-@Fluent
+@Immutable
 public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeStatus {
     /*
      * Managed integration runtime status type properties.
@@ -24,6 +24,10 @@ public final class ManagedIntegrationRuntimeStatus extends IntegrationRuntimeSta
     @JsonProperty(value = "typeProperties", required = true)
     private ManagedIntegrationRuntimeStatusTypeProperties innerTypeProperties =
         new ManagedIntegrationRuntimeStatusTypeProperties();
+
+    /** Creates an instance of ManagedIntegrationRuntimeStatus class. */
+    public ManagedIntegrationRuntimeStatus() {
+    }
 
     /**
      * Get the innerTypeProperties property: Managed integration runtime status type properties.

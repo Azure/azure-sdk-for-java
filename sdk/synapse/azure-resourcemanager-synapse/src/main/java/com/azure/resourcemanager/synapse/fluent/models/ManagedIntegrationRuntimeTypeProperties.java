@@ -24,6 +24,10 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     @JsonProperty(value = "ssisProperties")
     private IntegrationRuntimeSsisProperties ssisProperties;
 
+    /** Creates an instance of ManagedIntegrationRuntimeTypeProperties class. */
+    public ManagedIntegrationRuntimeTypeProperties() {
+    }
+
     /**
      * Get the computeProperties property: The compute resource for managed integration runtime.
      *

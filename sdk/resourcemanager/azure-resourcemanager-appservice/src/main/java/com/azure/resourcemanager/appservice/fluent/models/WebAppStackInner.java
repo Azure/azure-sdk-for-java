@@ -26,6 +26,10 @@ public final class WebAppStackInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private WebAppStackProperties innerProperties;
 
+    /** Creates an instance of WebAppStackInner class. */
+    public WebAppStackInner() {
+    }
+
     /**
      * Get the location property: Web App stack location.
      *

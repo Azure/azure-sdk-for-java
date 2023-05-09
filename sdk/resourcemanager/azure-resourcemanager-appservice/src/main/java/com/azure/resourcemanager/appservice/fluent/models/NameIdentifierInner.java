@@ -16,6 +16,10 @@ public final class NameIdentifierInner {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of NameIdentifierInner class. */
+    public NameIdentifierInner() {
+    }
+
     /**
      * Get the name property: Name of the object.
      *

@@ -16,6 +16,10 @@ public final class ReplaceAllFirewallRulesOperationResponseInner {
     @JsonProperty(value = "operationId")
     private String operationId;
 
+    /** Creates an instance of ReplaceAllFirewallRulesOperationResponseInner class. */
+    public ReplaceAllFirewallRulesOperationResponseInner() {
+    }
+
     /**
      * Get the operationId property: The operation ID.
      *

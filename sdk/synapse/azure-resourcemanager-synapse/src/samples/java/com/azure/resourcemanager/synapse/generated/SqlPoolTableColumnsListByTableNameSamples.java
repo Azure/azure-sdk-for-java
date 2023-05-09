@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolTableColumns ListByTableName. */
 public final class SqlPoolTableColumnsListByTableNameSamples {
     /*
@@ -20,6 +18,7 @@ public final class SqlPoolTableColumnsListByTableNameSamples {
         com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
             .sqlPoolTableColumns()
-            .listByTableName("myRG", "serverName", "myDatabase", "dbo", "table1", null, Context.NONE);
+            .listByTableName(
+                "myRG", "serverName", "myDatabase", "dbo", "table1", null, com.azure.core.util.Context.NONE);
     }
 }

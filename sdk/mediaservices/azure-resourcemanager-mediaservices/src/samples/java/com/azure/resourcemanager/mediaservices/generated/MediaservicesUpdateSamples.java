@@ -11,7 +11,7 @@ import java.util.Map;
 /** Samples for Mediaservices Update. */
 public final class MediaservicesUpdateSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2021-11-01/examples/async-accounts-update.json
+     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/Accounts/stable/2023-01-01/examples/async-accounts-update.json
      */
     /**
      * Sample code: Update a Media Services accounts.
@@ -23,7 +23,7 @@ public final class MediaservicesUpdateSamples {
         MediaService resource =
             manager
                 .mediaservices()
-                .getByResourceGroupWithResponse("contoso", "contososports", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("contosorg", "contososports", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("key1", "value3")).apply();
     }

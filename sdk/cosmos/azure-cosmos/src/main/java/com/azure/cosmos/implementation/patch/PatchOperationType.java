@@ -8,6 +8,7 @@ public enum PatchOperationType {
     ADD(PatchConstants.OperationTypeNames_Add),
     REMOVE(PatchConstants.OperationTypeNames_Remove),
     REPLACE(PatchConstants.OperationTypeNames_Replace),
+    MOVE(PatchConstants.OperationTypeNames_Move),
     SET(PatchConstants.OperationTypeNames_Set),
     INCREMENT(PatchConstants.OperationTypeNames_Increment);
 

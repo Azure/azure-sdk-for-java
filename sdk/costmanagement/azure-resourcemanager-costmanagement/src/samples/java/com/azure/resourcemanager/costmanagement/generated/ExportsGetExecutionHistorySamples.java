@@ -7,7 +7,7 @@ package com.azure.resourcemanager.costmanagement.generated;
 /** Samples for Exports GetExecutionHistory. */
 public final class ExportsGetExecutionHistorySamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetByManagementGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByManagementGroup.json
      */
     /**
      * Sample code: ExportRunHistoryGetByManagementGroup.
@@ -25,7 +25,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetBySubscription.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetBySubscription.json
      */
     /**
      * Sample code: ExportRunHistoryGetBySubscription.
@@ -41,7 +41,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetByResourceGroup.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByResourceGroup.json
      */
     /**
      * Sample code: ExportRunHistoryGetByResourceGroup.
@@ -59,7 +59,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetByEnrollmentAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByEnrollmentAccount.json
      */
     /**
      * Sample code: ExportRunHistoryGetByEnrollmentAccount.
@@ -77,7 +77,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetByBillingAccount.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByBillingAccount.json
      */
     /**
      * Sample code: ExportRunHistoryGetByBillingAccount.
@@ -93,7 +93,7 @@ public final class ExportsGetExecutionHistorySamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ExportRunHistoryGetByDepartment.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ExportRunHistoryGetByDepartment.json
      */
     /**
      * Sample code: ExportRunHistoryGetByDepartment.

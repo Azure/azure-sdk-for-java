@@ -72,8 +72,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     public interface SignalRsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/locations/{location}"
-                + "/checkNameAvailability")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.SignalRService/locations/{location}/checkNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NameAvailabilityInner>> checkNameAvailability(
@@ -98,8 +97,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SignalRResourceList>> listByResourceGroup(
@@ -112,8 +110,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SignalRResourceInner>> getByResourceGroup(
@@ -127,8 +124,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}")
         @ExpectedResponses({200, 201, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -143,8 +139,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -158,8 +153,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -174,8 +168,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/listKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SignalRKeysInner>> listKeys(
@@ -189,8 +182,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/regenerateKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/regenerateKey")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> regenerateKey(
@@ -205,8 +197,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/restart")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/restart")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> restart(
@@ -220,8 +211,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/skus")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/skus")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SkuListInner>> listSkus(
@@ -1047,7 +1037,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, SignalRResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1066,7 +1056,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1297,7 +1287,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -1315,7 +1305,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
@@ -1560,7 +1550,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(
         String resourceGroupName, String resourceName, SignalRResourceInner parameters) {
-        return beginUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -1579,7 +1569,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(
         String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1984,7 +1974,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(
         String resourceGroupName, String resourceName, RegenerateKeyParameters parameters) {
-        return beginRegenerateKeyAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+        return this.beginRegenerateKeyAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
     }
 
     /**
@@ -2003,7 +1993,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(
         String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context) {
-        return beginRegenerateKeyAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+        return this.beginRegenerateKeyAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2234,7 +2224,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(String resourceGroupName, String resourceName) {
-        return beginRestartAsync(resourceGroupName, resourceName).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -2252,7 +2242,7 @@ public final class SignalRsClientImpl implements SignalRsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String resourceName, Context context) {
-        return beginRestartAsync(resourceGroupName, resourceName, context).getSyncPoller();
+        return this.beginRestartAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**

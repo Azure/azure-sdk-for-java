@@ -16,23 +16,23 @@ public final class SelectVideoTrackByAttributeTests {
         SelectVideoTrackByAttribute model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.SelectVideoTrackByAttribute\",\"attribute\":\"Bitrate\",\"filter\":\"All\",\"filterValue\":\"ozauorsukokwb\"}")
+                    "{\"@odata.type\":\"#Microsoft.Media.SelectVideoTrackByAttribute\",\"attribute\":\"Language\",\"filter\":\"Top\",\"filterValue\":\"kyxvxevblbjedn\"}")
                 .toObject(SelectVideoTrackByAttribute.class);
-        Assertions.assertEquals(TrackAttribute.BITRATE, model.attribute());
-        Assertions.assertEquals(AttributeFilter.ALL, model.filter());
-        Assertions.assertEquals("ozauorsukokwb", model.filterValue());
+        Assertions.assertEquals(TrackAttribute.LANGUAGE, model.attribute());
+        Assertions.assertEquals(AttributeFilter.TOP, model.filter());
+        Assertions.assertEquals("kyxvxevblbjedn", model.filterValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SelectVideoTrackByAttribute model =
             new SelectVideoTrackByAttribute()
-                .withAttribute(TrackAttribute.BITRATE)
-                .withFilter(AttributeFilter.ALL)
-                .withFilterValue("ozauorsukokwb");
+                .withAttribute(TrackAttribute.LANGUAGE)
+                .withFilter(AttributeFilter.TOP)
+                .withFilterValue("kyxvxevblbjedn");
         model = BinaryData.fromObject(model).toObject(SelectVideoTrackByAttribute.class);
-        Assertions.assertEquals(TrackAttribute.BITRATE, model.attribute());
-        Assertions.assertEquals(AttributeFilter.ALL, model.filter());
-        Assertions.assertEquals("ozauorsukokwb", model.filterValue());
+        Assertions.assertEquals(TrackAttribute.LANGUAGE, model.attribute());
+        Assertions.assertEquals(AttributeFilter.TOP, model.filter());
+        Assertions.assertEquals("kyxvxevblbjedn", model.filterValue());
     }
 }

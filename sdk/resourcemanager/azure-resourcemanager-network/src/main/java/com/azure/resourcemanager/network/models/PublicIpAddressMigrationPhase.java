@@ -26,6 +26,15 @@ public final class PublicIpAddressMigrationPhase extends ExpandableStringEnum<Pu
     public static final PublicIpAddressMigrationPhase COMMITTED = fromString("Committed");
 
     /**
+     * Creates a new instance of PublicIpAddressMigrationPhase value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicIpAddressMigrationPhase() {
+    }
+
+    /**
      * Creates or finds a PublicIpAddressMigrationPhase from its string representation.
      *
      * @param name a name to look for.

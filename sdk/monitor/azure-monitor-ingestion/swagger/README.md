@@ -7,7 +7,7 @@ java: true
 use: '@autorest/java@4.1.9'
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/monitor/data-plane/ingestion/preview/2021-11-01-preview/DataCollectionRules.json
+input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/monitor/data-plane/ingestion/stable/2023-01-01/DataCollectionRules.json
 namespace: com.azure.monitor.ingestion.implementation
 generate-client-interfaces: false
 sync-methods: all
@@ -16,7 +16,9 @@ context-client-method-parameter: true
 required-parameter-client-methods: false
 required-fields-as-ctor-args: true
 credential-types: tokencredential
+credential-scopes: https://monitor.azure.com//.default
 client-side-validations: true
 artifact-id: azure-monitor-ingestion
 data-plane: true
+enable-sync-stack: true
 ```

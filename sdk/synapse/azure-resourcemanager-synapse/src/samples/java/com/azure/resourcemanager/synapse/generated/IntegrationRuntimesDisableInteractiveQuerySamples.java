@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IntegrationRuntimes DisableInteractiveQuery. */
 public final class IntegrationRuntimesDisableInteractiveQuerySamples {
     /*
@@ -20,6 +18,9 @@ public final class IntegrationRuntimesDisableInteractiveQuerySamples {
         manager
             .integrationRuntimes()
             .disableInteractiveQuery(
-                "exampleResourceGroup", "exampleWorkspace", "exampleManagedIntegrationRuntime", Context.NONE);
+                "exampleResourceGroup",
+                "exampleWorkspace",
+                "exampleManagedIntegrationRuntime",
+                com.azure.core.util.Context.NONE);
     }
 }

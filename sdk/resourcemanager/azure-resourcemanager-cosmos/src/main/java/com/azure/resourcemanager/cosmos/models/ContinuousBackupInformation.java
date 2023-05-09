@@ -16,6 +16,10 @@ public final class ContinuousBackupInformation {
     @JsonProperty(value = "latestRestorableTimestamp")
     private String latestRestorableTimestamp;
 
+    /** Creates an instance of ContinuousBackupInformation class. */
+    public ContinuousBackupInformation() {
+    }
+
     /**
      * Get the latestRestorableTimestamp property: The latest restorable timestamp for a resource.
      *

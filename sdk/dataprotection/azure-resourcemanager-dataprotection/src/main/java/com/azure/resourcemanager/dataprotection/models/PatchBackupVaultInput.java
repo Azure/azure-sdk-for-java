@@ -22,6 +22,12 @@ public final class PatchBackupVaultInput {
     @JsonProperty(value = "securitySettings")
     private SecuritySettings securitySettings;
 
+    /*
+     * Feature Settings
+     */
+    @JsonProperty(value = "featureSettings")
+    private FeatureSettings featureSettings;
+
     /** Creates an instance of PatchBackupVaultInput class. */
     public PatchBackupVaultInput() {
     }
@@ -67,6 +73,26 @@ public final class PatchBackupVaultInput {
     }
 
     /**
+     * Get the featureSettings property: Feature Settings.
+     *
+     * @return the featureSettings value.
+     */
+    public FeatureSettings featureSettings() {
+        return this.featureSettings;
+    }
+
+    /**
+     * Set the featureSettings property: Feature Settings.
+     *
+     * @param featureSettings the featureSettings value to set.
+     * @return the PatchBackupVaultInput object itself.
+     */
+    public PatchBackupVaultInput withFeatureSettings(FeatureSettings featureSettings) {
+        this.featureSettings = featureSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -77,6 +103,9 @@ public final class PatchBackupVaultInput {
         }
         if (securitySettings() != null) {
             securitySettings().validate();
+        }
+        if (featureSettings() != null) {
+            featureSettings().validate();
         }
     }
 }

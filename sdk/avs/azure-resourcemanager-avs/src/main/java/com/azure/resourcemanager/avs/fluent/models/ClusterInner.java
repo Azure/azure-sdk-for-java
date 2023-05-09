@@ -7,8 +7,10 @@ package com.azure.resourcemanager.avs.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.avs.models.ClusterProvisioningState;
 import com.azure.resourcemanager.avs.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** A cluster resource. */
 @Fluent
@@ -56,6 +58,70 @@ public final class ClusterInner extends ProxyResource {
      */
     private ClusterProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the clusterSize property: The cluster size.
+     *
+     * @return the clusterSize value.
+     */
+    public Integer clusterSize() {
+        return this.innerProperties() == null ? null : this.innerProperties().clusterSize();
+    }
+
+    /**
+     * Set the clusterSize property: The cluster size.
+     *
+     * @param clusterSize the clusterSize value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withClusterSize(Integer clusterSize) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withClusterSize(clusterSize);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The state of the cluster provisioning.
+     *
+     * @return the provisioningState value.
+     */
+    public ClusterProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the clusterId property: The identity.
+     *
+     * @return the clusterId value.
+     */
+    public Integer clusterId() {
+        return this.innerProperties() == null ? null : this.innerProperties().clusterId();
+    }
+
+    /**
+     * Get the hosts property: The hosts.
+     *
+     * @return the hosts value.
+     */
+    public List<String> hosts() {
+        return this.innerProperties() == null ? null : this.innerProperties().hosts();
+    }
+
+    /**
+     * Set the hosts property: The hosts.
+     *
+     * @param hosts the hosts value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withHosts(List<String> hosts) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withHosts(hosts);
+        return this;
     }
 
     /**

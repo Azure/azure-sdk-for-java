@@ -7,6 +7,7 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
 import com.azure.resourcemanager.mediaservices.models.KeyDelivery;
+import com.azure.resourcemanager.mediaservices.models.MinimumTlsVersion;
 import com.azure.resourcemanager.mediaservices.models.ProvisioningState;
 import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
@@ -65,6 +66,13 @@ public final class MediaServiceProperties {
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> privateEndpointConnections;
+
+    /*
+     * The minimum TLS version allowed for this account's requests. This is an optional property. If unspecified, a
+     * secure default value will be used.
+     */
+    @JsonProperty(value = "minimumTlsVersion")
+    private MinimumTlsVersion minimumTlsVersion;
 
     /** Creates an instance of MediaServiceProperties class. */
     public MediaServiceProperties() {
@@ -198,6 +206,28 @@ public final class MediaServiceProperties {
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.privateEndpointConnections;
+    }
+
+    /**
+     * Get the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
+     * optional property. If unspecified, a secure default value will be used.
+     *
+     * @return the minimumTlsVersion value.
+     */
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.minimumTlsVersion;
+    }
+
+    /**
+     * Set the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
+     * optional property. If unspecified, a secure default value will be used.
+     *
+     * @param minimumTlsVersion the minimumTlsVersion value to set.
+     * @return the MediaServiceProperties object itself.
+     */
+    public MediaServiceProperties withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        this.minimumTlsVersion = minimumTlsVersion;
+        return this;
     }
 
     /**

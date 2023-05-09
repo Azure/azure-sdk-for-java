@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /** The name of a managed cluster SKU. */
 public final class ManagedClusterSkuName extends ExpandableStringEnum<ManagedClusterSkuName> {
-    /** Static value Basic for ManagedClusterSkuName. */
-    public static final ManagedClusterSkuName BASIC = fromString("Basic");
+    /** Static value Base for ManagedClusterSkuName. */
+    public static final ManagedClusterSkuName BASE = fromString("Base");
 
     /**
      * Creates a new instance of ManagedClusterSkuName value.

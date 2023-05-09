@@ -114,7 +114,7 @@ Below is the current structure of project:
 ├── Chart.yaml                   # A YAML file containing information about the helm chart and its dependencies
 ├── scenarios-matrix.yaml        # A YAML file containing configuration and custom values for stress test(s)
 ├── Dockerfile                   # A Dockerfile for building the stress test image
-├── stress-test-resouce.bicep    # An Azure Bicep for deploying stress test azure resources
+├── stress-test-resources.bicep  # An Azure Bicep for deploying stress test azure resources
 ├── pom.xml
 └── README.md
 ```

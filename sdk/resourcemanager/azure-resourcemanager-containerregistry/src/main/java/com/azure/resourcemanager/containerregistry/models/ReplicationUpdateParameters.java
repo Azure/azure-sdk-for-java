@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.fluent.models.ReplicationUpdateParametersProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** The parameters for updating a replication. */
 @Fluent
 public final class ReplicationUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationUpdateParameters.class);
-
     /*
      * The tags for the replication.
      */
@@ -29,6 +25,10 @@ public final class ReplicationUpdateParameters {
      */
     @JsonProperty(value = "properties")
     private ReplicationUpdateParametersProperties innerProperties;
+
+    /** Creates an instance of ReplicationUpdateParameters class. */
+    public ReplicationUpdateParameters() {
+    }
 
     /**
      * Get the tags property: The tags for the replication.

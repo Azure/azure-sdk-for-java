@@ -30,6 +30,10 @@ public final class CmdkeySetupTypeProperties {
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
+    /** Creates an instance of CmdkeySetupTypeProperties class. */
+    public CmdkeySetupTypeProperties() {
+    }
+
     /**
      * Get the targetName property: The server name of data source access.
      *

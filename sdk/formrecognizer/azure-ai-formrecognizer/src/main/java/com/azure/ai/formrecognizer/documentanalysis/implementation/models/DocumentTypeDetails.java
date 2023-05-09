@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -35,8 +36,16 @@ public final class DocumentTypeDetails {
     @JsonProperty(value = "fieldConfidence")
     private Map<String, Float> fieldConfidence;
 
-    /** Creates an instance of DocumentTypeDetails class. */
-    public DocumentTypeDetails() {}
+    /**
+     * Creates an instance of DocumentTypeDetails class.
+     *
+     * @param fieldSchema the fieldSchema value to set.
+     */
+    @JsonCreator
+    public DocumentTypeDetails(
+            @JsonProperty(value = "fieldSchema", required = true) Map<String, DocumentFieldSchema> fieldSchema) {
+        this.fieldSchema = fieldSchema;
+    }
 
     /**
      * Get the description property: Document model description.
@@ -85,17 +94,6 @@ public final class DocumentTypeDetails {
      */
     public Map<String, DocumentFieldSchema> getFieldSchema() {
         return this.fieldSchema;
-    }
-
-    /**
-     * Set the fieldSchema property: Description of the document semantic schema using a JSON Schema style syntax.
-     *
-     * @param fieldSchema the fieldSchema value to set.
-     * @return the DocumentTypeDetails object itself.
-     */
-    public DocumentTypeDetails setFieldSchema(Map<String, DocumentFieldSchema> fieldSchema) {
-        this.fieldSchema = fieldSchema;
-        return this;
     }
 
     /**

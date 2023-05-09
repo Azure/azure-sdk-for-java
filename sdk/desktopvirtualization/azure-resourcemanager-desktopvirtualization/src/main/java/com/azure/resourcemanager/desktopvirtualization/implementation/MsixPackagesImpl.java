@@ -28,15 +28,6 @@ public final class MsixPackagesImpl implements MsixPackages {
         this.serviceManager = serviceManager;
     }
 
-    public MsixPackage get(String resourceGroupName, String hostPoolName, String msixPackageFullName) {
-        MsixPackageInner inner = this.serviceClient().get(resourceGroupName, hostPoolName, msixPackageFullName);
-        if (inner != null) {
-            return new MsixPackageImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<MsixPackage> getWithResponse(
         String resourceGroupName, String hostPoolName, String msixPackageFullName, Context context) {
         Response<MsixPackageInner> inner =
@@ -52,8 +43,13 @@ public final class MsixPackagesImpl implements MsixPackages {
         }
     }
 
-    public void delete(String resourceGroupName, String hostPoolName, String msixPackageFullName) {
-        this.serviceClient().delete(resourceGroupName, hostPoolName, msixPackageFullName);
+    public MsixPackage get(String resourceGroupName, String hostPoolName, String msixPackageFullName) {
+        MsixPackageInner inner = this.serviceClient().get(resourceGroupName, hostPoolName, msixPackageFullName);
+        if (inner != null) {
+            return new MsixPackageImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -61,13 +57,24 @@ public final class MsixPackagesImpl implements MsixPackages {
         return this.serviceClient().deleteWithResponse(resourceGroupName, hostPoolName, msixPackageFullName, context);
     }
 
+    public void delete(String resourceGroupName, String hostPoolName, String msixPackageFullName) {
+        this.serviceClient().delete(resourceGroupName, hostPoolName, msixPackageFullName);
+    }
+
     public PagedIterable<MsixPackage> list(String resourceGroupName, String hostPoolName) {
         PagedIterable<MsixPackageInner> inner = this.serviceClient().list(resourceGroupName, hostPoolName);
         return Utils.mapPage(inner, inner1 -> new MsixPackageImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<MsixPackage> list(String resourceGroupName, String hostPoolName, Context context) {
-        PagedIterable<MsixPackageInner> inner = this.serviceClient().list(resourceGroupName, hostPoolName, context);
+    public PagedIterable<MsixPackage> list(
+        String resourceGroupName,
+        String hostPoolName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context) {
+        PagedIterable<MsixPackageInner> inner =
+            this.serviceClient().list(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip, context);
         return Utils.mapPage(inner, inner1 -> new MsixPackageImpl(inner1, this.manager()));
     }
 

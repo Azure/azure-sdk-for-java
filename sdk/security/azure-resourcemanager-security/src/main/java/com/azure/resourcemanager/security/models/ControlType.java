@@ -17,6 +17,15 @@ public final class ControlType extends ExpandableStringEnum<ControlType> {
     public static final ControlType CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of ControlType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ControlType() {
+    }
+
+    /**
      * Creates or finds a ControlType from its string representation.
      *
      * @param name a name to look for.

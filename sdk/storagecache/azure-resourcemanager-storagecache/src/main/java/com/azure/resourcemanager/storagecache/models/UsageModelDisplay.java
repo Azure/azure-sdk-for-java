@@ -16,6 +16,10 @@ public final class UsageModelDisplay {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of UsageModelDisplay class. */
+    public UsageModelDisplay() {
+    }
+
     /**
      * Get the description property: String to display for this usage model.
      *

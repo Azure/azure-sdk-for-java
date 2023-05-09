@@ -16,6 +16,10 @@ public final class ManagedRGConfiguration {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of ManagedRGConfiguration class. */
+    public ManagedRGConfiguration() {
+    }
+
     /**
      * Get the name property: Managed resource group name.
      *

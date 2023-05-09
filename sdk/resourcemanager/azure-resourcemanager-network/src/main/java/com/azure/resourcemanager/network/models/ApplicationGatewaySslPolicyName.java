@@ -31,6 +31,15 @@ public final class ApplicationGatewaySslPolicyName extends ExpandableStringEnum<
         fromString("AppGwSslPolicy20220101S");
 
     /**
+     * Creates a new instance of ApplicationGatewaySslPolicyName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewaySslPolicyName() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewaySslPolicyName from its string representation.
      *
      * @param name a name to look for.

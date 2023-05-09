@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.webpubsub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebPubSub GetByResourceGroup. */
 public final class WebPubSubGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/preview/2022-08-01-preview/examples/WebPubSub_Get.json
+     * x-ms-original-file: specification/webpubsub/resource-manager/Microsoft.SignalRService/stable/2023-02-01/examples/WebPubSub_Get.json
      */
     /**
      * Sample code: WebPubSub_Get.
@@ -17,6 +15,8 @@ public final class WebPubSubGetByResourceGroupSamples {
      * @param manager Entry point to WebPubSubManager.
      */
     public static void webPubSubGet(com.azure.resourcemanager.webpubsub.WebPubSubManager manager) {
-        manager.webPubSubs().getByResourceGroupWithResponse("myResourceGroup", "myWebPubSubService", Context.NONE);
+        manager
+            .webPubSubs()
+            .getByResourceGroupWithResponse("myResourceGroup", "myWebPubSubService", com.azure.core.util.Context.NONE);
     }
 }

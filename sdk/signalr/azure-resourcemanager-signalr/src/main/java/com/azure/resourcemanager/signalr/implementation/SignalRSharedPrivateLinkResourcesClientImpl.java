@@ -72,8 +72,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     public interface SignalRSharedPrivateLinkResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/sharedPrivateLinkResources")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SharedPrivateLinkResourceList>> list(
@@ -87,8 +86,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SharedPrivateLinkResourceInner>> get(
@@ -103,8 +101,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -120,8 +117,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/sharedPrivateLinkResources/{sharedPrivateLinkResourceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -724,7 +720,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
         String resourceGroupName,
         String resourceName,
         SharedPrivateLinkResourceInner parameters) {
-        return beginCreateOrUpdateAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters)
+        return this
+            .beginCreateOrUpdateAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters)
             .getSyncPoller();
     }
 
@@ -749,7 +746,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
         String resourceName,
         SharedPrivateLinkResourceInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 sharedPrivateLinkResourceName, resourceGroupName, resourceName, parameters, context)
             .getSyncPoller();
     }
@@ -1026,7 +1024,7 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName).getSyncPoller();
+        return this.beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
@@ -1045,7 +1043,8 @@ public final class SignalRSharedPrivateLinkResourcesClientImpl implements Signal
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String sharedPrivateLinkResourceName, String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context)
+        return this
+            .beginDeleteAsync(sharedPrivateLinkResourceName, resourceGroupName, resourceName, context)
             .getSyncPoller();
     }
 

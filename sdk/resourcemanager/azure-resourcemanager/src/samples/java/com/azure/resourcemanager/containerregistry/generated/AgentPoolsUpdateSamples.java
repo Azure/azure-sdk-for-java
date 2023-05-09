@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerregistry.models.AgentPoolUpdateParameters;
 
 /** Samples for AgentPools Update. */
@@ -28,6 +27,6 @@ public final class AgentPoolsUpdateSamples {
                 "myRegistry",
                 "myAgentPool",
                 new AgentPoolUpdateParameters().withCount(1),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

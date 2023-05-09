@@ -44,17 +44,6 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsImpl implements Priv
             .mapPage(inner, inner1 -> new PrivateEndpointConnectionForPrivateLinkHubImpl(inner1, this.manager()));
     }
 
-    public PrivateEndpointConnectionForPrivateLinkHub get(
-        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionForPrivateLinkHubInner inner =
-            this.serviceClient().get(resourceGroupName, privateLinkHubName, privateEndpointConnectionName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionForPrivateLinkHubImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateEndpointConnectionForPrivateLinkHub> getWithResponse(
         String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName, Context context) {
         Response<PrivateEndpointConnectionForPrivateLinkHubInner> inner =
@@ -67,6 +56,17 @@ public final class PrivateEndpointConnectionsPrivateLinkHubsImpl implements Priv
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateEndpointConnectionForPrivateLinkHubImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateEndpointConnectionForPrivateLinkHub get(
+        String resourceGroupName, String privateLinkHubName, String privateEndpointConnectionName) {
+        PrivateEndpointConnectionForPrivateLinkHubInner inner =
+            this.serviceClient().get(resourceGroupName, privateLinkHubName, privateEndpointConnectionName);
+        if (inner != null) {
+            return new PrivateEndpointConnectionForPrivateLinkHubImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -31,6 +31,10 @@ public final class DataMaskingRuleInner extends ProxyResource {
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
 
+    /** Creates an instance of DataMaskingRuleInner class. */
+    public DataMaskingRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of the resource.
      *

@@ -56,28 +56,28 @@ public interface SapCentralServerInstance {
     SystemData systemData();
 
     /**
-     * Gets the instanceNo property: The central server instance id.
+     * Gets the instanceNo property: The central services instance number.
      *
      * @return the instanceNo value.
      */
     String instanceNo();
 
     /**
-     * Gets the subnet property: The central server subnet.
+     * Gets the subnet property: The central services instance subnet.
      *
      * @return the subnet value.
      */
     String subnet();
 
     /**
-     * Gets the messageServerProperties property: Defines the SAP message server properties.
+     * Gets the messageServerProperties property: Defines the SAP Message Server properties.
      *
      * @return the messageServerProperties value.
      */
     MessageServerProperties messageServerProperties();
 
     /**
-     * Gets the enqueueServerProperties property: Defines the SAP enqueue server properties.
+     * Gets the enqueueServerProperties property: Defines the SAP Enqueue Server properties.
      *
      * @return the enqueueServerProperties value.
      */
@@ -91,28 +91,37 @@ public interface SapCentralServerInstance {
     GatewayServerProperties gatewayServerProperties();
 
     /**
-     * Gets the enqueueReplicationServerProperties property: Defines the SAP ERS Server properties.
+     * Gets the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS)
+     * properties.
      *
      * @return the enqueueReplicationServerProperties value.
      */
     EnqueueReplicationServerProperties enqueueReplicationServerProperties();
 
     /**
-     * Gets the kernelVersion property: The central server kernel version.
+     * Gets the kernelVersion property: The central services instance Kernel Version.
      *
      * @return the kernelVersion value.
      */
     String kernelVersion();
 
     /**
-     * Gets the kernelPatch property: The central server kernel patch.
+     * Gets the kernelPatch property: The central services instance Kernel Patch level.
      *
      * @return the kernelPatch value.
      */
     String kernelPatch();
 
     /**
-     * Gets the vmDetails property: The list of virtual machines.
+     * Gets the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual
+     * Machines.
+     *
+     * @return the loadBalancerDetails value.
+     */
+    LoadBalancerDetails loadBalancerDetails();
+
+    /**
+     * Gets the vmDetails property: The list of virtual machines corresponding to the Central Services instance.
      *
      * @return the vmDetails value.
      */
@@ -126,7 +135,7 @@ public interface SapCentralServerInstance {
     SapVirtualInstanceStatus status();
 
     /**
-     * Gets the health property: Defines the SAP Instance health.
+     * Gets the health property: Defines the health of SAP Instances.
      *
      * @return the health value.
      */
@@ -140,7 +149,7 @@ public interface SapCentralServerInstance {
     SapVirtualInstanceProvisioningState provisioningState();
 
     /**
-     * Gets the errors property: Defines the Central Instance errors.
+     * Gets the errors property: Defines the errors related to SAP Central Services Instance resource.
      *
      * @return the errors value.
      */
@@ -210,7 +219,7 @@ public interface SapCentralServerInstance {
              * Specifies resourceGroupName, sapVirtualInstanceName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
              * @return the next definition stage.
              */
             WithCreate withExistingSapVirtualInstance(String resourceGroupName, String sapVirtualInstanceName);
@@ -253,9 +262,9 @@ public interface SapCentralServerInstance {
         /** The stage of the SapCentralServerInstance definition allowing to specify messageServerProperties. */
         interface WithMessageServerProperties {
             /**
-             * Specifies the messageServerProperties property: Defines the SAP message server properties..
+             * Specifies the messageServerProperties property: Defines the SAP Message Server properties..
              *
-             * @param messageServerProperties Defines the SAP message server properties.
+             * @param messageServerProperties Defines the SAP Message Server properties.
              * @return the next definition stage.
              */
             WithCreate withMessageServerProperties(MessageServerProperties messageServerProperties);
@@ -263,9 +272,9 @@ public interface SapCentralServerInstance {
         /** The stage of the SapCentralServerInstance definition allowing to specify enqueueServerProperties. */
         interface WithEnqueueServerProperties {
             /**
-             * Specifies the enqueueServerProperties property: Defines the SAP enqueue server properties..
+             * Specifies the enqueueServerProperties property: Defines the SAP Enqueue Server properties..
              *
-             * @param enqueueServerProperties Defines the SAP enqueue server properties.
+             * @param enqueueServerProperties Defines the SAP Enqueue Server properties.
              * @return the next definition stage.
              */
             WithCreate withEnqueueServerProperties(EnqueueServerProperties enqueueServerProperties);
@@ -285,9 +294,10 @@ public interface SapCentralServerInstance {
          */
         interface WithEnqueueReplicationServerProperties {
             /**
-             * Specifies the enqueueReplicationServerProperties property: Defines the SAP ERS Server properties..
+             * Specifies the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server
+             * (ERS) properties..
              *
-             * @param enqueueReplicationServerProperties Defines the SAP ERS Server properties.
+             * @param enqueueReplicationServerProperties Defines the SAP Enqueue Replication Server (ERS) properties.
              * @return the next definition stage.
              */
             WithCreate withEnqueueReplicationServerProperties(
@@ -345,4 +355,45 @@ public interface SapCentralServerInstance {
      * @return the refreshed resource.
      */
     SapCentralServerInstance refresh(Context context);
+
+    /**
+     * Starts the SAP Central Services Instance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance();
+
+    /**
+     * Starts the SAP Central Services Instance.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance(Context context);
+
+    /**
+     * Stops the SAP Central Services Instance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance();
+
+    /**
+     * Stops the SAP Central Services Instance.
+     *
+     * @param body SAP Central Services instance stop request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance(StopRequest body, Context context);
 }

@@ -35,6 +35,15 @@ public final class DhGroup extends ExpandableStringEnum<DhGroup> {
     public static final DhGroup DHGROUP24 = fromString("DHGroup24");
 
     /**
+     * Creates a new instance of DhGroup value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DhGroup() {
+    }
+
+    /**
      * Creates or finds a DhGroup from its string representation.
      *
      * @param name a name to look for.

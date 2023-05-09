@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The CassandraKeyspaceGetPropertiesOptions model. */
 @Fluent
 public final class CassandraKeyspaceGetPropertiesOptions extends OptionsResource {
+    /** Creates an instance of CassandraKeyspaceGetPropertiesOptions class. */
+    public CassandraKeyspaceGetPropertiesOptions() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public CassandraKeyspaceGetPropertiesOptions withThroughput(Integer throughput) {

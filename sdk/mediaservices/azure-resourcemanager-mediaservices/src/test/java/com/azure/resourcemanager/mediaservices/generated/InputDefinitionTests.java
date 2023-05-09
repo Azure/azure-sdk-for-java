@@ -15,15 +15,13 @@ public final class InputDefinitionTests {
         InputDefinition model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"},{\"@odata.type\":\"TrackDescriptor\"}]}")
+                    "{\"@odata.type\":\"InputDefinition\",\"includedTracks\":[{\"@odata.type\":\"TrackDescriptor\"}]}")
                 .toObject(InputDefinition.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InputDefinition model =
-            new InputDefinition()
-                .withIncludedTracks(Arrays.asList(new TrackDescriptor(), new TrackDescriptor(), new TrackDescriptor()));
+        InputDefinition model = new InputDefinition().withIncludedTracks(Arrays.asList(new TrackDescriptor()));
         model = BinaryData.fromObject(model).toObject(InputDefinition.class);
     }
 }

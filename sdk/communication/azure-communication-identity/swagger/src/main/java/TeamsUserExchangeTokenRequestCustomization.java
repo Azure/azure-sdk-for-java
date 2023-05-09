@@ -46,17 +46,17 @@ public class TeamsUserExchangeTokenRequestCustomization extends Customization {
     }
 
     private void addConstructor(ClassCustomization classCustomization) {
-        classCustomization.addConstructor(joinWithNewline(
-                        "public GetTokenForTeamsUserOptions(String teamsUserAadToken, String clientId, String userObjectId) {",
-                        "    this.teamsUserAadToken = teamsUserAadToken;",
-                        "    this.clientId = clientId;",
-                        "    this.userObjectId = userObjectId;",
-                        "}"))
-                .getJavadoc()
-                .setDescription("Constructor of {@link GetTokenForTeamsUserOptions}.")
-                .setParam("teamsUserAadToken", "Azure AD access token of a Teams User.")
-                .setParam("clientId", "Client ID of an Azure AD application to be verified against the appId claim in the Azure AD access token.")
-                .setParam("userObjectId", "Object ID of an Azure AD user (Teams User) to be verified against the OID claim in the Azure AD access token.");
+        classCustomization.getConstructor("GetTokenForTeamsUserOptions()")
+            .replaceParameters("String teamsUserAadToken, String clientId, String userObjectId")
+            .replaceBody(joinWithNewline(
+                "    this.teamsUserAadToken = teamsUserAadToken;",
+                "    this.clientId = clientId;",
+                "    this.userObjectId = userObjectId;"))
+            .getJavadoc()
+            .setDescription("Constructor of {@link GetTokenForTeamsUserOptions}.")
+            .setParam("teamsUserAadToken", "Azure AD access token of a Teams User.")
+            .setParam("clientId", "Client ID of an Azure AD application to be verified against the appId claim in the Azure AD access token.")
+            .setParam("userObjectId", "Object ID of an Azure AD user (Teams User) to be verified against the OID claim in the Azure AD access token.");
     }
 
     private void customizeTokenVariable(ClassCustomization classCustomization) {

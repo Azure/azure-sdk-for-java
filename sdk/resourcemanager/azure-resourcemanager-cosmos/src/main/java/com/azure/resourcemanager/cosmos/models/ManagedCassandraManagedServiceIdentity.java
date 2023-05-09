@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity for the resource. */
 @Fluent
-public class ManagedCassandraManagedServiceIdentity {
+public final class ManagedCassandraManagedServiceIdentity {
     /*
      * The object id of the identity resource.
      */
@@ -27,6 +27,10 @@ public class ManagedCassandraManagedServiceIdentity {
      */
     @JsonProperty(value = "type")
     private ManagedCassandraResourceIdentityType type;
+
+    /** Creates an instance of ManagedCassandraManagedServiceIdentity class. */
+    public ManagedCassandraManagedServiceIdentity() {
+    }
 
     /**
      * Get the principalId property: The object id of the identity resource.

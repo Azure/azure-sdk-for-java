@@ -9,7 +9,7 @@ import com.azure.resourcemanager.hybridcontainerservice.models.OsType;
 /** Samples for AgentPool CreateOrUpdate. */
 public final class AgentPoolCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/PutAgentPool.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/PutAgentPool.json
      */
     /**
      * Sample code: PutAgentPool.

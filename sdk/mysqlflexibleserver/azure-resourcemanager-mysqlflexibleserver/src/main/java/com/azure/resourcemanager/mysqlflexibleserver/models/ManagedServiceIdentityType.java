@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mysqlflexibleserver.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ManagedServiceIdentityType. */
+/** Type of managed service identity. */
 public enum ManagedServiceIdentityType {
     /** Enum value UserAssigned. */
     USER_ASSIGNED("UserAssigned");
@@ -27,6 +27,9 @@ public enum ManagedServiceIdentityType {
      */
     @JsonCreator
     public static ManagedServiceIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ManagedServiceIdentityType[] items = ManagedServiceIdentityType.values();
         for (ManagedServiceIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,6 +39,7 @@ public enum ManagedServiceIdentityType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

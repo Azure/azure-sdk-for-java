@@ -23,12 +23,12 @@ public final class OperationsResultsLocationsImpl implements OperationsResultsLo
         this.serviceManager = serviceManager;
     }
 
-    public void get(String location, String operationId) {
-        this.serviceClient().get(location, operationId);
-    }
-
     public Response<Void> getWithResponse(String location, String operationId, Context context) {
         return this.serviceClient().getWithResponse(location, operationId, context);
+    }
+
+    public void get(String location, String operationId) {
+        this.serviceClient().get(location, operationId);
     }
 
     private OperationsResultsLocationsClient serviceClient() {

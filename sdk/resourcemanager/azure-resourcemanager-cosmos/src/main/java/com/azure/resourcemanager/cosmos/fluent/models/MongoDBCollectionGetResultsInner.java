@@ -20,6 +20,10 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
     @JsonProperty(value = "properties")
     private MongoDBCollectionGetProperties innerProperties;
 
+    /** Creates an instance of MongoDBCollectionGetResultsInner class. */
+    public MongoDBCollectionGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB MongoDB collection.
      *

@@ -31,7 +31,7 @@ public final class ContentKeyPoliciesGetPolicyPropertiesWithSecretsWithResponseM
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"policyId\":\"b6896c10-7823-4e36-9df3-3e6951ced807\",\"created\":\"2021-10-21T16:39:12Z\",\"lastModified\":\"2021-01-06T20:17:19Z\",\"description\":\"vfuuru\",\"options\":[{\"policyOptionId\":\"73f0eb52-2d6e-4efb-9f29-cfcb5e45efca\",\"name\":\"xxwla\"},{\"policyOptionId\":\"a40e2b70-a41f-44b5-8921-6b9097e0a60b\",\"name\":\"exzsrz\"}]}";
+            "{\"policyId\":\"63503005-74f8-4d42-8235-46692e56f606\",\"created\":\"2021-01-31T22:09:22Z\",\"lastModified\":\"2021-01-03T21:52:46Z\",\"description\":\"hckfkyjpmspbps\",\"options\":[{\"policyOptionId\":\"730d3a0b-4f36-4581-b2a1-3ef784c09e3d\",\"name\":\"pyogtieyuj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +63,10 @@ public final class ContentKeyPoliciesGetPolicyPropertiesWithSecretsWithResponseM
             manager
                 .contentKeyPolicies()
                 .getPolicyPropertiesWithSecretsWithResponse(
-                    "bbelawumuaslzk", "rrwoycqucwyhahn", "mdr", com.azure.core.util.Context.NONE)
+                    "nknlqwzdvpi", "hxqszdtmaajquh", "xylrjvmtygjbmz", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("vfuuru", response.description());
-        Assertions.assertEquals("xxwla", response.options().get(0).name());
+        Assertions.assertEquals("hckfkyjpmspbps", response.description());
+        Assertions.assertEquals("pyogtieyuj", response.options().get(0).name());
     }
 }

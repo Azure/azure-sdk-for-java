@@ -15,29 +15,29 @@ public final class AacAudioTests {
         AacAudio model =
             BinaryData
                 .fromString(
-                    "{\"@odata.type\":\"#Microsoft.Media.AacAudio\",\"profile\":\"AacLc\",\"channels\":1723984044,\"samplingRate\":427413462,\"bitrate\":369486551,\"label\":\"jylwbtlhflsj\"}")
+                    "{\"@odata.type\":\"#Microsoft.Media.AacAudio\",\"profile\":\"HeAacV2\",\"channels\":1448184483,\"samplingRate\":1746749164,\"bitrate\":1933702310,\"label\":\"bbdaxco\"}")
                 .toObject(AacAudio.class);
-        Assertions.assertEquals("jylwbtlhflsj", model.label());
-        Assertions.assertEquals(1723984044, model.channels());
-        Assertions.assertEquals(427413462, model.samplingRate());
-        Assertions.assertEquals(369486551, model.bitrate());
-        Assertions.assertEquals(AacAudioProfile.AAC_LC, model.profile());
+        Assertions.assertEquals("bbdaxco", model.label());
+        Assertions.assertEquals(1448184483, model.channels());
+        Assertions.assertEquals(1746749164, model.samplingRate());
+        Assertions.assertEquals(1933702310, model.bitrate());
+        Assertions.assertEquals(AacAudioProfile.HE_AAC_V2, model.profile());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AacAudio model =
             new AacAudio()
-                .withLabel("jylwbtlhflsj")
-                .withChannels(1723984044)
-                .withSamplingRate(427413462)
-                .withBitrate(369486551)
-                .withProfile(AacAudioProfile.AAC_LC);
+                .withLabel("bbdaxco")
+                .withChannels(1448184483)
+                .withSamplingRate(1746749164)
+                .withBitrate(1933702310)
+                .withProfile(AacAudioProfile.HE_AAC_V2);
         model = BinaryData.fromObject(model).toObject(AacAudio.class);
-        Assertions.assertEquals("jylwbtlhflsj", model.label());
-        Assertions.assertEquals(1723984044, model.channels());
-        Assertions.assertEquals(427413462, model.samplingRate());
-        Assertions.assertEquals(369486551, model.bitrate());
-        Assertions.assertEquals(AacAudioProfile.AAC_LC, model.profile());
+        Assertions.assertEquals("bbdaxco", model.label());
+        Assertions.assertEquals(1448184483, model.channels());
+        Assertions.assertEquals(1746749164, model.samplingRate());
+        Assertions.assertEquals(1933702310, model.bitrate());
+        Assertions.assertEquals(AacAudioProfile.HE_AAC_V2, model.profile());
     }
 }

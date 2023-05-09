@@ -83,7 +83,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      */
     @Host("{$host}")
     @ServiceInterface(name = "AvsClientWorkloadNet")
-    private interface WorkloadNetworksService {
+    public interface WorkloadNetworksService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AVS/privateClouds"
@@ -1727,7 +1727,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        return beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
+        return this
+            .beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
             .getSyncPoller();
     }
 
@@ -1751,7 +1752,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment,
         Context context) {
-        return beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
+        return this
+            .beginCreateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
             .getSyncPoller();
     }
 
@@ -2061,7 +2063,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment) {
-        return beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
+        return this
+            .beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment)
             .getSyncPoller();
     }
 
@@ -2085,7 +2088,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String segmentId,
         WorkloadNetworkSegmentInner workloadNetworkSegment,
         Context context) {
-        return beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
+        return this
+            .beginUpdateSegmentsAsync(resourceGroupName, privateCloudName, segmentId, workloadNetworkSegment, context)
             .getSyncPoller();
     }
 
@@ -2347,7 +2351,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSegment(
         String resourceGroupName, String privateCloudName, String segmentId) {
-        return beginDeleteSegmentAsync(resourceGroupName, privateCloudName, segmentId).getSyncPoller();
+        return this.beginDeleteSegmentAsync(resourceGroupName, privateCloudName, segmentId).getSyncPoller();
     }
 
     /**
@@ -2365,7 +2369,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSegment(
         String resourceGroupName, String privateCloudName, String segmentId, Context context) {
-        return beginDeleteSegmentAsync(resourceGroupName, privateCloudName, segmentId, context).getSyncPoller();
+        return this.beginDeleteSegmentAsync(resourceGroupName, privateCloudName, segmentId, context).getSyncPoller();
     }
 
     /**
@@ -2989,7 +2993,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        return beginCreateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp).getSyncPoller();
+        return this
+            .beginCreateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp)
+            .getSyncPoller();
     }
 
     /**
@@ -3012,7 +3018,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp,
         Context context) {
-        return beginCreateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
+        return this
+            .beginCreateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
             .getSyncPoller();
     }
 
@@ -3318,7 +3325,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp) {
-        return beginUpdateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp).getSyncPoller();
+        return this
+            .beginUpdateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp)
+            .getSyncPoller();
     }
 
     /**
@@ -3341,7 +3350,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dhcpId,
         WorkloadNetworkDhcpInner workloadNetworkDhcp,
         Context context) {
-        return beginUpdateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
+        return this
+            .beginUpdateDhcpAsync(resourceGroupName, privateCloudName, dhcpId, workloadNetworkDhcp, context)
             .getSyncPoller();
     }
 
@@ -3602,7 +3612,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDhcp(
         String resourceGroupName, String privateCloudName, String dhcpId) {
-        return beginDeleteDhcpAsync(resourceGroupName, privateCloudName, dhcpId).getSyncPoller();
+        return this.beginDeleteDhcpAsync(resourceGroupName, privateCloudName, dhcpId).getSyncPoller();
     }
 
     /**
@@ -3620,7 +3630,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDhcp(
         String resourceGroupName, String privateCloudName, String dhcpId, Context context) {
-        return beginDeleteDhcpAsync(resourceGroupName, privateCloudName, dhcpId, context).getSyncPoller();
+        return this.beginDeleteDhcpAsync(resourceGroupName, privateCloudName, dhcpId, context).getSyncPoller();
     }
 
     /**
@@ -4605,7 +4615,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             String privateCloudName,
             String portMirroringId,
             WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        return beginCreatePortMirroringAsync(
+        return this
+            .beginCreatePortMirroringAsync(
                 resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring)
             .getSyncPoller();
     }
@@ -4631,7 +4642,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             String portMirroringId,
             WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring,
             Context context) {
-        return beginCreatePortMirroringAsync(
+        return this
+            .beginCreatePortMirroringAsync(
                 resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring, context)
             .getSyncPoller();
     }
@@ -4955,7 +4967,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             String privateCloudName,
             String portMirroringId,
             WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring) {
-        return beginUpdatePortMirroringAsync(
+        return this
+            .beginUpdatePortMirroringAsync(
                 resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring)
             .getSyncPoller();
     }
@@ -4981,7 +4994,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
             String portMirroringId,
             WorkloadNetworkPortMirroringInner workloadNetworkPortMirroring,
             Context context) {
-        return beginUpdatePortMirroringAsync(
+        return this
+            .beginUpdatePortMirroringAsync(
                 resourceGroupName, privateCloudName, portMirroringId, workloadNetworkPortMirroring, context)
             .getSyncPoller();
     }
@@ -5251,7 +5265,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePortMirroring(
         String resourceGroupName, String portMirroringId, String privateCloudName) {
-        return beginDeletePortMirroringAsync(resourceGroupName, portMirroringId, privateCloudName).getSyncPoller();
+        return this.beginDeletePortMirroringAsync(resourceGroupName, portMirroringId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -5269,7 +5283,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePortMirroring(
         String resourceGroupName, String portMirroringId, String privateCloudName, Context context) {
-        return beginDeletePortMirroringAsync(resourceGroupName, portMirroringId, privateCloudName, context)
+        return this
+            .beginDeletePortMirroringAsync(resourceGroupName, portMirroringId, privateCloudName, context)
             .getSyncPoller();
     }
 
@@ -5900,7 +5915,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String vmGroupId,
         WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        return beginCreateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
+        return this
+            .beginCreateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
             .getSyncPoller();
     }
 
@@ -5924,7 +5940,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String vmGroupId,
         WorkloadNetworkVMGroupInner workloadNetworkVMGroup,
         Context context) {
-        return beginCreateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
+        return this
+            .beginCreateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
             .getSyncPoller();
     }
 
@@ -6234,7 +6251,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String vmGroupId,
         WorkloadNetworkVMGroupInner workloadNetworkVMGroup) {
-        return beginUpdateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
+        return this
+            .beginUpdateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup)
             .getSyncPoller();
     }
 
@@ -6258,7 +6276,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String vmGroupId,
         WorkloadNetworkVMGroupInner workloadNetworkVMGroup,
         Context context) {
-        return beginUpdateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
+        return this
+            .beginUpdateVMGroupAsync(resourceGroupName, privateCloudName, vmGroupId, workloadNetworkVMGroup, context)
             .getSyncPoller();
     }
 
@@ -6520,7 +6539,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteVMGroup(
         String resourceGroupName, String vmGroupId, String privateCloudName) {
-        return beginDeleteVMGroupAsync(resourceGroupName, vmGroupId, privateCloudName).getSyncPoller();
+        return this.beginDeleteVMGroupAsync(resourceGroupName, vmGroupId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -6538,7 +6557,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteVMGroup(
         String resourceGroupName, String vmGroupId, String privateCloudName, Context context) {
-        return beginDeleteVMGroupAsync(resourceGroupName, vmGroupId, privateCloudName, context).getSyncPoller();
+        return this.beginDeleteVMGroupAsync(resourceGroupName, vmGroupId, privateCloudName, context).getSyncPoller();
     }
 
     /**
@@ -7522,7 +7541,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dnsServiceId,
         WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        return beginCreateDnsServiceAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
+        return this
+            .beginCreateDnsServiceAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
             .getSyncPoller();
     }
 
@@ -7546,7 +7566,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dnsServiceId,
         WorkloadNetworkDnsServiceInner workloadNetworkDnsService,
         Context context) {
-        return beginCreateDnsServiceAsync(
+        return this
+            .beginCreateDnsServiceAsync(
                 resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService, context)
             .getSyncPoller();
     }
@@ -7865,7 +7886,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dnsServiceId,
         WorkloadNetworkDnsServiceInner workloadNetworkDnsService) {
-        return beginUpdateDnsServiceAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
+        return this
+            .beginUpdateDnsServiceAsync(resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService)
             .getSyncPoller();
     }
 
@@ -7889,7 +7911,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dnsServiceId,
         WorkloadNetworkDnsServiceInner workloadNetworkDnsService,
         Context context) {
-        return beginUpdateDnsServiceAsync(
+        return this
+            .beginUpdateDnsServiceAsync(
                 resourceGroupName, privateCloudName, dnsServiceId, workloadNetworkDnsService, context)
             .getSyncPoller();
     }
@@ -8155,7 +8178,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsService(
         String resourceGroupName, String dnsServiceId, String privateCloudName) {
-        return beginDeleteDnsServiceAsync(resourceGroupName, dnsServiceId, privateCloudName).getSyncPoller();
+        return this.beginDeleteDnsServiceAsync(resourceGroupName, dnsServiceId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -8173,7 +8196,9 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsService(
         String resourceGroupName, String dnsServiceId, String privateCloudName, Context context) {
-        return beginDeleteDnsServiceAsync(resourceGroupName, dnsServiceId, privateCloudName, context).getSyncPoller();
+        return this
+            .beginDeleteDnsServiceAsync(resourceGroupName, dnsServiceId, privateCloudName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -8802,7 +8827,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dnsZoneId,
         WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        return beginCreateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone)
+        return this
+            .beginCreateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone)
             .getSyncPoller();
     }
 
@@ -8826,7 +8852,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dnsZoneId,
         WorkloadNetworkDnsZoneInner workloadNetworkDnsZone,
         Context context) {
-        return beginCreateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context)
+        return this
+            .beginCreateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context)
             .getSyncPoller();
     }
 
@@ -9136,7 +9163,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String dnsZoneId,
         WorkloadNetworkDnsZoneInner workloadNetworkDnsZone) {
-        return beginUpdateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone)
+        return this
+            .beginUpdateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone)
             .getSyncPoller();
     }
 
@@ -9160,7 +9188,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String dnsZoneId,
         WorkloadNetworkDnsZoneInner workloadNetworkDnsZone,
         Context context) {
-        return beginUpdateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context)
+        return this
+            .beginUpdateDnsZoneAsync(resourceGroupName, privateCloudName, dnsZoneId, workloadNetworkDnsZone, context)
             .getSyncPoller();
     }
 
@@ -9422,7 +9451,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsZone(
         String resourceGroupName, String dnsZoneId, String privateCloudName) {
-        return beginDeleteDnsZoneAsync(resourceGroupName, dnsZoneId, privateCloudName).getSyncPoller();
+        return this.beginDeleteDnsZoneAsync(resourceGroupName, dnsZoneId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -9440,7 +9469,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsZone(
         String resourceGroupName, String dnsZoneId, String privateCloudName, Context context) {
-        return beginDeleteDnsZoneAsync(resourceGroupName, dnsZoneId, privateCloudName, context).getSyncPoller();
+        return this.beginDeleteDnsZoneAsync(resourceGroupName, dnsZoneId, privateCloudName, context).getSyncPoller();
     }
 
     /**
@@ -10070,7 +10099,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String privateCloudName,
         String publicIpId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIp) {
-        return beginCreatePublicIpAsync(resourceGroupName, privateCloudName, publicIpId, workloadNetworkPublicIp)
+        return this
+            .beginCreatePublicIpAsync(resourceGroupName, privateCloudName, publicIpId, workloadNetworkPublicIp)
             .getSyncPoller();
     }
 
@@ -10094,8 +10124,8 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
         String publicIpId,
         WorkloadNetworkPublicIpInner workloadNetworkPublicIp,
         Context context) {
-        return beginCreatePublicIpAsync(
-                resourceGroupName, privateCloudName, publicIpId, workloadNetworkPublicIp, context)
+        return this
+            .beginCreatePublicIpAsync(resourceGroupName, privateCloudName, publicIpId, workloadNetworkPublicIp, context)
             .getSyncPoller();
     }
 
@@ -10358,7 +10388,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(
         String resourceGroupName, String publicIpId, String privateCloudName) {
-        return beginDeletePublicIpAsync(resourceGroupName, publicIpId, privateCloudName).getSyncPoller();
+        return this.beginDeletePublicIpAsync(resourceGroupName, publicIpId, privateCloudName).getSyncPoller();
     }
 
     /**
@@ -10376,7 +10406,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(
         String resourceGroupName, String publicIpId, String privateCloudName, Context context) {
-        return beginDeletePublicIpAsync(resourceGroupName, publicIpId, privateCloudName, context).getSyncPoller();
+        return this.beginDeletePublicIpAsync(resourceGroupName, publicIpId, privateCloudName, context).getSyncPoller();
     }
 
     /**

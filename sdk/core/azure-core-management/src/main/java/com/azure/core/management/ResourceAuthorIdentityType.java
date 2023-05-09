@@ -45,7 +45,11 @@ public final class ResourceAuthorIdentityType extends ExpandableStringEnum<Resou
         return fromString(name, ResourceAuthorIdentityType.class);
     }
 
-    /** @return known ResourceAuthorIdentityType values. */
+    /**
+     * Gets the known ResourceAuthorIdentityType values.
+     *
+     * @return known ResourceAuthorIdentityType values.
+     */
     public static Collection<ResourceAuthorIdentityType> values() {
         return values(ResourceAuthorIdentityType.class);
     }

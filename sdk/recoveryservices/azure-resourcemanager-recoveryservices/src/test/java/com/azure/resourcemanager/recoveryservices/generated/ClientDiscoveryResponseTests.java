@@ -11,11 +11,10 @@ import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryForPrope
 import com.azure.resourcemanager.recoveryservices.models.ClientDiscoveryResponse;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClientDiscoveryResponseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ClientDiscoveryResponse model =
             BinaryData
                 .fromString(
@@ -30,8 +29,8 @@ public final class ClientDiscoveryResponseTests {
         Assertions.assertEquals("yzydagfuaxbezyi", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ClientDiscoveryResponse model =
             new ClientDiscoveryResponse()
                 .withValue(

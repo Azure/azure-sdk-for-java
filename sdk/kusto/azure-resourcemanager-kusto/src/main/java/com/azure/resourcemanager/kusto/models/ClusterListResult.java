@@ -18,6 +18,10 @@ public final class ClusterListResult {
     @JsonProperty(value = "value")
     private List<ClusterInner> value;
 
+    /** Creates an instance of ClusterListResult class. */
+    public ClusterListResult() {
+    }
+
     /**
      * Get the value property: The list of Kusto clusters.
      *

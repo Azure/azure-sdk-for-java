@@ -16,6 +16,10 @@ public final class CommandOutputInner {
     @JsonProperty(value = "commandOutput")
     private String commandOutput;
 
+    /** Creates an instance of CommandOutputInner class. */
+    public CommandOutputInner() {
+    }
+
     /**
      * Get the commandOutput property: Output of the command.
      *

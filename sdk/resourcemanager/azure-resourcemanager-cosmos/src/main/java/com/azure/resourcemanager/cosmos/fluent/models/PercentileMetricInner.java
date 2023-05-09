@@ -51,6 +51,10 @@ public final class PercentileMetricInner {
     @JsonProperty(value = "metricValues", access = JsonProperty.Access.WRITE_ONLY)
     private List<PercentileMetricValue> metricValues;
 
+    /** Creates an instance of PercentileMetricInner class. */
+    public PercentileMetricInner() {
+    }
+
     /**
      * Get the startTime property: The start time for the metric (ISO-8601 format).
      *

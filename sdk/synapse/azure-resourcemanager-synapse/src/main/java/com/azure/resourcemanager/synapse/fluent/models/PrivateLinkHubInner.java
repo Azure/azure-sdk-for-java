@@ -20,6 +20,10 @@ public final class PrivateLinkHubInner extends Resource {
     @JsonProperty(value = "properties")
     private PrivateLinkHubProperties innerProperties;
 
+    /** Creates an instance of PrivateLinkHubInner class. */
+    public PrivateLinkHubInner() {
+    }
+
     /**
      * Get the innerProperties property: PrivateLinkHub resource properties.
      *

@@ -24,11 +24,14 @@ public final class UsageModelInner {
     private String modelName;
 
     /*
-     * The type of Storage Target to which this model is applicable (only nfs3
-     * as of this version).
+     * The type of Storage Target to which this model is applicable (only nfs3 as of this version).
      */
     @JsonProperty(value = "targetType")
     private String targetType;
+
+    /** Creates an instance of UsageModelInner class. */
+    public UsageModelInner() {
+    }
 
     /**
      * Get the display property: Localized information describing this usage model.

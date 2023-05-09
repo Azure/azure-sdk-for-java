@@ -17,6 +17,10 @@ public final class ThroughputSettingsGetProperties {
     @JsonProperty(value = "resource")
     private ThroughputSettingsGetPropertiesResource resource;
 
+    /** Creates an instance of ThroughputSettingsGetProperties class. */
+    public ThroughputSettingsGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

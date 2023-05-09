@@ -6,135 +6,132 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for MicrosoftTokenizerLanguage. */
+/** Lists the languages supported by the Microsoft language tokenizer. */
 public enum MicrosoftTokenizerLanguage {
-    /** Enum value bangla. */
+    /** Selects the Microsoft tokenizer for Bangla. */
     BANGLA("bangla"),
 
-    /** Enum value bulgarian. */
+    /** Selects the Microsoft tokenizer for Bulgarian. */
     BULGARIAN("bulgarian"),
 
-    /** Enum value catalan. */
+    /** Selects the Microsoft tokenizer for Catalan. */
     CATALAN("catalan"),
 
-    /** Enum value chineseSimplified. */
+    /** Selects the Microsoft tokenizer for Chinese (Simplified). */
     CHINESE_SIMPLIFIED("chineseSimplified"),
 
-    /** Enum value chineseTraditional. */
+    /** Selects the Microsoft tokenizer for Chinese (Traditional). */
     CHINESE_TRADITIONAL("chineseTraditional"),
 
-    /** Enum value croatian. */
+    /** Selects the Microsoft tokenizer for Croatian. */
     CROATIAN("croatian"),
 
-    /** Enum value czech. */
+    /** Selects the Microsoft tokenizer for Czech. */
     CZECH("czech"),
 
-    /** Enum value danish. */
+    /** Selects the Microsoft tokenizer for Danish. */
     DANISH("danish"),
 
-    /** Enum value dutch. */
+    /** Selects the Microsoft tokenizer for Dutch. */
     DUTCH("dutch"),
 
-    /** Enum value english. */
+    /** Selects the Microsoft tokenizer for English. */
     ENGLISH("english"),
 
-    /** Enum value french. */
+    /** Selects the Microsoft tokenizer for French. */
     FRENCH("french"),
 
-    /** Enum value german. */
+    /** Selects the Microsoft tokenizer for German. */
     GERMAN("german"),
 
-    /** Enum value greek. */
+    /** Selects the Microsoft tokenizer for Greek. */
     GREEK("greek"),
 
-    /** Enum value gujarati. */
+    /** Selects the Microsoft tokenizer for Gujarati. */
     GUJARATI("gujarati"),
 
-    /** Enum value hindi. */
+    /** Selects the Microsoft tokenizer for Hindi. */
     HINDI("hindi"),
 
-    /** Enum value icelandic. */
+    /** Selects the Microsoft tokenizer for Icelandic. */
     ICELANDIC("icelandic"),
 
-    /** Enum value indonesian. */
+    /** Selects the Microsoft tokenizer for Indonesian. */
     INDONESIAN("indonesian"),
 
-    /** Enum value italian. */
+    /** Selects the Microsoft tokenizer for Italian. */
     ITALIAN("italian"),
 
-    /** Enum value japanese. */
+    /** Selects the Microsoft tokenizer for Japanese. */
     JAPANESE("japanese"),
 
-    /** Enum value kannada. */
+    /** Selects the Microsoft tokenizer for Kannada. */
     KANNADA("kannada"),
 
-    /** Enum value korean. */
+    /** Selects the Microsoft tokenizer for Korean. */
     KOREAN("korean"),
 
-    /** Enum value malay. */
+    /** Selects the Microsoft tokenizer for Malay. */
     MALAY("malay"),
 
-    /** Enum value malayalam. */
+    /** Selects the Microsoft tokenizer for Malayalam. */
     MALAYALAM("malayalam"),
 
-    /** Enum value marathi. */
+    /** Selects the Microsoft tokenizer for Marathi. */
     MARATHI("marathi"),
 
-    /** Enum value norwegianBokmaal. */
+    /** Selects the Microsoft tokenizer for Norwegian (Bokmål). */
     NORWEGIAN_BOKMAAL("norwegianBokmaal"),
 
-    /** Enum value polish. */
+    /** Selects the Microsoft tokenizer for Polish. */
     POLISH("polish"),
 
-    /** Enum value portuguese. */
+    /** Selects the Microsoft tokenizer for Portuguese. */
     PORTUGUESE("portuguese"),
 
-    /** Enum value portugueseBrazilian. */
+    /** Selects the Microsoft tokenizer for Portuguese (Brazil). */
     PORTUGUESE_BRAZILIAN("portugueseBrazilian"),
 
-    /** Enum value punjabi. */
+    /** Selects the Microsoft tokenizer for Punjabi. */
     PUNJABI("punjabi"),
 
-    /** Enum value romanian. */
+    /** Selects the Microsoft tokenizer for Romanian. */
     ROMANIAN("romanian"),
 
-    /** Enum value russian. */
+    /** Selects the Microsoft tokenizer for Russian. */
     RUSSIAN("russian"),
 
-    /** Enum value serbianCyrillic. */
+    /** Selects the Microsoft tokenizer for Serbian (Cyrillic). */
     SERBIAN_CYRILLIC("serbianCyrillic"),
 
-    /** Enum value serbianLatin. */
+    /** Selects the Microsoft tokenizer for Serbian (Latin). */
     SERBIAN_LATIN("serbianLatin"),
 
-    /** Enum value slovenian. */
+    /** Selects the Microsoft tokenizer for Slovenian. */
     SLOVENIAN("slovenian"),
 
-    /** Enum value spanish. */
+    /** Selects the Microsoft tokenizer for Spanish. */
     SPANISH("spanish"),
 
-    /** Enum value swedish. */
+    /** Selects the Microsoft tokenizer for Swedish. */
     SWEDISH("swedish"),
 
-    /** Enum value tamil. */
+    /** Selects the Microsoft tokenizer for Tamil. */
     TAMIL("tamil"),
 
-    /** Enum value telugu. */
+    /** Selects the Microsoft tokenizer for Telugu. */
     TELUGU("telugu"),
 
-    /** Enum value thai. */
+    /** Selects the Microsoft tokenizer for Thai. */
     THAI("thai"),
 
-    /** Enum value ukrainian. */
+    /** Selects the Microsoft tokenizer for Ukrainian. */
     UKRAINIAN("ukrainian"),
 
-    /** Enum value urdu. */
+    /** Selects the Microsoft tokenizer for Urdu. */
     URDU("urdu"),
 
-    /** Enum value vietnamese. */
+    /** Selects the Microsoft tokenizer for Vietnamese. */
     VIETNAMESE("vietnamese");
 
     /** The actual serialized value for a MicrosoftTokenizerLanguage instance. */
@@ -150,7 +147,6 @@ public enum MicrosoftTokenizerLanguage {
      * @param value the serialized value to parse.
      * @return the parsed MicrosoftTokenizerLanguage object, or null if unable to parse.
      */
-    @JsonCreator
     public static MicrosoftTokenizerLanguage fromString(String value) {
         if (value == null) {
             return null;
@@ -164,7 +160,7 @@ public enum MicrosoftTokenizerLanguage {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

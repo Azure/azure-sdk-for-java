@@ -4,13 +4,13 @@
 
 package com.azure.resourcemanager.synapse.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A restorable dropped Sql pool. */
-@Fluent
+@Immutable
 public final class RestorableDroppedSqlPoolInner extends ProxyResource {
     /*
      * The geo-location where the resource lives
@@ -23,6 +23,10 @@ public final class RestorableDroppedSqlPoolInner extends ProxyResource {
      */
     @JsonProperty(value = "properties")
     private RestorableDroppedSqlPoolProperties innerProperties;
+
+    /** Creates an instance of RestorableDroppedSqlPoolInner class. */
+    public RestorableDroppedSqlPoolInner() {
+    }
 
     /**
      * Get the location property: The geo-location where the resource lives.

@@ -19,6 +19,10 @@ public final class ApplicationStackResourceInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private ApplicationStack innerProperties;
 
+    /** Creates an instance of ApplicationStackResourceInner class. */
+    public ApplicationStackResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Core resource properties.
      *

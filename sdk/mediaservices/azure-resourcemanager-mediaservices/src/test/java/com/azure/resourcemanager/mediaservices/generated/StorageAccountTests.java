@@ -16,25 +16,26 @@ public final class StorageAccountTests {
         StorageAccount model =
             BinaryData
                 .fromString(
-                    "{\"id\":\"ajrmvdjwzrlovmc\",\"type\":\"Secondary\",\"identity\":{\"userAssignedIdentity\":\"j\",\"useSystemAssignedIdentity\":true},\"status\":\"jctbza\"}")
+                    "{\"id\":\"fkgukdkexxppof\",\"type\":\"Secondary\",\"identity\":{\"userAssignedIdentity\":\"c\",\"useSystemAssignedIdentity\":false},\"status\":\"gddtocj\"}")
                 .toObject(StorageAccount.class);
-        Assertions.assertEquals("ajrmvdjwzrlovmc", model.id());
+        Assertions.assertEquals("fkgukdkexxppof", model.id());
         Assertions.assertEquals(StorageAccountType.SECONDARY, model.type());
-        Assertions.assertEquals("j", model.identity().userAssignedIdentity());
-        Assertions.assertEquals(true, model.identity().useSystemAssignedIdentity());
+        Assertions.assertEquals("c", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(false, model.identity().useSystemAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageAccount model =
             new StorageAccount()
-                .withId("ajrmvdjwzrlovmc")
+                .withId("fkgukdkexxppof")
                 .withType(StorageAccountType.SECONDARY)
-                .withIdentity(new ResourceIdentity().withUserAssignedIdentity("j").withUseSystemAssignedIdentity(true));
+                .withIdentity(
+                    new ResourceIdentity().withUserAssignedIdentity("c").withUseSystemAssignedIdentity(false));
         model = BinaryData.fromObject(model).toObject(StorageAccount.class);
-        Assertions.assertEquals("ajrmvdjwzrlovmc", model.id());
+        Assertions.assertEquals("fkgukdkexxppof", model.id());
         Assertions.assertEquals(StorageAccountType.SECONDARY, model.type());
-        Assertions.assertEquals("j", model.identity().userAssignedIdentity());
-        Assertions.assertEquals(true, model.identity().useSystemAssignedIdentity());
+        Assertions.assertEquals("c", model.identity().userAssignedIdentity());
+        Assertions.assertEquals(false, model.identity().useSystemAssignedIdentity());
     }
 }

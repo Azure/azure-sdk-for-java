@@ -22,6 +22,10 @@ public final class PartitionUsageInner extends UsageInner {
     @JsonProperty(value = "partitionKeyRangeId", access = JsonProperty.Access.WRITE_ONLY)
     private String partitionKeyRangeId;
 
+    /** Creates an instance of PartitionUsageInner class. */
+    public PartitionUsageInner() {
+    }
+
     /**
      * Get the partitionId property: The partition id (GUID identifier) of the usages.
      *

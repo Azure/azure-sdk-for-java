@@ -26,15 +26,6 @@ public final class AscOperationsImpl implements AscOperations {
         this.serviceManager = serviceManager;
     }
 
-    public AscOperation get(String location, String operationId) {
-        AscOperationInner inner = this.serviceClient().get(location, operationId);
-        if (inner != null) {
-            return new AscOperationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AscOperation> getWithResponse(String location, String operationId, Context context) {
         Response<AscOperationInner> inner = this.serviceClient().getWithResponse(location, operationId, context);
         if (inner != null) {
@@ -43,6 +34,15 @@ public final class AscOperationsImpl implements AscOperations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AscOperationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AscOperation get(String location, String operationId) {
+        AscOperationInner inner = this.serviceClient().get(location, operationId);
+        if (inner != null) {
+            return new AscOperationImpl(inner, this.manager());
         } else {
             return null;
         }

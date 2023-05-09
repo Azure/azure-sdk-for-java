@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.azure.resourcemanager.netapp.models.Identity;
+import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
 import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
 import java.util.Collections;
@@ -50,8 +51,12 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         return this.innerModel().etag();
     }
 
-    public Identity identity() {
+    public ManagedServiceIdentity identity() {
         return this.innerModel().identity();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String provisioningState() {
@@ -206,7 +211,7 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
         }
     }
 
-    public NetAppAccountImpl withIdentity(Identity identity) {
+    public NetAppAccountImpl withIdentity(ManagedServiceIdentity identity) {
         this.innerModel().withIdentity(identity);
         return this;
     }

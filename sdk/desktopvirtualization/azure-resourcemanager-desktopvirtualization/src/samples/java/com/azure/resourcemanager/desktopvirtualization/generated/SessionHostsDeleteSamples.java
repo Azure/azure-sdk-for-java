@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SessionHosts Delete. */
 public final class SessionHostsDeleteSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/SessionHost_Delete.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/SessionHost_Delete.json
      */
     /**
      * Sample code: SessionHost_Delete.
@@ -20,6 +18,7 @@ public final class SessionHostsDeleteSamples {
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
         manager
             .sessionHosts()
-            .deleteWithResponse("resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", true, Context.NONE);
+            .deleteWithResponse(
+                "resourceGroup1", "hostPool1", "sessionHost1.microsoft.com", true, com.azure.core.util.Context.NONE);
     }
 }

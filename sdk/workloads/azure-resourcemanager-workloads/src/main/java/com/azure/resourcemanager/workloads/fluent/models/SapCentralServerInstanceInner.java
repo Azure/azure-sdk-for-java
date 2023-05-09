@@ -11,6 +11,7 @@ import com.azure.resourcemanager.workloads.models.CentralServerVmDetails;
 import com.azure.resourcemanager.workloads.models.EnqueueReplicationServerProperties;
 import com.azure.resourcemanager.workloads.models.EnqueueServerProperties;
 import com.azure.resourcemanager.workloads.models.GatewayServerProperties;
+import com.azure.resourcemanager.workloads.models.LoadBalancerDetails;
 import com.azure.resourcemanager.workloads.models.MessageServerProperties;
 import com.azure.resourcemanager.workloads.models.SapHealthState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
@@ -20,24 +21,27 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Define the SAP Central Server Instance. */
+/** Define the SAP Central Services Instance resource. */
 @Fluent
 public final class SapCentralServerInstanceInner extends Resource {
     /*
-     * Defines the SAP Central Server properties.
+     * Defines the SAP Central Services Instance properties.
      */
     @JsonProperty(value = "properties")
     private SapCentralServerProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of SapCentralServerInstanceInner class. */
+    public SapCentralServerInstanceInner() {
+    }
+
     /**
-     * Get the innerProperties property: Defines the SAP Central Server properties.
+     * Get the innerProperties property: Defines the SAP Central Services Instance properties.
      *
      * @return the innerProperties value.
      */
@@ -69,7 +73,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the instanceNo property: The central server instance id.
+     * Get the instanceNo property: The central services instance number.
      *
      * @return the instanceNo value.
      */
@@ -78,7 +82,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the subnet property: The central server subnet.
+     * Get the subnet property: The central services instance subnet.
      *
      * @return the subnet value.
      */
@@ -87,7 +91,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the messageServerProperties property: Defines the SAP message server properties.
+     * Get the messageServerProperties property: Defines the SAP Message Server properties.
      *
      * @return the messageServerProperties value.
      */
@@ -96,7 +100,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Set the messageServerProperties property: Defines the SAP message server properties.
+     * Set the messageServerProperties property: Defines the SAP Message Server properties.
      *
      * @param messageServerProperties the messageServerProperties value to set.
      * @return the SapCentralServerInstanceInner object itself.
@@ -110,7 +114,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the enqueueServerProperties property: Defines the SAP enqueue server properties.
+     * Get the enqueueServerProperties property: Defines the SAP Enqueue Server properties.
      *
      * @return the enqueueServerProperties value.
      */
@@ -119,7 +123,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Set the enqueueServerProperties property: Defines the SAP enqueue server properties.
+     * Set the enqueueServerProperties property: Defines the SAP Enqueue Server properties.
      *
      * @param enqueueServerProperties the enqueueServerProperties value to set.
      * @return the SapCentralServerInstanceInner object itself.
@@ -156,7 +160,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the enqueueReplicationServerProperties property: Defines the SAP ERS Server properties.
+     * Get the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS) properties.
      *
      * @return the enqueueReplicationServerProperties value.
      */
@@ -165,7 +169,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Set the enqueueReplicationServerProperties property: Defines the SAP ERS Server properties.
+     * Set the enqueueReplicationServerProperties property: Defines the SAP Enqueue Replication Server (ERS) properties.
      *
      * @param enqueueReplicationServerProperties the enqueueReplicationServerProperties value to set.
      * @return the SapCentralServerInstanceInner object itself.
@@ -180,7 +184,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the kernelVersion property: The central server kernel version.
+     * Get the kernelVersion property: The central services instance Kernel Version.
      *
      * @return the kernelVersion value.
      */
@@ -189,7 +193,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the kernelPatch property: The central server kernel patch.
+     * Get the kernelPatch property: The central services instance Kernel Patch level.
      *
      * @return the kernelPatch value.
      */
@@ -198,7 +202,17 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the vmDetails property: The list of virtual machines.
+     * Get the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to ASCS Virtual
+     * Machines.
+     *
+     * @return the loadBalancerDetails value.
+     */
+    public LoadBalancerDetails loadBalancerDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().loadBalancerDetails();
+    }
+
+    /**
+     * Get the vmDetails property: The list of virtual machines corresponding to the Central Services instance.
      *
      * @return the vmDetails value.
      */
@@ -216,7 +230,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the health property: Defines the SAP Instance health.
+     * Get the health property: Defines the health of SAP Instances.
      *
      * @return the health value.
      */
@@ -234,7 +248,7 @@ public final class SapCentralServerInstanceInner extends Resource {
     }
 
     /**
-     * Get the errors property: Defines the Central Instance errors.
+     * Get the errors property: Defines the errors related to SAP Central Services Instance resource.
      *
      * @return the errors value.
      */

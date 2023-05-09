@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** Display information of the operation. */
 @Fluent
 public final class OperationsDefinitionDisplay extends OperationsDisplayDefinition {
+    /** Creates an instance of OperationsDefinitionDisplay class. */
+    public OperationsDefinitionDisplay() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public OperationsDefinitionDisplay withProvider(String provider) {

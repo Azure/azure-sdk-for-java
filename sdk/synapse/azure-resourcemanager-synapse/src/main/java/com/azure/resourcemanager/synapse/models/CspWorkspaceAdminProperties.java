@@ -16,6 +16,10 @@ public final class CspWorkspaceAdminProperties {
     @JsonProperty(value = "initialWorkspaceAdminObjectId")
     private String initialWorkspaceAdminObjectId;
 
+    /** Creates an instance of CspWorkspaceAdminProperties class. */
+    public CspWorkspaceAdminProperties() {
+    }
+
     /**
      * Get the initialWorkspaceAdminObjectId property: AAD object ID of initial workspace admin.
      *

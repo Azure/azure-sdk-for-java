@@ -65,6 +65,10 @@ public final class EncryptionProtectorImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public EncryptionProtectorInner innerModel() {
         return this.innerObject;
     }

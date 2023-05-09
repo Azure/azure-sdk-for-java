@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** The parameters for creating the properties of a webhook. */
 @Fluent
 public final class WebhookPropertiesCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookPropertiesCreateParameters.class);
-
     /*
      * The service URI for the webhook to post notifications.
      */
@@ -39,10 +36,9 @@ public final class WebhookPropertiesCreateParameters {
     private WebhookStatus status;
 
     /*
-     * The scope of repositories where the event can be triggered. For example,
-     * 'foo:*' means events for all tags under repository 'foo'. 'foo:bar'
-     * means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'.
-     * Empty means all events.
+     * The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under
+     * repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means
+     * all events.
      */
     @JsonProperty(value = "scope")
     private String scope;
@@ -52,6 +48,10 @@ public final class WebhookPropertiesCreateParameters {
      */
     @JsonProperty(value = "actions", required = true)
     private List<WebhookAction> actions;
+
+    /** Creates an instance of WebhookPropertiesCreateParameters class. */
+    public WebhookPropertiesCreateParameters() {
+    }
 
     /**
      * Get the serviceUri property: The service URI for the webhook to post notifications.
@@ -164,16 +164,18 @@ public final class WebhookPropertiesCreateParameters {
      */
     public void validate() {
         if (serviceUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serviceUri in model WebhookPropertiesCreateParameters"));
         }
         if (actions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property actions in model WebhookPropertiesCreateParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebhookPropertiesCreateParameters.class);
 }

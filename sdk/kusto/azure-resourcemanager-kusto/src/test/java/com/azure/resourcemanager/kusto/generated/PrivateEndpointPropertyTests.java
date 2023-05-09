@@ -6,17 +6,16 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.PrivateEndpointProperty;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointPropertyTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateEndpointProperty model =
-            BinaryData.fromString("{\"id\":\"ckwhds\"}").toObject(PrivateEndpointProperty.class);
+            BinaryData.fromString("{\"id\":\"qulngsntnbybkzgc\"}").toObject(PrivateEndpointProperty.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateEndpointProperty model = new PrivateEndpointProperty();
         model = BinaryData.fromObject(model).toObject(PrivateEndpointProperty.class);
     }

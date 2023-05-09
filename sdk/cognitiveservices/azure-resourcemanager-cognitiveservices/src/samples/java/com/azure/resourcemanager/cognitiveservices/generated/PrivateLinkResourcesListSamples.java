@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources List. */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListPrivateLinkResources.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/ListPrivateLinkResources.json
      */
     /**
      * Sample code: ListPrivateLinkResources.
@@ -18,6 +16,6 @@ public final class PrivateLinkResourcesListSamples {
      */
     public static void listPrivateLinkResources(
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.privateLinkResources().listWithResponse("res6977", "sto2527", Context.NONE);
+        manager.privateLinkResources().listWithResponse("res6977", "sto2527", com.azure.core.util.Context.NONE);
     }
 }

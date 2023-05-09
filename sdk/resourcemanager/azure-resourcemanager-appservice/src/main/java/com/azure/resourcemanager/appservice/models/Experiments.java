@@ -17,6 +17,10 @@ public final class Experiments {
     @JsonProperty(value = "rampUpRules")
     private List<RampUpRule> rampUpRules;
 
+    /** Creates an instance of Experiments class. */
+    public Experiments() {
+    }
+
     /**
      * Get the rampUpRules property: List of ramp-up rules.
      *

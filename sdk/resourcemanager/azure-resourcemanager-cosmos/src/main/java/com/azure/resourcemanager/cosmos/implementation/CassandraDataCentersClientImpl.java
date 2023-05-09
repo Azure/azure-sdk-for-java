@@ -65,11 +65,10 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface CassandraDataCentersService {
+    public interface CassandraDataCentersService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/cassandraClusters/{clusterName}/dataCenters")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListDataCenters>> list(
@@ -83,8 +82,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataCenterResourceInner>> get(
@@ -99,8 +97,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -115,8 +112,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createUpdate(
@@ -132,8 +128,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/cassandraClusters/{clusterName}/dataCenters/{dataCenterName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -446,22 +441,6 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
      * @param dataCenterName Data center name in a managed Cassandra cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a managed Cassandra data center.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataCenterResourceInner get(String resourceGroupName, String clusterName, String dataCenterName) {
-        return getAsync(resourceGroupName, clusterName, dataCenterName).block();
-    }
-
-    /**
-     * Get the properties of a managed Cassandra data center.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName Managed Cassandra cluster name.
-     * @param dataCenterName Data center name in a managed Cassandra cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -472,6 +451,22 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
     public Response<DataCenterResourceInner> getWithResponse(
         String resourceGroupName, String clusterName, String dataCenterName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, dataCenterName, context).block();
+    }
+
+    /**
+     * Get the properties of a managed Cassandra data center.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param dataCenterName Data center name in a managed Cassandra cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a managed Cassandra data center.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataCenterResourceInner get(String resourceGroupName, String clusterName, String dataCenterName) {
+        return getWithResponse(resourceGroupName, clusterName, dataCenterName, Context.NONE).getValue();
     }
 
     /**
@@ -636,7 +631,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String dataCenterName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, dataCenterName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, dataCenterName).getSyncPoller();
     }
 
     /**
@@ -654,7 +649,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String clusterName, String dataCenterName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, dataCenterName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, clusterName, dataCenterName, context).getSyncPoller();
     }
 
     /**
@@ -928,7 +923,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginCreateUpdate(
         String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
-        return beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).getSyncPoller();
+        return this.beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).getSyncPoller();
     }
 
     /**
@@ -952,7 +947,9 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
         String dataCenterName,
         DataCenterResourceInner body,
         Context context) {
-        return beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context).getSyncPoller();
+        return this
+            .beginCreateUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1242,7 +1239,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataCenterResourceInner>, DataCenterResourceInner> beginUpdate(
         String resourceGroupName, String clusterName, String dataCenterName, DataCenterResourceInner body) {
-        return beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body).getSyncPoller();
     }
 
     /**
@@ -1265,7 +1262,7 @@ public final class CassandraDataCentersClientImpl implements CassandraDataCenter
         String dataCenterName,
         DataCenterResourceInner body,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, clusterName, dataCenterName, body, context).getSyncPoller();
     }
 
     /**

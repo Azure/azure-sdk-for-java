@@ -19,6 +19,10 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private MongoUserDefinitionResource innerProperties;
 
+    /** Creates an instance of MongoUserDefinitionGetResultsInner class. */
+    public MongoUserDefinitionGetResultsInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties related to the User Definition.
      *

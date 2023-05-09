@@ -42,6 +42,10 @@ public final class CorsPolicy {
     @JsonProperty(value = "maxAgeInSeconds")
     private Long maxAgeInSeconds;
 
+    /** Creates an instance of CorsPolicy class. */
+    public CorsPolicy() {
+    }
+
     /**
      * Get the allowedOrigins property: The origin domains that are permitted to make a request against the service via
      * CORS.

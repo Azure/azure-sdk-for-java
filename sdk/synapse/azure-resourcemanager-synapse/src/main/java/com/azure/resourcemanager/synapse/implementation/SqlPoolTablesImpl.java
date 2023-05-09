@@ -48,17 +48,6 @@ public final class SqlPoolTablesImpl implements SqlPoolTables {
         return Utils.mapPage(inner, inner1 -> new SqlPoolTableImpl(inner1, this.manager()));
     }
 
-    public SqlPoolTable get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName) {
-        SqlPoolTableInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName);
-        if (inner != null) {
-            return new SqlPoolTableImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SqlPoolTable> getWithResponse(
         String resourceGroupName,
         String workspaceName,
@@ -76,6 +65,17 @@ public final class SqlPoolTablesImpl implements SqlPoolTables {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SqlPoolTableImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SqlPoolTable get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName, String tableName) {
+        SqlPoolTableInner inner =
+            this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName, schemaName, tableName);
+        if (inner != null) {
+            return new SqlPoolTableImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -13,15 +13,15 @@ public final class CopyVideoTests {
     public void testDeserialize() throws Exception {
         CopyVideo model =
             BinaryData
-                .fromString("{\"@odata.type\":\"#Microsoft.Media.CopyVideo\",\"label\":\"fvoow\"}")
+                .fromString("{\"@odata.type\":\"#Microsoft.Media.CopyVideo\",\"label\":\"vbalxlllc\"}")
                 .toObject(CopyVideo.class);
-        Assertions.assertEquals("fvoow", model.label());
+        Assertions.assertEquals("vbalxlllc", model.label());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CopyVideo model = new CopyVideo().withLabel("fvoow");
+        CopyVideo model = new CopyVideo().withLabel("vbalxlllc");
         model = BinaryData.fromObject(model).toObject(CopyVideo.class);
-        Assertions.assertEquals("fvoow", model.label());
+        Assertions.assertEquals("vbalxlllc", model.label());
     }
 }

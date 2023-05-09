@@ -17,6 +17,15 @@ public final class AutoLearnPrivateRangesMode extends ExpandableStringEnum<AutoL
     public static final AutoLearnPrivateRangesMode DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of AutoLearnPrivateRangesMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AutoLearnPrivateRangesMode() {
+    }
+
+    /**
      * Creates or finds a AutoLearnPrivateRangesMode from its string representation.
      *
      * @param name a name to look for.

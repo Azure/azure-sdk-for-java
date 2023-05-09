@@ -12,25 +12,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class FollowerDatabaseDefinitionInner {
     /*
-     * Resource id of the cluster that follows a database owned by this
-     * cluster.
+     * Resource id of the cluster that follows a database owned by this cluster.
      */
     @JsonProperty(value = "clusterResourceId", required = true)
     private String kustoPoolResourceId;
 
     /*
-     * Resource name of the attached database configuration in the follower
-     * cluster.
+     * Resource name of the attached database configuration in the follower cluster.
      */
     @JsonProperty(value = "attachedDatabaseConfigurationName", required = true)
     private String attachedDatabaseConfigurationName;
 
     /*
-     * The database name owned by this cluster that was followed. * in case
-     * following all databases.
+     * The database name owned by this cluster that was followed. * in case following all databases.
      */
     @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
+
+    /** Creates an instance of FollowerDatabaseDefinitionInner class. */
+    public FollowerDatabaseDefinitionInner() {
+    }
 
     /**
      * Get the kustoPoolResourceId property: Resource id of the cluster that follows a database owned by this cluster.

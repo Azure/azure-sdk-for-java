@@ -19,7 +19,6 @@ import java.net.URI;
 import java.util.Map;
 
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
 /**
  * This class provides a client for interacting asynchronously with a ModelsRepository instance.
@@ -28,7 +27,6 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 @ServiceClient(builder = ModelsRepositoryClientBuilder.class, isAsync = true)
 public final class ModelsRepositoryAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(ModelsRepositoryAsyncClient.class);
-    private static final String MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE = "Azure.IoT.ModelsRepository";
     private final ModelsRepositoryServiceVersion serviceVersion;
     private final RepositoryHandler repositoryHandler;
     private final ModelDependencyResolution defaultDependencyResolutionOption;
@@ -100,7 +98,6 @@ public final class ModelsRepositoryAsyncClient {
     }
 
     Mono<Map<String, String>> getModels(String dtmi, ModelDependencyResolution dependencyResolution, Context context) {
-        context = context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
         return repositoryHandler.processAsync(dtmi, dependencyResolution, context);
     }
 
@@ -130,7 +127,6 @@ public final class ModelsRepositoryAsyncClient {
     }
 
     Mono<Map<String, String>> getModels(Iterable<String> dtmis, ModelDependencyResolution dependencyResolution, Context context) {
-        context = context.addData(AZ_TRACING_NAMESPACE_KEY, MODELS_REPOSITORY_TRACING_NAMESPACE_VALUE);
         return repositoryHandler.processAsync(dtmis, dependencyResolution, context);
     }
 }

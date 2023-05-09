@@ -3,6 +3,10 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
+import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOptions;
@@ -16,10 +20,12 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
+import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
+import com.azure.ai.textanalytics.models.ExtractSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyOptions;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -31,6 +37,9 @@ import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
+import com.azure.ai.textanalytics.models.SummaryContext;
+import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
@@ -39,7 +48,6 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -1397,63 +1405,324 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
         // END: AsyncClient.beginMultiLabelClassify#Iterable-String-String-MultiLabelClassifyOptions
     }
 
-    // Dynamic classification
+    // Abstractive Summarization
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#dynamicClassificationBatch(Iterable, String, DynamicClassificationOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable)}.
      */
-    public void dynamicClassificationStringInputWithLanguage() {
-        // BEGIN: AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions
+    public void abstractSummaryStringInput() {
+        // BEGIN: AsyncClient.beginAbstractSummary#Iterable
         List<String> documents = new ArrayList<>();
-        documents.add("The WHO is issuing a warning about Monkey Pox.");
-        documents.add("Mo Salah plays in Liverpool FC in England.");
-        DynamicClassificationOptions options = new DynamicClassificationOptions()
-            .setCategories("Health", "Politics", "Music", "Sport");
-        textAnalyticsAsyncClient.dynamicClassificationBatch(documents,  "en", options)
+        for (int i = 0; i < 3; i++) {
+            documents.add(
+                "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
+                    + " human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI"
+                    + " Cognitive Services, I have been working with a team of amazing scientists and engineers to turn "
+                    + "this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship"
+                    + " among three attributes of human cognition: monolingual text (X), audio or visual sensory signals,"
+                    + " (Y) and multilingual (Z). At the intersection of all three, there’s magic—what we call XYZ-code"
+                    + " as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,"
+                    + " see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term"
+                    + " vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have"
+                    + " pretrained models that can jointly learn representations to support a broad range of downstream"
+                    + " AI tasks, much in the way humans do today. Over the past five years, we have achieved human"
+                    + " performance on benchmarks in conversational speech recognition, machine translation, "
+                    + "conversational question answering, machine reading comprehension, and image captioning. These"
+                    + " five breakthroughs provided us with strong signals toward our more ambitious aspiration to"
+                    + " produce a leap in AI capabilities, achieving multisensory and multilingual learning that "
+                    + "is closer in line with how humans learn and understand. I believe the joint XYZ-code is a "
+                    + "foundational component of this aspiration, if grounded with external knowledge sources in "
+                    + "the downstream AI tasks.");
+        }
+        textAnalyticsAsyncClient.beginAbstractSummary(documents)
+            .flatMap(result -> {
+                AbstractSummaryOperationDetail operationDetail = result.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
+                return result.getFinalResult();
+            })
+            .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
-                resultCollection -> resultCollection.forEach(documentResult -> {
-                    System.out.println("Document ID: " + documentResult.getId());
-                    for (ClassificationCategory classification : documentResult.getClassifications()) {
-                        System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                            classification.getCategory(), classification.getConfidenceScore());
+                resultCollection -> {
+                    for (AbstractSummaryResult documentResult : resultCollection) {
+                        System.out.println("\tAbstract summary sentences:");
+                        for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
+                            System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
+                            for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                                System.out.printf("\t\t offset: %d, length: %d%n",
+                                    summaryContext.getOffset(), summaryContext.getLength());
+                            }
+                        }
                     }
-                }),
-                error -> System.err.println("There was an error analyzing dynamic classification of the documents. " + error),
-                () -> System.out.println("End of analyzing dynamic classification."));
-        // END: AsyncClient.dynamicClassificationBatch#Iterable-String-DynamicClassificationOptions
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginAbstractSummary#Iterable
     }
 
     /**
-     * Code snippet for {@link TextAnalyticsAsyncClient#dynamicClassificationBatchWithResponse(Iterable, DynamicClassificationOptions)}
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginAbstractSummary(Iterable, String, AbstractSummaryOptions)}.
      */
-    public void dynamicClassificationMaxOverload() {
-        // BEGIN: AsyncClient.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions
-        List<TextDocumentInput> documents = new ArrayList<>();
-        documents.add(new TextDocumentInput("1", "The WHO is issuing a warning about Monkey Pox."));
-        documents.add(new TextDocumentInput("2", "Mo Salah plays in Liverpool FC in England."));
-        DynamicClassificationOptions options = new DynamicClassificationOptions()
-            .setCategories("Health", "Politics", "Music", "Sport");
-        textAnalyticsAsyncClient.dynamicClassificationBatchWithResponse(documents, options)
+    public void abstractSummaryStringInputWithOption() {
+        // BEGIN: AsyncClient.beginAbstractSummary#Iterable-String-AbstractSummaryOptions
+        List<String> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(
+                "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
+                    + " human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI"
+                    + " Cognitive Services, I have been working with a team of amazing scientists and engineers to turn "
+                    + "this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship"
+                    + " among three attributes of human cognition: monolingual text (X), audio or visual sensory signals,"
+                    + " (Y) and multilingual (Z). At the intersection of all three, there’s magic—what we call XYZ-code"
+                    + " as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,"
+                    + " see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term"
+                    + " vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have"
+                    + " pretrained models that can jointly learn representations to support a broad range of downstream"
+                    + " AI tasks, much in the way humans do today. Over the past five years, we have achieved human"
+                    + " performance on benchmarks in conversational speech recognition, machine translation, "
+                    + "conversational question answering, machine reading comprehension, and image captioning. These"
+                    + " five breakthroughs provided us with strong signals toward our more ambitious aspiration to"
+                    + " produce a leap in AI capabilities, achieving multisensory and multilingual learning that "
+                    + "is closer in line with how humans learn and understand. I believe the joint XYZ-code is a "
+                    + "foundational component of this aspiration, if grounded with external knowledge sources in "
+                    + "the downstream AI tasks.");
+        }
+        AbstractSummaryOptions options = new AbstractSummaryOptions().setSentenceCount(4);
+        textAnalyticsAsyncClient.beginAbstractSummary(documents, "en", options)
+            .flatMap(result -> {
+                AbstractSummaryOperationDetail operationDetail = result.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
+                return result.getFinalResult();
+            })
+            .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
-                response -> {
-                    // Response's status code
-                    System.out.printf("Status code of request response: %d%n", response.getStatusCode());
-                    DynamicClassifyDocumentResultCollection resultCollection = response.getValue();
-                    // Batch statistics
-                    TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();
-                    System.out.printf("Batch statistics, transaction count: %s, valid document count: %s.%n",
-                        batchStatistics.getTransactionCount(), batchStatistics.getValidDocumentCount());
-                    resultCollection.forEach(documentResult -> {
-                        System.out.println("Document ID: " + documentResult.getId());
-                        for (ClassificationCategory classification : documentResult.getClassifications()) {
-                            System.out.printf("\tCategory: %s, confidence score: %f.%n",
-                                classification.getCategory(), classification.getConfidenceScore());
+                resultCollection -> {
+                    for (AbstractSummaryResult documentResult : resultCollection) {
+                        System.out.println("\tAbstract summary sentences:");
+                        for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
+                            System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
+                            for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                                System.out.printf("\t\t offset: %d, length: %d%n",
+                                    summaryContext.getOffset(), summaryContext.getLength());
+                            }
                         }
-                    });
+                    }
                 },
-                error -> System.err.println(
-                    "There was an error analyzing dynamic classification of the documents. " + error),
-                () -> System.out.println("End of analyzing dynamic classification."));
-        // END: AsyncClient.dynamicClassificationBatchWithResponse#Iterable-DynamicClassificationOptions
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginAbstractSummary#Iterable-String-AbstractSummaryOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginAbstractSummary(Iterable, AbstractSummaryOptions)}.
+     */
+    public void abstractSummaryMaxOverload() {
+        // BEGIN: AsyncClient.beginAbstractSummary#Iterable-AbstractSummaryOptions
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i),
+                "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
+                    + " human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI"
+                    + " Cognitive Services, I have been working with a team of amazing scientists and engineers to turn "
+                    + "this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship"
+                    + " among three attributes of human cognition: monolingual text (X), audio or visual sensory signals,"
+                    + " (Y) and multilingual (Z). At the intersection of all three, there’s magic—what we call XYZ-code"
+                    + " as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,"
+                    + " see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term"
+                    + " vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have"
+                    + " pretrained models that can jointly learn representations to support a broad range of downstream"
+                    + " AI tasks, much in the way humans do today. Over the past five years, we have achieved human"
+                    + " performance on benchmarks in conversational speech recognition, machine translation, "
+                    + "conversational question answering, machine reading comprehension, and image captioning. These"
+                    + " five breakthroughs provided us with strong signals toward our more ambitious aspiration to"
+                    + " produce a leap in AI capabilities, achieving multisensory and multilingual learning that "
+                    + "is closer in line with how humans learn and understand. I believe the joint XYZ-code is a "
+                    + "foundational component of this aspiration, if grounded with external knowledge sources in "
+                    + "the downstream AI tasks."));
+        }
+        AbstractSummaryOptions options = new AbstractSummaryOptions().setSentenceCount(4);
+        textAnalyticsAsyncClient.beginAbstractSummary(documents, options)
+            .flatMap(result -> {
+                AbstractSummaryOperationDetail operationDetail = result.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
+                return result.getFinalResult();
+            })
+            .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
+            .subscribe(
+                resultCollection -> {
+                    for (AbstractSummaryResult documentResult : resultCollection) {
+                        System.out.println("\tAbstract summary sentences:");
+                        for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
+                            System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
+                            for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                                System.out.printf("\t\t offset: %d, length: %d%n",
+                                    summaryContext.getOffset(), summaryContext.getLength());
+                            }
+                        }
+                    }
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginAbstractSummary#Iterable-AbstractSummaryOptions
+    }
+
+    // Extractive Summarization
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable)}.
+     */
+    public void extractSummaryStringInput() {
+        // BEGIN: AsyncClient.beginExtractSummary#Iterable
+        List<String> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(
+                "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
+                    + " human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI"
+                    + " Cognitive Services, I have been working with a team of amazing scientists and engineers to turn "
+                    + "this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship"
+                    + " among three attributes of human cognition: monolingual text (X), audio or visual sensory signals,"
+                    + " (Y) and multilingual (Z). At the intersection of all three, there’s magic—what we call XYZ-code"
+                    + " as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,"
+                    + " see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term"
+                    + " vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have"
+                    + " pretrained models that can jointly learn representations to support a broad range of downstream"
+                    + " AI tasks, much in the way humans do today. Over the past five years, we have achieved human"
+                    + " performance on benchmarks in conversational speech recognition, machine translation, "
+                    + "conversational question answering, machine reading comprehension, and image captioning. These"
+                    + " five breakthroughs provided us with strong signals toward our more ambitious aspiration to"
+                    + " produce a leap in AI capabilities, achieving multisensory and multilingual learning that "
+                    + "is closer in line with how humans learn and understand. I believe the joint XYZ-code is a "
+                    + "foundational component of this aspiration, if grounded with external knowledge sources in "
+                    + "the downstream AI tasks.");
+        }
+        textAnalyticsAsyncClient.beginExtractSummary(documents)
+            .flatMap(result -> {
+                ExtractSummaryOperationDetail operationDetail = result.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
+                return result.getFinalResult();
+            })
+            .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
+            .subscribe(
+                resultCollection -> {
+                    for (ExtractSummaryResult documentResult : resultCollection) {
+                        for (SummarySentence summarySentence : documentResult.getSentences()) {
+                            System.out.printf(
+                                "Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
+                                summarySentence.getText(), summarySentence.getLength(),
+                                summarySentence.getOffset(), summarySentence.getRankScore());
+                        }
+                    }
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginExtractSummary#Iterable
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable, String, ExtractSummaryOptions)}.
+     */
+    public void extractSummaryStringInputWithOption() {
+        // BEGIN: AsyncClient.beginExtractSummary#Iterable-String-ExtractSummaryOptions
+        List<String> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(
+                "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
+                    + " human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI"
+                    + " Cognitive Services, I have been working with a team of amazing scientists and engineers to turn "
+                    + "this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship"
+                    + " among three attributes of human cognition: monolingual text (X), audio or visual sensory signals,"
+                    + " (Y) and multilingual (Z). At the intersection of all three, there’s magic—what we call XYZ-code"
+                    + " as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,"
+                    + " see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term"
+                    + " vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have"
+                    + " pretrained models that can jointly learn representations to support a broad range of downstream"
+                    + " AI tasks, much in the way humans do today. Over the past five years, we have achieved human"
+                    + " performance on benchmarks in conversational speech recognition, machine translation, "
+                    + "conversational question answering, machine reading comprehension, and image captioning. These"
+                    + " five breakthroughs provided us with strong signals toward our more ambitious aspiration to"
+                    + " produce a leap in AI capabilities, achieving multisensory and multilingual learning that "
+                    + "is closer in line with how humans learn and understand. I believe the joint XYZ-code is a "
+                    + "foundational component of this aspiration, if grounded with external knowledge sources in "
+                    + "the downstream AI tasks.");
+        }
+        ExtractSummaryOptions options =
+            new ExtractSummaryOptions().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK);
+        textAnalyticsAsyncClient.beginExtractSummary(documents, "en", options)
+            .flatMap(result -> {
+                ExtractSummaryOperationDetail operationDetail = result.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
+                return result.getFinalResult();
+            })
+            .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
+            .subscribe(
+                resultCollection -> {
+                    for (ExtractSummaryResult documentResult : resultCollection) {
+                        for (SummarySentence summarySentence : documentResult.getSentences()) {
+                            System.out.printf(
+                                "Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
+                                summarySentence.getText(), summarySentence.getLength(),
+                                summarySentence.getOffset(), summarySentence.getRankScore());
+                        }
+                    }
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginExtractSummary#Iterable-String-ExtractSummaryOptions
+    }
+
+    /**
+     * Code snippet for {@link TextAnalyticsAsyncClient#beginExtractSummary(Iterable, ExtractSummaryOptions)}.
+     */
+    public void extractSummaryMaxOverload() {
+        // BEGIN: AsyncClient.beginExtractSummary#Iterable-ExtractSummaryOptions
+        List<TextDocumentInput> documents = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            documents.add(new TextDocumentInput(Integer.toString(i),
+                "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic,"
+                    + " human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI"
+                    + " Cognitive Services, I have been working with a team of amazing scientists and engineers to turn "
+                    + "this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship"
+                    + " among three attributes of human cognition: monolingual text (X), audio or visual sensory signals,"
+                    + " (Y) and multilingual (Z). At the intersection of all three, there’s magic—what we call XYZ-code"
+                    + " as illustrated in Figure 1—a joint representation to create more powerful AI that can speak, hear,"
+                    + " see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term"
+                    + " vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have"
+                    + " pretrained models that can jointly learn representations to support a broad range of downstream"
+                    + " AI tasks, much in the way humans do today. Over the past five years, we have achieved human"
+                    + " performance on benchmarks in conversational speech recognition, machine translation, "
+                    + "conversational question answering, machine reading comprehension, and image captioning. These"
+                    + " five breakthroughs provided us with strong signals toward our more ambitious aspiration to"
+                    + " produce a leap in AI capabilities, achieving multisensory and multilingual learning that "
+                    + "is closer in line with how humans learn and understand. I believe the joint XYZ-code is a "
+                    + "foundational component of this aspiration, if grounded with external knowledge sources in "
+                    + "the downstream AI tasks."));
+        }
+        ExtractSummaryOptions options =
+            new ExtractSummaryOptions().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK);
+        textAnalyticsAsyncClient.beginExtractSummary(documents, options)
+            .flatMap(result -> {
+                ExtractSummaryOperationDetail operationDetail = result.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
+                return result.getFinalResult();
+            })
+            .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
+            .subscribe(
+                resultCollection -> {
+                    for (ExtractSummaryResult documentResult : resultCollection) {
+                        for (SummarySentence summarySentence : documentResult.getSentences()) {
+                            System.out.printf(
+                                "Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
+                                summarySentence.getText(), summarySentence.getLength(),
+                                summarySentence.getOffset(), summarySentence.getRankScore());
+                        }
+                    }
+                },
+                ex -> System.out.println("Error listing pages: " + ex.getMessage()),
+                () -> System.out.println("Successfully listed all pages"));
+        // END: AsyncClient.beginExtractSummary#Iterable-ExtractSummaryOptions
     }
 
     // Analyze actions

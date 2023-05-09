@@ -6,11 +6,10 @@ package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.UpgradeDetails;
-import org.junit.jupiter.api.Test;
 
 public final class UpgradeDetailsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         UpgradeDetails model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class UpgradeDetailsTests {
                 .toObject(UpgradeDetails.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UpgradeDetails model = new UpgradeDetails();
         model = BinaryData.fromObject(model).toObject(UpgradeDetails.class);
     }

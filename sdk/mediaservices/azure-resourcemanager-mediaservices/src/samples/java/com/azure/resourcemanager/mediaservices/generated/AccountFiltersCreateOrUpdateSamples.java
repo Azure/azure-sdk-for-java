@@ -26,7 +26,7 @@ public final class AccountFiltersCreateOrUpdateSamples {
         manager
             .accountFilters()
             .define("newAccountFilter")
-            .withExistingMediaService("contoso", "contosomedia")
+            .withExistingMediaService("contosorg", "contosomedia")
             .withPresentationTimeRange(
                 new PresentationTimeRange()
                     .withStartTimestamp(0L)

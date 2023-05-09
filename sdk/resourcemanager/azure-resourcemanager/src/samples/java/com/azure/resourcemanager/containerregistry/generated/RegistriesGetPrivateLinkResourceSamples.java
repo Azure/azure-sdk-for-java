@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Registries GetPrivateLinkResource. */
 public final class RegistriesGetPrivateLinkResourceSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryGetPrivateLinkResource.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/RegistryGetPrivateLinkResource.json
      */
     /**
      * Sample code: RegistryGetPrivateLinkResource.
@@ -22,6 +20,7 @@ public final class RegistriesGetPrivateLinkResourceSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .getPrivateLinkResourceWithResponse("myResourceGroup", "myRegistry", "registry", Context.NONE);
+            .getPrivateLinkResourceWithResponse(
+                "myResourceGroup", "myRegistry", "registry", com.azure.core.util.Context.NONE);
     }
 }

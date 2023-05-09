@@ -26,15 +26,6 @@ public final class WorkspaceAadAdminsImpl implements WorkspaceAadAdmins {
         this.serviceManager = serviceManager;
     }
 
-    public WorkspaceAadAdminInfo get(String resourceGroupName, String workspaceName) {
-        WorkspaceAadAdminInfoInner inner = this.serviceClient().get(resourceGroupName, workspaceName);
-        if (inner != null) {
-            return new WorkspaceAadAdminInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<WorkspaceAadAdminInfo> getWithResponse(
         String resourceGroupName, String workspaceName, Context context) {
         Response<WorkspaceAadAdminInfoInner> inner =
@@ -45,6 +36,15 @@ public final class WorkspaceAadAdminsImpl implements WorkspaceAadAdmins {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new WorkspaceAadAdminInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WorkspaceAadAdminInfo get(String resourceGroupName, String workspaceName) {
+        WorkspaceAadAdminInfoInner inner = this.serviceClient().get(resourceGroupName, workspaceName);
+        if (inner != null) {
+            return new WorkspaceAadAdminInfoImpl(inner, this.manager());
         } else {
             return null;
         }

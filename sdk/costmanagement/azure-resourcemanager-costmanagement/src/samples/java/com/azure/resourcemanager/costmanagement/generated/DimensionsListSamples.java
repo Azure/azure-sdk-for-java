@@ -7,7 +7,28 @@ package com.azure.resourcemanager.costmanagement.generated;
 /** Samples for Dimensions List. */
 public final class DimensionsListSamples {
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerDimensionsList.json
+     */
+    /**
+     * Sample code: CustomerDimensionsList-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void customerDimensionsListMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentDimensionsList.json
      */
     /**
      * Sample code: DepartmentDimensionsList-Legacy.
@@ -28,28 +49,49 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCACustomerDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionDimensionsListWithFilter.json
      */
     /**
-     * Sample code: CustomerDimensionsList-Modern.
+     * Sample code: InvoiceSectionDimensionsListWithFilter-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void customerDimensionsListModern(
+    public static void invoiceSectionDimensionsListWithFilterMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
+                "properties/category eq 'resourceId'",
+                "properties/data",
+                null,
+                5,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerDimensionsListWithFilter.json
+     */
+    /**
+     * Sample code: CustomerDimensionsListWithFilter-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void customerDimensionsListWithFilterMCA(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .dimensions()
             .list(
                 "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                "properties/category eq 'resourceId'",
+                "properties/data",
                 null,
-                null,
-                null,
-                null,
+                5,
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ManagementGroupDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupDimensionsListWithFilter.json
      */
     /**
      * Sample code: ManagementGroupDimensionsListWithFilter-Legacy.
@@ -70,7 +112,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountDimensionsList.json
      */
     /**
      * Sample code: BillingAccountDimensionsList-Legacy.
@@ -91,7 +133,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ManagementGroupDimensionsListExpandAndTop.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: ManagementGroupDimensionsListExpandAndTop-Legacy.
@@ -112,7 +154,28 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentDimensionsListExpandAndTop.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileDimensionsList.json
+     */
+    /**
+     * Sample code: BillingProfileDimensionsList-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingProfileDimensionsListMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: DepartmentDimensionsListExpandAndTop-Legacy.
@@ -133,7 +196,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountDimensionsList.json
      */
     /**
      * Sample code: EnrollmentAccountDimensionsList-Legacy.
@@ -154,7 +217,28 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountDimensionsListExpandAndTop.json
+     */
+    /**
+     * Sample code: BillingAccountDimensionsListExpandAndTop-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingAccountDimensionsListExpandAndTopMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                null,
+                "properties/data",
+                null,
+                5,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountDimensionsListWithFilter.json
      */
     /**
      * Sample code: BillingAccountDimensionsListWithFilter-Legacy.
@@ -175,28 +259,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCACustomerDimensionsListExpandAndTop.json
-     */
-    /**
-     * Sample code: CustomerDimensionsListExpandAndTop-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void customerDimensionsListExpandAndTopModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
-                null,
-                "properties/data",
-                null,
-                5,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ResourceGroupDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ResourceGroupDimensionsList.json
      */
     /**
      * Sample code: ResourceGroupDimensionsList-Legacy.
@@ -217,49 +280,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCAInvoiceSectionDimensionsListExpandAndTop.json
-     */
-    /**
-     * Sample code: InvoiceSectionDimensionsListExpandAndTop-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void invoiceSectionDimensionsListExpandAndTopModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
-                null,
-                "properties/data",
-                null,
-                5,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCACustomerDimensionsListWithFilter.json
-     */
-    /**
-     * Sample code: CustomerDimensionsListWithFilter-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void customerDimensionsListWithFilterModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
-                "properties/category eq 'resourceId'",
-                "properties/data",
-                null,
-                5,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/SubscriptionDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/SubscriptionDimensionsList.json
      */
     /**
      * Sample code: SubscriptionDimensionsList-Legacy.
@@ -280,7 +301,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/BillingAccountDimensionsListExpandAndTop.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/BillingAccountDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: BillingAccountDimensionsListExpandAndTop-Legacy.
@@ -301,7 +322,28 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountDimensionsListExpandAndTop.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountDimensionsList.json
+     */
+    /**
+     * Sample code: BillingAccountDimensionsList-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void billingAccountDimensionsListMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountDimensionsListExpandAndTop.json
      */
     /**
      * Sample code: EnrollmentAccountDimensionsListExpandAndTop-Legacy.
@@ -322,7 +364,28 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/DepartmentDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCACustomerDimensionsListExpandAndTop.json
+     */
+    /**
+     * Sample code: CustomerDimensionsListExpandAndTop-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void customerDimensionsListExpandAndTopMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/customers/5678",
+                null,
+                "properties/data",
+                null,
+                5,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/DepartmentDimensionsListWithFilter.json
      */
     /**
      * Sample code: DepartmentDimensionsListWithFilter-Legacy.
@@ -343,19 +406,40 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingAccountDimensionsListExpandAndTop.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionDimensionsList.json
      */
     /**
-     * Sample code: BillingAccountDimensionsListExpandAndTop-Modern.
+     * Sample code: InvoiceSectionDimensionsList-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void billingAccountDimensionsListExpandAndTopModern(
+    public static void invoiceSectionDimensionsListMCA(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .dimensions()
             .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
+                null,
+                null,
+                null,
+                null,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCAInvoiceSectionDimensionsListExpandAndTop.json
+     */
+    /**
+     * Sample code: InvoiceSectionDimensionsListExpandAndTop-MCA.
+     *
+     * @param manager Entry point to CostManagementManager.
+     */
+    public static void invoiceSectionDimensionsListExpandAndTopMCA(
+        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
+        manager
+            .dimensions()
+            .list(
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
                 null,
                 "properties/data",
                 null,
@@ -364,49 +448,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingProfileDimensionsListExpandAndTop.json
-     */
-    /**
-     * Sample code: BillingProfileDimensionsListExpandAndTop-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void billingProfileDimensionsListExpandAndTopModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                null,
-                "properties/data",
-                null,
-                5,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingProfileDimensionsList.json
-     */
-    /**
-     * Sample code: BillingProfileDimensionsList-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void billingProfileDimensionsListModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
-                null,
-                null,
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/ManagementGroupDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/ManagementGroupDimensionsList.json
      */
     /**
      * Sample code: ManagementGroupDimensionsList-Legacy.
@@ -427,20 +469,20 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingAccountDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileDimensionsListExpandAndTop.json
      */
     /**
-     * Sample code: BillingAccountDimensionsListWithFilter-Modern.
+     * Sample code: BillingProfileDimensionsListExpandAndTop-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void billingAccountDimensionsListWithFilterModern(
+    public static void billingProfileDimensionsListExpandAndTopMCA(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .dimensions()
             .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789",
-                "properties/category eq 'resourceId'",
+                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579",
+                null,
                 "properties/data",
                 null,
                 5,
@@ -448,14 +490,14 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingProfileDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingProfileDimensionsListWithFilter.json
      */
     /**
-     * Sample code: BillingProfileDimensionsListWithFilter-Modern.
+     * Sample code: BillingProfileDimensionsListWithFilter-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void billingProfileDimensionsListWithFilterModern(
+    public static void billingProfileDimensionsListWithFilterMCA(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .dimensions()
@@ -469,49 +511,7 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCABillingAccountDimensionsList.json
-     */
-    /**
-     * Sample code: BillingAccountDimensionsList-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void billingAccountDimensionsListModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789",
-                null,
-                null,
-                null,
-                null,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCAInvoiceSectionDimensionsListWithFilter.json
-     */
-    /**
-     * Sample code: InvoiceSectionDimensionsListWithFilter-Modern.
-     *
-     * @param manager Entry point to CostManagementManager.
-     */
-    public static void invoiceSectionDimensionsListWithFilterModern(
-        com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
-        manager
-            .dimensions()
-            .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
-                "properties/category eq 'resourceId'",
-                "properties/data",
-                null,
-                5,
-                com.azure.core.util.Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/EnrollmentAccountDimensionsListWithFilter.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/EnrollmentAccountDimensionsListWithFilter.json
      */
     /**
      * Sample code: EnrollmentAccountDimensionsListWithFilter-Legacy.
@@ -532,23 +532,23 @@ public final class DimensionsListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2020-06-01/examples/MCAInvoiceSectionDimensionsList.json
+     * x-ms-original-file: specification/cost-management/resource-manager/Microsoft.CostManagement/stable/2022-10-01/examples/MCABillingAccountDimensionsListWithFilter.json
      */
     /**
-     * Sample code: InvoiceSectionDimensionsList-Modern.
+     * Sample code: BillingAccountDimensionsListWithFilter-MCA.
      *
      * @param manager Entry point to CostManagementManager.
      */
-    public static void invoiceSectionDimensionsListModern(
+    public static void billingAccountDimensionsListWithFilterMCA(
         com.azure.resourcemanager.costmanagement.CostManagementManager manager) {
         manager
             .dimensions()
             .list(
-                "providers/Microsoft.Billing/billingAccounts/12345:6789/billingProfiles/13579/invoiceSections/9876",
+                "providers/Microsoft.Billing/billingAccounts/12345:6789",
+                "properties/category eq 'resourceId'",
+                "properties/data",
                 null,
-                null,
-                null,
-                null,
+                5,
                 com.azure.core.util.Context.NONE);
     }
 }

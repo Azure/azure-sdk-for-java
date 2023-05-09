@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkloadMonitorProvisioningState. */
+/** State of provisioning of the SAP monitor. */
 public final class WorkloadMonitorProvisioningState extends ExpandableStringEnum<WorkloadMonitorProvisioningState> {
     /** Static value Accepted for WorkloadMonitorProvisioningState. */
     public static final WorkloadMonitorProvisioningState ACCEPTED = fromString("Accepted");
@@ -30,6 +30,15 @@ public final class WorkloadMonitorProvisioningState extends ExpandableStringEnum
 
     /** Static value Migrating for WorkloadMonitorProvisioningState. */
     public static final WorkloadMonitorProvisioningState MIGRATING = fromString("Migrating");
+
+    /**
+     * Creates a new instance of WorkloadMonitorProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WorkloadMonitorProvisioningState() {
+    }
 
     /**
      * Creates or finds a WorkloadMonitorProvisioningState from its string representation.

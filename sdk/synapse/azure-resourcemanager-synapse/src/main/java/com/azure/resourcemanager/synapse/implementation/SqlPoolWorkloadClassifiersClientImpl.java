@@ -65,7 +65,7 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolWorkloadClassifiersService {
+    public interface SqlPoolWorkloadClassifiersService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -152,7 +152,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Get a workload classifier of Sql pool's workload group.
+     * Get workload classifier
+     *
+     * <p>Get a workload classifier of Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -224,7 +226,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Get a workload classifier of Sql pool's workload group.
+     * Get workload classifier
+     *
+     * <p>Get a workload classifier of Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -295,7 +299,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Get a workload classifier of Sql pool's workload group.
+     * Get workload classifier
+     *
+     * <p>Get a workload classifier of Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -316,42 +322,13 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
         String workloadClassifierName) {
         return getWithResponseAsync(
                 resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName)
-            .flatMap(
-                (Response<WorkloadClassifierInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a workload classifier of Sql pool's workload group.
+     * Get workload classifier
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param workloadGroupName The name of the workload group.
-     * @param workloadClassifierName The name of the workload classifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workload classifier of Sql pool's workload group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkloadClassifierInner get(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        String workloadClassifierName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName)
-            .block();
-    }
-
-    /**
-     * Get a workload classifier of Sql pool's workload group.
+     * <p>Get a workload classifier of Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -378,7 +355,36 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Create Or Update workload classifier for a Sql pool's workload group.
+     * Get workload classifier
+     *
+     * <p>Get a workload classifier of Sql pool's workload group.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param workloadGroupName The name of the workload group.
+     * @param workloadClassifierName The name of the workload classifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workload classifier of Sql pool's workload group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public WorkloadClassifierInner get(
+        String resourceGroupName,
+        String workspaceName,
+        String sqlPoolName,
+        String workloadGroupName,
+        String workloadClassifierName) {
+        return getWithResponse(
+                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Create Or Update workload classifier
+     *
+     * <p>Create Or Update workload classifier for a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -458,7 +464,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Create Or Update workload classifier for a Sql pool's workload group.
+     * Create Or Update workload classifier
+     *
+     * <p>Create Or Update workload classifier for a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -537,7 +545,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Create Or Update workload classifier for a Sql pool's workload group.
+     * Create Or Update workload classifier
+     *
+     * <p>Create Or Update workload classifier for a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -572,7 +582,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Create Or Update workload classifier for a Sql pool's workload group.
+     * Create Or Update workload classifier
+     *
+     * <p>Create Or Update workload classifier for a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -616,7 +628,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Create Or Update workload classifier for a Sql pool's workload group.
+     * Create Or Update workload classifier
+     *
+     * <p>Create Or Update workload classifier for a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -637,13 +651,16 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
         String workloadGroupName,
         String workloadClassifierName,
         WorkloadClassifierInner parameters) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Create Or Update workload classifier for a Sql pool's workload group.
+     * Create Or Update workload classifier
+     *
+     * <p>Create Or Update workload classifier for a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -666,7 +683,8 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
         String workloadClassifierName,
         WorkloadClassifierInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(
+        return this
+            .beginCreateOrUpdateAsync(
                 resourceGroupName,
                 workspaceName,
                 sqlPoolName,
@@ -678,7 +696,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Create Or Update workload classifier for a Sql pool's workload group.
+     * Create Or Update workload classifier
+     *
+     * <p>Create Or Update workload classifier for a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -706,7 +726,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Create Or Update workload classifier for a Sql pool's workload group.
+     * Create Or Update workload classifier
+     *
+     * <p>Create Or Update workload classifier for a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -742,7 +764,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Create Or Update workload classifier for a Sql pool's workload group.
+     * Create Or Update workload classifier
+     *
+     * <p>Create Or Update workload classifier for a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -769,7 +793,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Create Or Update workload classifier for a Sql pool's workload group.
+     * Create Or Update workload classifier
+     *
+     * <p>Create Or Update workload classifier for a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -804,7 +830,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Remove workload classifier of a Sql pool's workload group.
+     * Remove workload classifier
+     *
+     * <p>Remove workload classifier of a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -873,7 +901,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Remove workload classifier of a Sql pool's workload group.
+     * Remove workload classifier
+     *
+     * <p>Remove workload classifier of a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -941,7 +971,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Remove workload classifier of a Sql pool's workload group.
+     * Remove workload classifier
+     *
+     * <p>Remove workload classifier of a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -970,7 +1002,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Remove workload classifier of a Sql pool's workload group.
+     * Remove workload classifier
+     *
+     * <p>Remove workload classifier of a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1001,7 +1035,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Remove workload classifier of a Sql pool's workload group.
+     * Remove workload classifier
+     *
+     * <p>Remove workload classifier of a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1020,13 +1056,15 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
         String sqlPoolName,
         String workloadGroupName,
         String workloadClassifierName) {
-        return beginDeleteAsync(
-                resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName)
+        return this
+            .beginDeleteAsync(resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName)
             .getSyncPoller();
     }
 
     /**
-     * Remove workload classifier of a Sql pool's workload group.
+     * Remove workload classifier
+     *
+     * <p>Remove workload classifier of a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1047,13 +1085,16 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
         String workloadGroupName,
         String workloadClassifierName,
         Context context) {
-        return beginDeleteAsync(
+        return this
+            .beginDeleteAsync(
                 resourceGroupName, workspaceName, sqlPoolName, workloadGroupName, workloadClassifierName, context)
             .getSyncPoller();
     }
 
     /**
-     * Remove workload classifier of a Sql pool's workload group.
+     * Remove workload classifier
+     *
+     * <p>Remove workload classifier of a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1079,7 +1120,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Remove workload classifier of a Sql pool's workload group.
+     * Remove workload classifier
+     *
+     * <p>Remove workload classifier of a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1107,7 +1150,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Remove workload classifier of a Sql pool's workload group.
+     * Remove workload classifier
+     *
+     * <p>Remove workload classifier of a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1129,7 +1174,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Remove workload classifier of a Sql pool's workload group.
+     * Remove workload classifier
+     *
+     * <p>Remove workload classifier of a Sql pool's workload group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1154,7 +1201,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Get list of Sql pool's workload classifier for workload groups.
+     * Sql pool's workload classifier
+     *
+     * <p>Get list of Sql pool's workload classifier for workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1224,7 +1273,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Get list of Sql pool's workload classifier for workload groups.
+     * Sql pool's workload classifier
+     *
+     * <p>Get list of Sql pool's workload classifier for workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1292,7 +1343,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Get list of Sql pool's workload classifier for workload groups.
+     * Sql pool's workload classifier
+     *
+     * <p>Get list of Sql pool's workload classifier for workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1312,7 +1365,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Get list of Sql pool's workload classifier for workload groups.
+     * Sql pool's workload classifier
+     *
+     * <p>Get list of Sql pool's workload classifier for workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1333,7 +1388,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Get list of Sql pool's workload classifier for workload groups.
+     * Sql pool's workload classifier
+     *
+     * <p>Get list of Sql pool's workload classifier for workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1352,7 +1409,9 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     }
 
     /**
-     * Get list of Sql pool's workload classifier for workload groups.
+     * Sql pool's workload classifier
+     *
+     * <p>Get list of Sql pool's workload classifier for workload groups.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -1375,7 +1434,8 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1411,7 +1471,8 @@ public final class SqlPoolWorkloadClassifiersClientImpl implements SqlPoolWorklo
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

@@ -98,20 +98,6 @@ public interface CassandraDataCentersClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName Managed Cassandra cluster name.
      * @param dataCenterName Data center name in a managed Cassandra cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of a managed Cassandra data center.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataCenterResourceInner get(String resourceGroupName, String clusterName, String dataCenterName);
-
-    /**
-     * Get the properties of a managed Cassandra data center.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName Managed Cassandra cluster name.
-     * @param dataCenterName Data center name in a managed Cassandra cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -121,6 +107,20 @@ public interface CassandraDataCentersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DataCenterResourceInner> getWithResponse(
         String resourceGroupName, String clusterName, String dataCenterName, Context context);
+
+    /**
+     * Get the properties of a managed Cassandra data center.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName Managed Cassandra cluster name.
+     * @param dataCenterName Data center name in a managed Cassandra cluster.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a managed Cassandra data center.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DataCenterResourceInner get(String resourceGroupName, String clusterName, String dataCenterName);
 
     /**
      * Delete a managed Cassandra data center.

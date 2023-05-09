@@ -6,35 +6,45 @@ package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.workloads.models.SapDiskConfiguration;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import java.util.Map;
 
 /** The list of disk configuration for vmSku which are part of SAP deployment. */
 @Fluent
 public final class SapDiskConfigurationsResultInner {
     /*
-     * Gets the list of Disk Configurations.
+     * The disk configuration for the db volume. For HANA, Required volumes are: ['hana/data', 'hana/log',
+     * hana/shared', 'usr/sap', 'os'], Optional volume : ['backup'].
      */
-    @JsonProperty(value = "diskConfigurations")
-    private List<SapDiskConfiguration> diskConfigurations;
+    @JsonProperty(value = "volumeConfigurations")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, SapDiskConfiguration> volumeConfigurations;
 
-    /**
-     * Get the diskConfigurations property: Gets the list of Disk Configurations.
-     *
-     * @return the diskConfigurations value.
-     */
-    public List<SapDiskConfiguration> diskConfigurations() {
-        return this.diskConfigurations;
+    /** Creates an instance of SapDiskConfigurationsResultInner class. */
+    public SapDiskConfigurationsResultInner() {
     }
 
     /**
-     * Set the diskConfigurations property: Gets the list of Disk Configurations.
+     * Get the volumeConfigurations property: The disk configuration for the db volume. For HANA, Required volumes are:
+     * ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os'], Optional volume : ['backup'].
      *
-     * @param diskConfigurations the diskConfigurations value to set.
+     * @return the volumeConfigurations value.
+     */
+    public Map<String, SapDiskConfiguration> volumeConfigurations() {
+        return this.volumeConfigurations;
+    }
+
+    /**
+     * Set the volumeConfigurations property: The disk configuration for the db volume. For HANA, Required volumes are:
+     * ['hana/data', 'hana/log', hana/shared', 'usr/sap', 'os'], Optional volume : ['backup'].
+     *
+     * @param volumeConfigurations the volumeConfigurations value to set.
      * @return the SapDiskConfigurationsResultInner object itself.
      */
-    public SapDiskConfigurationsResultInner withDiskConfigurations(List<SapDiskConfiguration> diskConfigurations) {
-        this.diskConfigurations = diskConfigurations;
+    public SapDiskConfigurationsResultInner withVolumeConfigurations(
+        Map<String, SapDiskConfiguration> volumeConfigurations) {
+        this.volumeConfigurations = volumeConfigurations;
         return this;
     }
 
@@ -44,8 +54,15 @@ public final class SapDiskConfigurationsResultInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (diskConfigurations() != null) {
-            diskConfigurations().forEach(e -> e.validate());
+        if (volumeConfigurations() != null) {
+            volumeConfigurations()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

@@ -10,6 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
 import com.azure.resourcemanager.mediaservices.models.KeyDelivery;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
+import com.azure.resourcemanager.mediaservices.models.MinimumTlsVersion;
 import com.azure.resourcemanager.mediaservices.models.ProvisioningState;
 import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
@@ -239,6 +240,31 @@ public final class MediaServiceInner extends Resource {
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
         return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
+     * optional property. If unspecified, a secure default value will be used.
+     *
+     * @return the minimumTlsVersion value.
+     */
+    public MinimumTlsVersion minimumTlsVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersion();
+    }
+
+    /**
+     * Set the minimumTlsVersion property: The minimum TLS version allowed for this account's requests. This is an
+     * optional property. If unspecified, a secure default value will be used.
+     *
+     * @param minimumTlsVersion the minimumTlsVersion value to set.
+     * @return the MediaServiceInner object itself.
+     */
+    public MediaServiceInner withMinimumTlsVersion(MinimumTlsVersion minimumTlsVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MediaServiceProperties();
+        }
+        this.innerProperties().withMinimumTlsVersion(minimumTlsVersion);
+        return this;
     }
 
     /**

@@ -18,7 +18,6 @@ import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.JavaStreamUtils;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext.MetadataDiagnostics;
@@ -38,8 +37,11 @@ import com.azure.cosmos.implementation.UnauthorizedException;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionTask;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
@@ -67,6 +69,7 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class GatewayAddressCache implements IAddressCache {
@@ -81,6 +84,7 @@ public class GatewayAddressCache implements IAddressCache {
 
     private final String databaseFeedEntryUrl = PathsHelper.generatePath(ResourceType.Database, "", true);
     private final URI addressEndpoint;
+    private final URI serviceEndpoint;
 
     private final AsyncCacheNonBlocking<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
     private final ConcurrentHashMap<PartitionKeyRangeIdentity, Instant> suboptimalServerPartitionTimestamps;
@@ -97,7 +101,7 @@ public class GatewayAddressCache implements IAddressCache {
 
     private final ConcurrentHashMap<String, ForcedRefreshMetadata> lastForcedRefreshMap;
     private final GlobalEndpointManager globalEndpointManager;
-    private IOpenConnectionsHandler openConnectionsHandler;
+    private ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
     private final ConnectionPolicy connectionPolicy;
     private final boolean replicaAddressValidationEnabled;
     private final Set<Uri.HealthStatus> replicaValidationScopes;
@@ -113,7 +117,7 @@ public class GatewayAddressCache implements IAddressCache {
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        IOpenConnectionsHandler openConnectionsHandler) {
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
 
         this.clientContext = clientContext;
         try {
@@ -123,6 +127,7 @@ public class GatewayAddressCache implements IAddressCache {
             assert false;
             throw new IllegalStateException(e);
         }
+        this.serviceEndpoint = serviceEndpoint;
         this.tokenProvider = tokenProvider;
         this.serverPartitionAddressCache = new AsyncCacheNonBlocking<>();
         this.suboptimalServerPartitionTimestamps = new ConcurrentHashMap<>();
@@ -156,7 +161,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         this.lastForcedRefreshMap = new ConcurrentHashMap<>();
         this.globalEndpointManager = globalEndpointManager;
-        this.openConnectionsHandler = openConnectionsHandler;
+        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
         this.connectionPolicy = connectionPolicy;
         this.replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
         this.replicaValidationScopes = ConcurrentHashMap.newKeySet();
@@ -175,7 +180,7 @@ public class GatewayAddressCache implements IAddressCache {
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        IOpenConnectionsHandler openConnectionsHandler) {
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         this(clientContext,
                 serviceEndpoint,
                 protocol,
@@ -186,7 +191,7 @@ public class GatewayAddressCache implements IAddressCache {
                 apiType,
                 globalEndpointManager,
                 connectionPolicy,
-                openConnectionsHandler);
+                proactiveOpenConnectionsProcessor);
     }
 
     @Override
@@ -312,8 +317,8 @@ public class GatewayAddressCache implements IAddressCache {
     }
 
     @Override
-    public void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionsHandler) {
-        this.openConnectionsHandler = openConnectionsHandler;
+    public void setOpenConnectionsProcessor(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+        this.proactiveOpenConnectionsProcessor = proactiveOpenConnectionsProcessor;
     }
 
     public Mono<List<Address>> getServerAddressesViaGatewayAsync(
@@ -664,7 +669,7 @@ public class GatewayAddressCache implements IAddressCache {
                             }
 
                             if (this.replicaAddressValidationEnabled) {
-                                this.validateReplicaAddresses(mergedAddresses);
+                                this.validateReplicaAddresses(collectionRid, mergedAddresses);
                             }
 
                             return Mono.just(mergedAddresses);
@@ -853,8 +858,9 @@ public class GatewayAddressCache implements IAddressCache {
         return mergedAddresses.toArray(new AddressInformation[mergedAddresses.size()]);
     }
 
-    private void validateReplicaAddresses(AddressInformation[] addresses) {
+    private void validateReplicaAddresses(String collectionRid, AddressInformation[] addresses) {
         checkNotNull(addresses, "Argument 'addresses' can not be null");
+        checkArgument(StringUtils.isNotEmpty(collectionRid), "Argument 'collectionRid' can not be null");
 
         // By theory, when we reach here, the status of the address should be in one of the three status: Unknown, Connected, UnhealthyPending
         // using open connection to validate addresses in UnhealthyPending status
@@ -873,16 +879,26 @@ public class GatewayAddressCache implements IAddressCache {
                         addressesNeedToValidation.add(address.getPhysicalUri());
                         break;
                     default:
-                        throw new IllegalStateException("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
+                        // the status of the replica can be changed by other flows
+                        // ignore the validation if the status is not in the validation scope anymore
+                        logger.debug("Validate replica status is not support for status " + address.getPhysicalUri().getHealthStatus());
+                        break;
                 }
             }
         }
 
-        if (addressesNeedToValidation.size() > 0) {
-            this.openConnectionsHandler
-                    .openConnections(addressesNeedToValidation)
+        if (addressesNeedToValidation.size() > 0 && this.proactiveOpenConnectionsProcessor != null) {
+            logger.debug("Addresses to validate: [{}]", addressesNeedToValidation);
+            for (Uri addressToBeValidated : addressesNeedToValidation) {
+                Mono.fromFuture(this.proactiveOpenConnectionsProcessor
+                        .submitOpenConnectionTaskOutsideLoop(
+                                collectionRid,
+                                this.serviceEndpoint,
+                                addressToBeValidated,
+                                Configs.getMinConnectionPoolSizePerEndpoint()))
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
+            }
         }
     }
 
@@ -908,7 +924,8 @@ public class GatewayAddressCache implements IAddressCache {
         return new AddressInformation(true, address.isPrimary(), address.getPhyicalUri(), address.getProtocolScheme());
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(
+    public Flux<ImmutablePair<ImmutablePair<String, DocumentCollection> , AddressInformation>> resolveAddressesAndInitCaches(
+            String containerLink,
             DocumentCollection collection,
             List<PartitionKeyRangeIdentity> partitionKeyRangeIdentities) {
 
@@ -957,28 +974,45 @@ public class GatewayAddressCache implements IAddressCache {
                 .flatMap(list -> {
                     List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> addressInfos =
                             list.stream()
-                            .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
-                            .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
-                            .values()
-                            .stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
-                            .collect(Collectors.toList());
+                                    .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
+                                    .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
+                                    .values()
+                                    .stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
+                                    .collect(Collectors.toList());
 
                     return Flux.fromIterable(addressInfos)
                             .flatMap(addressInfo -> {
                                 this.serverPartitionAddressCache.set(addressInfo.getLeft(), addressInfo.getRight());
-
-                                if (this.openConnectionsHandler != null) {
-                                    return this.openConnectionsHandler.openConnections(
-                                            Arrays
-                                                .stream(addressInfo.getRight())
-                                                .map(addressInformation -> addressInformation.getPhysicalUri())
-                                                .collect(Collectors.toList()));
-                                }
-
-                                logger.info("OpenConnectionHandler is null, can not open connections");
-                                return Flux.empty();
-                            });
+                                return Flux.fromArray(addressInfo.getRight());
+                            }, Configs.getCPUCnt() * 10, Configs.getCPUCnt() * 3)
+                            .flatMap(addressInformation -> Mono.just(new ImmutablePair<>(new ImmutablePair<>(containerLink, collection), addressInformation)));
                 });
+
+    }
+
+    public Mono<OpenConnectionResponse> submitOpenConnectionTask(
+            AddressInformation address,
+            DocumentCollection documentCollection,
+            int connectionsPerEndpointCount) {
+
+        // do not fail here, just log
+        // this attempts to make the open connections flow
+        // best effort
+        if (this.proactiveOpenConnectionsProcessor == null) {
+            logger.warn("proactiveOpenConnectionsProcessor is null");
+            return Mono.empty();
+        }
+
+        int connectionsRequiredForEndpoint = Math.max(connectionsPerEndpointCount,
+                Configs.getMinConnectionPoolSizePerEndpoint());
+
+        OpenConnectionTask openConnectionTask = this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
+                documentCollection.getResourceId(),
+                this.serviceEndpoint,
+                address.getPhysicalUri(),
+                connectionsRequiredForEndpoint);
+
+        return Mono.fromFuture(openConnectionTask);
     }
 
     private Mono<List<Address>> getServerAddressesViaGatewayWithRetry(

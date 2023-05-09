@@ -4,7 +4,7 @@
     "Uri" : "https://REDACTED.communication.azure.com/teamsUser/:exchangeAccessToken?api-version=2022-10-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-communication-identity/1.5.0-beta.1 (11.0.17; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c3645a40-6b67-4946-88ba-8c1628b35ba3",
+      "x-ms-client-request-id" : "91a889ff-29b5-42b9-92ba-2a76a222398f",
       "Content-Type" : "application/json"
     },
     "Response" : {
@@ -12,13 +12,13 @@
       "X-Cache" : "CONFIG_NOCACHE",
       "retry-after" : "0",
       "StatusCode" : "401",
-      "Date" : "Thu, 12 Jan 2023 09:57:02 GMT",
+      "Date" : "Thu, 09 Mar 2023 08:53:04 GMT",
       "Strict-Transport-Security" : "max-age=2592000",
       "X-Processing-Time" : "98ms",
-      "MS-CV" : "ujm7Vpswm0uq/UKx7zvqRA.0",
-      "X-Azure-Ref" : "0b9m/YwAAAAB8CJg2HApWSba44Uq8zmzjSEVMMDFFREdFMjAxMgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
+      "MS-CV" : "pXEEY2iuJ0ehROB9bR6ivw.0",
+      "X-Azure-Ref" : "0cJ4JZAAAAADlI7eghI3tSo+N74hlEmDUSEVMMDFFREdFMjAxNgA5ZmM3YjUxOS1hOGNjLTRmODktOTM1ZS1jOTE0OGFlMDllODE=",
       "Body" : "{\"error\":{\"code\":\"InvalidAccessToken\",\"message\":\"Provided access token is not valid.\"}}",
-      "x-ms-client-request-id" : "c3645a40-6b67-4946-88ba-8c1628b35ba3",
+      "x-ms-client-request-id" : "91a889ff-29b5-42b9-92ba-2a76a222398f",
       "Request-Context" : "appId=",
       "Content-Type" : "application/json"
     },

@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservice.fluent.models.CredentialResultsInner;
+import com.azure.resourcemanager.containerservice.fluent.models.KubernetesVersionListResultInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterAccessProfileInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterInner;
 import com.azure.resourcemanager.containerservice.fluent.models.ManagedClusterUpgradeProfileInner;
@@ -89,6 +90,68 @@ public interface ManagedClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OSOptionProfileInner getOSOptions(String location);
+
+    /**
+     * Gets a list of supported Kubernetes versions in the specified subscription.
+     *
+     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
+     * and details on preview status of the version.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hold values properties, which is array of KubernetesVersion along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<KubernetesVersionListResultInner>> listKubernetesVersionsWithResponseAsync(String location);
+
+    /**
+     * Gets a list of supported Kubernetes versions in the specified subscription.
+     *
+     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
+     * and details on preview status of the version.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hold values properties, which is array of KubernetesVersion on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<KubernetesVersionListResultInner> listKubernetesVersionsAsync(String location);
+
+    /**
+     * Gets a list of supported Kubernetes versions in the specified subscription.
+     *
+     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
+     * and details on preview status of the version.
+     *
+     * @param location The name of Azure region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hold values properties, which is array of KubernetesVersion along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<KubernetesVersionListResultInner> listKubernetesVersionsWithResponse(String location, Context context);
+
+    /**
+     * Gets a list of supported Kubernetes versions in the specified subscription.
+     *
+     * <p>Contains extra metadata on the version, including supported patch versions, capabilities, available upgrades,
+     * and details on preview status of the version.
+     *
+     * @param location The name of Azure region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return hold values properties, which is array of KubernetesVersion.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    KubernetesVersionListResultInner listKubernetesVersions(String location);
 
     /**
      * Gets a list of managed clusters in the specified subscription.
@@ -964,6 +1027,9 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -978,6 +1044,9 @@ public interface ManagedClustersClient
 
     /**
      * Reset the AAD Profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -994,6 +1063,9 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1008,6 +1080,9 @@ public interface ManagedClustersClient
 
     /**
      * Reset the AAD Profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1025,6 +1100,9 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1039,6 +1117,9 @@ public interface ManagedClustersClient
     /**
      * Reset the AAD Profile of a managed cluster.
      *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters The AAD profile to set on the Managed Cluster.
@@ -1051,6 +1132,9 @@ public interface ManagedClustersClient
 
     /**
      * Reset the AAD Profile of a managed cluster.
+     *
+     * <p>**WARNING**: This API will be deprecated. Please see [AKS-managed Azure Active Directory
+     * integration](https://aka.ms/aks-managed-aad) to update your cluster with AKS-managed Azure AD.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
@@ -1178,6 +1262,127 @@ public interface ManagedClustersClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void rotateClusterCertificates(String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> abortLatestOperationWithResponseAsync(
+        String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginAbortLatestOperationAsync(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginAbortLatestOperation(
+        String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> abortLatestOperationAsync(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void abortLatestOperation(String resourceGroupName, String resourceName);
+
+    /**
+     * Aborts last operation running on managed cluster.
+     *
+     * <p>Aborts the currently running operation on the managed cluster. The Managed Cluster will be moved to a
+     * Canceling state and eventually to a Canceled state when cancellation finishes. If the operation completes before
+     * cancellation can take place, a 409 error code is returned.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the managed cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void abortLatestOperation(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Rotates the service account signing keys of a managed cluster.

@@ -44,9 +44,9 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return iP firewall rule.
      */
-    Object delete(String resourceGroupName, String workspaceName, String ruleName);
+    IpFirewallRuleInfo delete(String resourceGroupName, String workspaceName, String ruleName);
 
     /**
      * Deletes a firewall rule.
@@ -58,22 +58,9 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return iP firewall rule.
      */
-    Object delete(String resourceGroupName, String workspaceName, String ruleName, Context context);
-
-    /**
-     * Get a firewall rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param ruleName The IP firewall rule name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a firewall rule.
-     */
-    IpFirewallRuleInfo get(String resourceGroupName, String workspaceName, String ruleName);
+    IpFirewallRuleInfo delete(String resourceGroupName, String workspaceName, String ruleName, Context context);
 
     /**
      * Get a firewall rule.
@@ -89,6 +76,19 @@ public interface IpFirewallRules {
      */
     Response<IpFirewallRuleInfo> getWithResponse(
         String resourceGroupName, String workspaceName, String ruleName, Context context);
+
+    /**
+     * Get a firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param ruleName The IP firewall rule name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a firewall rule.
+     */
+    IpFirewallRuleInfo get(String resourceGroupName, String workspaceName, String ruleName);
 
     /**
      * Replaces firewall rules.
@@ -149,9 +149,9 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return iP firewall rule.
      */
-    Object deleteById(String id);
+    IpFirewallRuleInfo deleteById(String id);
 
     /**
      * Deletes a firewall rule.
@@ -161,9 +161,9 @@ public interface IpFirewallRules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
+     * @return iP firewall rule.
      */
-    Object deleteByIdWithResponse(String id, Context context);
+    IpFirewallRuleInfo deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new IpFirewallRuleInfo resource.

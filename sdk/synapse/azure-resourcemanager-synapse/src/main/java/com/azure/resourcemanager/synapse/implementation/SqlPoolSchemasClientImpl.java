@@ -55,7 +55,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SynapseManagementCli")
-    private interface SqlPoolSchemasService {
+    public interface SqlPoolSchemasService {
         @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Synapse/workspaces"
@@ -102,7 +102,9 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     }
 
     /**
-     * Gets schemas of a given SQL pool.
+     * Gets schemas of a given SQL pool
+     *
+     * <p>Gets schemas of a given SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -167,7 +169,9 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     }
 
     /**
-     * Gets schemas of a given SQL pool.
+     * Gets schemas of a given SQL pool
+     *
+     * <p>Gets schemas of a given SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -230,7 +234,9 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     }
 
     /**
-     * Gets schemas of a given SQL pool.
+     * Gets schemas of a given SQL pool
+     *
+     * <p>Gets schemas of a given SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -250,7 +256,9 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     }
 
     /**
-     * Gets schemas of a given SQL pool.
+     * Gets schemas of a given SQL pool
+     *
+     * <p>Gets schemas of a given SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -270,7 +278,9 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     }
 
     /**
-     * Gets schemas of a given SQL pool.
+     * Gets schemas of a given SQL pool
+     *
+     * <p>Gets schemas of a given SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -291,7 +301,9 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     }
 
     /**
-     * Gets schemas of a given SQL pool.
+     * Gets schemas of a given SQL pool
+     *
+     * <p>Gets schemas of a given SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -308,7 +320,9 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     }
 
     /**
-     * Gets schemas of a given SQL pool.
+     * Gets schemas of a given SQL pool
+     *
+     * <p>Gets schemas of a given SQL pool.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -458,32 +472,7 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     private Mono<SqlPoolSchemaInner> getAsync(
         String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName)
-            .flatMap(
-                (Response<SqlPoolSchemaInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get Sql Pool schema.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param schemaName The name of the schema.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool schema.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SqlPoolSchemaInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
-        return getAsync(resourceGroupName, workspaceName, sqlPoolName, schemaName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -506,9 +495,28 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     }
 
     /**
+     * Get Sql Pool schema.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param schemaName The name of the schema.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return sql Pool schema.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SqlPoolSchemaInner get(
+        String resourceGroupName, String workspaceName, String sqlPoolName, String schemaName) {
+        return getWithResponse(resourceGroupName, workspaceName, sqlPoolName, schemaName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -543,7 +551,8 @@ public final class SqlPoolSchemasClientImpl implements SqlPoolSchemasClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

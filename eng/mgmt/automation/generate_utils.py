@@ -141,7 +141,7 @@ def update_changelog(changelog_file, changelog):
     first_version_part = old_changelog[:first_version.end() +
                                        second_version.start()]
     # remove text starting from the first '###' (usually the block '### Features Added')
-    first_version_part = re.sub('\n###.*', '\n', first_version_part, re.S)
+    first_version_part = re.sub('\n###.*', '\n', first_version_part, flags=re.S)
     first_version_part = re.sub('\s+$', '', first_version_part)
 
     first_version_part += '\n\n'
@@ -291,3 +291,9 @@ def get_suffix_from_api_specs(api_specs_file: str, spec: str):
         return api_spec.get('suffix')
 
     return None
+
+
+def update_spec(spec: str, subspec: str) -> str:
+    if subspec:
+        spec = spec + subspec
+    return spec

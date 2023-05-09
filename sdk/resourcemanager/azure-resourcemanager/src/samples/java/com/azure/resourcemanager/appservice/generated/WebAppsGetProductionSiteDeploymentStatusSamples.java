@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps GetProductionSiteDeploymentStatus. */
 public final class WebAppsGetProductionSiteDeploymentStatusSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSiteDeploymentStatus.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetSiteDeploymentStatus.json
      */
     /**
      * Sample code: Get Deployment Status.
@@ -22,6 +20,7 @@ public final class WebAppsGetProductionSiteDeploymentStatusSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .getProductionSiteDeploymentStatus("rg", "testSite", "eacfd68b-3bbd-4ad9-99c5-98614d89c8e5", Context.NONE);
+            .getProductionSiteDeploymentStatus(
+                "rg", "testSite", "eacfd68b-3bbd-4ad9-99c5-98614d89c8e5", com.azure.core.util.Context.NONE);
     }
 }

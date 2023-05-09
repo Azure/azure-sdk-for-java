@@ -27,17 +27,6 @@ public final class IntegrationRuntimeMonitoringDatasImpl implements IntegrationR
         this.serviceManager = serviceManager;
     }
 
-    public IntegrationRuntimeMonitoringData list(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeMonitoringDataInner inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeMonitoringDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeMonitoringData> listWithResponse(
         String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         Response<IntegrationRuntimeMonitoringDataInner> inner =
@@ -48,6 +37,17 @@ public final class IntegrationRuntimeMonitoringDatasImpl implements IntegrationR
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeMonitoringDataImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeMonitoringData list(
+        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
+        IntegrationRuntimeMonitoringDataInner inner =
+            this.serviceClient().list(resourceGroupName, workspaceName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeMonitoringDataImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.workloads.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the SAP ERS Server properties. */
+/** Defines the SAP Enqueue Replication Server (ERS) properties. */
 @Immutable
 public final class EnqueueReplicationServerProperties {
     /*
@@ -17,40 +17,44 @@ public final class EnqueueReplicationServerProperties {
     private EnqueueReplicationServerType ersVersion;
 
     /*
-     * The ERS server instance id.
+     * ERS Instance Number.
      */
     @JsonProperty(value = "instanceNo", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceNo;
 
     /*
-     * The ERS server SAP host name.
+     * ERS SAP Hostname.
      */
     @JsonProperty(value = "hostname", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
-     * The ERS server SAP kernel version.
+     * ERS SAP Kernel Version.
      */
     @JsonProperty(value = "kernelVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kernelVersion;
 
     /*
-     * The ERS server SAP kernel patch.
+     * ERS SAP Kernel Patch level.
      */
     @JsonProperty(value = "kernelPatch", access = JsonProperty.Access.WRITE_ONLY)
     private String kernelPatch;
 
     /*
-     * The ERS server SAP IP Address.
+     * ERS SAP IP Address.
      */
     @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
-     * Defines the SAP Instance health.
+     * Defines the health of SAP Instances.
      */
     @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
+
+    /** Creates an instance of EnqueueReplicationServerProperties class. */
+    public EnqueueReplicationServerProperties() {
+    }
 
     /**
      * Get the ersVersion property: Defines the type of Enqueue Replication Server.
@@ -62,7 +66,7 @@ public final class EnqueueReplicationServerProperties {
     }
 
     /**
-     * Get the instanceNo property: The ERS server instance id.
+     * Get the instanceNo property: ERS Instance Number.
      *
      * @return the instanceNo value.
      */
@@ -71,7 +75,7 @@ public final class EnqueueReplicationServerProperties {
     }
 
     /**
-     * Get the hostname property: The ERS server SAP host name.
+     * Get the hostname property: ERS SAP Hostname.
      *
      * @return the hostname value.
      */
@@ -80,7 +84,7 @@ public final class EnqueueReplicationServerProperties {
     }
 
     /**
-     * Get the kernelVersion property: The ERS server SAP kernel version.
+     * Get the kernelVersion property: ERS SAP Kernel Version.
      *
      * @return the kernelVersion value.
      */
@@ -89,7 +93,7 @@ public final class EnqueueReplicationServerProperties {
     }
 
     /**
-     * Get the kernelPatch property: The ERS server SAP kernel patch.
+     * Get the kernelPatch property: ERS SAP Kernel Patch level.
      *
      * @return the kernelPatch value.
      */
@@ -98,7 +102,7 @@ public final class EnqueueReplicationServerProperties {
     }
 
     /**
-     * Get the ipAddress property: The ERS server SAP IP Address.
+     * Get the ipAddress property: ERS SAP IP Address.
      *
      * @return the ipAddress value.
      */
@@ -107,7 +111,7 @@ public final class EnqueueReplicationServerProperties {
     }
 
     /**
-     * Get the health property: Defines the SAP Instance health.
+     * Get the health property: Defines the health of SAP Instances.
      *
      * @return the health value.
      */

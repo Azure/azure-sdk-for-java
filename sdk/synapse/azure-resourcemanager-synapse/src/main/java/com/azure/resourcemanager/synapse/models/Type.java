@@ -7,7 +7,7 @@ package com.azure.resourcemanager.synapse.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for Type. */
+/** The type of resource, for instance Microsoft.Synapse/workspaces/kustoPools/databases. */
 public enum Type {
     /** Enum value Microsoft.Synapse/workspaces/kustoPools/databases. */
     MICROSOFT_SYNAPSE_WORKSPACES_KUSTO_POOLS_DATABASES("Microsoft.Synapse/workspaces/kustoPools/databases"),
@@ -31,6 +31,9 @@ public enum Type {
      */
     @JsonCreator
     public static Type fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         Type[] items = Type.values();
         for (Type item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -40,6 +43,7 @@ public enum Type {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

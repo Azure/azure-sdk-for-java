@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cognitiveservices.models.CheckDomainAvailabilityParameter;
 
 /** Samples for ResourceProvider CheckDomainAvailability. */
 public final class ResourceProviderCheckDomainAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/CheckDomainAvailability.json
+     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-12-01/examples/CheckDomainAvailability.json
      */
     /**
      * Sample code: Check SKU Availability.
@@ -25,6 +24,6 @@ public final class ResourceProviderCheckDomainAvailabilitySamples {
                 new CheckDomainAvailabilityParameter()
                     .withSubdomainName("contosodemoapp1")
                     .withType("Microsoft.CognitiveServices/accounts"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

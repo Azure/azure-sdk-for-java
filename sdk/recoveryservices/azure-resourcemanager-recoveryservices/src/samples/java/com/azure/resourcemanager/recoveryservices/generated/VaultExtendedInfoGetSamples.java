@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VaultExtendedInfo Get. */
 public final class VaultExtendedInfoGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/GETVaultExtendedInfo.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/GETVaultExtendedInfo.json
      */
     /**
      * Sample code: Get ExtendedInfo of Resource.
@@ -20,6 +18,7 @@ public final class VaultExtendedInfoGetSamples {
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
         manager
             .vaultExtendedInfoes()
-            .getWithResponse("Default-RecoveryServices-ResourceGroup", "swaggerExample", Context.NONE);
+            .getWithResponse(
+                "Default-RecoveryServices-ResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }

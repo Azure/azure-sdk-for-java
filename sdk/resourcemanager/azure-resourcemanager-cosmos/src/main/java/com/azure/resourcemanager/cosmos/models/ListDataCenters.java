@@ -18,6 +18,10 @@ public final class ListDataCenters {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataCenterResourceInner> value;
 
+    /** Creates an instance of ListDataCenters class. */
+    public ListDataCenters() {
+    }
+
     /**
      * Get the value property: Container for array of data centers.
      *

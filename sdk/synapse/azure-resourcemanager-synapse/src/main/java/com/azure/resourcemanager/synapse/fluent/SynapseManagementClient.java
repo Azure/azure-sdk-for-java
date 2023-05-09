@@ -73,11 +73,11 @@ public interface SynapseManagementClient {
     PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
-     * Gets the PrivateLinkResourcesClient object to access its operations.
+     * Gets the PrivateLinkResourcesOperationsClient object to access its operations.
      *
-     * @return the PrivateLinkResourcesClient object.
+     * @return the PrivateLinkResourcesOperationsClient object.
      */
-    PrivateLinkResourcesClient getPrivateLinkResources();
+    PrivateLinkResourcesOperationsClient getPrivateLinkResourcesOperations();
 
     /**
      * Gets the PrivateLinkHubPrivateLinkResourcesClient object to access its operations.
@@ -481,6 +481,13 @@ public interface SynapseManagementClient {
     IntegrationRuntimeStatusOperationsClient getIntegrationRuntimeStatusOperations();
 
     /**
+     * Gets the GetsClient object to access its operations.
+     *
+     * @return the GetsClient object.
+     */
+    GetsClient getGets();
+
+    /**
      * Gets the SparkConfigurationsClient object to access its operations.
      *
      * @return the SparkConfigurationsClient object.
@@ -549,4 +556,11 @@ public interface SynapseManagementClient {
      * @return the KustoPoolDatabasePrincipalAssignmentsClient object.
      */
     KustoPoolDatabasePrincipalAssignmentsClient getKustoPoolDatabasePrincipalAssignments();
+
+    /**
+     * Gets the KustoPoolPrivateLinkResourcesOperationsClient object to access its operations.
+     *
+     * @return the KustoPoolPrivateLinkResourcesOperationsClient object.
+     */
+    KustoPoolPrivateLinkResourcesOperationsClient getKustoPoolPrivateLinkResourcesOperations();
 }

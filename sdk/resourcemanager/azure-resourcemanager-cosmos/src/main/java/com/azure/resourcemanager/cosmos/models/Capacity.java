@@ -18,6 +18,10 @@ public final class Capacity {
     @JsonProperty(value = "totalThroughputLimit")
     private Integer totalThroughputLimit;
 
+    /** Creates an instance of Capacity class. */
+    public Capacity() {
+    }
+
     /**
      * Get the totalThroughputLimit property: The total throughput limit imposed on the account. A totalThroughputLimit
      * of 2000 imposes a strict limit of max throughput that can be provisioned on that account to be 2000. A

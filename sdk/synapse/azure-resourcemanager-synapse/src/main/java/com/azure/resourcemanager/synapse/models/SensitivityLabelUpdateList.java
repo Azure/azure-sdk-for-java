@@ -18,6 +18,10 @@ public final class SensitivityLabelUpdateList {
     @JsonProperty(value = "operations")
     private List<SensitivityLabelUpdateInner> operations;
 
+    /** Creates an instance of SensitivityLabelUpdateList class. */
+    public SensitivityLabelUpdateList() {
+    }
+
     /**
      * Get the operations property: The operations property.
      *

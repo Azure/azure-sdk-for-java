@@ -40,6 +40,10 @@ public final class RestorableMongodbCollectionPropertiesResource {
     @JsonProperty(value = "ownerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerResourceId;
 
+    /** Creates an instance of RestorableMongodbCollectionPropertiesResource class. */
+    public RestorableMongodbCollectionPropertiesResource() {
+    }
+
     /**
      * Get the rid property: A system generated property. A unique identifier.
      *

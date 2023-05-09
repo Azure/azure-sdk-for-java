@@ -10,6 +10,9 @@ import java.time.OffsetDateTime;
 /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ImageDeleted event. */
 @Fluent
 public final class ContainerRegistryImageDeletedEventData extends ContainerRegistryEventData {
+    /** Creates an instance of ContainerRegistryImageDeletedEventData class. */
+    public ContainerRegistryImageDeletedEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public ContainerRegistryImageDeletedEventData setId(String id) {

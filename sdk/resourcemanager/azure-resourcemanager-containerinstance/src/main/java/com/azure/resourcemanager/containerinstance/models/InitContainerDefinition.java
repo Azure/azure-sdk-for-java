@@ -25,6 +25,10 @@ public final class InitContainerDefinition {
     @JsonProperty(value = "properties", required = true)
     private InitContainerPropertiesDefinition innerProperties = new InitContainerPropertiesDefinition();
 
+    /** Creates an instance of InitContainerDefinition class. */
+    public InitContainerDefinition() {
+    }
+
     /**
      * Get the name property: The name for the init container.
      *
@@ -152,6 +156,29 @@ public final class InitContainerDefinition {
             this.innerProperties = new InitContainerPropertiesDefinition();
         }
         this.innerProperties().withVolumeMounts(volumeMounts);
+        return this;
+    }
+
+    /**
+     * Get the securityContext property: The container security properties.
+     *
+     * @return the securityContext value.
+     */
+    public SecurityContextDefinition securityContext() {
+        return this.innerProperties() == null ? null : this.innerProperties().securityContext();
+    }
+
+    /**
+     * Set the securityContext property: The container security properties.
+     *
+     * @param securityContext the securityContext value to set.
+     * @return the InitContainerDefinition object itself.
+     */
+    public InitContainerDefinition withSecurityContext(SecurityContextDefinition securityContext) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new InitContainerPropertiesDefinition();
+        }
+        this.innerProperties().withSecurityContext(securityContext);
         return this;
     }
 

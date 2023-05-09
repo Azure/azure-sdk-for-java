@@ -18,8 +18,7 @@ public final class DataConnectionCheckNameRequest {
     private String name;
 
     /*
-     * The type of resource,
-     * Microsoft.Synapse/workspaces/kustoPools/databases/dataConnections.
+     * The type of resource, Microsoft.Synapse/workspaces/kustoPools/databases/dataConnections.
      */
     @JsonProperty(value = "type", required = true)
     private String type = "Microsoft.Synapse/workspaces/kustoPools/databases/dataConnections";

@@ -17,23 +17,19 @@ public final class TransferToParticipantRequestInternal {
     private CommunicationIdentifierModel targetParticipant;
 
     /*
-     * The caller ID of the transferee when transferring to PSTN.
+     * Used by customer to send custom context to targets
      */
-    @JsonProperty(value = "transfereeCallerId")
-    private PhoneNumberIdentifierModel transfereeCallerId;
+    @JsonProperty(value = "customContext")
+    private CustomContext customContext;
 
     /*
-     * The user to user information.
-     */
-    @JsonProperty(value = "userToUserInformation")
-    private String userToUserInformation;
-
-    /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
+
+    /** Creates an instance of TransferToParticipantRequestInternal class. */
+    public TransferToParticipantRequestInternal() {}
 
     /**
      * Get the targetParticipant property: The identity of the target where call should be transferred to.
@@ -56,42 +52,22 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-     * Get the transfereeCallerId property: The caller ID of the transferee when transferring to PSTN.
+     * Get the customContext property: Used by customer to send custom context to targets.
      *
-     * @return the transfereeCallerId value.
+     * @return the customContext value.
      */
-    public PhoneNumberIdentifierModel getTransfereeCallerId() {
-        return this.transfereeCallerId;
+    public CustomContext getCustomContext() {
+        return this.customContext;
     }
 
     /**
-     * Set the transfereeCallerId property: The caller ID of the transferee when transferring to PSTN.
+     * Set the customContext property: Used by customer to send custom context to targets.
      *
-     * @param transfereeCallerId the transfereeCallerId value to set.
+     * @param customContext the customContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.
      */
-    public TransferToParticipantRequestInternal setTransfereeCallerId(PhoneNumberIdentifierModel transfereeCallerId) {
-        this.transfereeCallerId = transfereeCallerId;
-        return this;
-    }
-
-    /**
-     * Get the userToUserInformation property: The user to user information.
-     *
-     * @return the userToUserInformation value.
-     */
-    public String getUserToUserInformation() {
-        return this.userToUserInformation;
-    }
-
-    /**
-     * Set the userToUserInformation property: The user to user information.
-     *
-     * @param userToUserInformation the userToUserInformation value to set.
-     * @return the TransferToParticipantRequestInternal object itself.
-     */
-    public TransferToParticipantRequestInternal setUserToUserInformation(String userToUserInformation) {
-        this.userToUserInformation = userToUserInformation;
+    public TransferToParticipantRequestInternal setCustomContext(CustomContext customContext) {
+        this.customContext = customContext;
         return this;
     }
 

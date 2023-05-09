@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SkuName. */
+/** The SKU name of the container registry. Required for registry creation. */
 public final class SkuName extends ExpandableStringEnum<SkuName> {
     /** Static value Classic for SkuName. */
     public static final SkuName CLASSIC = fromString("Classic");
@@ -23,6 +23,15 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
     public static final SkuName PREMIUM = fromString("Premium");
 
     /**
+     * Creates a new instance of SkuName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SkuName() {
+    }
+
+    /**
      * Creates or finds a SkuName from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +42,11 @@ public final class SkuName extends ExpandableStringEnum<SkuName> {
         return fromString(name, SkuName.class);
     }
 
-    /** @return known SkuName values. */
+    /**
+     * Gets known SkuName values.
+     *
+     * @return known SkuName values.
+     */
     public static Collection<SkuName> values() {
         return values(SkuName.class);
     }

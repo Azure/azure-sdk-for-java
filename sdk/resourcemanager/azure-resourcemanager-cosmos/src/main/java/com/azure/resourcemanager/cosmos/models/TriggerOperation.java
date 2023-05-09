@@ -26,6 +26,15 @@ public final class TriggerOperation extends ExpandableStringEnum<TriggerOperatio
     public static final TriggerOperation REPLACE = fromString("Replace");
 
     /**
+     * Creates a new instance of TriggerOperation value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TriggerOperation() {
+    }
+
+    /**
      * Creates or finds a TriggerOperation from its string representation.
      *
      * @param name a name to look for.

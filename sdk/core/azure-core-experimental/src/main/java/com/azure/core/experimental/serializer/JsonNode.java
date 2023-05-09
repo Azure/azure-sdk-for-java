@@ -8,28 +8,37 @@ package com.azure.core.experimental.serializer;
  */
 public interface JsonNode {
     /**
-     * @return True if this {@link JsonNode} is an instance of {@link JsonArray}.
+     * Indicates whether this {@link JsonNode} is an instance of {@link JsonArray} ({@code []}).
+     *
+     * @return Whether this {@link JsonNode} is an instance of {@link JsonArray}.
      */
     default boolean isArray() {
         return false;
     }
 
     /**
-     * @return True if this {@link JsonNode} is an instance of {@link JsonNull}.
+     * Indicates whether this {@link JsonNode} is an instance of {@link JsonNull} ({@code null}).
+     *
+     * @return Whether this {@link JsonNode} is an instance of {@link JsonNull}.
      */
     default boolean isNull() {
         return false;
     }
 
     /**
-     * @return True if this {@link JsonNode} is an instance of {@link JsonObject}.
+     * Indicates whether this {@link JsonNode} is an instance of {@link JsonObject} ({@code {}}).
+     *
+     * @return Whether this {@link JsonNode} is an instance of {@link JsonObject}.
      */
     default boolean isObject() {
         return false;
     }
 
     /**
-     * @return True if this {@link JsonNode} is an instance of {@link JsonPrimitive}.
+     * Indicates whether this {@link JsonNode} is an instance of {@link JsonPrimitive}
+     * ({@code "string", 0, false, true}).
+     *
+     * @return Whether this {@link JsonNode} is an instance of {@link JsonPrimitive}.
      */
     default boolean isValue() {
         return false;

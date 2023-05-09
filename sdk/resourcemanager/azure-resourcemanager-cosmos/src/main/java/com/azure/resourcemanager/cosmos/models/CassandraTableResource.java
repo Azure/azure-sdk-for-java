@@ -35,6 +35,10 @@ public class CassandraTableResource {
     @JsonProperty(value = "analyticalStorageTtl")
     private Integer analyticalStorageTtl;
 
+    /** Creates an instance of CassandraTableResource class. */
+    public CassandraTableResource() {
+    }
+
     /**
      * Get the id property: Name of the Cosmos DB Cassandra table.
      *

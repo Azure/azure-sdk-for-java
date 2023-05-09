@@ -6,7 +6,7 @@ import com.azure.core.management.AzureEnvironment
 import com.azure.core.management.profile.AzureProfile
 import com.azure.cosmos.implementation.clienttelemetry.TagName
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, CosmosDaemonThreadFactory, SparkBridgeImplementationInternal, Strings}
-import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMicrometerMetricsOptions}
+import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategory, CosmosMetricTagName, CosmosMicrometerMetricsOptions}
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
@@ -212,20 +212,32 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               case None => customApplicationNameSuffix
           }
 
+          val metricsOptions = new CosmosMicrometerMetricsOptions()
+            .meterRegistry(CosmosClientMetrics.meterRegistry.get)
+            .configureDefaultTagNames(
+              CosmosMetricTagName.CONTAINER,
+              CosmosMetricTagName.CLIENT_CORRELATION_ID,
+              CosmosMetricTagName.OPERATION,
+              CosmosMetricTagName.OPERATION_STATUS_CODE,
+              CosmosMetricTagName.PARTITION_KEY_RANGE_ID,
+              CosmosMetricTagName.SERVICE_ADDRESS,
+              CosmosMetricTagName.ADDRESS_RESOLUTION_COLLECTION_MAP_REFRESH,
+              CosmosMetricTagName.ADDRESS_RESOLUTION_FORCED_REFRESH,
+              CosmosMetricTagName.REQUEST_STATUS_CODE,
+              CosmosMetricTagName.REQUEST_OPERATION_TYPE
+            )
+            .setMetricCategories(
+              CosmosMetricCategory.SYSTEM,
+              CosmosMetricCategory.OPERATION_SUMMARY,
+              CosmosMetricCategory.REQUEST_SUMMARY,
+              CosmosMetricCategory.DIRECT_ADDRESS_RESOLUTIONS,
+              CosmosMetricCategory.DIRECT_REQUESTS,
+              CosmosMetricCategory.DIRECT_CHANNELS
+            )
+
           val telemetryConfig = new CosmosClientTelemetryConfig()
-              .metricsOptions(
-                  new CosmosMicrometerMetricsOptions().meterRegistry(CosmosClientMetrics.meterRegistry.get)
-              )
+              .metricsOptions(metricsOptions)
               .clientCorrelationId(clientCorrelationId)
-              .metricTagNames(
-                  TagName.Container.toString,
-                  TagName.ClientCorrelationId.toString,
-                  TagName.Operation.toString,
-                  TagName.OperationStatusCode.toString,
-                  TagName.PartitionKeyRangeId.toString,
-                  TagName.ServiceEndpoint.toString,
-                  TagName.ServiceAddress.toString
-              )
 
           builder.clientTelemetryConfig(telemetryConfig)
       }

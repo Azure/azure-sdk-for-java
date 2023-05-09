@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceCollection;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
+import com.azure.resourcemanager.mediaservices.models.MinimumTlsVersion;
 import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
 import java.util.Arrays;
@@ -21,13 +22,14 @@ public final class MediaServiceCollectionTests {
         MediaServiceCollection model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"mediaServiceId\":\"335f8b95-f915-4c7a-b4f7-5ca162af4a34\",\"storageAccounts\":[],\"storageAuthentication\":\"ManagedIdentity\",\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[]},\"identity\":{\"type\":\"osfqpteehzzv\",\"principalId\":\"ec5229bb-770c-4a5d-bf76-fbd9f5be41d3\",\"tenantId\":\"0dbbee1b-90ec-4390-a793-489c7ea977d5\",\"userAssignedIdentities\":{}},\"location\":\"rimz\",\"tags\":{\"rsoodqxhcrmnoh\":\"vswjdk\",\"kwh\":\"t\",\"gr\":\"soifiyipjxsqw\"},\"id\":\"bznorcjxvsnby\",\"name\":\"qabnmoc\",\"type\":\"cyshurzafbljjgp\"}],\"@odata.nextLink\":\"oq\"}")
+                    "{\"value\":[{\"properties\":{\"mediaServiceId\":\"bc8caf84-beca-4093-94b1-76a9b6759cc5\",\"storageAccounts\":[],\"storageAuthentication\":\"ManagedIdentity\",\"publicNetworkAccess\":\"Enabled\",\"provisioningState\":\"Succeeded\",\"privateEndpointConnections\":[],\"minimumTlsVersion\":\"Tls10\"},\"identity\":{\"type\":\"fqpte\",\"principalId\":\"fd1fb765-6619-41e2-baf6-40d06da56fae\",\"tenantId\":\"8657e53a-6d11-445c-9ecb-26919b4cc50d\",\"userAssignedIdentities\":{}},\"location\":\"vypyqrimzinpv\",\"tags\":{\"nohjt\":\"dkirsoodqxhcr\",\"soifiyipjxsqw\":\"kwh\",\"bznorcjxvsnby\":\"gr\"},\"id\":\"qabnmoc\",\"name\":\"cyshurzafbljjgp\",\"type\":\"toqcjmklja\"}],\"@odata.nextLink\":\"qidtqajzyu\"}")
                 .toObject(MediaServiceCollection.class);
-        Assertions.assertEquals("rimz", model.value().get(0).location());
-        Assertions.assertEquals("vswjdk", model.value().get(0).tags().get("rsoodqxhcrmnoh"));
-        Assertions.assertEquals("osfqpteehzzv", model.value().get(0).identity().type());
+        Assertions.assertEquals("vypyqrimzinpv", model.value().get(0).location());
+        Assertions.assertEquals("dkirsoodqxhcr", model.value().get(0).tags().get("nohjt"));
+        Assertions.assertEquals("fqpte", model.value().get(0).identity().type());
         Assertions.assertEquals(StorageAuthentication.MANAGED_IDENTITY, model.value().get(0).storageAuthentication());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.value().get(0).publicNetworkAccess());
+        Assertions.assertEquals(MinimumTlsVersion.TLS10, model.value().get(0).minimumTlsVersion());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,21 +40,22 @@ public final class MediaServiceCollectionTests {
                     Arrays
                         .asList(
                             new MediaServiceInner()
-                                .withLocation("rimz")
-                                .withTags(mapOf("rsoodqxhcrmnoh", "vswjdk", "kwh", "t", "gr", "soifiyipjxsqw"))
+                                .withLocation("vypyqrimzinpv")
+                                .withTags(
+                                    mapOf("nohjt", "dkirsoodqxhcr", "soifiyipjxsqw", "kwh", "bznorcjxvsnby", "gr"))
                                 .withIdentity(
-                                    new MediaServiceIdentity()
-                                        .withType("osfqpteehzzv")
-                                        .withUserAssignedIdentities(mapOf()))
+                                    new MediaServiceIdentity().withType("fqpte").withUserAssignedIdentities(mapOf()))
                                 .withStorageAccounts(Arrays.asList())
                                 .withStorageAuthentication(StorageAuthentication.MANAGED_IDENTITY)
-                                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)));
+                                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
+                                .withMinimumTlsVersion(MinimumTlsVersion.TLS10)));
         model = BinaryData.fromObject(model).toObject(MediaServiceCollection.class);
-        Assertions.assertEquals("rimz", model.value().get(0).location());
-        Assertions.assertEquals("vswjdk", model.value().get(0).tags().get("rsoodqxhcrmnoh"));
-        Assertions.assertEquals("osfqpteehzzv", model.value().get(0).identity().type());
+        Assertions.assertEquals("vypyqrimzinpv", model.value().get(0).location());
+        Assertions.assertEquals("dkirsoodqxhcr", model.value().get(0).tags().get("nohjt"));
+        Assertions.assertEquals("fqpte", model.value().get(0).identity().type());
         Assertions.assertEquals(StorageAuthentication.MANAGED_IDENTITY, model.value().get(0).storageAuthentication());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.value().get(0).publicNetworkAccess());
+        Assertions.assertEquals(MinimumTlsVersion.TLS10, model.value().get(0).minimumTlsVersion());
     }
 
     @SuppressWarnings("unchecked")

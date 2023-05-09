@@ -7,42 +7,41 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPropertiesInfraVnetProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPropertiesInfraVnetProfileHci;
-import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPropertiesInfraVnetProfileKubevirt;
+import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPropertiesInfraVnetProfileNetworkCloud;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPropertiesInfraVnetProfileVmware;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworksPropertiesInfraVnetProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualNetworksPropertiesInfraVnetProfile model =
             BinaryData
                 .fromString(
-                    "{\"hci\":{\"mocGroup\":\"ovsm\",\"mocLocation\":\"xwabmqoe\",\"mocVnetName\":\"ifrvtpu\"},\"kubevirt\":{\"vnetName\":\"mqlgk\"},\"vmware\":{\"segmentName\":\"ndo\"}}")
+                    "{\"hci\":{\"mocGroup\":\"akufgmjz\",\"mocLocation\":\"rdgrtw\",\"mocVnetName\":\"nuuzkopbm\"},\"networkCloud\":{\"networkId\":\"fdwoyuhh\"},\"vmware\":{\"segmentName\":\"iefozbhdmsml\"}}")
                 .toObject(VirtualNetworksPropertiesInfraVnetProfile.class);
-        Assertions.assertEquals("ovsm", model.hci().mocGroup());
-        Assertions.assertEquals("xwabmqoe", model.hci().mocLocation());
-        Assertions.assertEquals("ifrvtpu", model.hci().mocVnetName());
-        Assertions.assertEquals("mqlgk", model.kubevirt().vnetName());
-        Assertions.assertEquals("ndo", model.vmware().segmentName());
+        Assertions.assertEquals("akufgmjz", model.hci().mocGroup());
+        Assertions.assertEquals("rdgrtw", model.hci().mocLocation());
+        Assertions.assertEquals("nuuzkopbm", model.hci().mocVnetName());
+        Assertions.assertEquals("fdwoyuhh", model.networkCloud().networkId());
+        Assertions.assertEquals("iefozbhdmsml", model.vmware().segmentName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VirtualNetworksPropertiesInfraVnetProfile model =
             new VirtualNetworksPropertiesInfraVnetProfile()
                 .withHci(
                     new VirtualNetworksPropertiesInfraVnetProfileHci()
-                        .withMocGroup("ovsm")
-                        .withMocLocation("xwabmqoe")
-                        .withMocVnetName("ifrvtpu"))
-                .withKubevirt(new VirtualNetworksPropertiesInfraVnetProfileKubevirt().withVnetName("mqlgk"))
-                .withVmware(new VirtualNetworksPropertiesInfraVnetProfileVmware().withSegmentName("ndo"));
+                        .withMocGroup("akufgmjz")
+                        .withMocLocation("rdgrtw")
+                        .withMocVnetName("nuuzkopbm"))
+                .withNetworkCloud(new VirtualNetworksPropertiesInfraVnetProfileNetworkCloud().withNetworkId("fdwoyuhh"))
+                .withVmware(new VirtualNetworksPropertiesInfraVnetProfileVmware().withSegmentName("iefozbhdmsml"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworksPropertiesInfraVnetProfile.class);
-        Assertions.assertEquals("ovsm", model.hci().mocGroup());
-        Assertions.assertEquals("xwabmqoe", model.hci().mocLocation());
-        Assertions.assertEquals("ifrvtpu", model.hci().mocVnetName());
-        Assertions.assertEquals("mqlgk", model.kubevirt().vnetName());
-        Assertions.assertEquals("ndo", model.vmware().segmentName());
+        Assertions.assertEquals("akufgmjz", model.hci().mocGroup());
+        Assertions.assertEquals("rdgrtw", model.hci().mocLocation());
+        Assertions.assertEquals("nuuzkopbm", model.hci().mocVnetName());
+        Assertions.assertEquals("fdwoyuhh", model.networkCloud().networkId());
+        Assertions.assertEquals("iefozbhdmsml", model.vmware().segmentName());
     }
 }

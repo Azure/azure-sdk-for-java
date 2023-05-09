@@ -5,23 +5,15 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.time.Instant;
-import java.util.UUID;
-
 /**
  * The options for creating a call.
  */
 @Fluent
-public class HangUpOptions {
+public final class HangUpOptions {
     /**
      * Boolean to determine if the call should be terminated for all participants.
      */
     private final boolean isForEveryone;
-
-    /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
 
     /**
      * Constructor
@@ -30,7 +22,6 @@ public class HangUpOptions {
      */
     public HangUpOptions(boolean isForEveryone) {
         this.isForEveryone = isForEveryone;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
@@ -40,25 +31,5 @@ public class HangUpOptions {
      */
     public boolean getIsForEveryone() {
         return isForEveryone;
-    }
-
-    /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
-
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the HangUpOptions object itself.
-     */
-    public HangUpOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
-        return this;
     }
 }

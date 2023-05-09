@@ -35,6 +35,10 @@ public class OperationsDisplayDefinition {
     @JsonProperty(value = "description", required = true)
     private String description;
 
+    /** Creates an instance of OperationsDisplayDefinition class. */
+    public OperationsDisplayDefinition() {
+    }
+
     /**
      * Get the provider property: Defines the workload provider.
      *

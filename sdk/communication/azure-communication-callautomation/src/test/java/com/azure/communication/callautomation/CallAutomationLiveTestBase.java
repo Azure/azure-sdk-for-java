@@ -33,6 +33,8 @@ public class CallAutomationLiveTestBase extends TestBase {
         "https://REDACTED.communication.azure.com/");
     protected static final String ENDPOINT_401 = Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_STATIC_ENDPOINT_401",
         "https://REDACTED.communication.azure.com/");
+    protected static final String PMA_ENDPOINT = Configuration.getGlobalConfiguration().get("PMA_Endpoint", "https://REDACTED.communication.azure.com/");
+    protected static final Boolean COMMUNICATION_CUSTOM_ENDPOINT_ENABLED = Configuration.getGlobalConfiguration().get("COMMUNICATION_CUSTOM_ENDPOINT_ENABLED", false);
     protected static final String METADATA_URL = Configuration.getGlobalConfiguration()
         .get("METADATA_URL", "https://storage.asm.skype.com/v1/objects/0-eus-d2-3cca2175891f21c6c9a5975a12c0141c/content/acsmetadata");
     protected static final String VIDEO_URL = Configuration.getGlobalConfiguration()
@@ -61,7 +63,8 @@ public class CallAutomationLiveTestBase extends TestBase {
         = new StringJoiner("\":\"|\"", "\"", "\":\"")
         .add("value")
         .add("rawId")
-        .add("id");
+        .add("id")
+        .add("callbackUri");
     protected static final Pattern JSON_PROPERTY_VALUE_REDACTION_PATTERN
         = Pattern.compile(String.format("(?:%s)(.*?)(?:\",|\"})", JSON_PROPERTIES_TO_REDACT),
         Pattern.CASE_INSENSITIVE);
@@ -80,9 +83,18 @@ public class CallAutomationLiveTestBase extends TestBase {
     }
 
     protected CallAutomationClientBuilder getCallAutomationClientUsingConnectionString(HttpClient httpClient) {
-        CallAutomationClientBuilder builder = new CallAutomationClientBuilder()
-            .connectionString(CONNECTION_STRING)
-            .httpClient(getHttpClientOrUsePlayback(httpClient));
+
+        CallAutomationClientBuilder builder;
+        if (COMMUNICATION_CUSTOM_ENDPOINT_ENABLED) {
+            builder = new CallAutomationClientBuilder()
+                .connectionString(CONNECTION_STRING)
+                .endpoint(PMA_ENDPOINT)
+                .httpClient(getHttpClientOrUsePlayback(httpClient));
+        } else {
+            builder = new CallAutomationClientBuilder()
+                .connectionString(CONNECTION_STRING)
+                .httpClient(getHttpClientOrUsePlayback(httpClient));
+        }
 
         if (getTestMode() == TestMode.RECORD) {
             List<Function<String, String>> redactors = new ArrayList<>();

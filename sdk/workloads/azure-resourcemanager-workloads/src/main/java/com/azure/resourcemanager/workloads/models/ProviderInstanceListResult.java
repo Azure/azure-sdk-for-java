@@ -24,6 +24,10 @@ public final class ProviderInstanceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ProviderInstanceListResult class. */
+    public ProviderInstanceListResult() {
+    }
+
     /**
      * Get the value property: The list of provider instances.
      *

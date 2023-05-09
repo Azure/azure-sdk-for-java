@@ -18,6 +18,10 @@ public final class DataMaskingRuleListResult {
     @JsonProperty(value = "value")
     private List<DataMaskingRuleInner> value;
 
+    /** Creates an instance of DataMaskingRuleListResult class. */
+    public DataMaskingRuleListResult() {
+    }
+
     /**
      * Get the value property: The list of Sql pool data masking rules.
      *

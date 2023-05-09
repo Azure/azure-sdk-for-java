@@ -32,7 +32,7 @@ public final class ContentKeyPoliciesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"policyId\":\"2b0ea39a-1c8c-4155-ba18-4a9bd1333cce\",\"created\":\"2021-12-01T20:46:37Z\",\"lastModified\":\"2021-10-30T09:16:37Z\",\"description\":\"szcofizeht\",\"options\":[]},\"id\":\"bjkvreljeamu\",\"name\":\"vzmlovuanashcxl\",\"type\":\"mjerbdk\"}]}";
+            "{\"value\":[{\"properties\":{\"policyId\":\"fd94fc3a-8db8-4634-8c9a-4c564820d306\",\"created\":\"2020-12-29T21:58:50Z\",\"lastModified\":\"2021-08-02T11:55:53Z\",\"description\":\"zjvkviirhgfgrws\",\"options\":[]},\"id\":\"ra\",\"name\":\"zvzbglbyv\",\"type\":\"ctctbrxkjz\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,8 +63,8 @@ public final class ContentKeyPoliciesListMockTests {
         PagedIterable<ContentKeyPolicy> response =
             manager
                 .contentKeyPolicies()
-                .list("xzhczexrxz", "ujrtrhqvwr", "vk", 589242227, "nlnzonzlrpi", com.azure.core.util.Context.NONE);
+                .list("wfl", "qmp", "zruwn", 1368362118, "xpxiwfcngjs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("szcofizeht", response.iterator().next().description());
+        Assertions.assertEquals("zjvkviirhgfgrws", response.iterator().next().description());
     }
 }

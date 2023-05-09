@@ -21,6 +21,10 @@ public final class MaterializedViewsBuilderServiceResourceProperties extends Ser
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<MaterializedViewsBuilderRegionalServiceResource> locations;
 
+    /** Creates an instance of MaterializedViewsBuilderServiceResourceProperties class. */
+    public MaterializedViewsBuilderServiceResourceProperties() {
+    }
+
     /**
      * Get the locations property: An array that contains all of the locations for the service.
      *

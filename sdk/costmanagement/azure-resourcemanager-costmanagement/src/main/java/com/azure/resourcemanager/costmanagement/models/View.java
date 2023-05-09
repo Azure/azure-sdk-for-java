@@ -83,6 +83,20 @@ public interface View {
     OffsetDateTime modifiedOn();
 
     /**
+     * Gets the dateRange property: Date range of the current view.
+     *
+     * @return the dateRange value.
+     */
+    String dateRange();
+
+    /**
+     * Gets the currency property: Currency of the current view.
+     *
+     * @return the currency value.
+     */
+    String currency();
+
+    /**
      * Gets the chart property: Chart type of the main view in Cost Analysis. Required.
      *
      * @return the chart value.
@@ -142,11 +156,18 @@ public interface View {
     ReportConfigTimePeriod timePeriod();
 
     /**
-     * Gets the dataset property: Has definition for data in this report config.
+     * Gets the dataSet property: Has definition for data in this report config.
      *
-     * @return the dataset value.
+     * @return the dataSet value.
      */
-    ReportConfigDataset dataset();
+    ReportConfigDataset dataSet();
+
+    /**
+     * Gets the includeMonetaryCommitment property: If true, report includes monetary commitment.
+     *
+     * @return the includeMonetaryCommitment value.
+     */
+    Boolean includeMonetaryCommitment();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.ViewInner object.
@@ -205,7 +226,8 @@ public interface View {
                 DefinitionStages.WithTypePropertiesType,
                 DefinitionStages.WithTimeframe,
                 DefinitionStages.WithTimePeriod,
-                DefinitionStages.WithDataset {
+                DefinitionStages.WithDataSet,
+                DefinitionStages.WithIncludeMonetaryCommitment {
             /**
              * Executes the create request.
              *
@@ -371,15 +393,25 @@ public interface View {
              */
             WithCreate withTimePeriod(ReportConfigTimePeriod timePeriod);
         }
-        /** The stage of the View definition allowing to specify dataset. */
-        interface WithDataset {
+        /** The stage of the View definition allowing to specify dataSet. */
+        interface WithDataSet {
             /**
-             * Specifies the dataset property: Has definition for data in this report config..
+             * Specifies the dataSet property: Has definition for data in this report config..
              *
-             * @param dataset Has definition for data in this report config.
+             * @param dataSet Has definition for data in this report config.
              * @return the next definition stage.
              */
-            WithCreate withDataset(ReportConfigDataset dataset);
+            WithCreate withDataSet(ReportConfigDataset dataSet);
+        }
+        /** The stage of the View definition allowing to specify includeMonetaryCommitment. */
+        interface WithIncludeMonetaryCommitment {
+            /**
+             * Specifies the includeMonetaryCommitment property: If true, report includes monetary commitment..
+             *
+             * @param includeMonetaryCommitment If true, report includes monetary commitment.
+             * @return the next definition stage.
+             */
+            WithCreate withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment);
         }
     }
     /**
@@ -402,7 +434,8 @@ public interface View {
             UpdateStages.WithTypePropertiesType,
             UpdateStages.WithTimeframe,
             UpdateStages.WithTimePeriod,
-            UpdateStages.WithDataset {
+            UpdateStages.WithDataSet,
+            UpdateStages.WithIncludeMonetaryCommitment {
         /**
          * Executes the update request.
          *
@@ -570,15 +603,25 @@ public interface View {
              */
             Update withTimePeriod(ReportConfigTimePeriod timePeriod);
         }
-        /** The stage of the View update allowing to specify dataset. */
-        interface WithDataset {
+        /** The stage of the View update allowing to specify dataSet. */
+        interface WithDataSet {
             /**
-             * Specifies the dataset property: Has definition for data in this report config..
+             * Specifies the dataSet property: Has definition for data in this report config..
              *
-             * @param dataset Has definition for data in this report config.
+             * @param dataSet Has definition for data in this report config.
              * @return the next definition stage.
              */
-            Update withDataset(ReportConfigDataset dataset);
+            Update withDataSet(ReportConfigDataset dataSet);
+        }
+        /** The stage of the View update allowing to specify includeMonetaryCommitment. */
+        interface WithIncludeMonetaryCommitment {
+            /**
+             * Specifies the includeMonetaryCommitment property: If true, report includes monetary commitment..
+             *
+             * @param includeMonetaryCommitment If true, report includes monetary commitment.
+             * @return the next definition stage.
+             */
+            Update withIncludeMonetaryCommitment(Boolean includeMonetaryCommitment);
         }
     }
     /**

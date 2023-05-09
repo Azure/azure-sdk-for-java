@@ -10,8 +10,6 @@ import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDefinition
 import com.azure.resourcemanager.costmanagement.models.AlertPropertiesDetails;
 import com.azure.resourcemanager.costmanagement.models.AlertSource;
 import com.azure.resourcemanager.costmanagement.models.AlertStatus;
-import java.util.Collections;
-import java.util.Map;
 
 public final class AlertImpl implements Alert {
     private AlertInner innerObject;
@@ -35,13 +33,8 @@ public final class AlertImpl implements Alert {
         return this.innerModel().type();
     }
 
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public AlertPropertiesDefinition definition() {

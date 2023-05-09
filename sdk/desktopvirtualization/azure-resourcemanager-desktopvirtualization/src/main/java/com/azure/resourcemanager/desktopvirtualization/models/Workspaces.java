@@ -15,18 +15,6 @@ public interface Workspaces {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace.
-     */
-    Workspace getByResourceGroup(String resourceGroupName, String workspaceName);
-
-    /**
-     * Get a workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,15 +24,16 @@ public interface Workspaces {
     Response<Workspace> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Remove a workspace.
+     * Get a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace.
      */
-    void deleteByResourceGroup(String resourceGroupName, String workspaceName);
+    Workspace getByResourceGroup(String resourceGroupName, String workspaceName);
 
     /**
      * Remove a workspace.
@@ -57,7 +46,18 @@ public interface Workspaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String workspaceName, Context context);
+
+    /**
+     * Remove a workspace.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteByResourceGroup(String resourceGroupName, String workspaceName);
 
     /**
      * List workspaces.
@@ -74,13 +74,17 @@ public interface Workspaces {
      * List workspaces.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspaceList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Workspace> listByResourceGroup(String resourceGroupName, Context context);
+    PagedIterable<Workspace> listByResourceGroup(
+        String resourceGroupName, Integer pageSize, Boolean isDescending, Integer initialSkip, Context context);
 
     /**
      * List workspaces in subscription.

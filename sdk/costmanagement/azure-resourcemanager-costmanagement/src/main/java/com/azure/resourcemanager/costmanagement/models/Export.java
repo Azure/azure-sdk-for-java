@@ -70,15 +70,24 @@ public interface Export {
     ExportDefinition definition();
 
     /**
-     * Gets the runHistory property: If requested, has the most recent execution history for the export.
+     * Gets the runHistory property: If requested, has the most recent run history for the export.
      *
      * @return the runHistory value.
      */
     ExportExecutionListResult runHistory();
 
     /**
-     * Gets the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next
-     * execution time.
+     * Gets the partitionData property: If set to true, exported data will be partitioned by size and placed in a blob
+     * directory together with a manifest file. Note: this option is currently available only for Microsoft Customer
+     * Agreement commerce scopes.
+     *
+     * @return the partitionData value.
+     */
+    Boolean partitionData();
+
+    /**
+     * Gets the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next run
+     * time.
      *
      * @return the nextRunTimeEstimate value.
      */
@@ -133,7 +142,8 @@ public interface Export {
                 DefinitionStages.WithFormat,
                 DefinitionStages.WithDeliveryInfo,
                 DefinitionStages.WithDefinition,
-                DefinitionStages.WithRunHistory {
+                DefinitionStages.WithRunHistory,
+                DefinitionStages.WithPartitionData {
             /**
              * Executes the create request.
              *
@@ -205,12 +215,26 @@ public interface Export {
         /** The stage of the Export definition allowing to specify runHistory. */
         interface WithRunHistory {
             /**
-             * Specifies the runHistory property: If requested, has the most recent execution history for the export..
+             * Specifies the runHistory property: If requested, has the most recent run history for the export..
              *
-             * @param runHistory If requested, has the most recent execution history for the export.
+             * @param runHistory If requested, has the most recent run history for the export.
              * @return the next definition stage.
              */
             WithCreate withRunHistory(ExportExecutionListResultInner runHistory);
+        }
+        /** The stage of the Export definition allowing to specify partitionData. */
+        interface WithPartitionData {
+            /**
+             * Specifies the partitionData property: If set to true, exported data will be partitioned by size and
+             * placed in a blob directory together with a manifest file. Note: this option is currently available only
+             * for Microsoft Customer Agreement commerce scopes..
+             *
+             * @param partitionData If set to true, exported data will be partitioned by size and placed in a blob
+             *     directory together with a manifest file. Note: this option is currently available only for Microsoft
+             *     Customer Agreement commerce scopes.
+             * @return the next definition stage.
+             */
+            WithCreate withPartitionData(Boolean partitionData);
         }
     }
     /**
@@ -227,7 +251,8 @@ public interface Export {
             UpdateStages.WithFormat,
             UpdateStages.WithDeliveryInfo,
             UpdateStages.WithDefinition,
-            UpdateStages.WithRunHistory {
+            UpdateStages.WithRunHistory,
+            UpdateStages.WithPartitionData {
         /**
          * Executes the update request.
          *
@@ -301,12 +326,26 @@ public interface Export {
         /** The stage of the Export update allowing to specify runHistory. */
         interface WithRunHistory {
             /**
-             * Specifies the runHistory property: If requested, has the most recent execution history for the export..
+             * Specifies the runHistory property: If requested, has the most recent run history for the export..
              *
-             * @param runHistory If requested, has the most recent execution history for the export.
+             * @param runHistory If requested, has the most recent run history for the export.
              * @return the next definition stage.
              */
             Update withRunHistory(ExportExecutionListResultInner runHistory);
+        }
+        /** The stage of the Export update allowing to specify partitionData. */
+        interface WithPartitionData {
+            /**
+             * Specifies the partitionData property: If set to true, exported data will be partitioned by size and
+             * placed in a blob directory together with a manifest file. Note: this option is currently available only
+             * for Microsoft Customer Agreement commerce scopes..
+             *
+             * @param partitionData If set to true, exported data will be partitioned by size and placed in a blob
+             *     directory together with a manifest file. Note: this option is currently available only for Microsoft
+             *     Customer Agreement commerce scopes.
+             * @return the next definition stage.
+             */
+            Update withPartitionData(Boolean partitionData);
         }
     }
     /**
@@ -325,7 +364,7 @@ public interface Export {
     Export refresh(Context context);
 
     /**
-     * The operation to execute an export.
+     * The operation to run an export.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +375,7 @@ public interface Export {
     Response<Void> executeWithResponse(Context context);
 
     /**
-     * The operation to execute an export.
+     * The operation to run an export.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

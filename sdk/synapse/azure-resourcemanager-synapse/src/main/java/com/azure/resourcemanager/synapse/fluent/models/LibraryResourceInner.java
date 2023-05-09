@@ -15,14 +15,20 @@ import java.time.OffsetDateTime;
 public final class LibraryResourceInner extends EntityResource {
     /*
      * Information about a library/package created at the workspace level.
+     *
      * Library/package properties.
      */
     @JsonProperty(value = "properties", required = true)
     private LibraryInfo innerProperties = new LibraryInfo();
 
+    /** Creates an instance of LibraryResourceInner class. */
+    public LibraryResourceInner() {
+    }
+
     /**
      * Get the innerProperties property: Information about a library/package created at the workspace level.
-     * Library/package properties.
+     *
+     * <p>Library/package properties.
      *
      * @return the innerProperties value.
      */
@@ -106,20 +112,6 @@ public final class LibraryResourceInner extends EntityResource {
      */
     public OffsetDateTime uploadedTimestamp() {
         return this.innerProperties() == null ? null : this.innerProperties().uploadedTimestamp();
-    }
-
-    /**
-     * Set the uploadedTimestamp property: The last update time of the library.
-     *
-     * @param uploadedTimestamp the uploadedTimestamp value to set.
-     * @return the LibraryResourceInner object itself.
-     */
-    public LibraryResourceInner withUploadedTimestamp(OffsetDateTime uploadedTimestamp) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new LibraryInfo();
-        }
-        this.innerProperties().withUploadedTimestamp(uploadedTimestamp);
-        return this;
     }
 
     /**

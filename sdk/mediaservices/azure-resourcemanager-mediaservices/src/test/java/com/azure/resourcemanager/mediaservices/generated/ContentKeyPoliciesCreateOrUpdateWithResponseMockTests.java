@@ -32,7 +32,7 @@ public final class ContentKeyPoliciesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"policyId\":\"749fc6b3-08c3-4667-888d-0a5176bbf008\",\"created\":\"2021-09-15T20:34:04Z\",\"lastModified\":\"2020-12-28T19:31:05Z\",\"description\":\"pchrqbn\",\"options\":[]},\"id\":\"cgegydcwbo\",\"name\":\"jumvqqolihrraio\",\"type\":\"aubrjtloq\"}";
+            "{\"properties\":{\"policyId\":\"958d59ca-95b5-4756-971c-acf18a5f34b3\",\"created\":\"2021-02-19T02:47:18Z\",\"lastModified\":\"2021-03-05T20:29:17Z\",\"description\":\"wjrmzvuporqzd\",\"options\":[]},\"id\":\"dzvkfvxcnqmxq\",\"name\":\"swokm\",\"type\":\"khlg\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +63,12 @@ public final class ContentKeyPoliciesCreateOrUpdateWithResponseMockTests {
         ContentKeyPolicy response =
             manager
                 .contentKeyPolicies()
-                .define("xkjibnxmy")
-                .withExistingMediaService("gepqtybbwwpg", "akchzyvlixqnrk")
-                .withDescription("tvlwijpsttexoq")
+                .define("nkvxlxpaglqi")
+                .withExistingMediaService("vczkcnyxrxmunjd", "vg")
+                .withDescription("pzvuqdflvo")
                 .withOptions(Arrays.asList())
                 .create();
 
-        Assertions.assertEquals("pchrqbn", response.description());
+        Assertions.assertEquals("wjrmzvuporqzd", response.description());
     }
 }

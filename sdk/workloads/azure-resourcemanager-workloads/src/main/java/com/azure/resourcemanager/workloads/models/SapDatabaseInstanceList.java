@@ -24,6 +24,10 @@ public final class SapDatabaseInstanceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SapDatabaseInstanceList class. */
+    public SapDatabaseInstanceList() {
+    }
+
     /**
      * Get the value property: Gets the list of SAP Database instances.
      *

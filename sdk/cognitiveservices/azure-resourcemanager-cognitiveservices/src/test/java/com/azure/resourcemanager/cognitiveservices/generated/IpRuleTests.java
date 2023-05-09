@@ -7,17 +7,16 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.IpRule;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IpRuleTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         IpRule model = BinaryData.fromString("{\"value\":\"fdfdosygexpa\"}").toObject(IpRule.class);
         Assertions.assertEquals("fdfdosygexpa", model.value());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         IpRule model = new IpRule().withValue("fdfdosygexpa");
         model = BinaryData.fromObject(model).toObject(IpRule.class);
         Assertions.assertEquals("fdfdosygexpa", model.value());

@@ -6,11 +6,10 @@ package com.azure.resourcemanager.recoveryservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservices.models.VaultPropertiesMoveDetails;
-import org.junit.jupiter.api.Test;
 
 public final class VaultPropertiesMoveDetailsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VaultPropertiesMoveDetails model =
             BinaryData
                 .fromString(
@@ -18,8 +17,8 @@ public final class VaultPropertiesMoveDetailsTests {
                 .toObject(VaultPropertiesMoveDetails.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VaultPropertiesMoveDetails model = new VaultPropertiesMoveDetails();
         model = BinaryData.fromObject(model).toObject(VaultPropertiesMoveDetails.class);
     }

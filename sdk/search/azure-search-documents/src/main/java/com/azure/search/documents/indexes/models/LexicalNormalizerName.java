@@ -7,25 +7,48 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LexicalNormalizerName. */
+/** Defines the names of all text normalizers supported by Azure Cognitive Search. */
 public final class LexicalNormalizerName extends ExpandableStringEnum<LexicalNormalizerName> {
-    /** Static value asciifolding for LexicalNormalizerName. */
+    /**
+     * Converts alphabetic, numeric, and symbolic Unicode characters which are not in the first 127 ASCII characters
+     * (the "Basic Latin" Unicode block) into their ASCII equivalents, if such equivalents exist. See
+     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/miscellaneous/ASCIIFoldingFilter.html.
+     */
     public static final LexicalNormalizerName ASCII_FOLDING = fromString("asciifolding");
 
-    /** Static value elision for LexicalNormalizerName. */
+    /**
+     * Removes elisions. For example, "l'avion" (the plane) will be converted to "avion" (plane). See
+     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/util/ElisionFilter.html.
+     */
     public static final LexicalNormalizerName ELISION = fromString("elision");
 
-    /** Static value lowercase for LexicalNormalizerName. */
+    /**
+     * Normalizes token text to lowercase. See
+     * https://lucene.apache.org/core/6_6_1/analyzers-common/org/apache/lucene/analysis/core/LowerCaseFilter.html.
+     */
     public static final LexicalNormalizerName LOWERCASE = fromString("lowercase");
 
-    /** Static value standard for LexicalNormalizerName. */
+    /**
+     * Standard normalizer, which consists of lowercase and asciifolding. See
+     * http://lucene.apache.org/core/4_10_3/analyzers-common/org/apache/lucene/analysis/reverse/ReverseStringFilter.html.
+     */
     public static final LexicalNormalizerName STANDARD = fromString("standard");
 
-    /** Static value uppercase for LexicalNormalizerName. */
+    /**
+     * Normalizes token text to uppercase. See
+     * https://lucene.apache.org/core/6_6_1/analyzers-common/org/apache/lucene/analysis/core/UpperCaseFilter.html.
+     */
     public static final LexicalNormalizerName UPPERCASE = fromString("uppercase");
+
+    /**
+     * Creates a new instance of LexicalNormalizerName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LexicalNormalizerName() {}
 
     /**
      * Creates or finds a LexicalNormalizerName from its string representation.
@@ -33,7 +56,6 @@ public final class LexicalNormalizerName extends ExpandableStringEnum<LexicalNor
      * @param name a name to look for.
      * @return the corresponding LexicalNormalizerName.
      */
-    @JsonCreator
     public static LexicalNormalizerName fromString(String name) {
         return fromString(name, LexicalNormalizerName.class);
     }

@@ -60,9 +60,9 @@ public final class MediaservicesSyncStorageKeysWithResponseMockTests {
         manager
             .mediaservices()
             .syncStorageKeysWithResponse(
-                "byfmowuxr",
-                "jpvd",
-                new SyncStorageKeysInput().withId("fzwiivwzjbhyz"),
+                "tmhheioqa",
+                "hvseufuqyrx",
+                new SyncStorageKeysInput().withId("lcgqlsismj"),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -29,6 +29,15 @@ public final class ManagedCassandraProvisioningState extends ExpandableStringEnu
     public static final ManagedCassandraProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of ManagedCassandraProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedCassandraProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ManagedCassandraProvisioningState from its string representation.
      *
      * @param name a name to look for.

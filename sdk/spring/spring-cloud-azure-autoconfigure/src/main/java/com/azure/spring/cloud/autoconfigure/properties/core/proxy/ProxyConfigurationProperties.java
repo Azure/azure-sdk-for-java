@@ -11,7 +11,7 @@ import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 public class ProxyConfigurationProperties implements ProxyOptionsProvider.ProxyOptions {
 
     /**
-     * Type of the proxy.
+     * Type of the proxy. For instance of http, 'http', 'socks4', 'socks5'. For instance of amqp, 'http', 'socks'.
      */
     private String type;
     /**

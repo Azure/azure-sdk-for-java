@@ -11,21 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of AzureADOnlyAuthentications. */
 public interface AzureADOnlyAuthentications {
     /**
-     * Gets a Azure Active Directory only authentication property.
+     * Get Azure Active Directory only authentication property
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param azureADOnlyAuthenticationName name of the property.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Azure Active Directory only authentication property.
-     */
-    AzureADOnlyAuthentication get(
-        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName);
-
-    /**
-     * Gets a Azure Active Directory only authentication property.
+     * <p>Gets a Azure Active Directory only authentication property.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -43,7 +31,25 @@ public interface AzureADOnlyAuthentications {
         Context context);
 
     /**
-     * Gets a list of Azure Active Directory only authentication property for a workspace.
+     * Get Azure Active Directory only authentication property
+     *
+     * <p>Gets a Azure Active Directory only authentication property.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param azureADOnlyAuthenticationName name of the property.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Azure Active Directory only authentication property.
+     */
+    AzureADOnlyAuthentication get(
+        String resourceGroupName, String workspaceName, AzureADOnlyAuthenticationName azureADOnlyAuthenticationName);
+
+    /**
+     * Gets a list of Azure Active Directory only authentication property
+     *
+     * <p>Gets a list of Azure Active Directory only authentication property for a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -56,7 +62,9 @@ public interface AzureADOnlyAuthentications {
     PagedIterable<AzureADOnlyAuthentication> list(String resourceGroupName, String workspaceName);
 
     /**
-     * Gets a list of Azure Active Directory only authentication property for a workspace.
+     * Gets a list of Azure Active Directory only authentication property
+     *
+     * <p>Gets a list of Azure Active Directory only authentication property for a workspace.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -70,7 +78,9 @@ public interface AzureADOnlyAuthentications {
     PagedIterable<AzureADOnlyAuthentication> list(String resourceGroupName, String workspaceName, Context context);
 
     /**
-     * Gets a Azure Active Directory only authentication property.
+     * Get Azure Active Directory only authentication property
+     *
+     * <p>Gets a Azure Active Directory only authentication property.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,7 +91,9 @@ public interface AzureADOnlyAuthentications {
     AzureADOnlyAuthentication getById(String id);
 
     /**
-     * Gets a Azure Active Directory only authentication property.
+     * Get Azure Active Directory only authentication property
+     *
+     * <p>Gets a Azure Active Directory only authentication property.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

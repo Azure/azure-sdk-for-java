@@ -37,15 +37,6 @@ public final class BackupPoliciesImpl implements BackupPolicies {
         return Utils.mapPage(inner, inner1 -> new BackupPolicyImpl(inner1, this.manager()));
     }
 
-    public BackupPolicy get(String resourceGroupName, String accountName, String backupPolicyName) {
-        BackupPolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, backupPolicyName);
-        if (inner != null) {
-            return new BackupPolicyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<BackupPolicy> getWithResponse(
         String resourceGroupName, String accountName, String backupPolicyName, Context context) {
         Response<BackupPolicyInner> inner =
@@ -56,6 +47,15 @@ public final class BackupPoliciesImpl implements BackupPolicies {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new BackupPolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BackupPolicy get(String resourceGroupName, String accountName, String backupPolicyName) {
+        BackupPolicyInner inner = this.serviceClient().get(resourceGroupName, accountName, backupPolicyName);
+        if (inner != null) {
+            return new BackupPolicyImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Registries ListUsages. */
 public final class RegistriesListUsagesSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/RegistryListUsages.json
+     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2022-12-01/examples/RegistryListUsages.json
      */
     /**
      * Sample code: RegistryListUsages.
@@ -22,6 +20,6 @@ public final class RegistriesListUsagesSamples {
             .manager()
             .serviceClient()
             .getRegistries()
-            .listUsagesWithResponse("myResourceGroup", "myRegistry", Context.NONE);
+            .listUsagesWithResponse("myResourceGroup", "myRegistry", com.azure.core.util.Context.NONE);
     }
 }

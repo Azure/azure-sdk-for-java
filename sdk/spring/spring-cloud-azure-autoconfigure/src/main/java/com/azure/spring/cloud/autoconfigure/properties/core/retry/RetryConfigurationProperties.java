@@ -12,7 +12,7 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 public class RetryConfigurationProperties implements RetryOptionsProvider.RetryOptions {
 
     /**
-     * Retry backoff mode.
+     * The retry backoff mode when retrying. Supported types are: FIXED, EXPONENTIAL.
      */
     private RetryOptionsProvider.RetryMode mode;
 

@@ -22,6 +22,10 @@ public final class ScalingHostPoolReference {
     @JsonProperty(value = "scalingPlanEnabled")
     private Boolean scalingPlanEnabled;
 
+    /** Creates an instance of ScalingHostPoolReference class. */
+    public ScalingHostPoolReference() {
+    }
+
     /**
      * Get the hostPoolArmPath property: Arm path of referenced hostpool.
      *

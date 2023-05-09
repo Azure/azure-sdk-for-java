@@ -21,6 +21,15 @@ public final class FirewallPolicyIntrusionDetectionStateType
     public static final FirewallPolicyIntrusionDetectionStateType DENY = fromString("Deny");
 
     /**
+     * Creates a new instance of FirewallPolicyIntrusionDetectionStateType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FirewallPolicyIntrusionDetectionStateType() {
+    }
+
+    /**
      * Creates or finds a FirewallPolicyIntrusionDetectionStateType from its string representation.
      *
      * @param name a name to look for.

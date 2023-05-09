@@ -39,6 +39,10 @@ public final class IpFirewallRuleInfoImpl
         return this.innerModel().startIpAddress();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IpFirewallRuleInfoInner innerModel() {
         return this.innerObject;
     }

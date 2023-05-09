@@ -28,22 +28,19 @@ public final class EventHubConnectionProperties {
     private String consumerGroup;
 
     /*
-     * The table where the data should be ingested. Optionally the table
-     * information can be added to each message.
+     * The table where the data should be ingested. Optionally the table information can be added to each message.
      */
     @JsonProperty(value = "tableName")
     private String tableName;
 
     /*
-     * The mapping rule to be used to ingest the data. Optionally the mapping
-     * information can be added to each message.
+     * The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.
      */
     @JsonProperty(value = "mappingRuleName")
     private String mappingRuleName;
 
     /*
-     * The data format of the message. Optionally the data format can be added
-     * to each message.
+     * The data format of the message. Optionally the data format can be added to each message.
      */
     @JsonProperty(value = "dataFormat")
     private EventHubDataFormat dataFormat;
@@ -67,11 +64,14 @@ public final class EventHubConnectionProperties {
     private ResourceProvisioningState provisioningState;
 
     /*
-     * The resource ID of a managed identity (system or user assigned) to be
-     * used to authenticate with event hub.
+     * The resource ID of a managed identity (system or user assigned) to be used to authenticate with event hub.
      */
     @JsonProperty(value = "managedIdentityResourceId")
     private String managedIdentityResourceId;
+
+    /** Creates an instance of EventHubConnectionProperties class. */
+    public EventHubConnectionProperties() {
+    }
 
     /**
      * Get the eventHubResourceId property: The resource ID of the event hub to be used to create a data connection.

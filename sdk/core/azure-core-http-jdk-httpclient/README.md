@@ -7,7 +7,7 @@ part of JDK 11.
 
 ### Prerequisites
 
-- A [Java Development Kit (JDK)][jdk_link], version 11 or later.
+- A [Java Development Kit (JDK)][jdk_link], version 12 or later.
 
 ### Adding the package to your product
 
@@ -16,7 +16,7 @@ part of JDK 11.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-core-http-jdk-httpclient</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -19,6 +19,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({@JsonSubTypes.Type(name = "SecureString", value = SecureString.class)})
 @Immutable
 public class SecretBase {
+    /** Creates an instance of SecretBase class. */
+    public SecretBase() {
+    }
+
     /**
      * Validates the instance.
      *

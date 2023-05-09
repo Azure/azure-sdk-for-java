@@ -17,6 +17,10 @@ public final class SelfHostedIntegrationRuntimeTypeProperties {
     @JsonProperty(value = "linkedInfo")
     private LinkedIntegrationRuntimeType linkedInfo;
 
+    /** Creates an instance of SelfHostedIntegrationRuntimeTypeProperties class. */
+    public SelfHostedIntegrationRuntimeTypeProperties() {
+    }
+
     /**
      * Get the linkedInfo property: Linked integration runtime type from data factory.
      *

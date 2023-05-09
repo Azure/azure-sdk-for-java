@@ -29,6 +29,10 @@ public final class PrivateEndpointConnectionItem {
     @JsonProperty(value = "properties")
     private PrivateEndpointConnectionProperties innerProperties;
 
+    /** Creates an instance of PrivateEndpointConnectionItem class. */
+    public PrivateEndpointConnectionItem() {
+    }
+
     /**
      * Get the id property: Id of private endpoint connection.
      *

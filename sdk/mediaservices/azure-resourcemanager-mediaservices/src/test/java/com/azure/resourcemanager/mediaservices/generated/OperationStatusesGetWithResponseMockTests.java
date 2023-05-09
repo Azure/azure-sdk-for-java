@@ -31,7 +31,7 @@ public final class OperationStatusesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"name\":\"ijddtvqc\",\"id\":\"adijaeukmrsie\",\"startTime\":\"2021-10-17T06:17:44Z\",\"endTime\":\"2021-09-22T10:42:53Z\",\"status\":\"zaapmudqmeqwi\"}";
+            "{\"name\":\"nbmhyree\",\"id\":\"zqavbpdqmjx\",\"startTime\":\"2021-08-14T02:20:46Z\",\"endTime\":\"2021-06-29T01:07:25Z\",\"status\":\"lgouwtlmjj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,13 +63,18 @@ public final class OperationStatusesGetWithResponseMockTests {
             manager
                 .operationStatuses()
                 .getWithResponse(
-                    "thwtzol", "a", "mwmdxmebwjscjpa", "lxveabfqx", "mwmqtibx", com.azure.core.util.Context.NONE)
+                    "smgbzahgxqdl",
+                    "rtltla",
+                    "rltzkatbhjmz",
+                    "nbsoqeqalarv",
+                    "agunbtgfebw",
+                    com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ijddtvqc", response.name());
-        Assertions.assertEquals("adijaeukmrsie", response.id());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T06:17:44Z"), response.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-22T10:42:53Z"), response.endTime());
-        Assertions.assertEquals("zaapmudqmeqwi", response.status());
+        Assertions.assertEquals("nbmhyree", response.name());
+        Assertions.assertEquals("zqavbpdqmjx", response.id());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-14T02:20:46Z"), response.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T01:07:25Z"), response.endTime());
+        Assertions.assertEquals("lgouwtlmjj", response.status());
     }
 }

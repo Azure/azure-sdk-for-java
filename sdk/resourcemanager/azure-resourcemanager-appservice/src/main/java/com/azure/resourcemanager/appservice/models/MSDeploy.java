@@ -19,6 +19,10 @@ public final class MSDeploy extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private MSDeployProperties innerProperties;
 
+    /** Creates an instance of MSDeploy class. */
+    public MSDeploy() {
+    }
+
     /**
      * Get the innerProperties property: Core resource properties.
      *

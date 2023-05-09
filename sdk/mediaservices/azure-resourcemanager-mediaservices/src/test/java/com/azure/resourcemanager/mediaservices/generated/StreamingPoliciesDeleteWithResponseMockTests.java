@@ -58,6 +58,6 @@ public final class StreamingPoliciesDeleteWithResponseMockTests {
 
         manager
             .streamingPolicies()
-            .deleteWithResponse("nh", "vsqltnzoibgsxg", "xfyqonmpqoxwdo", com.azure.core.util.Context.NONE);
+            .deleteWithResponse("lrohkpig", "fusuckzmkwklsno", "axmqeqal", com.azure.core.util.Context.NONE);
     }
 }

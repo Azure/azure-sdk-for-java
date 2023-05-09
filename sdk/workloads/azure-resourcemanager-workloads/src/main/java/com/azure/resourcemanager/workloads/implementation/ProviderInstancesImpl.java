@@ -39,15 +39,6 @@ public final class ProviderInstancesImpl implements ProviderInstances {
         return Utils.mapPage(inner, inner1 -> new ProviderInstanceImpl(inner1, this.manager()));
     }
 
-    public ProviderInstance get(String resourceGroupName, String monitorName, String providerInstanceName) {
-        ProviderInstanceInner inner = this.serviceClient().get(resourceGroupName, monitorName, providerInstanceName);
-        if (inner != null) {
-            return new ProviderInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ProviderInstance> getWithResponse(
         String resourceGroupName, String monitorName, String providerInstanceName, Context context) {
         Response<ProviderInstanceInner> inner =
@@ -58,6 +49,15 @@ public final class ProviderInstancesImpl implements ProviderInstances {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ProviderInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ProviderInstance get(String resourceGroupName, String monitorName, String providerInstanceName) {
+        ProviderInstanceInner inner = this.serviceClient().get(resourceGroupName, monitorName, providerInstanceName);
+        if (inner != null) {
+            return new ProviderInstanceImpl(inner, this.manager());
         } else {
             return null;
         }

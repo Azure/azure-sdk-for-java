@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tasks Delete. */
 public final class TasksDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class TasksDeleteSamples {
             .manager()
             .serviceClient()
             .getTasks()
-            .delete("myResourceGroup", "myRegistry", "myTask", Context.NONE);
+            .delete("myResourceGroup", "myRegistry", "myTask", com.azure.core.util.Context.NONE);
     }
 }

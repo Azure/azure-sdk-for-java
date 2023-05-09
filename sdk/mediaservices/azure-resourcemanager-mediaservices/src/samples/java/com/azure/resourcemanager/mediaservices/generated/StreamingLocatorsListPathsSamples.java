@@ -19,7 +19,7 @@ public final class StreamingLocatorsListPathsSamples {
         manager
             .streamingLocators()
             .listPathsWithResponse(
-                "contoso", "contosomedia", "secureStreamingLocator", com.azure.core.util.Context.NONE);
+                "contosorg", "contosomedia", "secureStreamingLocator", com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -35,6 +35,6 @@ public final class StreamingLocatorsListPathsSamples {
         manager
             .streamingLocators()
             .listPathsWithResponse(
-                "contoso", "contosomedia", "clearStreamingLocator", com.azure.core.util.Context.NONE);
+                "contosorg", "contosomedia", "clearStreamingLocator", com.azure.core.util.Context.NONE);
     }
 }

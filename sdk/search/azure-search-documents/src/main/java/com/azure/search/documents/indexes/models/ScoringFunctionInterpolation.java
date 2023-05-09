@@ -6,21 +6,24 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ScoringFunctionInterpolation. */
+/** Defines the function used to interpolate score boosting across a range of documents. */
 public enum ScoringFunctionInterpolation {
-    /** Enum value linear. */
+    /** Boosts scores by a linearly decreasing amount. This is the default interpolation for scoring functions. */
     LINEAR("linear"),
 
-    /** Enum value constant. */
+    /** Boosts scores by a constant factor. */
     CONSTANT("constant"),
 
-    /** Enum value quadratic. */
+    /**
+     * Boosts scores by an amount that decreases quadratically. Boosts decrease slowly for higher scores, and more
+     * quickly as the scores decrease. This interpolation option is not allowed in tag scoring functions.
+     */
     QUADRATIC("quadratic"),
 
-    /** Enum value logarithmic. */
+    /**
+     * Boosts scores by an amount that decreases logarithmically. Boosts decrease quickly for higher scores, and more
+     * slowly as the scores decrease. This interpolation option is not allowed in tag scoring functions.
+     */
     LOGARITHMIC("logarithmic");
 
     /** The actual serialized value for a ScoringFunctionInterpolation instance. */
@@ -36,7 +39,6 @@ public enum ScoringFunctionInterpolation {
      * @param value the serialized value to parse.
      * @return the parsed ScoringFunctionInterpolation object, or null if unable to parse.
      */
-    @JsonCreator
     public static ScoringFunctionInterpolation fromString(String value) {
         if (value == null) {
             return null;
@@ -50,7 +52,7 @@ public enum ScoringFunctionInterpolation {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

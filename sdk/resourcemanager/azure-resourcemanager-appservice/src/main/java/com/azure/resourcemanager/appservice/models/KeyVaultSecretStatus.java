@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for KeyVaultSecretStatus. */
+/** Status of the Key Vault secret. */
 public enum KeyVaultSecretStatus {
     /** Enum value Initialized. */
     INITIALIZED("Initialized"),
@@ -57,6 +57,9 @@ public enum KeyVaultSecretStatus {
      */
     @JsonCreator
     public static KeyVaultSecretStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         KeyVaultSecretStatus[] items = KeyVaultSecretStatus.values();
         for (KeyVaultSecretStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -66,6 +69,7 @@ public enum KeyVaultSecretStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

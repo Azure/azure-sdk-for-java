@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for InboundNatRules Delete. */
 public final class InboundNatRulesDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-07-01/examples/InboundNatRuleDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/InboundNatRuleDelete.json
      */
     /**
      * Sample code: InboundNatRuleDelete.
@@ -22,6 +20,6 @@ public final class InboundNatRulesDeleteSamples {
             .manager()
             .serviceClient()
             .getInboundNatRules()
-            .delete("testrg", "lb1", "natRule1.1", Context.NONE);
+            .delete("testrg", "lb1", "natRule1.1", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.costmanagement.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The QueryColumn model. */
+/** QueryColumn properties. */
 @Fluent
 public final class QueryColumn {
     /*

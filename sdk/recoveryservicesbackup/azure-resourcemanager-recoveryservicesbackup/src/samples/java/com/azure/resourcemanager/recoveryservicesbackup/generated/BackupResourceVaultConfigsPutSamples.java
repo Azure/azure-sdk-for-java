@@ -12,7 +12,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.SoftDeleteFeature
 /** Samples for BackupResourceVaultConfigs Put. */
 public final class BackupResourceVaultConfigsPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/Common/BackupResourceVaultConfigs_Put.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2023-02-01/examples/Common/BackupResourceVaultConfigs_Put.json
      */
     /**
      * Sample code: Update Vault Security Config.

@@ -7,23 +7,23 @@ package com.azure.resourcemanager.security.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describe the additional data of GovernanceAssignment - optional. */
+/** Describe the additional data of governance assignment - optional. */
 @Fluent
 public final class GovernanceAssignmentAdditionalData {
     /*
-     * Ticket number associated with this GovernanceAssignment
+     * Ticket number associated with this governance assignment
      */
     @JsonProperty(value = "ticketNumber")
     private Integer ticketNumber;
 
     /*
-     * Ticket link associated with this GovernanceAssignment - for example: https://snow.com
+     * Ticket link associated with this governance assignment - for example: https://snow.com
      */
     @JsonProperty(value = "ticketLink")
     private String ticketLink;
 
     /*
-     * The ticket status associated with this GovernanceAssignment - for example: Active
+     * The ticket status associated with this governance assignment - for example: Active
      */
     @JsonProperty(value = "ticketStatus")
     private String ticketStatus;
@@ -33,7 +33,7 @@ public final class GovernanceAssignmentAdditionalData {
     }
 
     /**
-     * Get the ticketNumber property: Ticket number associated with this GovernanceAssignment.
+     * Get the ticketNumber property: Ticket number associated with this governance assignment.
      *
      * @return the ticketNumber value.
      */
@@ -42,7 +42,7 @@ public final class GovernanceAssignmentAdditionalData {
     }
 
     /**
-     * Set the ticketNumber property: Ticket number associated with this GovernanceAssignment.
+     * Set the ticketNumber property: Ticket number associated with this governance assignment.
      *
      * @param ticketNumber the ticketNumber value to set.
      * @return the GovernanceAssignmentAdditionalData object itself.
@@ -53,7 +53,7 @@ public final class GovernanceAssignmentAdditionalData {
     }
 
     /**
-     * Get the ticketLink property: Ticket link associated with this GovernanceAssignment - for example:
+     * Get the ticketLink property: Ticket link associated with this governance assignment - for example:
      * https://snow.com.
      *
      * @return the ticketLink value.
@@ -63,7 +63,7 @@ public final class GovernanceAssignmentAdditionalData {
     }
 
     /**
-     * Set the ticketLink property: Ticket link associated with this GovernanceAssignment - for example:
+     * Set the ticketLink property: Ticket link associated with this governance assignment - for example:
      * https://snow.com.
      *
      * @param ticketLink the ticketLink value to set.
@@ -75,7 +75,8 @@ public final class GovernanceAssignmentAdditionalData {
     }
 
     /**
-     * Get the ticketStatus property: The ticket status associated with this GovernanceAssignment - for example: Active.
+     * Get the ticketStatus property: The ticket status associated with this governance assignment - for example:
+     * Active.
      *
      * @return the ticketStatus value.
      */
@@ -84,7 +85,8 @@ public final class GovernanceAssignmentAdditionalData {
     }
 
     /**
-     * Set the ticketStatus property: The ticket status associated with this GovernanceAssignment - for example: Active.
+     * Set the ticketStatus property: The ticket status associated with this governance assignment - for example:
+     * Active.
      *
      * @param ticketStatus the ticketStatus value to set.
      * @return the GovernanceAssignmentAdditionalData object itself.

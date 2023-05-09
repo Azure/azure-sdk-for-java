@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.NameIdentifierInner;
 
 /** Samples for AppServiceCertificateOrders ResendRequestEmails. */
 public final class AppServiceCertificateOrdersResendRequestEmailsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/ResendDomainOwnershipVerificationEmail.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/ResendDomainOwnershipVerificationEmail.json
      */
     /**
      * Sample code: Resend Domain Ownership verification email.
@@ -27,6 +26,6 @@ public final class AppServiceCertificateOrdersResendRequestEmailsSamples {
                 "testrg123",
                 "SampleCertificateOrderName",
                 new NameIdentifierInner().withName("Domain name"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -5,15 +5,12 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.AbstractiveSummary;
-import com.azure.ai.textanalytics.models.AbstractSummaryAction;
-import com.azure.ai.textanalytics.models.AbstractSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
 import com.azure.ai.textanalytics.models.AbstractSummaryResult;
-import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
-import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
-import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.SummaryContext;
-import com.azure.ai.textanalytics.models.TextAnalyticsActions;
+import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -21,11 +18,11 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Sample demonstrates how to synchronously execute an "Abstractive Summarization" action in a batch of documents.
+ * Sample demonstrates how to synchronously execute an "Abstractive Summarization" in a batch of documents.
  */
 public class AbstractiveSummarizationAsync {
     /**
-     * Main method to invoke this demo about how to analyze an "Abstractive Summarization" action.
+     * Main method to invoke this demo about how to analyze an "Abstractive Summarization".
      *
      * @param args Unused arguments to the program.
      */
@@ -57,25 +54,18 @@ public class AbstractiveSummarizationAsync {
                 + "foundational component of this aspiration, if grounded with external knowledge sources in "
                 + "the downstream AI tasks.");
 
-        client.beginAnalyzeActions(documents,
-            new TextAnalyticsActions()
-                .setDisplayName("{tasks_display_name}")
-                .setAbstractSummaryActions(
-                    new AbstractSummaryAction().setMaxSentenceCount(3)),
+        client.beginAbstractSummary(documents,
             "en",
-            new AnalyzeActionsOptions())
+            new AbstractSummaryOptions().setSentenceCount(4))
             .flatMap(result -> {
-                AnalyzeActionsOperationDetail operationDetail = result.getValue();
-                System.out.printf("Action display name: %s, Successfully completed actions: %d, in-process actions: %d,"
-                        + " failed actions: %d, total actions: %d%n",
-                    operationDetail.getDisplayName(), operationDetail.getSucceededCount(),
-                    operationDetail.getInProgressCount(), operationDetail.getFailedCount(),
-                    operationDetail.getTotalCount());
+                AbstractSummaryOperationDetail operationDetail = result.getValue();
+                System.out.printf("Operation created time: %s, expiration time: %s.%n",
+                    operationDetail.getCreatedAt(), operationDetail.getExpiresAt());
                 return result.getFinalResult();
             })
             .flatMap(pagedFlux -> pagedFlux) // this unwrap the Mono<> of Mono<PagedFlux<T>> to return PagedFlux<T>
             .subscribe(
-                actionsResult -> processAnalyzeActionsResult(actionsResult),
+                resultCollection -> processResult(resultCollection),
                 ex -> System.out.println("Error listing pages: " + ex.getMessage()),
                 () -> System.out.println("Successfully listed all pages"));
 
@@ -89,28 +79,20 @@ public class AbstractiveSummarizationAsync {
         }
     }
 
-    private static void processAnalyzeActionsResult(AnalyzeActionsResult actionsResult) {
-        System.out.println("Abstractive summarization action results:");
-        for (AbstractSummaryActionResult actionResult : actionsResult.getAbstractSummaryResults()) {
-            if (!actionResult.isError()) {
-                for (AbstractSummaryResult documentResult : actionResult.getDocumentsResults()) {
-                    if (!documentResult.isError()) {
-                        System.out.println("\tAbstract summary sentences:");
-                        for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
-                            System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
-                            for (SummaryContext summaryContext : summarySentence.getContexts()) {
-                                System.out.printf("\t\t offset: %d, length: %d%n",
-                                    summaryContext.getOffset(), summaryContext.getLength());
-                            }
-                        }
-                    } else {
-                        System.out.printf("\tCannot get abstract summary. Error: %s%n",
-                            documentResult.getError().getMessage());
+    private static void processResult(AbstractSummaryResultCollection actionsResult) {
+        for (AbstractSummaryResult documentResult : actionsResult) {
+            if (!documentResult.isError()) {
+                System.out.println("\tAbstract summary sentences:");
+                for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
+                    System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
+                    for (SummaryContext summaryContext : summarySentence.getContexts()) {
+                        System.out.printf("\t\t offset: %d, length: %d%n",
+                            summaryContext.getOffset(), summaryContext.getLength());
                     }
                 }
             } else {
-                System.out.printf("\tCannot get Abstractive Summarization action. Error: %s%n",
-                    actionResult.getError().getMessage());
+                System.out.printf("\tCannot get abstract summary. Error: %s%n",
+                    documentResult.getError().getMessage());
             }
         }
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityConnectors List. */
 public final class SecurityConnectorsListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2022-08-01-preview/examples/SecurityConnectors/GetSecurityConnectorsSubscription_example.json
+     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/preview/2023-03-01-preview/examples/SecurityConnectors/GetSecurityConnectorsSubscription_example.json
      */
     /**
      * Sample code: List all security connectors of a specified subscription.
@@ -18,6 +16,6 @@ public final class SecurityConnectorsListSamples {
      */
     public static void listAllSecurityConnectorsOfASpecifiedSubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityConnectors().list(Context.NONE);
+        manager.securityConnectors().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -13,18 +13,18 @@ public final class ContentKeyPolicyTokenClaimTests {
     public void testDeserialize() throws Exception {
         ContentKeyPolicyTokenClaim model =
             BinaryData
-                .fromString("{\"claimType\":\"zhjjklffhmouwq\",\"claimValue\":\"zrfze\"}")
+                .fromString("{\"claimType\":\"cv\",\"claimValue\":\"uwrbehwagoh\"}")
                 .toObject(ContentKeyPolicyTokenClaim.class);
-        Assertions.assertEquals("zhjjklffhmouwq", model.claimType());
-        Assertions.assertEquals("zrfze", model.claimValue());
+        Assertions.assertEquals("cv", model.claimType());
+        Assertions.assertEquals("uwrbehwagoh", model.claimValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ContentKeyPolicyTokenClaim model =
-            new ContentKeyPolicyTokenClaim().withClaimType("zhjjklffhmouwq").withClaimValue("zrfze");
+            new ContentKeyPolicyTokenClaim().withClaimType("cv").withClaimValue("uwrbehwagoh");
         model = BinaryData.fromObject(model).toObject(ContentKeyPolicyTokenClaim.class);
-        Assertions.assertEquals("zhjjklffhmouwq", model.claimType());
-        Assertions.assertEquals("zrfze", model.claimValue());
+        Assertions.assertEquals("cv", model.claimType());
+        Assertions.assertEquals("uwrbehwagoh", model.claimValue());
     }
 }

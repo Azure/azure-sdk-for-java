@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.signalr.SignalRManager;
 import com.azure.resourcemanager.signalr.models.CustomDomain;
 import java.nio.ByteBuffer;
@@ -63,7 +62,7 @@ public final class SignalRCustomDomainsGetWithResponseMockTests {
         CustomDomain response =
             manager
                 .signalRCustomDomains()
-                .getWithResponse("zszrnwoiindfpw", "jylwbtlhflsj", "dhszfjv", Context.NONE)
+                .getWithResponse("zszrnwoiindfpw", "jylwbtlhflsj", "dhszfjv", com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals("feljagrqm", response.domainName());

@@ -18,6 +18,10 @@ public class ManagedCassandraArmResourceProperties extends Resource {
     @JsonProperty(value = "identity")
     private ManagedCassandraManagedServiceIdentity identity;
 
+    /** Creates an instance of ManagedCassandraArmResourceProperties class. */
+    public ManagedCassandraArmResourceProperties() {
+    }
+
     /**
      * Get the identity property: Identity for the resource.
      *

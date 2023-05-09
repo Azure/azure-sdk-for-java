@@ -31,7 +31,7 @@ public final class TracksListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Succeeded\"},\"id\":\"ylkdghrje\",\"name\":\"utlwxezwzhok\",\"type\":\"bwnhhtql\"}]}";
+            "{\"value\":[{\"properties\":{\"track\":{\"@odata.type\":\"TrackBase\"},\"provisioningState\":\"Succeeded\"},\"id\":\"n\",\"name\":\"fbycjs\",\"type\":\"jww\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +60,6 @@ public final class TracksListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AssetTrack> response =
-            manager.tracks().list("btmvpdvjdhttza", "fedxihchrphkm", "rjdqnsdfzp", com.azure.core.util.Context.NONE);
+            manager.tracks().list("qbsms", "ziqgfuh", "kzruswh", com.azure.core.util.Context.NONE);
     }
 }

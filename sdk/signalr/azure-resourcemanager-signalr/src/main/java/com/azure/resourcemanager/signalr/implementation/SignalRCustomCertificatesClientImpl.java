@@ -68,8 +68,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     public interface SignalRCustomCertificatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/customCertificates")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customCertificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomCertificateList>> list(
@@ -83,8 +82,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/customCertificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customCertificates/{certificateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CustomCertificateInner>> get(
@@ -99,8 +97,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/customCertificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customCertificates/{certificateName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -116,8 +113,7 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService"
-                + "/signalR/{resourceName}/customCertificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.SignalRService/signalR/{resourceName}/customCertificates/{certificateName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -692,7 +688,9 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomCertificateInner>, CustomCertificateInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, String certificateName, CustomCertificateInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, certificateName, parameters).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, certificateName, parameters)
+            .getSyncPoller();
     }
 
     /**
@@ -716,7 +714,8 @@ public final class SignalRCustomCertificatesClientImpl implements SignalRCustomC
         String certificateName,
         CustomCertificateInner parameters,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, certificateName, parameters, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, resourceName, certificateName, parameters, context)
             .getSyncPoller();
     }
 

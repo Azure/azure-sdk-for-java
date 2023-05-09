@@ -6,15 +6,12 @@
 
 package com.azure.search.documents.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for SearchMode. */
+/** Specifies whether any or all of the search terms must be matched in order to count the document as a match. */
 public enum SearchMode {
-    /** Enum value any. */
+    /** Any of the search terms must be matched in order to count the document as a match. */
     ANY("any"),
 
-    /** Enum value all. */
+    /** All of the search terms must be matched in order to count the document as a match. */
     ALL("all");
 
     /** The actual serialized value for a SearchMode instance. */
@@ -30,7 +27,6 @@ public enum SearchMode {
      * @param value the serialized value to parse.
      * @return the parsed SearchMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static SearchMode fromString(String value) {
         if (value == null) {
             return null;
@@ -44,7 +40,7 @@ public enum SearchMode {
         return null;
     }
 
-    @JsonValue
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         return this.value;

@@ -24,6 +24,10 @@ public final class SensitivityLabelInner extends ProxyResource {
     @JsonProperty(value = "managedBy", access = JsonProperty.Access.WRITE_ONLY)
     private String managedBy;
 
+    /** Creates an instance of SensitivityLabelInner class. */
+    public SensitivityLabelInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

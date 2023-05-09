@@ -93,6 +93,13 @@ public interface SqlPoolSecurityAlertPolicy {
     OffsetDateTime creationTime();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.synapse.fluent.models.SqlPoolSecurityAlertPolicyInner object.
      *
      * @return the inner object.
@@ -240,8 +247,6 @@ public interface SqlPoolSecurityAlertPolicy {
     /** The template for SqlPoolSecurityAlertPolicy update. */
     interface Update
         extends UpdateStages.WithState,
-            UpdateStages.WithDisabledAlerts,
-            UpdateStages.WithEmailAddresses,
             UpdateStages.WithEmailAccountAdmins,
             UpdateStages.WithStorageEndpoint,
             UpdateStages.WithStorageAccountAccessKey,
@@ -274,29 +279,6 @@ public interface SqlPoolSecurityAlertPolicy {
              * @return the next definition stage.
              */
             Update withState(SecurityAlertPolicyState state);
-        }
-        /** The stage of the SqlPoolSecurityAlertPolicy update allowing to specify disabledAlerts. */
-        interface WithDisabledAlerts {
-            /**
-             * Specifies the disabledAlerts property: Specifies an array of alerts that are disabled. Allowed values
-             * are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action.
-             *
-             * @param disabledAlerts Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection,
-             *     Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action.
-             * @return the next definition stage.
-             */
-            Update withDisabledAlerts(List<String> disabledAlerts);
-        }
-        /** The stage of the SqlPoolSecurityAlertPolicy update allowing to specify emailAddresses. */
-        interface WithEmailAddresses {
-            /**
-             * Specifies the emailAddresses property: Specifies an array of e-mail addresses to which the alert is
-             * sent..
-             *
-             * @param emailAddresses Specifies an array of e-mail addresses to which the alert is sent.
-             * @return the next definition stage.
-             */
-            Update withEmailAddresses(List<String> emailAddresses);
         }
         /** The stage of the SqlPoolSecurityAlertPolicy update allowing to specify emailAccountAdmins. */
         interface WithEmailAccountAdmins {

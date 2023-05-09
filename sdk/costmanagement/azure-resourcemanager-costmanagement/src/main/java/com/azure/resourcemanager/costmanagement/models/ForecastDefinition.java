@@ -21,13 +21,13 @@ public final class ForecastDefinition {
      * The time frame for pulling data for the forecast. If custom, then a specific time period must be provided.
      */
     @JsonProperty(value = "timeframe", required = true)
-    private ForecastTimeframeType timeframe;
+    private ForecastTimeframe timeframe;
 
     /*
      * Has time period for pulling data for the forecast.
      */
     @JsonProperty(value = "timePeriod")
-    private QueryTimePeriod timePeriod;
+    private ForecastTimePeriod timePeriod;
 
     /*
      * Has definition for data in this forecast.
@@ -36,13 +36,13 @@ public final class ForecastDefinition {
     private ForecastDataset dataset;
 
     /*
-     * a boolean determining if actualCost will be included
+     * A boolean determining if actualCost will be included.
      */
     @JsonProperty(value = "includeActualCost")
     private Boolean includeActualCost;
 
     /*
-     * a boolean determining if FreshPartialCost will be included
+     * A boolean determining if FreshPartialCost will be included.
      */
     @JsonProperty(value = "includeFreshPartialCost")
     private Boolean includeFreshPartialCost;
@@ -77,7 +77,7 @@ public final class ForecastDefinition {
      *
      * @return the timeframe value.
      */
-    public ForecastTimeframeType timeframe() {
+    public ForecastTimeframe timeframe() {
         return this.timeframe;
     }
 
@@ -88,7 +88,7 @@ public final class ForecastDefinition {
      * @param timeframe the timeframe value to set.
      * @return the ForecastDefinition object itself.
      */
-    public ForecastDefinition withTimeframe(ForecastTimeframeType timeframe) {
+    public ForecastDefinition withTimeframe(ForecastTimeframe timeframe) {
         this.timeframe = timeframe;
         return this;
     }
@@ -98,7 +98,7 @@ public final class ForecastDefinition {
      *
      * @return the timePeriod value.
      */
-    public QueryTimePeriod timePeriod() {
+    public ForecastTimePeriod timePeriod() {
         return this.timePeriod;
     }
 
@@ -108,7 +108,7 @@ public final class ForecastDefinition {
      * @param timePeriod the timePeriod value to set.
      * @return the ForecastDefinition object itself.
      */
-    public ForecastDefinition withTimePeriod(QueryTimePeriod timePeriod) {
+    public ForecastDefinition withTimePeriod(ForecastTimePeriod timePeriod) {
         this.timePeriod = timePeriod;
         return this;
     }
@@ -134,7 +134,7 @@ public final class ForecastDefinition {
     }
 
     /**
-     * Get the includeActualCost property: a boolean determining if actualCost will be included.
+     * Get the includeActualCost property: A boolean determining if actualCost will be included.
      *
      * @return the includeActualCost value.
      */
@@ -143,7 +143,7 @@ public final class ForecastDefinition {
     }
 
     /**
-     * Set the includeActualCost property: a boolean determining if actualCost will be included.
+     * Set the includeActualCost property: A boolean determining if actualCost will be included.
      *
      * @param includeActualCost the includeActualCost value to set.
      * @return the ForecastDefinition object itself.
@@ -154,7 +154,7 @@ public final class ForecastDefinition {
     }
 
     /**
-     * Get the includeFreshPartialCost property: a boolean determining if FreshPartialCost will be included.
+     * Get the includeFreshPartialCost property: A boolean determining if FreshPartialCost will be included.
      *
      * @return the includeFreshPartialCost value.
      */
@@ -163,7 +163,7 @@ public final class ForecastDefinition {
     }
 
     /**
-     * Set the includeFreshPartialCost property: a boolean determining if FreshPartialCost will be included.
+     * Set the includeFreshPartialCost property: A boolean determining if FreshPartialCost will be included.
      *
      * @param includeFreshPartialCost the includeFreshPartialCost value to set.
      * @return the ForecastDefinition object itself.

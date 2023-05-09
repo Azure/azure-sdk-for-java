@@ -3,42 +3,29 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.communication.common.CommunicationIdentifier;
-import com.azure.core.annotation.Fluent;
-
-import java.time.Instant;
-import java.util.UUID;
-
 /**
  * The options for creating a call.
  */
-@Fluent
-public class RedirectCallOptions {
+public final class RedirectCallOptions {
     /**
      * The incoming call context.
      */
     private final String incomingCallContext;
 
     /**
-     * The target of being redirected to.
+     * Information of target of being redirected to.
      */
-    private final CommunicationIdentifier target;
-
-    /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
+    private final CallInvite targetParticipant;
 
     /**
      * Constructor
      *
      * @param incomingCallContext The incoming call context.
-     * @param target The target of being redirected to.
+     * @param targetParticipant Information of target of being redirected to.
      */
-    public RedirectCallOptions(String incomingCallContext, CommunicationIdentifier target) {
+    public RedirectCallOptions(String incomingCallContext, CallInvite targetParticipant) {
         this.incomingCallContext = incomingCallContext;
-        this.target = target;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
+        this.targetParticipant = targetParticipant;
     }
 
     /**
@@ -51,31 +38,10 @@ public class RedirectCallOptions {
     }
 
     /**
-     * Get the target
-     *
-     * @return the target
+     * Information of target of being redirected to
+     * @return the callInvite to redirect target
      */
-    public CommunicationIdentifier getTarget() {
-        return target;
-    }
-
-    /**
-     * Get the Repeatability headers configuration.
-     *
-     * @return the repeatabilityHeaders
-     */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
-    }
-
-    /**
-     * Set the repeatability headers
-     *
-     * @param repeatabilityHeaders The repeatability headers configuration.
-     * @return the RedirectCallOptions object itself.
-     */
-    public RedirectCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
-        return this;
+    public CallInvite getTargetParticipant() {
+        return targetParticipant;
     }
 }

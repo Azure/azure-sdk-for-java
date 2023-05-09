@@ -39,6 +39,10 @@ public final class IntegrationRuntimeResourceImpl
         return this.innerModel().properties();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IntegrationRuntimeResourceInner innerModel() {
         return this.innerObject;
     }
@@ -167,14 +171,14 @@ public final class IntegrationRuntimeResourceImpl
         return this;
     }
 
-    public void upgrade() {
-        serviceManager.integrationRuntimes().upgrade(resourceGroupName, workspaceName, integrationRuntimeName);
-    }
-
     public Response<Void> upgradeWithResponse(Context context) {
         return serviceManager
             .integrationRuntimes()
             .upgradeWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
+    }
+
+    public void upgrade() {
+        serviceManager.integrationRuntimes().upgrade(resourceGroupName, workspaceName, integrationRuntimeName);
     }
 
     public IntegrationRuntimeStatusResponse start() {

@@ -1,8 +1,11 @@
 parameters:
-- name: ServiceDirectory
+- name: TimeoutInMinutes
+  type: number
+  default: '360'
+- name: LanguageVersion
   type: string
-  default: ''
-- name: services
+  default: '17'
+- name: ServiceDirectory
   type: string
   default: ''
 - name: PackageVersions
@@ -30,22 +33,23 @@ parameters:
 extends:
   template: /eng/common/pipelines/templates/jobs/perf.yml
   parameters:
+    TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+    Language: Java
+    LanguageVersion: ${{ parameters.LanguageVersion }}
     Variables:
     - template: /eng/pipelines/templates/variables/globals.yml
-    Language: Java
     InstallLanguageSteps:
     - task: JavaToolInstaller@0
       inputs:
-        versionSpec: '17'
+        versionSpec: ${{ parameters.LanguageVersion }}
         jdkArchitectureOption: 'x64'
         jdkSourceOption: 'PreInstalled'
-      displayName: Install Java 17
+      displayName: Install Java ${{ parameters.LanguageVersion }}
     - script: |
         java -version
         mvn --version
       displayName: Print Java Versions
     ServiceDirectory: ${{ parameters.ServiceDirectory }}
-    Services: ${{ parameters.Services }}
     PackageVersions: ${{ parameters.PackageVersions }}
     Tests: ${{ parameters.Tests }}
     Arguments: ${{ parameters.Arguments }}

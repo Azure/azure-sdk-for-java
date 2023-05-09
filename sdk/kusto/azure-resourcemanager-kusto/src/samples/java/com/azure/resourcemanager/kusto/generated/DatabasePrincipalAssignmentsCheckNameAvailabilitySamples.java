@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.kusto.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalAssignmentCheckNameRequest;
 
 /** Samples for DatabasePrincipalAssignments CheckNameAvailability. */
 public final class DatabasePrincipalAssignmentsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDatabasePrincipalAssignmentsCheckNameAvailability.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-12-29/examples/KustoDatabasePrincipalAssignmentsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoDatabaseCheckNameAvailability.
@@ -25,6 +24,6 @@ public final class DatabasePrincipalAssignmentsCheckNameAvailabilitySamples {
                 "kustoCluster",
                 "Kustodatabase8",
                 new DatabasePrincipalAssignmentCheckNameRequest().withName("kustoprincipal1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

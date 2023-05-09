@@ -14,6 +14,7 @@ import com.azure.storage.blob.models.BlobAnalyticsLogging
 import com.azure.storage.blob.models.BlobContainerItem
 import com.azure.storage.blob.models.BlobContainerListDetails
 import com.azure.storage.blob.models.BlobCorsRule
+import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobMetrics
 import com.azure.storage.blob.models.BlobRetentionPolicy
 import com.azure.storage.blob.models.BlobServiceProperties
@@ -28,12 +29,15 @@ import com.azure.storage.blob.options.BlobParallelUploadOptions
 import com.azure.storage.blob.options.FindBlobsOptions
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues
+import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.policy.RetryPolicyType
+import com.azure.storage.common.policy.ServiceTimeoutPolicy
 import com.azure.storage.common.sas.AccountSasPermission
 import com.azure.storage.common.sas.AccountSasResourceType
 import com.azure.storage.common.sas.AccountSasService
 import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Mono
@@ -466,6 +470,42 @@ class ServiceAPITest extends APISpec {
 
         cleanup:
         cc.delete()
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    def "Find blobs by page async"() {
+        setup:
+        def containerAsyncClient = primaryBlobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName())
+        containerAsyncClient.create().block()
+        def tags = Collections.singletonMap(tagKey, tagValue)
+
+        for (i in (1..15)) {
+            cc.getBlobClient(generateBlobName()).uploadWithResponse(
+                new BlobParallelUploadOptions(data.defaultInputStream).setTags(tags), null, null)
+        }
+        sleepIfRecord(10 * 1000) // To allow tags to index
+        def query = String.format("\"%s\"='%s'", tagKey, tagValue)
+        def searchOptions = new FindBlobsOptions(query).setMaxResultsPerPage(12)
+
+        when:
+        def list = primaryBlobServiceAsyncClient
+            .findBlobsByTags(searchOptions)
+            .byPage(10) // byPage should take precedence
+            .take(1, true)
+            .concatMapIterable(ContinuablePage::getElements).collectList().block()
+
+        then:
+        list.size() == 10
+
+        when:
+        def list2 = primaryBlobServiceAsyncClient
+            .findBlobsByTags(searchOptions)
+            .byPage() // since no number is specified, it should use the max number specified in options
+            .take(1, true)
+            .concatMapIterable(ContinuablePage::getElements).collectList().block()
+
+        then:
+        list2.size() == 12
     }
 
     def "Find blobs error"() {
@@ -1166,6 +1206,31 @@ class ServiceAPITest extends APISpec {
         // Confirming the behavior of the api when the container is in the deleting state.
         // After delete has been called once but before it has been garbage collected
         response2.getStatusCode() == 202
+    }
+
+    @LiveOnly
+    def "Service timeout policy"() {
+        setup:
+        def serviceClient = new BlobServiceClientBuilder()
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .addPolicy(new ServiceTimeoutPolicy(Duration.ofSeconds(1)))
+            .buildClient()
+
+        def blobContainerClient = serviceClient.getBlobContainerClient(generateContainerName())
+        blobContainerClient.createIfNotExists()
+        def blobClient = blobContainerClient.getBlobClient(generateBlobName())
+
+        // testing with large dataset that is guaranteed to take longer than the specified timeout (1 second)
+        def randomData = getRandomByteArray(256 * Constants.MB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        blobClient.uploadWithResponse(new BlobParallelUploadOptions(input), null, null)
+
+        then:
+        def e = thrown(BlobStorageException)
+        e.getErrorCode() == BlobErrorCode.OPERATION_TIMED_OUT
     }
 
 //    def "Rename blob container"() {

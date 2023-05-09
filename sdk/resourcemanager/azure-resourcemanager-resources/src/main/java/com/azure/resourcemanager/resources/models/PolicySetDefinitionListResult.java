@@ -24,6 +24,10 @@ public final class PolicySetDefinitionListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of PolicySetDefinitionListResult class. */
+    public PolicySetDefinitionListResult() {
+    }
+
     /**
      * Get the value property: An array of policy set definitions.
      *

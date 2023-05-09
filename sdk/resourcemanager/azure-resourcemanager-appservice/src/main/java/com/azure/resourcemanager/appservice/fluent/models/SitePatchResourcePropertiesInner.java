@@ -40,22 +40,20 @@ public final class SitePatchResourcePropertiesInner {
     private String repositorySiteName;
 
     /*
-     * State indicating whether the app has exceeded its quota usage.
-     * Read-only.
+     * State indicating whether the app has exceeded its quota usage. Read-only.
      */
     @JsonProperty(value = "usageState", access = JsonProperty.Access.WRITE_ONLY)
     private UsageState usageState;
 
     /*
-     * <code>true</code> if the app is enabled; otherwise, <code>false</code>.
-     * Setting this value to false disables the app (takes the app offline).
+     * <code>true</code> if the app is enabled; otherwise, <code>false</code>. Setting this value to false disables the
+     * app (takes the app offline).
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * Enabled hostnames for the app.Hostnames need to be assigned (see
-     * HostNames) AND enabled. Otherwise,
+     * Enabled hostnames for the app.Hostnames need to be assigned (see HostNames) AND enabled. Otherwise,
      * the app is not served on those hostnames.
      */
     @JsonProperty(value = "enabledHostNames", access = JsonProperty.Access.WRITE_ONLY)
@@ -68,16 +66,14 @@ public final class SitePatchResourcePropertiesInner {
     private SiteAvailabilityState availabilityState;
 
     /*
-     * Hostname SSL states are used to manage the SSL bindings for app's
-     * hostnames.
+     * Hostname SSL states are used to manage the SSL bindings for app's hostnames.
      */
     @JsonProperty(value = "hostNameSslStates")
     private List<HostnameSslState> hostnameSslStates;
 
     /*
      * Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      */
     @JsonProperty(value = "serverFarmId")
     private String serverFarmId;
@@ -119,8 +115,8 @@ public final class SitePatchResourcePropertiesInner {
     private List<String> trafficManagerHostNames;
 
     /*
-     * <code>true</code> to stop SCM (KUDU) site when the app is stopped;
-     * otherwise, <code>false</code>. The default is <code>false</code>.
+     * <code>true</code> to stop SCM (KUDU) site when the app is stopped; otherwise, <code>false</code>. The default is
+     * <code>false</code>.
      */
     @JsonProperty(value = "scmSiteAlsoStopped")
     private Boolean scmSiteAlsoStopped;
@@ -138,17 +134,15 @@ public final class SitePatchResourcePropertiesInner {
     private HostingEnvironmentProfile hostingEnvironmentProfile;
 
     /*
-     * <code>true</code> to enable client affinity; <code>false</code> to stop
-     * sending session affinity cookies, which route client requests in the
-     * same session to the same instance. Default is <code>true</code>.
+     * <code>true</code> to enable client affinity; <code>false</code> to stop sending session affinity cookies, which
+     * route client requests in the same session to the same instance. Default is <code>true</code>.
      */
     @JsonProperty(value = "clientAffinityEnabled")
     private Boolean clientAffinityEnabled;
 
     /*
-     * <code>true</code> to enable client certificate authentication (TLS
-     * mutual authentication); otherwise, <code>false</code>. Default is
-     * <code>false</code>.
+     * <code>true</code> to enable client certificate authentication (TLS mutual authentication); otherwise,
+     * <code>false</code>. Default is <code>false</code>.
      */
     @JsonProperty(value = "clientCertEnabled")
     private Boolean clientCertEnabled;
@@ -156,10 +150,8 @@ public final class SitePatchResourcePropertiesInner {
     /*
      * This composes with ClientCertEnabled setting.
      * - ClientCertEnabled: false means ClientCert is ignored.
-     * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert
-     * is required.
-     * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert
-     * is optional or accepted.
+     * - ClientCertEnabled: true and ClientCertMode: Required means ClientCert is required.
+     * - ClientCertEnabled: true and ClientCertMode: Optional means ClientCert is optional or accepted.
      */
     @JsonProperty(value = "clientCertMode")
     private ClientCertMode clientCertMode;
@@ -171,33 +163,29 @@ public final class SitePatchResourcePropertiesInner {
     private String clientCertExclusionPaths;
 
     /*
-     * <code>true</code> to disable the public hostnames of the app; otherwise,
-     * <code>false</code>.
-     * If <code>true</code>, the app is only accessible via API management
-     * process.
+     * <code>true</code> to disable the public hostnames of the app; otherwise, <code>false</code>.
+     * If <code>true</code>, the app is only accessible via API management process.
      */
     @JsonProperty(value = "hostNamesDisabled")
     private Boolean hostNamesDisabled;
 
     /*
-     * Unique identifier that verifies the custom domains assigned to the app.
-     * Customer will add this id to a txt record for verification.
+     * Unique identifier that verifies the custom domains assigned to the app. Customer will add this id to a txt
+     * record for verification.
      */
     @JsonProperty(value = "customDomainVerificationId")
     private String customDomainVerificationId;
 
     /*
-     * List of IP addresses that the app uses for outbound connections (e.g.
-     * database access). Includes VIPs from tenants that site can be hosted
-     * with current settings. Read-only.
+     * List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from
+     * tenants that site can be hosted with current settings. Read-only.
      */
     @JsonProperty(value = "outboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private String outboundIpAddresses;
 
     /*
-     * List of IP addresses that the app uses for outbound connections (e.g.
-     * database access). Includes VIPs from all tenants except dataComponent.
-     * Read-only.
+     * List of IP addresses that the app uses for outbound connections (e.g. database access). Includes VIPs from all
+     * tenants except dataComponent. Read-only.
      */
     @JsonProperty(value = "possibleOutboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private String possibleOutboundIpAddresses;
@@ -209,8 +197,7 @@ public final class SitePatchResourcePropertiesInner {
     private Integer containerSize;
 
     /*
-     * Maximum allowed daily memory-time quota (applicable on dynamic apps
-     * only).
+     * Maximum allowed daily memory-time quota (applicable on dynamic apps only).
      */
     @JsonProperty(value = "dailyMemoryTimeQuota")
     private Integer dailyMemoryTimeQuota;
@@ -241,8 +228,7 @@ public final class SitePatchResourcePropertiesInner {
     private String resourceGroup;
 
     /*
-     * <code>true</code> if the app is a default container; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if the app is a default container; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "isDefaultContainer", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDefaultContainer;
@@ -260,8 +246,7 @@ public final class SitePatchResourcePropertiesInner {
     private SlotSwapStatus slotSwapStatus;
 
     /*
-     * HttpsOnly: configures a web site to accept only https requests. Issues
-     * redirect for
+     * HttpsOnly: configures a web site to accept only https requests. Issues redirect for
      * http requests
      */
     @JsonProperty(value = "httpsOnly")
@@ -292,13 +277,16 @@ public final class SitePatchResourcePropertiesInner {
     private String keyVaultReferenceIdentity;
 
     /*
-     * Azure Resource Manager ID of the Virtual network and subnet to be joined
-     * by Regional VNET Integration.
+     * Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration.
      * This must be of the form
      * /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}
      */
     @JsonProperty(value = "virtualNetworkSubnetId")
     private String virtualNetworkSubnetId;
+
+    /** Creates an instance of SitePatchResourcePropertiesInner class. */
+    public SitePatchResourcePropertiesInner() {
+    }
 
     /**
      * Get the state property: Current state of the app.
@@ -399,8 +387,7 @@ public final class SitePatchResourcePropertiesInner {
 
     /**
      * Get the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @return the serverFarmId value.
      */
@@ -410,8 +397,7 @@ public final class SitePatchResourcePropertiesInner {
 
     /**
      * Set the serverFarmId property: Resource ID of the associated App Service plan, formatted as:
-     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms"
-         + "/{appServicePlanName}".
+     * "/subscriptions/{subscriptionID}/resourceGroups/{groupName}/providers/Microsoft.Web/serverfarms/{appServicePlanName}".
      *
      * @param serverFarmId the serverFarmId value to set.
      * @return the SitePatchResourcePropertiesInner object itself.

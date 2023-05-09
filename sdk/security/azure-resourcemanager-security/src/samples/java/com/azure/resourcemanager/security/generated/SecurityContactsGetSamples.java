@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecurityContacts Get. */
 public final class SecurityContactsGetSamples {
     /*
@@ -17,6 +15,6 @@ public final class SecurityContactsGetSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getASecurityContact(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.securityContacts().getWithResponse("default", Context.NONE);
+        manager.securityContacts().getWithResponse("default", com.azure.core.util.Context.NONE);
     }
 }

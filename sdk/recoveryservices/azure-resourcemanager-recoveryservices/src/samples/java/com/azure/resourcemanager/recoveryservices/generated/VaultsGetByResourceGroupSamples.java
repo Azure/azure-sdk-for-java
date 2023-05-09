@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Vaults GetByResourceGroup. */
 public final class VaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/GETVault.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/GETVault.json
      */
     /**
      * Sample code: Get Recovery Services Resource.
@@ -20,6 +18,7 @@ public final class VaultsGetByResourceGroupSamples {
         com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager) {
         manager
             .vaults()
-            .getByResourceGroupWithResponse("Default-RecoveryServices-ResourceGroup", "swaggerExample", Context.NONE);
+            .getByResourceGroupWithResponse(
+                "Default-RecoveryServices-ResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }

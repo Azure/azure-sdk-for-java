@@ -17,6 +17,10 @@ public final class SqlUserDefinedFunctionGetProperties {
     @JsonProperty(value = "resource")
     private SqlUserDefinedFunctionGetPropertiesResource resource;
 
+    /** Creates an instance of SqlUserDefinedFunctionGetProperties class. */
+    public SqlUserDefinedFunctionGetProperties() {
+    }
+
     /**
      * Get the resource property: The resource property.
      *

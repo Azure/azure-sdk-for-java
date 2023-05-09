@@ -20,6 +20,10 @@ public final class ServerSecurityAlertPolicyInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private ServerSecurityAlertPolicyProperties innerProperties;
 
+    /** Creates an instance of ServerSecurityAlertPolicyInner class. */
+    public ServerSecurityAlertPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

@@ -20,6 +20,10 @@ public final class ReplaceAllIpFirewallRulesRequest {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, IpFirewallRuleProperties> ipFirewallRules;
 
+    /** Creates an instance of ReplaceAllIpFirewallRulesRequest class. */
+    public ReplaceAllIpFirewallRulesRequest() {
+    }
+
     /**
      * Get the ipFirewallRules property: IP firewall rule properties.
      *

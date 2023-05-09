@@ -18,10 +18,9 @@ public final class PrimingJob {
     private String primingJobName;
 
     /*
-     * The URL for the priming manifest file to download. This file must be
-     * readable from the HPC Cache. When the file is in Azure blob storage the
-     * URL should include a Shared Access Signature (SAS) granting read
-     * permissions on the blob.
+     * The URL for the priming manifest file to download. This file must be readable from the HPC Cache. When the file
+     * is in Azure blob storage the URL should include a Shared Access Signature (SAS) granting read permissions on the
+     * blob.
      */
     @JsonProperty(value = "primingManifestUrl", required = true)
     private String primingManifestUrl;
@@ -55,6 +54,10 @@ public final class PrimingJob {
      */
     @JsonProperty(value = "primingJobPercentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Double primingJobPercentComplete;
+
+    /** Creates an instance of PrimingJob class. */
+    public PrimingJob() {
+    }
 
     /**
      * Get the primingJobName property: The priming job name.

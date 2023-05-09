@@ -7,7 +7,7 @@ package com.azure.resourcemanager.dataprotection.generated;
 /** Samples for DeletedBackupInstances Get. */
 public final class DeletedBackupInstancesGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/DeletedBackupInstanceOperations/GetDeletedBackupInstance.json
      */
     /**
      * Sample code: Get DeletedBackupInstance.

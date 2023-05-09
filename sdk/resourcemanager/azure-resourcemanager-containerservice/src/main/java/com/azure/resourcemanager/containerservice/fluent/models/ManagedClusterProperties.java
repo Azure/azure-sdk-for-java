@@ -7,11 +7,13 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
+import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
@@ -171,6 +173,12 @@ public final class ManagedClusterProperties {
     private Boolean enableRbac;
 
     /*
+     * The support plan for the Managed Cluster. If unspecified, the default is 'KubernetesOfficial'.
+     */
+    @JsonProperty(value = "supportPlan")
+    private KubernetesSupportPlan supportPlan;
+
+    /*
      * (DEPRECATED) Whether to enable Kubernetes pod security policy (preview). PodSecurityPolicy was deprecated in
      * Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more at https://aka.ms/k8s/psp and
      * https://aka.ms/aks/psp.
@@ -273,6 +281,12 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "workloadAutoScalerProfile")
     private ManagedClusterWorkloadAutoScalerProfile workloadAutoScalerProfile;
+
+    /*
+     * Azure Monitor addon profiles for monitoring the managed cluster.
+     */
+    @JsonProperty(value = "azureMonitorProfile")
+    private ManagedClusterAzureMonitorProfile azureMonitorProfile;
 
     /** Creates an instance of ManagedClusterProperties class. */
     public ManagedClusterProperties() {
@@ -626,6 +640,28 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the supportPlan property: The support plan for the Managed Cluster. If unspecified, the default is
+     * 'KubernetesOfficial'.
+     *
+     * @return the supportPlan value.
+     */
+    public KubernetesSupportPlan supportPlan() {
+        return this.supportPlan;
+    }
+
+    /**
+     * Set the supportPlan property: The support plan for the Managed Cluster. If unspecified, the default is
+     * 'KubernetesOfficial'.
+     *
+     * @param supportPlan the supportPlan value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withSupportPlan(KubernetesSupportPlan supportPlan) {
+        this.supportPlan = supportPlan;
+        return this;
+    }
+
+    /**
      * Get the enablePodSecurityPolicy property: (DEPRECATED) Whether to enable Kubernetes pod security policy
      * (preview). PodSecurityPolicy was deprecated in Kubernetes v1.21, and removed from Kubernetes in v1.25. Learn more
      * at https://aka.ms/k8s/psp and https://aka.ms/aks/psp.
@@ -956,6 +992,26 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
+     *
+     * @return the azureMonitorProfile value.
+     */
+    public ManagedClusterAzureMonitorProfile azureMonitorProfile() {
+        return this.azureMonitorProfile;
+    }
+
+    /**
+     * Set the azureMonitorProfile property: Azure Monitor addon profiles for monitoring the managed cluster.
+     *
+     * @param azureMonitorProfile the azureMonitorProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withAzureMonitorProfile(ManagedClusterAzureMonitorProfile azureMonitorProfile) {
+        this.azureMonitorProfile = azureMonitorProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1031,6 +1087,9 @@ public final class ManagedClusterProperties {
         }
         if (workloadAutoScalerProfile() != null) {
             workloadAutoScalerProfile().validate();
+        }
+        if (azureMonitorProfile() != null) {
+            azureMonitorProfile().validate();
         }
     }
 }

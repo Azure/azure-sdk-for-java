@@ -14,6 +14,15 @@ public final class DedicatedSqlMinimalTlsSettingsName extends ExpandableStringEn
     public static final DedicatedSqlMinimalTlsSettingsName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of DedicatedSqlMinimalTlsSettingsName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DedicatedSqlMinimalTlsSettingsName() {
+    }
+
+    /**
      * Creates or finds a DedicatedSqlMinimalTlsSettingsName from its string representation.
      *
      * @param name a name to look for.
@@ -24,7 +33,11 @@ public final class DedicatedSqlMinimalTlsSettingsName extends ExpandableStringEn
         return fromString(name, DedicatedSqlMinimalTlsSettingsName.class);
     }
 
-    /** @return known DedicatedSqlMinimalTlsSettingsName values. */
+    /**
+     * Gets known DedicatedSqlMinimalTlsSettingsName values.
+     *
+     * @return known DedicatedSqlMinimalTlsSettingsName values.
+     */
     public static Collection<DedicatedSqlMinimalTlsSettingsName> values() {
         return values(DedicatedSqlMinimalTlsSettingsName.class);
     }

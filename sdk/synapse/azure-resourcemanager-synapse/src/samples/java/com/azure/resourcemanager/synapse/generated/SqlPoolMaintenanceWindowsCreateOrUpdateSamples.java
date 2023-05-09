@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.MaintenanceWindowsInner;
 import com.azure.resourcemanager.synapse.models.DayOfWeek;
 import com.azure.resourcemanager.synapse.models.MaintenanceWindowTimeRange;
@@ -37,6 +36,6 @@ public final class SqlPoolMaintenanceWindowsCreateOrUpdateSamples {
                                     .withDayOfWeek(DayOfWeek.SATURDAY)
                                     .withStartTime("00:00:00")
                                     .withDuration("PT60M"))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * A Cache instance. Follows Azure Resource Manager standards:
+ * A cache instance. Follows Azure Resource Manager standards:
  * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md.
  */
 @Fluent
@@ -42,16 +42,20 @@ public final class CacheInner extends Resource {
     private SystemData systemData;
 
     /*
-     * Properties of the Cache.
+     * Properties of the cache.
      */
     @JsonProperty(value = "properties")
     private CacheProperties innerProperties;
 
     /*
-     * SKU for the Cache.
+     * SKU for the cache.
      */
     @JsonProperty(value = "sku")
     private CacheSku sku;
+
+    /** Creates an instance of CacheInner class. */
+    public CacheInner() {
+    }
 
     /**
      * Get the identity property: The identity of the cache, if configured.
@@ -83,7 +87,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Properties of the Cache.
+     * Get the innerProperties property: Properties of the cache.
      *
      * @return the innerProperties value.
      */
@@ -92,7 +96,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the sku property: SKU for the Cache.
+     * Get the sku property: SKU for the cache.
      *
      * @return the sku value.
      */
@@ -101,7 +105,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Set the sku property: SKU for the Cache.
+     * Set the sku property: SKU for the cache.
      *
      * @param sku the sku value to set.
      * @return the CacheInner object itself.
@@ -126,7 +130,9 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the cacheSizeGB property: The size of this Cache, in GB.
+     * Get the cacheSizeGB property: The size of this cache, in GB, when scalingFactor is 1.0. Values depend on the
+     * cache SKU - &lt;a href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List
+     * SKUs&lt;/a&gt;.
      *
      * @return the cacheSizeGB value.
      */
@@ -135,7 +141,9 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Set the cacheSizeGB property: The size of this Cache, in GB.
+     * Set the cacheSizeGB property: The size of this cache, in GB, when scalingFactor is 1.0. Values depend on the
+     * cache SKU - &lt;a href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List
+     * SKUs&lt;/a&gt;.
      *
      * @param cacheSizeGB the cacheSizeGB value to set.
      * @return the CacheInner object itself.
@@ -149,7 +157,38 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the health property: Health of the Cache.
+     * Get the scalingFactor property: Multiplier that sets the current storage and throughput capacity of the cache.
+     * Values depend on the cache SKU - &lt;a
+     * href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List SKUs&lt;/a&gt;. Values
+     * above 1.0 increase the cache size and throughput - for example, the scaling factor 1.33 gives a cache that's 33%
+     * larger than its base size.
+     *
+     * @return the scalingFactor value.
+     */
+    public Double scalingFactor() {
+        return this.innerProperties() == null ? null : this.innerProperties().scalingFactor();
+    }
+
+    /**
+     * Set the scalingFactor property: Multiplier that sets the current storage and throughput capacity of the cache.
+     * Values depend on the cache SKU - &lt;a
+     * href="https://learn.microsoft.com/en-us/rest/api/storagecache/skus/list?tabs=HTTP"&gt;List SKUs&lt;/a&gt;. Values
+     * above 1.0 increase the cache size and throughput - for example, the scaling factor 1.33 gives a cache that's 33%
+     * larger than its base size.
+     *
+     * @param scalingFactor the scalingFactor value to set.
+     * @return the CacheInner object itself.
+     */
+    public CacheInner withScalingFactor(Double scalingFactor) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheProperties();
+        }
+        this.innerProperties().withScalingFactor(scalingFactor);
+        return this;
+    }
+
+    /**
+     * Get the health property: Health of the cache.
      *
      * @return the health value.
      */
@@ -158,7 +197,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the mountAddresses property: Array of IP addresses that can be used by clients mounting this Cache.
+     * Get the mountAddresses property: Array of IPv4 addresses that can be used by clients mounting this cache.
      *
      * @return the mountAddresses value.
      */
@@ -177,7 +216,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the subnet property: Subnet used for the Cache.
+     * Get the subnet property: Subnet used for the cache.
      *
      * @return the subnet value.
      */
@@ -186,7 +225,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Set the subnet property: Subnet used for the Cache.
+     * Set the subnet property: Subnet used for the cache.
      *
      * @param subnet the subnet value to set.
      * @return the CacheInner object itself.
@@ -200,7 +239,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the upgradeStatus property: Upgrade status of the Cache.
+     * Get the upgradeStatus property: Upgrade status of the cache.
      *
      * @return the upgradeStatus value.
      */
@@ -209,7 +248,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the upgradeSettings property: Upgrade settings of the Cache.
+     * Get the upgradeSettings property: Upgrade settings of the cache.
      *
      * @return the upgradeSettings value.
      */
@@ -218,7 +257,7 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Set the upgradeSettings property: Upgrade settings of the Cache.
+     * Set the upgradeSettings property: Upgrade settings of the cache.
      *
      * @param upgradeSettings the upgradeSettings value to set.
      * @return the CacheInner object itself.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,243 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2023-04-18)
+
+- Azure Resource Manager Security client library for Java. This package contains Microsoft Azure SDK for Security Management SDK. API spec for Microsoft.Security (Azure Security Center) resource provider. Package tag package-composite-v3. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration` was added
+
+* `models.Extension` was added
+
+* `models.Code` was added
+
+* `models.ResourceIdentityType` was added
+
+* `models.DefenderFoDatabasesAwsOfferingDatabasesDspm` was added
+
+* `models.GitlabScopeEnvironmentData` was added
+
+* `models.DefenderForServersAwsOfferingArcAutoProvisioningConfiguration` was added
+
+* `models.SecurityOperators` was added
+
+* `models.SecurityOperatorList` was added
+
+* `models.DefenderForDevOpsGitLabOffering` was added
+
+* `models.DefenderCspmAwsOfferingDatabasesDspm` was added
+
+* `models.DefenderForServersGcpOfferingVmScanners` was added
+
+* `models.DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration` was added
+
+* `models.IsEnabled` was added
+
+* `models.Identity` was added
+
+* `models.DefenderForServersGcpOfferingVmScannersConfiguration` was added
+
+* `models.DefenderForServersGcpOfferingArcAutoProvisioningConfiguration` was added
+
+* `models.SecurityOperator` was added
+
+* `models.DefenderCspmAwsOfferingDataSensitivityDiscovery` was added
+
+* `models.CspmMonitorGitLabOffering` was added
+
+* `models.OperationStatus` was added
+
+#### `models.GcpOrganizationalDataOrganization` was modified
+
+* `organizationName()` was added
+
+#### `models.DefenderForServersGcpOffering` was modified
+
+* `vmScanners()` was added
+* `withVmScanners(models.DefenderForServersGcpOfferingVmScanners)` was added
+
+#### `models.Pricing` was modified
+
+* `extensions()` was added
+* `enablementTime()` was added
+
+#### `models.DefenderForServersGcpOfferingArcAutoProvisioning` was modified
+
+* `configuration()` was added
+* `withConfiguration(models.DefenderForServersGcpOfferingArcAutoProvisioningConfiguration)` was added
+
+#### `models.AwsEnvironmentData` was modified
+
+* `withRegions(java.util.List)` was added
+* `regions()` was added
+* `accountName()` was added
+
+#### `SecurityManager` was modified
+
+* `securityOperators()` was added
+
+#### `models.DefenderForDatabasesGcpOfferingArcAutoProvisioning` was modified
+
+* `configuration()` was added
+* `withConfiguration(models.DefenderForDatabasesGcpOfferingArcAutoProvisioningConfiguration)` was added
+
+#### `models.DefenderFoDatabasesAwsOfferingArcAutoProvisioning` was modified
+
+* `withConfiguration(models.DefenderFoDatabasesAwsOfferingArcAutoProvisioningConfiguration)` was added
+* `configuration()` was added
+
+#### `models.DefenderFoDatabasesAwsOffering` was modified
+
+* `withDatabasesDspm(models.DefenderFoDatabasesAwsOfferingDatabasesDspm)` was added
+* `databasesDspm()` was added
+
+#### `models.GcpProjectDetails` was modified
+
+* `projectName()` was added
+
+#### `models.DefenderCspmAwsOffering` was modified
+
+* `dataSensitivityDiscovery()` was added
+* `withDataSensitivityDiscovery(models.DefenderCspmAwsOfferingDataSensitivityDiscovery)` was added
+* `withDatabasesDspm(models.DefenderCspmAwsOfferingDatabasesDspm)` was added
+* `databasesDspm()` was added
+
+#### `models.DefenderForServersAwsOfferingArcAutoProvisioning` was modified
+
+* `withConfiguration(models.DefenderForServersAwsOfferingArcAutoProvisioningConfiguration)` was added
+* `configuration()` was added
+
+## 1.0.0-beta.4 (2023-03-21)
+
+- Azure Resource Manager Security client library for Java. This package contains Microsoft Azure SDK for Security Management SDK. API spec for Microsoft.Security (Azure Security Center) resource provider. Package tag package-composite-v3. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.SecurityConnectorGovernanceRulesExecuteStatus` was removed
+
+* `models.SecurityConnectorGovernanceRules` was removed
+
+* `models.SecurityConnectorGovernanceRulesOperations` was removed
+
+* `models.SubscriptionGovernanceRulesExecuteStatus` was removed
+
+* `models.ExecuteRuleStatus` was removed
+
+* `models.GovernanceRulesOperations` was removed
+
+#### `SecurityManager` was modified
+
+* `securityConnectorGovernanceRules()` was removed
+* `securityConnectorGovernanceRulesOperations()` was removed
+* `governanceRulesOperations()` was removed
+* `securityConnectorGovernanceRulesExecuteStatus()` was removed
+* `subscriptionGovernanceRulesExecuteStatus()` was removed
+
+#### `models.GovernanceRule` was modified
+
+* `ruleIdExecuteSingleSubscription()` was removed
+* `ruleIdExecuteSingleSubscription(models.ExecuteGovernanceRuleParams,com.azure.core.util.Context)` was removed
+
+#### `models.AutomationActionLogicApp` was modified
+
+* `withUri(java.net.URL)` was removed
+* `java.net.URL uri()` -> `java.lang.String uri()`
+
+#### `models.GovernanceRules` was modified
+
+* `list(com.azure.core.util.Context)` was removed
+* `list()` was removed
+
+### Features Added
+
+* `models.GovernanceRulesOperationResultsHeaders` was added
+
+* `models.OperationResultAutoGenerated` was added
+
+* `models.OperationResult` was added
+
+* `models.StatusName` was added
+
+* `models.HealthReport` was added
+
+* `models.ScopeName` was added
+
+* `models.HealthReports` was added
+
+* `models.Issue` was added
+
+* `models.ResourceDetailsAutoGenerated` was added
+
+* `models.GovernanceRuleMetadata` was added
+
+* `models.StatusAutoGenerated` was added
+
+* `models.HealthReportsList` was added
+
+* `models.HealthReportOperations` was added
+
+* `models.HealthDataClassification` was added
+
+* `models.GovernanceRulesOperationResultsResponse` was added
+
+* `models.EnvironmentDetails` was added
+
+#### `models.GovernanceRule$Update` was modified
+
+* `withMetadata(models.GovernanceRuleMetadata)` was added
+* `withIncludeMemberScopes(java.lang.Boolean)` was added
+* `withExcludedScopes(java.util.List)` was added
+
+#### `models.GovernanceRule$Definition` was modified
+
+* `withIncludeMemberScopes(java.lang.Boolean)` was added
+* `withMetadata(models.GovernanceRuleMetadata)` was added
+* `withExcludedScopes(java.util.List)` was added
+* `withExistingScope(java.lang.String)` was added
+
+#### `SecurityManager` was modified
+
+* `healthReportOperations()` was added
+* `healthReports()` was added
+
+#### `models.GovernanceRule` was modified
+
+* `execute()` was added
+* `execute(models.ExecuteGovernanceRuleParams,com.azure.core.util.Context)` was added
+* `metadata()` was added
+* `tenantId()` was added
+* `includeMemberScopes()` was added
+* `excludedScopes()` was added
+
+#### `models.AutomationActionLogicApp` was modified
+
+* `withUri(java.lang.String)` was added
+
+#### `models.ScanProperties` was modified
+
+* `lastScanTime()` was added
+* `withLastScanTime(java.time.OffsetDateTime)` was added
+
+#### `models.GovernanceRules` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `operationResults(java.lang.String,java.lang.String,java.lang.String)` was added
+* `list(java.lang.String)` was added
+* `operationResultsWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `deleteByResourceGroup(java.lang.String,java.lang.String)` was added
+* `delete(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `get(java.lang.String,java.lang.String)` was added
+* `getById(java.lang.String)` was added
+* `define(java.lang.String)` was added
+* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `list(java.lang.String,com.azure.core.util.Context)` was added
+* `execute(java.lang.String,java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `execute(java.lang.String,java.lang.String,models.ExecuteGovernanceRuleParams,com.azure.core.util.Context)` was added
+* `deleteById(java.lang.String)` was added
 
 ## 1.0.0-beta.3 (2022-11-18)
 

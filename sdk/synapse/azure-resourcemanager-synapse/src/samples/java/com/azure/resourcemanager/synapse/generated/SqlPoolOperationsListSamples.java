@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SqlPoolOperations List. */
 public final class SqlPoolOperationsListSamples {
     /*
@@ -18,6 +16,8 @@ public final class SqlPoolOperationsListSamples {
      */
     public static void listTheSqlAnalyticsPoolManagementOperations(
         com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolOperations().list("sqlcrudtest-7398", "sqlcrudtest-4645", "testdb", Context.NONE);
+        manager
+            .sqlPoolOperations()
+            .list("sqlcrudtest-7398", "sqlcrudtest-4645", "testdb", com.azure.core.util.Context.NONE);
     }
 }

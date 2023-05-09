@@ -9,6 +9,10 @@ import com.azure.core.annotation.Immutable;
 /** Azure Synapse nested resource, which belongs to a workspace. */
 @Immutable
 public class EntityResource extends AzureEntityResource {
+    /** Creates an instance of EntityResource class. */
+    public EntityResource() {
+    }
+
     /**
      * Validates the instance.
      *

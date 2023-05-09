@@ -7,17 +7,16 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.ResourceReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceReferenceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceReference model = BinaryData.fromString("{\"id\":\"dyvxqtayriww\"}").toObject(ResourceReference.class);
         Assertions.assertEquals("dyvxqtayriww", model.id());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceReference model = new ResourceReference().withId("dyvxqtayriww");
         model = BinaryData.fromObject(model).toObject(ResourceReference.class);
         Assertions.assertEquals("dyvxqtayriww", model.id());

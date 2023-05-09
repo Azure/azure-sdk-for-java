@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a webhook. */
 @Fluent
 public final class WebhookProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookProperties.class);
-
     /*
      * The status of the webhook at the time the operation was called.
      */
@@ -25,10 +22,9 @@ public final class WebhookProperties {
     private WebhookStatus status;
 
     /*
-     * The scope of repositories where the event can be triggered. For example,
-     * 'foo:*' means events for all tags under repository 'foo'. 'foo:bar'
-     * means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'.
-     * Empty means all events.
+     * The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under
+     * repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means
+     * all events.
      */
     @JsonProperty(value = "scope")
     private String scope;
@@ -40,11 +36,14 @@ public final class WebhookProperties {
     private List<WebhookAction> actions;
 
     /*
-     * The provisioning state of the webhook at the time the operation was
-     * called.
+     * The provisioning state of the webhook at the time the operation was called.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of WebhookProperties class. */
+    public WebhookProperties() {
+    }
 
     /**
      * Get the status property: The status of the webhook at the time the operation was called.
@@ -126,9 +125,11 @@ public final class WebhookProperties {
      */
     public void validate() {
         if (actions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property actions in model WebhookProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebhookProperties.class);
 }

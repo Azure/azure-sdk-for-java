@@ -17,6 +17,15 @@ public final class PublicIpPrefixSkuTier extends ExpandableStringEnum<PublicIpPr
     public static final PublicIpPrefixSkuTier GLOBAL = fromString("Global");
 
     /**
+     * Creates a new instance of PublicIpPrefixSkuTier value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PublicIpPrefixSkuTier() {
+    }
+
+    /**
      * Creates or finds a PublicIpPrefixSkuTier from its string representation.
      *
      * @param name a name to look for.

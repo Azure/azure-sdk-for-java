@@ -6,20 +6,19 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.OperationDisplay;
-import org.junit.jupiter.api.Test;
 
 public final class OperationDisplayTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationDisplay model =
             BinaryData
                 .fromString(
-                    "{\"provider\":\"tkcxywnytnrsy\",\"resource\":\"qidybyx\",\"operation\":\"fclhaaxdbabphlwr\",\"description\":\"fkts\"}")
+                    "{\"provider\":\"rqjbhckfrl\",\"resource\":\"xsbkyvpyca\",\"operation\":\"z\",\"description\":\"zka\"}")
                 .toObject(OperationDisplay.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationDisplay model = new OperationDisplay();
         model = BinaryData.fromObject(model).toObject(OperationDisplay.class);
     }

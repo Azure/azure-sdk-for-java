@@ -56,35 +56,44 @@ public interface SapDatabaseInstance {
     SystemData systemData();
 
     /**
-     * Gets the subnet property: The database subnet.
+     * Gets the subnet property: Database subnet.
      *
      * @return the subnet value.
      */
     String subnet();
 
     /**
-     * Gets the databaseSid property: The database SID.
+     * Gets the databaseSid property: Database SID name.
      *
      * @return the databaseSid value.
      */
     String databaseSid();
 
     /**
-     * Gets the databaseType property: The SAP database type.
+     * Gets the databaseType property: Database type, that is if the DB is HANA, DB2, Oracle, SAP ASE, Max DB or MS SQL
+     * Server.
      *
      * @return the databaseType value.
      */
     String databaseType();
 
     /**
-     * Gets the ipAddress property: The database IP Address.
+     * Gets the ipAddress property: Database IP Address.
      *
      * @return the ipAddress value.
      */
     String ipAddress();
 
     /**
-     * Gets the vmDetails property: The list of virtual machines.
+     * Gets the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to Database
+     * Virtual Machines.
+     *
+     * @return the loadBalancerDetails value.
+     */
+    LoadBalancerDetails loadBalancerDetails();
+
+    /**
+     * Gets the vmDetails property: The list of virtual machines corresponding to the Database resource.
      *
      * @return the vmDetails value.
      */
@@ -105,7 +114,7 @@ public interface SapDatabaseInstance {
     SapVirtualInstanceProvisioningState provisioningState();
 
     /**
-     * Gets the errors property: Defines the Database Instance errors.
+     * Gets the errors property: Defines the errors related to Database resource.
      *
      * @return the errors value.
      */
@@ -175,7 +184,7 @@ public interface SapDatabaseInstance {
              * Specifies resourceGroupName, sapVirtualInstanceName.
              *
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+             * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
              * @return the next definition stage.
              */
             WithCreate withExistingSapVirtualInstance(String resourceGroupName, String sapVirtualInstanceName);
@@ -262,4 +271,45 @@ public interface SapDatabaseInstance {
      * @return the refreshed resource.
      */
     SapDatabaseInstance refresh(Context context);
+
+    /**
+     * Starts the database instance of the SAP system.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance();
+
+    /**
+     * Starts the database instance of the SAP system.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult startInstance(Context context);
+
+    /**
+     * Stops the database instance of the SAP system.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance();
+
+    /**
+     * Stops the database instance of the SAP system.
+     *
+     * @param body Stop request for the database instance of the SAP system.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the current status of an async operation.
+     */
+    OperationStatusResult stopInstance(StopRequest body, Context context);
 }

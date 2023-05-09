@@ -33,8 +33,10 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cosmos.fluent.TableResourcesClient;
+import com.azure.resourcemanager.cosmos.fluent.models.BackupInformationInner;
 import com.azure.resourcemanager.cosmos.fluent.models.TableGetResultsInner;
 import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsGetResultsInner;
+import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 import com.azure.resourcemanager.cosmos.models.TableCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.TableListResult;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsUpdateParameters;
@@ -67,11 +69,10 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface TableResourcesService {
+    public interface TableResourcesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/tables")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TableListResult>> listTables(
@@ -85,8 +86,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/tables/{tableName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TableGetResultsInner>> getTable(
@@ -101,8 +101,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/tables/{tableName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createUpdateTable(
@@ -118,8 +117,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/tables/{tableName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteTable(
@@ -133,8 +131,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ThroughputSettingsGetResultsInner>> getTableThroughput(
@@ -149,8 +146,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> updateTableThroughput(
@@ -166,8 +162,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default/migrateToAutoscale")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default/migrateToAutoscale")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> migrateTableToAutoscale(
@@ -182,9 +177,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB"
-                + "/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default"
-                + "/migrateToManualThroughput")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/throughputSettings/default/migrateToManualThroughput")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> migrateTableToManualThroughput(
@@ -194,6 +187,22 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             @PathParam("accountName") String accountName,
             @PathParam("tableName") String tableName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DocumentDB/databaseAccounts/{accountName}/tables/{tableName}/retrieveContinuousBackupInformation")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformation(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("tableName") String tableName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") ContinuousBackupRestoreLocation location,
             @HeaderParam("Accept") String accept,
             Context context);
     }
@@ -500,22 +509,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TableGetResultsInner getTable(String resourceGroupName, String accountName, String tableName) {
-        return getTableAsync(resourceGroupName, accountName, tableName).block();
-    }
-
-    /**
-     * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -527,6 +520,22 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public Response<TableGetResultsInner> getTableWithResponse(
         String resourceGroupName, String accountName, String tableName, Context context) {
         return getTableWithResponseAsync(resourceGroupName, accountName, tableName, context).block();
+    }
+
+    /**
+     * Gets the Tables under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Tables under an existing Azure Cosmos DB database account with the provided name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TableGetResultsInner getTable(String resourceGroupName, String accountName, String tableName) {
+        return getTableWithResponse(resourceGroupName, accountName, tableName, Context.NONE).getValue();
     }
 
     /**
@@ -738,7 +747,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         String accountName,
         String tableName,
         TableCreateUpdateParameters createUpdateTableParameters) {
-        return beginCreateUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters)
+        return this
+            .beginCreateUpdateTableAsync(resourceGroupName, accountName, tableName, createUpdateTableParameters)
             .getSyncPoller();
     }
 
@@ -762,7 +772,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
         String tableName,
         TableCreateUpdateParameters createUpdateTableParameters,
         Context context) {
-        return beginCreateUpdateTableAsync(
+        return this
+            .beginCreateUpdateTableAsync(
                 resourceGroupName, accountName, tableName, createUpdateTableParameters, context)
             .getSyncPoller();
     }
@@ -1019,7 +1030,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTable(
         String resourceGroupName, String accountName, String tableName) {
-        return beginDeleteTableAsync(resourceGroupName, accountName, tableName).getSyncPoller();
+        return this.beginDeleteTableAsync(resourceGroupName, accountName, tableName).getSyncPoller();
     }
 
     /**
@@ -1037,7 +1048,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteTable(
         String resourceGroupName, String accountName, String tableName, Context context) {
-        return beginDeleteTableAsync(resourceGroupName, accountName, tableName, context).getSyncPoller();
+        return this.beginDeleteTableAsync(resourceGroupName, accountName, tableName, context).getSyncPoller();
     }
 
     /**
@@ -1240,24 +1251,6 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName Cosmos DB database account name.
      * @param tableName Cosmos DB table name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
-     *     name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ThroughputSettingsGetResultsInner getTableThroughput(
-        String resourceGroupName, String accountName, String tableName) {
-        return getTableThroughputAsync(resourceGroupName, accountName, tableName).block();
-    }
-
-    /**
-     * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param accountName Cosmos DB database account name.
-     * @param tableName Cosmos DB table name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1269,6 +1262,24 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public Response<ThroughputSettingsGetResultsInner> getTableThroughputWithResponse(
         String resourceGroupName, String accountName, String tableName, Context context) {
         return getTableThroughputWithResponseAsync(resourceGroupName, accountName, tableName, context).block();
+    }
+
+    /**
+     * Gets the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided name.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the RUs per second of the Table under an existing Azure Cosmos DB database account with the provided
+     *     name.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ThroughputSettingsGetResultsInner getTableThroughput(
+        String resourceGroupName, String accountName, String tableName) {
+        return getTableThroughputWithResponse(resourceGroupName, accountName, tableName, Context.NONE).getValue();
     }
 
     /**
@@ -1490,7 +1501,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             String accountName,
             String tableName,
             ThroughputSettingsUpdateParameters updateThroughputParameters) {
-        return beginUpdateTableThroughputAsync(resourceGroupName, accountName, tableName, updateThroughputParameters)
+        return this
+            .beginUpdateTableThroughputAsync(resourceGroupName, accountName, tableName, updateThroughputParameters)
             .getSyncPoller();
     }
 
@@ -1515,7 +1527,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
             String tableName,
             ThroughputSettingsUpdateParameters updateThroughputParameters,
             Context context) {
-        return beginUpdateTableThroughputAsync(
+        return this
+            .beginUpdateTableThroughputAsync(
                 resourceGroupName, accountName, tableName, updateThroughputParameters, context)
             .getSyncPoller();
     }
@@ -1791,7 +1804,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName) {
-        return beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName).getSyncPoller();
+        return this.beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName).getSyncPoller();
     }
 
     /**
@@ -1809,7 +1822,9 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToAutoscale(String resourceGroupName, String accountName, String tableName, Context context) {
-        return beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName, context).getSyncPoller();
+        return this
+            .beginMigrateTableToAutoscaleAsync(resourceGroupName, accountName, tableName, context)
+            .getSyncPoller();
     }
 
     /**
@@ -2061,7 +2076,7 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToManualThroughput(String resourceGroupName, String accountName, String tableName) {
-        return beginMigrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName).getSyncPoller();
+        return this.beginMigrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName).getSyncPoller();
     }
 
     /**
@@ -2080,7 +2095,8 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public SyncPoller<PollResult<ThroughputSettingsGetResultsInner>, ThroughputSettingsGetResultsInner>
         beginMigrateTableToManualThroughput(
             String resourceGroupName, String accountName, String tableName, Context context) {
-        return beginMigrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName, context)
+        return this
+            .beginMigrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName, context)
             .getSyncPoller();
     }
 
@@ -2156,5 +2172,325 @@ public final class TableResourcesClientImpl implements TableResourcesClient {
     public ThroughputSettingsGetResultsInner migrateTableToManualThroughput(
         String resourceGroupName, String accountName, String tableName, Context context) {
         return migrateTableToManualThroughputAsync(resourceGroupName, accountName, tableName, context).block();
+    }
+
+    /**
+     * Retrieves continuous backup information for a table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
+        String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        } else {
+            location.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .retrieveContinuousBackupInformation(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            tableName,
+                            this.client.getApiVersion(),
+                            location,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Retrieves continuous backup information for a table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> retrieveContinuousBackupInformationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (tableName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter tableName is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        } else {
+            location.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .retrieveContinuousBackupInformation(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                tableName,
+                this.client.getApiVersion(),
+                location,
+                accept,
+                context);
+    }
+
+    /**
+     * Retrieves continuous backup information for a table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(
+            String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            retrieveContinuousBackupInformationWithResponseAsync(resourceGroupName, accountName, tableName, location);
+        return this
+            .client
+            .<BackupInformationInner, BackupInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupInformationInner.class,
+                BackupInformationInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Retrieves continuous backup information for a table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformationAsync(
+            String resourceGroupName,
+            String accountName,
+            String tableName,
+            ContinuousBackupRestoreLocation location,
+            Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            retrieveContinuousBackupInformationWithResponseAsync(
+                resourceGroupName, accountName, tableName, location, context);
+        return this
+            .client
+            .<BackupInformationInner, BackupInformationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                BackupInformationInner.class,
+                BackupInformationInner.class,
+                context);
+    }
+
+    /**
+     * Retrieves continuous backup information for a table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformation(
+            String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location) {
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, tableName, location)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves continuous backup information for a table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupInformationInner>, BackupInformationInner>
+        beginRetrieveContinuousBackupInformation(
+            String resourceGroupName,
+            String accountName,
+            String tableName,
+            ContinuousBackupRestoreLocation location,
+            Context context) {
+        return this
+            .beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, tableName, location, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Retrieves continuous backup information for a table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
+        String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location) {
+        return beginRetrieveContinuousBackupInformationAsync(resourceGroupName, accountName, tableName, location)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves continuous backup information for a table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupInformationInner> retrieveContinuousBackupInformationAsync(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        return beginRetrieveContinuousBackupInformationAsync(
+                resourceGroupName, accountName, tableName, location, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Retrieves continuous backup information for a table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param location The name of the continuous backup restore location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName, String accountName, String tableName, ContinuousBackupRestoreLocation location) {
+        return retrieveContinuousBackupInformationAsync(resourceGroupName, accountName, tableName, location).block();
+    }
+
+    /**
+     * Retrieves continuous backup information for a table.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName Cosmos DB database account name.
+     * @param tableName Cosmos DB table name.
+     * @param location The name of the continuous backup restore location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup information of a resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInformationInner retrieveContinuousBackupInformation(
+        String resourceGroupName,
+        String accountName,
+        String tableName,
+        ContinuousBackupRestoreLocation location,
+        Context context) {
+        return retrieveContinuousBackupInformationAsync(resourceGroupName, accountName, tableName, location, context)
+            .block();
     }
 }

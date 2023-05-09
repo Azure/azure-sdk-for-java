@@ -20,6 +20,15 @@ public final class GatewayLoadBalancerTunnelProtocol extends ExpandableStringEnu
     public static final GatewayLoadBalancerTunnelProtocol VXLAN = fromString("VXLAN");
 
     /**
+     * Creates a new instance of GatewayLoadBalancerTunnelProtocol value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GatewayLoadBalancerTunnelProtocol() {
+    }
+
+    /**
      * Creates or finds a GatewayLoadBalancerTunnelProtocol from its string representation.
      *
      * @param name a name to look for.

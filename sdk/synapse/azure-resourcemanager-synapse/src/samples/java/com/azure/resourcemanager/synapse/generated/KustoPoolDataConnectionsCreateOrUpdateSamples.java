@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.EventHubDataConnection;
 
 /** Samples for KustoPoolDataConnections CreateOrUpdate. */
@@ -32,6 +31,6 @@ public final class KustoPoolDataConnectionsCreateOrUpdateSamples {
                     .withEventHubResourceId(
                         "/subscriptions/12345678-1234-1234-1234-123456789098/resourceGroups/kustorptest/providers/Microsoft.EventHub/namespaces/eventhubTestns1/eventhubs/eventhubTest1")
                     .withConsumerGroup("testConsumerGroup1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

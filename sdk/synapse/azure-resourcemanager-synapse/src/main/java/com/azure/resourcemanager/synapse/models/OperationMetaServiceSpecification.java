@@ -23,6 +23,10 @@ public final class OperationMetaServiceSpecification {
     @JsonProperty(value = "logSpecifications")
     private List<OperationMetaLogSpecification> logSpecifications;
 
+    /** Creates an instance of OperationMetaServiceSpecification class. */
+    public OperationMetaServiceSpecification() {
+    }
+
     /**
      * Get the metricSpecifications property: Service metric specifications.
      *

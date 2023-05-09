@@ -23,7 +23,7 @@ public final class AssetFiltersUpdateSamples {
             manager
                 .assetFilters()
                 .getWithResponse(
-                    "contoso",
+                    "contosorg",
                     "contosomedia",
                     "ClimbingMountRainer",
                     "assetFilterWithTimeWindowAndTrack",

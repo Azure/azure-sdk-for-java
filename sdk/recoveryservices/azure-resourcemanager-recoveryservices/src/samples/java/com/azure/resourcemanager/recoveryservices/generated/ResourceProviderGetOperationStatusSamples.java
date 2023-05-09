@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.recoveryservices.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceProvider GetOperationStatus. */
 public final class ResourceProviderGetOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2022-10-01/examples/GetOperationStatus.json
+     * x-ms-original-file: specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2023-01-01/examples/GetOperationStatus.json
      */
     /**
      * Sample code: Get Operation Status.
@@ -23,6 +21,6 @@ public final class ResourceProviderGetOperationStatusSamples {
                 "HelloWorld",
                 "swaggerExample",
                 "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

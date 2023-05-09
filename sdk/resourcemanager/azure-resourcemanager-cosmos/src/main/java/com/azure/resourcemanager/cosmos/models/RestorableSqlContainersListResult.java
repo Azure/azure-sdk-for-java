@@ -18,6 +18,10 @@ public final class RestorableSqlContainersListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableSqlContainerGetResultInner> value;
 
+    /** Creates an instance of RestorableSqlContainersListResult class. */
+    public RestorableSqlContainersListResult() {
+    }
+
     /**
      * Get the value property: List of SQL container events and their properties.
      *

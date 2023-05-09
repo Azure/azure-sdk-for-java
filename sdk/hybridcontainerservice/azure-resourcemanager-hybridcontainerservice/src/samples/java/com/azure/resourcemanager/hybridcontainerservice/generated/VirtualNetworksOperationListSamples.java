@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VirtualNetworksOperation List. */
 public final class VirtualNetworksOperationListSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/ListVirtualNetworkBySubscription.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/ListVirtualNetworkBySubscription.json
      */
     /**
      * Sample code: ListVirtualNetworkBySubscription.
@@ -18,6 +16,6 @@ public final class VirtualNetworksOperationListSamples {
      */
     public static void listVirtualNetworkBySubscription(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.virtualNetworksOperations().list(Context.NONE);
+        manager.virtualNetworksOperations().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -68,11 +68,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      */
     @Host("{$host}")
     @ServiceInterface(name = "WorkloadsClientSapVi")
-    private interface SapVirtualInstancesService {
+    public interface SapVirtualInstancesService {
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads"
-                + "/sapVirtualInstances/{sapVirtualInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(
@@ -87,8 +86,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads"
-                + "/sapVirtualInstances/{sapVirtualInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SapVirtualInstanceInner>> getByResourceGroup(
@@ -102,8 +100,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads"
-                + "/sapVirtualInstances/{sapVirtualInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SapVirtualInstanceInner>> update(
@@ -118,8 +115,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads"
-                + "/sapVirtualInstances/{sapVirtualInstanceName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -133,8 +129,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads"
-                + "/sapVirtualInstances")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SapVirtualInstanceList>> listByResourceGroup(
@@ -158,8 +153,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads"
-                + "/sapVirtualInstances/{sapVirtualInstanceName}/start")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/start")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> start(
@@ -173,8 +167,7 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads"
-                + "/sapVirtualInstances/{sapVirtualInstanceName}/stop")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Workloads/sapVirtualInstances/{sapVirtualInstanceName}/stop")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stop(
@@ -209,15 +202,16 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Virtual Instance for SAP solutions resource request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP along with {@link Response} on successful completion of {@link Mono}.
+     * @return define the Virtual Instance for SAP solutions resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -264,16 +258,17 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Virtual Instance for SAP solutions resource request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP along with {@link Response} on successful completion of {@link Mono}.
+     * @return define the Virtual Instance for SAP solutions resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -317,15 +312,15 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Virtual Instance for SAP solutions resource request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of define the Virtual Instance for SAP.
+     * @return the {@link PollerFlux} for polling of define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreateAsync(
@@ -343,16 +338,42 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of define the Virtual Instance for SAP solutions resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreateAsync(
+        String resourceGroupName, String sapVirtualInstanceName) {
+        final SapVirtualInstanceInner body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createWithResponseAsync(resourceGroupName, sapVirtualInstanceName, body);
+        return this
+            .client
+            .<SapVirtualInstanceInner, SapVirtualInstanceInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                SapVirtualInstanceInner.class,
+                SapVirtualInstanceInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Virtual Instance for SAP solutions resource request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of define the Virtual Instance for SAP.
+     * @return the {@link PollerFlux} for polling of define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreateAsync(
@@ -371,50 +392,50 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of define the Virtual Instance for SAP.
+     * @return the {@link SyncPoller} for polling of define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreate(
-        String resourceGroupName, String sapVirtualInstanceName, SapVirtualInstanceInner body) {
-        return beginCreateAsync(resourceGroupName, sapVirtualInstanceName, body).getSyncPoller();
+        String resourceGroupName, String sapVirtualInstanceName) {
+        final SapVirtualInstanceInner body = null;
+        return this.beginCreateAsync(resourceGroupName, sapVirtualInstanceName, body).getSyncPoller();
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Virtual Instance for SAP solutions resource request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of define the Virtual Instance for SAP.
+     * @return the {@link SyncPoller} for polling of define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SapVirtualInstanceInner>, SapVirtualInstanceInner> beginCreate(
         String resourceGroupName, String sapVirtualInstanceName, SapVirtualInstanceInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, sapVirtualInstanceName, body, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, sapVirtualInstanceName, body, context).getSyncPoller();
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Virtual Instance for SAP solutions resource request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP on successful completion of {@link Mono}.
+     * @return define the Virtual Instance for SAP solutions resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapVirtualInstanceInner> createAsync(
@@ -425,14 +446,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP on successful completion of {@link Mono}.
+     * @return define the Virtual Instance for SAP solutions resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapVirtualInstanceInner> createAsync(String resourceGroupName, String sapVirtualInstanceName) {
@@ -443,16 +464,16 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Virtual Instance for SAP solutions resource request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP on successful completion of {@link Mono}.
+     * @return define the Virtual Instance for SAP solutions resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapVirtualInstanceInner> createAsync(
@@ -463,31 +484,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SapVirtualInstanceInner create(
-        String resourceGroupName, String sapVirtualInstanceName, SapVirtualInstanceInner body) {
-        return createAsync(resourceGroupName, sapVirtualInstanceName, body).block();
-    }
-
-    /**
-     * Creates an Virtual Instance for SAP.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP.
+     * @return define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SapVirtualInstanceInner create(String resourceGroupName, String sapVirtualInstanceName) {
@@ -496,16 +500,16 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Creates an Virtual Instance for SAP.
+     * Creates a Virtual Instance for SAP solutions (VIS) resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Virtual Instance for SAP solutions resource request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP.
+     * @return define the Virtual Instance for SAP solutions resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SapVirtualInstanceInner create(
@@ -514,14 +518,15 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets an Virtual Instance for SAP.
+     * Gets a Virtual Instance for SAP solutions resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Virtual Instance for SAP along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Virtual Instance for SAP solutions resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapVirtualInstanceInner>> getByResourceGroupWithResponseAsync(
@@ -564,15 +569,16 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets an Virtual Instance for SAP.
+     * Gets a Virtual Instance for SAP solutions resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Virtual Instance for SAP along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Virtual Instance for SAP solutions resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapVirtualInstanceInner>> getByResourceGroupWithResponseAsync(
@@ -612,14 +618,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets an Virtual Instance for SAP.
+     * Gets a Virtual Instance for SAP solutions resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Virtual Instance for SAP on successful completion of {@link Mono}.
+     * @return a Virtual Instance for SAP solutions resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapVirtualInstanceInner> getByResourceGroupAsync(
@@ -629,30 +635,15 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets an Virtual Instance for SAP.
+     * Gets a Virtual Instance for SAP solutions resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Virtual Instance for SAP.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SapVirtualInstanceInner getByResourceGroup(String resourceGroupName, String sapVirtualInstanceName) {
-        return getByResourceGroupAsync(resourceGroupName, sapVirtualInstanceName).block();
-    }
-
-    /**
-     * Gets an Virtual Instance for SAP.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Virtual Instance for SAP along with {@link Response}.
+     * @return a Virtual Instance for SAP solutions resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SapVirtualInstanceInner> getByResourceGroupWithResponse(
@@ -661,15 +652,31 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Updates an Virtual Instance for SAP.
+     * Gets a Virtual Instance for SAP solutions resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Update Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Virtual Instance for SAP solutions resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SapVirtualInstanceInner getByResourceGroup(String resourceGroupName, String sapVirtualInstanceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, sapVirtualInstanceName, Context.NONE).getValue();
+    }
+
+    /**
+     * Updates a Virtual Instance for SAP solutions resource.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Request body to update a Virtual Instance for SAP solutions resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the Virtual Instance for SAP solutions resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapVirtualInstanceInner>> updateWithResponseAsync(
@@ -716,16 +723,17 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Updates an Virtual Instance for SAP.
+     * Updates a Virtual Instance for SAP solutions resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Update Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Request body to update a Virtual Instance for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP along with {@link Response} on successful completion of {@link Mono}.
+     * @return define the Virtual Instance for SAP solutions resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SapVirtualInstanceInner>> updateWithResponseAsync(
@@ -772,32 +780,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Updates an Virtual Instance for SAP.
+     * Updates a Virtual Instance for SAP solutions resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Update Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SapVirtualInstanceInner> updateAsync(
-        String resourceGroupName, String sapVirtualInstanceName, UpdateSapVirtualInstanceRequest body) {
-        return updateWithResponseAsync(resourceGroupName, sapVirtualInstanceName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates an Virtual Instance for SAP.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP on successful completion of {@link Mono}.
+     * @return define the Virtual Instance for SAP solutions resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SapVirtualInstanceInner> updateAsync(String resourceGroupName, String sapVirtualInstanceName) {
@@ -807,32 +797,16 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Updates an Virtual Instance for SAP.
+     * Updates a Virtual Instance for SAP solutions resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SapVirtualInstanceInner update(String resourceGroupName, String sapVirtualInstanceName) {
-        final UpdateSapVirtualInstanceRequest body = null;
-        return updateAsync(resourceGroupName, sapVirtualInstanceName, body).block();
-    }
-
-    /**
-     * Updates an Virtual Instance for SAP.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Update Virtual Instance for SAP request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body Request body to update a Virtual Instance for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the Virtual Instance for SAP along with {@link Response}.
+     * @return define the Virtual Instance for SAP solutions resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SapVirtualInstanceInner> updateWithResponse(
@@ -844,10 +818,27 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Deletes an Virtual Instance for SAP.
+     * Updates a Virtual Instance for SAP solutions resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the Virtual Instance for SAP solutions resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SapVirtualInstanceInner update(String resourceGroupName, String sapVirtualInstanceName) {
+        final UpdateSapVirtualInstanceRequest body = null;
+        return updateWithResponse(resourceGroupName, sapVirtualInstanceName, body, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -895,10 +886,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Deletes an Virtual Instance for SAP.
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -944,10 +936,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Deletes an Virtual Instance for SAP.
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -968,10 +961,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Deletes an Virtual Instance for SAP.
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -995,10 +989,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Deletes an Virtual Instance for SAP.
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1007,14 +1002,15 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
         String resourceGroupName, String sapVirtualInstanceName) {
-        return beginDeleteAsync(resourceGroupName, sapVirtualInstanceName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, sapVirtualInstanceName).getSyncPoller();
     }
 
     /**
-     * Deletes an Virtual Instance for SAP.
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1024,14 +1020,15 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginDelete(
         String resourceGroupName, String sapVirtualInstanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, sapVirtualInstanceName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, sapVirtualInstanceName, context).getSyncPoller();
     }
 
     /**
-     * Deletes an Virtual Instance for SAP.
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1045,10 +1042,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Deletes an Virtual Instance for SAP.
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1064,10 +1062,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Deletes an Virtual Instance for SAP.
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1079,10 +1078,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Deletes an Virtual Instance for SAP.
+     * Deletes a Virtual Instance for SAP solutions resource and its child resources, that is the associated Central
+     * Services Instance, Application Server Instances and Database Instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1095,14 +1095,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in a resource group.
+     * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in a resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -1147,15 +1147,15 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in a resource group.
+     * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in a resource group along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listByResourceGroupSinglePageAsync(
@@ -1198,13 +1198,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in a resource group.
+     * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in a resource group as paginated response with {@link PagedFlux}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SapVirtualInstanceInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1214,14 +1215,15 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in a resource group.
+     * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in a resource group as paginated response with {@link PagedFlux}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SapVirtualInstanceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1231,13 +1233,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in a resource group.
+     * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in a resource group as paginated response with {@link PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SapVirtualInstanceInner> listByResourceGroup(String resourceGroupName) {
@@ -1245,14 +1248,15 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in a resource group.
+     * Gets all Virtual Instances for SAP solutions resources in a Resource Group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in a resource group as paginated response with {@link PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Resource Group as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SapVirtualInstanceInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1260,12 +1264,12 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in the subscription.
+     * Gets all Virtual Instances for SAP solutions resources in a Subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in the subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listSinglePageAsync() {
@@ -1305,14 +1309,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in the subscription.
+     * Gets all Virtual Instances for SAP solutions resources in a Subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in the subscription along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listSinglePageAsync(Context context) {
@@ -1349,11 +1353,12 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in the subscription.
+     * Gets all Virtual Instances for SAP solutions resources in a Subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in the subscription as paginated response with {@link PagedFlux}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SapVirtualInstanceInner> listAsync() {
@@ -1362,13 +1367,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in the subscription.
+     * Gets all Virtual Instances for SAP solutions resources in a Subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in the subscription as paginated response with {@link PagedFlux}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SapVirtualInstanceInner> listAsync(Context context) {
@@ -1377,11 +1383,12 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in the subscription.
+     * Gets all Virtual Instances for SAP solutions resources in a Subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in the subscription as paginated response with {@link PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SapVirtualInstanceInner> list() {
@@ -1389,13 +1396,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Gets all Virtual Instances for SAP in the subscription.
+     * Gets all Virtual Instances for SAP solutions resources in a Subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Virtual Instances for SAP in the subscription as paginated response with {@link PagedIterable}.
+     * @return all Virtual Instances for SAP solutions resources in a Subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SapVirtualInstanceInner> list(Context context) {
@@ -1403,10 +1411,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1454,10 +1462,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1503,10 +1511,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1527,10 +1535,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1554,10 +1562,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1566,14 +1574,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
         String resourceGroupName, String sapVirtualInstanceName) {
-        return beginStartAsync(resourceGroupName, sapVirtualInstanceName).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, sapVirtualInstanceName).getSyncPoller();
     }
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1583,14 +1591,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStart(
         String resourceGroupName, String sapVirtualInstanceName, Context context) {
-        return beginStartAsync(resourceGroupName, sapVirtualInstanceName, context).getSyncPoller();
+        return this.beginStartAsync(resourceGroupName, sapVirtualInstanceName, context).getSyncPoller();
     }
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1604,10 +1612,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1623,10 +1631,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1638,10 +1646,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Starts the SAP System.
+     * Starts the SAP application, that is the Central Services instance and Application server instances.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1654,11 +1662,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instances for SAP stop request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body The Virtual Instance for SAP solutions resource stop request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1710,11 +1718,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instances for SAP stop request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body The Virtual Instance for SAP solutions resource stop request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1764,11 +1772,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instances for SAP stop request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body The Virtual Instance for SAP solutions resource stop request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1789,11 +1797,36 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instances for SAP stop request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the current status of an async operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStopAsync(
+        String resourceGroupName, String sapVirtualInstanceName) {
+        final StopRequest body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, sapVirtualInstanceName, body);
+        return this
+            .client
+            .<OperationStatusResultInner, OperationStatusResultInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                OperationStatusResultInner.class,
+                OperationStatusResultInner.class,
+                this.client.getContext());
+    }
+
+    /**
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body The Virtual Instance for SAP solutions resource stop request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1817,11 +1850,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instances for SAP stop request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1829,16 +1861,17 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
-        String resourceGroupName, String sapVirtualInstanceName, StopRequest body) {
-        return beginStopAsync(resourceGroupName, sapVirtualInstanceName, body).getSyncPoller();
+        String resourceGroupName, String sapVirtualInstanceName) {
+        final StopRequest body = null;
+        return this.beginStopAsync(resourceGroupName, sapVirtualInstanceName, body).getSyncPoller();
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instances for SAP stop request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body The Virtual Instance for SAP solutions resource stop request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1848,15 +1881,15 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationStatusResultInner>, OperationStatusResultInner> beginStop(
         String resourceGroupName, String sapVirtualInstanceName, StopRequest body, Context context) {
-        return beginStopAsync(resourceGroupName, sapVirtualInstanceName, body, context).getSyncPoller();
+        return this.beginStopAsync(resourceGroupName, sapVirtualInstanceName, body, context).getSyncPoller();
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instances for SAP stop request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body The Virtual Instance for SAP solutions resource stop request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1871,10 +1904,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1889,11 +1922,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instances for SAP stop request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body The Virtual Instance for SAP solutions resource stop request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1909,26 +1942,10 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instances for SAP stop request body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the current status of an async operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusResultInner stop(String resourceGroupName, String sapVirtualInstanceName, StopRequest body) {
-        return stopAsync(resourceGroupName, sapVirtualInstanceName, body).block();
-    }
-
-    /**
-     * Stops the SAP System.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1941,11 +1958,11 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     }
 
     /**
-     * Stops the SAP System.
+     * Stops the SAP Application, that is the Application server instances and Central Services instance.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP.
-     * @param body The Virtual Instances for SAP stop request body.
+     * @param sapVirtualInstanceName The name of the Virtual Instances for SAP solutions resource.
+     * @param body The Virtual Instance for SAP solutions resource stop request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1961,12 +1978,13 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of Virtual Instance for SAP along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return defines the collection of Virtual Instance for SAP solutions resources along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1998,13 +2016,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of Virtual Instance for SAP along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return defines the collection of Virtual Instance for SAP solutions resources along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listByResourceGroupNextSinglePageAsync(
@@ -2036,12 +2055,13 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of Virtual Instance for SAP along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return defines the collection of Virtual Instance for SAP solutions resources along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2073,13 +2093,14 @@ public final class SapVirtualInstancesClientImpl implements SapVirtualInstancesC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of Virtual Instance for SAP along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return defines the collection of Virtual Instance for SAP solutions resources along with {@link PagedResponse}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SapVirtualInstanceInner>> listBySubscriptionNextSinglePageAsync(

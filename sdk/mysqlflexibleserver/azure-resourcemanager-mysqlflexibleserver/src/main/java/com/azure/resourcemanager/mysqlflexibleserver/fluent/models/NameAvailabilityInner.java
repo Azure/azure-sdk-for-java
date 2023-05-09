@@ -28,6 +28,10 @@ public final class NameAvailabilityInner {
     @JsonProperty(value = "reason")
     private String reason;
 
+    /** Creates an instance of NameAvailabilityInner class. */
+    public NameAvailabilityInner() {
+    }
+
     /**
      * Get the message property: Error Message.
      *

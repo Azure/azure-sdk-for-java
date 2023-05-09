@@ -150,7 +150,7 @@ class SchemaRegistrySchemaCache {
 
     /**
      * Simple LRU cache. Accesses to cache are synchronized via the outer class lock.
-     * TODO (conniey): When https://github.com/Azure/azure-sdk-for-java/pull/27408/ is merged, take a look at replacing.
+     * TODO: When https://github.com/Azure/azure-sdk-for-java/pull/27408/ is merged, take a look at replacing.
      */
     private static final class SchemaCache extends LinkedHashMap<String, Schema> {
         private static final long serialVersionUID = -1L;

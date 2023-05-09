@@ -39,6 +39,10 @@ public final class SapInstallWithoutOSConfigSoftwareConfiguration extends Softwa
     @JsonProperty(value = "highAvailabilitySoftwareConfiguration")
     private HighAvailabilitySoftwareConfiguration highAvailabilitySoftwareConfiguration;
 
+    /** Creates an instance of SapInstallWithoutOSConfigSoftwareConfiguration class. */
+    public SapInstallWithoutOSConfigSoftwareConfiguration() {
+    }
+
     /**
      * Get the bomUrl property: The URL to the SAP Build of Materials(BOM) file.
      *

@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SoftwareInventories ListByExtendedResource. */
 public final class SoftwareInventoriesListByExtendedResourceSamples {
     /*
@@ -20,6 +18,7 @@ public final class SoftwareInventoriesListByExtendedResourceSamples {
         com.azure.resourcemanager.security.SecurityManager manager) {
         manager
             .softwareInventories()
-            .listByExtendedResource("EITAN-TESTS", "Microsoft.Compute", "virtualMachines", "Eitan-Test1", Context.NONE);
+            .listByExtendedResource(
+                "EITAN-TESTS", "Microsoft.Compute", "virtualMachines", "Eitan-Test1", com.azure.core.util.Context.NONE);
     }
 }

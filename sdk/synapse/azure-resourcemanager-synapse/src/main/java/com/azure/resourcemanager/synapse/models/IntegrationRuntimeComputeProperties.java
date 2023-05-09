@@ -16,8 +16,7 @@ import java.util.Map;
 @Fluent
 public final class IntegrationRuntimeComputeProperties {
     /*
-     * The location for managed integration runtime. The supported regions
-     * could be found on
+     * The location for managed integration runtime. The supported regions could be found on
      * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities
      */
     @JsonProperty(value = "location")
@@ -36,8 +35,7 @@ public final class IntegrationRuntimeComputeProperties {
     private Integer numberOfNodes;
 
     /*
-     * Maximum parallel executions count per node for managed integration
-     * runtime.
+     * Maximum parallel executions count per node for managed integration runtime.
      */
     @JsonProperty(value = "maxParallelExecutionsPerNode")
     private Integer maxParallelExecutionsPerNode;
@@ -58,6 +56,10 @@ public final class IntegrationRuntimeComputeProperties {
      * The compute resource properties for managed integration runtime.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of IntegrationRuntimeComputeProperties class. */
+    public IntegrationRuntimeComputeProperties() {
+    }
 
     /**
      * Get the location property: The location for managed integration runtime. The supported regions could be found on

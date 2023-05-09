@@ -17,6 +17,9 @@ public final class SeriesResultList {
     @JsonProperty(value = "value", required = true)
     private List<SeriesResult> value;
 
+    /** Creates an instance of SeriesResultList class. */
+    public SeriesResultList() {}
+
     /**
      * Get the value property: The value property.
      *

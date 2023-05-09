@@ -18,6 +18,10 @@ public final class SnapshotPoliciesList {
     @JsonProperty(value = "value")
     private List<SnapshotPolicyInner> value;
 
+    /** Creates an instance of SnapshotPoliciesList class. */
+    public SnapshotPoliciesList() {
+    }
+
     /**
      * Get the value property: A list of snapshot policies.
      *

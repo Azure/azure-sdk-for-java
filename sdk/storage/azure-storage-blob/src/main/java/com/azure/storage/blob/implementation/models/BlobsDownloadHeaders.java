@@ -106,6 +106,12 @@ public final class BlobsDownloadHeaders {
     private String xMsCopyStatusDescription;
 
     /*
+     * The x-ms-creation-time property.
+     */
+    @JsonProperty(value = "x-ms-creation-time")
+    private DateTimeRfc1123 xMsCreationTime;
+
+    /*
      * The x-ms-lease-duration property.
      */
     @JsonProperty(value = "x-ms-lease-duration")
@@ -308,6 +314,8 @@ public final class BlobsDownloadHeaders {
     private static final HttpHeaderName X_MS_COPY_STATUS_DESCRIPTION =
             HttpHeaderName.fromString("x-ms-copy-status-description");
 
+    private static final HttpHeaderName X_MS_CREATION_TIME = HttpHeaderName.fromString("x-ms-creation-time");
+
     private static final HttpHeaderName X_MS_LEASE_DURATION = HttpHeaderName.fromString("x-ms-lease-duration");
 
     private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
@@ -389,6 +397,10 @@ public final class BlobsDownloadHeaders {
         this.xMsImmutabilityPolicyMode = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_MODE);
         this.contentEncoding = rawHeaders.getValue(HttpHeaderName.CONTENT_ENCODING);
         this.xMsCopyStatusDescription = rawHeaders.getValue(X_MS_COPY_STATUS_DESCRIPTION);
+        String xMsCreationTime = rawHeaders.getValue(X_MS_CREATION_TIME);
+        if (xMsCreationTime != null) {
+            this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
+        }
         String xMsLeaseDuration = rawHeaders.getValue(X_MS_LEASE_DURATION);
         if (xMsLeaseDuration != null) {
             this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
@@ -741,6 +753,33 @@ public final class BlobsDownloadHeaders {
      */
     public BlobsDownloadHeaders setXMsCopyStatusDescription(String xMsCopyStatusDescription) {
         this.xMsCopyStatusDescription = xMsCopyStatusDescription;
+        return this;
+    }
+
+    /**
+     * Get the xMsCreationTime property: The x-ms-creation-time property.
+     *
+     * @return the xMsCreationTime value.
+     */
+    public OffsetDateTime getXMsCreationTime() {
+        if (this.xMsCreationTime == null) {
+            return null;
+        }
+        return this.xMsCreationTime.getDateTime();
+    }
+
+    /**
+     * Set the xMsCreationTime property: The x-ms-creation-time property.
+     *
+     * @param xMsCreationTime the xMsCreationTime value to set.
+     * @return the BlobsDownloadHeaders object itself.
+     */
+    public BlobsDownloadHeaders setXMsCreationTime(OffsetDateTime xMsCreationTime) {
+        if (xMsCreationTime == null) {
+            this.xMsCreationTime = null;
+        } else {
+            this.xMsCreationTime = new DateTimeRfc1123(xMsCreationTime);
+        }
         return this;
     }
 

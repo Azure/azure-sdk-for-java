@@ -23,6 +23,15 @@ public final class HcxEnterpriseSiteStatus extends ExpandableStringEnum<HcxEnter
     public static final HcxEnterpriseSiteStatus DELETED = fromString("Deleted");
 
     /**
+     * Creates a new instance of HcxEnterpriseSiteStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HcxEnterpriseSiteStatus() {
+    }
+
+    /**
      * Creates or finds a HcxEnterpriseSiteStatus from its string representation.
      *
      * @param name a name to look for.

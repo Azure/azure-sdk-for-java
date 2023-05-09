@@ -9,20 +9,19 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateLinkReso
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResource;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResourceProperties;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourceListResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkResourceListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"qlveualupjmkh\",\"requiredMembers\":[],\"requiredZoneNames\":[],\"displayName\":\"bcswsrt\"},\"id\":\"riplrbpbewtg\",\"name\":\"fgb\",\"type\":\"c\"},{\"properties\":{\"groupId\":\"zvlvqhjkbegib\",\"requiredMembers\":[],\"requiredZoneNames\":[],\"displayName\":\"iebwwaloayqcgwrt\"},\"id\":\"j\",\"name\":\"zg\",\"type\":\"yzm\"}]}")
+                    "{\"value\":[{\"properties\":{\"groupId\":\"qtaruoujmkcjhwq\",\"requiredMembers\":[],\"requiredZoneNames\":[],\"displayName\":\"ybn\"},\"id\":\"jewgdrjerv\",\"name\":\"aen\",\"type\":\"pehindoygm\"},{\"properties\":{\"groupId\":\"hnzdndslgnayqi\",\"requiredMembers\":[],\"requiredZoneNames\":[],\"displayName\":\"uhavhql\"},\"id\":\"thuma\",\"name\":\"olbgycduiertgccy\",\"type\":\"vaolpsslqlf\"}]}")
                 .toObject(PrivateLinkResourceListResultInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkResourceListResultInner model =
             new PrivateLinkResourceListResultInner()
                 .withValue(

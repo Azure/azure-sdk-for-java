@@ -29,6 +29,10 @@ public final class SampleUtterance {
     @JsonProperty(value = "qid")
     private String qid;
 
+    /** Creates an instance of SampleUtterance class. */
+    public SampleUtterance() {
+    }
+
     /**
      * Get the text property: Text attribute of sample utterance.
      *

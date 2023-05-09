@@ -3,11 +3,10 @@
 
 package com.azure.cosmos
 
-import com.azure.cosmos.implementation.{PartitionKeyRange, SparkBridgeImplementationInternal}
-import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.rangeToNormalizedRange
+import com.azure.cosmos.implementation.{DocumentCollection, PartitionKeyRange, SparkBridgeImplementationInternal}
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.FeedRange
+import com.azure.cosmos.models.{FeedRange, ModelBridgeInternal}
 import com.azure.cosmos.spark.NormalizedRange
 
 import scala.collection.mutable.ArrayBuffer
@@ -66,5 +65,19 @@ private[cosmos] object SparkBridgeInternal {
       .forEach(feedResponse => feedResponse.getResults.forEach(pkRange => pkRanges += pkRange))
 
     pkRanges.toList
+  }
+
+  private[cosmos] def clearCollectionCache(container: CosmosAsyncContainer, obsoleteRid: String): Unit = {
+    val clientWrapper = container.getDatabase.getDocClientWrapper
+
+    val link = container.getLinkWithoutTrailingSlash;
+
+    val obsoleteValue = new DocumentCollection
+    ModelBridgeInternal.setResourceId(obsoleteValue, obsoleteRid)
+
+    clientWrapper
+      .getCollectionCache()
+      .resolveByNameAsync(null, link, null, obsoleteValue)
+      .block()
   }
 }

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.dataprotection.models.RestoreSourceDataStoreTyp
 /** Samples for RestorableTimeRanges Find. */
 public final class RestorableTimeRangesFindSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/preview/2022-11-01-preview/examples/BackupInstanceOperations/FindRestorableTimeRanges.json
+     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-01-01/examples/BackupInstanceOperations/FindRestorableTimeRanges.json
      */
     /**
      * Sample code: Find Restorable Time Ranges.

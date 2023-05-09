@@ -18,6 +18,10 @@ public final class ServiceResourceInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private ServiceResourceProperties properties;
 
+    /** Creates an instance of ServiceResourceInner class. */
+    public ServiceResourceInner() {
+    }
+
     /**
      * Get the properties property: Services response resource.
      *

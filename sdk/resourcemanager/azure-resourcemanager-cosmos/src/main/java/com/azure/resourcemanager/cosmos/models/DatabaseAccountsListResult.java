@@ -18,6 +18,10 @@ public final class DatabaseAccountsListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<DatabaseAccountGetResultsInner> value;
 
+    /** Creates an instance of DatabaseAccountsListResult class. */
+    public DatabaseAccountsListResult() {
+    }
+
     /**
      * Get the value property: List of database account and their properties.
      *

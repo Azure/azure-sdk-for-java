@@ -29,6 +29,10 @@ public final class SapAvailabilityZoneDetailsRequest {
     @JsonProperty(value = "databaseType", required = true)
     private SapDatabaseType databaseType;
 
+    /** Creates an instance of SapAvailabilityZoneDetailsRequest class. */
+    public SapAvailabilityZoneDetailsRequest() {
+    }
+
     /**
      * Get the appLocation property: The geo-location where the SAP resources will be created.
      *

@@ -27,9 +27,8 @@ public final class ResourceSkuInner {
     private List<ResourceSkuCapabilities> capabilities;
 
     /*
-     * The set of locations where the SKU is available. This is the supported
-     * and registered Azure Geo Regions (e.g., West US, East US, Southeast
-     * Asia, etc.).
+     * The set of locations where the SKU is available. This is the supported and registered Azure Geo Regions (e.g.,
+     * West US, East US, Southeast Asia, etc.).
      */
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
@@ -47,11 +46,14 @@ public final class ResourceSkuInner {
     private String name;
 
     /*
-     * The restrictions preventing this SKU from being used. This is empty if
-     * there are no restrictions.
+     * The restrictions preventing this SKU from being used. This is empty if there are no restrictions.
      */
     @JsonProperty(value = "restrictions")
     private List<Restriction> restrictions;
+
+    /** Creates an instance of ResourceSkuInner class. */
+    public ResourceSkuInner() {
+    }
 
     /**
      * Get the resourceType property: The type of resource the SKU applies to.

@@ -18,7 +18,7 @@ public final class AssetFiltersDeleteSamples {
         manager
             .assetFilters()
             .deleteWithResponse(
-                "contoso",
+                "contosorg",
                 "contosomedia",
                 "ClimbingMountRainer",
                 "assetFilterWithTimeWindowAndTrack",

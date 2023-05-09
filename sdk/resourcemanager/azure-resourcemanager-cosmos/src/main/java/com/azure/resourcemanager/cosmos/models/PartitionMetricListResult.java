@@ -18,6 +18,10 @@ public final class PartitionMetricListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PartitionMetricInner> value;
 
+    /** Creates an instance of PartitionMetricListResult class. */
+    public PartitionMetricListResult() {
+    }
+
     /**
      * Get the value property: The list of partition-level metrics for the account.
      *

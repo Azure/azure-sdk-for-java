@@ -17,19 +17,9 @@ import java.util.List;
 /** An instance of this class provides access to all the operations defined in OperationsClient. */
 public interface OperationsClient {
     /**
-     * Check whether a workspace name is available.
+     * Check name availability
      *
-     * @param request The check request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return check name availability response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest request);
-
-    /**
-     * Check whether a workspace name is available.
+     * <p>Check whether a workspace name is available.
      *
      * @param request The check request.
      * @param context The context to associate with this operation.
@@ -43,17 +33,23 @@ public interface OperationsClient {
         CheckNameAvailabilityRequest request, Context context);
 
     /**
-     * Get all available operations.
+     * Check name availability
      *
+     * <p>Check whether a workspace name is available.
+     *
+     * @param request The check request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available operations.
+     * @return check name availability response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    List<AvailableRpOperationInner> list();
+    CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest request);
 
     /**
-     * Get all available operations.
+     * All operations
+     *
+     * <p>Get all available operations.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,20 +61,21 @@ public interface OperationsClient {
     Response<List<AvailableRpOperationInner>> listWithResponse(Context context);
 
     /**
-     * Get the result of an operation.
+     * All operations
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param operationId Operation ID.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <p>Get all available operations.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all available operations.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void getLocationHeaderResult(String resourceGroupName, String workspaceName, String operationId);
+    List<AvailableRpOperationInner> list();
 
     /**
-     * Get the result of an operation.
+     * Get operation result
+     *
+     * <p>Get the result of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -94,7 +91,9 @@ public interface OperationsClient {
         String resourceGroupName, String workspaceName, String operationId, Context context);
 
     /**
-     * Get the status of an operation.
+     * Get operation result
+     *
+     * <p>Get the result of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -102,14 +101,14 @@ public interface OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OperationResourceInner getAzureAsyncHeaderResult(
-        String resourceGroupName, String workspaceName, String operationId);
+    void getLocationHeaderResult(String resourceGroupName, String workspaceName, String operationId);
 
     /**
-     * Get the status of an operation.
+     * Get operation status
+     *
+     * <p>Get the status of an operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -123,4 +122,21 @@ public interface OperationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OperationResourceInner> getAzureAsyncHeaderResultWithResponse(
         String resourceGroupName, String workspaceName, String operationId, Context context);
+
+    /**
+     * Get operation status
+     *
+     * <p>Get the status of an operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param operationId Operation ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of an operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OperationResourceInner getAzureAsyncHeaderResult(
+        String resourceGroupName, String workspaceName, String operationId);
 }

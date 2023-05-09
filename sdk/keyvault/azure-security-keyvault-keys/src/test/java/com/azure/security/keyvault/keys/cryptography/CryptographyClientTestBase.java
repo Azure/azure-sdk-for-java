@@ -17,8 +17,11 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
@@ -28,9 +31,7 @@ import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.keys.models.CreateOkpKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import org.junit.jupiter.api.Test;
 
@@ -45,12 +46,9 @@ import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
 
@@ -58,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class CryptographyClientTestBase extends TestBase {
+public abstract class CryptographyClientTestBase extends TestProxyTestBase {
     private static final String SDK_NAME = "client_name";
     private static final String SDK_VERSION = "client_version";
     protected boolean isHsmEnabled = false;
@@ -70,10 +68,11 @@ public abstract class CryptographyClientTestBase extends TestBase {
     }
 
     void beforeTestSetup() {
+        KeyVaultCredentialPolicy.clearCache();
     }
 
     HttpPipeline getHttpPipeline(HttpClient httpClient)   {
-        TokenCredential credential = null;
+        TokenCredential credential;
 
         if (!interceptorManager.isPlaybackMode()) {
             String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
@@ -90,6 +89,13 @@ public abstract class CryptographyClientTestBase extends TestBase {
                 .tenantId(tenantId)
                 .additionallyAllowedTenants("*")
                 .build();
+        } else {
+            credential = new MockTokenCredential();
+
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            interceptorManager.addMatchers(customMatchers);
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -102,22 +108,21 @@ public abstract class CryptographyClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential, false));
+            // If in playback mode, disable the challenge resource verification.
+            policies.add(new KeyVaultCredentialPolicy(credential, interceptorManager.isPlaybackMode()));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
 
-        if (getTestMode() == TestMode.RECORD) {
+        if (interceptorManager.isRecordMode()) {
             policies.add(interceptorManager.getRecordPolicy());
         }
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
+        return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .build();
-
-        return pipeline;
     }
 
     static CryptographyClient initializeCryptographyClient(JsonWebKey key) {
@@ -168,24 +173,6 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
     @Test
     public abstract void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
-
-    @Test
-    public abstract void signVerifyOkp(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
-
-    void encryptDecryptOkpRunner(Consumer<CreateOkpKeyOptions> testRunner) throws Exception {
-        String keyName = testResourceNamer.randomName("testOkpKeySignVerify", 25);
-        final Map<String, String> tags = new HashMap<>();
-
-        tags.put("foo", "baz");
-
-        CreateOkpKeyOptions okpKeyOptions = new CreateOkpKeyOptions(testResourceNamer.randomName(keyName, 20))
-            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
-            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
-            .setTags(tags)
-            .setCurveName(KeyCurveName.ED25519);
-
-        testRunner.accept(okpKeyOptions);
-    }
 
     private static KeyPair getWellKnownKey() throws Exception {
         BigInteger modulus = new BigInteger("27266783713040163753473734334021230592631652450892850648620119914958066181400432364213298181846462385257448168605902438305568194683691563208578540343969522651422088760509452879461613852042845039552547834002168737350264189810815735922734447830725099163869215360401162450008673869707774119785881115044406101346450911054819448375712432746968301739007624952483347278954755460152795801894283389540036131881712321193750961817346255102052653789197325341350920441746054233522546543768770643593655942246891652634114922277138937273034902434321431672058220631825053788262810480543541597284376261438324665363067125951152574540779");
@@ -246,8 +233,8 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint = runManagedHsmTest
-            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
-            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "https://localhost:8080")
+            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080");
 
         Objects.requireNonNull(endpoint);
 

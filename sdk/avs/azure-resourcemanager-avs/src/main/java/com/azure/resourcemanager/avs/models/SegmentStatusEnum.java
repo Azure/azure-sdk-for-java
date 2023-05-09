@@ -17,6 +17,15 @@ public final class SegmentStatusEnum extends ExpandableStringEnum<SegmentStatusE
     public static final SegmentStatusEnum FAILURE = fromString("FAILURE");
 
     /**
+     * Creates a new instance of SegmentStatusEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SegmentStatusEnum() {
+    }
+
+    /**
      * Creates or finds a SegmentStatusEnum from its string representation.
      *
      * @param name a name to look for.

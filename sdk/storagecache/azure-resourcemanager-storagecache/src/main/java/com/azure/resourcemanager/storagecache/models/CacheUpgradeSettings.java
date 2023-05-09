@@ -12,21 +12,23 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class CacheUpgradeSettings {
     /*
-     * True if the user chooses to select an installation time between now and
-     * firmwareUpdateDeadline. Else the firmware will automatically be
-     * installed after firmwareUpdateDeadline if not triggered earlier via the
-     * upgrade operation.
+     * True if the user chooses to select an installation time between now and firmwareUpdateDeadline. Else the
+     * firmware will automatically be installed after firmwareUpdateDeadline if not triggered earlier via the upgrade
+     * operation.
      */
     @JsonProperty(value = "upgradeScheduleEnabled")
     private Boolean upgradeScheduleEnabled;
 
     /*
-     * When upgradeScheduleEnabled is true, this field holds the user-chosen
-     * upgrade time. At the user-chosen time, the firmware update will
-     * automatically be installed on the cache.
+     * When upgradeScheduleEnabled is true, this field holds the user-chosen upgrade time. At the user-chosen time, the
+     * firmware update will automatically be installed on the cache.
      */
     @JsonProperty(value = "scheduledTime")
     private OffsetDateTime scheduledTime;
+
+    /** Creates an instance of CacheUpgradeSettings class. */
+    public CacheUpgradeSettings() {
+    }
 
     /**
      * Get the upgradeScheduleEnabled property: True if the user chooses to select an installation time between now and

@@ -17,6 +17,10 @@ public final class WorkloadGroupInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private WorkloadGroupProperties innerProperties;
 
+    /** Creates an instance of WorkloadGroupInner class. */
+    public WorkloadGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Resource properties.
      *

@@ -9,18 +9,17 @@ import com.azure.resourcemanager.recoveryservices.models.ImmutabilitySettings;
 import com.azure.resourcemanager.recoveryservices.models.ImmutabilityState;
 import com.azure.resourcemanager.recoveryservices.models.SecuritySettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SecuritySettingsTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         SecuritySettings model =
             BinaryData.fromString("{\"immutabilitySettings\":{\"state\":\"Locked\"}}").toObject(SecuritySettings.class);
         Assertions.assertEquals(ImmutabilityState.LOCKED, model.immutabilitySettings().state());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SecuritySettings model =
             new SecuritySettings()
                 .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.LOCKED));

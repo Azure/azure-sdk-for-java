@@ -35,6 +35,10 @@ public final class TldLegalAgreementInner {
     @JsonProperty(value = "url")
     private String url;
 
+    /** Creates an instance of TldLegalAgreementInner class. */
+    public TldLegalAgreementInner() {
+    }
+
     /**
      * Get the agreementKey property: Unique identifier for the agreement.
      *

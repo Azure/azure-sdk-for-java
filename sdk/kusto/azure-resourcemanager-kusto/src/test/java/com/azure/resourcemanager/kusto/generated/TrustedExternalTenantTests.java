@@ -7,19 +7,19 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TrustedExternalTenantTests {
-    @Test
-    public void testDeserialize() {
-        TrustedExternalTenant model = BinaryData.fromString("{\"value\":\"ol\"}").toObject(TrustedExternalTenant.class);
-        Assertions.assertEquals("ol", model.value());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        TrustedExternalTenant model =
+            BinaryData.fromString("{\"value\":\"soacctazakl\"}").toObject(TrustedExternalTenant.class);
+        Assertions.assertEquals("soacctazakl", model.value());
     }
 
-    @Test
-    public void testSerialize() {
-        TrustedExternalTenant model = new TrustedExternalTenant().withValue("ol");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        TrustedExternalTenant model = new TrustedExternalTenant().withValue("soacctazakl");
         model = BinaryData.fromObject(model).toObject(TrustedExternalTenant.class);
-        Assertions.assertEquals("ol", model.value());
+        Assertions.assertEquals("soacctazakl", model.value());
     }
 }

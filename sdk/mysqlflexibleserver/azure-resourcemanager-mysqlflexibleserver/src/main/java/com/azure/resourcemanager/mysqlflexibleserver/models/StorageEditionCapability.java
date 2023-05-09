@@ -40,6 +40,10 @@ public final class StorageEditionCapability {
     @JsonProperty(value = "maxBackupRetentionDays", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxBackupRetentionDays;
 
+    /** Creates an instance of StorageEditionCapability class. */
+    public StorageEditionCapability() {
+    }
+
     /**
      * Get the name property: storage edition name.
      *

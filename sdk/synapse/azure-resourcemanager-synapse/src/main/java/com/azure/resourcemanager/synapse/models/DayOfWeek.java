@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DayOfWeek. */
+/** Day of maintenance window. */
 public final class DayOfWeek extends ExpandableStringEnum<DayOfWeek> {
     /** Static value Sunday for DayOfWeek. */
     public static final DayOfWeek SUNDAY = fromString("Sunday");
@@ -32,6 +32,15 @@ public final class DayOfWeek extends ExpandableStringEnum<DayOfWeek> {
     public static final DayOfWeek SATURDAY = fromString("Saturday");
 
     /**
+     * Creates a new instance of DayOfWeek value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DayOfWeek() {
+    }
+
+    /**
      * Creates or finds a DayOfWeek from its string representation.
      *
      * @param name a name to look for.
@@ -42,7 +51,11 @@ public final class DayOfWeek extends ExpandableStringEnum<DayOfWeek> {
         return fromString(name, DayOfWeek.class);
     }
 
-    /** @return known DayOfWeek values. */
+    /**
+     * Gets known DayOfWeek values.
+     *
+     * @return known DayOfWeek values.
+     */
     public static Collection<DayOfWeek> values() {
         return values(DayOfWeek.class);
     }

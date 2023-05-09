@@ -51,12 +51,12 @@ public final class BackupVaultResourceImpl
         return this.innerModel().etag();
     }
 
-    public DppIdentityDetails identity() {
-        return this.innerModel().identity();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public DppIdentityDetails identity() {
+        return this.innerModel().identity();
     }
 
     public BackupVault properties() {
