@@ -461,6 +461,7 @@ public class ClientSideRequestStatistics {
         return responseStatisticsList;
     }
 
+    @JsonIgnore
     public String getUserAgent() {
         return this.userAgent;
     }
