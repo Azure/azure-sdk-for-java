@@ -113,11 +113,12 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
     public static Object[][] faultInjectionServerErrorResponseProvider() {
         return new Object[][]{
             // faultInjectionServerError, will SDK retry, errorStatusCode, errorSubStatusCode
+            { FaultInjectionServerErrorType.GONE, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_410 },
             { FaultInjectionServerErrorType.INTERNAL_SERVER_ERROR, false, 500, 0 },
             { FaultInjectionServerErrorType.RETRY_WITH, true, 449, 0 },
             { FaultInjectionServerErrorType.TOO_MANY_REQUEST, true, 429, 0 },
             { FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE, true, 404, 1002 },
-            { FaultInjectionServerErrorType.TIMEOUT, false, 408, 0 },
+            { FaultInjectionServerErrorType.TIMEOUT, true, 410, HttpConstants.SubStatusCodes.SERVER_GENERATED_408 }, // for server return 408, SDK will wrap into 410/21010
             { FaultInjectionServerErrorType.PARTITION_IS_MIGRATING, true, 410, 1008 },
             { FaultInjectionServerErrorType.PARTITION_IS_SPLITTING, true, 410, 1007 }
         };
@@ -175,7 +176,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 cosmosDiagnostics,
                 operationType,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 serverGoneRuleId,
                 true);
 
@@ -293,7 +294,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     cosmosDiagnostics,
                     operationType,
                     HttpConstants.StatusCodes.GONE,
-                    HttpConstants.SubStatusCodes.UNKNOWN,
+                    HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                     writeRegionServerGoneRuleId,
                     true);
             } else {
@@ -393,7 +394,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 cosmosDiagnostics,
                 OperationType.Read,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 localRegionRuleId,
                 true
             );
@@ -455,7 +456,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             cosmosDiagnostics,
             OperationType.Query,
             HttpConstants.StatusCodes.GONE,
-            HttpConstants.SubStatusCodes.UNKNOWN,
+            HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
             feedRangeRuleId,
             true
         );
@@ -673,9 +674,29 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                     partitionSize,
                     serverConnectionDelayWarmupRule.getHitCount(),
                     serverConnectionDelayWarmupRule.getHitCountDetails());
-                this.validateHitCount(serverConnectionDelayWarmupRule, partitionSize, OperationType.Create, ResourceType.Connection);
+
+                // proactive connection management will try to establish one connection per primary
+                // and retry failed connection attempts at most twice per primary
+                int primaryAddressCount = partitionSize;
+                int maxConnectionRetriesPerPrimary = primaryAddressCount * 2;
+
+                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isLessThanOrEqualTo(primaryAddressCount + maxConnectionRetriesPerPrimary);
+
+                this.validateHitCount(
+                        serverConnectionDelayWarmupRule,
+                        serverConnectionDelayWarmupRule.getHitCount(),
+                        OperationType.Create,
+                        ResourceType.Connection);
             } else {
-                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(partitionSize * 3L, partitionSize * 5L);
+
+                // proactive connection management will try to establish one connection per replica
+                // and retry failed connection attempts at most twice per replica
+                long minSecondaryAddressesCount = 3L * partitionSize;
+                long maxAddressesCount = 5L * partitionSize;
+                long minTotalConnectionEstablishmentAttempts = minSecondaryAddressesCount + 2 * minSecondaryAddressesCount;
+                long maxTotalConnectionEstablishmentAttempts = maxAddressesCount + 2 * maxAddressesCount;
+
+                assertThat(serverConnectionDelayWarmupRule.getHitCount()).isBetween(minTotalConnectionEstablishmentAttempts, maxTotalConnectionEstablishmentAttempts);
 
                 this.validateHitCount(
                     serverConnectionDelayWarmupRule,
@@ -797,7 +818,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                         cosmosDiagnostics,
                         OperationType.Read,
                         HttpConstants.StatusCodes.GONE,
-                        HttpConstants.SubStatusCodes.UNKNOWN,
+                        HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                         hitLimitRuleId,
                         true
                     );
@@ -921,7 +942,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 cosmosDiagnostics,
                 OperationType.Create,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 serverGoneIncludePrimaryRuleId,
                 true);
 
@@ -931,7 +952,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 cosmosDiagnostics,
                 OperationType.Upsert,
                 HttpConstants.StatusCodes.GONE,
-                HttpConstants.SubStatusCodes.UNKNOWN,
+                HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
                 serverGoneIncludePrimaryRuleId,
                 true);
         } finally {

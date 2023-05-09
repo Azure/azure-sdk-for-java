@@ -4,13 +4,15 @@
 package com.azure.communication.callautomation.models;
 
 import com.azure.communication.common.CommunicationIdentifier;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.Duration;
 import java.util.List;
 
 /** The Recognize configurations specific for Dtmf. **/
-public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
+@Fluent
+public final class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
 
     /*
      * Time to wait between DTMF inputs to stop recognizing.
@@ -73,10 +75,97 @@ public class CallMediaRecognizeDtmfOptions extends CallMediaRecognizeOptions {
      * Set the stopTones property: List of tones that will stop recognizing.
      *
      * @param stopDtmfTones the stopTones value to set.
-     * @return the DtmfConfigurationsInternal object itself.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
      */
     public CallMediaRecognizeDtmfOptions setStopTones(List<DtmfTone> stopDtmfTones) {
         this.stopDtmfTones = stopDtmfTones;
+        return this;
+    }
+
+    /**
+     * Set the recognizeInputType property: Determines the type of the recognition.
+     *
+     * @param recognizeInputType the recognizeInputType value to set.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
+     */
+    @Override
+    public CallMediaRecognizeDtmfOptions setRecognizeInputType(RecognizeInputType recognizeInputType) {
+        super.setRecognizeInputType(recognizeInputType);
+        return this;
+    }
+
+    /**
+     * Set the playPrompt property: The source of the audio to be played for recognition.
+     *
+     * @param playPrompt the playPrompt value to set.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
+     */
+    @Override
+    public CallMediaRecognizeDtmfOptions setPlayPrompt(PlaySource playPrompt) {
+        super.setPlayPrompt(playPrompt);
+        return this;
+    }
+
+    /**
+     * Set the interruptCallMediaOperation property: If set recognize can barge into other existing
+     * queued-up/currently-processing requests.
+     *
+     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
+     */
+    @Override
+    public CallMediaRecognizeDtmfOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
+        super.setInterruptCallMediaOperation(interruptCallMediaOperation);
+        return this;
+    }
+
+    /**
+     * Set the stopCurrentOperations property: If set recognize can barge into other existing
+     * queued-up/currently-processing requests.
+     *
+     * @param stopCurrentOperations the stopCurrentOperations value to set.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
+     */
+    @Override
+    public CallMediaRecognizeDtmfOptions setStopCurrentOperations(Boolean stopCurrentOperations) {
+        super.setStopCurrentOperations(stopCurrentOperations);
+        return this;
+    }
+
+    /**
+     * Set the operationContext property: The value to identify context of the operation.
+     *
+     * @param operationContext the operationContext value to set.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
+     */
+    @Override
+    public CallMediaRecognizeDtmfOptions setOperationContext(String operationContext) {
+        super.setOperationContext(operationContext);
+        return this;
+    }
+
+    /**
+     * Set the interruptPrompt property: Determines if we interrupt the prompt and start recognizing.
+     *
+     * @param interruptPrompt the interruptPrompt value to set.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
+     */
+    @Override
+    public CallMediaRecognizeDtmfOptions setInterruptPrompt(
+        Boolean interruptPrompt) {
+        super.setInterruptPrompt(interruptPrompt);
+        return this;
+    }
+
+    /**
+     * Set the initialSilenceTimeout property: Time to wait for first input after prompt (if any).
+     *
+     * @param initialSilenceTimeout the initialSilenceTimeout value to set.
+     * @return the CallMediaRecognizeDtmfOptions object itself.
+     */
+    @Override
+    public CallMediaRecognizeDtmfOptions setInitialSilenceTimeout(Duration initialSilenceTimeout) {
+        super.setInitialSilenceTimeout(initialSilenceTimeout);
         return this;
     }
 

@@ -53,10 +53,7 @@ public class TestProxyManager {
 
                 ProcessBuilder builder = new ProcessBuilder(commandLine,
                     "--storage-location",
-                    recordingPath.toString(),
-                    "--",
-                    "--urls",
-                    TestProxyUtils.getProxyUrl().toString());
+                    recordingPath.toString());
                 Map<String, String> environment = builder.environment();
                 environment.put("LOGGING__LOGLEVEL", "Information");
                 environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");

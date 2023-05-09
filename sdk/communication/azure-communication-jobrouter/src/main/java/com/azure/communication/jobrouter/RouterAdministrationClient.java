@@ -342,7 +342,7 @@ public final class RouterAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DistributionPolicyItem> listDistributionPolicies() {
-        return new PagedIterable<>(this.client.listDistributionPolicies());
+        return new PagedIterable<>(this.client.listDistributionPolicies(null));
     }
 
     /**

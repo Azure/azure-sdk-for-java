@@ -37,6 +37,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
@@ -69,6 +70,7 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.CoreUtils.bytesToHexString;
+import static com.azure.core.util.CoreUtils.extractSizeFromContentRange;
 
 /**
  * This is the utility class that includes helper methods used across our clients.
@@ -85,7 +87,7 @@ public final class UtilsImpl {
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
 
     public static final String SUPPORTED_MANIFEST_TYPES = "*/*"
-        + "," + ManifestMediaType.OCI_MANIFEST
+        + "," + ManifestMediaType.OCI_IMAGE_MANIFEST
         + "," + ManifestMediaType.DOCKER_MANIFEST
         + ",application/vnd.oci.image.index.v1+json"
         + ",application/vnd.docker.distribution.manifest.list.v2+json"
@@ -93,6 +95,7 @@ public final class UtilsImpl {
 
     private static final String CONTAINER_REGISTRY_TRACING_NAMESPACE_VALUE = "Microsoft.ContainerRegistry";
     public static final int CHUNK_SIZE = 4 * 1024 * 1024;
+    public static final int MAX_MANIFEST_SIZE = 4 * 1024 * 1024;
     public static final String UPLOAD_BLOB_SPAN_NAME = "ContainerRegistryContentAsyncClient.uploadBlob";
     public static final String DOWNLOAD_BLOB_SPAN_NAME = "ContainerRegistryContentAsyncClient.downloadBlob";
 
@@ -106,6 +109,7 @@ public final class UtilsImpl {
      * @param retryPolicy retry policy
      * @param retryOptions retry options
      * @param credential credentials.
+     * @param audience the audience.
      * @param perCallPolicies per call policies.
      * @param perRetryPolicies per retry policies.
      * @param httpClient http client
@@ -113,7 +117,7 @@ public final class UtilsImpl {
      * @param serviceVersion the service api version being targeted by the client.
      * @return returns the httpPipeline to be consumed by the builders.
      */
-    public static HttpPipeline buildHttpPipeline(
+    public static HttpPipeline buildClientPipeline(
         ClientOptions clientOptions,
         HttpLogOptions logOptions,
         Configuration configuration,
@@ -128,57 +132,78 @@ public final class UtilsImpl {
         ContainerRegistryServiceVersion serviceVersion,
         Tracer tracer) {
 
+        if (credential == null) {
+            LOGGER.verbose("Credentials are null, enabling anonymous access");
+        }
+        if (audience == null)  {
+            LOGGER.info("Audience is not specified, defaulting to ACR access token scope.");
+            audience = ACR_ACCESS_TOKEN_AUDIENCE;
+        }
+
+        if (serviceVersion == null) {
+            serviceVersion = ContainerRegistryServiceVersion.getLatest();
+        }
+
+        HttpPipeline credentialsPipeline = buildPipeline(clientOptions, logOptions, configuration, retryPolicy, retryOptions, null, null, perCallPolicies, perRetryPolicies, httpClient, tracer);
+
+        return buildPipeline(clientOptions,
+            logOptions,
+            configuration,
+            retryPolicy,
+            retryOptions,
+            buildCredentialsPolicy(credentialsPipeline, credential, audience, endpoint, serviceVersion),
+            new RedirectPolicy(),
+            perCallPolicies,
+            perRetryPolicies,
+            httpClient,
+            tracer);
+    }
+
+    private static ContainerRegistryCredentialsPolicy buildCredentialsPolicy(HttpPipeline credentialPipeline, TokenCredential credential, ContainerRegistryAudience audience, String endpoint, ContainerRegistryServiceVersion serviceVersion) {
+        AzureContainerRegistryImpl acrClient = new AzureContainerRegistryImpl(
+            credentialPipeline,
+            endpoint,
+            serviceVersion.getVersion());
+
+        ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(credential, audience, acrClient);
+        return new ContainerRegistryCredentialsPolicy(tokenService, audience + "/.default");
+    }
+
+    private static HttpPipeline buildPipeline(ClientOptions clientOptions,
+                                              HttpLogOptions logOptions,
+                                              Configuration configuration,
+                                              RetryPolicy retryPolicy,
+                                              RetryOptions retryOptions,
+                                              ContainerRegistryCredentialsPolicy credentialPolicy,
+                                              RedirectPolicy redirectPolicy,
+                                              List<HttpPipelinePolicy> perCallPolicies,
+                                              List<HttpPipelinePolicy> perRetryPolicies,
+                                              HttpClient httpClient,
+                                              Tracer tracer) {
+
         ArrayList<HttpPipelinePolicy> policies = new ArrayList<>();
 
         policies.add(
             new UserAgentPolicy(CoreUtils.getApplicationId(clientOptions, logOptions), CLIENT_NAME, CLIENT_VERSION, configuration));
-        policies.add(new RequestIdPolicy());
 
+        policies.add(new RequestIdPolicy());
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         policies.add(new CookiePolicy());
         policies.add(new AddDatePolicy());
-        policies.add(new ContainerRegistryRedirectPolicy());
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+
+        if (credentialPolicy != null) {
+            policies.add(credentialPolicy);
+        }
+        if (redirectPolicy != null) {
+            policies.add(redirectPolicy);
+        }
 
         policies.addAll(perRetryPolicies);
-
-        // We generally put credential policy between BeforeRetry and AfterRetry policies and put Logging policy in the end.
-        // However since ACR uses the rest endpoints of the service in the credential policy,
-        // we want to be able to use the same pipeline (minus the credential policy) to have uniformity in the policy
-        // pipelines across all ACR endpoints.
-        if (credential == null) {
-            LOGGER.verbose("Credentials are null, enabling anonymous access");
-        }
-
-        HttpLoggingPolicy loggingPolicy = new HttpLoggingPolicy(logOptions);
-        ArrayList<HttpPipelinePolicy> credentialPolicies = clone(policies);
-        HttpPolicyProviders.addAfterRetryPolicies(credentialPolicies);
-        credentialPolicies.add(loggingPolicy);
-
-        if (audience == null)  {
-            LOGGER.info("Audience is not specified, defaulting to ACR access token scope.");
-            audience = ACR_ACCESS_TOKEN_AUDIENCE;
-        }
-
-        ContainerRegistryTokenService tokenService = new ContainerRegistryTokenService(
-            credential,
-            audience,
-            endpoint,
-            serviceVersion,
-            new HttpPipelineBuilder()
-                .policies(credentialPolicies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .clientOptions(clientOptions)
-                .tracer(tracer)
-                .build());
-
-        ContainerRegistryCredentialsPolicy credentialsPolicy = new ContainerRegistryCredentialsPolicy(tokenService);
-
-        policies.add(credentialsPolicy);
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(loggingPolicy);
+        policies.add(new HttpLoggingPolicy(logOptions));
 
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
@@ -186,11 +211,6 @@ public final class UtilsImpl {
             .clientOptions(clientOptions)
             .tracer(tracer)
             .build();
-    }
-
-    @SuppressWarnings("unchecked")
-    private static ArrayList<HttpPipelinePolicy> clone(ArrayList<HttpPipelinePolicy> policies) {
-        return (ArrayList<HttpPipelinePolicy>) policies.clone();
     }
 
     public static Tracer createTracer(ClientOptions clientOptions) {
@@ -214,7 +234,6 @@ public final class UtilsImpl {
     public static MessageDigest createSha256() {
         try {
             return MessageDigest.getInstance("SHA-256");
-
         } catch (NoSuchAlgorithmException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
@@ -231,6 +250,7 @@ public final class UtilsImpl {
     }
 
     public static Response<GetManifestResult> toGetManifestResponse(String tagOrDigest, Response<BinaryData> rawResponse) {
+        checkManifestSize(rawResponse.getHeaders());
         String digest = rawResponse.getHeaders().getValue(DOCKER_DIGEST_HEADER_NAME);
         String responseSha256 = computeDigest(rawResponse.getValue().toByteBuffer());
 
@@ -247,6 +267,30 @@ public final class UtilsImpl {
             rawResponse.getStatusCode(),
             rawResponse.getHeaders(),
             ConstructorAccessors.createGetManifestResult(digest, responseMediaType, rawResponse.getValue()));
+    }
+
+    private static long checkManifestSize(HttpHeaders headers) {
+        // part of the service threat model - if manifest does not have proper content length or manifest is too big
+        // it indicates a malicious or faulty service and should not be trusted.
+        String contentLengthString = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (CoreUtils.isNullOrEmpty(contentLengthString)) {
+            throw LOGGER.logExceptionAsError(new ServiceResponseException("Response does not include `Content-Length` header"));
+        }
+
+        try {
+            long contentLength = Long.parseLong(contentLengthString);
+            if (contentLength > MAX_MANIFEST_SIZE) {
+                throw LOGGER.atError()
+                    .addKeyValue("contentLength", contentLengthString)
+                    .log(new ServiceResponseException("Manifest size is bigger than 4MB"));
+            }
+
+            return contentLength;
+        } catch (NumberFormatException | NullPointerException e) {
+            throw LOGGER.atError()
+                .addKeyValue("contentLength", contentLengthString)
+                .log(new ServiceResponseException("Could not parse `Content-Length` header"));
+        }
     }
 
     /**
@@ -438,15 +482,26 @@ public final class UtilsImpl {
         return locationHeader;
     }
 
-    public static long getBlobSize(HttpHeader contentRangeHeader) {
+    public static long getBlobSize(HttpHeaders headers) {
+        HttpHeader contentRangeHeader = headers.get(HttpHeaderName.CONTENT_RANGE);
         if (contentRangeHeader != null) {
-            int slashInd = contentRangeHeader.getValue().indexOf('/');
-            if (slashInd > 0) {
-                return Long.parseLong(contentRangeHeader.getValue().substring(slashInd + 1));
+            long size = extractSizeFromContentRange(contentRangeHeader.getValue());
+            if (size > 0) {
+                return size;
             }
         }
 
-        throw LOGGER.logExceptionAsError(new ServiceResponseException("Invalid content-range header in response -" + contentRangeHeader));
+        throw LOGGER.atError()
+            .addKeyValue("contentRange", contentRangeHeader)
+            .log(new ServiceResponseException("Missing or invalid content-range header in response"));
+    }
+
+    public static long getContentLength(HttpHeader contentLengthHeader) {
+        if (contentLengthHeader != null && contentLengthHeader.getValue() != null) {
+            return Long.parseLong(contentLengthHeader.getValue());
+        }
+
+        throw LOGGER.logExceptionAsError(new ServiceResponseException("Content-Length header in missing in the response"));
     }
 
     /**

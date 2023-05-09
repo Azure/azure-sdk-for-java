@@ -30,10 +30,14 @@ public final class ApplianceInner extends Resource {
     private ApplianceProperties innerProperties;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of ApplianceInner class. */
+    public ApplianceInner() {
+    }
 
     /**
      * Get the identity property: Identity for the resource.
@@ -65,7 +69,7 @@ public final class ApplianceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -144,7 +148,7 @@ public final class ApplianceInner extends Resource {
     }
 
     /**
-     * Get the publicKey property: Certificates pair used to download MSI certificate from HIS.
+     * Get the publicKey property: Certificates pair used to download MSI certificate from HIS. Can only be set once.
      *
      * @return the publicKey value.
      */
@@ -153,7 +157,7 @@ public final class ApplianceInner extends Resource {
     }
 
     /**
-     * Set the publicKey property: Certificates pair used to download MSI certificate from HIS.
+     * Set the publicKey property: Certificates pair used to download MSI certificate from HIS. Can only be set once.
      *
      * @param publicKey the publicKey value to set.
      * @return the ApplianceInner object itself.

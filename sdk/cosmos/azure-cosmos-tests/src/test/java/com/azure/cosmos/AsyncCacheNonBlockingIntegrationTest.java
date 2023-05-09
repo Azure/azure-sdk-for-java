@@ -63,7 +63,7 @@ public class AsyncCacheNonBlockingIntegrationTest extends BatchTestBase {
         safeCloseAsync(this.bulkClient);
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT * 200)
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 20)
     public void createItem_withCacheRefresh() throws InterruptedException {
         String containerId = "bulksplittestcontainer_" + UUID.randomUUID();
         int totalRequest = getTotalRequest();

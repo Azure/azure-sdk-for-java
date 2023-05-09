@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for TagOperations CreateOrUpdateAtScope. */
 public final class TagOperationsCreateOrUpdateAtScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PutTagsResource.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutTagsResource.json
      */
     /**
      * Sample code: Update tags on a resource.
@@ -25,15 +25,17 @@ public final class TagOperationsCreateOrUpdateAtScopeSamples {
             .manager()
             .serviceClient()
             .getTagOperations()
-            .createOrUpdateAtScopeWithResponse(
+            .createOrUpdateAtScope(
                 "subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/my-resource-group/providers/myPRNameSpace/VM/myVm",
                 new TagsResourceInner()
-                    .withProperties(new Tags().withTags(mapOf("tagKey1", "tag-value-1", "tagKey2", "tag-value-2"))),
+                    .withProperties(
+                        new Tags()
+                            .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder"))),
                 com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/PutTagsSubscription.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/PutTagsSubscription.json
      */
     /**
      * Sample code: Update tags on a subscription.
@@ -46,10 +48,12 @@ public final class TagOperationsCreateOrUpdateAtScopeSamples {
             .manager()
             .serviceClient()
             .getTagOperations()
-            .createOrUpdateAtScopeWithResponse(
+            .createOrUpdateAtScope(
                 "subscriptions/00000000-0000-0000-0000-000000000000",
                 new TagsResourceInner()
-                    .withProperties(new Tags().withTags(mapOf("tagKey1", "tag-value-1", "tagKey2", "tag-value-2"))),
+                    .withProperties(
+                        new Tags()
+                            .withTags(mapOf("tagKey1", "fakeTokenPlaceholder", "tagKey2", "fakeTokenPlaceholder"))),
                 com.azure.core.util.Context.NONE);
     }
 

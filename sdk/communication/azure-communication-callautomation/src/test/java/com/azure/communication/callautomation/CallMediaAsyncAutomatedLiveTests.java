@@ -72,7 +72,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
             CreateGroupCallOptions createCallOptions = new CreateGroupCallOptions(targets,
                 DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
-            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createCallWithResponse(createCallOptions).block();
+            Response<CreateCallResult> createCallResultResponse = callerAsyncClient.createGroupCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
             assertNotNull(createCallResult);
@@ -95,14 +95,14 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(callConnectedEvent);
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
 
             // play media to all participants
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
-            callMediaAsync.playToAll(new FileSource().setUri(MEDIA_SOURCE)).block();
-            PlayCompleted playCompletedEvent = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
-            assertNotNull(playCompletedEvent);
+            callMediaAsync.playToAll(new FileSource().setUrl(MEDIA_SOURCE)).block();
+            PlayCompleted playCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(playCompleted);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {
