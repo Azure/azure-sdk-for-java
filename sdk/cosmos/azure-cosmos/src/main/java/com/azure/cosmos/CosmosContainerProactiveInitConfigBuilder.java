@@ -98,7 +98,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
                 "minConnectionsPerEndpoint cannot be negative or greater than {}", MAX_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT);
 
         ContainerDirectConnectionMetadata containerDirectConnectionMetadata = this.containerDirectConnectionMetadataMap.get(cosmosContainerIdentity);
-        containerDirectConnectionMetadata.setMinConnectionCountPerEndpoint(minConnectionsPerEndpoint);
+        containerDirectConnectionMetadata.setMinConnectionPoolSizePerEndpointForContainer(minConnectionsPerEndpoint);
 
         return this;
     }

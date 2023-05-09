@@ -9,18 +9,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class ContainerDirectConnectionMetadata {
     private final CosmosContainerIdentity cosmosContainerIdentity;
-    private final AtomicInteger minConnectionCountPerEndpoint;
+    private final AtomicInteger minConnectionPoolSizePerEndpointForContainer;
 
     public ContainerDirectConnectionMetadata(CosmosContainerIdentity cosmosContainerIdentity) {
         this.cosmosContainerIdentity = cosmosContainerIdentity;
-        this.minConnectionCountPerEndpoint = new AtomicInteger(1);
+        this.minConnectionPoolSizePerEndpointForContainer = new AtomicInteger(1);
     }
 
-    public void setMinConnectionCountPerEndpoint(int minConnectionCountPerEndpoint) {
-        this.minConnectionCountPerEndpoint.set(minConnectionCountPerEndpoint);
+    public void setMinConnectionPoolSizePerEndpointForContainer(int minConnectionPoolSizePerEndpointForContainer) {
+        this.minConnectionPoolSizePerEndpointForContainer.set(minConnectionPoolSizePerEndpointForContainer);
     }
 
-    int getMinConnectionCountPerEndpoint() {
-        return this.minConnectionCountPerEndpoint.get();
+    int getMinConnectionPoolSizePerEndpointForContainer() {
+        return this.minConnectionPoolSizePerEndpointForContainer.get();
     }
 }
