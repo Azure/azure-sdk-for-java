@@ -38,17 +38,17 @@ public final class ConsumerSettings {
         final String hostname = amqpConnection.getFullyQualifiedNamespace();
         final AmqpMetricsProvider metricsProvider = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath);
         if (this.useLegacyReceiver) {
-            final ReceiveLinkHandler receiveLinkHandler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath);
-            BaseHandler.setHandler(receiver, receiveLinkHandler);
+            final ReceiveLinkHandler handler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath);
+            BaseHandler.setHandler(receiver, handler);
             receiver.open();
-            return linkProvider.createReceiveLink(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
+            return linkProvider.createReceiveLink(amqpConnection, entityPath, receiver, handler, tokenManager,
                 reactorProvider.getReactorDispatcher(), retryOptions, metricsProvider);
         } else {
-            final ReceiveLinkHandler2 receiveLinkHandler = handlerProvider.createReceiveLinkHandler2(connectionId, hostname, linkName, entityPath,
+            final ReceiveLinkHandler2 handler = handlerProvider.createReceiveLinkHandler2(connectionId, hostname, linkName, entityPath,
                 settleMode, includeDeliveryTagInMessage, reactorProvider.getReactorDispatcher(), retryOptions);
-            BaseHandler.setHandler(receiver, receiveLinkHandler);
+            BaseHandler.setHandler(receiver, handler);
             receiver.open();
-            return linkProvider.createReceiveLink2(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
+            return linkProvider.createReceiveLink(amqpConnection, entityPath, receiver, handler, tokenManager,
                 reactorProvider.getReactorDispatcher(), retryOptions, metricsProvider);
         }
     }
