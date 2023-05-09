@@ -1746,7 +1746,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Renewing message lock is an invalid operation when working with sessions."));
         }
         final Duration maxRenewalDuration = receiverOptions.getMaxLockRenewDuration();
-        Objects.requireNonNull(maxRenewalDuration,"'receivingOptions.maxAutoLockRenewDuration' is required for recurring lock renewal.");
+        Objects.requireNonNull(maxRenewalDuration, "'receivingOptions.maxAutoLockRenewDuration' is required for recurring lock renewal.");
 
         final ServiceBusReceivedMessage message = messageContext.getMessage();
         if (message == null) {
@@ -1775,7 +1775,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .map(nextExpireAt -> {
                 message.setLockedUntil(nextExpireAt);
                 return nextExpireAt;
-        });
+            });
 
         // The operation performing recurring renewal by subscribing to 'renewalMono' before the message expires each time.
         // The periodic renewal stops when the object is disposed of, or when the 'maxRenewalDuration' elapses.

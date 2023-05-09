@@ -71,7 +71,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.messaging.servicebus.ReceiverOptions.createNonSessionOptions;
@@ -2191,7 +2190,7 @@ public final class ServiceBusClientBuilder implements
                     onClientClose = ServiceBusClientBuilder.this::onClientClose;
                 }
             }
-            final ReceiverOptions receiverOptions = createNonSessionOptions(receiveMode, prefetchCount, 
+            final ReceiverOptions receiverOptions = createNonSessionOptions(receiveMode, prefetchCount,
                 maxAutoLockRenewDuration, enableAutoComplete);
 
             final String clientIdentifier;

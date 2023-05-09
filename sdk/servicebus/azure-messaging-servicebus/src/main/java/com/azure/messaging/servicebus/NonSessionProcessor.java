@@ -10,7 +10,10 @@ import org.reactivestreams.Subscription;
 import reactor.core.CoreSubscriber;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
-import reactor.core.publisher.*;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
+import reactor.core.publisher.Sinks;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 import reactor.util.retry.Retry;
@@ -106,7 +109,7 @@ public final class NonSessionProcessor {
     public void close() {
         // Note: 'stop' (i.e. pause) calls after 'close' but before 'start' has no effect.
         final RecoverableMessagePump p;
-        synchronized(lock) {
+        synchronized (lock) {
             this.isClosed = true;
             p = this.pump;
         }
@@ -133,7 +136,7 @@ public final class NonSessionProcessor {
      * The abstraction that wraps a {@link MessagePump} and transparently moves to the next 'MessagePump' when
      * the current one terminates.
      */
-    private final static class RecoverableMessagePump {
+    private static final class RecoverableMessagePump {
         static final RuntimeException PUMP_TERMINATED = new RuntimeException("Pump is Terminated (due to Processor close).");
         private final ServiceBusClientBuilder builder;
         private final int concurrency;
@@ -190,9 +193,7 @@ public final class NonSessionProcessor {
                 final MessagePump pump = nextPump();
                 // Lock free when pumping message.
                 return pump.begin();
-            })
-            .retryWhen(retryWhenSpec())
-            .subscribe();
+            }).retryWhen(retryWhenSpec()).subscribe();
 
             disposable.add(d);
         }
@@ -254,7 +255,7 @@ public final class NonSessionProcessor {
     /**
      * Abstraction to pump messages as long as the associated 'ServiceBusReceiverAsyncClient' is healthy.
      */
-    private final static class MessagePump {
+    private static final class MessagePump {
         static final RuntimeException PUMP_COMPLETED = new RuntimeException("Pump Terminated with completion.");
         private static final AtomicLong COUNTER = new AtomicLong();
         private final ClientLogger logger;
@@ -420,7 +421,7 @@ public final class NonSessionProcessor {
      * when paused, get locally accumulated. Upon resuming, the accumulated request flows as the back pressure to
      * the source.
      */
-    private final static class PausableSubscription extends AtomicReference<Subscription> implements Subscription {
+    private static final class PausableSubscription extends AtomicReference<Subscription> implements Subscription {
         private final AtomicReference<Subscription> source = new AtomicReference<>();
         private final Paused paused;
         private final Object lock = new Object();
@@ -492,7 +493,7 @@ public final class NonSessionProcessor {
          * Inner Subscription represents the paused state (i.e., pause() called) and to accumulates
          * requests while paused.
          */
-        private final class Paused extends AtomicLong implements Subscription {
+        private static final class Paused extends AtomicLong implements Subscription {
 
             @Override
             public void request(long r) {
@@ -514,7 +515,7 @@ public final class NonSessionProcessor {
      *
      * @param <T> the event type.
      */
-    private final static class ParallelPumping<T> {
+    private static final class ParallelPumping<T> {
         private final Sinks.Many<T> sink = Sinks.many().multicast().onBackpressureBuffer();
         private final int concurrency;
 
