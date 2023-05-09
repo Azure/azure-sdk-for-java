@@ -63,7 +63,7 @@ class SchemaRegistrySchemaCache {
         }
 
         final Mono<SchemaProperties> serviceCall;
-        if (autoRegisterSchemas) {
+        if ( autoRegisterSchemas) {
             serviceCall = this.schemaRegistryClient
                 .registerSchema(schemaGroup, schemaFullName, schemaString, SchemaFormat.AVRO);
         } else {
