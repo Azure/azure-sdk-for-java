@@ -1,5 +1,36 @@
 # Release History
 
+## 1.40.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.39.0 (2023-05-04)
+
+### Features Added
+
+- Added `HttpHeaders.setAllHttpHeaders(HttpHeaders)` to provide a way to efficiently combine two `HttpHeaders`.
+- Added `CoreUtils.parseQueryParameters` to efficient parse query parameters without array overhead found with `String.split`.
+
+### Breaking Changes
+
+- Deprecated `String`-based APIs on `HttpHeaders`, `HttpRequest`, `HttpResponse`, and `RequestOptions`. Use 
+  `HttpHeaderName`-based APIs instead as they provide better performance.
+
+### Bugs Fixed
+
+- Fixed an edge case when parsing query parameters without a value (`key&key2=value2`). ([#34459](https://github.com/Azure/azure-sdk-for-java/pull/34459))
+
+### Other Changes
+
+- Changed how handling supporting multiple versions of Jackson happens internally to reduce usage of reflection. ([#34468](https://github.com/Azure/azure-sdk-for-java/pull/34468))
+- Improved request and response body logging to reduce memory allocations.
+
 ## 1.38.0 (2023-04-07)
 
 ### Features Added

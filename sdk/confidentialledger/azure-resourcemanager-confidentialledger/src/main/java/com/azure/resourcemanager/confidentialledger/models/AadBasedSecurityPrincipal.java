@@ -28,6 +28,10 @@ public final class AadBasedSecurityPrincipal {
     @JsonProperty(value = "ledgerRoleName")
     private LedgerRoleName ledgerRoleName;
 
+    /** Creates an instance of AadBasedSecurityPrincipal class. */
+    public AadBasedSecurityPrincipal() {
+    }
+
     /**
      * Get the principalId property: UUID/GUID based Principal Id of the Security Principal.
      *

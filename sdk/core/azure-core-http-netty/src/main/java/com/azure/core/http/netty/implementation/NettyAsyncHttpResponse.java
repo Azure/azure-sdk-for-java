@@ -3,6 +3,7 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
@@ -52,7 +53,8 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<String> getBodyAsString() {
-        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes, getHeaderValue("Content-Type")));
+        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes,
+            getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override

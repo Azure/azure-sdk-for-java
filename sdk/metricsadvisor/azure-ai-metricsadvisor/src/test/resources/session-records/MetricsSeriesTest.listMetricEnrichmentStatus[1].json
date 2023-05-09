@@ -1,26 +1,40 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/metrics/b6c0649c-0c51-4aa6-82b6-3c3b0aa55066/status/enrichment/anomalyDetection/query",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "eb7c207a-7a69-4180-83e2-85e57b17e7d8",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "c52b6eb1-0b58-4f54-9afe-2159c0791231",
-      "content-length" : "29",
-      "x-envoy-upstream-service-time" : "277",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "c52b6eb1-0b58-4f54-9afe-2159c0791231",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"value\":[],\"@nextLink\":null}",
-      "Date" : "Fri, 08 Apr 2022 23:50:14 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/metricsadvisor/v1.0/metrics/b6c0649c-0c51-4aa6-82b6-3c3b0aa55066/status/enrichment/anomalyDetection/query",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "69",
+        "Content-Type": "application/json",
+        "Date": "Mon, 17 Apr 2023 23:00:09 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-metricsadvisor/1.1.13 (11.0.9; Windows 10; 10.0)",
+        "x-api-key": "REDACTED",
+        "x-ms-client-request-id": "2927bfec-5e4b-466a-bc8a-5bf1bd6533aa",
+        "x-ms-return-client-request-id": "true"
+      },
+      "RequestBody": {
+        "startTime": "2021-10-01T00:00:00Z",
+        "endTime": "2021-10-30T00:00:00Z"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "b07897fb-d288-4288-8ee9-fb7bde0878d6",
+        "Content-Length": "29",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Mon, 17 Apr 2023 23:00:08 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "327",
+        "x-ms-region": "West US 2",
+        "X-Request-ID": "b07897fb-d288-4288-8ee9-fb7bde0878d6"
+      },
+      "ResponseBody": {
+        "value": [],
+        "@nextLink": null
+      }
+    }
+  ],
+  "Variables": {}
 }

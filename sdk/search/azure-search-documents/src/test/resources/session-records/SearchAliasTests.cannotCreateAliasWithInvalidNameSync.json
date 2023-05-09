@@ -1,31 +1,53 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/aliases?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "47890cd3-908b-4897-9d09-e5e113c5bcd1",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "47890cd3-908b-4897-9d09-e5e113c5bcd1",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:24:19 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "47890cd3-908b-4897-9d09-e5e113c5bcd1",
-      "elapsed-time" : "5",
-      "Expires" : "-1",
-      "Content-Length" : "436",
-      "Body" : "{\"error\":{\"code\":\"InvalidName\",\"message\":\"The request is invalid. Details: alias : Index alias name must only contain lowercase letters, digits or dashes, cannot start or end with dashes and is limited to 128 characters.\",\"details\":[{\"code\":\"InvalidIndexAliasName\",\"message\":\"Index alias name must only contain lowercase letters, digits or dashes, cannot start or end with dashes and is limited to 128 characters. Parameters: alias\"}]}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "47890cd3-908b-4897-9d09-e5e113c5bcd1",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/aliases?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "88",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:56:41 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d7a845a1-6ed6-48a7-984c-c0f548c8e88f"
+      },
+      "RequestBody": {
+        "name": "--invalid--alias-name",
+        "indexes": [
+          "azsearch-search-shared-hotel-instance-one"
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "d7a845a1-6ed6-48a7-984c-c0f548c8e88f",
+        "Content-Language": "en",
+        "Content-Length": "436",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 19:56:40 GMT",
+        "elapsed-time": "6",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "d7a845a1-6ed6-48a7-984c-c0f548c8e88f",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "d7a845a1-6ed6-48a7-984c-c0f548c8e88f"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidName",
+          "message": "The request is invalid. Details: alias : Index alias name must only contain lowercase letters, digits or dashes, cannot start or end with dashes and is limited to 128 characters.",
+          "details": [
+            {
+              "code": "InvalidIndexAliasName",
+              "message": "Index alias name must only contain lowercase letters, digits or dashes, cannot start or end with dashes and is limited to 128 characters. Parameters: alias"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

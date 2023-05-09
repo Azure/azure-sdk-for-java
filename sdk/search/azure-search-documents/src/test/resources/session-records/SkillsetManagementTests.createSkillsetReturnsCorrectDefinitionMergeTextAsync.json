@@ -1,54 +1,145 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "d81bb095-51d8-41bb-ad89-fc61a8730aec",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/skillsets?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "488",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:18:41 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "2ae60b7d-f4af-402b-9e46-906473132f13"
+      },
+      "RequestBody": {
+        "name": "merge-text-skillset25047b363ad3f9ec2",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Text.MergeSkill",
+            "inputs": [
+              {
+                "name": "text",
+                "source": "/document/text"
+              },
+              {
+                "name": "itemsToInsert",
+                "source": "/document/textitems"
+              },
+              {
+                "name": "offsets",
+                "source": "/document/offsets"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "mergedText",
+                "targetName": "myMergedText"
+              }
+            ],
+            "name": "mymerge",
+            "description": "Tested Merged Text skill",
+            "context": "/document",
+            "insertPreTag": "__",
+            "insertPostTag": "__e"
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "2ae60b7d-f4af-402b-9e46-906473132f13",
+        "Content-Length": "794",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:18:39 GMT",
+        "elapsed-time": "66",
+        "ETag": "W/\u00220x8DB20DB7919FE06\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/skillsets(\u0027merge-text-skillset25047b363ad3f9ec2\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "2ae60b7d-f4af-402b-9e46-906473132f13",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "2ae60b7d-f4af-402b-9e46-906473132f13"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\u00220x8DB20DB7919FE06\u0022",
+        "name": "merge-text-skillset25047b363ad3f9ec2",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Text.MergeSkill",
+            "name": "mymerge",
+            "description": "Tested Merged Text skill",
+            "context": "/document",
+            "insertPreTag": "__",
+            "insertPostTag": "__e",
+            "inputs": [
+              {
+                "name": "text",
+                "source": "/document/text",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "itemsToInsert",
+                "source": "/document/textitems",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "offsets",
+                "source": "/document/offsets",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "mergedText",
+                "targetName": "myMergedText"
+              }
+            ]
+          }
+        ],
+        "cognitiveServices": null,
+        "knowledgeStore": null,
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "d81bb095-51d8-41bb-ad89-fc61a8730aec",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:46:06 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "d81bb095-51d8-41bb-ad89-fc61a8730aec",
-      "ETag" : "W/\"0x8DAF8CBDB6CAC8A\"",
-      "elapsed-time" : "42",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "782",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBDB6CAC8A\\\"\",\"name\":\"merge-text-skillset41247613ebffe667c\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":\"__\",\"insertPostTag\":\"__e\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "d81bb095-51d8-41bb-ad89-fc61a8730aec",
-      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('merge-text-skillset41247613ebffe667c')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('merge-text-skillset41247613ebffe667c')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "66965329-8a13-4a64-b824-c8fe798dd22f"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "66965329-8a13-4a64-b824-c8fe798dd22f",
-      "elapsed-time" : "29",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "66965329-8a13-4a64-b824-c8fe798dd22f",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:46:06 GMT",
-      "x-ms-client-request-id" : "66965329-8a13-4a64-b824-c8fe798dd22f"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "merge-text-skillset41247613ebffe667c" ]
+    {
+      "RequestUri": "https://REDACTED/skillsets(\u0027merge-text-skillset25047b363ad3f9ec2\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:18:41 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d63ef6e8-7cb7-41fa-8348-bc0643ad4a15"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "d63ef6e8-7cb7-41fa-8348-bc0643ad4a15",
+        "Date": "Thu, 09 Mar 2023 20:18:40 GMT",
+        "elapsed-time": "40",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "d63ef6e8-7cb7-41fa-8348-bc0643ad4a15",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "d63ef6e8-7cb7-41fa-8348-bc0643ad4a15"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "merge-text-skillset25047b363ad3f9ec2"
+  }
 }

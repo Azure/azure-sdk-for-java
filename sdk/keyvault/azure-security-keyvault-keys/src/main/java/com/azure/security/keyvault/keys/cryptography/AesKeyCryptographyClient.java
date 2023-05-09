@@ -24,11 +24,11 @@ import java.security.SecureRandom;
 import java.util.Objects;
 
 class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
-    static final int AES_BLOCK_SIZE = 16;
-
-    private final ClientLogger logger = new ClientLogger(AesKeyCryptographyClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AesKeyCryptographyClient.class);
 
     private byte[] key;
+
+    static final int AES_BLOCK_SIZE = 16;
 
     /**
      * Creates a {@link AesKeyCryptographyClient} to perform local cryptography operations.
@@ -74,14 +74,14 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         if (!isAes(algorithm)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Key is empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Key is empty."));
         }
 
         // Interpret the algorithm
@@ -99,7 +99,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
             if (isAes(algorithm)) {
                 iv = generateRandomByteArray(AES_BLOCK_SIZE);
             } else {
-                throw logger.logExceptionAsError(
+                throw LOGGER.logExceptionAsError(
                     new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
             }
         }
@@ -145,14 +145,14 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         }
 
         if (!isAes(algorithm)) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException("Encryption algorithm provided is not supported: " + algorithm));
         }
 
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Key is empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Key is empty."));
         }
 
         // Interpret the algorithm
@@ -202,7 +202,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         this.key = getKey(jsonWebKey);
 
         if (key == null || key.length == 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("key"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("key"));
         }
 
         // Interpret the algorithm
@@ -284,7 +284,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
             iv = new byte[sizeInBytes];
             randomSecureRandom.nextBytes(iv);
         } catch (NoSuchAlgorithmException e) {
-            logger.logThrowableAsError(e);
+            LOGGER.logThrowableAsError(e);
         }
 
         return iv;

@@ -3,7 +3,7 @@
 
 package com.azure.communication.jobrouter;
 
-import com.azure.communication.jobrouter.implementation.AzureCommunicationRoutingServiceImpl;
+import com.azure.communication.jobrouter.implementation.AzureCommunicationServicesImpl;
 import com.azure.communication.jobrouter.implementation.JobRouterAdministrationsImpl;
 import com.azure.communication.jobrouter.implementation.convertors.ClassificationPolicyAdapter;
 import com.azure.communication.jobrouter.implementation.convertors.DistributionPolicyAdapter;
@@ -64,7 +64,7 @@ public final class RouterAdministrationAsyncClient {
 
     private final JobRouterAdministrationsImpl jobRouterAdmin;
 
-    RouterAdministrationAsyncClient(AzureCommunicationRoutingServiceImpl jobRouterService) {
+    RouterAdministrationAsyncClient(AzureCommunicationServicesImpl jobRouterService) {
         this.jobRouterAdmin = jobRouterService.getJobRouterAdministrations();
     }
 
@@ -282,7 +282,7 @@ public final class RouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ClassificationPolicyItem> listClassificationPolicies() {
         try {
-            return jobRouterAdmin.listClassificationPoliciesAsync();
+            return jobRouterAdmin.listClassificationPoliciesAsync(null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -507,22 +507,6 @@ public final class RouterAdministrationAsyncClient {
             return jobRouterAdmin.deleteDistributionPolicyWithResponseAsync(id, context);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
-        }
-    }
-
-    /**
-     * Retrieves existing distribution policies.
-     *
-     * @return a paged collection of distribution policies.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DistributionPolicyItem> listDistributionPolicies() {
-        try {
-            return jobRouterAdmin.listDistributionPoliciesAsync();
-        } catch (RuntimeException ex) {
-            return pagedFluxError(LOGGER, ex);
         }
     }
 
@@ -758,7 +742,7 @@ public final class RouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExceptionPolicyItem> listExceptionPolicies() {
         try {
-            return jobRouterAdmin.listExceptionPoliciesAsync();
+            return jobRouterAdmin.listExceptionPoliciesAsync(null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }
@@ -996,7 +980,7 @@ public final class RouterAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobQueueItem> listQueues() {
         try {
-            return jobRouterAdmin.listQueuesAsync();
+            return jobRouterAdmin.listQueuesAsync(null);
         } catch (RuntimeException ex) {
             return pagedFluxError(LOGGER, ex);
         }

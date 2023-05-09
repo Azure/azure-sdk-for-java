@@ -1,54 +1,144 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "8826efe4-9d3f-4b96-b9ca-0f363947232b",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/skillsets?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "454",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:18:43 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "1f1dc320-82ef-46d9-b09d-dd39d645e517"
+      },
+      "RequestBody": {
+        "name": "nested-skillset-with-sharperskill399590da23",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Util.ShaperSkill",
+            "inputs": [
+              {
+                "name": "doc",
+                "sourceContext": "/document",
+                "inputs": [
+                  {
+                    "name": "text",
+                    "source": "/document/content"
+                  },
+                  {
+                    "name": "images",
+                    "source": "/document/normalized_images/*"
+                  }
+                ]
+              }
+            ],
+            "outputs": [
+              {
+                "name": "output",
+                "targetName": "myOutput"
+              }
+            ],
+            "name": "myshaper",
+            "description": "Tested Shaper skill",
+            "context": "/document"
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "1f1dc320-82ef-46d9-b09d-dd39d645e517",
+        "Content-Length": "741",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:18:42 GMT",
+        "elapsed-time": "49",
+        "ETag": "W/\u00220x8DB20DB7AA175D3\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/skillsets(\u0027nested-skillset-with-sharperskill399590da23\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "1f1dc320-82ef-46d9-b09d-dd39d645e517",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "1f1dc320-82ef-46d9-b09d-dd39d645e517"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\u00220x8DB20DB7AA175D3\u0022",
+        "name": "nested-skillset-with-sharperskill399590da23",
+        "description": "Skillset for testing",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Util.ShaperSkill",
+            "name": "myshaper",
+            "description": "Tested Shaper skill",
+            "context": "/document",
+            "inputs": [
+              {
+                "name": "doc",
+                "source": null,
+                "sourceContext": "/document",
+                "inputs": [
+                  {
+                    "name": "text",
+                    "source": "/document/content",
+                    "sourceContext": null,
+                    "inputs": []
+                  },
+                  {
+                    "name": "images",
+                    "source": "/document/normalized_images/*",
+                    "sourceContext": null,
+                    "inputs": []
+                  }
+                ]
+              }
+            ],
+            "outputs": [
+              {
+                "name": "output",
+                "targetName": "myOutput"
+              }
+            ]
+          }
+        ],
+        "cognitiveServices": null,
+        "knowledgeStore": null,
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "8826efe4-9d3f-4b96-b9ca-0f363947232b",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:46:08 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "8826efe4-9d3f-4b96-b9ca-0f363947232b",
-      "ETag" : "W/\"0x8DAF8CBDCBAA5EA\"",
-      "elapsed-time" : "46",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "729",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBDCBAA5EA\\\"\",\"name\":\"nested-skillset-with-sharperskill457866607b\",\"description\":\"Skillset for testing\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Util.ShaperSkill\",\"name\":\"myshaper\",\"description\":\"Tested Shaper skill\",\"context\":\"/document\",\"inputs\":[{\"name\":\"doc\",\"source\":null,\"sourceContext\":\"/document\",\"inputs\":[{\"name\":\"text\",\"source\":\"/document/content\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"images\",\"source\":\"/document/normalized_images/*\",\"sourceContext\":null,\"inputs\":[]}]}],\"outputs\":[{\"name\":\"output\",\"targetName\":\"myOutput\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "8826efe4-9d3f-4b96-b9ca-0f363947232b",
-      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('nested-skillset-with-sharperskill457866607b')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('nested-skillset-with-sharperskill457866607b')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f31ac177-28dc-44ce-be4e-b37bdceaf008"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "f31ac177-28dc-44ce-be4e-b37bdceaf008",
-      "elapsed-time" : "27",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "f31ac177-28dc-44ce-be4e-b37bdceaf008",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:46:08 GMT",
-      "x-ms-client-request-id" : "f31ac177-28dc-44ce-be4e-b37bdceaf008"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "nested-skillset-with-sharperskill457866607b" ]
+    {
+      "RequestUri": "https://REDACTED/skillsets(\u0027nested-skillset-with-sharperskill399590da23\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:18:43 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "277c7a28-0937-4648-93d9-5f4a084ee593"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "277c7a28-0937-4648-93d9-5f4a084ee593",
+        "Date": "Thu, 09 Mar 2023 20:18:42 GMT",
+        "elapsed-time": "29",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "277c7a28-0937-4648-93d9-5f4a084ee593",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "277c7a28-0937-4648-93d9-5f4a084ee593"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "nested-skillset-with-sharperskill399590da23"
+  }
 }

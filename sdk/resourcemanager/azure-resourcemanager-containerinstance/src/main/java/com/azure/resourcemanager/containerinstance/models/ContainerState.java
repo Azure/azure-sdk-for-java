@@ -24,8 +24,7 @@ public final class ContainerState {
     private OffsetDateTime startTime;
 
     /*
-     * The container instance exit codes correspond to those from the `docker
-     * run` command.
+     * The container instance exit codes correspond to those from the `docker run` command.
      */
     @JsonProperty(value = "exitCode", access = JsonProperty.Access.WRITE_ONLY)
     private Integer exitCode;
@@ -41,6 +40,10 @@ public final class ContainerState {
      */
     @JsonProperty(value = "detailStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String detailStatus;
+
+    /** Creates an instance of ContainerState class. */
+    public ContainerState() {
+    }
 
     /**
      * Get the state property: The state of the container instance.

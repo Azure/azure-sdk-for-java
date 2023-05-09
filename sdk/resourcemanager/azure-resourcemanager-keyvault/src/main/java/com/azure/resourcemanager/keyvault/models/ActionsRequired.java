@@ -14,6 +14,15 @@ public final class ActionsRequired extends ExpandableStringEnum<ActionsRequired>
     public static final ActionsRequired NONE = fromString("None");
 
     /**
+     * Creates a new instance of ActionsRequired value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ActionsRequired() {
+    }
+
+    /**
      * Creates or finds a ActionsRequired from its string representation.
      *
      * @param name a name to look for.

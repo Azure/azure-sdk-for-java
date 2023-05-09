@@ -311,7 +311,7 @@ public abstract class RestProxyBase {
             .append(httpResponse.getStatusCode())
             .append(", ");
 
-        final String contentType = httpResponse.getHeaderValue("Content-Type");
+        final String contentType = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
             String contentLength = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
             exceptionMessage.append("(").append(contentLength).append("-byte body)");

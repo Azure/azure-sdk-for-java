@@ -17,6 +17,41 @@ that you create in Log Analytics workspace. You can even extend the schema of bu
 
 ### Include the package
 
+#### Include the BOM file
+
+Please include the `azure-sdk-bom` to your project to take a dependency on the latest stable version of the library. In 
+the following snippet, replace the `{bom_version_to_target}` placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag as shown below.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-monitor-ingestion</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
 [//]: # ({x-version-update-start;com.azure:azure-monitor-ingestion;current})
 ```xml
 <dependency>
@@ -30,17 +65,18 @@ that you create in Log Analytics workspace. You can even extend the schema of bu
 ### Create the client
 
 An authenticated client is required to upload logs to Azure Monitor. The library includes both synchronous and asynchronous forms of the clients. To authenticate, 
-the following examples use `DefaultAzureCredentialBuilder` from the [com.azure:azure-identity](https://search.maven.org/artifact/com.azure/azure-identity) package.
+the following examples use `DefaultAzureCredentialBuilder` from the [azure-identity](https://central.sonatype.com/artifact/com.azure/azure-identity/1.8.1) package.
 
 #### Authenticating using Azure Active Directory
 You can authenticate with Azure Active Directory using the [Azure Identity library][azure_identity].
 To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below, or other credential providers provided with the Azure SDK, please include the `azure-identity` package:
+
 [//]: # ({x-version-update-start;com.azure:azure-identity;dependency})
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.8.1</version>
+    <version>1.8.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -94,10 +130,10 @@ a DCR ID, see [this tutorial][data_collection_rule_tutorial].
 Custom logs can send data to any custom table that you create and to certain built-in tables in your Log Analytics 
 workspace. The target table must exist before you can send data to it. The following built-in tables are currently supported:
 
-- [CommonSecurityLog](https://docs.microsoft.com/azure/azure-monitor/reference/tables/commonsecuritylog)
-- [SecurityEvents](https://docs.microsoft.com/azure/azure-monitor/reference/tables/securityevent)
-- [Syslog](https://docs.microsoft.com/azure/azure-monitor/reference/tables/syslog)
-- [WindowsEvents](https://docs.microsoft.com/azure/azure-monitor/reference/tables/windowsevent)
+- [CommonSecurityLog](https://learn.microsoft.com/azure/azure-monitor/reference/tables/commonsecuritylog)
+- [SecurityEvents](https://learn.microsoft.com/azure/azure-monitor/reference/tables/securityevent)
+- [Syslog](https://learn.microsoft.com/azure/azure-monitor/reference/tables/syslog)
+- [WindowsEvents](https://learn.microsoft.com/azure/azure-monitor/reference/tables/windowsevent)
 
 ### Logs retrieval
 The logs that were uploaded using this library can be queried using the 
@@ -202,19 +238,19 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 
 <!-- LINKS -->
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
-[azure_monitor_overview]: https://docs.microsoft.com/azure/azure-monitor/overview
+[azure_monitor_overview]: https://learn.microsoft.com/azure/azure-monitor/overview
 [azure_subscription]: https://azure.microsoft.com/free
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[data_collection_endpoint]: https://docs.microsoft.com//azure/azure-monitor/essentials/data-collection-endpoint-overview
-[data_collection_rule]: https://docs.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-overview
+[data_collection_endpoint]: https://learn.microsoft.com//azure/azure-monitor/essentials/data-collection-endpoint-overview
+[data_collection_rule]: https://learn.microsoft.com/azure/azure-monitor/essentials/data-collection-rule-overview
 [data_collection_rule_tutorial]: https://learn.microsoft.com/azure/azure-monitor/logs/tutorial-logs-ingestion-portal#collect-information-from-the-dcr
 [DefaultAzureCredential]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#defaultazurecredential
 [ingestion_overview]: https://learn.microsoft.com/azure/azure-monitor/logs/logs-ingestion-api-overview
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[log_analytics_workspace]: https://docs.microsoft.com//azure/azure-monitor/logs/log-analytics-workspace-overview
-[logging]: https://docs.microsoft.com//azure/developer/java/sdk/logging-overview
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[log_analytics_workspace]: https://learn.microsoft.com//azure/azure-monitor/logs/log-analytics-workspace-overview
+[logging]: https://learn.microsoft.com//azure/developer/java/sdk/logging-overview
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/src/samples/java/com/azure/monitor/ingestion
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmonitor%2Fazure-monitor-ingestion%2FREADME.png)

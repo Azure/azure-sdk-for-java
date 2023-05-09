@@ -1,31 +1,55 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/datasources('azs-java-test-sql52102b1b2f')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "9ee117e7-6f34-48aa-a57e-ff242b826a39",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "9ee117e7-6f34-48aa-a57e-ff242b826a39",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:35:05 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "9ee117e7-6f34-48aa-a57e-ff242b826a39",
-      "elapsed-time" : "7",
-      "Expires" : "-1",
-      "Content-Length" : "90",
-      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"Data source type 'thistypedoesnotexist' is not supported\"}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "9ee117e7-6f34-48aa-a57e-ff242b826a39",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "azs-java-test-sql52102b1b2f" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/datasources(\u0027azs-java-test-sql77979406ae\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "181",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:08:09 GMT",
+        "Prefer": "return=representation",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "fe74f1e3-fa28-4b88-ac21-6763bdb683dd"
+      },
+      "RequestBody": {
+        "name": "azs-java-test-sql77979406ae",
+        "description": "Some data source",
+        "type": "thistypedoesnotexist",
+        "credentials": {
+          "connectionString": "REDACTED"
+        },
+        "container": {
+          "name": "GeoNamesRI"
+        }
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "fe74f1e3-fa28-4b88-ac21-6763bdb683dd",
+        "Content-Language": "en",
+        "Content-Length": "90",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 20:08:07 GMT",
+        "elapsed-time": "9",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "fe74f1e3-fa28-4b88-ac21-6763bdb683dd",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "fe74f1e3-fa28-4b88-ac21-6763bdb683dd"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "",
+          "message": "Data source type \u0027thistypedoesnotexist\u0027 is not supported"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "azs-java-test-sql77979406ae"
+  }
 }

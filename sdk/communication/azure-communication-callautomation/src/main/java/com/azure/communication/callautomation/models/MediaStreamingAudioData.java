@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 
 /** The MediaStreamingAudio model. */
-public class MediaStreamingAudioData extends MediaStreamingPackageBase {
+public final class MediaStreamingAudioData extends MediaStreamingPackageBase {
 
     /*
      * The audio data.

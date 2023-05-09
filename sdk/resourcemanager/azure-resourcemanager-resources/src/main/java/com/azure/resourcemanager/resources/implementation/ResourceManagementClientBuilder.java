@@ -18,12 +18,12 @@ import java.time.Duration;
 @ServiceClientBuilder(serviceClients = {ResourceManagementClientImpl.class})
 public final class ResourceManagementClientBuilder {
     /*
-     * The ID of the target subscription.
+     * The Microsoft Azure subscription ID.
      */
     private String subscriptionId;
 
     /**
-     * Sets The ID of the target subscription.
+     * Sets The Microsoft Azure subscription ID.
      *
      * @param subscriptionId the subscriptionId value.
      * @return the ResourceManagementClientBuilder.

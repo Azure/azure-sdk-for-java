@@ -25,7 +25,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ServiceResponseException;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRange;
 import com.azure.core.http.HttpResponse;
@@ -37,6 +36,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
@@ -58,7 +58,6 @@ import static com.azure.containers.containerregistry.implementation.UtilsImpl.ge
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.toGetManifestResponse;
 import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateDigest;
-import static com.azure.containers.containerregistry.implementation.UtilsImpl.validateResponseHeaderDigest;
 import static com.azure.core.util.CoreUtils.bytesToHexString;
 
 /**
@@ -128,7 +127,7 @@ public final class ContainerRegistryContentClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SetManifestResult setManifest(OciImageManifest manifest, String tag) {
         Objects.requireNonNull(manifest, "'manifest' cannot be null.");
-        return setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_MANIFEST, Context.NONE).getValue();
+        return setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_IMAGE_MANIFEST, Context.NONE).getValue();
     }
 
     /**
@@ -249,7 +248,7 @@ public final class ContainerRegistryContentClient {
      * <pre>
      * GetManifestResult latestResult = contentClient.getManifest&#40;&quot;latest&quot;&#41;;
      * if &#40;ManifestMediaType.DOCKER_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;
-     *     || ManifestMediaType.OCI_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
+     *     || ManifestMediaType.OCI_IMAGE_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
      *     OciImageManifest manifest = latestResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
      * &#125; else &#123;
      *     throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + latestResult.getManifestMediaType&#40;&#41;&#41;;
@@ -388,8 +387,8 @@ public final class ContainerRegistryContentClient {
         Objects.requireNonNull(digest, "'digest' cannot be null.");
 
         try {
-            Response<BinaryData> streamResponse = blobsImpl.deleteBlobWithResponse(repositoryName, digest, context);
-            return deleteResponseToSuccess(streamResponse);
+            Response<Void> response = blobsImpl.deleteBlobWithResponse(repositoryName, digest, context);
+            return deleteResponseToSuccess(response);
         } catch (HttpResponseException ex) {
             if (ex.getResponse().getStatusCode() == 404) {
                 HttpResponse response = ex.getResponse();
@@ -531,12 +530,17 @@ public final class ContainerRegistryContentClient {
 
         MessageDigest sha256 = createSha256();
         try {
-            Response<BinaryData> lastChunk = readRange(digest, new HttpRange(0, (long) CHUNK_SIZE), channel, sha256, context);
-            validateResponseHeaderDigest(digest, lastChunk.getHeaders());
+            HttpRange range = new HttpRange(0, (long) CHUNK_SIZE);
+            // TODO (limolkova) https://github.com/Azure/azure-sdk-for-java/issues/34400
+            context = context.addData("azure-eagerly-read-response", true);
+            Response<BinaryData> lastChunk = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
+            long blobSize = getBlobSize(lastChunk.getHeaders());
+            long length = writeChunk(lastChunk, sha256, channel);
 
-            long blobSize = getBlobSize(lastChunk.getHeaders().get(HttpHeaderName.CONTENT_RANGE));
-            for (long p = lastChunk.getValue().getLength(); p < blobSize; p += CHUNK_SIZE) {
-                readRange(digest, new HttpRange(p, (long) CHUNK_SIZE), channel, sha256, context);
+            for (long p = length; p < blobSize; p += CHUNK_SIZE) {
+                range = new HttpRange(p, (long) CHUNK_SIZE);
+                lastChunk = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
+                writeChunk(lastChunk, sha256, channel);
             }
         } catch (AcrErrorsException exception) {
             throw LOGGER.logExceptionAsError(mapAcrErrorsException(exception));
@@ -547,18 +551,37 @@ public final class ContainerRegistryContentClient {
         return context;
     }
 
-    private Response<BinaryData> readRange(String digest, HttpRange range, WritableByteChannel channel, MessageDigest sha256, Context context) {
-        Response<BinaryData> response = blobsImpl.getChunkWithResponse(repositoryName, digest, range.toString(), context);
-
-        ByteBuffer buffer = response.getValue().toByteBuffer();
+    private long writeChunk(Response<BinaryData> response, MessageDigest sha256, WritableByteChannel channel) {
+        InputStream content = response.getValue().toStream();
+        ByteBuffer buffer = ByteBuffer.wrap(getBytes(content));
         sha256.update(buffer.asReadOnlyBuffer());
         try {
             channel.write(buffer);
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        } finally {
+            try {
+                content.close();
+            } catch (IOException e) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+            }
         }
 
-        return response;
+        return buffer.limit();
+    }
+
+    private byte[] getBytes(InputStream stream) {
+        try {
+            ByteArrayOutputStream dataOutputBuffer = new ByteArrayOutputStream();
+            int nRead;
+            byte[] data = new byte[8192];
+            while ((nRead = stream.read(data, 0, data.length)) != -1) {
+                dataOutputBuffer.write(data, 0, nRead);
+            }
+            return dataOutputBuffer.toByteArray();
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
     }
 
     private <T> T runWithTracing(String spanName, Function<Context, T> operation, Context context) {

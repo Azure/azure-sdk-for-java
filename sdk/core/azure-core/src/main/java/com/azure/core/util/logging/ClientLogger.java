@@ -15,9 +15,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import static com.azure.core.implementation.logging.LoggingUtils.removeNewLinesFromLogMessage;
-
 import static com.azure.core.implementation.logging.LoggingUtils.doesArgsHaveThrowable;
+import static com.azure.core.implementation.logging.LoggingUtils.removeNewLinesFromLogMessage;
 import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable;
 
 /**
@@ -690,5 +689,30 @@ public class ClientLogger {
     public LoggingEventBuilder atVerbose() {
         return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContextSerialized,
             canLogAtLevel(LogLevel.VERBOSE));
+    }
+
+    /**
+     * Creates {@link LoggingEventBuilder} for log level that can be
+     * used to enrich log with additional context.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with context at provided level.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atLevel -->
+     * <pre>
+     * LogLevel level = response.getStatusCode&#40;&#41; == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
+     * logger.atLevel&#40;level&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;message&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atLevel -->
+     *
+     * @param level log level.
+     * @return instance of {@link LoggingEventBuilder} or no-op if logging at provided level is disabled.
+     */
+    public LoggingEventBuilder atLevel(LogLevel level) {
+        return LoggingEventBuilder.create(logger, level, globalContextSerialized,
+            canLogAtLevel(level));
     }
 }

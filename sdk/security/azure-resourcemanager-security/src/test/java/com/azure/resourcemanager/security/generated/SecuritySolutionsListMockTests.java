@@ -34,7 +34,7 @@ public final class SecuritySolutionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Succeeded\",\"template\":\"wyil\",\"protectionStatus\":\"pibkgxyxyaux\"},\"location\":\"ddobmcnltmwyt\",\"id\":\"ujsqycm\",\"name\":\"oxfab\",\"type\":\"qgpwbmwhr\"}]}";
+            "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"provisioningState\":\"Failed\",\"template\":\"bpgb\",\"protectionStatus\":\"hbjdqknhqnmotpu\"},\"location\":\"nohmmzngocfrj\",\"id\":\"ypwyiulayno\",\"name\":\"ugkfhaxttpfsm\",\"type\":\"gsgh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,9 +64,9 @@ public final class SecuritySolutionsListMockTests {
 
         PagedIterable<SecuritySolution> response = manager.securitySolutions().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(SecurityFamily.NGFW, response.iterator().next().securityFamily());
-        Assertions.assertEquals(ProvisioningState.SUCCEEDED, response.iterator().next().provisioningState());
-        Assertions.assertEquals("wyil", response.iterator().next().template());
-        Assertions.assertEquals("pibkgxyxyaux", response.iterator().next().protectionStatus());
+        Assertions.assertEquals(SecurityFamily.VA, response.iterator().next().securityFamily());
+        Assertions.assertEquals(ProvisioningState.FAILED, response.iterator().next().provisioningState());
+        Assertions.assertEquals("bpgb", response.iterator().next().template());
+        Assertions.assertEquals("hbjdqknhqnmotpu", response.iterator().next().protectionStatus());
     }
 }

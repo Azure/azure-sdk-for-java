@@ -22,6 +22,9 @@ public final class AcsChatThreadParticipantProperties {
     @JsonProperty(value = "participantCommunicationIdentifier")
     private CommunicationIdentifierModel participantCommunicationIdentifier;
 
+    /** Creates an instance of AcsChatThreadParticipantProperties class. */
+    public AcsChatThreadParticipantProperties() {}
+
     /**
      * Get the displayName property: The name of the user.
      *

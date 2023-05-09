@@ -32,7 +32,7 @@ public final class JitNetworkAccessPoliciesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"fwzlgzawkgyepeya\"},\"kind\":\"nidmdiaw\",\"location\":\"xkzrn\",\"id\":\"mkctdhuo\",\"name\":\"gwqpsqazih\",\"type\":\"odvqgcnbhcbmj\"}]}";
+            "{\"value\":[{\"properties\":{\"virtualMachines\":[],\"requests\":[],\"provisioningState\":\"sgqk\"},\"kind\":\"yecup\",\"location\":\"ijpardavsjcf\",\"id\":\"azpzdqwuz\",\"name\":\"cmcokxizekuv\",\"type\":\"rjwuca\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,6 +63,6 @@ public final class JitNetworkAccessPoliciesListMockTests {
         PagedIterable<JitNetworkAccessPolicy> response =
             manager.jitNetworkAccessPolicies().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("nidmdiaw", response.iterator().next().kind());
+        Assertions.assertEquals("yecup", response.iterator().next().kind());
     }
 }

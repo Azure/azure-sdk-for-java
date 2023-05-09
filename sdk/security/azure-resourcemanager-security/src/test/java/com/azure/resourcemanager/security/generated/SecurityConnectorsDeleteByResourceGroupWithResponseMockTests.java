@@ -58,6 +58,6 @@ public final class SecurityConnectorsDeleteByResourceGroupWithResponseMockTests 
 
         manager
             .securityConnectors()
-            .deleteByResourceGroupWithResponse("udccgndjgdprig", "qqyeqfcb", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("hoksmmculwk", "icruo", com.azure.core.util.Context.NONE);
     }
 }
