@@ -21,8 +21,6 @@ import reactor.core.publisher.Sinks;
 import java.nio.ByteBuffer;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
-import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addErrorCondition;
 import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY;
@@ -40,7 +38,6 @@ import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 final class ReceiverDeliveryHandler {
     static final UUID DELIVERY_EMPTY_TAG = new UUID(0L, 0L);
     private static final int DELIVERY_TAG_SIZE = 16;
-    private static final Supplier<Integer> EMPTY_CREDIT_SUPPLIER = () -> 0;
 
     private final AtomicBoolean isTerminated = new AtomicBoolean();
     private final AtomicBoolean isLinkTerminatedWithError = new AtomicBoolean();
@@ -51,7 +48,6 @@ final class ReceiverDeliveryHandler {
     private final boolean includeDeliveryTagInMessage;
     private final ClientLogger logger;
     private final ReceiverUnsettledDeliveries unsettledDeliveries;
-    private final AtomicReference<Supplier<Integer>> creditSupplier = new AtomicReference<>(EMPTY_CREDIT_SUPPLIER);
 
     /**
      * Creates DeliveryHandler.
@@ -79,17 +75,6 @@ final class ReceiverDeliveryHandler {
         this.unsettledDeliveries = unsettledDeliveries;
         this.includeDeliveryTagInMessage = includeDeliveryTagInMessage;
         this.logger = logger;
-    }
-
-    /**
-     * Sets a {@link Supplier} that is invoked from {@link ReceiverDeliveryHandler#onDelivery(Delivery)} when there are
-     * no credits left on the amqp receive-link. If the supplier returns a non-null integer value greater than
-     * zero, then value is added to the amqp receive-link's credit.
-     *
-     * @param creditSupplier Supplier that returns the number of credits to add to the amqp receive-link.
-     */
-    void setCreditSupplier(Supplier<Integer> creditSupplier) {
-        this.creditSupplier.set(creditSupplier);
     }
 
     /**
@@ -127,29 +112,6 @@ final class ReceiverDeliveryHandler {
                 break;
             default:
                 throw logger.logExceptionAsError(new RuntimeException("settlingMode is not supported: " + settlingMode));
-        }
-
-        final Link link = delivery.getLink();
-        if (link != null) {
-            final Receiver receiver = (Receiver) link;
-            final int creditsLeft = receiver.getRemoteCredit();
-            if (creditsLeft <= 0) {
-                final Supplier<Integer> supplier = creditSupplier.get();
-                if (supplier == EMPTY_CREDIT_SUPPLIER) {
-                    return;
-                }
-                final Integer credits = supplier.get();
-                if (credits != null && credits > 0) {
-                    logger.atInfo()
-                        .addKeyValue("credits", credits)
-                        .log("Adding credits.");
-                    receiver.flow(credits);
-                } else {
-                    logger.atVerbose()
-                        .addKeyValue("credits", credits)
-                        .log("There are no credits to add.");
-                }
-            }
         }
     }
 

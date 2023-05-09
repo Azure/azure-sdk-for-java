@@ -208,11 +208,6 @@ public class ReactorReceiver2 implements AmqpReceiveLink, AsyncCloseable, AutoCl
     @Override
     public void setEmptyCreditListener(Supplier<Integer> creditSupplier) {
         Objects.requireNonNull(creditSupplier, "'creditSupplier' cannot be null.");
-        this.handler.setCreditSupplier(() -> {
-            final Integer credits = creditSupplier.get();
-            metricsProvider.recordAddCredits(credits == null ? 0 : credits);
-            return credits;
-        });
     }
 
     @Override
