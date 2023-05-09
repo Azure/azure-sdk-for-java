@@ -7,7 +7,7 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ContainerDirectConnectionMetadata {
+public final class ContainerDirectConnectionMetadata {
     private final CosmosContainerIdentity cosmosContainerIdentity;
     private final AtomicInteger minConnectionPoolSizePerEndpointForContainer;
 
