@@ -51,6 +51,10 @@ disable-client-builder: true
 ```
 
 ### Change Return Types of Subscription REST Methods
+
+Replaces `object` as the return type for subscription REST APIs to either `SubscriptionDescriptionFeed` or
+`SubscriptionDescriptionEntry` based on the API.
+
 ```yaml
 directive:
   - from: swagger-document
@@ -73,6 +77,10 @@ directive:
 ```
 
 ### Change Return Types of Rules REST Methods
+
+Replaces `object` as the return type for rules REST APIs to either `RuleDescriptionFeed` or`RuleDescriptionEntry` based 
+on the API.
+
 ```yaml
 directive:
   - from: swagger-document
@@ -95,6 +103,10 @@ directive:
 ```
 
 ### Change Title Properties to Non-Object
+
+Adds a new definition for `Title` to replace the `object` or `string` `title` properties for entry and feed models,
+properly aligning the definition with what is returned by the service.
+
 ```yaml
 directive:
   - from: swagger-document
