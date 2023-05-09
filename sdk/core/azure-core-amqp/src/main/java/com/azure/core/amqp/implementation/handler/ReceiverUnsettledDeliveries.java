@@ -91,7 +91,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      * @param retryOptions     the retry configuration to use when resending a disposition frame that the broker 'Rejected'.
      * @param deliveryEmptyTag reference to static UUID indicating absence of delivery tag in deliveries.
      * @param logger           the logger.
-     * Note: This Ctr and settleOnClose will be removed once the legacy receiver is removed
+     * Note: This Ctr and settleOnClose will be removed once the v1 receiver is removed.
      */
     public ReceiverUnsettledDeliveries(String hostName, String entityPath, String receiveLinkName, ReactorDispatcher dispatcher,
         AmqpRetryOptions retryOptions, UUID deliveryEmptyTag, ClientLogger logger) {

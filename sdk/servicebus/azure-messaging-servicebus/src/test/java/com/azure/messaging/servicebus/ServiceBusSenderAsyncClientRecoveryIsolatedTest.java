@@ -849,8 +849,10 @@ public class ServiceBusSenderAsyncClientRecoveryIsolatedTest {
             when(tokenManager.authorize()).thenReturn(Mono.just(Duration.ofHours(1).toMillis()));
             when(tokenManagerProvider.getTokenManager(any(), anyString())).thenReturn(tokenManager);
 
+            // New tests only for ReactorConnectionCache introduced in v2.
+            final boolean isV2 = true;
             return new ServiceBusReactorAmqpConnection(connectionId, connectionOptions,
-                reactorProvider, handlerProvider, linkProvider, tokenManagerProvider, messageSerializer,  false, false);
+                reactorProvider, handlerProvider, linkProvider, tokenManagerProvider, messageSerializer,  false, isV2);
         }
 
         AmqpSendLink getAmqpSendLink(int sessionIdx, int linkIdx) {
