@@ -28,6 +28,13 @@ public class MetadataValidationPolicy implements HttpPipelinePolicy {
     private static final int X_MS_META_LENGTH = X_MS_META.length();
 
     @Override
+    public HttpResponse processSync(HttpPipelineCallContext context,  com.azure.core.http.HttpPipelineNextSyncPolicy next) {
+        validateMetadataHeaders(context.getHttpRequest().getHeaders());
+        return next.processSync();
+    }
+
+
+    @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         try {
             validateMetadataHeaders(context.getHttpRequest().getHeaders());
