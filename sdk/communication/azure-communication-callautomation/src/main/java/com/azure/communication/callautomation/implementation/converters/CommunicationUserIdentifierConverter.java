@@ -4,17 +4,15 @@
 package com.azure.communication.callautomation.implementation.converters;
 
 import com.azure.communication.callautomation.implementation.models.CommunicationUserIdentifierModel;
-import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.common.CommunicationUserIdentifier;
-import com.azure.communication.common.PhoneNumberIdentifier;
 
 /**
- * A converter for {@link PhoneNumberIdentifier} and {@link PhoneNumberIdentifierModel}
+ * A converter for {@link CommunicationUserIdentifier} and {@link CommunicationUserIdentifierModel}
  */
 public final class CommunicationUserIdentifierConverter {
 
     /**
-     * Converts to {@link PhoneNumberIdentifierModel}.
+     * Converts to {@link CommunicationUserIdentifierModel}.
      */
     public static CommunicationUserIdentifierModel convert(CommunicationUserIdentifier communicationUserIdentifier) {
 
@@ -26,7 +24,7 @@ public final class CommunicationUserIdentifierConverter {
     }
 
     /**
-     * Converts to {@link PhoneNumberIdentifier}.
+     * Converts to {@link CommunicationUserIdentifier}.
      */
     public static CommunicationUserIdentifier convert(CommunicationUserIdentifierModel communicationUserIdentifierModel) {
 
