@@ -61,6 +61,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
      *                 less chatty network and faster message processing on the client).
      * @param creditFlowMode the mode indicating how to compute the credit and when to send it to the broker.
      * @param retryPolicy the retry policy to use to obtain a new receiver upon current receiver termination.
+     * @throws IllegalStateException if the {@code prefetch} is a negative value.
+     * @throws NullPointerException if the {@code retryPolicy} is {@code null}.
      */
     public MessageFlux(Flux<? extends AmqpReceiveLink> source, int prefetch, CreditFlowMode creditFlowMode, AmqpRetryPolicy retryPolicy) {
         super(source);
@@ -75,7 +77,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         this.prefetch = prefetch;
         this.creditFlowMode = creditFlowMode;
         this.retryPolicy = Objects.requireNonNull(retryPolicy, "'retryPolicy' cannot be null.");
-        this.updateDispositionFunc = (t, s) -> Mono.error(new IllegalStateException("Cannot disposition as no receive-link is established."));
+        this.updateDispositionFunc = (t, s) -> Mono.error(new IllegalStateException("Cannot update disposition as no receive-link is established."));
     }
 
     /**
@@ -84,9 +86,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
      * @param actual the downstream subscriber interested in the published messages and termination.
      */
     @Override
-    @SuppressWarnings("unchecked")
     public void subscribe(CoreSubscriber<? super Message> actual) {
-        source.subscribe(new RecoverableReactorReceiver(this, (CoreSubscriber<Message>) actual, prefetch, creditFlowMode, retryPolicy));
+        source.subscribe(new RecoverableReactorReceiver(this, actual, prefetch, creditFlowMode, retryPolicy));
     }
 
     /**
@@ -131,15 +132,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         private final AmqpRetryPolicy retryPolicy;
         private final ClientLogger logger;
         private final AtomicInteger retryAttempts = new AtomicInteger();
-        private final CoreSubscriber<Message> messageSubscriber;
-        volatile Throwable error;
-        @SuppressWarnings("rawtypes")
-        static final AtomicReferenceFieldUpdater<RecoverableReactorReceiver, Throwable> ERROR =
-            AtomicReferenceFieldUpdater.newUpdater(RecoverableReactorReceiver.class,
-                Throwable.class,
-                "error");
-        private volatile boolean done;
-        private volatile boolean cancelled;
+        private final CoreSubscriber<? super Message> messageSubscriber;
         private Subscription upstream;
         private volatile long requested;
         @SuppressWarnings("rawtypes")
@@ -149,6 +142,14 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         @SuppressWarnings("rawtypes")
         private static final AtomicIntegerFieldUpdater<RecoverableReactorReceiver> WIP =
             AtomicIntegerFieldUpdater.newUpdater(RecoverableReactorReceiver.class, "wip");
+        private volatile boolean done;
+        private volatile boolean cancelled;
+        volatile Throwable error;
+        @SuppressWarnings("rawtypes")
+        static final AtomicReferenceFieldUpdater<RecoverableReactorReceiver, Throwable> ERROR =
+            AtomicReferenceFieldUpdater.newUpdater(RecoverableReactorReceiver.class,
+                Throwable.class,
+                "error");
 
         /**
          * Create a recoverable-receiver that supports the message-flux to stream messages from the receiver attached
@@ -161,7 +162,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * @param creditFlowMode the mode indicating how to compute the credit and when to send it to the broker.
          * @param retryPolicy the retry policy to use to recover from receiver termination.
          */
-        RecoverableReactorReceiver(MessageFlux parent, CoreSubscriber<Message> messageSubscriber, int prefetch,
+        RecoverableReactorReceiver(MessageFlux parent, CoreSubscriber<? super Message> messageSubscriber, int prefetch,
             CreditFlowMode creditFlowMode, AmqpRetryPolicy retryPolicy) {
             this.parent = parent;
             this.messageSubscriber = messageSubscriber;
@@ -343,7 +344,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          */
         private void drainLoop() {
             int missed = 1;
-            CoreSubscriber<Message> downstream = this.messageSubscriber;
+            CoreSubscriber<? super Message> downstream = this.messageSubscriber;
             // Begin: serialized drain-loop.
             for (; ;) {
                 boolean d = done;
@@ -474,7 +475,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * @param messageDropped the message that gets dropped if cancellation was signaled.
          * @return true if canceled, false otherwise.
          */
-        private boolean terminateIfCancelled(CoreSubscriber<Message> downstream, Message messageDropped) {
+        private boolean terminateIfCancelled(CoreSubscriber<? super Message> downstream, Message messageDropped) {
             if (cancelled) {
                 Operators.onDiscard(messageDropped, downstream.currentContext());
                 upstream.cancel();
@@ -496,7 +497,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * @param messageDropped the message that gets dropped if termination happened.
          * @return true if terminated, false otherwise.
          */
-        private boolean terminateIfErroredOrUpstreamCompleted(boolean d, CoreSubscriber<Message> downstream, Message messageDropped) {
+        private boolean terminateIfErroredOrUpstreamCompleted(boolean d, CoreSubscriber<? super Message> downstream, Message messageDropped) {
             if (d) {
                 // true for 'd' means the operator termination was signaled.
                 final LoggingEventBuilder logBuilder = mediatorHolder.updateLogWithReceiverId(logger.atWarning());
@@ -541,7 +542,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * @param mediatorHolder the mediator holder.
          */
         private void setTerminationSignalOrScheduleNextMediatorRequest(Throwable error,
-            CoreSubscriber<Message> downstream, MediatorHolder mediatorHolder) {
+            CoreSubscriber<? super Message> downstream, MediatorHolder mediatorHolder) {
             final LoggingEventBuilder logBuilder = mediatorHolder.updateLogWithReceiverId(logger.atWarning());
             if (cancelled || done) {
                 // To terminate the operator, the downstream signaled cancellation Or upstream signaled error
@@ -628,9 +629,8 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         private final CreditFlowMode creditFlowMode;
         private final ClientLogger logger;
         private final Disposable.Composite endpointStateDisposables = Disposables.composite();
-        private volatile boolean ready;
         private CreditAccounting creditAccounting;
-
+        private volatile boolean ready;
         private volatile Subscription s;
         @SuppressWarnings("rawtypes")
         private static final AtomicReferenceFieldUpdater<ReactorReceiverMediator, Subscription> S =
@@ -648,11 +648,6 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          */
         volatile boolean done;
         /**
-         * The queue holding messages from the backing receiver's message publisher, waiting to be drained by
-         * the drain-loop iterations.
-         */
-        final Queue<Message> queue;
-        /**
          * The drain loop iteration that first identifies the mediator as terminated (done == true) and
          * and drained (queue.isEmpty() == true) will initiate a retry to obtain the next mediator. While that retry
          * completion is pending, any request for messages from downstream may lead to further drain loop iterations;
@@ -660,6 +655,11 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * and drained) will not initiate duplicate retries.
          */
         volatile boolean isRetryInitiated;
+        /**
+         * The queue holding messages from the backing receiver's message publisher, waiting to be drained by
+         * the drain-loop iterations.
+         */
+        final Queue<Message> queue;
 
         /**
          * Create a mediator to channel events (messages, termination) from a receiver to recoverable-receiver.
