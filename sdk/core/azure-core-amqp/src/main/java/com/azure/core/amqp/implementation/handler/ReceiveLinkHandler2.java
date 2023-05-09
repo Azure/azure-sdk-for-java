@@ -22,15 +22,15 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
 
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 
-
 /**
  * Handler that receives events from its corresponding {@link Receiver}. Handlers must be associated to a
  * {@link Receiver} to receive its events.
+ *
+ * Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack is removed.
  *
  * @see BaseHandler#setHandler(Extendable, Handler)
  * @see Receiver
@@ -173,16 +173,6 @@ public class ReceiveLinkHandler2 extends LinkHandler {
         close();
 
         super.onLinkFinal(event);
-    }
-
-    /**
-     * Sets a {@link Supplier} to retrieve the credit value to be placed on the amqp receive-link
-     * when the link has no credit left.
-     *
-     * @param creditSupplier Supplier that returns the number of credits to add to the amqp receive-link.
-     */
-    public void setCreditSupplier(Supplier<Integer> creditSupplier) {
-        deliveryHandler.setCreditSupplier(creditSupplier);
     }
 
     /**
