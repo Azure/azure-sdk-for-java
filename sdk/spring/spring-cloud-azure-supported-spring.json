@@ -12,6 +12,14 @@
     "releaseStatus" : "PRERELEASE",
     "snapshot" : false,
     "supportStatus" : "TODO",
+    "spring-boot-version" : "3.1.0-RC2",
+    "spring-cloud-version" : "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
+  },
+  {
+    "current" : false,
+    "releaseStatus" : "PRERELEASE",
+    "snapshot" : false,
+    "supportStatus" : "END_OF_LIFE",
     "spring-boot-version" : "3.1.0-RC1",
     "spring-cloud-version" : "NONE_SUPPORTED_SPRING_CLOUD_VERSION"
   },
