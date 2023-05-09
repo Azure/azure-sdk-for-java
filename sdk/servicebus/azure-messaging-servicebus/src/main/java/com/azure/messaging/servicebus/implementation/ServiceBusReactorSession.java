@@ -60,7 +60,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     private final AmqpConnection amqpConnection;
     private final AmqpRetryOptions retryOptions;
     private final boolean distributedTransactionsSupport;
-    private final boolean useLegacyReceiver;
+    private final boolean isV2;
 
     /**
      * Creates a new AMQP session using proton-j.
@@ -76,13 +76,13 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
      *     operations on the message broker.
      * @param retryOptions Retry options.
      * @param createOptions  the options to create {@link ServiceBusReactorSession}.
-     * @param useLegacyReceiver (temporary) flag indicating which receiver, legacy or new, to create.
+     * @param isV2 (temporary) flag indicating which receiver, v1 or v2, to create.
      */
     ServiceBusReactorSession(AmqpConnection amqpConnection, Session session, SessionHandler sessionHandler,
         String sessionName, ReactorProvider provider, ReactorHandlerProvider handlerProvider,
         ServiceBusAmqpLinkProvider linkProvider, Mono<ClaimsBasedSecurityNode> cbsNodeSupplier, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, AmqpRetryOptions retryOptions,
-        ServiceBusCreateSessionOptions createOptions, boolean useLegacyReceiver) {
+        ServiceBusCreateSessionOptions createOptions, boolean isV2) {
         super(amqpConnection, session, sessionHandler, sessionName, provider, handlerProvider, linkProvider, cbsNodeSupplier,
             tokenManagerProvider, messageSerializer, retryOptions);
         this.amqpConnection = amqpConnection;
@@ -92,7 +92,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         this.tokenManagerProvider = tokenManagerProvider;
         this.cbsNodeSupplier = cbsNodeSupplier;
         this.distributedTransactionsSupport = createOptions.isDistributedTransactionsSupported();
-        this.useLegacyReceiver = useLegacyReceiver;
+        this.isV2 = isV2;
     }
 
     @Override
@@ -204,10 +204,10 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
         }
 
         final ConsumerSettings consumerSettings;
-        if (useLegacyReceiver) {
-            consumerSettings = new ConsumerSettings();
-        } else {
+        if (this.isV2) {
             consumerSettings = new ConsumerSettings(deliverySettleMode, true);
+        } else {
+            consumerSettings = new ConsumerSettings();
         }
 
         if (distributedTransactionsSupport) {

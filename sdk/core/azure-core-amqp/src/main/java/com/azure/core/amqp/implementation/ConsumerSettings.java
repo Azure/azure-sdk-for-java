@@ -13,20 +13,20 @@ import org.apache.qpid.proton.engine.Receiver;
 
 import java.util.Objects;
 
-// temporary type to host consumer either on legacy or on new receiver.
+// temporary type to support v1 and v2 side by side.
 public final class ConsumerSettings {
-    private final boolean useLegacyReceiver;
+    private final boolean isV2;
     private final DeliverySettleMode settleMode;
     private final boolean includeDeliveryTagInMessage;
 
     public ConsumerSettings() {
-        this.useLegacyReceiver = true;
+        this.isV2 = false;
         this.settleMode = null;
         this.includeDeliveryTagInMessage = false;
     }
 
     public ConsumerSettings(DeliverySettleMode settlingMode, boolean includeDeliveryTagInMessage) {
-        this.useLegacyReceiver = false;
+        this.isV2 = true;
         this.settleMode = Objects.requireNonNull(settlingMode);
         this.includeDeliveryTagInMessage = includeDeliveryTagInMessage;
     }
@@ -37,15 +37,15 @@ public final class ConsumerSettings {
         final String connectionId = amqpConnection.getId();
         final String hostname = amqpConnection.getFullyQualifiedNamespace();
         final AmqpMetricsProvider metricsProvider = handlerProvider.getMetricProvider(amqpConnection.getFullyQualifiedNamespace(), entityPath);
-        if (this.useLegacyReceiver) {
-            final ReceiveLinkHandler handler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath);
+        if (this.isV2) {
+            final ReceiveLinkHandler2 handler = handlerProvider.createReceiveLinkHandler2(connectionId, hostname, linkName, entityPath,
+                settleMode, includeDeliveryTagInMessage, reactorProvider.getReactorDispatcher(), retryOptions);
             BaseHandler.setHandler(receiver, handler);
             receiver.open();
             return linkProvider.createReceiveLink(amqpConnection, entityPath, receiver, handler, tokenManager,
                 reactorProvider.getReactorDispatcher(), retryOptions, metricsProvider);
         } else {
-            final ReceiveLinkHandler2 handler = handlerProvider.createReceiveLinkHandler2(connectionId, hostname, linkName, entityPath,
-                settleMode, includeDeliveryTagInMessage, reactorProvider.getReactorDispatcher(), retryOptions);
+            final ReceiveLinkHandler handler = handlerProvider.createReceiveLinkHandler(connectionId, hostname, linkName, entityPath);
             BaseHandler.setHandler(receiver, handler);
             receiver.open();
             return linkProvider.createReceiveLink(amqpConnection, entityPath, receiver, handler, tokenManager,

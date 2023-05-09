@@ -23,7 +23,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  */
 class ServiceBusAsyncConsumer implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
-    private final boolean isLegacyStack;
+    private final boolean isV2;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final String linkName;
     private final ServiceBusReceiveLinkProcessor linkProcessor;
@@ -33,7 +33,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
 
     ServiceBusAsyncConsumer(String linkName, ServiceBusReceiveLinkProcessor linkProcessor,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
-        this.isLegacyStack = true;
+        this.isV2 = false;
         this.linkName = linkName;
         this.linkProcessor = linkProcessor;
         this.messageFlux = null;
@@ -43,8 +43,8 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     }
 
     ServiceBusAsyncConsumer(String linkName, MessageFlux messageFlux,
-                            MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
-        this.isLegacyStack = false;
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
+        this.isV2 = true;
         this.linkName = linkName;
         this.messageFlux = messageFlux;
         this.linkProcessor = null;
@@ -82,10 +82,10 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
             return monoError(LOGGER,
                 new IllegalArgumentException("'dispositionStatus' is not known. status: " + dispositionStatus));
         }
-        if (isLegacyStack) {
-            return linkProcessor.updateDisposition(lockToken, deliveryState);
-        } else {
+        if (isV2) {
             return messageFlux.updateDisposition(lockToken, deliveryState);
+        } else {
+            return linkProcessor.updateDisposition(lockToken, deliveryState);
         }
     }
 
@@ -95,7 +95,7 @@ class ServiceBusAsyncConsumer implements AutoCloseable {
     @Override
     public void close() {
         if (!isDisposed.getAndSet(true)) {
-            if (isLegacyStack) {
+            if (!isV2) {
                 linkProcessor.dispose();
             }
         }
