@@ -2,10 +2,20 @@
 // Licensed under the MIT License.
 
 /**
- * <p>
- * The Azure Schema Registry client library provides support for <a
- * href="https://learn.microsoft.com/azure/event-hubs/schema-registry-overview">Azure Schema Registry</a>.  The library
- * focuses on registering and fetching schemas stored in Schema Registry.
+ * <p><a href="https://learn.microsoft.com/azure/event-hubs/schema-registry-overview">Azure Schema Registry</a> is a
+ * service in Microsoft Azure that enables users to manage the schemas for their applications and data. A schema is a
+ * formal definition of the structure of data in a particular format, such as Avro or JSON. With Azure Schema Registry,
+ * users can store, version, and manage these schemas in a central location, making it easier to ensure consistency and
+ * compatibility across different applications and systems.</p>
+ *
+ * <p>In addition, Azure Schema Registry can integrate with other Azure services, such as Azure Event Hubs and
+ * Azure Stream Analytics, to provide a complete data processing and analytics solution. By using Azure Schema
+ * Registry, users can simplify the management of their data schemas, reduce errors and inconsistencies, and
+ * accelerate the development of data-driven applications.</p>
+ *
+ * <p>The Azure Schema Registry client library allows Java developers to interact with Azure Schema Registry. It
+ * provides a set of APIs that enable Java developers to perform operations such as registering, updating, and
+ * retrieving schemas from the Azure Schema Registry.</p>
  *
  * <h2>Key Concepts</h2>
  *
@@ -45,6 +55,7 @@
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.data.schemaregistry.schemaregistryclient.construct -->
+ * <hr/>
  *
  * <h2>Using the Client</h2>
  *
