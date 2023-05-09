@@ -30,13 +30,21 @@ final class RequestDrivenCreditAccounting extends CreditAccounting {
      * @param logger the logger.
      */
     RequestDrivenCreditAccounting(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
-        super(receiver, subscription, validateAndBound(prefetch), logger);
+        super(receiver, subscription, validateAndGet(prefetch), logger);
     }
 
+    /**
+     * Update the credit accounting based on the latest view of the downstream request and messages emitted by
+     * the emitter-loop in the last drain-loop iteration.
+     * <br/>
+     * CONTRACT: Never invoke from the outside of serialized drain-loop in message-flux; the method relies on
+     * the thread-safety and memory visibility the drain-loop provides.
+     *
+     * @param request the latest view of the downstream request.
+     * @param emitted the number of messages emitted by the latest emitter-loop run.
+     */
     @Override
     void update(long request, long emitted) {
-        // Non-thread-safe method, designed ONLY to be called from a serialized drain-loop of message-flux.
-
         if (request == Long.MAX_VALUE) {
             // Once an unbounded downstream request is encountered, future downstream request values, if any, will not
             // be honored per reactive spec.
@@ -57,7 +65,7 @@ final class RequestDrivenCreditAccounting extends CreditAccounting {
         }
     }
 
-    private static int validateAndBound(int prefetch) {
+    private static int validateAndGet(int prefetch) {
         if (prefetch < 0) {
             throw new IllegalArgumentException("prefetch >= 0 required but it was " + prefetch);
         }
