@@ -93,7 +93,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
      *
      * @return Current {@link CosmosContainerProactiveInitConfigBuilder}
      * */
-    CosmosContainerProactiveInitConfigBuilder setMinConnectionsPerEndpointForContainer(CosmosContainerIdentity cosmosContainerIdentity, int minConnectionsPerEndpoint) {
+    CosmosContainerProactiveInitConfigBuilder setMinConnectionPoolSizePerEndpointForContainer(CosmosContainerIdentity cosmosContainerIdentity, int minConnectionsPerEndpoint) {
         checkArgument(minConnectionsPerEndpoint >= 0 && minConnectionsPerEndpoint <= MAX_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT,
                 "minConnectionsPerEndpoint cannot be negative or greater than {}", MAX_MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT);
 
