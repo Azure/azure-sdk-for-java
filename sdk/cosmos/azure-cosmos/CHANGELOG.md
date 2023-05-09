@@ -7,6 +7,7 @@
 * Added `CosmosContainerProactiveInitConfigBuilder:setAggressiveWarmupDuration(Duration aggressiveWarmupDuration)` public API to switch between aggressively opening connections
   in a blocking manner to defensively opening connections in a non-blocking manner after `aggressiveWarmupDuration` has elapsed - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
 * Added end to end timeout policy for Document/Item operations. Request will get cancelled if the request can not finish before timeout - See [PR 34554](https://github.com/Azure/azure-sdk-for-java/pull/34554).
+
 #### Breaking Changes
 
 #### Bugs Fixed
