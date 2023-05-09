@@ -15,10 +15,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
-
-import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
 
 /**
  * <p>Fluent credential builder for instantiating a {@link DefaultAzureCredential}.</p>
@@ -220,23 +219,29 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
-     * Specifies a {@link Duration} timeout for developer credentials (such as Azure CLI or IntelliJ).
-     * @param duration The {@link Duration} to wait.
+     * Specifies a {@link Duration} timeout for developer credentials (such as Azure CLI) that rely on separate process
+     * invocations.
+     * @param credentialProcessTimeout The {@link Duration} to wait.
      * @return An updated instance of this builder with the timeout specified.
      */
-    public DefaultAzureCredentialBuilder developerCredentialTimeout(Duration duration) {
-        this.identityClientOptions.setDeveloperCredentialTimeout(duration);
+    public DefaultAzureCredentialBuilder credentialProcessTimeout(Duration credentialProcessTimeout) {
+        Objects.requireNonNull(credentialProcessTimeout);
+        this.identityClientOptions.setCredentialProcessTimeout(credentialProcessTimeout);
         return this;
     }
 
     /**
-     * Disable instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
-     * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
+     * Disables the setting which determines whether or not instance discovery is performed when attempting to
+     * authenticate. This will completely disable both instance discovery and authority validation.
+     * This functionality is intended for use in scenarios where the metadata endpoint cannot be reached, such as in
+     * private clouds or Azure Stack. The process of instance discovery entails retrieving authority metadata from
+     * https://login.microsoft.com/ to validate the authority. By utilizing this API, the validation of the authority
+     * is disabled. As a result, it is crucial to ensure that the configured authority host is valid and trustworthy.
      *
      * @return An updated instance of this builder with instance discovery disabled.
      */
     public DefaultAzureCredentialBuilder disableInstanceDiscovery() {
-        this.identityClientOptions.disableInstanceDisovery();
+        this.identityClientOptions.disableInstanceDiscovery();
         return this;
     }
 
@@ -266,12 +271,9 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
-        WorkloadIdentityCredential workloadIdentityCredential = getWorkloadIdentityCredentialIfAvailable();
-        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(workloadIdentityCredential != null ? 8 : 7);
+        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
-        if (workloadIdentityCredential != null) {
-            output.add(workloadIdentityCredential);
-        }
+        output.add(getWorkloadIdentityCredential());
         output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions.clone()));
         output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
@@ -282,20 +284,18 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         return output;
     }
 
-    private WorkloadIdentityCredential getWorkloadIdentityCredentialIfAvailable() {
+    private WorkloadIdentityCredential getWorkloadIdentityCredential() {
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
 
-        String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-        String federatedTokenFilePath = configuration.get(AZURE_FEDERATED_TOKEN_FILE);
         String azureAuthorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
-        String clientId = CoreUtils.isNullOrEmpty(workloadIdentityClientId) ? managedIdentityClientId : workloadIdentityClientId;
-        if (!(CoreUtils.isNullOrEmpty(tenantId)
-            || CoreUtils.isNullOrEmpty(federatedTokenFilePath)
-            || CoreUtils.isNullOrEmpty(clientId)
-            || CoreUtils.isNullOrEmpty(azureAuthorityHost))) {
-            return new WorkloadIdentityCredential(tenantId, clientId, federatedTokenFilePath, identityClientOptions.setAuthorityHost(azureAuthorityHost).clone());
+        String clientId = CoreUtils.isNullOrEmpty(workloadIdentityClientId)
+            ? managedIdentityClientId : workloadIdentityClientId;
+
+        if (!CoreUtils.isNullOrEmpty(azureAuthorityHost)) {
+            identityClientOptions.setAuthorityHost(azureAuthorityHost);
         }
-        return null;
+        return new WorkloadIdentityCredential(null, clientId, null,
+                identityClientOptions.clone());
     }
 }

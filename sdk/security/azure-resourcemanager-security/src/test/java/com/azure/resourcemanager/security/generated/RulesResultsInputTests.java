@@ -16,10 +16,11 @@ public final class RulesResultsInputTests {
     public void testDeserialize() throws Exception {
         RulesResultsInput model =
             BinaryData
-                .fromString("{\"latestScan\":false,\"results\":{\"r\":[[\"xxqcwgaxf\",\"vaknokzwjj\"]]}}")
+                .fromString(
+                    "{\"latestScan\":false,\"results\":{\"z\":[[\"fbojxjmcsmyqwix\",\"cp\"],[\"kwywzwofalic\",\"duoiqt\",\"mt\"],[\"sknxrwzawnvsbcf\",\"zagxnvhycvdi\",\"wrzregzgyufu\"],[\"wpwerye\"]],\"hnhjtfvpndpmi\":[[\"meottawj\",\"osxw\"]],\"yyshtuwgmevua\":[[\"nwynudq\"],[\"zsauzp\"],[\"xee\",\"uxiqhzlraymezxl\",\"kihmxrfdsajredn\"]]}}")
                 .toObject(RulesResultsInput.class);
         Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("xxqcwgaxf", model.results().get("r").get(0).get(0));
+        Assertions.assertEquals("fbojxjmcsmyqwix", model.results().get("z").get(0).get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -27,10 +28,26 @@ public final class RulesResultsInputTests {
         RulesResultsInput model =
             new RulesResultsInput()
                 .withLatestScan(false)
-                .withResults(mapOf("r", Arrays.asList(Arrays.asList("xxqcwgaxf", "vaknokzwjj"))));
+                .withResults(
+                    mapOf(
+                        "z",
+                        Arrays
+                            .asList(
+                                Arrays.asList("fbojxjmcsmyqwix", "cp"),
+                                Arrays.asList("kwywzwofalic", "duoiqt", "mt"),
+                                Arrays.asList("sknxrwzawnvsbcf", "zagxnvhycvdi", "wrzregzgyufu"),
+                                Arrays.asList("wpwerye")),
+                        "hnhjtfvpndpmi",
+                        Arrays.asList(Arrays.asList("meottawj", "osxw")),
+                        "yyshtuwgmevua",
+                        Arrays
+                            .asList(
+                                Arrays.asList("nwynudq"),
+                                Arrays.asList("zsauzp"),
+                                Arrays.asList("xee", "uxiqhzlraymezxl", "kihmxrfdsajredn"))));
         model = BinaryData.fromObject(model).toObject(RulesResultsInput.class);
         Assertions.assertEquals(false, model.latestScan());
-        Assertions.assertEquals("xxqcwgaxf", model.results().get("r").get(0).get(0));
+        Assertions.assertEquals("fbojxjmcsmyqwix", model.results().get("z").get(0).get(0));
     }
 
     @SuppressWarnings("unchecked")

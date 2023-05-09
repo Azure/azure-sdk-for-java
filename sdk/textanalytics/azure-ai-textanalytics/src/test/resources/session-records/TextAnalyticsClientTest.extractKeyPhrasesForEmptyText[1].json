@@ -1,26 +1,64 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "6e97b5b1-6a6d-4ae3-b9f5-afccd5bbd139",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "266",
-      "x-envoy-upstream-service-time" : "3",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "b4d6072c-2665-4870-8c28-8be6f7e354ae",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"kind\":\"KeyPhraseExtractionResults\",\"results\":{\"documents\":[],\"errors\":[{\"id\":\"0\",\"error\":{\"code\":\"InvalidArgument\",\"message\":\"Invalid Document in request.\",\"innererror\":{\"code\":\"InvalidDocument\",\"message\":\"Document text is empty.\"}}}],\"modelVersion\":\"2022-10-01\"}}",
-      "Date" : "Tue, 11 Oct 2022 19:57:45 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "120",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:34:00 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b08150f9-9df7-48e6-a072-02173e1136d1"
+      },
+      "RequestBody": {
+        "kind": "KeyPhraseExtraction",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": ""
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "4ccba378-2c00-4c0e-8fe8-0945d25ed6b7",
+        "Content-Length": "266",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:33:59 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "2",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "KeyPhraseExtractionResults",
+        "results": {
+          "documents": [],
+          "errors": [
+            {
+              "id": "0",
+              "error": {
+                "code": "InvalidArgument",
+                "message": "Invalid Document in request.",
+                "innererror": {
+                  "code": "InvalidDocument",
+                  "message": "Document text is empty."
+                }
+              }
+            }
+          ],
+          "modelVersion": "2022-10-01"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

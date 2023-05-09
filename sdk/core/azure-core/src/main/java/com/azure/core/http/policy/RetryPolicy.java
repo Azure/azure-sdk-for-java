@@ -3,6 +3,7 @@
 
 package com.azure.core.http.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
@@ -34,7 +35,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RetryPolicy.class);
 
     private final RetryStrategy retryStrategy;
-    private final String retryAfterHeader;
+    private final HttpHeaderName retryAfterHeader;
     private final ChronoUnit retryAfterTimeUnit;
 
     /**
@@ -76,7 +77,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      */
     public RetryPolicy(RetryStrategy retryStrategy, String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
-        this.retryAfterHeader = retryAfterHeader;
+        this.retryAfterHeader = HttpHeaderName.fromString(retryAfterHeader);
         this.retryAfterTimeUnit = retryAfterTimeUnit;
         if (!isNullOrEmpty(retryAfterHeader)) {
             Objects.requireNonNull(retryAfterTimeUnit, "'retryAfterTimeUnit' cannot be null.");
@@ -266,9 +267,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying.
      */
     static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
-        String retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
+        HttpHeaderName retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
-        if (isNullOrEmpty(retryAfterHeader)) {
+        if (retryAfterHeader == null) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);
         }
 

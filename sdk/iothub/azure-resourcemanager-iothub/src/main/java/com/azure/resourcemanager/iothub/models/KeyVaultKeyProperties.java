@@ -22,6 +22,10 @@ public final class KeyVaultKeyProperties {
     @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
+    /** Creates an instance of KeyVaultKeyProperties class. */
+    public KeyVaultKeyProperties() {
+    }
+
     /**
      * Get the keyIdentifier property: The identifier of the key.
      *

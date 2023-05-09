@@ -34,6 +34,10 @@ public final class IotHubCapacity {
     @JsonProperty(value = "scaleType", access = JsonProperty.Access.WRITE_ONLY)
     private IotHubScaleType scaleType;
 
+    /** Creates an instance of IotHubCapacity class. */
+    public IotHubCapacity() {
+    }
+
     /**
      * Get the minimum property: The minimum number of units.
      *

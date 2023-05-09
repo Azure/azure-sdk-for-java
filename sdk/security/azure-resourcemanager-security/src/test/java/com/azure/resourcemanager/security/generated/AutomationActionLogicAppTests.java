@@ -13,18 +13,18 @@ public final class AutomationActionLogicAppTests {
     public void testDeserialize() throws Exception {
         AutomationActionLogicApp model =
             BinaryData
-                .fromString("{\"actionType\":\"LogicApp\",\"logicAppResourceId\":\"kxhnegknj\",\"uri\":\"bhtmeplvuk\"}")
+                .fromString("{\"actionType\":\"LogicApp\",\"logicAppResourceId\":\"bqc\",\"uri\":\"jfgxxsaetg\"}")
                 .toObject(AutomationActionLogicApp.class);
-        Assertions.assertEquals("kxhnegknj", model.logicAppResourceId());
-        Assertions.assertEquals("bhtmeplvuk", model.uri());
+        Assertions.assertEquals("bqc", model.logicAppResourceId());
+        Assertions.assertEquals("jfgxxsaetg", model.uri());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutomationActionLogicApp model =
-            new AutomationActionLogicApp().withLogicAppResourceId("kxhnegknj").withUri("bhtmeplvuk");
+            new AutomationActionLogicApp().withLogicAppResourceId("bqc").withUri("jfgxxsaetg");
         model = BinaryData.fromObject(model).toObject(AutomationActionLogicApp.class);
-        Assertions.assertEquals("kxhnegknj", model.logicAppResourceId());
-        Assertions.assertEquals("bhtmeplvuk", model.uri());
+        Assertions.assertEquals("bqc", model.logicAppResourceId());
+        Assertions.assertEquals("jfgxxsaetg", model.uri());
     }
 }

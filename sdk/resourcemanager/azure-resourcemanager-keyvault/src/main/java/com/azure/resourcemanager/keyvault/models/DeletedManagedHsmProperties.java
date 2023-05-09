@@ -50,6 +50,10 @@ public final class DeletedManagedHsmProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of DeletedManagedHsmProperties class. */
+    public DeletedManagedHsmProperties() {
+    }
+
     /**
      * Get the mhsmId property: The resource id of the original managed HSM.
      *

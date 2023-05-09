@@ -37,6 +37,7 @@ public class ServiceBusMeter {
 
     private TelemetryAttributes sendAttributesSuccess;
     private TelemetryAttributes sendAttributesFailure;
+    private TelemetryAttributes sendAttributesCancelled;
     private TelemetryAttributes receiveAttributes;
 
     /**
@@ -76,6 +77,10 @@ public class ServiceBusMeter {
             failureMap.put(GENERIC_STATUS_KEY, "error");
             this.sendAttributesFailure = meter.createAttributes(failureMap);
 
+            Map<String, Object> cancelMap = new HashMap<>(commonAttributesMap);
+            cancelMap.put(GENERIC_STATUS_KEY, "cancelled");
+            this.sendAttributesCancelled = meter.createAttributes(cancelMap);
+
             this.settleSuccessAttributes = new TelemetryAttributes[DISPOSITION_STATUSES_COUNT];
             this.settleFailureAttributes = new TelemetryAttributes[DISPOSITION_STATUSES_COUNT];
             for (int i = 0; i < DISPOSITION_STATUSES_COUNT; i++) {
@@ -106,9 +111,15 @@ public class ServiceBusMeter {
     /**
      * Reports sent messages count.
      */
-    public void reportBatchSend(int batchSize, Throwable throwable, Context context) {
+    public void reportBatchSend(int batchSize, Throwable throwable, boolean cancelled, Context context) {
         if (isEnabled && sentMessagesCounter.isEnabled()) {
-            TelemetryAttributes attributes = throwable == null ? sendAttributesSuccess : sendAttributesFailure;
+            TelemetryAttributes attributes = sendAttributesSuccess;
+            if (throwable != null) {
+                attributes = sendAttributesFailure;
+            } else if (cancelled) {
+                attributes = sendAttributesCancelled;
+            }
+
             sentMessagesCounter.add(batchSize, attributes, context);
         }
     }
@@ -149,7 +160,7 @@ public class ServiceBusMeter {
      * if there is an active subscription for last sequence number reporting obtained
      * with {@link ServiceBusMeter#trackSettlementSequenceNumber()}.
      */
-    public void reportSettlement(long start, long seqNo, DispositionStatus status, Throwable throwable, Context context) {
+    public void reportSettlement(long start, long seqNo, DispositionStatus status, Throwable throwable, boolean cancelled, Context context) {
         if (isEnabled) {
             if (settleMessageDuration.isEnabled()) {
                 TelemetryAttributes attributes = throwable == null ? settleSuccessAttributes[status.ordinal()]
@@ -160,7 +171,7 @@ public class ServiceBusMeter {
 
             CompositeSubscription subs = lastSeqNoSubscription.get();
             if (settledSequenceNumber.isEnabled() && subs != null) {
-                subs.set(seqNo, status, throwable == null);
+                subs.set(seqNo, status, throwable == null && !cancelled);
             }
         }
     }

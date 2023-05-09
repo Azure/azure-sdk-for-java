@@ -6,20 +6,43 @@ package com.azure.resourcemanager.compute.generated;
 
 import com.azure.resourcemanager.compute.models.DedicatedHostLicenseTypes;
 import com.azure.resourcemanager.compute.models.DedicatedHostUpdate;
+import com.azure.resourcemanager.compute.models.Sku;
 import java.util.HashMap;
 import java.util.Map;
 
 /** Samples for DedicatedHosts Update. */
 public final class DedicatedHostsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_Update_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHost_Update_Resize.json
      */
     /**
-     * Sample code: DedicatedHosts_Update_MaximumSet_Gen.
+     * Sample code: DedicatedHost_Update_Resize.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dedicatedHostsUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void dedicatedHostUpdateResize(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure
+            .virtualMachines()
+            .manager()
+            .serviceClient()
+            .getDedicatedHosts()
+            .update(
+                "rgcompute",
+                "aaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaaaa",
+                new DedicatedHostUpdate().withSku(new Sku().withName("DSv3-Type1")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHost_Update_MaximumSet_Gen.json
+     */
+    /**
+     * Sample code: DedicatedHost_Update_MaximumSet_Gen.
+     *
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void dedicatedHostUpdateMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()
@@ -30,7 +53,7 @@ public final class DedicatedHostsUpdateSamples {
                 "aaaaaaaaa",
                 "aaaaaaaaaaaaaaaaaaaaa",
                 new DedicatedHostUpdate()
-                    .withTags(mapOf("key8813", "aaaaaaaaaaaaaaaaaaaaaaaaaaa"))
+                    .withTags(mapOf("key8813", "fakeTokenPlaceholder"))
                     .withPlatformFaultDomain(1)
                     .withAutoReplaceOnFailure(true)
                     .withLicenseType(DedicatedHostLicenseTypes.WINDOWS_SERVER_HYBRID),
@@ -38,14 +61,14 @@ public final class DedicatedHostsUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/dedicatedHostExamples/DedicatedHosts_Update_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/dedicatedHostExamples/DedicatedHost_Update_MinimumSet_Gen.json
      */
     /**
-     * Sample code: DedicatedHosts_Update_MinimumSet_Gen.
+     * Sample code: DedicatedHost_Update_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dedicatedHostsUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+    public static void dedicatedHostUpdateMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
             .manager()

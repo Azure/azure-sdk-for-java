@@ -24,6 +24,10 @@ public final class UserSubscriptionQuotaListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of UserSubscriptionQuotaListResultInner class. */
+    public UserSubscriptionQuotaListResultInner() {
+    }
+
     /**
      * Get the value property: The value property.
      *

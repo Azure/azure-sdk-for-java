@@ -1,47 +1,63 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.table.core.windows.net?restype=service&comp=properties",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e038ba08-95aa-4023-b30d-5ea6fbec587d",
-      "Content-Type" : "application/xml"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/?REDACTED",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "867",
+        "Content-Type": "application/xml",
+        "Date": "Fri, 14 Apr 2023 20:22:34 GMT",
+        "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
+        "x-ms-client-request-id": "b430a1ac-1cd2-44c6-92ea-17a6d3848baa",
+        "x-ms-version": "2020-12-06"
+      },
+      "RequestBody": "\u003C?xml version=\u00271.0\u0027 encoding=\u0027UTF-8\u0027?\u003E\u003CStorageServiceProperties\u003E\u003CLogging\u003E\u003CVersion\u003E1.0\u003C/Version\u003E\u003CDelete\u003Efalse\u003C/Delete\u003E\u003CRead\u003Etrue\u003C/Read\u003E\u003CWrite\u003Efalse\u003C/Write\u003E\u003CRetentionPolicy\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CDays\u003E5\u003C/Days\u003E\u003C/RetentionPolicy\u003E\u003C/Logging\u003E\u003CHourMetrics\u003E\u003CVersion\u003E1.0\u003C/Version\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CIncludeAPIs\u003Etrue\u003C/IncludeAPIs\u003E\u003CRetentionPolicy\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CDays\u003E5\u003C/Days\u003E\u003C/RetentionPolicy\u003E\u003C/HourMetrics\u003E\u003CMinuteMetrics\u003E\u003CVersion\u003E1.0\u003C/Version\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CIncludeAPIs\u003Etrue\u003C/IncludeAPIs\u003E\u003CRetentionPolicy\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CDays\u003E5\u003C/Days\u003E\u003C/RetentionPolicy\u003E\u003C/MinuteMetrics\u003E\u003CCors\u003E\u003CCorsRule\u003E\u003CAllowedOrigins\u003E*\u003C/AllowedOrigins\u003E\u003CAllowedMethods\u003EGET,PUT,HEAD\u003C/AllowedMethods\u003E\u003CAllowedHeaders\u003Ex-ms-version\u003C/AllowedHeaders\u003E\u003CExposedHeaders\u003Ex-ms-client-request-id\u003C/ExposedHeaders\u003E\u003CMaxAgeInSeconds\u003E10\u003C/MaxAgeInSeconds\u003E\u003C/CorsRule\u003E\u003C/Cors\u003E\u003C/StorageServiceProperties\u003E",
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Date": "Fri, 14 Apr 2023 20:22:34 GMT",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "x-ms-client-request-id": "b430a1ac-1cd2-44c6-92ea-17a6d3848baa",
+        "x-ms-request-id": "8716f9e2-9002-0036-700e-6f7333000000",
+        "x-ms-version": "2020-12-06"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "x-ms-request-id" : "9f6a4f5f-1002-0063-06b1-5d9844000000",
-      "x-ms-client-request-id" : "e038ba08-95aa-4023-b30d-5ea6fbec587d",
-      "Date" : "Thu, 10 Jun 2021 04:28:26 GMT"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.table.core.windows.net?restype=service&comp=properties",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "aa9fba1e-576e-4067-a641-e407f47a8d20"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Access-Control-Expose-Headers" : "x-ms-client-request-id",
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
-      "Access-Control-Allow-Origin" : "*",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-request-id" : "9f6a4fe0-1002-0063-4fb1-5d9844000000",
-      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><StorageServiceProperties><Logging><Version>1.0</Version><Read>true</Read><Write>false</Write><Delete>false</Delete><RetentionPolicy><Enabled>true</Enabled><Days>5</Days></RetentionPolicy></Logging><HourMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>true</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>5</Days></RetentionPolicy></HourMetrics><MinuteMetrics><Version>1.0</Version><Enabled>true</Enabled><IncludeAPIs>true</IncludeAPIs><RetentionPolicy><Enabled>true</Enabled><Days>5</Days></RetentionPolicy></MinuteMetrics><Cors><CorsRule><AllowedMethods>GET,PUT,HEAD</AllowedMethods><AllowedOrigins>*</AllowedOrigins><AllowedHeaders>x-ms-version</AllowedHeaders><ExposedHeaders>x-ms-client-request-id</ExposedHeaders><MaxAgeInSeconds>10</MaxAgeInSeconds></CorsRule></Cors></StorageServiceProperties>",
-      "x-ms-client-request-id" : "aa9fba1e-576e-4067-a641-e407f47a8d20",
-      "Date" : "Thu, 10 Jun 2021 04:28:27 GMT",
-      "Content-Type" : "application/xml"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/?REDACTED",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/xml",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 14 Apr 2023 20:22:54 GMT",
+        "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
+        "x-ms-client-request-id": "1957acb8-9ae4-4b00-acbd-ff374433d402",
+        "x-ms-version": "2020-12-06"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "x-ms-client-request-id",
+        "Content-Type": "application/xml",
+        "Date": "Fri, 14 Apr 2023 20:22:54 GMT",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "x-ms-client-request-id": "1957acb8-9ae4-4b00-acbd-ff374433d402",
+        "x-ms-request-id": "871713ff-9002-0036-590e-6f7333000000",
+        "x-ms-version": "2020-12-06"
+      },
+      "ResponseBody": "\uFEFF\u003C?xml version=\u00221.0\u0022 encoding=\u0022utf-8\u0022?\u003E\u003CStorageServiceProperties\u003E\u003CLogging\u003E\u003CVersion\u003E1.0\u003C/Version\u003E\u003CRead\u003Etrue\u003C/Read\u003E\u003CWrite\u003Efalse\u003C/Write\u003E\u003CDelete\u003Efalse\u003C/Delete\u003E\u003CRetentionPolicy\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CDays\u003E5\u003C/Days\u003E\u003C/RetentionPolicy\u003E\u003C/Logging\u003E\u003CHourMetrics\u003E\u003CVersion\u003E1.0\u003C/Version\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CIncludeAPIs\u003Etrue\u003C/IncludeAPIs\u003E\u003CRetentionPolicy\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CDays\u003E5\u003C/Days\u003E\u003C/RetentionPolicy\u003E\u003C/HourMetrics\u003E\u003CMinuteMetrics\u003E\u003CVersion\u003E1.0\u003C/Version\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CIncludeAPIs\u003Etrue\u003C/IncludeAPIs\u003E\u003CRetentionPolicy\u003E\u003CEnabled\u003Etrue\u003C/Enabled\u003E\u003CDays\u003E5\u003C/Days\u003E\u003C/RetentionPolicy\u003E\u003C/MinuteMetrics\u003E\u003CCors\u003E\u003CCorsRule\u003E\u003CAllowedMethods\u003EGET,PUT,HEAD\u003C/AllowedMethods\u003E\u003CAllowedOrigins\u003E*\u003C/AllowedOrigins\u003E\u003CAllowedHeaders\u003Ex-ms-version\u003C/AllowedHeaders\u003E\u003CExposedHeaders\u003Ex-ms-client-request-id\u003C/ExposedHeaders\u003E\u003CMaxAgeInSeconds\u003E10\u003C/MaxAgeInSeconds\u003E\u003C/CorsRule\u003E\u003C/Cors\u003E\u003C/StorageServiceProperties\u003E"
+    }
+  ],
+  "Variables": {}
 }

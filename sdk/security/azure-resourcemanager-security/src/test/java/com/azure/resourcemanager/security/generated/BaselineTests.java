@@ -16,10 +16,10 @@ public final class BaselineTests {
         Baseline model =
             BinaryData
                 .fromString(
-                    "{\"expectedResults\":[[\"qnzmnhiil\",\"alwcjgckbb\"],[\"cgzpraoxnyu\",\"fa\",\"sgftipwc\"]],\"updatedTime\":\"2021-01-22T16:26:57Z\"}")
+                    "{\"expectedResults\":[[\"g\",\"uuj\"],[\"uhd\",\"wsigrbjbxsj\",\"bvitvqkjya\"],[\"umtggmuwdchozfn\"],[\"exlvxnoakiz\"]],\"updatedTime\":\"2021-02-16T18:23:50Z\"}")
                 .toObject(Baseline.class);
-        Assertions.assertEquals("qnzmnhiil", model.expectedResults().get(0).get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T16:26:57Z"), model.updatedTime());
+        Assertions.assertEquals("g", model.expectedResults().get(0).get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T18:23:50Z"), model.updatedTime());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,10 +29,13 @@ public final class BaselineTests {
                 .withExpectedResults(
                     Arrays
                         .asList(
-                            Arrays.asList("qnzmnhiil", "alwcjgckbb"), Arrays.asList("cgzpraoxnyu", "fa", "sgftipwc")))
-                .withUpdatedTime(OffsetDateTime.parse("2021-01-22T16:26:57Z"));
+                            Arrays.asList("g", "uuj"),
+                            Arrays.asList("uhd", "wsigrbjbxsj", "bvitvqkjya"),
+                            Arrays.asList("umtggmuwdchozfn"),
+                            Arrays.asList("exlvxnoakiz")))
+                .withUpdatedTime(OffsetDateTime.parse("2021-02-16T18:23:50Z"));
         model = BinaryData.fromObject(model).toObject(Baseline.class);
-        Assertions.assertEquals("qnzmnhiil", model.expectedResults().get(0).get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-22T16:26:57Z"), model.updatedTime());
+        Assertions.assertEquals("g", model.expectedResults().get(0).get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-16T18:23:50Z"), model.updatedTime());
     }
 }

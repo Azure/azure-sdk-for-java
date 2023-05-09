@@ -31,7 +31,7 @@ public final class WorkspaceSettingsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"workspaceId\":\"n\",\"scope\":\"abwmvogljsv\"},\"id\":\"pgidnw\",\"name\":\"ehaqidoyzltgio\",\"type\":\"qoqpepiaeap\"}";
+            "{\"properties\":{\"workspaceId\":\"dfj\",\"scope\":\"i\"},\"id\":\"socwiqbuout\",\"name\":\"py\",\"type\":\"gleofjsbgbw\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,9 +60,9 @@ public final class WorkspaceSettingsGetWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         WorkspaceSetting response =
-            manager.workspaceSettings().getWithResponse("okjxebjvb", com.azure.core.util.Context.NONE).getValue();
+            manager.workspaceSettings().getWithResponse("eaqgrvgpomxpupd", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("n", response.workspaceId());
-        Assertions.assertEquals("abwmvogljsv", response.scope());
+        Assertions.assertEquals("dfj", response.workspaceId());
+        Assertions.assertEquals("i", response.scope());
     }
 }

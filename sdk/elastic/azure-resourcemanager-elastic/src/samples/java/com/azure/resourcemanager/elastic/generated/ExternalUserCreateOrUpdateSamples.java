@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ExternalUser CreateOrUpdate. */
 public final class ExternalUserCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/ExternalUserInfo.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/ExternalUserInfo.json
      */
     /**
      * Sample code: ExternalUser_CreateOrUpdate.
@@ -17,6 +15,8 @@ public final class ExternalUserCreateOrUpdateSamples {
      * @param manager Entry point to ElasticManager.
      */
     public static void externalUserCreateOrUpdate(com.azure.resourcemanager.elastic.ElasticManager manager) {
-        manager.externalUsers().createOrUpdateWithResponse("myResourceGroup", "myMonitor", null, Context.NONE);
+        manager
+            .externalUsers()
+            .createOrUpdateWithResponse("myResourceGroup", "myMonitor", null, com.azure.core.util.Context.NONE);
     }
 }

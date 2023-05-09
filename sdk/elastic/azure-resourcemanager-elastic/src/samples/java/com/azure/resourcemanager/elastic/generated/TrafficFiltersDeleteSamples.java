@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for TrafficFilters Delete. */
 public final class TrafficFiltersDeleteSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/TrafficFilters_Delete.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/TrafficFilters_Delete.json
      */
     /**
      * Sample code: TrafficFilters_Delete.
@@ -19,6 +17,7 @@ public final class TrafficFiltersDeleteSamples {
     public static void trafficFiltersDelete(com.azure.resourcemanager.elastic.ElasticManager manager) {
         manager
             .trafficFilters()
-            .deleteWithResponse("myResourceGroup", "myMonitor", "31d91b5afb6f4c2eaaf104c97b1991dd", Context.NONE);
+            .deleteWithResponse(
+                "myResourceGroup", "myMonitor", "31d91b5afb6f4c2eaaf104c97b1991dd", com.azure.core.util.Context.NONE);
     }
 }

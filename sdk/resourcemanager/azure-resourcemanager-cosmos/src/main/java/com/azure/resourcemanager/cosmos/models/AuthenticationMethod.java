@@ -20,6 +20,9 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
     /** Static value Cassandra for AuthenticationMethod. */
     public static final AuthenticationMethod CASSANDRA = fromString("Cassandra");
 
+    /** Static value Ldap for AuthenticationMethod. */
+    public static final AuthenticationMethod LDAP = fromString("Ldap");
+
     /**
      * Creates a new instance of AuthenticationMethod value.
      *
