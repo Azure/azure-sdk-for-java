@@ -36,10 +36,11 @@ abstract class CreditAccounting {
     }
 
     /**
-     * CONTRACT: Never invoke from the outside of serialized drain-loop of message-flux.
+     * Update the credit accounting based on the latest view of the downstream request and messages emitted by
+     * the emitter-loop in the last drain-loop iteration.
      * <br/>
-     * Notify the latest view of the downstream request and messages emitted by the emitter-loop during
-     * the last drain-loop iteration in message-flux.
+     * CONTRACT: Never invoke from the outside of serialized drain-loop in message-flux; the method relies on
+     * the thread-safety and memory visibility the drain-loop provides.
      *
      * @param request the latest view of the downstream request.
      * @param emitted the number of messages emitted by the latest emitter-loop run.
@@ -55,9 +56,9 @@ abstract class CreditAccounting {
         try {
             receiver.addCredit(creditSupplier);
         } catch (RejectedExecutionException e) {
-            logger.info("Credit schedule encountered rejected-error (normal during link termination or transition).", e);
+            logger.atInfo().log("Credit schedule encountered rejected-error (normal during link termination or transition).", e);
         } catch (UncheckedIOException e) {
-            logger.info("Credit schedule encountered io-error (normal during link termination or transition).", e);
+            logger.atInfo().log("Credit schedule encountered io-error (normal during link termination or transition).", e);
         }
     }
 }
