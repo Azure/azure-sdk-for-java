@@ -22,9 +22,4 @@ public class HttpTimeoutPolicyControlPlaneRead extends HttpTimeoutPolicy {
             new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 1),
             new ResponseTimeoutAndDelays(Duration.ofSeconds(20), 0)));
     }
-
-    @Override
-    public boolean isSafeToRetry(HttpMethod httpMethod) {
-        return true;
-    }
 }

@@ -44,10 +44,7 @@ public class WebExceptionRetryPolicy extends DocumentClientRetryPolicy {
             this.durationTimer.stop();
             return Mono.just(ShouldRetryResult.noRetry());
         }
-        if (!timeoutPolicy.isSafeToRetry(httpMethod) && !WebExceptionUtility.isWebExceptionRetriable(exception)) {
-            this.durationTimer.stop();
-            return Mono.just(ShouldRetryResult.noRetryOnNonRelatedException());
-        }
+
         if (!WebExceptionUtility.isWebExceptionRetriable(exception)) {
             // Have caller propagate original exception.
             this.durationTimer.stop();

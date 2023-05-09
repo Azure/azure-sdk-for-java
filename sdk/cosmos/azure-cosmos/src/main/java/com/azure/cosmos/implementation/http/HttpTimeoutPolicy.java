@@ -35,8 +35,6 @@ public abstract class HttpTimeoutPolicy {
 
     public long maximumRetryTimeLimit() { return Configs.getHttpResponseTimeoutInSeconds(); };
 
-    public abstract boolean isSafeToRetry(HttpMethod httpMethod);
-
     public List<ResponseTimeoutAndDelays> getTimeoutAndDelaysList() {
         return timeoutAndDelaysList;
     }

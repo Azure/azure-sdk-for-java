@@ -23,13 +23,4 @@ public class HttpTimeoutPolicyDefault extends HttpTimeoutPolicy {
             new ResponseTimeoutAndDelays(Duration.ofSeconds(60), 1),
             new ResponseTimeoutAndDelays(Duration.ofSeconds(60), 0)));
     }
-
-    // Assume that it is not safe to retry unless it is a get method.
-    // Create and other operations could have succeeded even though a timeout occurred.
-    @Override
-    public boolean isSafeToRetry(HttpMethod httpMethod) {
-        return httpMethod == HttpMethod.GET;
-    }
-
-
 }

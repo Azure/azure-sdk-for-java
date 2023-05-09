@@ -22,9 +22,4 @@ public class HttpTimeoutPolicyControlPlaneHotPath extends HttpTimeoutPolicy {
             new ResponseTimeoutAndDelays(Duration.ofSeconds(5), 1),
             new ResponseTimeoutAndDelays(Duration.ofSeconds(10), 0)));
     }
-
-    @Override
-    public boolean isSafeToRetry(HttpMethod httpMethod) {
-        return true;
-    }
 }
