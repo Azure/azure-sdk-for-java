@@ -25,7 +25,6 @@ public class TestProxyManager {
 
     /**
      * Construct a {@link TestProxyManager} for controlling the external test proxy.
-     * @param recordingPath The local path in the file system where recordings are saved.
      */
     public TestProxyManager() {
         // This is necessary to stop the proxy when the debugger is stopped.
