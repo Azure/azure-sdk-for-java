@@ -65,7 +65,7 @@ public final class CallConnectionPropertiesInternal {
      * Source identity.
      */
     @JsonProperty(value = "sourceIdentity")
-    private CommunicationUserIdentifierModel sourceIdentity;
+    private CommunicationIdentifierModel sourceIdentity;
 
     /*
      * The correlation ID.
@@ -248,7 +248,7 @@ public final class CallConnectionPropertiesInternal {
      *
      * @return the sourceIdentity value.
      */
-    public CommunicationUserIdentifierModel getSourceIdentity() {
+    public CommunicationIdentifierModel getSourceIdentity() {
         return this.sourceIdentity;
     }
 
@@ -258,7 +258,7 @@ public final class CallConnectionPropertiesInternal {
      * @param sourceIdentity the sourceIdentity value to set.
      * @return the CallConnectionPropertiesInternal object itself.
      */
-    public CallConnectionPropertiesInternal setSourceIdentity(CommunicationUserIdentifierModel sourceIdentity) {
+    public CallConnectionPropertiesInternal setSourceIdentity(CommunicationIdentifierModel sourceIdentity) {
         this.sourceIdentity = sourceIdentity;
         return this;
     }

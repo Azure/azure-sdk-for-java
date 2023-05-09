@@ -44,11 +44,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.util.DateTimeRfc1123;
+import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
 import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -81,9 +84,9 @@ public final class CallAutomationAsyncClient {
         this.callRecordingsInternal = callServiceClient.getCallRecordings();
         this.callMediasInternal = callServiceClient.getCallMedias();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
-        this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint().toString(), callServiceClient.getHttpPipeline());
+        this.contentDownloader = new ContentDownloader(callServiceClient.getEndpoint(), callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
-        this.resourceUrl = callServiceClient.getEndpoint().toString();
+        this.resourceUrl = callServiceClient.getEndpoint();
         this.sourceIdentity = sourceIdentity == null ? null : CommunicationUserIdentifierConverter.convert(sourceIdentity);
     }
 
@@ -158,8 +161,10 @@ public final class CallAutomationAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createCallOptions);
-
-            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
+            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
                     context)
                 .map(response -> {
                     try {
@@ -181,8 +186,10 @@ public final class CallAutomationAsyncClient {
         try {
             context = context == null ? Context.NONE : context;
             CreateCallRequestInternal request = getCreateCallRequestInternal(createGroupCallOptions);
-
-            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(request,
+            return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
                     context)
                 .map(response -> {
                     try {
@@ -330,7 +337,11 @@ public final class CallAutomationAsyncClient {
                 request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesUrl());
             }
 
-            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(request, context)
+            return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    context)
                 .map(response -> {
                     try {
                         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(response.getValue().getCallConnectionId());
@@ -390,7 +401,10 @@ public final class CallAutomationAsyncClient {
                 request.setCustomContext(customContext);
             }
 
-            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(request,
+            return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -434,7 +448,10 @@ public final class CallAutomationAsyncClient {
                 request.setCallRejectReason(CallRejectReasonInternal.fromString(rejectCallOptions.getCallRejectReason().toString()));
             }
 
-            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(request,
+            return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

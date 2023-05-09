@@ -25,7 +25,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.net.URL;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CallMedias. */
@@ -58,7 +57,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> play(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") PlayRequest playRequest,
@@ -69,7 +68,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> cancelAllMediaOperations(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -79,7 +78,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> recognize(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RecognizeRequest recognizeRequest,
@@ -90,7 +89,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> startContinuousDtmfRecognition(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json")
@@ -102,7 +101,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopContinuousDtmfRecognition(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json")
@@ -114,7 +113,7 @@ public final class CallMediasImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> sendDtmf(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") SendDtmfRequestInternal sendDtmfRequest,
@@ -130,7 +129,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> playWithResponseAsync(String callConnectionId, PlayRequest playRequest) {
@@ -155,7 +154,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> playWithResponseAsync(
@@ -173,11 +172,11 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> playAsync(String callConnectionId, PlayRequest playRequest) {
-        return playWithResponseAsync(callConnectionId, playRequest).flatMap(ignored -> Mono.empty());
+        return playWithResponseAsync(callConnectionId, playRequest).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -189,11 +188,12 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> playAsync(String callConnectionId, PlayRequest playRequest, Context context) {
-        return playWithResponseAsync(callConnectionId, playRequest, context).flatMap(ignored -> Mono.empty());
+        return playWithResponseAsync(callConnectionId, playRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -219,7 +219,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> playWithResponse(String callConnectionId, PlayRequest playRequest, Context context) {
@@ -233,7 +233,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId) {
@@ -256,7 +256,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId, Context context) {
@@ -272,11 +272,12 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAllMediaOperationsAsync(String callConnectionId) {
-        return cancelAllMediaOperationsWithResponseAsync(callConnectionId).flatMap(ignored -> Mono.empty());
+        return cancelAllMediaOperationsWithResponseAsync(callConnectionId)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -287,11 +288,12 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> cancelAllMediaOperationsAsync(String callConnectionId, Context context) {
-        return cancelAllMediaOperationsWithResponseAsync(callConnectionId, context).flatMap(ignored -> Mono.empty());
+        return cancelAllMediaOperationsWithResponseAsync(callConnectionId, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -315,7 +317,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> cancelAllMediaOperationsWithResponse(String callConnectionId, Context context) {
@@ -330,7 +332,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> recognizeWithResponseAsync(String callConnectionId, RecognizeRequest recognizeRequest) {
@@ -355,7 +357,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> recognizeWithResponseAsync(
@@ -378,11 +380,12 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> recognizeAsync(String callConnectionId, RecognizeRequest recognizeRequest) {
-        return recognizeWithResponseAsync(callConnectionId, recognizeRequest).flatMap(ignored -> Mono.empty());
+        return recognizeWithResponseAsync(callConnectionId, recognizeRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -394,11 +397,12 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> recognizeAsync(String callConnectionId, RecognizeRequest recognizeRequest, Context context) {
-        return recognizeWithResponseAsync(callConnectionId, recognizeRequest, context).flatMap(ignored -> Mono.empty());
+        return recognizeWithResponseAsync(callConnectionId, recognizeRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -424,7 +428,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> recognizeWithResponse(
@@ -440,7 +444,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startContinuousDtmfRecognitionWithResponseAsync(
@@ -466,7 +470,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> startContinuousDtmfRecognitionWithResponseAsync(
@@ -491,13 +495,13 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startContinuousDtmfRecognitionAsync(
             String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
         return startContinuousDtmfRecognitionWithResponseAsync(callConnectionId, continuousDtmfRecognitionRequest)
-                .flatMap(ignored -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -509,7 +513,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startContinuousDtmfRecognitionAsync(
@@ -518,7 +522,7 @@ public final class CallMediasImpl {
             Context context) {
         return startContinuousDtmfRecognitionWithResponseAsync(
                         callConnectionId, continuousDtmfRecognitionRequest, context)
-                .flatMap(ignored -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -545,7 +549,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> startContinuousDtmfRecognitionWithResponse(
@@ -565,7 +569,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseAsync(
@@ -591,7 +595,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseAsync(
@@ -616,13 +620,13 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopContinuousDtmfRecognitionAsync(
             String callConnectionId, ContinuousDtmfRecognitionRequestInternal continuousDtmfRecognitionRequest) {
         return stopContinuousDtmfRecognitionWithResponseAsync(callConnectionId, continuousDtmfRecognitionRequest)
-                .flatMap(ignored -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -634,7 +638,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopContinuousDtmfRecognitionAsync(
@@ -643,7 +647,7 @@ public final class CallMediasImpl {
             Context context) {
         return stopContinuousDtmfRecognitionWithResponseAsync(
                         callConnectionId, continuousDtmfRecognitionRequest, context)
-                .flatMap(ignored -> Mono.empty());
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -670,7 +674,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopContinuousDtmfRecognitionWithResponse(
@@ -690,7 +694,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendDtmfWithResponseAsync(
@@ -716,7 +720,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> sendDtmfWithResponseAsync(
@@ -739,11 +743,12 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendDtmfAsync(String callConnectionId, SendDtmfRequestInternal sendDtmfRequest) {
-        return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest).flatMap(ignored -> Mono.empty());
+        return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -755,11 +760,12 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> sendDtmfAsync(String callConnectionId, SendDtmfRequestInternal sendDtmfRequest, Context context) {
-        return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest, context).flatMap(ignored -> Mono.empty());
+        return sendDtmfWithResponseAsync(callConnectionId, sendDtmfRequest, context)
+                .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
@@ -785,7 +791,7 @@ public final class CallMediasImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendDtmfWithResponse(

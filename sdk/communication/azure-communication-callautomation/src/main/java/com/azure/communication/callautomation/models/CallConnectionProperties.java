@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public final class CallConnectionProperties {
     private final String callConnectionId;
     private final String serverCallId;
-    private final CommunicationUserIdentifier sourceIdentity;
+    private final CommunicationIdentifier sourceIdentity;
     private final PhoneNumberIdentifier sourceCallerIdNumber;
     private final String sourceDisplayName;
     private final List<CommunicationIdentifier> targetParticipants;
@@ -68,7 +68,7 @@ public final class CallConnectionProperties {
      */
     CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
         this.callConnectionId = callConnectionPropertiesInternal.getCallConnectionId();
-        this.sourceIdentity = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceIdentity());
+        this.sourceIdentity = CommunicationIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceIdentity());
         this.sourceCallerIdNumber = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceCallerIdNumber());
         this.sourceDisplayName = callConnectionPropertiesInternal.getSourceDisplayName();
         this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
@@ -94,7 +94,7 @@ public final class CallConnectionProperties {
      *
      * @return sourceIdentity value.
      */
-    public CommunicationUserIdentifier getSourceIdentity() {
+    public CommunicationIdentifier getSourceIdentity() {
         return sourceIdentity;
     }
 

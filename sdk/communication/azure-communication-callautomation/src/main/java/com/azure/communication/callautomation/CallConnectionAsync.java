@@ -45,13 +45,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 import com.azure.core.exception.HttpResponseException;
 
 import java.net.URISyntaxException;
+import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -148,7 +151,11 @@ public final class CallConnectionAsync {
         try {
             context = context == null ? Context.NONE : context;
 
-            return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
+            return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(
+                    callConnectionId,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -282,9 +289,12 @@ public final class CallConnectionAsync {
                             .setVoipHeaders(transferCallToParticipantOptions.getVoipHeaders()));
             }
 
-            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
-            context).map(response ->
-                    new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
+            return callConnectionInternal.transferToParticipantWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    context).map(response -> new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -338,8 +348,13 @@ public final class CallConnectionAsync {
                 request.setCustomContext(customContext);
             }
 
-            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request,
-            context).map(response -> new SimpleResponse<>(response, AddParticipantResponseConstructorProxy.create(response.getValue())));
+            return callConnectionInternal.addParticipantWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    context
+            ).map(response -> new SimpleResponse<>(response, AddParticipantResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -379,8 +394,12 @@ public final class CallConnectionAsync {
                 .setParticipantToRemove(CommunicationIdentifierConverter.convert(removeParticipantOptions.getParticipant()))
                 .setOperationContext(removeParticipantOptions.getOperationContext());
 
-            return callConnectionInternal.removeParticipantWithResponseAsync(callConnectionId, request,
-            context).map(response -> new SimpleResponse<>(response, RemoveParticipantResponseConstructorProxy.create(response.getValue())));
+            return callConnectionInternal.removeParticipantWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    context).map(response -> new SimpleResponse<>(response, RemoveParticipantResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -421,6 +440,8 @@ public final class CallConnectionAsync {
             return callConnectionInternal.muteWithResponseAsync(
                     callConnectionId,
                     request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
                     context).map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -462,6 +483,8 @@ public final class CallConnectionAsync {
             return callConnectionInternal.unmuteWithResponseAsync(
                     callConnectionId,
                     request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
                     context).map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
