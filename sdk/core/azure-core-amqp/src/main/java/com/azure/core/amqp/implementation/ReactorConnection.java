@@ -93,7 +93,7 @@ public class ReactorConnection implements AmqpConnection {
     private volatile ClaimsBasedSecurityChannel cbsChannel;
     private volatile AmqpChannelProcessor<RequestResponseChannel> cbsChannelProcessor;
     private volatile Connection connection;
-    private final boolean useLegacyReceiver;
+    private final boolean isV2;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -107,12 +107,12 @@ public class ReactorConnection implements AmqpConnection {
      * @param messageSerializer Serializer to translate objects to and from proton-j {@link Message messages}.
      * @param senderSettleMode to set as {@link SenderSettleMode} on sender.
      * @param receiverSettleMode to set as {@link ReceiverSettleMode} on receiver.
-     * @param useLegacyReceiver (temporary) flag to use either legacy or new receiver.
+     * @param isV2 (temporary) flag to use either v1 or v2 receiver.
      */
     public ReactorConnection(String connectionId, ConnectionOptions connectionOptions, ReactorProvider reactorProvider,
         ReactorHandlerProvider handlerProvider, AmqpLinkProvider linkProvider, TokenManagerProvider tokenManagerProvider,
         MessageSerializer messageSerializer, SenderSettleMode senderSettleMode,
-        ReceiverSettleMode receiverSettleMode, boolean useLegacyReceiver) {
+        ReceiverSettleMode receiverSettleMode, boolean isV2) {
 
         this.connectionOptions = connectionOptions;
         this.reactorProvider = reactorProvider;
@@ -129,7 +129,7 @@ public class ReactorConnection implements AmqpConnection {
         this.operationTimeout = connectionOptions.getRetry().getTryTimeout();
         this.senderSettleMode = senderSettleMode;
         this.receiverSettleMode = receiverSettleMode;
-        this.useLegacyReceiver = useLegacyReceiver;
+        this.isV2 = isV2;
 
         this.connectionMono = Mono.fromCallable(this::getOrCreateConnection)
             .flatMap(reactorConnection -> {
@@ -441,7 +441,7 @@ public class ReactorConnection implements AmqpConnection {
             .cast(ReactorSession.class)
             .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), linkName,
                 entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
-                messageSerializer, senderSettleMode, receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), useLegacyReceiver))
+                messageSerializer, senderSettleMode, receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), isV2))
             .doOnNext(e -> {
                 logger.atInfo()
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)

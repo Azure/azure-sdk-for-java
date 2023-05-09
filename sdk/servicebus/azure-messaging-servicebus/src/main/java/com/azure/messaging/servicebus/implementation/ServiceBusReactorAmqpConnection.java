@@ -55,7 +55,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     private final String fullyQualifiedNamespace;
     private final CbsAuthorizationType authorizationType;
     private final boolean distributedTransactionsSupport;
-    private final boolean useLegacyReceiver;
+    private final boolean isV2;
 
     /**
      * Creates a new AMQP connection that uses proton-j.
@@ -69,14 +69,14 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
      * @param messageSerializer Serializes and deserializes proton-j messages.
      * @param distributedTransactionsSupport indicate if distributed transaction across different entities is required
      *        for this connection.
-     * @param useLegacyReceiver (temporary) flag to use either legacy or new receiver.
+     * @param isV2 (temporary) flag to use either v1 or v2 receiver.
      */
     public ServiceBusReactorAmqpConnection(String connectionId, ConnectionOptions connectionOptions,
         ReactorProvider reactorProvider, ReactorHandlerProvider handlerProvider, ServiceBusAmqpLinkProvider linkProvider,
         TokenManagerProvider tokenManagerProvider, MessageSerializer messageSerializer,
-        boolean distributedTransactionsSupport, boolean useLegacyReceiver) {
+        boolean distributedTransactionsSupport, boolean isV2) {
         super(connectionId, connectionOptions, reactorProvider, handlerProvider, linkProvider, tokenManagerProvider,
-            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, useLegacyReceiver);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, isV2);
 
         this.connectionId = connectionId;
         this.reactorProvider = reactorProvider;
@@ -89,7 +89,7 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
         this.scheduler = connectionOptions.getScheduler();
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
         this.distributedTransactionsSupport = distributedTransactionsSupport;
-        this.useLegacyReceiver = useLegacyReceiver;
+        this.isV2 = isV2;
     }
 
     @Override
@@ -227,6 +227,6 @@ public class ServiceBusReactorAmqpConnection extends ReactorConnection implement
     protected AmqpSession createSession(String sessionName, Session session, SessionHandler handler) {
         return new ServiceBusReactorSession(this, session, handler, sessionName, reactorProvider,
             handlerProvider, linkProvider, getClaimsBasedSecurityNode(), tokenManagerProvider, messageSerializer, retryOptions,
-            new ServiceBusCreateSessionOptions(distributedTransactionsSupport), useLegacyReceiver);
+            new ServiceBusCreateSessionOptions(distributedTransactionsSupport), isV2);
     }
 }

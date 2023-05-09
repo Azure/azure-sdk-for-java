@@ -10,41 +10,41 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import reactor.core.publisher.Mono;
 
-// Temporary type to support connection cache either in new or legacy stack.
+// Temporary type to support connection cache either in v1 or v2 stack.
 final class ConnectionCacheWrapper {
-    private final boolean isNewStack;
+    private final boolean isV2;
     private final ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache;
     private final ServiceBusConnectionProcessor processor;
 
     ConnectionCacheWrapper(ReactorConnectionCache<ServiceBusReactorAmqpConnection> cache) {
-        this.isNewStack = true;
+        this.isV2 = true;
         this.cache = cache;
         this.processor = null;
     }
 
     ConnectionCacheWrapper(ServiceBusConnectionProcessor processor) {
-        this.isNewStack = false;
+        this.isV2 = false;
         this.processor = processor;
         this.cache = null;
     }
 
-    boolean isNewStack() {
-        return isNewStack;
+    boolean isV2() {
+        return isV2;
     }
 
     Mono<ServiceBusAmqpConnection> getConnection() {
-        return isNewStack ? cache.get().cast(ServiceBusAmqpConnection.class) : processor;
+        return isV2 ? cache.get().cast(ServiceBusAmqpConnection.class) : processor;
     }
 
     String getFullyQualifiedNamespace() {
-        return isNewStack ?  cache.getFullyQualifiedNamespace() : processor.getFullyQualifiedNamespace();
+        return isV2 ?  cache.getFullyQualifiedNamespace() : processor.getFullyQualifiedNamespace();
     }
 
     AmqpRetryOptions getRetryOptions() {
-        return isNewStack ? cache.getRetryOptions() : processor.getRetryOptions();
+        return isV2 ? cache.getRetryOptions() : processor.getRetryOptions();
     }
 
     boolean isChannelClosed() {
-        return isNewStack ? cache.isCurrentConnectionClosed() : processor.isChannelClosed();
+        return isV2 ? cache.isCurrentConnectionClosed() : processor.isChannelClosed();
     }
 }

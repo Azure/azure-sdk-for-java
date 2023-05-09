@@ -235,7 +235,7 @@ public class ReactorSession implements AmqpSession {
      */
     @Override
     public Mono<AmqpLink> createConsumer(String linkName, String entityPath, Duration timeout, AmqpRetryPolicy retry) {
-        // Note: As part of removing the legacy receiver, the 'createConsumer' invoked below will be updated by removing
+        // Note: As part of removing the v1 stack receiver, the 'createConsumer' invoked below will be updated by removing
         // ConsumerSettings parameter and adding two additional parameters (DeliverySettleMode, includeDeliveryTagInMessage).
         // Here we've to pass (DeliverySettleMode.SETTLE_ON_DELIVERY, false) as the values for those two parameters.
         return createConsumer(linkName, entityPath, timeout, retry, null, null, null,
@@ -346,7 +346,7 @@ public class ReactorSession implements AmqpSession {
      * @param receiverDesiredCapabilities Capabilities that the receiver link supports.
      * @param senderSettleMode Amqp {@link SenderSettleMode} mode for receiver.
      * @param receiverSettleMode Amqp {@link ReceiverSettleMode} mode for receiver.
-     * @param consumerSettings a temporary parameter to support both legacy and new receivers. When removing the legacy
+     * @param consumerSettings a temporary parameter to support both v1 and v2 receivers. When removing the v1
      *       receiver support, two new parameters, 'ReceiverSettleMode' and 'includeDeliveryTagInMessage' will be introduced,
      *       and 'consumerSettings' will be removed.
      * @return A new instance of an {@link AmqpReceiveLink} with the correct properties set.
@@ -605,8 +605,8 @@ public class ReactorSession implements AmqpSession {
             receiver.setDesiredCapabilities(receiverDesiredCapabilities);
         }
 
-        // When removing legacy receiver support, the type 'ConsumerSettings' will be deleted, and we'll replace
-        // the logic here with the logic in consumerSettings.createConsumer' that uses the new receiver types.
+        // When removing v1 receiver support, the type 'ConsumerSettings' will be deleted, and we'll replace
+        // the logic here with the logic in consumerSettings.createConsumer' that uses the new v2 receiver types.
         final AmqpReceiveLink reactorReceiver = consumerSettings.createConsumer(amqpConnection, linkName, entityPath, receiver,
             tokenManager, provider, handlerProvider, linkProvider, retryOptions);
 

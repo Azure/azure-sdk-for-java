@@ -304,7 +304,7 @@ public final class NonSessionProcessor {
          */
         Mono<Void> begin() {
             final Mono<Void> mono = Mono.create(monoSink -> {
-                receiverClient.nonSessionProcessorReceiveOnNewStack()
+                receiverClient.nonSessionProcessorReceiveV2()
                     .subscribe(new CoreSubscriber<ServiceBusReceivedMessage>() {
                         @Override
                         public void onSubscribe(Subscription s) {
