@@ -90,6 +90,9 @@ public final class ResourceActionSuccessEventData {
 
     static final ClientLogger LOGGER = new ClientLogger(ResourceActionSuccessEventData.class);
 
+    /** Creates an instance of ResourceActionSuccessEventData class. */
+    public ResourceActionSuccessEventData() {}
+
     /**
      * Get the tenantId property: The tenant ID of the resource.
      *

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/OperationsList.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/OperationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -17,6 +15,6 @@ public final class OperationsListSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void operationsList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.containerGroups().manager().serviceClient().getOperations().list(Context.NONE);
+        azure.containerGroups().manager().serviceClient().getOperations().list(com.azure.core.util.Context.NONE);
     }
 }

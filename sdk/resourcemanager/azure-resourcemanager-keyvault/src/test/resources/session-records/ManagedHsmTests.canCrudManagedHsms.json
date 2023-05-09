@@ -49,7 +49,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg17988?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg17988?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a52c3172-8753-414c-a37c-40c1a1fd0143",
@@ -75,7 +75,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1d4a17e1-d346-4d73-8a61-568ecef40f43",
@@ -102,7 +102,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1d4a17e1-d346-4d73-8a61-568ecef40f43",
@@ -132,7 +132,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2c879613-5562-446b-ab2f-6a46c80d5e47"
@@ -161,7 +161,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "dee75346-4e71-471f-8305-769e26be3578"
@@ -190,7 +190,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a8b672e3-9d10-46f0-96a2-d0c4cc9f778b"
@@ -219,7 +219,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fdd6142d-d822-4589-9477-4e3e06a3caa4"
@@ -248,7 +248,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ec29c432-b68a-49eb-b5d8-6269f72fcdd3"
@@ -277,7 +277,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "587c9737-e05e-4d8b-9b7a-fa7c50c3a1d3"
@@ -306,7 +306,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "42c0086a-88e7-4e16-94e3-097d180b7289"
@@ -335,7 +335,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b1a82146-2ffb-4328-a2c5-be3565dfac33"
@@ -364,7 +364,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "06bf46f1-756b-4a92-b546-c83b2c6db767"
@@ -393,7 +393,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6c2442de-6788-471c-91cd-17f44e21f48b"
@@ -422,7 +422,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "55e7a466-4aa2-487a-818d-146eaa9e451a"
@@ -451,7 +451,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "574923db-33a1-432e-9104-248debec2ca1"
@@ -480,7 +480,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3feaacc8-0b15-45d3-8a01-e3588c34a600"
@@ -509,7 +509,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "8142e5b4-973a-4557-87c1-ceb7d2548be9"
@@ -538,7 +538,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "732cba32-c3ec-4249-9e4d-a47f31803818"
@@ -567,7 +567,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9d30c223-9925-48f2-8d1e-59d8ce93a186"
@@ -596,7 +596,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "e7bd67ef-8dad-44d8-b185-61b6270a60d5"
@@ -625,7 +625,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "430049b8-209b-4195-aa6f-142de1f29fa6"
@@ -654,7 +654,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "4f091427-e258-4882-9ffe-cdc56bd1fb2a"
@@ -683,7 +683,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f7b9542c-2b6f-49aa-85d1-383e8fc7fd62"
@@ -712,7 +712,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "98d061e6-d4f8-4b78-83f9-94870672b047"
@@ -741,7 +741,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "cc204952-c8f5-46d0-b1c3-0db37002f619"
@@ -770,7 +770,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fe2c9a13-ce44-4544-b4c3-15997a60c617"
@@ -799,7 +799,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "10f9b610-9730-47e1-8eee-ade8b9608eae"
@@ -828,7 +828,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f19d53ae-f09a-48d0-b251-bd940b6c2bda"
@@ -857,7 +857,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "66bd1e52-175e-4fbd-ba69-204abb532d16"
@@ -886,7 +886,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "03f6dd84-7e00-4dca-8611-f1492199c8dc"
@@ -915,7 +915,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "66a445fc-d98c-4a8b-b612-21d68609fd74"
@@ -944,7 +944,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c55db09b-ca40-4ad6-9737-b5f4d474dbe6"
@@ -973,7 +973,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "69b0c939-ea98-4c7d-9d85-44e5d3b4cf2b"
@@ -1002,7 +1002,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "77ab7e54-01e8-4ec7-8050-7d4815664caf"
@@ -1031,7 +1031,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c28c5339-3652-4cd8-be0b-6e99f195d3a4"
@@ -1060,7 +1060,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "a7d09aae-3abc-42c6-9d89-364a4b1217d8"
@@ -1089,7 +1089,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "00188847-0274-495d-9ade-7a18482b948b"
@@ -1118,7 +1118,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b6e1313e-82f4-42ea-8a78-43bfcc57346a"
@@ -1147,7 +1147,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c6f37108-54f0-45ae-be20-a366761e9932"
@@ -1176,7 +1176,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "dee10049-72d2-4036-b862-cd806817af53"
@@ -1205,7 +1205,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "983c15f5-b737-4f28-be74-38905c5c7db1"
@@ -1234,7 +1234,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "df3ffb35-1388-4d1d-9295-e66ee85f1918"
@@ -1263,7 +1263,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "1de9124e-e915-4969-979f-c2ebb6613a4f"
@@ -1292,7 +1292,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "68c1f51f-5e50-41fe-9f78-18675b132f6e",
@@ -1322,7 +1322,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "6fc36b94-17cd-4e10-9f82-1560ca948e36",
@@ -1352,7 +1352,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "95cda5e7-7fa8-4626-81ca-d6775042bf76",
@@ -1382,7 +1382,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "b1a4eae1-bfe7-4f20-bf79-9c22704dbf10",
@@ -1412,7 +1412,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/javacsmrg17988/providers/Microsoft.KeyVault/managedHSMs/mhsm35360?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3478ff30-1a72-45ac-aa8c-1a665577c2cf",
@@ -1436,12 +1436,12 @@
       "x-ms-request-id" : "cacb2058-407d-47dc-ac75-adcd3fb6ebcc",
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-client-request-id" : "3478ff30-1a72-45ac-aa8c-1a665577c2cf",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9ad61a3e-ed40-4dae-88ab-8d70f37ee0af"
@@ -1464,12 +1464,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "217548d1-5939-4fe3-ac05-e9f7fde006b2",
       "x-ms-client-request-id" : "9ad61a3e-ed40-4dae-88ab-8d70f37ee0af",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3d329190-4763-4b71-8d63-167278621a3a"
@@ -1492,12 +1492,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "c804cf87-6fb9-4253-99dd-b2754f8953d0",
       "x-ms-client-request-id" : "3d329190-4763-4b71-8d63-167278621a3a",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "bf6e49f8-0757-4999-8d41-812a8caec4ba"
@@ -1520,12 +1520,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "235c9d79-7c71-4da8-b5c4-e5eaa385948f",
       "x-ms-client-request-id" : "bf6e49f8-0757-4999-8d41-812a8caec4ba",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fc9b235b-255b-4f1b-8687-bcfd2e7c3f12"
@@ -1548,12 +1548,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "13ab9451-ee2b-412e-a9ea-ea7bcbaeaa00",
       "x-ms-client-request-id" : "fc9b235b-255b-4f1b-8687-bcfd2e7c3f12",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "eca2b872-5d8e-4ac6-b8f8-c0e8ed65c832"
@@ -1576,12 +1576,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "dd7e3435-11dc-4844-ba17-36d913a4989a",
       "x-ms-client-request-id" : "eca2b872-5d8e-4ac6-b8f8-c0e8ed65c832",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "2277f99f-7a00-4edd-b5b7-ffa47fb9b3ef"
@@ -1604,12 +1604,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "9a808661-6eda-4af7-8f55-d4e1797bac54",
       "x-ms-client-request-id" : "2277f99f-7a00-4edd-b5b7-ffa47fb9b3ef",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "837542d6-59b4-403c-9008-ff52220efa0d"
@@ -1632,12 +1632,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "41dfa47a-4ebf-4277-944c-14f6159a0126",
       "x-ms-client-request-id" : "837542d6-59b4-403c-9008-ff52220efa0d",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "50d682f0-a945-4881-992c-a17ba1a6dcdb"
@@ -1660,12 +1660,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "ca4c2451-f731-4655-b5d7-e01222bcd80e",
       "x-ms-client-request-id" : "50d682f0-a945-4881-992c-a17ba1a6dcdb",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "fde7652a-1859-4f57-8b84-9ed85fbb0807"
@@ -1688,12 +1688,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "1b929eb5-a2b4-4dfc-bbcb-01b9ee05a6dc",
       "x-ms-client-request-id" : "fde7652a-1859-4f57-8b84-9ed85fbb0807",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "341448a6-91d4-42a4-b130-4d50e3ce0c88"
@@ -1716,12 +1716,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "8922d65b-20f5-4424-a957-aaf8a61438da",
       "x-ms-client-request-id" : "341448a6-91d4-42a4-b130-4d50e3ce0c88",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "28c54268-79f8-4649-b650-27e5779ecd21"
@@ -1744,12 +1744,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "486e2e4e-559f-4642-8f5f-898d22dedb1d",
       "x-ms-client-request-id" : "28c54268-79f8-4649-b650-27e5779ecd21",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "34e36fd0-d564-4b9d-9e56-61844cb5ed30"
@@ -1772,12 +1772,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "a2336477-bd97-4b93-adec-8d2636a55079",
       "x-ms-client-request-id" : "34e36fd0-d564-4b9d-9e56-61844cb5ed30",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "adf9fb19-1c8b-4638-a69c-ed2ddb6b4eed"
@@ -1800,12 +1800,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "a6e45ede-d225-4d47-9603-936ebe26f1a2",
       "x-ms-client-request-id" : "adf9fb19-1c8b-4638-a69c-ed2ddb6b4eed",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "56f790a3-3145-4b26-b9c9-59b5d0282067"
@@ -1828,12 +1828,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "45a16b23-6571-4e3c-bca4-b43503dd714b",
       "x-ms-client-request-id" : "56f790a3-3145-4b26-b9c9-59b5d0282067",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/8a7521cd-b6da-4a11-89d7-e15b7838d4e1?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "ce9895c9-8112-44f9-8259-8b8c305f2a18"
@@ -1860,7 +1860,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/deletedManagedHSMs/mhsm35360/purge?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/deletedManagedHSMs/mhsm35360/purge?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "7b39ea32-55a4-4450-a1df-43726bdc751c",
@@ -1884,12 +1884,12 @@
       "x-ms-request-id" : "8bc85d4e-3de5-4f59-878e-97d8b9aa8b1c",
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-client-request-id" : "7b39ea32-55a4-4450-a1df-43726bdc751c",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "f4fbb07c-d18f-46de-ba17-a774d5db7187"
@@ -1912,12 +1912,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "4550d1c4-b440-4371-86f8-7e57c849e39d",
       "x-ms-client-request-id" : "f4fbb07c-d18f-46de-ba17-a774d5db7187",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "c1c87a4e-54aa-42b1-8b63-e571d4db17f8"
@@ -1940,12 +1940,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "a9f968ca-005c-4b8c-b30b-f050966efe69",
       "x-ms-client-request-id" : "c1c87a4e-54aa-42b1-8b63-e571d4db17f8",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d6cfd406-2e4f-49f1-992c-ab142ffccf52"
@@ -1968,12 +1968,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "ce02c1ca-cbc0-41ae-8032-e7a5e7ab5ff5",
       "x-ms-client-request-id" : "d6cfd406-2e4f-49f1-992c-ab142ffccf52",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "53ac7d9d-cc10-4119-904a-ac1cf47afd9c"
@@ -1996,12 +1996,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "16a8ecd2-e2d0-4622-a85d-f4eb86caa571",
       "x-ms-client-request-id" : "53ac7d9d-cc10-4119-904a-ac1cf47afd9c",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "d8f0d591-8b0e-4a3b-b20a-8303dc3e44a2"
@@ -2024,12 +2024,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "5c6beb09-6dc1-40a0-950c-1873ef55d0b3",
       "x-ms-client-request-id" : "d8f0d591-8b0e-4a3b-b20a-8303dc3e44a2",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3d646a7b-104f-4223-b096-93e5ede2bc2e"
@@ -2052,12 +2052,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "1e483e62-cef5-4f50-9c48-b3eb24d34e09",
       "x-ms-client-request-id" : "3d646a7b-104f-4223-b096-93e5ede2bc2e",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "24ce2df9-145d-4c2e-b37c-5f8509511e92"
@@ -2080,12 +2080,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "cb0f3705-f3bb-4b09-ab24-65222d628e7d",
       "x-ms-client-request-id" : "24ce2df9-145d-4c2e-b37c-5f8509511e92",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "3be1d563-03f5-49ce-afc5-59a4d9b311eb"
@@ -2108,12 +2108,12 @@
       "x-ms-keyvault-service-version" : "1.5.692.0",
       "x-ms-request-id" : "4901c432-f8ba-4523-a42f-46975767eba1",
       "x-ms-client-request-id" : "3be1d563-03f5-49ce-afc5-59a4d9b311eb",
-      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01"
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2021-10-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/providers/Microsoft.KeyVault/locations/eastus2/managedHsmOperationResults/17d84348-77d7-419b-a130-80031993df9c?api-version=2023-02-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.keyvault/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "9976102e-3f30-4e2d-89c9-4a4980d72e4e"
@@ -2140,7 +2140,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg17988?api-version=2021-01-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/javacsmrg17988?api-version=2022-09-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.25.0-beta.1 (17.0.6; Windows 10; 10.0)",
       "x-ms-client-request-id" : "69bc3cfd-fece-413c-af92-5ada9fd2ed91",

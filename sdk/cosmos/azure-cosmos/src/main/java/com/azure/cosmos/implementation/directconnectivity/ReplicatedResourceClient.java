@@ -11,7 +11,6 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.ISessionContainer;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
@@ -19,12 +18,14 @@ import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -111,9 +112,9 @@ public class ReplicatedResourceClient {
                     forceRefreshAndTimeout.getValue3().toString());
             documentServiceRequest.getHeaders().put(HttpConstants.HttpHeaders.REMAINING_TIME_IN_MS_ON_CLIENT_REQUEST,
                     Long.toString(forceRefreshAndTimeout.getValue2().toMillis()));
-            return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                        forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
 
+            return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+                forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
         };
         Function<Quadruple<Boolean, Boolean, Duration, Integer>, Mono<StoreResponse>> funcDelegate = (
                 Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) -> {
@@ -143,16 +144,14 @@ public class ReplicatedResourceClient {
                     return prepareRequestAsyncDelegate.apply(readRequestClone).flatMap(responseReq -> {
                         logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
                         responseReq.requestContext.routeToLocation(forceRefreshAndTimeout.getValue3(), true);
-                        return invokeAsync(responseReq, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                                forceRefreshAndTimeout.getValue1(),
-                                forceRefreshAndTimeout.getValue0());
+                        return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+                            forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
                     });
                 } else {
                     logger.trace("Executing inBackoffAlternateCallbackMethod on readRegionIndex {}", forceRefreshAndTimeout.getValue3());
                     readRequestClone.requestContext.routeToLocation(forceRefreshAndTimeout.getValue3(), true);
-                    return invokeAsync(readRequestClone, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
-                            forceRefreshAndTimeout.getValue1(),
-                            forceRefreshAndTimeout.getValue0());
+                    return invokeAsync(request, new TimeoutHelper(forceRefreshAndTimeout.getValue2()),
+                        forceRefreshAndTimeout.getValue1(), forceRefreshAndTimeout.getValue0());
                 }
 
             };
@@ -170,6 +169,14 @@ public class ReplicatedResourceClient {
                 ReplicatedResourceClient.MIN_BACKOFF_FOR_FAILLING_BACK_TO_OTHER_REGIONS_FOR_READ_REQUESTS_IN_SECONDS),
             request,
             addressSelector);
+    }
+
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.transportClient.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
+    }
+
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.transportClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
     private Mono<StoreResponse> invokeAsync(RxDocumentServiceRequest request, TimeoutHelper timeout,
@@ -191,8 +198,8 @@ public class ReplicatedResourceClient {
         }
     }
 
-    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
-        return this.addressSelector.openConnectionsAndInitCaches(proactiveContainerInitConfig);
+    public Flux<Void> submitOpenConnectionTasksAndInitCaches(CosmosContainerProactiveInitConfig proactiveContainerInitConfig) {
+        return this.addressSelector.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig);
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

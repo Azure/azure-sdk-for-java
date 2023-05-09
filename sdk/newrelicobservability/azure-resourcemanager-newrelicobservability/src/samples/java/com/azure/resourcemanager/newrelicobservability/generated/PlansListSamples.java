@@ -7,7 +7,7 @@ package com.azure.resourcemanager.newrelicobservability.generated;
 /** Samples for Plans List. */
 public final class PlansListSamples {
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Plans_List_MaximumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Plans_List_MaximumSet_Gen.json
      */
     /**
      * Sample code: Plans_List_MaximumSet_Gen.
@@ -20,7 +20,7 @@ public final class PlansListSamples {
     }
 
     /*
-     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/preview/2022-07-01-preview/examples/Plans_List_MinimumSet_Gen.json
+     * x-ms-original-file: specification/newrelic/resource-manager/NewRelic.Observability/stable/2022-07-01/examples/Plans_List_MinimumSet_Gen.json
      */
     /**
      * Sample code: Plans_List_MinimumSet_Gen.

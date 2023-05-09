@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,37 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2023-04-28)
+
+- Azure Resource Manager AppConfiguration client library for Java. This package contains Microsoft Azure SDK for AppConfiguration Management SDK.  Package tag package-2023-03-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.KeyValueListResult` was removed
+
+#### `models.KeyValues` was modified
+
+* `listByConfigurationStore(java.lang.String,java.lang.String)` was removed
+* `listByConfigurationStore(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+* `models.Replica$DefinitionStages` was added
+
+* `models.ReplicaListResult` was added
+
+* `models.Replica` was added
+
+* `models.Replicas` was added
+
+* `models.ReplicaProvisioningState` was added
+
+* `models.Replica$Definition` was added
+
+#### `AppConfigurationManager` was modified
+
+* `replicas()` was added
 
 ## 1.0.0-beta.6 (2022-06-08)
 

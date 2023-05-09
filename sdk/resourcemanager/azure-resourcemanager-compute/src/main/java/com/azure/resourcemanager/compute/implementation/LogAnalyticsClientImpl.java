@@ -61,8 +61,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
     public interface LogAnalyticsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
-                + "/getRequestRateByInterval")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getRequestRateByInterval")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> exportRequestRateByInterval(
@@ -76,8 +75,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess"
-                + "/getThrottledRequests")
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Compute/locations/{location}/logAnalytics/apiAccess/getThrottledRequests")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ApiErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> exportThrottledRequests(
@@ -125,7 +123,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -178,7 +176,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -388,7 +386,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -440,7 +438,7 @@ public final class LogAnalyticsClientImpl implements LogAnalyticsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-11-01";
+        final String apiVersion = "2023-03-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

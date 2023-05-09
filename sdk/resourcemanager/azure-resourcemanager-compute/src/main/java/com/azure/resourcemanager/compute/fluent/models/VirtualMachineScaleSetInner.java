@@ -421,7 +421,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Get the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * virtual machine scale set should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
+     * virtual machine scale set should be assigned to. Minimum api-version: 2018-04-01.
      *
      * @return the proximityPlacementGroup value.
      */
@@ -431,7 +431,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Set the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * virtual machine scale set should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
+     * virtual machine scale set should be assigned to. Minimum api-version: 2018-04-01.
      *
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the VirtualMachineScaleSetInner object itself.
@@ -446,7 +446,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine scale
-     * set resides in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * set resides in. Minimum api-version: 2020-06-01.
      *
      * @return the hostGroup value.
      */
@@ -456,7 +456,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
 
     /**
      * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine scale
-     * set resides in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
+     * set resides in. Minimum api-version: 2020-06-01.
      *
      * @param hostGroup the hostGroup value to set.
      * @return the VirtualMachineScaleSetInner object itself.
@@ -593,8 +593,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the timeCreated property: Specifies the time at which the Virtual Machine Scale Set resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
+     * Get the timeCreated property: Specifies the time at which the Virtual Machine Scale Set resource was created.
+     * Minimum api-version: 2021-11-01.
      *
      * @return the timeCreated value.
      */

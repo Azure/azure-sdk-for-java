@@ -35,6 +35,10 @@ public final class DeletedManagedHsmInner {
     @JsonProperty(value = "properties")
     private DeletedManagedHsmProperties properties;
 
+    /** Creates an instance of DeletedManagedHsmInner class. */
+    public DeletedManagedHsmInner() {
+    }
+
     /**
      * Get the id property: The Azure Resource Manager resource ID for the deleted managed HSM Pool.
      *

@@ -80,11 +80,11 @@ public final class KeyVaultAccessControlClientBuilder implements
     HttpTrait<KeyVaultAccessControlClientBuilder>,
     ConfigurationTrait<KeyVaultAccessControlClientBuilder> {
     // This is the properties file name.
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultAccessControlClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
 
-    private final ClientLogger logger = new ClientLogger(KeyVaultAccessControlClientBuilder.class);
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
     private final Map<String, String> properties;
@@ -173,7 +173,7 @@ public final class KeyVaultAccessControlClientBuilder implements
         URL buildEndpoint = getBuildEndpoint(buildConfiguration);
 
         if (buildEndpoint == null) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalStateException(
                     KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
         }
@@ -244,13 +244,13 @@ public final class KeyVaultAccessControlClientBuilder implements
      */
     public KeyVaultAccessControlClientBuilder vaultUrl(String vaultUrl) {
         if (vaultUrl == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'vaultUrl' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'vaultUrl' cannot be null."));
         }
 
         try {
             this.vaultUrl = new URL(vaultUrl);
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
         }
 
@@ -271,7 +271,7 @@ public final class KeyVaultAccessControlClientBuilder implements
     @Override
     public KeyVaultAccessControlClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         this.credential = credential;
@@ -319,7 +319,7 @@ public final class KeyVaultAccessControlClientBuilder implements
     @Override
     public KeyVaultAccessControlClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
         if (policy.getPipelinePosition() == HttpPipelinePosition.PER_CALL) {

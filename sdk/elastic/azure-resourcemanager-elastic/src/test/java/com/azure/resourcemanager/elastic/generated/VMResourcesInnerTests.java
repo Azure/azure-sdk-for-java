@@ -7,20 +7,19 @@ package com.azure.resourcemanager.elastic.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.fluent.models.VMResourcesInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VMResourcesInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VMResourcesInner model =
-            BinaryData.fromString("{\"vmResourceId\":\"utqxlngx\"}").toObject(VMResourcesInner.class);
-        Assertions.assertEquals("utqxlngx", model.vmResourceId());
+            BinaryData.fromString("{\"vmResourceId\":\"ovmclwhijcoejct\"}").toObject(VMResourcesInner.class);
+        Assertions.assertEquals("ovmclwhijcoejct", model.vmResourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        VMResourcesInner model = new VMResourcesInner().withVmResourceId("utqxlngx");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VMResourcesInner model = new VMResourcesInner().withVmResourceId("ovmclwhijcoejct");
         model = BinaryData.fromObject(model).toObject(VMResourcesInner.class);
-        Assertions.assertEquals("utqxlngx", model.vmResourceId());
+        Assertions.assertEquals("ovmclwhijcoejct", model.vmResourceId());
     }
 }

@@ -12,6 +12,7 @@ import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClient;
 import com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient;
 import com.azure.resourcemanager.keyvault.fluent.MhsmPrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.keyvault.fluent.MhsmPrivateLinkResourcesClient;
+import com.azure.resourcemanager.keyvault.fluent.MhsmRegionsClient;
 import com.azure.resourcemanager.keyvault.fluent.OperationsClient;
 import com.azure.resourcemanager.keyvault.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.keyvault.fluent.PrivateLinkResourcesClient;
@@ -170,6 +171,18 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         return this.mhsmPrivateLinkResources;
     }
 
+    /** The MhsmRegionsClient object to access its operations. */
+    private final MhsmRegionsClient mhsmRegions;
+
+    /**
+     * Gets the MhsmRegionsClient object to access its operations.
+     *
+     * @return the MhsmRegionsClient object.
+     */
+    public MhsmRegionsClient getMhsmRegions() {
+        return this.mhsmRegions;
+    }
+
     /** The OperationsClient object to access its operations. */
     private final OperationsClient operations;
 
@@ -206,13 +219,14 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-10-01";
+        this.apiVersion = "2023-02-01";
         this.vaults = new VaultsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.managedHsms = new ManagedHsmsClientImpl(this);
         this.mhsmPrivateEndpointConnections = new MhsmPrivateEndpointConnectionsClientImpl(this);
         this.mhsmPrivateLinkResources = new MhsmPrivateLinkResourcesClientImpl(this);
+        this.mhsmRegions = new MhsmRegionsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }
 }

@@ -66,8 +66,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyAsyncClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
-        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(httpClient == null
-            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
+        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
         KeyClientImpl implClient = spy(new KeyClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {

@@ -20,14 +20,14 @@ public final class IoTSecuritySolutionsListTests {
         IoTSecuritySolutionsList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"location\":\"oaeupfhyhltrpmo\",\"properties\":{\"workspace\":\"cma\",\"displayName\":\"u\",\"status\":\"Disabled\",\"export\":[],\"disabledDataSources\":[],\"iotHubs\":[],\"autoDiscoveredResources\":[],\"recommendationsConfiguration\":[],\"unmaskedIpLoggingStatus\":\"Enabled\",\"additionalWorkspaces\":[]},\"tags\":{\"xodpuozmyzydagfu\":\"pk\",\"dxwzywqsmbsurexi\":\"xbezyiuokktwh\"},\"id\":\"o\",\"name\":\"yocf\",\"type\":\"fksymddystki\"}],\"nextLink\":\"xhqyudxorrqnb\"}")
+                    "{\"value\":[{\"location\":\"dgwdslfhot\",\"properties\":{\"workspace\":\"ynpwlbj\",\"displayName\":\"pgacftadehxnlty\",\"status\":\"Disabled\",\"export\":[],\"disabledDataSources\":[],\"iotHubs\":[],\"autoDiscoveredResources\":[],\"recommendationsConfiguration\":[],\"unmaskedIpLoggingStatus\":\"Disabled\",\"additionalWorkspaces\":[]},\"tags\":{\"avo\":\"ej\",\"vudwx\":\"xzdmohctb\"},\"id\":\"ndnvo\",\"name\":\"gujjugwdkcglh\",\"type\":\"lazjdyggdtjixhbk\"},{\"location\":\"fqweykhmene\",\"properties\":{\"workspace\":\"exfwhy\",\"displayName\":\"cibvyvdcsitynn\",\"status\":\"Disabled\",\"export\":[],\"disabledDataSources\":[],\"iotHubs\":[],\"autoDiscoveredResources\":[],\"recommendationsConfiguration\":[],\"unmaskedIpLoggingStatus\":\"Disabled\",\"additionalWorkspaces\":[]},\"tags\":{\"hezrkgq\":\"jeyp\"},\"id\":\"c\",\"name\":\"refovgmkqsleyyvx\",\"type\":\"qjpkcattpngjcrc\"},{\"location\":\"sqpjhvmdajvn\",\"properties\":{\"workspace\":\"unqecanoae\",\"displayName\":\"pfhyhl\",\"status\":\"Enabled\",\"export\":[],\"disabledDataSources\":[],\"iotHubs\":[],\"autoDiscoveredResources\":[],\"recommendationsConfiguration\":[],\"unmaskedIpLoggingStatus\":\"Disabled\",\"additionalWorkspaces\":[]},\"tags\":{\"aodsfcpkv\":\"kthfui\"},\"id\":\"odpuozmyzydag\",\"name\":\"uaxbezyiuokkt\",\"type\":\"hrdxwzywqsmbs\"}],\"nextLink\":\"exim\"}")
                 .toObject(IoTSecuritySolutionsList.class);
-        Assertions.assertEquals("oaeupfhyhltrpmo", model.value().get(0).location());
-        Assertions.assertEquals("pk", model.value().get(0).tags().get("xodpuozmyzydagfu"));
-        Assertions.assertEquals("cma", model.value().get(0).workspace());
-        Assertions.assertEquals("u", model.value().get(0).displayName());
+        Assertions.assertEquals("dgwdslfhot", model.value().get(0).location());
+        Assertions.assertEquals("ej", model.value().get(0).tags().get("avo"));
+        Assertions.assertEquals("ynpwlbj", model.value().get(0).workspace());
+        Assertions.assertEquals("pgacftadehxnlty", model.value().get(0).displayName());
         Assertions.assertEquals(SecuritySolutionStatus.DISABLED, model.value().get(0).status());
-        Assertions.assertEquals(UnmaskedIpLoggingStatus.ENABLED, model.value().get(0).unmaskedIpLoggingStatus());
+        Assertions.assertEquals(UnmaskedIpLoggingStatus.DISABLED, model.value().get(0).unmaskedIpLoggingStatus());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,24 +38,48 @@ public final class IoTSecuritySolutionsListTests {
                     Arrays
                         .asList(
                             new IoTSecuritySolutionModelInner()
-                                .withLocation("oaeupfhyhltrpmo")
-                                .withTags(mapOf("xodpuozmyzydagfu", "pk", "dxwzywqsmbsurexi", "xbezyiuokktwh"))
-                                .withWorkspace("cma")
-                                .withDisplayName("u")
+                                .withLocation("dgwdslfhot")
+                                .withTags(mapOf("avo", "ej", "vudwx", "xzdmohctb"))
+                                .withWorkspace("ynpwlbj")
+                                .withDisplayName("pgacftadehxnlty")
                                 .withStatus(SecuritySolutionStatus.DISABLED)
                                 .withExport(Arrays.asList())
                                 .withDisabledDataSources(Arrays.asList())
                                 .withIotHubs(Arrays.asList())
                                 .withRecommendationsConfiguration(Arrays.asList())
-                                .withUnmaskedIpLoggingStatus(UnmaskedIpLoggingStatus.ENABLED)
+                                .withUnmaskedIpLoggingStatus(UnmaskedIpLoggingStatus.DISABLED)
+                                .withAdditionalWorkspaces(Arrays.asList()),
+                            new IoTSecuritySolutionModelInner()
+                                .withLocation("fqweykhmene")
+                                .withTags(mapOf("hezrkgq", "jeyp"))
+                                .withWorkspace("exfwhy")
+                                .withDisplayName("cibvyvdcsitynn")
+                                .withStatus(SecuritySolutionStatus.DISABLED)
+                                .withExport(Arrays.asList())
+                                .withDisabledDataSources(Arrays.asList())
+                                .withIotHubs(Arrays.asList())
+                                .withRecommendationsConfiguration(Arrays.asList())
+                                .withUnmaskedIpLoggingStatus(UnmaskedIpLoggingStatus.DISABLED)
+                                .withAdditionalWorkspaces(Arrays.asList()),
+                            new IoTSecuritySolutionModelInner()
+                                .withLocation("sqpjhvmdajvn")
+                                .withTags(mapOf("aodsfcpkv", "kthfui"))
+                                .withWorkspace("unqecanoae")
+                                .withDisplayName("pfhyhl")
+                                .withStatus(SecuritySolutionStatus.ENABLED)
+                                .withExport(Arrays.asList())
+                                .withDisabledDataSources(Arrays.asList())
+                                .withIotHubs(Arrays.asList())
+                                .withRecommendationsConfiguration(Arrays.asList())
+                                .withUnmaskedIpLoggingStatus(UnmaskedIpLoggingStatus.DISABLED)
                                 .withAdditionalWorkspaces(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(IoTSecuritySolutionsList.class);
-        Assertions.assertEquals("oaeupfhyhltrpmo", model.value().get(0).location());
-        Assertions.assertEquals("pk", model.value().get(0).tags().get("xodpuozmyzydagfu"));
-        Assertions.assertEquals("cma", model.value().get(0).workspace());
-        Assertions.assertEquals("u", model.value().get(0).displayName());
+        Assertions.assertEquals("dgwdslfhot", model.value().get(0).location());
+        Assertions.assertEquals("ej", model.value().get(0).tags().get("avo"));
+        Assertions.assertEquals("ynpwlbj", model.value().get(0).workspace());
+        Assertions.assertEquals("pgacftadehxnlty", model.value().get(0).displayName());
         Assertions.assertEquals(SecuritySolutionStatus.DISABLED, model.value().get(0).status());
-        Assertions.assertEquals(UnmaskedIpLoggingStatus.ENABLED, model.value().get(0).unmaskedIpLoggingStatus());
+        Assertions.assertEquals(UnmaskedIpLoggingStatus.DISABLED, model.value().get(0).unmaskedIpLoggingStatus());
     }
 
     @SuppressWarnings("unchecked")

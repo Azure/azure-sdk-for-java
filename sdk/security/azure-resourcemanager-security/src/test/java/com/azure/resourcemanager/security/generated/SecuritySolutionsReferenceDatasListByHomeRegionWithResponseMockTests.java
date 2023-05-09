@@ -30,7 +30,7 @@ public final class SecuritySolutionsReferenceDatasListByHomeRegionWithResponseMo
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"xaxnrq\",\"id\":\"qo\",\"name\":\"nndx\",\"type\":\"lousdvrgptqm\"},{\"location\":\"zjdrp\",\"id\":\"zfulgyctsdbtq\",\"name\":\"kujdsooxrqwoe\",\"type\":\"rbtigap\"},{\"location\":\"arikeejdpdfhtwmm\",\"id\":\"fqbriqu\",\"name\":\"wwtrjm\",\"type\":\"qkvyhzokpoyuohu\"},{\"location\":\"snaajph\",\"id\":\"poejnglpwsa\",\"name\":\"axj\",\"type\":\"umxpezcoi\"}]}";
+            "{\"value\":[{\"location\":\"ablqgpwbmwhria\",\"id\":\"iwrycgnwplrrb\",\"name\":\"hctsbbibti\",\"type\":\"uhqvums\"},{\"location\":\"fsfeqbbe\",\"id\":\"f\",\"name\":\"uqfpyyxmzrmtm\",\"type\":\"wi\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class SecuritySolutionsReferenceDatasListByHomeRegionWithResponseMo
         SecuritySolutionsReferenceDataList response =
             manager
                 .securitySolutionsReferenceDatas()
-                .listByHomeRegionWithResponse("y", com.azure.core.util.Context.NONE)
+                .listByHomeRegionWithResponse("cm", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

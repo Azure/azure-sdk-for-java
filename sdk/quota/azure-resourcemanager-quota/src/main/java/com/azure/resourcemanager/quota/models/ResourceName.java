@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Name of the resource provided by the resource Provider. When requesting quota, use this property name. */
 @Fluent
 public final class ResourceName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceName.class);
-
     /*
      * Resource name.
      */
@@ -25,6 +21,10 @@ public final class ResourceName {
      */
     @JsonProperty(value = "localizedValue", access = JsonProperty.Access.WRITE_ONLY)
     private String localizedValue;
+
+    /** Creates an instance of ResourceName class. */
+    public ResourceName() {
+    }
 
     /**
      * Get the value property: Resource name.

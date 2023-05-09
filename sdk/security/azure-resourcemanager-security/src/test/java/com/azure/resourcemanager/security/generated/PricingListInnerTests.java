@@ -17,7 +17,7 @@ public final class PricingListInnerTests {
         PricingListInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"nqpjwnzlljfmpp\",\"freeTrialRemainingTime\":\"PT46H48M36S\",\"deprecated\":false,\"replacedBy\":[]},\"id\":\"xsabkyqdu\",\"name\":\"jitcjczdzevn\",\"type\":\"hkr\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"ppdsbdkvwrwj\",\"freeTrialRemainingTime\":\"PT118H22M48S\",\"deprecated\":true,\"replacedBy\":[]},\"id\":\"utjeltmrldhugj\",\"name\":\"zdatqxhocdg\",\"type\":\"ablgphuticndvk\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"yiftyhxhuro\",\"freeTrialRemainingTime\":\"PT104H53M33S\",\"deprecated\":true,\"replacedBy\":[]},\"id\":\"lniwpwcukjfkgiaw\",\"name\":\"klryplwck\",\"type\":\"asy\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"dhsgcba\",\"freeTrialRemainingTime\":\"PT53H26M51S\",\"deprecated\":false,\"replacedBy\":[]},\"id\":\"ot\",\"name\":\"nqgoulzndli\",\"type\":\"wyqkgfgibm\"}]}")
+                    "{\"value\":[{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"nqpjwnzlljfmpp\",\"freeTrialRemainingTime\":\"PT46H48M36S\",\"enablementTime\":\"2021-10-30T03:41:11Z\",\"deprecated\":true,\"replacedBy\":[],\"extensions\":[]},\"id\":\"bkyqduu\",\"name\":\"itcjczdz\",\"type\":\"vndhkrwpdapp\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"kvwrwjfeu\",\"freeTrialRemainingTime\":\"PT36H39M29S\",\"enablementTime\":\"2021-01-02T14:30:26Z\",\"deprecated\":true,\"replacedBy\":[],\"extensions\":[]},\"id\":\"mrldhu\",\"name\":\"jzzd\",\"type\":\"tqxhocdgeab\"},{\"properties\":{\"pricingTier\":\"Free\",\"subPlan\":\"uticndvkaozwyif\",\"freeTrialRemainingTime\":\"PT23H12M54S\",\"enablementTime\":\"2021-10-09T12:18:53Z\",\"deprecated\":false,\"replacedBy\":[],\"extensions\":[]},\"id\":\"ftyxolniw\",\"name\":\"wcukjfkgiawxk\",\"type\":\"ryplwckbasyypn\"},{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"gcbacphejkot\",\"freeTrialRemainingTime\":\"PT157H5M51S\",\"enablementTime\":\"2021-02-05T05:14:14Z\",\"deprecated\":false,\"replacedBy\":[],\"extensions\":[]},\"id\":\"dlikwyqkgfgibma\",\"name\":\"gakeqsr\",\"type\":\"yb\"}]}")
                 .toObject(PricingListInner.class);
         Assertions.assertEquals(PricingTier.STANDARD, model.value().get(0).pricingTier());
         Assertions.assertEquals("nqpjwnzlljfmpp", model.value().get(0).subPlan());
@@ -30,10 +30,22 @@ public final class PricingListInnerTests {
                 .withValue(
                     Arrays
                         .asList(
-                            new PricingInner().withPricingTier(PricingTier.STANDARD).withSubPlan("nqpjwnzlljfmpp"),
-                            new PricingInner().withPricingTier(PricingTier.FREE).withSubPlan("ppdsbdkvwrwj"),
-                            new PricingInner().withPricingTier(PricingTier.STANDARD).withSubPlan("yiftyhxhuro"),
-                            new PricingInner().withPricingTier(PricingTier.STANDARD).withSubPlan("dhsgcba")));
+                            new PricingInner()
+                                .withPricingTier(PricingTier.STANDARD)
+                                .withSubPlan("nqpjwnzlljfmpp")
+                                .withExtensions(Arrays.asList()),
+                            new PricingInner()
+                                .withPricingTier(PricingTier.STANDARD)
+                                .withSubPlan("kvwrwjfeu")
+                                .withExtensions(Arrays.asList()),
+                            new PricingInner()
+                                .withPricingTier(PricingTier.FREE)
+                                .withSubPlan("uticndvkaozwyif")
+                                .withExtensions(Arrays.asList()),
+                            new PricingInner()
+                                .withPricingTier(PricingTier.STANDARD)
+                                .withSubPlan("gcbacphejkot")
+                                .withExtensions(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(PricingListInner.class);
         Assertions.assertEquals(PricingTier.STANDARD, model.value().get(0).pricingTier());
         Assertions.assertEquals("nqpjwnzlljfmpp", model.value().get(0).subPlan());

@@ -37,6 +37,9 @@ public final class MediaLiveEventEncoderConnectedEventData {
     @JsonProperty(value = "encoderPort", access = JsonProperty.Access.WRITE_ONLY)
     private String encoderPort;
 
+    /** Creates an instance of MediaLiveEventEncoderConnectedEventData class. */
+    public MediaLiveEventEncoderConnectedEventData() {}
+
     /**
      * Get the ingestUrl property: Gets the ingest URL provided by the live event.
      *

@@ -29,7 +29,7 @@ public final class MdeOnboardingsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"properties\":{},\"id\":\"bmfuvqarwzxu\",\"name\":\"rebluimmbwxsf\",\"type\":\"td\"}";
+        String responseStr = "{\"properties\":{},\"id\":\"twfhi\",\"name\":\"xwgsa\",\"type\":\"vcipo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());

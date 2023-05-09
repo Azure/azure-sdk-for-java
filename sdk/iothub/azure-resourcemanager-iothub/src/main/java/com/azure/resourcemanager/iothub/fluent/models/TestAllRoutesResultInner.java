@@ -18,6 +18,10 @@ public final class TestAllRoutesResultInner {
     @JsonProperty(value = "routes")
     private List<MatchedRoute> routes;
 
+    /** Creates an instance of TestAllRoutesResultInner class. */
+    public TestAllRoutesResultInner() {
+    }
+
     /**
      * Get the routes property: JSON-serialized array of matched routes.
      *

@@ -10,6 +10,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Fluent credential builder for instantiating a {@link AzureDeveloperCliCredential}.
@@ -57,12 +58,14 @@ public class AzureDeveloperCliCredentialBuilder extends CredentialBuilderBase<Az
     }
 
     /**
-     * Specifies a {@link Duration} timeout for calling the Azure Developer CLI.
-     * @param duration The {@link Duration} to wait.
+     * Specifies a {@link Duration} timeout for calling the Azure Developer CLI. The timeout period is applied on
+     * the Azure Developer CLI command execution process invoked by the credential.
+     * @param processTimeout The {@link Duration} to wait.
      * @return An updated instance of this builder with the timeout specified.
      */
-    public AzureDeveloperCliCredentialBuilder azureDeveloperCliCredentialTimeout(Duration duration) {
-        this.identityClientOptions.setDeveloperCredentialTimeout(duration);
+    public AzureDeveloperCliCredentialBuilder processTimeout(Duration processTimeout) {
+        Objects.requireNonNull(processTimeout);
+        this.identityClientOptions.setCredentialProcessTimeout(processTimeout);
         return this;
     }
 

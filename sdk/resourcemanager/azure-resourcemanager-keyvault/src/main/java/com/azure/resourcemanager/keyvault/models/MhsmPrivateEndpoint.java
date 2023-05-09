@@ -16,6 +16,10 @@ public final class MhsmPrivateEndpoint {
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
+    /** Creates an instance of MhsmPrivateEndpoint class. */
+    public MhsmPrivateEndpoint() {
+    }
+
     /**
      * Get the id property: Full identifier of the private endpoint resource.
      *

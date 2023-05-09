@@ -8,13 +8,22 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Scheme. */
+/** The scheme. */
 public final class Scheme extends ExpandableStringEnum<Scheme> {
     /** Static value http for Scheme. */
     public static final Scheme HTTP = fromString("http");
 
     /** Static value https for Scheme. */
     public static final Scheme HTTPS = fromString("https");
+
+    /**
+     * Creates a new instance of Scheme value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Scheme() {
+    }
 
     /**
      * Creates or finds a Scheme from its string representation.
@@ -27,7 +36,11 @@ public final class Scheme extends ExpandableStringEnum<Scheme> {
         return fromString(name, Scheme.class);
     }
 
-    /** @return known Scheme values. */
+    /**
+     * Gets known Scheme values.
+     *
+     * @return known Scheme values.
+     */
     public static Collection<Scheme> values() {
         return values(Scheme.class);
     }

@@ -33,7 +33,7 @@ public final class AlertsSuppressionRulesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"alertType\":\"cgrvkcxzznnuifer\",\"lastModifiedUtc\":\"2021-08-19T01:31:44Z\",\"expirationDateUtc\":\"2020-12-20T21:14:16Z\",\"reason\":\"prkjg\",\"state\":\"Disabled\",\"comment\":\"jmwvvbtuqkxxi\",\"suppressionAlertsScope\":{\"allOf\":[]}},\"id\":\"gxql\",\"name\":\"ekotjgxi\",\"type\":\"qfkyfhiwvjaqu\"}]}";
+            "{\"value\":[{\"properties\":{\"alertType\":\"ntujmoilunwemhd\",\"lastModifiedUtc\":\"2021-12-02T08:52:50Z\",\"expirationDateUtc\":\"2021-10-18T05:10:35Z\",\"reason\":\"lkyozdsfzj\",\"state\":\"Enabled\",\"comment\":\"rhrhtsl\",\"suppressionAlertsScope\":{\"allOf\":[]}},\"id\":\"tv\",\"name\":\"j\",\"type\":\"xvgjbfi\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class AlertsSuppressionRulesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AlertsSuppressionRule> response =
-            manager.alertsSuppressionRules().list("ltfokyksyim", com.azure.core.util.Context.NONE);
+            manager.alertsSuppressionRules().list("dsaidjanormovdxx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("cgrvkcxzznnuifer", response.iterator().next().alertType());
+        Assertions.assertEquals("ntujmoilunwemhd", response.iterator().next().alertType());
         Assertions
-            .assertEquals(OffsetDateTime.parse("2020-12-20T21:14:16Z"), response.iterator().next().expirationDateUtc());
-        Assertions.assertEquals("prkjg", response.iterator().next().reason());
-        Assertions.assertEquals(RuleState.DISABLED, response.iterator().next().state());
-        Assertions.assertEquals("jmwvvbtuqkxxi", response.iterator().next().comment());
+            .assertEquals(OffsetDateTime.parse("2021-10-18T05:10:35Z"), response.iterator().next().expirationDateUtc());
+        Assertions.assertEquals("lkyozdsfzj", response.iterator().next().reason());
+        Assertions.assertEquals(RuleState.ENABLED, response.iterator().next().state());
+        Assertions.assertEquals("rhrhtsl", response.iterator().next().comment());
     }
 }
