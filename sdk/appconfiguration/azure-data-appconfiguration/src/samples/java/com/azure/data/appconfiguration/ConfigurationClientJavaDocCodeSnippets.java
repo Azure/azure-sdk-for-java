@@ -322,10 +322,10 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      * Generates code sample for using {@link ConfigurationClient#listRevisions(SettingSelector)}
      */
     public void listRevisions() {
-        ConfigurationClient client = createSyncConfigurationClient();
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector
         SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
-        client.listRevisions(settingSelector).streamByPage().forEach(resp -> {
+        configurationClient.listRevisions(settingSelector).streamByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
             resp.getItems().forEach(value -> {
