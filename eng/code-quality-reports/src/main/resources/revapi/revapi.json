@@ -252,7 +252,7 @@
         {
           "regex": true,
           "code" : "java.method.removed",
-          "old" : "method int com.mysql.cj.protocol.ServerSession::(getOldStatusFlags()|setOldStatusFlags(int))",
+          "old" : "method (int|void) com.mysql.cj.protocol.(ServerSession::getOldStatusFlags()|ServerSession::setOldStatusFlags(int))",
           "justification" : "Fix method removed."
         }
       ]
