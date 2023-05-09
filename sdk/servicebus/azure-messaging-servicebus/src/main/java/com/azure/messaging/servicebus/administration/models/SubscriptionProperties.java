@@ -139,18 +139,6 @@ public final class SubscriptionProperties {
     }
 
     /**
-     * Set the requiresSession property: A value that indicates whether the subscription supports the concept of
-     * sessions.
-     *
-     * @param requiresSession the requiresSession value to set.
-     * @return the SubscriptionDescription object itself.
-     */
-    public SubscriptionProperties setSessionRequired(boolean requiresSession) {
-        description.setRequiresSession(requiresSession);
-        return this;
-    }
-
-    /**
      * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value. This is the duration
      * after which the message expires, starting from when the message is sent to Service Bus. This is the default value
      * used when TimeToLive is not set on a message itself.
