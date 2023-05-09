@@ -496,8 +496,8 @@ class ServiceBusMessageSerializer implements MessageSerializer {
         }
 
         if (amqpMessage instanceof MessageWithDeliveryTag) {
-            // In the new-stack, a new amqp-core type, 'MessageWithDeliveryTag,' represents a tagged message.
-            // The equivalent SB-specific type 'MessageWithLockToken' will be deleted as part of old-stack removal.
+            // In the V2-stack, a new amqp-core type, 'MessageWithDeliveryTag,' represents a tagged message.
+            // The equivalent SB-specific type 'MessageWithLockToken' will be deleted as part of V1-stack removal.
             brokeredMessage.setLockToken(((MessageWithDeliveryTag) amqpMessage).getDeliveryTag());
         } else if (amqpMessage instanceof MessageWithLockToken) {
             brokeredMessage.setLockToken(((MessageWithLockToken) amqpMessage).getLockToken());

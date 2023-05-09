@@ -832,11 +832,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveMessages")));
         }
-        if (connectionCacheWrapper.isNewStack()) {
+        if (connectionCacheWrapper.isV2()) {
             if (isSessionEnabled) {
-                return fluxError(LOGGER, new IllegalStateException("Session-Receive and New-Stack combination is unexpected."));
+                return fluxError(LOGGER, new IllegalStateException("Session-Receive and V2-Stack combination is unexpected."));
             } else {
-                return nonSessionReactiveReceiveOnNewStack();
+                return nonSessionReactiveReceiveV2();
             }
         }
         // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
@@ -1574,7 +1574,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionCacheWrapper.getRetryOptions());
         final ServiceBusAsyncConsumer newConsumer;
-        if (connectionCacheWrapper.isNewStack()) {
+        if (connectionCacheWrapper.isV2()) {
             final MessageFlux messageFlux = new MessageFlux(receiveLinkFlux, receiverOptions.getPrefetchCount(),
                 CreditFlowMode.RequestDriven, retryPolicy);
             newConsumer = new ServiceBusAsyncConsumer(linkName, messageFlux, messageSerializer, receiverOptions);
@@ -1715,23 +1715,23 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         return receiverOptions.isAutoLockRenewEnabled();
     }
 
-    boolean isNewStack() {
-        return connectionCacheWrapper.isNewStack();
+    boolean isV2() {
+        return connectionCacheWrapper.isV2();
     }
 
-    Flux<ServiceBusReceivedMessage> nonSessionProcessorReceiveOnNewStack() {
-        assert !isSessionEnabled && connectionCacheWrapper.isNewStack();
+    Flux<ServiceBusReceivedMessage> nonSessionProcessorReceiveV2() {
+        assert !isSessionEnabled && connectionCacheWrapper.isV2();
         return getOrCreateConsumer().receive();
     }
 
-    Flux<ServiceBusReceivedMessage> nonSessionReactiveReceiveOnNewStack() {
-        assert !isSessionEnabled && connectionCacheWrapper.isNewStack();
+    Flux<ServiceBusReceivedMessage> nonSessionReactiveReceiveV2() {
+        assert !isSessionEnabled && connectionCacheWrapper.isV2();
         // TODO: apply auto-complete etc.
         return getOrCreateConsumer().receive();
     }
 
-    Flux<ServiceBusReceivedMessage> nonSessionSyncReceiveOnNewStack() {
-        assert !isSessionEnabled && connectionCacheWrapper.isNewStack();
+    Flux<ServiceBusReceivedMessage> nonSessionSyncReceiveV2() {
+        assert !isSessionEnabled && connectionCacheWrapper.isV2();
         return getOrCreateConsumer().receive();
     }
 
