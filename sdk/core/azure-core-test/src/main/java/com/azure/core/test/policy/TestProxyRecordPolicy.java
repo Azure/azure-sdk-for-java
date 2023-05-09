@@ -24,6 +24,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -99,7 +100,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         try {
             rootPath = Paths.get(System.getProperty("user.dir") + "/.." + "/.." + "/..").toRealPath();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new UncheckedIOException(e);
         }
         return rootPath.relativize(Paths.get(System.getProperty("user.dir"))) + "assets.json";
     }
