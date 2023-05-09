@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpEndpointState;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.exception.AmqpErrorCondition;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
+import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.Proton;
@@ -42,6 +43,7 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addSignalTypeA
 import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextWithConnectionId;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
+import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
@@ -51,7 +53,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private static final Symbol SEQUENCE_NUMBER_ANNOTATION = Symbol.valueOf(SEQUENCE_NUMBER_ANNOTATION_NAME.getValue());
     private final String entityPath;
     private final Receiver receiver;
-    private final ReceiveLinkHandler handler;
+    private final ReceiveLinkHandlerWrapper handler;
     private final TokenManager tokenManager;
     private final ReactorDispatcher dispatcher;
     private final Disposable subscriptions;
@@ -64,6 +66,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private final Flux<Message> messagesProcessor;
     private final AmqpRetryOptions retryOptions;
     private final ClientLogger logger;
+    private final boolean isV2;
     private final Flux<AmqpEndpointState> endpointStates;
     private final Sinks.Empty<AmqpEndpointState> terminateEndpointStates = Sinks.empty();
 
@@ -72,16 +75,11 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     private final AtomicLong lastSequenceNumber = new AtomicLong();
     private final AutoCloseable trackPrefetchSeqNoSubscription;
 
-    @Deprecated
+    // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
+    // is removed. At that point the type "ReceiveLinkHandlerWrapper" type will be removed and the Ctr will take
+    // "ReceiveLinkHandler".
     protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-                              ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
-                              AmqpRetryOptions retryOptions) {
-        this(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
-            new AmqpMetricsProvider(null, amqpConnection.getFullyQualifiedNamespace(), entityPath));
-    }
-
-    protected ReactorReceiver(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
-                              ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
+                              ReceiveLinkHandlerWrapper handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
                               AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
         this.entityPath = entityPath;
         this.receiver = receiver;
@@ -96,59 +94,73 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         loggingContext.put(ENTITY_PATH_KEY, entityPath);
 
         this.logger = new ClientLogger(ReactorReceiver.class, loggingContext);
+        handler.setLogger(this.logger);
 
-        // Delivered messages are not published on another scheduler because we want the settlement method that happens
-        // in decodeDelivery to take place and since proton-j is not thread safe, it could end up with hundreds of
-        // backed up deliveries waiting to be settled. (Which, consequently, ends up in a FAIL_OVERFLOW error from
-        // the handler.
-        this.messagesProcessor = this.handler.getDeliveredMessages()
-            .flatMap(delivery -> {
-                return Mono.create(sink -> {
-                    try {
-                        this.dispatcher.invoke(() -> {
-                            if (isDisposed()) {
-                                sink.error(new IllegalStateException(
-                                    "Cannot decode delivery when ReactorReceiver instance is closed."));
-                                return;
-                            }
-
-                            final Message message = decodeDelivery(delivery);
-                            if (metricsProvider.isPrefetchedSequenceNumberEnabled()) {
-                                Long seqNo = getSequenceNumber(message);
-                                if (seqNo != null) {
-                                    lastSequenceNumber.set(seqNo);
+        this.isV2 = handler.isV2();
+        if (!this.isV2) {
+            // Delivered messages are not published on another scheduler because we want the settlement method that happens
+            // in decodeDelivery to take place and since proton-j is not thread safe, it could end up with hundreds of
+            // backed up deliveries waiting to be settled. (Which, consequently, ends up in a FAIL_OVERFLOW error from
+            // the handler.
+            this.messagesProcessor = this.handler.getDeliveredMessagesV1()
+                .flatMap(delivery -> {
+                    return Mono.create(sink -> {
+                        try {
+                            this.dispatcher.invoke(() -> {
+                                if (isDisposed()) {
+                                    sink.error(new IllegalStateException(
+                                        "Cannot decode delivery when ReactorReceiver instance is closed."));
+                                    return;
                                 }
-                            }
 
-                            final int creditsLeft = receiver.getRemoteCredit();
+                                final Message message = decodeDelivery(delivery);
+                                if (metricsProvider.isPrefetchedSequenceNumberEnabled()) {
+                                    Long seqNo = getSequenceNumber(message);
+                                    if (seqNo != null) {
+                                        lastSequenceNumber.set(seqNo);
+                                    }
+                                }
 
-                            if (creditsLeft > 0) {
+                                final int creditsLeft = receiver.getRemoteCredit();
+
+                                if (creditsLeft > 0) {
+                                    sink.success(message);
+                                    return;
+                                }
+
+                                final Supplier<Integer> supplier = creditSupplier.get();
+                                final Integer credits = supplier.get();
+
+                                if (credits != null && credits > 0) {
+                                    logger.atInfo()
+                                        .addKeyValue("credits", credits)
+                                        .log("Adding credits.");
+                                    receiver.flow(credits);
+                                } else {
+                                    logger.atVerbose()
+                                        .addKeyValue("credits", credits)
+                                        .log("There are no credits to add.");
+                                }
+
+                                metricsProvider.recordAddCredits(credits == null ? 0 : credits);
                                 sink.success(message);
-                                return;
-                            }
-
-                            final Supplier<Integer> supplier = creditSupplier.get();
-                            final Integer credits = supplier.get();
-
-                            if (credits != null && credits > 0) {
-                                logger.atInfo()
-                                    .addKeyValue("credits", credits)
-                                    .log("Adding credits.");
-                                receiver.flow(credits);
-                            } else {
-                                logger.atVerbose()
-                                    .addKeyValue("credits", credits)
-                                    .log("There are no credits to add.");
-                            }
-
-                            metricsProvider.recordAddCredits(credits == null ? 0 : credits);
-                            sink.success(message);
-                        });
-                    } catch (IOException | RejectedExecutionException e) {
-                        sink.error(e);
+                            });
+                        } catch (IOException | RejectedExecutionException e) {
+                            sink.error(e);
+                        }
+                    });
+                }, 1);
+        } else {
+            this.messagesProcessor = this.handler.getDeliveredMessagesV2()
+                .doOnNext(message -> {
+                    if (metricsProvider.isPrefetchedSequenceNumberEnabled()) {
+                        Long seqNo = getSequenceNumber(message);
+                        if (seqNo != null) {
+                            lastSequenceNumber.set(seqNo);
+                        }
                     }
                 });
-            }, 1);
+        }
 
         this.retryOptions = retryOptions;
         this.endpointStates = this.handler.getEndpointStates()
@@ -224,7 +236,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
     @Override
     public Mono<Void> updateDisposition(String deliveryTag, DeliveryState deliveryState) {
-        return monoError(logger, new IllegalStateException("updateDisposition is not supported in ReactorReceiver."));
+        return handler.sendDisposition(deliveryTag, deliveryState);
     }
 
     @Override
@@ -252,7 +264,23 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
     @Override
     public void addCredit(Supplier<Long> creditSupplier) {
-        throw logger.logExceptionAsError(new IllegalStateException("addCredit(Supplier) is supported only in ReactorReceiver2."));
+        assert this.isV2;
+        if (isDisposed()) {
+            throw new RejectedExecutionException(String.format(
+                "connectionId[%s] linkName[%s] Cannot schedule credit flow post the link closure.",
+                handler.getConnectionId(), getLinkName()));
+        }
+        try {
+            dispatcher.invoke(() -> {
+                final long credit = creditSupplier.get();
+                receiver.flow((int) credit);
+                metricsProvider.recordAddCredits((int) credit);
+            });
+        } catch (IOException e) {
+            throw new UncheckedIOException(String.format(
+                "connectionId[%s] linkName[%s] Unable to schedule work to add more credits.",
+                handler.getConnectionId(), getLinkName()), e);
+        }
     }
 
     @Override
@@ -262,6 +290,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
 
     @Override
     public void setEmptyCreditListener(Supplier<Integer> creditSupplier) {
+        assert !this.isV2;
         Objects.requireNonNull(creditSupplier, "'creditSupplier' cannot be null.");
         this.creditSupplier.set(creditSupplier);
     }
@@ -376,7 +405,8 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     /**
-     * Beings the client side close by initiating local-close on underlying receiver.
+     * Begins the client side close by requesting receive link handler for any graceful resource
+     * cleanup, then initiating local-close on underlying receiver.
      *
      * @param errorCondition Error condition associated with close operation.
      * @return a {@link Mono} when subscribed attempt to initiate local-close, emitting {@code true}
@@ -394,7 +424,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
             }
         };
 
-        return Mono.create(sink -> {
+        final Mono<Boolean> localCloseMono = Mono.create(sink -> {
             boolean localCloseScheduled = false;
             try {
                 dispatcher.invoke(localClose);
@@ -416,6 +446,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 sink.success(localCloseScheduled);
             }
         });
+        return handler.beginClose(localCloseMono);
     }
 
     /**
@@ -482,7 +513,9 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
         }
 
         handler.close();
-        onHandlerClose();
+        if (!isV2) {
+            onHandlerClose();
+        }
         receiver.free();
         try {
             trackPrefetchSeqNoSubscription.close();
@@ -513,5 +546,94 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     public String toString() {
         return String.format("connectionId: [%s] entity path: [%s] linkName: [%s]", receiver.getName(), entityPath,
             getLinkName());
+    }
+
+    // Temporary type to support both v1 or v2 stack side by side.
+    public static final class ReceiveLinkHandlerWrapper {
+        private final boolean isV2;
+        private final ReceiveLinkHandler receiveLinkHandler;
+        private final ReceiveLinkHandler2 receiveLinkHandler2;
+        private ClientLogger logger;
+
+        public ReceiveLinkHandlerWrapper(ReceiveLinkHandler receiveLinkHandler) {
+            this.isV2 = false;
+            this.receiveLinkHandler = receiveLinkHandler;
+            this.receiveLinkHandler2 = null;
+        }
+
+        public ReceiveLinkHandlerWrapper(ReceiveLinkHandler2 receiveLinkHandler2) {
+            this.isV2 = true;
+            this.receiveLinkHandler = null;
+            this.receiveLinkHandler2 = receiveLinkHandler2;
+        }
+
+        public void setLogger(ClientLogger logger) {
+            this.logger = logger;
+        }
+
+        public boolean isV2() {
+            return this.isV2;
+        }
+
+        String getConnectionId() {
+            return isV2 ? receiveLinkHandler2.getConnectionId() : receiveLinkHandler.getConnectionId();
+        }
+
+        public String getLinkName() {
+            return isV2 ? receiveLinkHandler2.getLinkName() : receiveLinkHandler.getLinkName();
+        }
+
+        public String getHostname() {
+            return isV2 ? receiveLinkHandler2.getHostname() : receiveLinkHandler.getHostname();
+        }
+
+        Flux<EndpointState> getEndpointStates() {
+            if (isV2) {
+                return receiveLinkHandler2.getEndpointStates();
+            } else {
+                return receiveLinkHandler.getEndpointStates();
+            }
+        }
+
+        Flux<Delivery> getDeliveredMessagesV1() {
+            if (isV2) {
+                return fluxError(logger, unsupportedOperation("getDeliveredMessagesV1", "V2"));
+            }
+            return receiveLinkHandler.getDeliveredMessages();
+        }
+
+        Flux<Message> getDeliveredMessagesV2() {
+            if (!isV2) {
+                return fluxError(logger, unsupportedOperation("getDeliveredMessagesV2", "V1"));
+            }
+            return receiveLinkHandler2.getMessages();
+        }
+
+        Mono<Void> sendDisposition(String deliveryTag, DeliveryState deliveryState) {
+            if (!isV2) {
+                return monoError(logger, unsupportedOperation("updateDisposition", "V1"));
+            }
+            return receiveLinkHandler2.sendDisposition(deliveryTag, deliveryState);
+        }
+
+        Mono<Boolean> beginClose(Mono<Boolean> thenMono) {
+            if (isV2) {
+                return receiveLinkHandler2.preClose().then(thenMono);
+            } else {
+                return thenMono;
+            }
+        }
+
+        void close() {
+            if (isV2) {
+                receiveLinkHandler2.close();
+            } else {
+                receiveLinkHandler.close();
+            }
+        }
+
+        static RuntimeException unsupportedOperation(String operation, String unsupportedStack) {
+            return new UnsupportedOperationException("The " + operation + " is not needed or supported in " + unsupportedStack + ".");
+        }
     }
 }
