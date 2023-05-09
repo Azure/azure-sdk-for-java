@@ -7,6 +7,7 @@ import com.azure.core.amqp.AmqpConnection;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler;
 import com.azure.core.amqp.implementation.handler.ReceiveLinkHandler2;
+import com.azure.core.amqp.implementation.ReactorReceiver.ReceiveLinkHandlerWrapper;
 import com.azure.core.amqp.implementation.handler.SendLinkHandler;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.engine.Sender;
@@ -17,9 +18,11 @@ import reactor.core.scheduler.Scheduler;
  *
  * Under normal execution, the provider provides the actual links, but when running under unit test scenarios,
  * the provider enables tests to inject mock links.
+ * @see ReactorProvider
+ * @see ReactorHandlerProvider
+ * @see AmqpMetricsProvider
  */
 public class AmqpLinkProvider {
-
     /**
      * Creates an Amqp Link to send messages.
      *
@@ -58,14 +61,16 @@ public class AmqpLinkProvider {
     public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
         ReceiveLinkHandler handler, TokenManager tokenManager, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions,
         AmqpMetricsProvider metricsProvider) {
-        return new ReactorReceiver(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
+        return new ReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler), tokenManager, dispatcher, retryOptions,
             metricsProvider);
     }
 
-    public AmqpReceiveLink createReceiveLink2(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
+    // Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack
+    // is removed. At that point "ReceiveLinkHandlerWrapper" and this createReceiveLink method will also be removed.
+    public AmqpReceiveLink createReceiveLink(AmqpConnection amqpConnection, String entityPath, Receiver receiver,
         ReceiveLinkHandler2 handler, TokenManager tokenManager, ReactorDispatcher dispatcher,
         AmqpRetryOptions retryOptions, AmqpMetricsProvider metricsProvider) {
-        return new ReactorReceiver2(amqpConnection, entityPath, receiver, handler, tokenManager, dispatcher, retryOptions,
+        return new ReactorReceiver(amqpConnection, entityPath, receiver, new ReceiveLinkHandlerWrapper(handler), tokenManager, dispatcher, retryOptions,
             metricsProvider);
     }
 }
