@@ -12,8 +12,8 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class DataBoxCopyCompletedEventData {
     /*
-     * Serial Number of the device associated with the event. The list is comma
-     * separated if more than one serial number is associated.
+     * Serial Number of the device associated with the event. The list is comma separated if more than one serial
+     * number is associated.
      */
     @JsonProperty(value = "serialNumber")
     private String serialNumber;
@@ -29,6 +29,9 @@ public final class DataBoxCopyCompletedEventData {
      */
     @JsonProperty(value = "stageTime")
     private OffsetDateTime stageTime;
+
+    /** Creates an instance of DataBoxCopyCompletedEventData class. */
+    public DataBoxCopyCompletedEventData() {}
 
     /**
      * Get the serialNumber property: Serial Number of the device associated with the event. The list is comma separated

@@ -240,8 +240,8 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      *
      * @return An updated instance of this builder with instance discovery disabled.
      */
-    public DefaultAzureCredentialBuilder disableAuthorityValidationAndInstanceDiscovery() {
-        this.identityClientOptions.disableAuthorityValidationAndInstanceDiscovery();
+    public DefaultAzureCredentialBuilder disableInstanceDiscovery() {
+        this.identityClientOptions.disableInstanceDiscovery();
         return this;
     }
 

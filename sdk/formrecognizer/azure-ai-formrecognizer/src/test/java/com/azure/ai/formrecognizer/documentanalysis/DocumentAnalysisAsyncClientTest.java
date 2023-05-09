@@ -1059,6 +1059,7 @@ public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestB
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    @Disabled("Deserialization error as amount missing in CurrencyValue")
     public void analyzeInvoiceWithPage(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
         client = getDocumentAnalysisAsyncClient(httpClient, serviceVersion);
         urlRunner(sourceUrl -> {

@@ -30,16 +30,25 @@ public final class AcsEmailDeliveryReportReceivedEventData {
     private String messageId;
 
     /*
-     * The status of the email
+     * The status of the email. Any value other than Delivered is considered failed.
      */
     @JsonProperty(value = "status")
     private AcsEmailDeliveryReportStatus status;
+
+    /*
+     * Detailed information about the status if any
+     */
+    @JsonProperty(value = "deliveryStatusDetails")
+    private AcsEmailDeliveryReportStatusDetails deliveryStatusDetails;
 
     /*
      * The time at which the email delivery report received timestamp
      */
     @JsonProperty(value = "deliveryAttemptTimeStamp")
     private OffsetDateTime deliveryAttemptTimestamp;
+
+    /** Creates an instance of AcsEmailDeliveryReportReceivedEventData class. */
+    public AcsEmailDeliveryReportReceivedEventData() {}
 
     /**
      * Get the sender property: The Sender Email Address.
@@ -102,7 +111,7 @@ public final class AcsEmailDeliveryReportReceivedEventData {
     }
 
     /**
-     * Get the status property: The status of the email.
+     * Get the status property: The status of the email. Any value other than Delivered is considered failed.
      *
      * @return the status value.
      */
@@ -111,13 +120,34 @@ public final class AcsEmailDeliveryReportReceivedEventData {
     }
 
     /**
-     * Set the status property: The status of the email.
+     * Set the status property: The status of the email. Any value other than Delivered is considered failed.
      *
      * @param status the status value to set.
      * @return the AcsEmailDeliveryReportReceivedEventData object itself.
      */
     public AcsEmailDeliveryReportReceivedEventData setStatus(AcsEmailDeliveryReportStatus status) {
         this.status = status;
+        return this;
+    }
+
+    /**
+     * Get the deliveryStatusDetails property: Detailed information about the status if any.
+     *
+     * @return the deliveryStatusDetails value.
+     */
+    public AcsEmailDeliveryReportStatusDetails getDeliveryStatusDetails() {
+        return this.deliveryStatusDetails;
+    }
+
+    /**
+     * Set the deliveryStatusDetails property: Detailed information about the status if any.
+     *
+     * @param deliveryStatusDetails the deliveryStatusDetails value to set.
+     * @return the AcsEmailDeliveryReportReceivedEventData object itself.
+     */
+    public AcsEmailDeliveryReportReceivedEventData setDeliveryStatusDetails(
+            AcsEmailDeliveryReportStatusDetails deliveryStatusDetails) {
+        this.deliveryStatusDetails = deliveryStatusDetails;
         return this;
     }
 
