@@ -4,7 +4,6 @@
 package com.azure.core.test;
 
 import com.azure.core.test.utils.TestProxyManager;
-import com.azure.core.test.utils.TestUtils;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
@@ -33,7 +32,7 @@ public abstract class TestProxyTestBase extends TestBase {
     public static void setupTestProxy() {
         testMode = initializeTestMode();
         if (isTestProxyEnabled() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
-            testProxyManager = new TestProxyManager(TestUtils.getRepoRoot());
+            testProxyManager = new TestProxyManager();
             testProxyManager.startProxy();
         }
     }

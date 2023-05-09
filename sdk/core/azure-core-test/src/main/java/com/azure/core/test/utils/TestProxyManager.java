@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
@@ -22,16 +21,13 @@ import java.util.Map;
  */
 public class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
-    private final Path recordingPath;
     private Process proxy;
 
     /**
      * Construct a {@link TestProxyManager} for controlling the external test proxy.
      * @param recordingPath The local path in the file system where recordings are saved.
      */
-    public TestProxyManager(Path recordingPath) {
-        this.recordingPath = recordingPath;
-
+    public TestProxyManager() {
         // This is necessary to stop the proxy when the debugger is stopped.
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
         if (runningLocally()) {
@@ -53,7 +49,7 @@ public class TestProxyManager {
 
                 ProcessBuilder builder = new ProcessBuilder(commandLine,
                     "--storage-location",
-                    recordingPath.toString());
+                    Paths.get(System.getProperty("user.dir") + "/.." + "/.." + "/..").toRealPath().toString());
                 Map<String, String> environment = builder.environment();
                 environment.put("LOGGING__LOGLEVEL", "Information");
                 environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
@@ -100,13 +96,6 @@ public class TestProxyManager {
             proxy.destroy();
         }
     }
-
-    /**
-     * Get the proxy URL.
-     *
-     * @return A string containing the proxy URL.
-     * @throws RuntimeException The proxy URL could not be constructed.
-     */
 
 
     /**
