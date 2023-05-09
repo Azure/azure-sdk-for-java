@@ -5,39 +5,39 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.network.models.PeerRoute;
+import com.azure.resourcemanager.network.models.EffectiveRouteMapRoute;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of virtual router peer routes. */
+/** EffectiveRouteMapRoute List. */
 @Fluent
-public final class PeerRouteListInner {
+public final class EffectiveRouteMapRouteListInner {
     /*
-     * List of peer routes.
+     * The list of Effective RouteMap Routes configured on the connection resource.
      */
     @JsonProperty(value = "value")
-    private List<PeerRoute> value;
+    private List<EffectiveRouteMapRoute> value;
 
-    /** Creates an instance of PeerRouteListInner class. */
-    public PeerRouteListInner() {
+    /** Creates an instance of EffectiveRouteMapRouteListInner class. */
+    public EffectiveRouteMapRouteListInner() {
     }
 
     /**
-     * Get the value property: List of peer routes.
+     * Get the value property: The list of Effective RouteMap Routes configured on the connection resource.
      *
      * @return the value value.
      */
-    public List<PeerRoute> value() {
+    public List<EffectiveRouteMapRoute> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: List of peer routes.
+     * Set the value property: The list of Effective RouteMap Routes configured on the connection resource.
      *
      * @param value the value value to set.
-     * @return the PeerRouteListInner object itself.
+     * @return the EffectiveRouteMapRouteListInner object itself.
      */
-    public PeerRouteListInner withValue(List<PeerRoute> value) {
+    public EffectiveRouteMapRouteListInner withValue(List<EffectiveRouteMapRoute> value) {
         this.value = value;
         return this;
     }

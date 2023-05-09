@@ -58,8 +58,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
     public interface VpnSiteLinksService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
-                + "/{vpnSiteName}/vpnSiteLinks/{vpnSiteLinkName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}/vpnSiteLinks/{vpnSiteLinkName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VpnSiteLinkInner>> get(
@@ -74,8 +73,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites"
-                + "/{vpnSiteName}/vpnSiteLinks")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnSites/{vpnSiteName}/vpnSiteLinks")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnSiteLinksResult>> listByVpnSite(
@@ -135,7 +133,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter vpnSiteLinkName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -191,7 +189,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter vpnSiteLinkName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -290,7 +288,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -350,7 +348,7 @@ public final class VpnSiteLinksClientImpl implements VpnSiteLinksClient {
         if (vpnSiteName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vpnSiteName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for IpGroups CreateOrUpdate. */
 public final class IpGroupsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/IpGroupsCreate.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/IpGroupsCreate.json
      */
     /**
      * Sample code: CreateOrUpdate_IpGroups.
