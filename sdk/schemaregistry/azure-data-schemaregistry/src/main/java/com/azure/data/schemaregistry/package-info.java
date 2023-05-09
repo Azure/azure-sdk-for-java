@@ -41,9 +41,10 @@
  * <p><strong>Sample: Construct a service client</strong></p>
  *
  * <p>The following code sample demonstrates the creation of the synchronous client
- * {@link com.azure.data.schemaregistry.SchemaRegistryClient}.  The credential used is {@code DefaultAzureCredential}
- * because it combines commonly used credentials in deployment and development and chooses the credential to used based
- * on its running environment.</p>
+ * {@link com.azure.data.schemaregistry.SchemaRegistryClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs
+ * Namespace's host name.  It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via
+ * Azure Portal.  The credential used is {@code DefaultAzureCredential} because it combines commonly used credentials
+ * in deployment and development and chooses the credential to used based on its running environment.</p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.construct -->
  * <pre>

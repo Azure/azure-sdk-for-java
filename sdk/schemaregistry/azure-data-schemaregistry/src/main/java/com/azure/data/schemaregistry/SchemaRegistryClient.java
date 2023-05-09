@@ -36,14 +36,21 @@ import java.util.Objects;
 
 /**
  * {@link SchemaRegistryClient} is an HTTP-based client that interacts with Azure Schema Registry service to store and
- * retrieve schemas on demand.
+ * retrieve schemas on demand.   Azure Schema Registry supports multiple schema formats such as Avro, JSON, and custom
+ * formats.
  *
  * <p><strong>Sample: Construct a {@link SchemaRegistryClient}</strong></p>
  *
  * <p>The following code sample demonstrates the creation of the synchronous client
- * {@link com.azure.data.schemaregistry.SchemaRegistryClient}.  The credential used is {@code DefaultAzureCredential}
- * because it combines commonly used credentials in deployment and development and chooses the credential to used based
- * on its running environment.</p>
+ * {@link com.azure.data.schemaregistry.SchemaRegistryClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs
+ * Namespace's host name.  It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via
+ * Azure Portal.  The credential used is {@code DefaultAzureCredential} for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
  *
  * <!-- src_embed com.azure.data.schemaregistry.schemaregistryclient.construct -->
  * <pre>
