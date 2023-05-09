@@ -102,7 +102,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
-        return rootPath.relativize(Paths.get(System.getProperty("user.dir"))) + "assets.json";
+        return rootPath.relativize(Paths.get(System.getProperty("user.dir"))) + "/assets.json";
     }
 
     /**
