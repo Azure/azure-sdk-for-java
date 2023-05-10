@@ -19,7 +19,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
-import com.azure.data.appconfiguration.implementation.ConfigurationSettingSnapshotHelper;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.DeleteKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
@@ -1025,9 +1024,8 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapshot#String-ConfigurationSettingSnapshot -->
-
-     * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapshot#String-ConfigurationSettingSnapshot -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxoverload -->
+     * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxoverload -->
      *
      * @param name The name of the {@link ConfigurationSettingSnapshot} to create.
      * @param snapshot The snapshot to create.
@@ -1089,9 +1087,11 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSettingSnapshot archiveSnapshot(String name) {
-        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(null);
-        ConfigurationSettingSnapshotHelper.setName(snapshot, name);
-        return archiveSnapshotWithResponse(snapshot, false, Context.NONE).getValue();
+        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
+            serviceClient.updateSnapshotWithResponse(name,
+                new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
+                null, null, Context.NONE);
+        return response.getValue();
     }
 
     /**
@@ -1103,7 +1103,7 @@ public final class ConfigurationClient {
      * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag ETag} is
      * used as a IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} of {@link ConfigurationSettingSnapshot}.
@@ -1132,9 +1132,11 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConfigurationSettingSnapshot recoverSnapshot(String name) {
-        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(null);
-        ConfigurationSettingSnapshotHelper.setName(snapshot, name);
-        return recoverSnapshotWithResponse(snapshot, false, Context.NONE).getValue();
+        final ResponseBase<UpdateSnapshotHeaders, ConfigurationSettingSnapshot> response =
+            serviceClient.updateSnapshotWithResponse(name,
+                new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY),
+                null, null, Context.NONE);
+        return response.getValue();
     }
 
     /**
@@ -1146,7 +1148,7 @@ public final class ConfigurationClient {
      * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag()} ETag}
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()} ETag}
      *                    is used as an IF-MATCH header.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link Response} of {@link ConfigurationSettingSnapshot}.

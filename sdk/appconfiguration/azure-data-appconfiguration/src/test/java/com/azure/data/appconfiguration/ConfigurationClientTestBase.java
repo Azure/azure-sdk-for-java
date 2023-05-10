@@ -12,7 +12,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.implementation.ConfigurationClientCredentials;
 import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
-import com.azure.data.appconfiguration.implementation.ConfigurationSettingSnapshotHelper;
 import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
@@ -802,54 +801,32 @@ public abstract class ConfigurationClientTestBase extends TestProxyTestBase {
                 .setValue(getFeatureFlagConfigurationSettingValue(key));
     }
 
-    ConfigurationSettingSnapshot getExpectedSettingSnapshot(String snapshotName, SnapshotStatus status,
-        List<SnapshotSettingFilter> filters, CompositionType compositionType, OffsetDateTime createdAt,
-        OffsetDateTime expiresAt, Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
-        String etag) {
-
-        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(filters);
-        ConfigurationSettingSnapshotHelper.setName(snapshot, snapshotName);
-        ConfigurationSettingSnapshotHelper.setStatus(snapshot, status);
-        ConfigurationSettingSnapshotHelper.setCreatedAt(snapshot, createdAt);
-        ConfigurationSettingSnapshotHelper.setExpiresAt(snapshot, expiresAt);
-        ConfigurationSettingSnapshotHelper.setSize(snapshot, size);
-        ConfigurationSettingSnapshotHelper.setItemCount(snapshot, itemCount);
-        ConfigurationSettingSnapshotHelper.setEtag(snapshot, etag);
-
-        snapshot.setCompositionType(compositionType);
-        snapshot.setTags(tags);
-        snapshot.setRetentionPeriod(retentionPeriod);
-        return snapshot;
-    }
-
-    void assertConfigurationSettingSnapshotWithResponse(ConfigurationSettingSnapshot expected,
-        Response<ConfigurationSettingSnapshot> response, final int expectedStatusCode) {
+    void assertConfigurationSettingSnapshotWithResponse(int expectedStatusCode, String name,
+        SnapshotStatus snapshotStatus, List<SnapshotSettingFilter> filters, CompositionType compositionType,
+        Duration retentionPeriod, Long size, Long itemCount, Map<String, String> tags,
+        Response<ConfigurationSettingSnapshot> response) {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
 
-        assertEqualsConfigurationSettingSnapshot(expected, response.getValue());
+        assertEqualsConfigurationSettingSnapshot(name, snapshotStatus, filters, compositionType, retentionPeriod,
+            size, itemCount, tags, response.getValue());
     }
 
-    void assertEqualsConfigurationSettingSnapshot(ConfigurationSettingSnapshot o1, ConfigurationSettingSnapshot o2) {
-        if (o1 == o2) {
-            return;
-        }
+    void assertEqualsConfigurationSettingSnapshot(String name, SnapshotStatus snapshotStatus,
+        List<SnapshotSettingFilter> filters, CompositionType compositionType, Duration retentionPeriod, Long size,
+        Long itemCount, Map<String, String> tags, ConfigurationSettingSnapshot actualSnapshot) {
+        assertEquals(name, actualSnapshot.getName());
+        assertEquals(snapshotStatus, actualSnapshot.getStatus());
+        assertEqualsSnapshotFilters(filters, actualSnapshot.getFilters());
+        assertEquals(compositionType, actualSnapshot.getCompositionType());
+        assertEquals(retentionPeriod, actualSnapshot.getRetentionPeriod());
+        assertNotNull(actualSnapshot.getCreatedAt());
+        assertEquals(itemCount, actualSnapshot.getItemCount());
+        assertEquals(size, actualSnapshot.getSize());
+        assertNotNull(actualSnapshot.getEtag());
 
-        assertEquals(o1.getName(), o2.getName());
-        assertEquals(o1.getCompositionType(), o2.getCompositionType());
-        assertEquals(o1.getRetentionPeriod(), o2.getRetentionPeriod());
-        assertNotNull(o2.getCreatedAt());
-        assertEqualsSnapshotFilters(o1.getFilters(), o2.getFilters());
-        assertEquals(o1.getItemCount(), o2.getItemCount());
-        assertEquals(o1.getSize(), o2.getSize());
-        assertEquals(o1.getStatus(), o2.getStatus());
-        assertNotNull(o2.getETag());
-
-        assertTrue(CoreUtils.isNullOrEmpty(o1.getTags()) == CoreUtils.isNullOrEmpty(o2.getTags()));
-        assertTrue(CoreUtils.isNullOrEmpty(o1.getFilters()) == CoreUtils.isNullOrEmpty(o2.getFilters()));
-
-        if (!CoreUtils.isNullOrEmpty(o1.getTags())) {
-            assertEquals(o1.getTags(), o2.getTags());
+        if (!CoreUtils.isNullOrEmpty(tags)) {
+            assertEquals(tags, actualSnapshot.getTags());
         }
     }
 

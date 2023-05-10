@@ -16,7 +16,6 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.data.appconfiguration.implementation.ConfigurationSettingSnapshotHelper;
 import com.azure.data.appconfiguration.models.CompositionType;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
@@ -40,7 +39,6 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
@@ -1336,15 +1334,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name,
+                SnapshotStatus.READY, filters, CompositionType.KEY,
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1366,15 +1362,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                DEFAULT_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                DEFAULT_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1399,21 +1392,20 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Retrieve a snapshot after creation
             StepVerifier.create(client.getSnapshotWithResponse(name))
-                .assertNext(getSnapshot -> assertConfigurationSettingSnapshotWithResponse(expectedSettingSnapshot,
-                    getSnapshot, 200))
+                .assertNext(getSnapshot -> assertConfigurationSettingSnapshotWithResponse(200, name,
+                    SnapshotStatus.READY, filters, CompositionType.KEY,
+                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null,
+                    getSnapshot))
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1438,20 +1430,19 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Retrieve a snapshot after creation
             StepVerifier.create(client.getSnapshot(name))
-                .assertNext(getSnapshot -> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, getSnapshot))
+                .assertNext(getSnapshot -> assertEqualsConfigurationSettingSnapshot(name,
+                    SnapshotStatus.READY, filters, CompositionType.KEY,
+                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, getSnapshot))
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1476,16 +1467,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name,
+                SnapshotStatus.READY, filters, CompositionType.KEY,
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshotWithResponse(snapshotResult, false))
-                .assertNext(response-> assertConfigurationSettingSnapshotWithResponse(expectedSettingSnapshot, response,
-                    200))
+                .assertNext(response-> assertConfigurationSettingSnapshotWithResponse(200, name,
+                    SnapshotStatus.ARCHIVED, filters, CompositionType.KEY,
+                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
                 .verifyComplete();
         });
     }
@@ -1510,15 +1500,15 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name,
+                SnapshotStatus.READY, filters, CompositionType.KEY,
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(name,
+                    SnapshotStatus.ARCHIVED, filters, CompositionType.KEY,
+                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
                 .verifyComplete();
         });
     }
@@ -1543,28 +1533,25 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name,
+                SnapshotStatus.READY, filters, CompositionType.KEY,
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Archived the snapshot
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
 
             // Recover the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.READY);
             StepVerifier.create(client.recoverSnapshotWithResponse(snapshotResult, false))
-                .assertNext(response-> assertConfigurationSettingSnapshotWithResponse(expectedSettingSnapshot, response,
-                    200))
+                .assertNext(response-> assertConfigurationSettingSnapshotWithResponse(200, name,
+                    SnapshotStatus.READY, filters, CompositionType.KEY,
+                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1589,27 +1576,24 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Archived the snapshot
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
 
             // Recover the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.READY);
             StepVerifier.create(client.recoverSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(name,
+                    SnapshotStatus.READY, filters, CompositionType.KEY,
+                    MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1648,10 +1632,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
             actualSnapshots.add(snapshotResult);
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
         });
         // Create second snapshot
         createSnapshotRunner((name, filters) -> {
@@ -1664,15 +1646,13 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name,
+                SnapshotStatus.READY, filters, CompositionType.KEY,
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, snapshotResult);
 
             // Archived the snapshot
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
 
@@ -1685,9 +1665,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(snapshot, SnapshotStatus.ARCHIVED);
-            StepVerifier.create(client.archiveSnapshotWithResponse(snapshot, false))
-                .assertNext(response-> assertConfigurationSettingSnapshotWithResponse(snapshot, response, 200))
+            StepVerifier.create(client.archiveSnapshot(snapshot.getName()))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         }
     }
@@ -1722,10 +1701,8 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
             poller.waitForCompletion();
             ConfigurationSettingSnapshot snapshotResult = poller.getFinalResult();
 
-            ConfigurationSettingSnapshot expectedSettingSnapshot = getExpectedSettingSnapshot(name,
-                SnapshotStatus.READY, filters, CompositionType.GROUP_BY_KEY, null, null,
-                MINIMUM_RETENTION_PERIOD, Long.valueOf(15000), Long.valueOf(50), null, null);
-            assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, snapshotResult);
+            assertEqualsConfigurationSettingSnapshot(name, SnapshotStatus.READY, filters, CompositionType.KEY,
+                MINIMUM_RETENTION_PERIOD, Long.valueOf(15000), Long.valueOf(50), null, snapshotResult);
 
 
             StepVerifier.create(client.listConfigurationSettingsBySnapshot(name))
@@ -1733,12 +1710,12 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
-            ConfigurationSettingSnapshotHelper.setStatus(expectedSettingSnapshot, SnapshotStatus.ARCHIVED);
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(expectedSettingSnapshot, response))
+                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
+
     /**
      * Test helper that calling list configuration setting with given key and label input
      *

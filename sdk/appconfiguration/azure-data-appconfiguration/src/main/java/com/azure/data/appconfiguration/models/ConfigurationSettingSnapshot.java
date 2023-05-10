@@ -5,12 +5,10 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.data.appconfiguration.implementation.ConfigurationSettingSnapshotHelper;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
 import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -38,9 +36,9 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
     private final List<SnapshotSettingFilter> filters;
 
     /*
-     * The composition type describes how the key-values within the snapshot are composed. The 'all' composition type
-     * includes all key-values. The 'group_by_key' composition type ensures there are no two key-values containing the
-     * same key.
+     * The composition type describes how the key-values within the snapshot are composed. The 'key' composition type
+     * ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are
+     * no two key-values containing the same key and label.
      */
     private CompositionType compositionType;
 
@@ -81,50 +79,6 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
      */
     private String etag;
 
-
-    static {
-        ConfigurationSettingSnapshotHelper.setAccessor(
-            new ConfigurationSettingSnapshotHelper.ConfigurationSettingSnapshotAccessor() {
-            @Override
-            public ConfigurationSettingSnapshot setName(ConfigurationSettingSnapshot snapshot, String name) {
-                return snapshot.setName(name);
-            }
-
-            @Override
-            public ConfigurationSettingSnapshot setStatus(ConfigurationSettingSnapshot snapshot,
-                                                          SnapshotStatus status) {
-                return snapshot.setStatus(status);
-            }
-
-            @Override
-            public ConfigurationSettingSnapshot setCreatedAt(ConfigurationSettingSnapshot snapshot,
-                                                             OffsetDateTime createdAt) {
-                return snapshot.setCreatedAt(createdAt);
-            }
-
-            @Override
-            public ConfigurationSettingSnapshot setExpiresAt(ConfigurationSettingSnapshot snapshot,
-                                                             OffsetDateTime expiresAt) {
-                return snapshot.setExpiresAt(expiresAt);
-            }
-
-            @Override
-            public ConfigurationSettingSnapshot setSize(ConfigurationSettingSnapshot snapshot, Long size) {
-                return snapshot.setSize(size);
-            }
-
-            @Override
-            public ConfigurationSettingSnapshot setItemCount(ConfigurationSettingSnapshot snapshot, Long itemCount) {
-                return snapshot.setItemCount(itemCount);
-            }
-
-            @Override
-            public ConfigurationSettingSnapshot setEtag(ConfigurationSettingSnapshot snapshot, String etag) {
-                return snapshot.setETag(etag);
-            }
-        });
-    }
-
     /**
      * Creates an instance of ConfigurationSettingSnapshot class.
      *
@@ -143,11 +97,6 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
         return this.name;
     }
 
-    private ConfigurationSettingSnapshot setName(String name) {
-        this.name = name;
-        return this;
-    }
-
     /**
      * Get the status property: The current status of the snapshot.
      *
@@ -155,11 +104,6 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
      */
     public SnapshotStatus getStatus() {
         return this.status;
-    }
-
-    private ConfigurationSettingSnapshot setStatus(SnapshotStatus status) {
-        this.status = status;
-        return this;
     }
 
     /**
@@ -173,8 +117,8 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
 
     /**
      * Get the compositionType property: The composition type describes how the key-values within the snapshot are
-     * composed. The 'all' composition type includes all key-values. The 'group_by_key' composition type ensures there
-     * are no two key-values containing the same key.
+     * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
+     * composition type ensures there are no two key-values containing the same key and label.
      *
      * @return the compositionType value.
      */
@@ -184,8 +128,8 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
 
     /**
      * Set the compositionType property: The composition type describes how the key-values within the snapshot are
-     * composed. The 'all' composition type includes all key-values. The 'group_by_key' composition type ensures there
-     * are no two key-values containing the same key.
+     * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
+     * composition type ensures there are no two key-values containing the same key and label.
      *
      * @param compositionType the compositionType value to set.
      * @return the ConfigurationSettingSnapshot object itself.
@@ -204,11 +148,6 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
         return this.createdAt;
     }
 
-    private ConfigurationSettingSnapshot setCreatedAt(OffsetDateTime createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
     /**
      * Get the expiresAt property: The time that the snapshot will expire.
      *
@@ -216,11 +155,6 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
      */
     public OffsetDateTime getExpiresAt() {
         return this.expiresAt;
-    }
-
-    private ConfigurationSettingSnapshot setExpiresAt(OffsetDateTime expiresAt) {
-        this.expiresAt = expiresAt;
-        return this;
     }
 
     /**
@@ -259,11 +193,6 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
         return this.size;
     }
 
-    private ConfigurationSettingSnapshot setSize(Long size) {
-        this.size = size;
-        return this;
-    }
-
     /**
      * Get the itemCount property: The amount of key-values in the snapshot.
      *
@@ -271,11 +200,6 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
      */
     public Long getItemCount() {
         return this.itemCount;
-    }
-
-    private ConfigurationSettingSnapshot setItemCount(Long itemCount) {
-        this.itemCount = itemCount;
-        return this;
     }
 
     /**
@@ -303,13 +227,8 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
      *
      * @return the etag value.
      */
-    public String getETag() {
+    public String getEtag() {
         return this.etag;
-    }
-
-    private ConfigurationSettingSnapshot setETag(String etag) {
-        this.etag = etag;
-        return this;
     }
 
     @Override

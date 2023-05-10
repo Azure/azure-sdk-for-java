@@ -92,7 +92,7 @@ public class Utility {
     }
 
     public static String getEtagSnapshot(boolean isEtagRequired, ConfigurationSettingSnapshot snapshot) {
-        return isEtagRequired ? getETagValue(snapshot.getETag()) : null;
+        return isEtagRequired ? getETagValue(snapshot.getEtag()) : null;
     }
 
     /*

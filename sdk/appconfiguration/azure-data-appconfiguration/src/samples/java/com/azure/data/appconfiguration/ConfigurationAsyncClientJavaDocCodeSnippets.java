@@ -295,7 +295,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
      */
     public void createSnapshotMaxOverload() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotWithResponse
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotMaxOverload
         List<SnapshotSettingFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new SnapshotSettingFilter("{keyName}"));
@@ -308,7 +308,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
                     snapshot.getName(), snapshot.getCreatedAt()),
                 ex -> System.out.printf("Error on creating a snapshot=%s, with error=%s.%n", snapshotName, ex.getMessage()),
                 () -> System.out.println("Successfully created a snapshot."));
-        // END: com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotWithResponse
+        // END: com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotMaxOverload
     }
 
     /**

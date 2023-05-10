@@ -382,7 +382,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
     public void createSnapshotMaxOverload() {
         ConfigurationClient client = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotWithResponse
+        // BEGIN: com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxoverload
         List<SnapshotSettingFilter> filters = new ArrayList<>();
         // Key Name also supports RegExp but only support prefix end with "*", such as "k*" and is case-sensitive.
         filters.add(new SnapshotSettingFilter("{keyName}"));
@@ -396,7 +396,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 
         ConfigurationSettingSnapshot snapshot= poller.getFinalResult();
         System.out.printf("Snapshot name=%s is created at %s%n", snapshot.getName(), snapshot.getCreatedAt());
-        // END: com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotWithResponse
+        // END: com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxoverload
     }
 
     /**

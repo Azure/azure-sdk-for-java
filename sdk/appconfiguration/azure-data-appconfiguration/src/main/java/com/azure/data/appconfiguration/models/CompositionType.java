@@ -8,16 +8,16 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The composition type describes how the key-values within the snapshot are composed. The 'all' composition type
- * includes all key-values. The 'group_by_key' composition type ensures there are no two key-values containing the same
- * key.
+ * The composition type describes how the key-values within the snapshot are composed. The 'key' composition type
+ * ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are no
+ * two key-values containing the same key and label.
  */
 public final class CompositionType extends ExpandableStringEnum<CompositionType> {
-    /** Static value all for CompositionType. */
-    public static final CompositionType ALL = fromString("all");
+    /** Static value key for CompositionType. */
+    public static final CompositionType KEY = fromString("key");
 
-    /** Static value group_by_key for CompositionType. */
-    public static final CompositionType GROUP_BY_KEY = fromString("group_by_key");
+    /** Static value key_label for CompositionType. */
+    public static final CompositionType KEY_LABEL = fromString("key_label");
 
     /**
      * Creates a new instance of CompositionType value.

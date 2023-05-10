@@ -15,7 +15,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
-import com.azure.data.appconfiguration.implementation.ConfigurationSettingSnapshotHelper;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
@@ -915,13 +914,13 @@ public final class ConfigurationAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotWithResponse -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotMaxOverload -->
      * <pre>
      * List&lt;SnapshotSettingFilter&gt; filters = new ArrayList&lt;&gt;&#40;&#41;;
      * &#47;&#47; Key Name also supports RegExp but only support prefix end with &quot;*&quot;, such as &quot;k*&quot; and is case-sensitive.
      * filters.add&#40;new SnapshotSettingFilter&#40;&quot;&#123;keyName&#125;&quot;&#41;&#41;;
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * client.beginCreateSnapshotWithResponse&#40;snapshotName,
+     * client.beginCreateSnapshot&#40;snapshotName,
      *     new ConfigurationSettingSnapshot&#40;filters&#41;.setRetentionPeriod&#40;Duration.ZERO&#41;&#41;
      *     .flatMap&#40;result -&gt; result.getFinalResult&#40;&#41;&#41;
      *     .subscribe&#40;
@@ -930,7 +929,7 @@ public final class ConfigurationAsyncClient {
      *         ex -&gt; System.out.printf&#40;&quot;Error on creating a snapshot=%s, with error=%s.%n&quot;, snapshotName, ex.getMessage&#40;&#41;&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully created a snapshot.&quot;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotWithResponse -->
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.beginCreateSnapshotMaxOverload -->
      *
      * @param name The name of the {@link ConfigurationSettingSnapshot} to create.
      * @param snapshot The {@link ConfigurationSettingSnapshot} to create.
@@ -989,9 +988,9 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSettingSnapshot> archiveSnapshot(String name) {
-        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(null);
-        ConfigurationSettingSnapshotHelper.setName(snapshot, name);
-        return archiveSnapshotWithResponse(snapshot, false).map(Response::getValue);
+        return serviceClient.updateSnapshotWithResponseAsync(name,
+                new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED), null, null)
+            .map(response -> response.getValue());
     }
 
     /**
@@ -1003,7 +1002,7 @@ public final class ConfigurationAsyncClient {
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.archiveSnapshotWithResponse#ConfigurationSettingSnapshot-boolean -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag ETag} is
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag ETag} is
      * used as a IF-MATCH header.
      * @return A {@link Mono} of {@link ConfigurationSettingSnapshot}.
      */
@@ -1011,7 +1010,6 @@ public final class ConfigurationAsyncClient {
     public Mono<Response<ConfigurationSettingSnapshot>> archiveSnapshotWithResponse(
         ConfigurationSettingSnapshot snapshot, boolean ifUnchanged) {
         Objects.requireNonNull(snapshot);
-        // validate name and snapshot.getName can be null. Has to be one of
         return serviceClient.updateSnapshotWithResponseAsync(snapshot.getName(),
                 new SnapshotUpdateParameters().setStatus(SnapshotStatus.ARCHIVED),
                 getEtagSnapshot(ifUnchanged, snapshot), null)
@@ -1031,9 +1029,9 @@ public final class ConfigurationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ConfigurationSettingSnapshot> recoverSnapshot(String name) {
-        ConfigurationSettingSnapshot snapshot = new ConfigurationSettingSnapshot(null);
-        ConfigurationSettingSnapshotHelper.setName(snapshot, name);
-        return recoverSnapshotWithResponse(snapshot, false).map(Response::getValue);
+        return serviceClient.updateSnapshotWithResponseAsync(name,
+                new SnapshotUpdateParameters().setStatus(SnapshotStatus.READY), null, null)
+            .map(response -> response.getValue());
     }
 
     /**
@@ -1045,7 +1043,7 @@ public final class ConfigurationAsyncClient {
      * <!-- end com.azure.data.appconfiguration.configurationasyncclient.recoverSnapshotWithResponse#ConfigurationSettingSnapshot-boolean -->
      *
      * @param snapshot The snapshot to be archived.
-     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getETag()} ETag}
+     * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()} ETag}
      *                    is used as an IF-MATCH header.
      * @return A {@link Mono} of {@link ConfigurationSettingSnapshot}.
      */
