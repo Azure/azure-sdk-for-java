@@ -167,20 +167,20 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         AtomicReference<ServiceBusReceivedMessage> received = new AtomicReference<>();
         StepVerifier.create(receiver.receiveMessages()
-            .take(1)
-            .doOnNext(msg -> received.set(msg))
-            .flatMap(msg -> receiver.renewMessageLock(msg, Duration.ofSeconds(10)).thenReturn(msg)))
-            .expectNextCount(1)
+            .next()
+            .flatMap(msg -> receiver.renewMessageLock(msg, Duration.ofSeconds(10))
+                    .thenReturn(msg)))
+            .assertNext(msg -> {
+                List<ReadableSpan> spans = spanProcessor.getEndedSpans();
+
+                List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process");
+                assertConsumerSpan(processed.get(0), received.get(), "ServiceBus.process");
+
+                List<ReadableSpan> renewLock = findSpans(spans, "ServiceBus.renewMessageLock");
+                assertClientSpan(renewLock.get(0), Collections.singletonList(received.get()), "ServiceBus.renewMessageLock", null);
+            })
             .verifyComplete();
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
-
-        List<ReadableSpan> spans = spanProcessor.getEndedSpans();
-
-        List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process");
-        assertConsumerSpan(processed.get(0), received.get(), "ServiceBus.process");
-
-        List<ReadableSpan> renewLock = findSpans(spans, "ServiceBus.renewMessageLock");
-        assertClientSpan(renewLock.get(0), Collections.singletonList(received.get()), "ServiceBus.renewMessageLock", null);
     }
 
     @Test
