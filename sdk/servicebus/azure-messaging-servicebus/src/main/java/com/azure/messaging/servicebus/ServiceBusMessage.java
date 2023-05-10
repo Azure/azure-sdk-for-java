@@ -14,6 +14,7 @@ import com.azure.core.amqp.models.AmqpMessageProperties;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ContextAccessor;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -55,6 +56,10 @@ public class ServiceBusMessage {
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
 
     private Context context;
+
+    static {
+        ContextAccessor.setSendMessageContextAccessor(message -> message.getContext());
+    }
 
     /**
      * Creates a {@link ServiceBusMessage} with given byte array body.
