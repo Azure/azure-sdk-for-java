@@ -62,8 +62,7 @@ class AppConfigurationRefreshUtil {
                 if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
                     for (AppConfigurationReplicaClient client : clients) {
                         try {
-                            State state = StateHolder.getState(originEndpoint);
-                            refreshWithTime(client, state, monitor.getRefreshInterval(), eventData);
+                            refreshWithTime(client, StateHolder.getState(originEndpoint), monitor.getRefreshInterval(), eventData);
                             if (eventData.getDoRefresh()) {
                                 clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
                                 return eventData;
