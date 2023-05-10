@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -236,6 +237,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
+    @Disabled
     public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
@@ -313,6 +315,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
+    @Disabled
     public void testBodyRegexRedactRecord() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 

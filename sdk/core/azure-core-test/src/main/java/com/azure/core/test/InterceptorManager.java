@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -384,8 +385,8 @@ public class InterceptorManager implements AutoCloseable {
      */
     private File getTestProxyRecordFile() {
         Path repoRoot = TestUtils.getRepoRoot();
-        File recordFile = new File(new File("src/test/resources/session-records"), playbackRecordName + ".json");
-        return repoRoot.relativize(recordFile.toPath()).toFile();
+        Path filePath = Paths.get(System.getProperty("user.dir"), "src/test/resources/session-records", playbackRecordName + ".json");
+        return repoRoot.relativize(filePath).toFile();
     }
 
     /*
