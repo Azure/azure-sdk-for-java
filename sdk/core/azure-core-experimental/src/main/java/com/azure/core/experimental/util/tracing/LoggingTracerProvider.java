@@ -83,7 +83,7 @@ public class LoggingTracerProvider implements TracerProvider {
             if (options.getLinks() != null) {
                 for (int i = 0; i < options.getLinks().size(); i++) {
                     TracingLink link = options.getLinks().get(i);
-                    span.addKeyValue("link[" + i + "].traceId", link.getContext().getData("traceId").orElse(null)) ;
+                    span.addKeyValue("link[" + i + "].traceId", link.getContext().getData("traceId").orElse(null));
                     span.addKeyValue("link[" + i + "].spanId", link.getContext().getData("spanId").orElse(null));
 
                     if (link.getAttributes() != null) {
