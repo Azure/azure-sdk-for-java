@@ -32,7 +32,7 @@ import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 /**
  * Tracing helper.
  */
-public class ServiceBusTracer {
+public final class ServiceBusTracer {
     private static final AutoCloseable NOOP_CLOSEABLE = () -> {
     };
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusTracer.class);

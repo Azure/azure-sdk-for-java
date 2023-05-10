@@ -26,7 +26,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 /**
  * Contains methods to report Service Bus metrics.
  */
-public class ServiceBusMeter {
+public final class ServiceBusMeter {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusMeter.class);
     private static final String GENERIC_STATUS_KEY = "status";
     private static final int DISPOSITION_STATUSES_COUNT  = DispositionStatus.values().length;

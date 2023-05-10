@@ -16,7 +16,7 @@ import java.time.Instant;
 /**
  * Contains convenience methods to instrument specific calls with traces and metrics.
  */
-public class ServiceBusReceiverInstrumentation {
+public final class ServiceBusReceiverInstrumentation {
     private final ServiceBusMeter meter;
     private final ServiceBusTracer tracer;
 

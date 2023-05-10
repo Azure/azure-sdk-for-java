@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * Contains convenience methods to instrument specific sender calls with traces and metrics.
  */
-public class ServiceBusSenderInstrumentation {
+public final class ServiceBusSenderInstrumentation {
     private final ServiceBusMeter meter;
     private final ServiceBusTracer tracer;
 

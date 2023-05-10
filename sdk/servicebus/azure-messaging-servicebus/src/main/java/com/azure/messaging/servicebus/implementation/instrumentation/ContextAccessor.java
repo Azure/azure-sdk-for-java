@@ -35,6 +35,7 @@ public final class ContextAccessor {
     public static void setReceiveMessageContextAccessor(final ReceiveMessageContextAccessor accessor) {
         receiveAccessor = accessor;
     }
+
     public static void setSendMessageContextAccessor(final SendMessageContextAccessor accessor) {
         sendAccessor = accessor;
     }
