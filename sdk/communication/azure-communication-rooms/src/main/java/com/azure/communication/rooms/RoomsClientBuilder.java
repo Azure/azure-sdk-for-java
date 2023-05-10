@@ -39,9 +39,18 @@ import java.util.Objects;
 
 /**
  * RoomsClientBuilder that creates RoomsAsyncClient and RoomsClient.
+ *
  * <p>
  * <strong>Instantiating a Rooms CLient Builder</strong>
  * </p>
+ *
+ *
+ * <!-- src_embed readme-sample-createRoomsCLientBuilder -->
+ * <pre>
+ * RoomsClientBuilder builder = new RoomsClientBuilder&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createRoomsCLientBuilder -->
+ *
  *
  * <p>
  * <strong>Using room client builder build a Rooms Client</strong>
