@@ -17,11 +17,11 @@ public class JobRouterCustomization extends Customization {
 
         // Implementation models customizations
         PackageCustomization implementationModels = customization.getPackage("com.azure.communication.jobrouter.implementation.models");
-        implementationModels.getClass("DistributionMode").setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
-        implementationModels.getClass("ExceptionAction").setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
-        implementationModels.getClass("RouterRule").setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
-        implementationModels.getClass("WorkerSelectorAttachment").setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
-        implementationModels.getClass("QueueSelectorAttachment").setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+        implementationModels.getClass("DistributionModeInternal").setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+        implementationModels.getClass("ExceptionActionInternal").setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+        implementationModels.getClass("RouterRuleInternal").setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+        implementationModels.getClass("WorkerSelectorAttachmentInternal").setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
+        implementationModels.getClass("QueueSelectorAttachmentInternal").setModifier(Modifier.PUBLIC | Modifier.ABSTRACT);
 
         // Models customizations
         PackageCustomization models = customization.getPackage("com.azure.communication.jobrouter.models");

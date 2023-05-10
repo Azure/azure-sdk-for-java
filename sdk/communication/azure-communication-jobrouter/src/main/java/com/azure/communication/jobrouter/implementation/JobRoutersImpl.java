@@ -4,22 +4,22 @@
 
 package com.azure.communication.jobrouter.implementation;
 
+import com.azure.communication.jobrouter.implementation.models.AcceptJobOfferResultInternal;
 import com.azure.communication.jobrouter.implementation.models.CancelJobRequest;
 import com.azure.communication.jobrouter.implementation.models.CloseJobRequest;
 import com.azure.communication.jobrouter.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.jobrouter.implementation.models.CompleteJobRequest;
-import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
-import com.azure.communication.jobrouter.models.JobCollection;
-import com.azure.communication.jobrouter.models.JobPositionDetails;
-import com.azure.communication.jobrouter.models.JobStateSelector;
-import com.azure.communication.jobrouter.models.QueueStatistics;
-import com.azure.communication.jobrouter.models.RouterJob;
-import com.azure.communication.jobrouter.models.RouterJobItem;
-import com.azure.communication.jobrouter.models.RouterWorker;
-import com.azure.communication.jobrouter.models.RouterWorkerItem;
-import com.azure.communication.jobrouter.models.UnassignJobResult;
-import com.azure.communication.jobrouter.models.WorkerCollection;
-import com.azure.communication.jobrouter.models.WorkerStateSelector;
+import com.azure.communication.jobrouter.implementation.models.JobCollectionInternal;
+import com.azure.communication.jobrouter.implementation.models.JobPositionDetailsInternal;
+import com.azure.communication.jobrouter.implementation.models.JobStateSelector;
+import com.azure.communication.jobrouter.implementation.models.QueueStatistics;
+import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterJobItemInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
+import com.azure.communication.jobrouter.implementation.models.RouterWorkerItemInternal;
+import com.azure.communication.jobrouter.implementation.models.UnassignJobResultInternal;
+import com.azure.communication.jobrouter.implementation.models.WorkerCollectionInternal;
+import com.azure.communication.jobrouter.implementation.models.WorkerStateSelector;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -75,18 +75,18 @@ public final class JobRoutersImpl {
         @Patch("/routing/jobs/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJob>> upsertJob(
+        Mono<Response<RouterJobInternal>> upsertJob(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") RouterJob patch,
+                @BodyParam("application/merge-patch+json") RouterJobInternal patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/routing/jobs/{id}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterJob>> getJob(
+        Mono<Response<RouterJobInternal>> getJob(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -150,7 +150,7 @@ public final class JobRoutersImpl {
         @Get("/routing/jobs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<JobCollection>> listJobs(
+        Mono<Response<JobCollectionInternal>> listJobs(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("status") JobStateSelector status,
                 @QueryParam("queueId") String queueId,
@@ -164,7 +164,7 @@ public final class JobRoutersImpl {
         @Get("/routing/jobs/{id}/position")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<JobPositionDetails>> getInQueuePosition(
+        Mono<Response<JobPositionDetailsInternal>> getInQueuePosition(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @QueryParam("api-version") String apiVersion,
@@ -174,7 +174,7 @@ public final class JobRoutersImpl {
         @Post("/routing/jobs/{id}/assignments/{assignmentId}:unassign")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<UnassignJobResult>> unassignJobAction(
+        Mono<Response<UnassignJobResultInternal>> unassignJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("id") String id,
                 @PathParam("assignmentId") String assignmentId,
@@ -185,7 +185,7 @@ public final class JobRoutersImpl {
         @Post("/routing/workers/{workerId}/offers/{offerId}:accept")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AcceptJobOfferResult>> acceptJobAction(
+        Mono<Response<AcceptJobOfferResultInternal>> acceptJobAction(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @PathParam("offerId") String offerId,
@@ -217,18 +217,18 @@ public final class JobRoutersImpl {
         @Patch("/routing/workers/{workerId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterWorker>> upsertWorker(
+        Mono<Response<RouterWorkerInternal>> upsertWorker(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/merge-patch+json") RouterWorker patch,
+                @BodyParam("application/merge-patch+json") RouterWorkerInternal patch,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
         @Get("/routing/workers/{workerId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<RouterWorker>> getWorker(
+        Mono<Response<RouterWorkerInternal>> getWorker(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("workerId") String workerId,
                 @QueryParam("api-version") String apiVersion,
@@ -248,7 +248,7 @@ public final class JobRoutersImpl {
         @Get("/routing/workers")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<WorkerCollection>> listWorkers(
+        Mono<Response<WorkerCollectionInternal>> listWorkers(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("status") WorkerStateSelector status,
                 @QueryParam("channelId") String channelId,
@@ -262,7 +262,7 @@ public final class JobRoutersImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<JobCollection>> listJobsNext(
+        Mono<Response<JobCollectionInternal>> listJobsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -271,7 +271,7 @@ public final class JobRoutersImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<WorkerCollection>> listWorkersNext(
+        Mono<Response<WorkerCollectionInternal>> listWorkersNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -290,7 +290,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> upsertJobWithResponseAsync(String id, RouterJob patch) {
+    public Mono<Response<RouterJobInternal>> upsertJobWithResponseAsync(String id, RouterJobInternal patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -311,7 +311,8 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> upsertJobWithResponseAsync(String id, RouterJob patch, Context context) {
+    public Mono<Response<RouterJobInternal>> upsertJobWithResponseAsync(
+            String id, RouterJobInternal patch, Context context) {
         final String accept = "application/json";
         return service.upsertJob(this.client.getEndpoint(), id, this.client.getApiVersion(), patch, accept, context);
     }
@@ -328,7 +329,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> upsertJobAsync(String id, RouterJob patch) {
+    public Mono<RouterJobInternal> upsertJobAsync(String id, RouterJobInternal patch) {
         return upsertJobWithResponseAsync(id, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -345,7 +346,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> upsertJobAsync(String id, RouterJob patch, Context context) {
+    public Mono<RouterJobInternal> upsertJobAsync(String id, RouterJobInternal patch, Context context) {
         return upsertJobWithResponseAsync(id, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -361,7 +362,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob upsertJob(String id, RouterJob patch) {
+    public RouterJobInternal upsertJob(String id, RouterJobInternal patch) {
         return upsertJobAsync(id, patch).block();
     }
 
@@ -378,7 +379,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> upsertJobWithResponse(String id, RouterJob patch, Context context) {
+    public Response<RouterJobInternal> upsertJobWithResponse(String id, RouterJobInternal patch, Context context) {
         return upsertJobWithResponseAsync(id, patch, context).block();
     }
 
@@ -392,7 +393,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> getJobWithResponseAsync(String id) {
+    public Mono<Response<RouterJobInternal>> getJobWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.getJob(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context));
@@ -409,7 +410,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterJob>> getJobWithResponseAsync(String id, Context context) {
+    public Mono<Response<RouterJobInternal>> getJobWithResponseAsync(String id, Context context) {
         final String accept = "application/json";
         return service.getJob(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
@@ -424,7 +425,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> getJobAsync(String id) {
+    public Mono<RouterJobInternal> getJobAsync(String id) {
         return getJobWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -439,7 +440,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterJob> getJobAsync(String id, Context context) {
+    public Mono<RouterJobInternal> getJobAsync(String id, Context context) {
         return getJobWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -453,7 +454,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterJob getJob(String id) {
+    public RouterJobInternal getJob(String id) {
         return getJobAsync(id).block();
     }
 
@@ -468,7 +469,7 @@ public final class JobRoutersImpl {
      * @return a unit of work to be routed along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterJob> getJobWithResponse(String id, Context context) {
+    public Response<RouterJobInternal> getJobWithResponse(String id, Context context) {
         return getJobWithResponseAsync(id, context).block();
     }
 
@@ -1104,7 +1105,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsSinglePageAsync(
+    public Mono<PagedResponse<RouterJobItemInternal>> listJobsSinglePageAsync(
             JobStateSelector status,
             String queueId,
             String channelId,
@@ -1149,7 +1150,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsSinglePageAsync(
+    public Mono<PagedResponse<RouterJobItemInternal>> listJobsSinglePageAsync(
             JobStateSelector status,
             String queueId,
             String channelId,
@@ -1192,7 +1193,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJobItem> listJobsAsync(
+    public PagedFlux<RouterJobItemInternal> listJobsAsync(
             JobStateSelector status,
             String queueId,
             String channelId,
@@ -1218,7 +1219,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterJobItem> listJobsAsync(
+    public PagedFlux<RouterJobItemInternal> listJobsAsync(
             JobStateSelector status,
             String queueId,
             String channelId,
@@ -1244,7 +1245,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterJobItem> listJobs(
+    public PagedIterable<RouterJobItemInternal> listJobs(
             JobStateSelector status,
             String queueId,
             String channelId,
@@ -1268,7 +1269,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterJobItem> listJobs(
+    public PagedIterable<RouterJobItemInternal> listJobs(
             JobStateSelector status,
             String queueId,
             String channelId,
@@ -1289,7 +1290,7 @@ public final class JobRoutersImpl {
      * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobPositionDetails>> getInQueuePositionWithResponseAsync(String id) {
+    public Mono<Response<JobPositionDetailsInternal>> getInQueuePositionWithResponseAsync(String id) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1308,7 +1309,7 @@ public final class JobRoutersImpl {
      * @return a job's position details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobPositionDetails>> getInQueuePositionWithResponseAsync(String id, Context context) {
+    public Mono<Response<JobPositionDetailsInternal>> getInQueuePositionWithResponseAsync(String id, Context context) {
         final String accept = "application/json";
         return service.getInQueuePosition(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
@@ -1323,7 +1324,7 @@ public final class JobRoutersImpl {
      * @return a job's position details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobPositionDetails> getInQueuePositionAsync(String id) {
+    public Mono<JobPositionDetailsInternal> getInQueuePositionAsync(String id) {
         return getInQueuePositionWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1338,7 +1339,7 @@ public final class JobRoutersImpl {
      * @return a job's position details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobPositionDetails> getInQueuePositionAsync(String id, Context context) {
+    public Mono<JobPositionDetailsInternal> getInQueuePositionAsync(String id, Context context) {
         return getInQueuePositionWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1352,7 +1353,7 @@ public final class JobRoutersImpl {
      * @return a job's position details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobPositionDetails getInQueuePosition(String id) {
+    public JobPositionDetailsInternal getInQueuePosition(String id) {
         return getInQueuePositionAsync(id).block();
     }
 
@@ -1367,7 +1368,7 @@ public final class JobRoutersImpl {
      * @return a job's position details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobPositionDetails> getInQueuePositionWithResponse(String id, Context context) {
+    public Response<JobPositionDetailsInternal> getInQueuePositionWithResponse(String id, Context context) {
         return getInQueuePositionWithResponseAsync(id, context).block();
     }
 
@@ -1383,7 +1384,8 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnassignJobResult>> unassignJobActionWithResponseAsync(String id, String assignmentId) {
+    public Mono<Response<UnassignJobResultInternal>> unassignJobActionWithResponseAsync(
+            String id, String assignmentId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1409,7 +1411,7 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnassignJobResult>> unassignJobActionWithResponseAsync(
+    public Mono<Response<UnassignJobResultInternal>> unassignJobActionWithResponseAsync(
             String id, String assignmentId, Context context) {
         final String accept = "application/json";
         return service.unassignJobAction(
@@ -1427,7 +1429,7 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResult> unassignJobActionAsync(String id, String assignmentId) {
+    public Mono<UnassignJobResultInternal> unassignJobActionAsync(String id, String assignmentId) {
         return unassignJobActionWithResponseAsync(id, assignmentId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1443,7 +1445,7 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnassignJobResult> unassignJobActionAsync(String id, String assignmentId, Context context) {
+    public Mono<UnassignJobResultInternal> unassignJobActionAsync(String id, String assignmentId, Context context) {
         return unassignJobActionWithResponseAsync(id, assignmentId, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1459,7 +1461,7 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnassignJobResult unassignJobAction(String id, String assignmentId) {
+    public UnassignJobResultInternal unassignJobAction(String id, String assignmentId) {
         return unassignJobActionAsync(id, assignmentId).block();
     }
 
@@ -1475,7 +1477,8 @@ public final class JobRoutersImpl {
      * @return response payload after a job has been successfully unassigned along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<UnassignJobResult> unassignJobActionWithResponse(String id, String assignmentId, Context context) {
+    public Response<UnassignJobResultInternal> unassignJobActionWithResponse(
+            String id, String assignmentId, Context context) {
         return unassignJobActionWithResponseAsync(id, assignmentId, context).block();
     }
 
@@ -1491,7 +1494,8 @@ public final class JobRoutersImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResult>> acceptJobActionWithResponseAsync(String workerId, String offerId) {
+    public Mono<Response<AcceptJobOfferResultInternal>> acceptJobActionWithResponseAsync(
+            String workerId, String offerId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1517,7 +1521,7 @@ public final class JobRoutersImpl {
      *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcceptJobOfferResult>> acceptJobActionWithResponseAsync(
+    public Mono<Response<AcceptJobOfferResultInternal>> acceptJobActionWithResponseAsync(
             String workerId, String offerId, Context context) {
         final String accept = "application/json";
         return service.acceptJobAction(
@@ -1536,7 +1540,7 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResult> acceptJobActionAsync(String workerId, String offerId) {
+    public Mono<AcceptJobOfferResultInternal> acceptJobActionAsync(String workerId, String offerId) {
         return acceptJobActionWithResponseAsync(workerId, offerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1553,7 +1557,7 @@ public final class JobRoutersImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AcceptJobOfferResult> acceptJobActionAsync(String workerId, String offerId, Context context) {
+    public Mono<AcceptJobOfferResultInternal> acceptJobActionAsync(String workerId, String offerId, Context context) {
         return acceptJobActionWithResponseAsync(workerId, offerId, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1569,7 +1573,7 @@ public final class JobRoutersImpl {
      * @return response containing Id's for the worker, job, and assignment from an accepted offer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AcceptJobOfferResult acceptJobAction(String workerId, String offerId) {
+    public AcceptJobOfferResultInternal acceptJobAction(String workerId, String offerId) {
         return acceptJobActionAsync(workerId, offerId).block();
     }
 
@@ -1586,7 +1590,7 @@ public final class JobRoutersImpl {
      *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcceptJobOfferResult> acceptJobActionWithResponse(
+    public Response<AcceptJobOfferResultInternal> acceptJobActionWithResponse(
             String workerId, String offerId, Context context) {
         return acceptJobActionWithResponseAsync(workerId, offerId, context).block();
     }
@@ -1800,7 +1804,8 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> upsertWorkerWithResponseAsync(String workerId, RouterWorker patch) {
+    public Mono<Response<RouterWorkerInternal>> upsertWorkerWithResponseAsync(
+            String workerId, RouterWorkerInternal patch) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1826,8 +1831,8 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> upsertWorkerWithResponseAsync(
-            String workerId, RouterWorker patch, Context context) {
+    public Mono<Response<RouterWorkerInternal>> upsertWorkerWithResponseAsync(
+            String workerId, RouterWorkerInternal patch, Context context) {
         final String accept = "application/json";
         return service.upsertWorker(
                 this.client.getEndpoint(), workerId, this.client.getApiVersion(), patch, accept, context);
@@ -1845,7 +1850,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> upsertWorkerAsync(String workerId, RouterWorker patch) {
+    public Mono<RouterWorkerInternal> upsertWorkerAsync(String workerId, RouterWorkerInternal patch) {
         return upsertWorkerWithResponseAsync(workerId, patch).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1862,7 +1867,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> upsertWorkerAsync(String workerId, RouterWorker patch, Context context) {
+    public Mono<RouterWorkerInternal> upsertWorkerAsync(String workerId, RouterWorkerInternal patch, Context context) {
         return upsertWorkerWithResponseAsync(workerId, patch, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1878,7 +1883,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker upsertWorker(String workerId, RouterWorker patch) {
+    public RouterWorkerInternal upsertWorker(String workerId, RouterWorkerInternal patch) {
         return upsertWorkerAsync(workerId, patch).block();
     }
 
@@ -1895,7 +1900,8 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> upsertWorkerWithResponse(String workerId, RouterWorker patch, Context context) {
+    public Response<RouterWorkerInternal> upsertWorkerWithResponse(
+            String workerId, RouterWorkerInternal patch, Context context) {
         return upsertWorkerWithResponseAsync(workerId, patch, context).block();
     }
 
@@ -1909,7 +1915,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> getWorkerWithResponseAsync(String workerId) {
+    public Mono<Response<RouterWorkerInternal>> getWorkerWithResponseAsync(String workerId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -1928,7 +1934,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RouterWorker>> getWorkerWithResponseAsync(String workerId, Context context) {
+    public Mono<Response<RouterWorkerInternal>> getWorkerWithResponseAsync(String workerId, Context context) {
         final String accept = "application/json";
         return service.getWorker(this.client.getEndpoint(), workerId, this.client.getApiVersion(), accept, context);
     }
@@ -1943,7 +1949,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> getWorkerAsync(String workerId) {
+    public Mono<RouterWorkerInternal> getWorkerAsync(String workerId) {
         return getWorkerWithResponseAsync(workerId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1958,7 +1964,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<RouterWorker> getWorkerAsync(String workerId, Context context) {
+    public Mono<RouterWorkerInternal> getWorkerAsync(String workerId, Context context) {
         return getWorkerWithResponseAsync(workerId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1972,7 +1978,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouterWorker getWorker(String workerId) {
+    public RouterWorkerInternal getWorker(String workerId) {
         return getWorkerAsync(workerId).block();
     }
 
@@ -1987,7 +1993,7 @@ public final class JobRoutersImpl {
      * @return an entity for jobs to be routed to along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouterWorker> getWorkerWithResponse(String workerId, Context context) {
+    public Response<RouterWorkerInternal> getWorkerWithResponse(String workerId, Context context) {
         return getWorkerWithResponseAsync(workerId, context).block();
     }
 
@@ -2098,7 +2104,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersSinglePageAsync(
+    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersSinglePageAsync(
             WorkerStateSelector status, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2141,7 +2147,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersSinglePageAsync(
+    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersSinglePageAsync(
             WorkerStateSelector status,
             String channelId,
             String queueId,
@@ -2186,7 +2192,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorkerItem> listWorkersAsync(
+    public PagedFlux<RouterWorkerItemInternal> listWorkersAsync(
             WorkerStateSelector status, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
         return new PagedFlux<>(
                 () -> listWorkersSinglePageAsync(status, channelId, queueId, hasCapacity, maxPageSize),
@@ -2210,7 +2216,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RouterWorkerItem> listWorkersAsync(
+    public PagedFlux<RouterWorkerItemInternal> listWorkersAsync(
             WorkerStateSelector status,
             String channelId,
             String queueId,
@@ -2238,7 +2244,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterWorkerItem> listWorkers(
+    public PagedIterable<RouterWorkerItemInternal> listWorkers(
             WorkerStateSelector status, String channelId, String queueId, Boolean hasCapacity, Integer maxPageSize) {
         return new PagedIterable<>(listWorkersAsync(status, channelId, queueId, hasCapacity, maxPageSize));
     }
@@ -2260,7 +2266,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RouterWorkerItem> listWorkers(
+    public PagedIterable<RouterWorkerItemInternal> listWorkers(
             WorkerStateSelector status,
             String channelId,
             String queueId,
@@ -2280,7 +2286,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<RouterJobItemInternal>> listJobsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -2306,7 +2312,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of jobs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterJobItem>> listJobsNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<RouterJobItemInternal>> listJobsNextSinglePageAsync(String nextLink, Context context) {
         final String accept = "application/json";
         return service.listJobsNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
@@ -2330,7 +2336,7 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context -> service.listWorkersNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -2356,7 +2362,8 @@ public final class JobRoutersImpl {
      * @return a paged collection of workers along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<RouterWorkerItem>> listWorkersNextSinglePageAsync(String nextLink, Context context) {
+    public Mono<PagedResponse<RouterWorkerItemInternal>> listWorkersNextSinglePageAsync(
+            String nextLink, Context context) {
         final String accept = "application/json";
         return service.listWorkersNext(nextLink, this.client.getEndpoint(), accept, context)
                 .map(
