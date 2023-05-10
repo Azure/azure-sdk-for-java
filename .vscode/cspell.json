@@ -837,6 +837,7 @@
         "astbuilder",
         "atomikos",
         "awaitility",
+        "awspring",
         "Borca",
         "brotli",
         "bson",
