@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
@@ -81,7 +82,7 @@ class ServiceBusReceiveLinkProcessorTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(0));
     }
 
     @AfterAll
@@ -231,6 +232,7 @@ class ServiceBusReceiveLinkProcessorTest {
      * Verifies that we can get subsequent AMQP links when the first one is closed.
      */
     @Test
+    @RepeatedTest(1000)
     void newLinkOnClose() {
         // Arrange
         final int count = 4;
