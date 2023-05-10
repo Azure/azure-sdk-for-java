@@ -841,7 +841,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     static class TestSpanProcessor implements SpanProcessor {
-        private final static  ClientLogger LOGGER = new ClientLogger(TestSpanProcessor.class);
+        private static final ClientLogger LOGGER = new ClientLogger(TestSpanProcessor.class);
         private final ConcurrentLinkedDeque<ReadableSpan> spans = new ConcurrentLinkedDeque<>();
         private final String entityName;
         private final String namespace;
