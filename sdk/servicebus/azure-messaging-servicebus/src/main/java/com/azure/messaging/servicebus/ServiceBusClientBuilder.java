@@ -43,6 +43,7 @@ import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcess
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.implementation.ServiceBusProcessorClientOptions;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
@@ -1446,12 +1447,13 @@ public final class ServiceBusClientBuilder implements
                 clientIdentifier = UUID.randomUUID().toString();
             }
 
-            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
-                connectionProcessor, messageSerializer, receiverOptions, clientIdentifier);
-
             final ServiceBusReceiverInstrumentation instrumentation = new ServiceBusReceiverInstrumentation(
                 createTracer(), createMeter(), connectionProcessor.getFullyQualifiedNamespace(),
                 entityPath, subscriptionName, false);
+
+            final ServiceBusSessionManager sessionManager = new ServiceBusSessionManager(entityPath, entityType,
+                connectionProcessor, messageSerializer, receiverOptions, clientIdentifier, instrumentation.getTracer());
+
             return new ServiceBusReceiverAsyncClient(connectionProcessor.getFullyQualifiedNamespace(), entityPath,
                 entityType, receiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                 instrumentation, messageSerializer, ServiceBusClientBuilder.this::onClientClose, sessionManager);
