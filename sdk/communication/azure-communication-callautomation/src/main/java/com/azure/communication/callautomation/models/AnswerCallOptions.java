@@ -108,7 +108,7 @@ public final class AnswerCallOptions {
      * attached.
      *
      * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallRequestInternal object itself.
+     * @return the AnswerCallOptions object itself.
      */
     public AnswerCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
         this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
@@ -119,7 +119,7 @@ public final class AnswerCallOptions {
      * Set the operationContext.
      *
      * @param operationContext the operationContext to set
-     * @return the AddParticipantOptions object itself.
+     * @return the AnswerCallOptions object itself.
      */
     public AnswerCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
