@@ -15,6 +15,7 @@
 * Removed custom user agent suffix from client telemetry - See [PR 34866](https://github.com/Azure/azure-sdk-for-java/pull/34866)
 
 #### Other Changes
+* Disabled initialization of client telemetry background threads if client telemetry is disabled - See [PR 34889](https://github.com/Azure/azure-sdk-for-java/pull/34889)
 
 ### 4.44.0 (2023-04-21)
 
