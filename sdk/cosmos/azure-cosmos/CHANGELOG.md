@@ -12,6 +12,7 @@
 
 #### Bugs Fixed
 * Fixed `IllegalArgumentException` in changeFeedProcessor when `maxScaleCount` is configured - See [PR 34618](https://github.com/Azure/azure-sdk-for-java/pull/34618)
+* Removed custom user agent suffix from client telemetry - See [PR 34866](https://github.com/Azure/azure-sdk-for-java/pull/34866)
 
 #### Other Changes
 

@@ -550,7 +550,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     null,
                     UUID.randomUUID().toString(),
                     ManagementFactory.getRuntimeMXBean().getName(),
-                    userAgentContainer.getUserAgent(),
                     connectionPolicy.getConnectionMode(),
                     globalEndpointManager.getLatestDatabaseAccount().getId(),
                     null,
