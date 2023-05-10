@@ -216,17 +216,16 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 .acceptSession(sessionId)
                 .flatMapMany(rec -> rec
                     .renewSessionLock()
-                    .thenMany(rec.receiveMessages()
-                        .take(1)
-                        .doOnNext(msg -> {
-                            received.set(msg);
-                            logger.atInfo()
-                                .addKeyValue("lockedUntil", msg.getLockedUntil())
-                                .addKeyValue("sessionId", msg.getSessionId())
-                                .log("message received");
-                        }))))
-            .expectNextCount(1)
+                    .then(rec.receiveMessages().next())))
+            .assertNext(msg -> {
+                received.set(msg);
+                logger.atInfo()
+                    .addKeyValue("lockedUntil", msg.getLockedUntil())
+                    .addKeyValue("sessionId", msg.getSessionId())
+                    .log("message received");
+            })
             .verifyComplete();
+
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = spanProcessor.getEndedSpans();
