@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Replaced `OpenTelemetryMetricsOptions.setProvider` with `OpenTelemetryMetricsOptions.setOpenTelemetry` method. Instead of `io.opentelemetry.api.metrics.MeterProvider` instance 
+  it now takes `io.opentelemetry.api.OpenTelemetry` container.
+
 ### Bugs Fixed
 
 ### Other Changes
