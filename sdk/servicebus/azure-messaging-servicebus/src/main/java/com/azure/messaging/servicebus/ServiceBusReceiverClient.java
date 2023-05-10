@@ -55,7 +55,6 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusReceiverClient implements AutoCloseable {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverClient.class);
-    private static final int DEFAULT_BATCH_SIZE = 1;
     private final AtomicInteger idGenerator = new AtomicInteger();
     private final ServiceBusReceiverAsyncClient asyncClient;
     private final Duration operationTimeout;

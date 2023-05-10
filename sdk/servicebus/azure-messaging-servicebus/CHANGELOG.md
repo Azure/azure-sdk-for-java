@@ -6,6 +6,8 @@
 
 - Added `sessionIdleTimeout` method to configure session idle timeout on `ServiceBusSessionProcessorClientBuilder`. After this time has elapsed,
   the processor will close the session and attempt to process another session. ([#34700](https://github.com/Azure/azure-sdk-for-java/issues/34700))
+- Fixed a race condition in `ServiceBusReceiverClient` sometimes causing two requests to be sent when peeking or receiving deferred messages.
+  ([#34838](https://github.com/Azure/azure-sdk-for-java/issues/34838))
 
 ### Breaking Changes
 
