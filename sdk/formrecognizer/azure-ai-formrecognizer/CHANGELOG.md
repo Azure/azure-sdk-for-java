@@ -1,11 +1,6 @@
 # Release History
 
 ## 4.1.0-beta.2 (2023-05-10)
-
-### Features Added
-
-### Breaking Changes
-
 ### Bugs Fixed
 - Document Table cell now returns correct values for bounding boxes.
 
