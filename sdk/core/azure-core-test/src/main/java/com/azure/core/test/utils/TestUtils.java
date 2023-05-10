@@ -13,6 +13,7 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -149,7 +150,7 @@ public final class TestUtils {
      * @throws RuntimeException The eng folder could not be located.
      */
     public static Path getRepoRoot() {
-        Path path = getRecordFolder().toPath();
+        Path path = Paths.get(System.getProperty("user.dir"));
         Path candidate = null;
         while (path != null) {
             candidate = path.resolve("eng");
