@@ -223,8 +223,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnostics).containsPattern("(?s).*?\"activityId\":\"[^\\s\"]+\".*");
         assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
         assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
-        // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
-        // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
+        assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
         validateTransportRequestTimelineGateway(diagnostics);
         validateRegionContacted(createResponse.getDiagnostics(), gatewayClient.asyncClient());
         isValidJSON(diagnostics);
@@ -265,8 +264,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
             assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
             validateRegionContacted(createResponse.getDiagnostics(), this.containerGateway.asyncContainer.getDatabase().getClient());
-            // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
-            // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
+            assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineGateway(diagnostics);
             isValidJSON(diagnostics);
