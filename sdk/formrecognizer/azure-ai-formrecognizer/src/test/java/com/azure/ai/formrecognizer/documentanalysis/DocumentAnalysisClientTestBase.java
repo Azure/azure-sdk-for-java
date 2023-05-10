@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.documentanalysis;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
@@ -414,6 +415,12 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertEquals(EXPECTED_MERCHANT_NAME, invoicePage1Fields.get("VendorName")
             .getValueAsString());
         assertNotNull(invoicePage1Fields.get("VendorName").getConfidence());
+        DocumentField subtotalField = invoicePage1Fields.get("Subtotal");
+        CurrencyValue subtotal =
+            subtotalField.getValueAsCurrency();
+        Assertions.assertEquals(100.0, subtotal.getAmount());
+        Assertions.assertEquals("USD", subtotal.getCode());
+        Assertions.assertEquals("$", subtotal.getSymbol());
 
         Map<String, DocumentField> itemsMap
             = invoicePage1Fields.get("Items").getValueAsList().get(0).getValueAsMap();
@@ -423,8 +430,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertNotNull(itemsMap.get("Date").getConfidence());
         assertEquals("34278587", itemsMap.get("ProductCode").getValueAsString());
         assertNotNull(itemsMap.get("ProductCode").getConfidence());
-        // assertEquals(DocumentFieldType.CURRENCY, itemsMap.get("Tax").getType());
-        // Assertions.assertNotNull(itemsMap.get("Tax").getConfidence());
+        Assertions.assertNotNull(analyzeResult.getPages());
     }
 
     static void validateMultipageInvoiceData(AnalyzeResult analyzeResult) {
