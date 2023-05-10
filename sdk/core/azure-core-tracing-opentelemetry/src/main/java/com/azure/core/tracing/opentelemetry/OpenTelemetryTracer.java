@@ -68,7 +68,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         if (options != null && options.isEnabled() && options instanceof OpenTelemetryTracingOptions) {
             OpenTelemetryTracingOptions otelOptions = (OpenTelemetryTracingOptions) options;
-            otelProvider = otelOptions.getProvider();
+            otelProvider = otelOptions.getOpenTelemetryProvider();
             otelSchemaVersion = otelOptions.getSchemaVersion();
         }
 

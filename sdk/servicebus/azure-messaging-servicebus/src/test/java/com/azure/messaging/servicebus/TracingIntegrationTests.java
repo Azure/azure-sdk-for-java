@@ -3,6 +3,8 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
+import com.azure.core.util.ClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.DeferOptions;
@@ -23,7 +25,6 @@ import io.opentelemetry.sdk.trace.data.LinkData;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.Disposable;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
@@ -50,9 +51,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-@Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class TracingIntegrationTests extends IntegrationTestBase {
+    private ClientOptions clientOptions;
     private TestSpanProcessor spanProcessor;
     private ServiceBusSenderAsyncClient sender;
     private ServiceBusReceiverAsyncClient receiver;
@@ -65,29 +66,33 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        GlobalOpenTelemetry.resetForTest();
         spanProcessor = new TestSpanProcessor(getFullyQualifiedDomainName(), getQueueName(0));
-        OpenTelemetrySdk.builder()
-            .setTracerProvider(
-                SdkTracerProvider.builder()
-                    .addSpanProcessor(spanProcessor)
-                    .build())
-            .buildAndRegisterGlobal();
+        OpenTelemetryTracingOptions tracingOptions = new OpenTelemetryTracingOptions()
+            .setOpenTelemetry(OpenTelemetrySdk.builder()
+                .setTracerProvider(
+                    SdkTracerProvider.builder()
+                        .addSpanProcessor(spanProcessor)
+                        .build())
+                .build());
+        clientOptions = new ClientOptions().setTracingOptions(tracingOptions);
 
         sender = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .sender()
             .queueName(getQueueName(0))
             .buildAsyncClient());
 
         receiver = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .receiver()
             .queueName(getQueueName(0))
             .buildAsyncClient(false, false));
 
         receiverSync = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .receiver()
             .queueName(getQueueName(0))
             .buildClient());
@@ -247,6 +252,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         ServiceBusReceiverAsyncClient receiverAutoComplete = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .receiver()
             .queueName(getQueueName(0))
             .buildAsyncClient());
@@ -448,6 +454,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
         processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
             .processMessage(mc -> {
@@ -507,6 +514,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
             .maxConcurrentCalls(10)
@@ -553,6 +561,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
             .maxConcurrentCalls(messageCount)
@@ -601,6 +610,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         AtomicReference<ServiceBusReceivedMessage> receivedMessage = new AtomicReference<>();
         processor = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
+            .clientOptions(clientOptions)
             .processor()
             .queueName(getQueueName(0))
             .processMessage(mc -> {
