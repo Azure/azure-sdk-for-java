@@ -35,8 +35,10 @@ public final class CosmosContainerProactiveInitConfigBuilder {
             "The list of container identities cannot be null or empty.");
         this.containerDirectConnectionMetadataMap = new HashMap<>();
 
-        for (CosmosContainerIdentity cosmosContainerIdentity : cosmosContainerIdentities) {
-            this.containerDirectConnectionMetadataMap.put(cosmosContainerIdentity, new ContainerDirectConnectionMetadata());
+        if (cosmosContainerIdentities != null && !cosmosContainerIdentities.isEmpty()) {
+            for (CosmosContainerIdentity cosmosContainerIdentity : cosmosContainerIdentities) {
+                this.containerDirectConnectionMetadataMap.put(cosmosContainerIdentity, new ContainerDirectConnectionMetadata());
+            }
         }
 
         this.numProactiveConnectionRegions = 1;

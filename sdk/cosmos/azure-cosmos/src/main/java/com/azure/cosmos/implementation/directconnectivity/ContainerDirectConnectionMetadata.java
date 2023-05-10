@@ -3,11 +3,10 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.models.CosmosContainerIdentity;
-
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ContainerDirectConnectionMetadata {
+
     private final AtomicInteger minConnectionPoolSizePerEndpointForContainer;
 
     public ContainerDirectConnectionMetadata() {
