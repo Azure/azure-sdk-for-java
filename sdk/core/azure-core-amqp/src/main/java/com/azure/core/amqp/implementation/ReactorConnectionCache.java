@@ -206,9 +206,11 @@ public final class ReactorConnectionCache<T extends ReactorConnection> implement
                     return Mono.error(new IllegalStateException("RetrySignal::failure() not expected to be null."));
                 }
 
-                // There are exceptions that will not be AmqpExceptions like IllegalStateExceptions or
-                // RejectedExecutionExceptions when attempting an operation that is closed or if the IO
+                // There are exceptions that will not be AmqpExceptions like IllegalStateException (ISE)
+                // or RejectedExecutionException when attempting an operation that is closed or if the IO
                 // signal is accidentally closed, retrying in these cases as well.
+                // https://github.com/Azure/azure-sdk-for-java/pull/34122 addresses one source of ISE.
+                // Continue to log (to detect any other unknown edge-case) and recover on ISE.
                 final boolean shouldRetry = error instanceof TimeoutException
                     || (error instanceof AmqpException && ((AmqpException) error).isTransient()
                     || (error instanceof IllegalStateException)
