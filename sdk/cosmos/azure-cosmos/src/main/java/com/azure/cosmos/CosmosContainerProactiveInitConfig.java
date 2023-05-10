@@ -3,11 +3,15 @@
 
 package com.azure.cosmos;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -29,7 +33,7 @@ public final class CosmosContainerProactiveInitConfig {
         int numProactiveConnectionRegions,
         Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerDirectConnectionMetadataMap,
         Duration aggressiveWarmupDuration) {
-        this.cosmosContainerIdentities = containerDirectConnectionMetadataMap.keySet().stream().toList();
+        this.cosmosContainerIdentities = new ArrayList<>(containerDirectConnectionMetadataMap.keySet());
         this.numProactiveConnectionRegions = numProactiveConnectionRegions;
         this.containerDirectConnectionMetadataMap = containerDirectConnectionMetadataMap;
         this.aggressiveWarmupDuration = aggressiveWarmupDuration;
@@ -41,7 +45,7 @@ public final class CosmosContainerProactiveInitConfig {
      * @return list of {@link CosmosContainerIdentity}
      * */
     public List<CosmosContainerIdentity> getCosmosContainerIdentities() {
-        return cosmosContainerIdentities;
+        return Collections.unmodifiableList(this.cosmosContainerIdentities);
     }
 
     /**
