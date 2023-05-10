@@ -1173,8 +1173,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     if (logger.isDebugEnabled()) {
                         logger.debug("Channel to endpoint {} is closed. " +
-                                "isInAvailableChannels={}, " +
-                                "isInAcquiredChannels={}, " +
                                 "isOnChannelEventLoop={}, " +
                                 "isActive={}, " +
                                 "isOpen={}, " +
@@ -1182,8 +1180,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
                                 "isWritable={}, " +
                                 "threadName={}",
                             channel.remoteAddress(),
-                            availableChannels.contains(channel),
-                            acquiredChannels.contains(channel),
                             channel.eventLoop().inEventLoop(),
                             channel.isActive(),
                             channel.isOpen(),
