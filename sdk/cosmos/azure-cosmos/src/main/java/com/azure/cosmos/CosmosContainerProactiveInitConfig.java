@@ -3,10 +3,8 @@
 
 package com.azure.cosmos;
 
-import com.azure.core.annotation.Immutable;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.directconnectivity.ContainerDirectConnectionMetadata;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 
 import java.time.Duration;
