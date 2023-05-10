@@ -192,14 +192,14 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         OpenTelemetry otel = configureOTel(getFullyQualifiedDomainName(), getSessionQueueName(0));
         sender = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
-            .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setProvider(otel.getTracerProvider())))
+            .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel)))
             .sender()
             .queueName(getSessionQueueName(0))
             .buildAsyncClient());
 
         ServiceBusSessionReceiverAsyncClient sessionReceiver = toClose(new ServiceBusClientBuilder()
             .connectionString(getConnectionString())
-            .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setProvider(otel.getTracerProvider())))
+            .clientOptions(new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel)))
             .sessionReceiver()
             .disableAutoComplete()
             .queueName(getSessionQueueName(0))
