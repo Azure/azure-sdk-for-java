@@ -42,10 +42,10 @@ public final class ServiceBusTracer {
     public static final String MESSAGE_BATCH_SIZE_ATTRIBUTE_NAME = "messaging.batch.message_count";
 
     private static final String MESSAGING_OPERATION_ATTRIBUTE_NAME = "messaging.operation";
-    protected static final boolean IS_TRACING_DISABLED = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED, false);
-    protected final Tracer tracer;
-    protected final String fullyQualifiedName;
-    protected final String entityPath;
+    private static final boolean IS_TRACING_DISABLED = Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TRACING_DISABLED, false);
+    private final Tracer tracer;
+    private final String fullyQualifiedName;
+    private final String entityPath;
 
     public ServiceBusTracer(Tracer tracer, String fullyQualifiedName, String entityPath) {
         this.tracer = IS_TRACING_DISABLED ? null : tracer;
