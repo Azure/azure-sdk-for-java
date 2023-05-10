@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/catalogs/sdk-default-catalog/environmentDefinitions?api-version=2023-01-01-preview",
+    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/catalogs/sdk-default-catalog/environmentDefinitions?api-version=2023-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-devcenter/1.0.0-beta.3 (20.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "9b5cd9ed-9b78-43dd-8fee-9a120b55e583"
@@ -24,7 +24,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/catalogs/sdk-default-catalog/environmentDefinitions?api-version=2023-01-01-preview",
+    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/catalogs/sdk-default-catalog/environmentDefinitions?api-version=2023-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-devcenter/1.0.0-beta.3 (20.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "650117ae-9ed5-41a5-9421-c206fb0111bb"
@@ -47,7 +47,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/environments/envname?api-version=2023-01-01-preview",
+    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/environments/envname?api-version=2023-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-devcenter/1.0.0-beta.3 (20.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "3d3fa601-f548-4df9-95a7-f0df3a50bf2c",
@@ -223,7 +223,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/environments/envname?api-version=2023-01-01-preview",
+    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/environments/envname?api-version=2023-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-devcenter/1.0.0-beta.3 (20.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "95aaa984-1eb0-4040-aa92-fa61cee1a680"
@@ -246,7 +246,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/environments/envname?api-version=2023-01-01-preview",
+    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/environments/envname?api-version=2023-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-devcenter/1.0.0-beta.3 (20.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "78ff37cd-4cf6-46d8-b0b8-0dc2814cd2b1"

@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/devboxes/mydevbox?api-version=2023-01-01-preview",
+    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/devboxes/mydevbox?api-version=2023-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-devcenter/1.0.0-beta.3 (20.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "441efb24-ccae-4f3a-91ae-1cdbf4e782ac",
@@ -952,7 +952,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/devboxes?api-version=2023-01-01-preview",
+    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/devboxes?api-version=2023-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-devcenter/1.0.0-beta.3 (20.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "b5306b52-5f71-4a74-8f34-0a06527dac98"
@@ -975,7 +975,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/devboxes?api-version=2023-01-01-preview",
+    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/devboxes?api-version=2023-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-devcenter/1.0.0-beta.3 (20.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "3c4e52c0-966a-47d0-b593-607343078618"
@@ -998,7 +998,7 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/devboxes/mydevbox?api-version=2023-01-01-preview",
+    "Uri" : "https://REDACTED.eastus.devcenter.azure.com/projects/sdk-project-x2z4o4ohvwcbi/users/me/devboxes/mydevbox?api-version=2023-04-01",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-developer-devcenter/1.0.0-beta.3 (20.0.1; Windows 11; 10.0)",
       "x-ms-client-request-id" : "950475d0-1368-4e89-8c25-1d89d7653b83"
