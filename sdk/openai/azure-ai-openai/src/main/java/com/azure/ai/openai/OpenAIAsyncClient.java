@@ -6,6 +6,7 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
+import com.azure.ai.openai.implementation.OpenAIClientNonAzureImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -35,6 +36,8 @@ public final class OpenAIAsyncClient {
 
     @Generated private final OpenAIClientImpl serviceClient;
 
+    private OpenAIClientNonAzureImpl openAIServiceClient;
+
     /**
      * Initializes an instance of OpenAIAsyncClient class.
      *
@@ -43,6 +46,11 @@ public final class OpenAIAsyncClient {
     @Generated
     OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    OpenAIAsyncClient(OpenAIClientNonAzureImpl openAIServiceClient) {
+        this.serviceClient = null;
+        this.openAIServiceClient = openAIServiceClient;
     }
 
     /**
@@ -96,7 +104,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponse(
             String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
+//        return this.serviceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
+        return this.openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
     }
 
     /**
@@ -184,7 +193,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCompletionsWithResponse(
             String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
+        return this.openAIServiceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
+//        return this.serviceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
     }
 
     /**
@@ -263,8 +273,10 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getChatCompletionsWithResponse(
             String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getChatCompletionsWithResponseAsync(
-                deploymentId, chatCompletionsOptions, requestOptions);
+//        return this.serviceClient.getChatCompletionsWithResponseAsync(
+//                deploymentId, chatCompletionsOptions, requestOptions);
+        return this.openAIServiceClient.getChatCompletionsWithResponseAsync(deploymentId,
+                chatCompletionsOptions, requestOptions);
     }
 
     /**

@@ -4,6 +4,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
+import com.azure.ai.openai.implementation.OpenAIClientNonAzureImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.AzureKeyCredentialTrait;
@@ -290,13 +291,65 @@ public final class OpenAIClientBuilder
         return httpPipeline;
     }
 
+    private OpenAIClientNonAzureImpl buildInnerClientOpenAI() {
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineOpenAI();
+        OpenAIClientNonAzureImpl client = new OpenAIClientNonAzureImpl(localPipeline,
+            JacksonAdapter.createDefaultSerializerAdapter());
+        return client;
+    }
+
+    private HttpPipeline createHttpPipelineOpenAI() {
+        Configuration buildConfiguration =
+            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
+        ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+        String clientName = PROPERTIES.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, localHttpLogOptions);
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
+        HttpHeaders headers = new HttpHeaders();
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
+        }
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
+        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(new AddDatePolicy());
+        policies.add(new CookiePolicy());
+
+        if (tokenCredential != null) {
+            policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
+        }
+
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
+        HttpPolicyProviders.addAfterRetryPolicies(policies);
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
+        HttpPipeline httpPipeline =
+            new HttpPipelineBuilder()
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .httpClient(httpClient)
+                .clientOptions(localClientOptions)
+                .build();
+        return httpPipeline;
+    }
+
     /**
      * Builds an instance of OpenAIAsyncClient class.
      *
      * @return an instance of OpenAIAsyncClient.
      */
-    @Generated
     public OpenAIAsyncClient buildAsyncClient() {
+        if (tokenCredential != null && tokenCredential instanceof OpenAIApiKeyCredential) {
+            return new OpenAIAsyncClient(buildInnerClientOpenAI());
+        }
         return new OpenAIAsyncClient(buildInnerClient());
     }
 
@@ -305,8 +358,10 @@ public final class OpenAIClientBuilder
      *
      * @return an instance of OpenAIClient.
      */
-    @Generated
     public OpenAIClient buildClient() {
+        if (tokenCredential != null && tokenCredential instanceof OpenAIApiKeyCredential) {
+            return new OpenAIClient(new OpenAIAsyncClient(buildInnerClientOpenAI()));
+        }
         return new OpenAIClient(new OpenAIAsyncClient(buildInnerClient()));
     }
 }

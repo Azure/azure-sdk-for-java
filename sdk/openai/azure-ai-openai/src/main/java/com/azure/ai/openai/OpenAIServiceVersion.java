@@ -12,7 +12,10 @@ public enum OpenAIServiceVersion implements ServiceVersion {
     V2022_12_01("2022-12-01"),
 
     /** Enum value 2023-03-15-preview. */
-    V2023_03_15_PREVIEW("2023-03-15-preview");
+    V2023_03_15_PREVIEW("2023-03-15-preview"),
+
+    /** Enum value for Non-Azure OpenAI service version */
+    V1("v1");
 
     private final String version;
 
