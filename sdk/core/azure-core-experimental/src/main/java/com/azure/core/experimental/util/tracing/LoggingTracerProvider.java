@@ -154,7 +154,7 @@ public class LoggingTracerProvider implements TracerProvider {
 
         LoggingSpan(String name, SpanKind kind, String traceId, String parentSpanId) {
             this.traceId = traceId != null ? traceId : UUID.randomUUID().toString().replace("-", "");
-            this.spanId = UUID.randomUUID().toString().substring(16).replace("-", "");
+            this.spanId = UUID.randomUUID().toString().replace("-", "").substring(16);
             this.log = LOGGER.atInfo()
                 .addKeyValue("traceId", this.traceId)
                 .addKeyValue("spanId", spanId)
