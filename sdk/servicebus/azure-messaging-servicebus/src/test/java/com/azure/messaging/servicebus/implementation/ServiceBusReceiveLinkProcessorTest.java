@@ -232,7 +232,6 @@ class ServiceBusReceiveLinkProcessorTest {
      * Verifies that we can get subsequent AMQP links when the first one is closed.
      */
     @Test
-    @RepeatedTest(1000)
     void newLinkOnClose() {
         // Arrange
         final int count = 4;

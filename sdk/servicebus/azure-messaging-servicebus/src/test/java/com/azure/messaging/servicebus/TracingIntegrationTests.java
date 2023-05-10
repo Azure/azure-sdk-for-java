@@ -494,6 +494,9 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .assertNext(receivedMessage -> {
                 ReadableSpan received = findSpans(spanProcessor.getEndedSpans(), "ServiceBus.peekMessage").get(0);
                 if (receivedMessage.getApplicationProperties().containsKey("traceparent")) {
+                    logger.atInfo()
+                        .addKeyValue("traceparent", receivedMessage.getApplicationProperties().get("traceparent"))
+                        .log("span should have link");
                     assertClientSpan(received, Collections.singletonList(receivedMessage), "ServiceBus.peekMessage", "receive");
                 } else {
                     assertEquals("ServiceBus.peekMessage", received.getName());
@@ -838,6 +841,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     static class TestSpanProcessor implements SpanProcessor {
+        private final static  ClientLogger LOGGER = new ClientLogger(TestSpanProcessor.class);
         private final ConcurrentLinkedDeque<ReadableSpan> spans = new ConcurrentLinkedDeque<>();
         private final String entityName;
         private final String namespace;
@@ -863,6 +867,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         @Override
         public void onEnd(ReadableSpan readableSpan) {
+            LOGGER.info(readableSpan.toString());
             assertEquals("Microsoft.ServiceBus", readableSpan.getAttribute(AttributeKey.stringKey("az.namespace")));
             assertEquals("servicebus", readableSpan.getAttribute(AttributeKey.stringKey("messaging.system")));
             assertEquals(entityName, readableSpan.getAttribute(AttributeKey.stringKey("messaging.destination.name")));
