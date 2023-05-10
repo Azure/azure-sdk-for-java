@@ -36,7 +36,7 @@ public final class CosmosContainerProactiveInitConfigBuilder {
         this.containerDirectConnectionMetadataMap = new HashMap<>();
 
         for (CosmosContainerIdentity cosmosContainerIdentity : cosmosContainerIdentities) {
-            this.containerDirectConnectionMetadataMap.put(cosmosContainerIdentity, new ContainerDirectConnectionMetadata(cosmosContainerIdentity));
+            this.containerDirectConnectionMetadataMap.put(cosmosContainerIdentity, new ContainerDirectConnectionMetadata());
         }
 
         this.numProactiveConnectionRegions = 1;

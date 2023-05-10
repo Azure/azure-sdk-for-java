@@ -8,11 +8,9 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public final class ContainerDirectConnectionMetadata {
-    private final CosmosContainerIdentity cosmosContainerIdentity;
     private final AtomicInteger minConnectionPoolSizePerEndpointForContainer;
 
-    public ContainerDirectConnectionMetadata(CosmosContainerIdentity cosmosContainerIdentity) {
-        this.cosmosContainerIdentity = cosmosContainerIdentity;
+    public ContainerDirectConnectionMetadata() {
         this.minConnectionPoolSizePerEndpointForContainer = new AtomicInteger(1);
     }
 
