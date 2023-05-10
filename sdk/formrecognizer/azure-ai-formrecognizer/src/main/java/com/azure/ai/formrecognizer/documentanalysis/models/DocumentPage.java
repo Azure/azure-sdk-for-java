@@ -61,30 +61,8 @@ public final class DocumentPage {
      */
     private List<DocumentLine> lines;
 
-    private DocumentPageKind kind;
-
-    /*
-     * Extracted annotations from the page.
-     */
-    private List<DocumentAnnotation> annotations;
-
-    /*
-     * Extracted barcodes from the page.
-     */
-    private List<DocumentBarcode> barcodes;
-
-    /*
-     * Extracted formulas from the page.
-     */
-    private List<DocumentFormula> formulas;
-
-    /*
-     * Extracted images from the page.
-     */
-    private List<DocumentImage> images;
-
     /**
-     * Get the 1-based page number in the input document.
+     * Get the pageNumber property: 1-based page number in the input document.
      *
      * @return the pageNumber value.
      */
@@ -103,7 +81,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the general orientation of the content in clockwise direction, measured in degrees
+     * Get the angle property: The general orientation of the content in clockwise direction, measured in degrees
      * between (-180, 180].
      *
      * @return the angle value.
@@ -124,7 +102,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the width of the image/PDF in pixels/inches, respectively.
+     * Get the width property: The width of the image/PDF in pixels/inches, respectively.
      *
      * @return the width value.
      */
@@ -143,7 +121,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the height of the image/PDF in pixels/inches, respectively.
+     * Get the height property: The height of the image/PDF in pixels/inches, respectively.
      *
      * @return the height value.
      */
@@ -162,7 +140,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the unit used by the width, height, and boundingBox properties. For images, the unit is
+     * Get the unit property: The unit used by the width, height, and boundingBox properties. For images, the unit is
      * "pixel". For PDF, the unit is "inch".
      *
      * @return the unit value.
@@ -183,7 +161,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the location of the page in the reading order concatenated content.
+     * Get the spans property: Location of the page in the reading order concatenated content.
      *
      * @return the spans value.
      */
@@ -202,7 +180,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the extracted words from the page.
+     * Get the words property: Extracted words from the page.
      *
      * @return the words value.
      */
@@ -221,7 +199,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the extracted selection marks from the page.
+     * Get the selectionMarks property: Extracted selection marks from the page.
      *
      * @return the selectionMarks value.
      */
@@ -240,7 +218,7 @@ public final class DocumentPage {
     }
 
     /**
-     * Get the extracted lines from the page, potentially containing both textual and visual elements.
+     * Get the lines property: Extracted lines from the page, potentially containing both textual and visual elements.
      *
      * @return the lines value.
      */
@@ -256,100 +234,6 @@ public final class DocumentPage {
      */
     private void setLines(List<DocumentLine> lines) {
         this.lines = lines;
-    }
-
-    /**
-     * Get the kind of document page.
-     *
-     * @return the kind value.
-     */
-    public DocumentPageKind getKind() {
-        return this.kind;
-    }
-
-    /**
-     * Set the kind property: Kind of document page.
-     *
-     * @param kind the kind value to set.
-     */
-    void setKind(DocumentPageKind kind) {
-        this.kind = kind;
-    }
-
-    /**
-     * Get the extracted annotations from the page.
-     *
-     * @return the annotations value.
-     */
-    public List<DocumentAnnotation> getAnnotations() {
-        return this.annotations;
-    }
-
-    /**
-     * Set the annotations property: Extracted annotations from the page.
-     *
-     * @param annotations the annotations value to set.
-     * @return the DocumentPage object itself.
-     */
-    void setAnnotations(List<DocumentAnnotation> annotations) {
-        this.annotations = annotations;
-    }
-
-    /**
-     * Get the extracted barcodes from the page.
-     *
-     * @return the barcodes value.
-     */
-    public List<DocumentBarcode> getBarcodes() {
-        return this.barcodes;
-    }
-
-    /**
-     * Set the barcodes property: Extracted barcodes from the page.
-     *
-     * @param barcodes the barcodes value to set.
-     * @return the DocumentPage object itself.
-     */
-    void setBarcodes(List<DocumentBarcode> barcodes) {
-        this.barcodes = barcodes;
-    }
-
-    /**
-     * Get the extracted formulas from the page.
-     *
-     * @return the formulas value.
-     */
-    public List<DocumentFormula> getFormulas() {
-        return this.formulas;
-    }
-
-    /**
-     * Set the formulas property: Extracted formulas from the page.
-     *
-     * @param formulas the formulas value to set.
-     * @return the DocumentPage object itself.
-     */
-    void setFormulas(List<DocumentFormula> formulas) {
-        this.formulas = formulas;
-    }
-
-    /**
-     * Get the extracted images from the page.
-     *
-     * @return the images value.
-     */
-    public List<DocumentImage> getImages() {
-        return this.images;
-    }
-
-    /**
-     * Set the images property: Extracted images from the page.
-     *
-     * @param images the images value to set.
-     * @return the DocumentPage object itself.
-     */
-    void setImages(List<DocumentImage> images) {
-        this.images = images;
     }
 
     static {
@@ -397,31 +281,6 @@ public final class DocumentPage {
             @Override
             public void setLines(DocumentPage documentPage, List<DocumentLine> lines) {
                 documentPage.setLines(lines);
-            }
-
-            @Override
-            public void setKind(DocumentPage documentPage, DocumentPageKind pageKind) {
-                documentPage.setKind(pageKind);
-            }
-
-            @Override
-            public void setImages(DocumentPage documentPage, List<DocumentImage> images) {
-                documentPage.setImages(images);
-            }
-
-            @Override
-            public void setFormulas(DocumentPage documentPage, List<DocumentFormula> formulas) {
-                documentPage.setFormulas(formulas);
-            }
-
-            @Override
-            public void setBarcodes(DocumentPage documentPage, List<DocumentBarcode> barcodes) {
-                documentPage.setBarcodes(barcodes);
-            }
-
-            @Override
-            public void setAnnotations(DocumentPage documentPage, List<DocumentAnnotation> annotations) {
-                documentPage.setAnnotations(annotations);
             }
         });
     }

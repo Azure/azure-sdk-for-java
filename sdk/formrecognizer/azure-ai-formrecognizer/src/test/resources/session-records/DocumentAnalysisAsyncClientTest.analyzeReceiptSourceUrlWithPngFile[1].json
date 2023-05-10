@@ -1,65 +1,181 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "24",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:16:42 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "66b2211d-e9e1-4e91-96d5-264593201402"
+        "Date": "Thu, 20 Apr 2023 20:16:57 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "a72f81c4-758b-4e5c-adfb-869e7ee20206"
       },
       "RequestBody": {
         "urlSource": "REDACTED"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "35ff04c2-bb14-4a5f-8bba-e4bbdf49c1ab",
+        "apim-request-id": "f81cdc3e-a417-4282-9650-718cfe754676",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:16:40 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/35ff04c2-bb14-4a5f-8bba-e4bbdf49c1ab?api-version=2023-02-28-preview",
+        "Date": "Thu, 20 Apr 2023 20:16:57 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/f81cdc3e-a417-4282-9650-718cfe754676?api-version=2022-08-31",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "516",
+        "x-envoy-upstream-service-time": "486",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/35ff04c2-bb14-4a5f-8bba-e4bbdf49c1ab?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/f81cdc3e-a417-4282-9650-718cfe754676?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:16:47 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "9afcc46a-5b7e-497b-9af8-64b9fce59d3e"
+        "Date": "Thu, 20 Apr 2023 20:17:03 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "36a0db40-a930-4bb0-9338-00abc32b6120"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "613b38c4-48a7-4377-a139-64e18d6dd32b",
-        "Content-Length": "9646",
+        "apim-request-id": "ccccbaff-f689-447e-b91d-86a79d06a688",
+        "Content-Length": "106",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:16:45 GMT",
+        "Date": "Thu, 20 Apr 2023 20:17:03 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "35",
+        "x-envoy-upstream-service-time": "19",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "running",
+        "createdDateTime": "2023-04-20T20:16:58Z",
+        "lastUpdatedDateTime": "2023-04-20T20:16:58Z"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/f81cdc3e-a417-4282-9650-718cfe754676?api-version=2022-08-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:17:08 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d642bd2b-fa83-46eb-bacd-26833093c737"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "5df1f265-e60e-49f5-8a41-0c6eab23d113",
+        "Content-Length": "106",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:17:08 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "19",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "running",
+        "createdDateTime": "2023-04-20T20:16:58Z",
+        "lastUpdatedDateTime": "2023-04-20T20:16:58Z"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/f81cdc3e-a417-4282-9650-718cfe754676?api-version=2022-08-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:17:13 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "67cfb2c9-9b14-489f-a7a6-59bfcb0655c0"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "3588e2a3-2088-47f9-9463-57db949713d8",
+        "Content-Length": "106",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:17:12 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "19",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "running",
+        "createdDateTime": "2023-04-20T20:16:58Z",
+        "lastUpdatedDateTime": "2023-04-20T20:16:58Z"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/f81cdc3e-a417-4282-9650-718cfe754676?api-version=2022-08-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:17:18 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d0b193ad-88d0-48a3-b157-1ad34811c021"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "3d481662-5a66-4c4e-aec6-8cd37aab739f",
+        "Content-Length": "106",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:17:18 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "17",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "status": "running",
+        "createdDateTime": "2023-04-20T20:16:58Z",
+        "lastUpdatedDateTime": "2023-04-20T20:16:58Z"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/f81cdc3e-a417-4282-9650-718cfe754676?api-version=2022-08-31",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:17:23 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "a2d749fd-3893-4d08-a680-585daf96a65e"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "512adbc4-a619-4768-9cf4-ee9c29322f9d",
+        "Content-Length": "11755",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:17:23 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "40",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:16:41Z",
-        "lastUpdatedDateTime": "2023-04-14T18:16:44Z",
+        "createdDateTime": "2023-04-20T20:16:58Z",
+        "lastUpdatedDateTime": "2023-04-20T20:17:21Z",
         "analyzeResult": {
-          "apiVersion": "2023-02-28-preview",
+          "apiVersion": "2022-08-31",
           "modelId": "prebuilt-receipt",
           "stringIndexType": "utf16CodeUnit",
-          "content": "Contoso\n123 Main Street\nRedmond, WA 98052\n987-654-3210\n6/10/2019 13:59\nSales Associate: Paul\n2 Surface Pro 6\n$1,998.00\n3 Surface Pen\n$299.97\nSub-Total\n$2,297.97\nTax\n$218.31\nTotal\n$2,516.28",
+          "content": "Contoso\n123 Main Street Redmond, WA 98052\n987-654-3210\n6/10/2019 13:59 Sales Associate: Paul\n2 Surface Pro 6\n$1,998.00\n3 Surface Pen\n$299.97\nSub-Total\n$2,297.97\nTax\n$218.31\nTotal\n$2,516.28",
           "pages": [
             {
               "pageNumber": 1,
@@ -888,6 +1004,344 @@
               "kind": "document"
             }
           ],
+          "paragraphs": [
+            {
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 7
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    858,
+                    270,
+                    1610,
+                    270,
+                    1610,
+                    421,
+                    858,
+                    421
+                  ]
+                }
+              ],
+              "content": "Contoso"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 8,
+                  "length": 33
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    582,
+                    705,
+                    1371,
+                    698,
+                    1373,
+                    923,
+                    584,
+                    930
+                  ]
+                }
+              ],
+              "content": "123 Main Street Redmond, WA 98052"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 42,
+                  "length": 12
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    587,
+                    1110,
+                    1116,
+                    1109,
+                    1116,
+                    1200,
+                    587,
+                    1201
+                  ]
+                }
+              ],
+              "content": "987-654-3210"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 55,
+                  "length": 37
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    584,
+                    1385,
+                    1419,
+                    1385,
+                    1419,
+                    1612,
+                    584,
+                    1612
+                  ]
+                }
+              ],
+              "content": "6/10/2019 13:59 Sales Associate: Paul"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 93,
+                  "length": 15
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    601,
+                    1799,
+                    1233,
+                    1795,
+                    1234,
+                    1888,
+                    601,
+                    1892
+                  ]
+                }
+              ],
+              "content": "2 Surface Pro 6"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 109,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1526,
+                    1795,
+                    1881,
+                    1793,
+                    1882,
+                    1890,
+                    1526,
+                    1895
+                  ]
+                }
+              ],
+              "content": "$1,998.00"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 119,
+                  "length": 13
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    600,
+                    1941,
+                    1181,
+                    1940,
+                    1181,
+                    2031,
+                    600,
+                    2034
+                  ]
+                }
+              ],
+              "content": "3 Surface Pen"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 133,
+                  "length": 7
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1588,
+                    1938,
+                    1884,
+                    1937,
+                    1885,
+                    2030,
+                    1589,
+                    2034
+                  ]
+                }
+              ],
+              "content": "$299.97"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 141,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    826,
+                    2220,
+                    1215,
+                    2219,
+                    1215,
+                    2317,
+                    826,
+                    2318
+                  ]
+                }
+              ],
+              "content": "Sub-Total"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 151,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1528,
+                    2223,
+                    1891,
+                    2222,
+                    1892,
+                    2318,
+                    1528,
+                    2320
+                  ]
+                }
+              ],
+              "content": "$2,297.97"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 161,
+                  "length": 3
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    839,
+                    2365,
+                    977,
+                    2362,
+                    976,
+                    2452,
+                    838,
+                    2451
+                  ]
+                }
+              ],
+              "content": "Tax"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 165,
+                  "length": 7
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1614,
+                    2360,
+                    1893,
+                    2360,
+                    1895,
+                    2453,
+                    1612,
+                    2455
+                  ]
+                }
+              ],
+              "content": "$218.31"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 173,
+                  "length": 5
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    843,
+                    2643,
+                    1040,
+                    2652,
+                    1040,
+                    2744,
+                    839,
+                    2740
+                  ]
+                }
+              ],
+              "content": "Total"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 179,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1549,
+                    2641,
+                    1909,
+                    2644,
+                    1908,
+                    2745,
+                    1549,
+                    2742
+                  ]
+                }
+              ],
+              "content": "$2,516.28"
+            }
+          ],
           "styles": [],
           "documents": [
             {
@@ -1133,7 +1587,7 @@
                 },
                 "MerchantAddress": {
                   "type": "address",
-                  "content": "123 Main Street\nRedmond, WA 98052",
+                  "content": "123 Main Street Redmond, WA 98052",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
@@ -1368,37 +1822,37 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/35ff04c2-bb14-4a5f-8bba-e4bbdf49c1ab?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-receipt/analyzeResults/f81cdc3e-a417-4282-9650-718cfe754676?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:16:47 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "f1beb7de-4ecf-4377-92c2-62e24f9e55b8"
+        "Date": "Thu, 20 Apr 2023 20:17:23 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f64ce517-dcad-4386-a4ac-f620289dac83"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "10e8fe4b-2ce5-4391-bca3-740c21a6fc90",
-        "Content-Length": "9646",
+        "apim-request-id": "3618f73b-96d9-4377-8628-55a8116e35c3",
+        "Content-Length": "11755",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:16:45 GMT",
+        "Date": "Thu, 20 Apr 2023 20:17:23 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "32",
+        "x-envoy-upstream-service-time": "39",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:16:41Z",
-        "lastUpdatedDateTime": "2023-04-14T18:16:44Z",
+        "createdDateTime": "2023-04-20T20:16:58Z",
+        "lastUpdatedDateTime": "2023-04-20T20:17:21Z",
         "analyzeResult": {
-          "apiVersion": "2023-02-28-preview",
+          "apiVersion": "2022-08-31",
           "modelId": "prebuilt-receipt",
           "stringIndexType": "utf16CodeUnit",
-          "content": "Contoso\n123 Main Street\nRedmond, WA 98052\n987-654-3210\n6/10/2019 13:59\nSales Associate: Paul\n2 Surface Pro 6\n$1,998.00\n3 Surface Pen\n$299.97\nSub-Total\n$2,297.97\nTax\n$218.31\nTotal\n$2,516.28",
+          "content": "Contoso\n123 Main Street Redmond, WA 98052\n987-654-3210\n6/10/2019 13:59 Sales Associate: Paul\n2 Surface Pro 6\n$1,998.00\n3 Surface Pen\n$299.97\nSub-Total\n$2,297.97\nTax\n$218.31\nTotal\n$2,516.28",
           "pages": [
             {
               "pageNumber": 1,
@@ -2227,6 +2681,344 @@
               "kind": "document"
             }
           ],
+          "paragraphs": [
+            {
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 7
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    858,
+                    270,
+                    1610,
+                    270,
+                    1610,
+                    421,
+                    858,
+                    421
+                  ]
+                }
+              ],
+              "content": "Contoso"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 8,
+                  "length": 33
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    582,
+                    705,
+                    1371,
+                    698,
+                    1373,
+                    923,
+                    584,
+                    930
+                  ]
+                }
+              ],
+              "content": "123 Main Street Redmond, WA 98052"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 42,
+                  "length": 12
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    587,
+                    1110,
+                    1116,
+                    1109,
+                    1116,
+                    1200,
+                    587,
+                    1201
+                  ]
+                }
+              ],
+              "content": "987-654-3210"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 55,
+                  "length": 37
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    584,
+                    1385,
+                    1419,
+                    1385,
+                    1419,
+                    1612,
+                    584,
+                    1612
+                  ]
+                }
+              ],
+              "content": "6/10/2019 13:59 Sales Associate: Paul"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 93,
+                  "length": 15
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    601,
+                    1799,
+                    1233,
+                    1795,
+                    1234,
+                    1888,
+                    601,
+                    1892
+                  ]
+                }
+              ],
+              "content": "2 Surface Pro 6"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 109,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1526,
+                    1795,
+                    1881,
+                    1793,
+                    1882,
+                    1890,
+                    1526,
+                    1895
+                  ]
+                }
+              ],
+              "content": "$1,998.00"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 119,
+                  "length": 13
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    600,
+                    1941,
+                    1181,
+                    1940,
+                    1181,
+                    2031,
+                    600,
+                    2034
+                  ]
+                }
+              ],
+              "content": "3 Surface Pen"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 133,
+                  "length": 7
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1588,
+                    1938,
+                    1884,
+                    1937,
+                    1885,
+                    2030,
+                    1589,
+                    2034
+                  ]
+                }
+              ],
+              "content": "$299.97"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 141,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    826,
+                    2220,
+                    1215,
+                    2219,
+                    1215,
+                    2317,
+                    826,
+                    2318
+                  ]
+                }
+              ],
+              "content": "Sub-Total"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 151,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1528,
+                    2223,
+                    1891,
+                    2222,
+                    1892,
+                    2318,
+                    1528,
+                    2320
+                  ]
+                }
+              ],
+              "content": "$2,297.97"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 161,
+                  "length": 3
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    839,
+                    2365,
+                    977,
+                    2362,
+                    976,
+                    2452,
+                    838,
+                    2451
+                  ]
+                }
+              ],
+              "content": "Tax"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 165,
+                  "length": 7
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1614,
+                    2360,
+                    1893,
+                    2360,
+                    1895,
+                    2453,
+                    1612,
+                    2455
+                  ]
+                }
+              ],
+              "content": "$218.31"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 173,
+                  "length": 5
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    843,
+                    2643,
+                    1040,
+                    2652,
+                    1040,
+                    2744,
+                    839,
+                    2740
+                  ]
+                }
+              ],
+              "content": "Total"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 179,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    1549,
+                    2641,
+                    1909,
+                    2644,
+                    1908,
+                    2745,
+                    1549,
+                    2742
+                  ]
+                }
+              ],
+              "content": "$2,516.28"
+            }
+          ],
           "styles": [],
           "documents": [
             {
@@ -2472,7 +3264,7 @@
                 },
                 "MerchantAddress": {
                   "type": "address",
-                  "content": "123 Main Street\nRedmond, WA 98052",
+                  "content": "123 Main Street Redmond, WA 98052",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,

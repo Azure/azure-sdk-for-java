@@ -1,65 +1,65 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "24",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:16:00 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "a06a0240-148f-41f0-92b6-bd1b691ec0d5"
+        "Date": "Thu, 20 Apr 2023 20:15:06 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d24c6b13-c2c3-4002-b680-9a0736a0f9bf"
       },
       "RequestBody": {
         "urlSource": "REDACTED"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "4223058d-75dc-4727-a6d5-7d0db4b45a15",
+        "apim-request-id": "30f38be8-b5ac-40c7-9747-6c04794d70db",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:15:58 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/4223058d-75dc-4727-a6d5-7d0db4b45a15?api-version=2023-02-28-preview",
+        "Date": "Thu, 20 Apr 2023 20:15:06 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/30f38be8-b5ac-40c7-9747-6c04794d70db?api-version=2022-08-31",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "276",
+        "x-envoy-upstream-service-time": "253",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/4223058d-75dc-4727-a6d5-7d0db4b45a15?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/30f38be8-b5ac-40c7-9747-6c04794d70db?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:16:05 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "6723c13d-e9df-4373-ba3f-e225977230bc"
+        "Date": "Thu, 20 Apr 2023 20:15:11 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "01e9cea0-0554-4195-be4e-9702d156c2a1"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "f56b45f5-e120-49f5-a1ec-5ad1ac4a4544",
-        "Content-Length": "11586",
+        "apim-request-id": "3d15f2df-5890-4171-9f1c-7d540c12db5e",
+        "Content-Length": "14733",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:16:03 GMT",
+        "Date": "Thu, 20 Apr 2023 20:15:11 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "40",
+        "x-envoy-upstream-service-time": "43",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:15:59Z",
-        "lastUpdatedDateTime": "2023-04-14T18:16:00Z",
+        "createdDateTime": "2023-04-20T20:15:06Z",
+        "lastUpdatedDateTime": "2023-04-20T20:15:09Z",
         "analyzeResult": {
-          "apiVersion": "2023-02-28-preview",
+          "apiVersion": "2022-08-31",
           "modelId": "prebuilt-idDocument",
           "stringIndexType": "utf16CodeUnit",
-          "content": "WEST VIRGINIA\nCommercial\nDriver\u0027s License\nCHRIS SMITH\nMain Street , Charleston,\nWV 456789\nCLASS: A\nRESTR: NONE\nEND: NONE\nLIC #:\n034568\nSEX:\nM\nDOB:\n03/23/1988\nHGT:\n5\u002711\u0022\nEXP:\n03/23/2026\nWGT: 185LB\nISS:\n03/23/2019\nEYES: BLU\nDD: 12645646464554646456464544\nORGAN DONOR",
+          "content": "WEST VIRGINIA\nCommercial Driver\u0027s License\nCHRIS SMITH\nMain Street , Charleston, WV 456789\nCLASS: A\nLIC #:\n034568\nDOB:\n03/23/1988\nEXP:\n03/23/2026\nRESTR: NONE\nISS: 03/23/2019\nDD: 12645646464554646456464544\nEND: NONE\nSEX:\nM\nHGT:\n5\u002711\u0022\nWGT: 185LB\nEYES: BLU\nORGAN DONOR",
           "pages": [
             {
               "pageNumber": 1,
@@ -339,78 +339,6 @@
                   }
                 },
                 {
-                  "content": "RESTR:",
-                  "polygon": [
-                    412,
-                    238,
-                    475,
-                    237,
-                    475,
-                    260,
-                    412,
-                    260
-                  ],
-                  "confidence": 0.993,
-                  "span": {
-                    "offset": 99,
-                    "length": 6
-                  }
-                },
-                {
-                  "content": "NONE",
-                  "polygon": [
-                    479,
-                    237,
-                    550,
-                    236,
-                    550,
-                    260,
-                    479,
-                    260
-                  ],
-                  "confidence": 0.988,
-                  "span": {
-                    "offset": 106,
-                    "length": 4
-                  }
-                },
-                {
-                  "content": "END:",
-                  "polygon": [
-                    587,
-                    239,
-                    639,
-                    238,
-                    639,
-                    260,
-                    587,
-                    260
-                  ],
-                  "confidence": 0.994,
-                  "span": {
-                    "offset": 111,
-                    "length": 4
-                  }
-                },
-                {
-                  "content": "NONE",
-                  "polygon": [
-                    645,
-                    238,
-                    714,
-                    237,
-                    714,
-                    260,
-                    645,
-                    260
-                  ],
-                  "confidence": 0.987,
-                  "span": {
-                    "offset": 116,
-                    "length": 4
-                  }
-                },
-                {
                   "content": "LIC",
                   "polygon": [
                     259,
@@ -424,7 +352,7 @@
                   ],
                   "confidence": 0.993,
                   "span": {
-                    "offset": 121,
+                    "offset": 99,
                     "length": 3
                   }
                 },
@@ -442,7 +370,7 @@
                   ],
                   "confidence": 0.971,
                   "span": {
-                    "offset": 125,
+                    "offset": 103,
                     "length": 2
                   }
                 },
@@ -460,44 +388,8 @@
                   ],
                   "confidence": 0.994,
                   "span": {
-                    "offset": 128,
+                    "offset": 106,
                     "length": 6
-                  }
-                },
-                {
-                  "content": "SEX:",
-                  "polygon": [
-                    588,
-                    268,
-                    634,
-                    267,
-                    634,
-                    289,
-                    588,
-                    290
-                  ],
-                  "confidence": 0.993,
-                  "span": {
-                    "offset": 135,
-                    "length": 4
-                  }
-                },
-                {
-                  "content": "M",
-                  "polygon": [
-                    646,
-                    267,
-                    659,
-                    266,
-                    660,
-                    288,
-                    647,
-                    289
-                  ],
-                  "confidence": 0.994,
-                  "span": {
-                    "offset": 140,
-                    "length": 1
                   }
                 },
                 {
@@ -514,7 +406,7 @@
                   ],
                   "confidence": 0.997,
                   "span": {
-                    "offset": 142,
+                    "offset": 113,
                     "length": 4
                   }
                 },
@@ -532,44 +424,8 @@
                   ],
                   "confidence": 0.991,
                   "span": {
-                    "offset": 147,
+                    "offset": 118,
                     "length": 10
-                  }
-                },
-                {
-                  "content": "HGT:",
-                  "polygon": [
-                    589,
-                    301,
-                    634,
-                    300,
-                    635,
-                    319,
-                    589,
-                    320
-                  ],
-                  "confidence": 0.991,
-                  "span": {
-                    "offset": 158,
-                    "length": 4
-                  }
-                },
-                {
-                  "content": "5\u002711\u0022",
-                  "polygon": [
-                    646,
-                    299,
-                    708,
-                    298,
-                    709,
-                    319,
-                    646,
-                    322
-                  ],
-                  "confidence": 0.994,
-                  "span": {
-                    "offset": 163,
-                    "length": 5
                   }
                 },
                 {
@@ -586,7 +442,7 @@
                   ],
                   "confidence": 0.994,
                   "span": {
-                    "offset": 169,
+                    "offset": 129,
                     "length": 4
                   }
                 },
@@ -604,44 +460,44 @@
                   ],
                   "confidence": 0.986,
                   "span": {
-                    "offset": 174,
+                    "offset": 134,
                     "length": 10
                   }
                 },
                 {
-                  "content": "WGT:",
+                  "content": "RESTR:",
                   "polygon": [
-                    587,
-                    332,
-                    642,
-                    331,
-                    642,
-                    352,
-                    587,
-                    351
+                    412,
+                    238,
+                    475,
+                    237,
+                    475,
+                    260,
+                    412,
+                    260
                   ],
-                  "confidence": 0.986,
+                  "confidence": 0.993,
                   "span": {
-                    "offset": 185,
-                    "length": 4
+                    "offset": 145,
+                    "length": 6
                   }
                 },
                 {
-                  "content": "185LB",
+                  "content": "NONE",
                   "polygon": [
-                    650,
-                    330,
-                    716,
-                    328,
-                    716,
-                    352,
-                    649,
-                    352
+                    479,
+                    237,
+                    550,
+                    236,
+                    550,
+                    260,
+                    479,
+                    260
                   ],
-                  "confidence": 0.997,
+                  "confidence": 0.988,
                   "span": {
-                    "offset": 190,
-                    "length": 5
+                    "offset": 152,
+                    "length": 4
                   }
                 },
                 {
@@ -658,7 +514,7 @@
                   ],
                   "confidence": 0.98,
                   "span": {
-                    "offset": 196,
+                    "offset": 157,
                     "length": 4
                   }
                 },
@@ -676,44 +532,8 @@
                   ],
                   "confidence": 0.991,
                   "span": {
-                    "offset": 201,
+                    "offset": 162,
                     "length": 10
-                  }
-                },
-                {
-                  "content": "EYES:",
-                  "polygon": [
-                    588,
-                    362,
-                    640,
-                    360,
-                    639,
-                    382,
-                    588,
-                    384
-                  ],
-                  "confidence": 0.997,
-                  "span": {
-                    "offset": 212,
-                    "length": 5
-                  }
-                },
-                {
-                  "content": "BLU",
-                  "polygon": [
-                    644,
-                    359,
-                    687,
-                    359,
-                    687,
-                    382,
-                    644,
-                    382
-                  ],
-                  "confidence": 0.998,
-                  "span": {
-                    "offset": 218,
-                    "length": 3
                   }
                 },
                 {
@@ -730,7 +550,7 @@
                   ],
                   "confidence": 0.993,
                   "span": {
-                    "offset": 222,
+                    "offset": 173,
                     "length": 3
                   }
                 },
@@ -748,8 +568,188 @@
                   ],
                   "confidence": 0.941,
                   "span": {
-                    "offset": 226,
+                    "offset": 177,
                     "length": 26
+                  }
+                },
+                {
+                  "content": "END:",
+                  "polygon": [
+                    587,
+                    239,
+                    639,
+                    238,
+                    639,
+                    260,
+                    587,
+                    260
+                  ],
+                  "confidence": 0.994,
+                  "span": {
+                    "offset": 204,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "NONE",
+                  "polygon": [
+                    645,
+                    238,
+                    714,
+                    237,
+                    714,
+                    260,
+                    645,
+                    260
+                  ],
+                  "confidence": 0.987,
+                  "span": {
+                    "offset": 209,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "SEX:",
+                  "polygon": [
+                    588,
+                    268,
+                    634,
+                    267,
+                    634,
+                    289,
+                    588,
+                    290
+                  ],
+                  "confidence": 0.993,
+                  "span": {
+                    "offset": 214,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "M",
+                  "polygon": [
+                    646,
+                    267,
+                    659,
+                    266,
+                    660,
+                    288,
+                    647,
+                    289
+                  ],
+                  "confidence": 0.994,
+                  "span": {
+                    "offset": 219,
+                    "length": 1
+                  }
+                },
+                {
+                  "content": "HGT:",
+                  "polygon": [
+                    589,
+                    301,
+                    634,
+                    300,
+                    635,
+                    319,
+                    589,
+                    320
+                  ],
+                  "confidence": 0.991,
+                  "span": {
+                    "offset": 221,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "5\u002711\u0022",
+                  "polygon": [
+                    646,
+                    299,
+                    708,
+                    298,
+                    709,
+                    319,
+                    646,
+                    322
+                  ],
+                  "confidence": 0.994,
+                  "span": {
+                    "offset": 226,
+                    "length": 5
+                  }
+                },
+                {
+                  "content": "WGT:",
+                  "polygon": [
+                    587,
+                    332,
+                    642,
+                    331,
+                    642,
+                    352,
+                    587,
+                    351
+                  ],
+                  "confidence": 0.986,
+                  "span": {
+                    "offset": 232,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "185LB",
+                  "polygon": [
+                    650,
+                    330,
+                    716,
+                    328,
+                    716,
+                    352,
+                    649,
+                    352
+                  ],
+                  "confidence": 0.997,
+                  "span": {
+                    "offset": 237,
+                    "length": 5
+                  }
+                },
+                {
+                  "content": "EYES:",
+                  "polygon": [
+                    588,
+                    362,
+                    640,
+                    360,
+                    639,
+                    382,
+                    588,
+                    384
+                  ],
+                  "confidence": 0.997,
+                  "span": {
+                    "offset": 243,
+                    "length": 5
+                  }
+                },
+                {
+                  "content": "BLU",
+                  "polygon": [
+                    644,
+                    359,
+                    687,
+                    359,
+                    687,
+                    382,
+                    644,
+                    382
+                  ],
+                  "confidence": 0.998,
+                  "span": {
+                    "offset": 249,
+                    "length": 3
                   }
                 },
                 {
@@ -924,44 +924,6 @@
                   ]
                 },
                 {
-                  "content": "RESTR: NONE",
-                  "polygon": [
-                    411,
-                    236,
-                    555,
-                    235,
-                    555,
-                    260,
-                    411,
-                    260
-                  ],
-                  "spans": [
-                    {
-                      "offset": 99,
-                      "length": 11
-                    }
-                  ]
-                },
-                {
-                  "content": "END: NONE",
-                  "polygon": [
-                    587,
-                    237,
-                    720,
-                    236,
-                    720,
-                    259,
-                    587,
-                    260
-                  ],
-                  "spans": [
-                    {
-                      "offset": 111,
-                      "length": 9
-                    }
-                  ]
-                },
-                {
                   "content": "LIC #:",
                   "polygon": [
                     259,
@@ -975,7 +937,7 @@
                   ],
                   "spans": [
                     {
-                      "offset": 121,
+                      "offset": 99,
                       "length": 6
                     }
                   ]
@@ -994,46 +956,8 @@
                   ],
                   "spans": [
                     {
-                      "offset": 128,
+                      "offset": 106,
                       "length": 6
-                    }
-                  ]
-                },
-                {
-                  "content": "SEX:",
-                  "polygon": [
-                    588,
-                    268,
-                    635,
-                    267,
-                    634,
-                    289,
-                    588,
-                    290
-                  ],
-                  "spans": [
-                    {
-                      "offset": 135,
-                      "length": 4
-                    }
-                  ]
-                },
-                {
-                  "content": "M",
-                  "polygon": [
-                    646,
-                    268,
-                    671,
-                    266,
-                    672,
-                    288,
-                    646,
-                    289
-                  ],
-                  "spans": [
-                    {
-                      "offset": 140,
-                      "length": 1
                     }
                   ]
                 },
@@ -1051,7 +975,7 @@
                   ],
                   "spans": [
                     {
-                      "offset": 142,
+                      "offset": 113,
                       "length": 4
                     }
                   ]
@@ -1070,46 +994,8 @@
                   ],
                   "spans": [
                     {
-                      "offset": 147,
+                      "offset": 118,
                       "length": 10
-                    }
-                  ]
-                },
-                {
-                  "content": "HGT:",
-                  "polygon": [
-                    589,
-                    301,
-                    635,
-                    300,
-                    635,
-                    319,
-                    590,
-                    320
-                  ],
-                  "spans": [
-                    {
-                      "offset": 158,
-                      "length": 4
-                    }
-                  ]
-                },
-                {
-                  "content": "5\u002711\u0022",
-                  "polygon": [
-                    641,
-                    299,
-                    708,
-                    298,
-                    709,
-                    320,
-                    642,
-                    322
-                  ],
-                  "spans": [
-                    {
-                      "offset": 163,
-                      "length": 5
                     }
                   ]
                 },
@@ -1127,7 +1013,7 @@
                   ],
                   "spans": [
                     {
-                      "offset": 169,
+                      "offset": 129,
                       "length": 4
                     }
                   ]
@@ -1146,27 +1032,27 @@
                   ],
                   "spans": [
                     {
-                      "offset": 174,
+                      "offset": 134,
                       "length": 10
                     }
                   ]
                 },
                 {
-                  "content": "WGT: 185LB",
+                  "content": "RESTR: NONE",
                   "polygon": [
-                    587,
-                    329,
-                    720,
-                    327,
-                    721,
-                    351,
-                    587,
-                    352
+                    411,
+                    236,
+                    555,
+                    235,
+                    555,
+                    260,
+                    411,
+                    260
                   ],
                   "spans": [
                     {
-                      "offset": 185,
-                      "length": 10
+                      "offset": 145,
+                      "length": 11
                     }
                   ]
                 },
@@ -1184,7 +1070,7 @@
                   ],
                   "spans": [
                     {
-                      "offset": 196,
+                      "offset": 157,
                       "length": 4
                     }
                   ]
@@ -1203,7 +1089,140 @@
                   ],
                   "spans": [
                     {
-                      "offset": 201,
+                      "offset": 162,
+                      "length": 10
+                    }
+                  ]
+                },
+                {
+                  "content": "DD: 12645646464554646456464544",
+                  "polygon": [
+                    260,
+                    412,
+                    534,
+                    411,
+                    534,
+                    431,
+                    260,
+                    431
+                  ],
+                  "spans": [
+                    {
+                      "offset": 173,
+                      "length": 30
+                    }
+                  ]
+                },
+                {
+                  "content": "END: NONE",
+                  "polygon": [
+                    587,
+                    237,
+                    720,
+                    236,
+                    720,
+                    259,
+                    587,
+                    260
+                  ],
+                  "spans": [
+                    {
+                      "offset": 204,
+                      "length": 9
+                    }
+                  ]
+                },
+                {
+                  "content": "SEX:",
+                  "polygon": [
+                    588,
+                    268,
+                    635,
+                    267,
+                    634,
+                    289,
+                    588,
+                    290
+                  ],
+                  "spans": [
+                    {
+                      "offset": 214,
+                      "length": 4
+                    }
+                  ]
+                },
+                {
+                  "content": "M",
+                  "polygon": [
+                    646,
+                    268,
+                    671,
+                    266,
+                    672,
+                    288,
+                    646,
+                    289
+                  ],
+                  "spans": [
+                    {
+                      "offset": 219,
+                      "length": 1
+                    }
+                  ]
+                },
+                {
+                  "content": "HGT:",
+                  "polygon": [
+                    589,
+                    301,
+                    635,
+                    300,
+                    635,
+                    319,
+                    590,
+                    320
+                  ],
+                  "spans": [
+                    {
+                      "offset": 221,
+                      "length": 4
+                    }
+                  ]
+                },
+                {
+                  "content": "5\u002711\u0022",
+                  "polygon": [
+                    641,
+                    299,
+                    708,
+                    298,
+                    709,
+                    320,
+                    642,
+                    322
+                  ],
+                  "spans": [
+                    {
+                      "offset": 226,
+                      "length": 5
+                    }
+                  ]
+                },
+                {
+                  "content": "WGT: 185LB",
+                  "polygon": [
+                    587,
+                    329,
+                    720,
+                    327,
+                    721,
+                    351,
+                    587,
+                    352
+                  ],
+                  "spans": [
+                    {
+                      "offset": 232,
                       "length": 10
                     }
                   ]
@@ -1222,27 +1241,8 @@
                   ],
                   "spans": [
                     {
-                      "offset": 212,
+                      "offset": 243,
                       "length": 9
-                    }
-                  ]
-                },
-                {
-                  "content": "DD: 12645646464554646456464544",
-                  "polygon": [
-                    260,
-                    412,
-                    534,
-                    411,
-                    534,
-                    431,
-                    260,
-                    431
-                  ],
-                  "spans": [
-                    {
-                      "offset": 222,
-                      "length": 30
                     }
                   ]
                 },
@@ -1275,6 +1275,536 @@
               "kind": "document"
             }
           ],
+          "paragraphs": [
+            {
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 13
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    106,
+                    32,
+                    366,
+                    32,
+                    366,
+                    65,
+                    106,
+                    65
+                  ]
+                }
+              ],
+              "content": "WEST VIRGINIA"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 14,
+                  "length": 27
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    530,
+                    19,
+                    746,
+                    19,
+                    746,
+                    75,
+                    530,
+                    75
+                  ]
+                }
+              ],
+              "content": "Commercial Driver\u0027s License"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 42,
+                  "length": 11
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    255,
+                    106,
+                    508,
+                    105,
+                    508,
+                    142,
+                    255,
+                    143
+                  ]
+                }
+              ],
+              "content": "CHRIS SMITH"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 54,
+                  "length": 35
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    259,
+                    152,
+                    564,
+                    152,
+                    564,
+                    207,
+                    259,
+                    207
+                  ]
+                }
+              ],
+              "content": "Main Street , Charleston, WV 456789"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 90,
+                  "length": 8
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    258,
+                    237,
+                    349,
+                    236,
+                    349,
+                    259,
+                    258,
+                    260
+                  ]
+                }
+              ],
+              "content": "CLASS: A"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 99,
+                  "length": 6
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    259,
+                    269,
+                    315,
+                    267,
+                    314,
+                    290,
+                    259,
+                    291
+                  ]
+                }
+              ],
+              "content": "LIC #:"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 106,
+                  "length": 6
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    330,
+                    266,
+                    418,
+                    266,
+                    418,
+                    290,
+                    330,
+                    290
+                  ]
+                }
+              ],
+              "content": "034568"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 113,
+                  "length": 4
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    259,
+                    300,
+                    308,
+                    299,
+                    309,
+                    322,
+                    259,
+                    322
+                  ]
+                }
+              ],
+              "content": "DOB:"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 118,
+                  "length": 10
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    330,
+                    296,
+                    470,
+                    296,
+                    470,
+                    321,
+                    330,
+                    321
+                  ]
+                }
+              ],
+              "content": "03/23/1988"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 129,
+                  "length": 4
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    259,
+                    332,
+                    298,
+                    331,
+                    297,
+                    350,
+                    260,
+                    350
+                  ]
+                }
+              ],
+              "content": "EXP:"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 134,
+                  "length": 10
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    329,
+                    327,
+                    468,
+                    327,
+                    468,
+                    351,
+                    329,
+                    351
+                  ]
+                }
+              ],
+              "content": "03/23/2026"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 145,
+                  "length": 11
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    411,
+                    235,
+                    555,
+                    235,
+                    555,
+                    260,
+                    411,
+                    260
+                  ]
+                }
+              ],
+              "content": "RESTR: NONE"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 157,
+                  "length": 15
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    259,
+                    359,
+                    468,
+                    357,
+                    468,
+                    381,
+                    259,
+                    383
+                  ]
+                }
+              ],
+              "content": "ISS: 03/23/2019"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 173,
+                  "length": 30
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    260,
+                    411,
+                    534,
+                    411,
+                    534,
+                    431,
+                    260,
+                    431
+                  ]
+                }
+              ],
+              "content": "DD: 12645646464554646456464544"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 204,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    587,
+                    237,
+                    720,
+                    236,
+                    720,
+                    259,
+                    587,
+                    260
+                  ]
+                }
+              ],
+              "content": "END: NONE"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 214,
+                  "length": 4
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    588,
+                    268,
+                    635,
+                    267,
+                    635,
+                    289,
+                    588,
+                    290
+                  ]
+                }
+              ],
+              "content": "SEX:"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 219,
+                  "length": 1
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    645,
+                    267,
+                    671,
+                    266,
+                    672,
+                    288,
+                    646,
+                    289
+                  ]
+                }
+              ],
+              "content": "M"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 221,
+                  "length": 4
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    589,
+                    301,
+                    635,
+                    300,
+                    635,
+                    319,
+                    589,
+                    320
+                  ]
+                }
+              ],
+              "content": "HGT:"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 226,
+                  "length": 5
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    641,
+                    299,
+                    708,
+                    297,
+                    709,
+                    320,
+                    642,
+                    322
+                  ]
+                }
+              ],
+              "content": "5\u002711\u0022"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 232,
+                  "length": 10
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    587,
+                    328,
+                    721,
+                    327,
+                    721,
+                    351,
+                    587,
+                    352
+                  ]
+                }
+              ],
+              "content": "WGT: 185LB"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 243,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    587,
+                    361,
+                    694,
+                    358,
+                    695,
+                    381,
+                    588,
+                    384
+                  ]
+                }
+              ],
+              "content": "EYES: BLU"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 253,
+                  "length": 11
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    557,
+                    414,
+                    673,
+                    414,
+                    673,
+                    431,
+                    557,
+                    431
+                  ]
+                }
+              ],
+              "content": "ORGAN DONOR"
+            }
+          ],
           "styles": [],
           "documents": [
             {
@@ -1297,7 +1827,7 @@
               "fields": {
                 "Address": {
                   "type": "address",
-                  "content": "Main Street , Charleston,\nWV 456789",
+                  "content": "Main Street , Charleston, WV 456789",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
@@ -1355,7 +1885,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 147,
+                      "offset": 118,
                       "length": 10
                     }
                   ]
@@ -1382,7 +1912,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 174,
+                      "offset": 134,
                       "length": 10
                     }
                   ]
@@ -1409,7 +1939,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 201,
+                      "offset": 162,
                       "length": 10
                     }
                   ]
@@ -1436,7 +1966,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 226,
+                      "offset": 177,
                       "length": 26
                     }
                   ]
@@ -1463,7 +1993,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 128,
+                      "offset": 106,
                       "length": 6
                     }
                   ]
@@ -1490,7 +2020,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 116,
+                      "offset": 209,
                       "length": 4
                     }
                   ]
@@ -1517,7 +2047,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 218,
+                      "offset": 249,
                       "length": 3
                     }
                   ]
@@ -1571,7 +2101,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 163,
+                      "offset": 226,
                       "length": 5
                     }
                   ]
@@ -1630,7 +2160,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 106,
+                      "offset": 152,
                       "length": 4
                     }
                   ]
@@ -1657,7 +2187,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 140,
+                      "offset": 219,
                       "length": 1
                     }
                   ]
@@ -1711,7 +2241,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 190,
+                      "offset": 237,
                       "length": 5
                     }
                   ]
@@ -1730,37 +2260,37 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/4223058d-75dc-4727-a6d5-7d0db4b45a15?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/prebuilt-idDocument/analyzeResults/30f38be8-b5ac-40c7-9747-6c04794d70db?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:16:05 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "21e836c3-e7eb-4bcd-8401-a2c56d7157c4"
+        "Date": "Thu, 20 Apr 2023 20:15:12 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "382e2e53-5995-4552-a089-568849a3ab97"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "28dd9166-fd54-4aee-91c7-2da38bbb4e07",
-        "Content-Length": "11586",
+        "apim-request-id": "dc2510ca-7290-4a4a-a3f2-c34d6fbf422a",
+        "Content-Length": "14733",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:16:03 GMT",
+        "Date": "Thu, 20 Apr 2023 20:15:11 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "54",
+        "x-envoy-upstream-service-time": "47",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:15:59Z",
-        "lastUpdatedDateTime": "2023-04-14T18:16:00Z",
+        "createdDateTime": "2023-04-20T20:15:06Z",
+        "lastUpdatedDateTime": "2023-04-20T20:15:09Z",
         "analyzeResult": {
-          "apiVersion": "2023-02-28-preview",
+          "apiVersion": "2022-08-31",
           "modelId": "prebuilt-idDocument",
           "stringIndexType": "utf16CodeUnit",
-          "content": "WEST VIRGINIA\nCommercial\nDriver\u0027s License\nCHRIS SMITH\nMain Street , Charleston,\nWV 456789\nCLASS: A\nRESTR: NONE\nEND: NONE\nLIC #:\n034568\nSEX:\nM\nDOB:\n03/23/1988\nHGT:\n5\u002711\u0022\nEXP:\n03/23/2026\nWGT: 185LB\nISS:\n03/23/2019\nEYES: BLU\nDD: 12645646464554646456464544\nORGAN DONOR",
+          "content": "WEST VIRGINIA\nCommercial Driver\u0027s License\nCHRIS SMITH\nMain Street , Charleston, WV 456789\nCLASS: A\nLIC #:\n034568\nDOB:\n03/23/1988\nEXP:\n03/23/2026\nRESTR: NONE\nISS: 03/23/2019\nDD: 12645646464554646456464544\nEND: NONE\nSEX:\nM\nHGT:\n5\u002711\u0022\nWGT: 185LB\nEYES: BLU\nORGAN DONOR",
           "pages": [
             {
               "pageNumber": 1,
@@ -2040,78 +2570,6 @@
                   }
                 },
                 {
-                  "content": "RESTR:",
-                  "polygon": [
-                    412,
-                    238,
-                    475,
-                    237,
-                    475,
-                    260,
-                    412,
-                    260
-                  ],
-                  "confidence": 0.993,
-                  "span": {
-                    "offset": 99,
-                    "length": 6
-                  }
-                },
-                {
-                  "content": "NONE",
-                  "polygon": [
-                    479,
-                    237,
-                    550,
-                    236,
-                    550,
-                    260,
-                    479,
-                    260
-                  ],
-                  "confidence": 0.988,
-                  "span": {
-                    "offset": 106,
-                    "length": 4
-                  }
-                },
-                {
-                  "content": "END:",
-                  "polygon": [
-                    587,
-                    239,
-                    639,
-                    238,
-                    639,
-                    260,
-                    587,
-                    260
-                  ],
-                  "confidence": 0.994,
-                  "span": {
-                    "offset": 111,
-                    "length": 4
-                  }
-                },
-                {
-                  "content": "NONE",
-                  "polygon": [
-                    645,
-                    238,
-                    714,
-                    237,
-                    714,
-                    260,
-                    645,
-                    260
-                  ],
-                  "confidence": 0.987,
-                  "span": {
-                    "offset": 116,
-                    "length": 4
-                  }
-                },
-                {
                   "content": "LIC",
                   "polygon": [
                     259,
@@ -2125,7 +2583,7 @@
                   ],
                   "confidence": 0.993,
                   "span": {
-                    "offset": 121,
+                    "offset": 99,
                     "length": 3
                   }
                 },
@@ -2143,7 +2601,7 @@
                   ],
                   "confidence": 0.971,
                   "span": {
-                    "offset": 125,
+                    "offset": 103,
                     "length": 2
                   }
                 },
@@ -2161,44 +2619,8 @@
                   ],
                   "confidence": 0.994,
                   "span": {
-                    "offset": 128,
+                    "offset": 106,
                     "length": 6
-                  }
-                },
-                {
-                  "content": "SEX:",
-                  "polygon": [
-                    588,
-                    268,
-                    634,
-                    267,
-                    634,
-                    289,
-                    588,
-                    290
-                  ],
-                  "confidence": 0.993,
-                  "span": {
-                    "offset": 135,
-                    "length": 4
-                  }
-                },
-                {
-                  "content": "M",
-                  "polygon": [
-                    646,
-                    267,
-                    659,
-                    266,
-                    660,
-                    288,
-                    647,
-                    289
-                  ],
-                  "confidence": 0.994,
-                  "span": {
-                    "offset": 140,
-                    "length": 1
                   }
                 },
                 {
@@ -2215,7 +2637,7 @@
                   ],
                   "confidence": 0.997,
                   "span": {
-                    "offset": 142,
+                    "offset": 113,
                     "length": 4
                   }
                 },
@@ -2233,44 +2655,8 @@
                   ],
                   "confidence": 0.991,
                   "span": {
-                    "offset": 147,
+                    "offset": 118,
                     "length": 10
-                  }
-                },
-                {
-                  "content": "HGT:",
-                  "polygon": [
-                    589,
-                    301,
-                    634,
-                    300,
-                    635,
-                    319,
-                    589,
-                    320
-                  ],
-                  "confidence": 0.991,
-                  "span": {
-                    "offset": 158,
-                    "length": 4
-                  }
-                },
-                {
-                  "content": "5\u002711\u0022",
-                  "polygon": [
-                    646,
-                    299,
-                    708,
-                    298,
-                    709,
-                    319,
-                    646,
-                    322
-                  ],
-                  "confidence": 0.994,
-                  "span": {
-                    "offset": 163,
-                    "length": 5
                   }
                 },
                 {
@@ -2287,7 +2673,7 @@
                   ],
                   "confidence": 0.994,
                   "span": {
-                    "offset": 169,
+                    "offset": 129,
                     "length": 4
                   }
                 },
@@ -2305,44 +2691,44 @@
                   ],
                   "confidence": 0.986,
                   "span": {
-                    "offset": 174,
+                    "offset": 134,
                     "length": 10
                   }
                 },
                 {
-                  "content": "WGT:",
+                  "content": "RESTR:",
                   "polygon": [
-                    587,
-                    332,
-                    642,
-                    331,
-                    642,
-                    352,
-                    587,
-                    351
+                    412,
+                    238,
+                    475,
+                    237,
+                    475,
+                    260,
+                    412,
+                    260
                   ],
-                  "confidence": 0.986,
+                  "confidence": 0.993,
                   "span": {
-                    "offset": 185,
-                    "length": 4
+                    "offset": 145,
+                    "length": 6
                   }
                 },
                 {
-                  "content": "185LB",
+                  "content": "NONE",
                   "polygon": [
-                    650,
-                    330,
-                    716,
-                    328,
-                    716,
-                    352,
-                    649,
-                    352
+                    479,
+                    237,
+                    550,
+                    236,
+                    550,
+                    260,
+                    479,
+                    260
                   ],
-                  "confidence": 0.997,
+                  "confidence": 0.988,
                   "span": {
-                    "offset": 190,
-                    "length": 5
+                    "offset": 152,
+                    "length": 4
                   }
                 },
                 {
@@ -2359,7 +2745,7 @@
                   ],
                   "confidence": 0.98,
                   "span": {
-                    "offset": 196,
+                    "offset": 157,
                     "length": 4
                   }
                 },
@@ -2377,44 +2763,8 @@
                   ],
                   "confidence": 0.991,
                   "span": {
-                    "offset": 201,
+                    "offset": 162,
                     "length": 10
-                  }
-                },
-                {
-                  "content": "EYES:",
-                  "polygon": [
-                    588,
-                    362,
-                    640,
-                    360,
-                    639,
-                    382,
-                    588,
-                    384
-                  ],
-                  "confidence": 0.997,
-                  "span": {
-                    "offset": 212,
-                    "length": 5
-                  }
-                },
-                {
-                  "content": "BLU",
-                  "polygon": [
-                    644,
-                    359,
-                    687,
-                    359,
-                    687,
-                    382,
-                    644,
-                    382
-                  ],
-                  "confidence": 0.998,
-                  "span": {
-                    "offset": 218,
-                    "length": 3
                   }
                 },
                 {
@@ -2431,7 +2781,7 @@
                   ],
                   "confidence": 0.993,
                   "span": {
-                    "offset": 222,
+                    "offset": 173,
                     "length": 3
                   }
                 },
@@ -2449,8 +2799,188 @@
                   ],
                   "confidence": 0.941,
                   "span": {
-                    "offset": 226,
+                    "offset": 177,
                     "length": 26
+                  }
+                },
+                {
+                  "content": "END:",
+                  "polygon": [
+                    587,
+                    239,
+                    639,
+                    238,
+                    639,
+                    260,
+                    587,
+                    260
+                  ],
+                  "confidence": 0.994,
+                  "span": {
+                    "offset": 204,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "NONE",
+                  "polygon": [
+                    645,
+                    238,
+                    714,
+                    237,
+                    714,
+                    260,
+                    645,
+                    260
+                  ],
+                  "confidence": 0.987,
+                  "span": {
+                    "offset": 209,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "SEX:",
+                  "polygon": [
+                    588,
+                    268,
+                    634,
+                    267,
+                    634,
+                    289,
+                    588,
+                    290
+                  ],
+                  "confidence": 0.993,
+                  "span": {
+                    "offset": 214,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "M",
+                  "polygon": [
+                    646,
+                    267,
+                    659,
+                    266,
+                    660,
+                    288,
+                    647,
+                    289
+                  ],
+                  "confidence": 0.994,
+                  "span": {
+                    "offset": 219,
+                    "length": 1
+                  }
+                },
+                {
+                  "content": "HGT:",
+                  "polygon": [
+                    589,
+                    301,
+                    634,
+                    300,
+                    635,
+                    319,
+                    589,
+                    320
+                  ],
+                  "confidence": 0.991,
+                  "span": {
+                    "offset": 221,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "5\u002711\u0022",
+                  "polygon": [
+                    646,
+                    299,
+                    708,
+                    298,
+                    709,
+                    319,
+                    646,
+                    322
+                  ],
+                  "confidence": 0.994,
+                  "span": {
+                    "offset": 226,
+                    "length": 5
+                  }
+                },
+                {
+                  "content": "WGT:",
+                  "polygon": [
+                    587,
+                    332,
+                    642,
+                    331,
+                    642,
+                    352,
+                    587,
+                    351
+                  ],
+                  "confidence": 0.986,
+                  "span": {
+                    "offset": 232,
+                    "length": 4
+                  }
+                },
+                {
+                  "content": "185LB",
+                  "polygon": [
+                    650,
+                    330,
+                    716,
+                    328,
+                    716,
+                    352,
+                    649,
+                    352
+                  ],
+                  "confidence": 0.997,
+                  "span": {
+                    "offset": 237,
+                    "length": 5
+                  }
+                },
+                {
+                  "content": "EYES:",
+                  "polygon": [
+                    588,
+                    362,
+                    640,
+                    360,
+                    639,
+                    382,
+                    588,
+                    384
+                  ],
+                  "confidence": 0.997,
+                  "span": {
+                    "offset": 243,
+                    "length": 5
+                  }
+                },
+                {
+                  "content": "BLU",
+                  "polygon": [
+                    644,
+                    359,
+                    687,
+                    359,
+                    687,
+                    382,
+                    644,
+                    382
+                  ],
+                  "confidence": 0.998,
+                  "span": {
+                    "offset": 249,
+                    "length": 3
                   }
                 },
                 {
@@ -2625,44 +3155,6 @@
                   ]
                 },
                 {
-                  "content": "RESTR: NONE",
-                  "polygon": [
-                    411,
-                    236,
-                    555,
-                    235,
-                    555,
-                    260,
-                    411,
-                    260
-                  ],
-                  "spans": [
-                    {
-                      "offset": 99,
-                      "length": 11
-                    }
-                  ]
-                },
-                {
-                  "content": "END: NONE",
-                  "polygon": [
-                    587,
-                    237,
-                    720,
-                    236,
-                    720,
-                    259,
-                    587,
-                    260
-                  ],
-                  "spans": [
-                    {
-                      "offset": 111,
-                      "length": 9
-                    }
-                  ]
-                },
-                {
                   "content": "LIC #:",
                   "polygon": [
                     259,
@@ -2676,7 +3168,7 @@
                   ],
                   "spans": [
                     {
-                      "offset": 121,
+                      "offset": 99,
                       "length": 6
                     }
                   ]
@@ -2695,46 +3187,8 @@
                   ],
                   "spans": [
                     {
-                      "offset": 128,
+                      "offset": 106,
                       "length": 6
-                    }
-                  ]
-                },
-                {
-                  "content": "SEX:",
-                  "polygon": [
-                    588,
-                    268,
-                    635,
-                    267,
-                    634,
-                    289,
-                    588,
-                    290
-                  ],
-                  "spans": [
-                    {
-                      "offset": 135,
-                      "length": 4
-                    }
-                  ]
-                },
-                {
-                  "content": "M",
-                  "polygon": [
-                    646,
-                    268,
-                    671,
-                    266,
-                    672,
-                    288,
-                    646,
-                    289
-                  ],
-                  "spans": [
-                    {
-                      "offset": 140,
-                      "length": 1
                     }
                   ]
                 },
@@ -2752,7 +3206,7 @@
                   ],
                   "spans": [
                     {
-                      "offset": 142,
+                      "offset": 113,
                       "length": 4
                     }
                   ]
@@ -2771,46 +3225,8 @@
                   ],
                   "spans": [
                     {
-                      "offset": 147,
+                      "offset": 118,
                       "length": 10
-                    }
-                  ]
-                },
-                {
-                  "content": "HGT:",
-                  "polygon": [
-                    589,
-                    301,
-                    635,
-                    300,
-                    635,
-                    319,
-                    590,
-                    320
-                  ],
-                  "spans": [
-                    {
-                      "offset": 158,
-                      "length": 4
-                    }
-                  ]
-                },
-                {
-                  "content": "5\u002711\u0022",
-                  "polygon": [
-                    641,
-                    299,
-                    708,
-                    298,
-                    709,
-                    320,
-                    642,
-                    322
-                  ],
-                  "spans": [
-                    {
-                      "offset": 163,
-                      "length": 5
                     }
                   ]
                 },
@@ -2828,7 +3244,7 @@
                   ],
                   "spans": [
                     {
-                      "offset": 169,
+                      "offset": 129,
                       "length": 4
                     }
                   ]
@@ -2847,27 +3263,27 @@
                   ],
                   "spans": [
                     {
-                      "offset": 174,
+                      "offset": 134,
                       "length": 10
                     }
                   ]
                 },
                 {
-                  "content": "WGT: 185LB",
+                  "content": "RESTR: NONE",
                   "polygon": [
-                    587,
-                    329,
-                    720,
-                    327,
-                    721,
-                    351,
-                    587,
-                    352
+                    411,
+                    236,
+                    555,
+                    235,
+                    555,
+                    260,
+                    411,
+                    260
                   ],
                   "spans": [
                     {
-                      "offset": 185,
-                      "length": 10
+                      "offset": 145,
+                      "length": 11
                     }
                   ]
                 },
@@ -2885,7 +3301,7 @@
                   ],
                   "spans": [
                     {
-                      "offset": 196,
+                      "offset": 157,
                       "length": 4
                     }
                   ]
@@ -2904,7 +3320,140 @@
                   ],
                   "spans": [
                     {
-                      "offset": 201,
+                      "offset": 162,
+                      "length": 10
+                    }
+                  ]
+                },
+                {
+                  "content": "DD: 12645646464554646456464544",
+                  "polygon": [
+                    260,
+                    412,
+                    534,
+                    411,
+                    534,
+                    431,
+                    260,
+                    431
+                  ],
+                  "spans": [
+                    {
+                      "offset": 173,
+                      "length": 30
+                    }
+                  ]
+                },
+                {
+                  "content": "END: NONE",
+                  "polygon": [
+                    587,
+                    237,
+                    720,
+                    236,
+                    720,
+                    259,
+                    587,
+                    260
+                  ],
+                  "spans": [
+                    {
+                      "offset": 204,
+                      "length": 9
+                    }
+                  ]
+                },
+                {
+                  "content": "SEX:",
+                  "polygon": [
+                    588,
+                    268,
+                    635,
+                    267,
+                    634,
+                    289,
+                    588,
+                    290
+                  ],
+                  "spans": [
+                    {
+                      "offset": 214,
+                      "length": 4
+                    }
+                  ]
+                },
+                {
+                  "content": "M",
+                  "polygon": [
+                    646,
+                    268,
+                    671,
+                    266,
+                    672,
+                    288,
+                    646,
+                    289
+                  ],
+                  "spans": [
+                    {
+                      "offset": 219,
+                      "length": 1
+                    }
+                  ]
+                },
+                {
+                  "content": "HGT:",
+                  "polygon": [
+                    589,
+                    301,
+                    635,
+                    300,
+                    635,
+                    319,
+                    590,
+                    320
+                  ],
+                  "spans": [
+                    {
+                      "offset": 221,
+                      "length": 4
+                    }
+                  ]
+                },
+                {
+                  "content": "5\u002711\u0022",
+                  "polygon": [
+                    641,
+                    299,
+                    708,
+                    298,
+                    709,
+                    320,
+                    642,
+                    322
+                  ],
+                  "spans": [
+                    {
+                      "offset": 226,
+                      "length": 5
+                    }
+                  ]
+                },
+                {
+                  "content": "WGT: 185LB",
+                  "polygon": [
+                    587,
+                    329,
+                    720,
+                    327,
+                    721,
+                    351,
+                    587,
+                    352
+                  ],
+                  "spans": [
+                    {
+                      "offset": 232,
                       "length": 10
                     }
                   ]
@@ -2923,27 +3472,8 @@
                   ],
                   "spans": [
                     {
-                      "offset": 212,
+                      "offset": 243,
                       "length": 9
-                    }
-                  ]
-                },
-                {
-                  "content": "DD: 12645646464554646456464544",
-                  "polygon": [
-                    260,
-                    412,
-                    534,
-                    411,
-                    534,
-                    431,
-                    260,
-                    431
-                  ],
-                  "spans": [
-                    {
-                      "offset": 222,
-                      "length": 30
                     }
                   ]
                 },
@@ -2976,6 +3506,536 @@
               "kind": "document"
             }
           ],
+          "paragraphs": [
+            {
+              "spans": [
+                {
+                  "offset": 0,
+                  "length": 13
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    106,
+                    32,
+                    366,
+                    32,
+                    366,
+                    65,
+                    106,
+                    65
+                  ]
+                }
+              ],
+              "content": "WEST VIRGINIA"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 14,
+                  "length": 27
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    530,
+                    19,
+                    746,
+                    19,
+                    746,
+                    75,
+                    530,
+                    75
+                  ]
+                }
+              ],
+              "content": "Commercial Driver\u0027s License"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 42,
+                  "length": 11
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    255,
+                    106,
+                    508,
+                    105,
+                    508,
+                    142,
+                    255,
+                    143
+                  ]
+                }
+              ],
+              "content": "CHRIS SMITH"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 54,
+                  "length": 35
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    259,
+                    152,
+                    564,
+                    152,
+                    564,
+                    207,
+                    259,
+                    207
+                  ]
+                }
+              ],
+              "content": "Main Street , Charleston, WV 456789"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 90,
+                  "length": 8
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    258,
+                    237,
+                    349,
+                    236,
+                    349,
+                    259,
+                    258,
+                    260
+                  ]
+                }
+              ],
+              "content": "CLASS: A"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 99,
+                  "length": 6
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    259,
+                    269,
+                    315,
+                    267,
+                    314,
+                    290,
+                    259,
+                    291
+                  ]
+                }
+              ],
+              "content": "LIC #:"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 106,
+                  "length": 6
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    330,
+                    266,
+                    418,
+                    266,
+                    418,
+                    290,
+                    330,
+                    290
+                  ]
+                }
+              ],
+              "content": "034568"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 113,
+                  "length": 4
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    259,
+                    300,
+                    308,
+                    299,
+                    309,
+                    322,
+                    259,
+                    322
+                  ]
+                }
+              ],
+              "content": "DOB:"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 118,
+                  "length": 10
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    330,
+                    296,
+                    470,
+                    296,
+                    470,
+                    321,
+                    330,
+                    321
+                  ]
+                }
+              ],
+              "content": "03/23/1988"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 129,
+                  "length": 4
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    259,
+                    332,
+                    298,
+                    331,
+                    297,
+                    350,
+                    260,
+                    350
+                  ]
+                }
+              ],
+              "content": "EXP:"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 134,
+                  "length": 10
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    329,
+                    327,
+                    468,
+                    327,
+                    468,
+                    351,
+                    329,
+                    351
+                  ]
+                }
+              ],
+              "content": "03/23/2026"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 145,
+                  "length": 11
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    411,
+                    235,
+                    555,
+                    235,
+                    555,
+                    260,
+                    411,
+                    260
+                  ]
+                }
+              ],
+              "content": "RESTR: NONE"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 157,
+                  "length": 15
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    259,
+                    359,
+                    468,
+                    357,
+                    468,
+                    381,
+                    259,
+                    383
+                  ]
+                }
+              ],
+              "content": "ISS: 03/23/2019"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 173,
+                  "length": 30
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    260,
+                    411,
+                    534,
+                    411,
+                    534,
+                    431,
+                    260,
+                    431
+                  ]
+                }
+              ],
+              "content": "DD: 12645646464554646456464544"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 204,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    587,
+                    237,
+                    720,
+                    236,
+                    720,
+                    259,
+                    587,
+                    260
+                  ]
+                }
+              ],
+              "content": "END: NONE"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 214,
+                  "length": 4
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    588,
+                    268,
+                    635,
+                    267,
+                    635,
+                    289,
+                    588,
+                    290
+                  ]
+                }
+              ],
+              "content": "SEX:"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 219,
+                  "length": 1
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    645,
+                    267,
+                    671,
+                    266,
+                    672,
+                    288,
+                    646,
+                    289
+                  ]
+                }
+              ],
+              "content": "M"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 221,
+                  "length": 4
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    589,
+                    301,
+                    635,
+                    300,
+                    635,
+                    319,
+                    589,
+                    320
+                  ]
+                }
+              ],
+              "content": "HGT:"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 226,
+                  "length": 5
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    641,
+                    299,
+                    708,
+                    297,
+                    709,
+                    320,
+                    642,
+                    322
+                  ]
+                }
+              ],
+              "content": "5\u002711\u0022"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 232,
+                  "length": 10
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    587,
+                    328,
+                    721,
+                    327,
+                    721,
+                    351,
+                    587,
+                    352
+                  ]
+                }
+              ],
+              "content": "WGT: 185LB"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 243,
+                  "length": 9
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    587,
+                    361,
+                    694,
+                    358,
+                    695,
+                    381,
+                    588,
+                    384
+                  ]
+                }
+              ],
+              "content": "EYES: BLU"
+            },
+            {
+              "spans": [
+                {
+                  "offset": 253,
+                  "length": 11
+                }
+              ],
+              "boundingRegions": [
+                {
+                  "pageNumber": 1,
+                  "polygon": [
+                    557,
+                    414,
+                    673,
+                    414,
+                    673,
+                    431,
+                    557,
+                    431
+                  ]
+                }
+              ],
+              "content": "ORGAN DONOR"
+            }
+          ],
           "styles": [],
           "documents": [
             {
@@ -2998,7 +4058,7 @@
               "fields": {
                 "Address": {
                   "type": "address",
-                  "content": "Main Street , Charleston,\nWV 456789",
+                  "content": "Main Street , Charleston, WV 456789",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
@@ -3056,7 +4116,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 147,
+                      "offset": 118,
                       "length": 10
                     }
                   ]
@@ -3083,7 +4143,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 174,
+                      "offset": 134,
                       "length": 10
                     }
                   ]
@@ -3110,7 +4170,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 201,
+                      "offset": 162,
                       "length": 10
                     }
                   ]
@@ -3137,7 +4197,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 226,
+                      "offset": 177,
                       "length": 26
                     }
                   ]
@@ -3164,7 +4224,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 128,
+                      "offset": 106,
                       "length": 6
                     }
                   ]
@@ -3191,7 +4251,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 116,
+                      "offset": 209,
                       "length": 4
                     }
                   ]
@@ -3218,7 +4278,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 218,
+                      "offset": 249,
                       "length": 3
                     }
                   ]
@@ -3272,7 +4332,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 163,
+                      "offset": 226,
                       "length": 5
                     }
                   ]
@@ -3331,7 +4391,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 106,
+                      "offset": 152,
                       "length": 4
                     }
                   ]
@@ -3358,7 +4418,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 140,
+                      "offset": 219,
                       "length": 1
                     }
                   ]
@@ -3412,7 +4472,7 @@
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 190,
+                      "offset": 237,
                       "length": 5
                     }
                   ]

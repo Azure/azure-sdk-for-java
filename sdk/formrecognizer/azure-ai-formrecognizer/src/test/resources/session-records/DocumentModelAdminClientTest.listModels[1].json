@@ -1,106 +1,88 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:14:39 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "d45d4a78-5f4c-479c-836e-b3993c45a8d8"
+        "Date": "Thu, 20 Apr 2023 20:11:52 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "424856b3-bd78-4d9e-a309-c6ede48d6283"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "e10c1709-939b-4807-ad23-0c9256b60491",
+        "apim-request-id": "528737c1-72d7-4600-b3cf-bb11c030af8e",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:14:41 GMT",
+        "Date": "Thu, 20 Apr 2023 20:11:56 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "3419",
+        "x-envoy-upstream-service-time": "3690",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "value": [
           {
             "modelId": "prebuilt-businessCard",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
             "description": "Extract key information from business cards."
           },
           {
             "modelId": "prebuilt-document",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
             "description": "Extract text, layout, entities, and general key-value pairs from documents."
           },
           {
             "modelId": "prebuilt-healthInsuranceCard.us",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
             "description": "Extract key information from US health insurance cards."
           },
           {
             "modelId": "prebuilt-idDocument",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
             "description": "Extract key information from passports and ID cards."
           },
           {
             "modelId": "prebuilt-invoice",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
             "description": "Extract key information from invoices."
           },
           {
             "modelId": "prebuilt-layout",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
             "description": "Extract text and layout information from documents."
           },
           {
             "modelId": "prebuilt-read",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
             "description": "Extract text from documents."
           },
           {
             "modelId": "prebuilt-receipt",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
             "description": "Extract key information from receipts."
           },
           {
-            "modelId": "prebuilt-tax.us.1098",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
-            "description": "Extract key information from United States Internal Revenue Service Form 1098 (2021-2022)."
-          },
-          {
-            "modelId": "prebuilt-tax.us.1098E",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
-            "description": "Extract key information from United States Internal Revenue Service Form 1098-E (2021-2022)."
-          },
-          {
-            "modelId": "prebuilt-tax.us.1098T",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
-            "description": "Extract key information from United States Internal Revenue Service Form 1098-T (2021-2022)."
-          },
-          {
             "modelId": "prebuilt-tax.us.w2",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
             "description": "Extract key information from IRS US W2 tax forms (year 2018-2021)."
           },
           {
             "modelId": "prebuilt-vaccinationCard",
-            "createdDateTime": "2023-02-28T00:00:00Z",
-            "apiVersion": "2023-02-28-preview",
+            "createdDateTime": "2022-08-31T00:00:00Z",
+            "apiVersion": "2022-08-31",
             "description": "Extract key information from US Covid-19 CDC vaccination cards."
           },
           {
@@ -212,6 +194,12 @@
             "apiVersion": "v2.1-preview.2"
           },
           {
+            "modelId": "01638e03-1f0f-4bd0-a78f-c16919576e6d",
+            "createdDateTime": "2023-04-14T18:19:12Z",
+            "expirationDateTime": "2025-04-13T18:19:12Z",
+            "apiVersion": "v2.1"
+          },
+          {
             "modelId": "01682953-2e27-4b54-b6ea-ef02a7e10ed2",
             "createdDateTime": "2023-04-14T17:34:46Z",
             "expirationDateTime": "2025-04-13T17:34:46Z",
@@ -241,6 +229,12 @@
             "createdDateTime": "2021-02-10T22:37:07Z",
             "expirationDateTime": "2023-02-10T22:37:07Z",
             "apiVersion": "v2.1-preview.2"
+          },
+          {
+            "modelId": "0188860b-0ea5-474a-8161-73309202f3a6",
+            "createdDateTime": "2023-04-14T18:17:46Z",
+            "expirationDateTime": "2025-04-13T18:17:46Z",
+            "apiVersion": "v2.1"
           },
           {
             "modelId": "0191f99e-41bd-4435-a8cd-12379ba4d476",
@@ -500,12 +494,6 @@
             "createdDateTime": "2021-05-25T18:57:21Z",
             "expirationDateTime": "2023-05-25T18:57:21Z",
             "apiVersion": "v2.1"
-          },
-          {
-            "modelId": "efdd9b96-5790-4087-ad28-ae2d71110b5b",
-            "createdDateTime": "2023-04-12T20:35:44Z",
-            "expirationDateTime": "2025-04-11T20:35:44Z",
-            "apiVersion": "2023-02-28-preview"
           },
           {
             "modelId": "04e7a418-d28c-4851-b3b9-ea01fe646edb",
@@ -896,48 +884,42 @@
             "createdDateTime": "2021-04-14T18:47:35Z",
             "expirationDateTime": "2023-04-14T18:47:35Z",
             "apiVersion": "v2.1-preview.3"
-          },
+          }
+        ],
+        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2022-08-31\u0026nextLink=2!232!MDAwMTMwIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzA5NzVhMmZhLTM0MjAtNDFlYS04NTYzLTEzM2Q4Yjk2MWI1OC8wOTc1YTJmYS0zNDIwLTQxZWEtODU2My0xMzNkOGI5NjFiNTguZ3ohMDAwMDI4ITk5OTktMTItMzFUMjM6NTk6NTkuOTk5OTk5OVoh"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels?api-version=2022-08-31\u0026nextLink=2!232!MDAwMTMwIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzA5NzVhMmZhLTM0MjAtNDFlYS04NTYzLTEzM2Q4Yjk2MWI1OC8wOTc1YTJmYS0zNDIwLTQxZWEtODU2My0xMzNkOGI5NjFiNTguZ3ohMDAwMDI4ITk5OTktMTItMzFUMjM6NTk6NTkuOTk5OTk5OVoh",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:11:57 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "12933f8f-8f40-47ab-abc1-158874408cc7"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "82613493-d01d-462f-9977-91948701c913",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:12:00 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "3969",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "value": [
           {
             "modelId": "0975a2fa-3420-41ea-8563-133d8b961b58",
             "createdDateTime": "2020-10-07T14:41:56Z",
             "expirationDateTime": "2022-10-07T14:41:56Z",
             "apiVersion": "v2.1-preview.1"
           },
-          {
-            "modelId": "a17d5565-09a5-442b-ae7b-039c29962a99",
-            "createdDateTime": "2023-04-04T22:46:07Z",
-            "expirationDateTime": "2025-04-03T22:46:07Z",
-            "apiVersion": "2023-02-28-preview"
-          }
-        ],
-        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2023-02-28-preview\u0026nextLink=2!232!MDAwMTMwIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzA5ODk1YTYwLTM2MTEtNGVhYS04MWRkLTAyMjA1ZTg3MmQwMy8wOTg5NWE2MC0zNjExLTRlYWEtODFkZC0wMjIwNWU4NzJkMDMuZ3ohMDAwMDI4ITk5OTktMTItMzFUMjM6NTk6NTkuOTk5OTk5OVoh"
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels?api-version=2023-02-28-preview\u0026nextLink=2!232!MDAwMTMwIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzA5ODk1YTYwLTM2MTEtNGVhYS04MWRkLTAyMjA1ZTg3MmQwMy8wOTg5NWE2MC0zNjExLTRlYWEtODFkZC0wMjIwNWU4NzJkMDMuZ3ohMDAwMDI4ITk5OTktMTItMzFUMjM6NTk6NTkuOTk5OTk5OVoh",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:14:43 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "6dd7db78-9495-448c-b739-219c5c6f6d9c"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "677a0f1c-24e7-4cd1-b588-b9d561da2b2c",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:14:45 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "4047",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "value": [
           {
             "modelId": "099430e3-f987-440a-a0c8-1dfd252a8bde",
             "createdDateTime": "2021-03-16T15:14:11Z",
@@ -1248,6 +1230,12 @@
             "apiVersion": "v2.1-preview.1"
           },
           {
+            "modelId": "0dcfa3b4-8a27-4590-8c11-06a19027f045",
+            "createdDateTime": "2023-04-15T22:04:53Z",
+            "expirationDateTime": "2025-04-14T22:04:53Z",
+            "apiVersion": "v2.1"
+          },
+          {
             "modelId": "0dece9a9-0624-4f19-8805-51f79d77ffa1",
             "createdDateTime": "2021-03-16T15:08:37Z",
             "expirationDateTime": "2023-03-16T15:08:37Z",
@@ -1282,12 +1270,6 @@
             "createdDateTime": "2021-03-26T13:48:39Z",
             "expirationDateTime": "2023-03-26T13:48:39Z",
             "apiVersion": "v2.1-preview.3"
-          },
-          {
-            "modelId": "e18f913d-676a-4486-868e-3ad679ac9e19",
-            "createdDateTime": "2023-04-13T22:35:01Z",
-            "expirationDateTime": "2025-04-12T22:35:01Z",
-            "apiVersion": "2023-02-28-preview"
           },
           {
             "modelId": "0e6dcdff-dc2e-4f6c-8e93-3180d5d0e3ec",
@@ -1426,6 +1408,12 @@
             "createdDateTime": "2020-07-24T03:59:50Z",
             "expirationDateTime": "2022-07-24T03:59:50Z",
             "apiVersion": "v2.0"
+          },
+          {
+            "modelId": "0f730753-627c-4a02-aa9c-705520302ca3",
+            "createdDateTime": "2023-04-14T18:20:15Z",
+            "expirationDateTime": "2025-04-13T18:20:15Z",
+            "apiVersion": "v2.1"
           },
           {
             "modelId": "0f9e4769-6601-4ab6-b9ed-f3b05f8aa2f3",
@@ -1692,28 +1680,22 @@
             "apiVersion": "v2.1-preview.2"
           },
           {
-            "modelId": "f7832a24-cb90-41b6-9250-07c57794c038",
-            "createdDateTime": "2023-04-10T19:08:02Z",
-            "expirationDateTime": "2025-04-09T19:08:02Z",
-            "apiVersion": "2023-02-28-preview"
-          },
-          {
             "modelId": "125a20ac-7b68-4a6d-ba52-0f84b6d7b925",
             "createdDateTime": "2020-10-14T20:47:20Z",
             "expirationDateTime": "2022-10-14T20:47:20Z",
             "apiVersion": "v2.1-preview.1"
           },
           {
-            "modelId": "a794f532-1934-46da-9550-6617729985f9",
-            "createdDateTime": "2023-04-12T20:35:27Z",
-            "expirationDateTime": "2025-04-11T20:35:27Z",
-            "apiVersion": "2023-02-28-preview"
-          },
-          {
             "modelId": "128756db-52e0-41c2-9e31-e6d91b903616",
             "createdDateTime": "2020-11-03T05:58:33Z",
             "expirationDateTime": "2022-11-03T05:58:33Z",
             "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "12903aea-3e62-4cca-b44a-82a51721b7be",
+            "createdDateTime": "2023-04-20T20:11:32Z",
+            "expirationDateTime": "2025-04-19T20:11:32Z",
+            "apiVersion": "v2.1"
           },
           {
             "modelId": "12c0b5fe-1fe4-4f96-b206-5e10e2986708",
@@ -1792,7 +1774,36 @@
             "createdDateTime": "2020-10-14T23:07:49Z",
             "expirationDateTime": "2022-10-14T23:07:49Z",
             "apiVersion": "v2.1-preview.1"
-          },
+          }
+        ],
+        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2022-08-31\u0026nextLink=2!232!MDAwMTMwIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzE0MjUyMTRlLTQ4MjQtNDRiYy1hMmVjLThkZDdhNzNiMGVjYS8xNDI1MjE0ZS00ODI0LTQ0YmMtYTJlYy04ZGQ3YTczYjBlY2EuZ3ohMDAwMDI4ITk5OTktMTItMzFUMjM6NTk6NTkuOTk5OTk5OVoh"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels?api-version=2022-08-31\u0026nextLink=2!232!MDAwMTMwIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzE0MjUyMTRlLTQ4MjQtNDRiYy1hMmVjLThkZDdhNzNiMGVjYS8xNDI1MjE0ZS00ODI0LTQ0YmMtYTJlYy04ZGQ3YTczYjBlY2EuZ3ohMDAwMDI4ITk5OTktMTItMzFUMjM6NTk6NTkuOTk5OTk5OVoh",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:12:01 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "5791b85e-403d-43e1-93aa-1abb4b3ef1be"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "fe57f2f0-98f0-4133-a159-fe891ba3b87f",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:12:05 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "4215",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "value": [
           {
             "modelId": "142791cd-af58-4492-aae8-5e2b10c0aac6",
             "createdDateTime": "2021-02-23T06:40:17Z",
@@ -1816,41 +1827,18 @@
             "createdDateTime": "2023-03-08T19:40:40Z",
             "expirationDateTime": "2025-03-07T19:40:40Z",
             "apiVersion": "v2.1"
-          }
-        ],
-        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2023-02-28-preview\u0026nextLink=2!232!MDAwMTMwIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzE0NjIxMDdiLTJhMjgtNDBjZC1hODJmLTk0ZTgwYWY0NGI2Yy8xNDYyMTA3Yi0yYTI4LTQwY2QtYTgyZi05NGU4MGFmNDRiNmMuZ3ohMDAwMDI4ITk5OTktMTItMzFUMjM6NTk6NTkuOTk5OTk5OVoh"
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels?api-version=2023-02-28-preview\u0026nextLink=2!232!MDAwMTMwIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzE0NjIxMDdiLTJhMjgtNDBjZC1hODJmLTk0ZTgwYWY0NGI2Yy8xNDYyMTA3Yi0yYTI4LTQwY2QtYTgyZi05NGU4MGFmNDRiNmMuZ3ohMDAwMDI4ITk5OTktMTItMzFUMjM6NTk6NTkuOTk5OTk5OVoh",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:14:47 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "38eeb85c-6dba-45a3-8615-b1b584b76c63"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "d416650a-242b-4a77-98d7-774680a4de3a",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:14:48 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "3253",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "value": [
+          },
           {
             "modelId": "1462107b-2a28-40cd-a82f-94e80af44b6c",
             "createdDateTime": "2020-11-03T06:00:10Z",
             "expirationDateTime": "2022-11-03T06:00:10Z",
             "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "14668157-8c0b-451c-a677-cb8b4fc1f42c",
+            "createdDateTime": "2023-04-14T18:14:59Z",
+            "expirationDateTime": "2025-04-13T18:14:59Z",
+            "apiVersion": "v2.1"
           },
           {
             "modelId": "14985e98-ba07-4245-b65c-ff1f43bb92e4",
@@ -2073,6 +2061,12 @@
             "modelId": "16ef49bf-d905-4759-a75d-9bf77acf38bc",
             "createdDateTime": "2023-03-08T19:38:15Z",
             "expirationDateTime": "2025-03-07T19:38:15Z",
+            "apiVersion": "v2.1"
+          },
+          {
+            "modelId": "1702c460-4c2a-4b1b-ba2a-8afa3f414e84",
+            "createdDateTime": "2023-04-14T18:14:51Z",
+            "expirationDateTime": "2025-04-13T18:14:51Z",
             "apiVersion": "v2.1"
           },
           {
@@ -2432,12 +2426,6 @@
             "apiVersion": "v2.1-preview.1"
           },
           {
-            "modelId": "a2720adf-e0b8-4c87-8b9e-026eb8fa2f8e",
-            "createdDateTime": "2023-04-12T20:35:28Z",
-            "expirationDateTime": "2025-04-11T20:35:28Z",
-            "apiVersion": "2023-02-28-preview"
-          },
-          {
             "modelId": "1a3602f0-e5a4-45f3-9d89-af643d7da30c",
             "createdDateTime": "2021-03-16T17:12:52Z",
             "expirationDateTime": "2023-03-16T17:12:52Z",
@@ -2731,7 +2719,36 @@
             "createdDateTime": "2020-10-21T17:26:47Z",
             "expirationDateTime": "2022-10-21T17:26:47Z",
             "apiVersion": "v2.1-preview.1"
-          },
+          }
+        ],
+        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2022-08-31\u0026nextLink=2!236!MDAwMTMyIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzFkMjJiNGZlLWVlMTItNGZkZi05N2E2LTZmZmQ2OTUwYzJhOS8xZDIyYjRmZS1lZTEyLTRmZGYtOTdhNi02ZmZkNjk1MGMyYTkuanNvbiEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels?api-version=2022-08-31\u0026nextLink=2!236!MDAwMTMyIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzFkMjJiNGZlLWVlMTItNGZkZi05N2E2LTZmZmQ2OTUwYzJhOS8xZDIyYjRmZS1lZTEyLTRmZGYtOTdhNi02ZmZkNjk1MGMyYTkuanNvbiEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:12:05 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "1fe83dda-2742-41eb-9fa5-becbf21f5ee7"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "233bbc8f-85b8-48ce-9744-f5252c50f761",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:12:09 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "4298",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "value": [
           {
             "modelId": "1d426119-e657-4b62-b4c1-52e7dac3b492",
             "createdDateTime": "2021-07-07T06:32:17Z",
@@ -2761,36 +2778,7 @@
             "createdDateTime": "2021-07-07T06:28:03Z",
             "expirationDateTime": "2023-07-07T06:28:03Z",
             "apiVersion": "v2.1"
-          }
-        ],
-        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2023-02-28-preview\u0026nextLink=2!236!MDAwMTMyIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzFkODU5NjczLTQ2NzYtNDkyNS1iYjEyLTIxNzNlODZmNDQyOS8xZDg1OTY3My00Njc2LTQ5MjUtYmIxMi0yMTczZTg2ZjQ0MjkuanNvbiEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-"
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels?api-version=2023-02-28-preview\u0026nextLink=2!236!MDAwMTMyIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzFkODU5NjczLTQ2NzYtNDkyNS1iYjEyLTIxNzNlODZmNDQyOS8xZDg1OTY3My00Njc2LTQ5MjUtYmIxMi0yMTczZTg2ZjQ0MjkuanNvbiEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:14:51 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "9aeab67b-649b-4841-8632-ef46186e892d"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "ab5ad995-4a3f-4047-a042-f7572ad615fe",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:14:53 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "4129",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "value": [
+          },
           {
             "modelId": "1dae23c5-9f87-41ec-ba76-426f3b05166e",
             "createdDateTime": "2021-05-25T23:22:36Z",
@@ -2808,6 +2796,12 @@
             "createdDateTime": "2020-09-23T21:21:08Z",
             "expirationDateTime": "2022-09-23T21:21:08Z",
             "apiVersion": "v2.1-preview.1"
+          },
+          {
+            "modelId": "1dd3ccae-686b-4d18-baa6-3b2ff12b2108",
+            "createdDateTime": "2023-04-20T20:11:32Z",
+            "expirationDateTime": "2025-04-19T20:11:32Z",
+            "apiVersion": "v2.1"
           },
           {
             "modelId": "1df7f841-c6fb-459e-934e-46cd6bc3e07f",
@@ -2917,12 +2911,6 @@
             "apiVersion": "v2.1"
           },
           {
-            "modelId": "a012ef65-d2e7-447c-a0ce-8844a0b6cef2",
-            "createdDateTime": "2023-04-12T20:35:51Z",
-            "expirationDateTime": "2025-04-11T20:35:51Z",
-            "apiVersion": "2023-02-28-preview"
-          },
-          {
             "modelId": "1f014b7c-feb2-4a16-acee-d254ea707719",
             "createdDateTime": "2023-04-14T17:35:30Z",
             "expirationDateTime": "2025-04-13T17:35:30Z",
@@ -2970,6 +2958,12 @@
             "createdDateTime": "2021-02-17T23:35:31Z",
             "expirationDateTime": "2023-02-17T23:35:31Z",
             "apiVersion": "v2.1-preview.3"
+          },
+          {
+            "modelId": "1f87b365-5817-4af8-a857-64d3ec5968a2",
+            "createdDateTime": "2023-04-15T22:04:19Z",
+            "expirationDateTime": "2025-04-14T22:04:19Z",
+            "apiVersion": "v2.1"
           },
           {
             "modelId": "1f8c8c79-fb46-4273-b0aa-ba8523a5758f",
@@ -3196,6 +3190,12 @@
             "apiVersion": "v2.1-preview.3"
           },
           {
+            "modelId": "226980b9-09e7-4b83-a9ff-28c0fdf293aa",
+            "createdDateTime": "2023-04-14T18:18:15Z",
+            "expirationDateTime": "2025-04-13T18:18:15Z",
+            "apiVersion": "v2.1"
+          },
+          {
             "modelId": "22a8e8a6-a3dd-4955-b9bb-f7ac867980e4",
             "createdDateTime": "2020-10-14T21:33:40Z",
             "expirationDateTime": "2022-10-14T21:33:40Z",
@@ -3393,22 +3393,10 @@
             "description": "test desc"
           },
           {
-            "modelId": "db844598-65bf-4601-900a-62dad390f4e0",
-            "createdDateTime": "2023-04-10T19:07:55Z",
-            "expirationDateTime": "2025-04-09T19:07:55Z",
-            "apiVersion": "2023-02-28-preview"
-          },
-          {
             "modelId": "25022edb-52f7-42dd-bda0-45ef484c0fde",
             "createdDateTime": "2023-03-08T19:41:29Z",
             "expirationDateTime": "2025-03-07T19:41:29Z",
             "apiVersion": "v2.1"
-          },
-          {
-            "modelId": "dc5c0648-cc99-4d93-9fe3-e58fb4ffe750",
-            "createdDateTime": "2023-04-12T20:52:00Z",
-            "expirationDateTime": "2025-04-11T20:52:00Z",
-            "apiVersion": "2023-02-28-preview"
           },
           {
             "modelId": "2532c6d6-c247-4b39-9c3a-2f03f3e840e4",
@@ -3495,6 +3483,12 @@
             "apiVersion": "v2.1-preview.3"
           },
           {
+            "modelId": "261117e0-2f34-4d63-b98b-65f0e461762f",
+            "createdDateTime": "2023-04-14T18:20:25Z",
+            "expirationDateTime": "2025-04-13T18:20:25Z",
+            "apiVersion": "v2.1"
+          },
+          {
             "modelId": "2647d4b6-5b5d-493a-87ac-24797e10dc5c",
             "createdDateTime": "2020-10-07T14:40:42Z",
             "expirationDateTime": "2022-10-07T14:40:42Z",
@@ -3536,7 +3530,36 @@
             "createdDateTime": "2020-10-14T23:07:09Z",
             "expirationDateTime": "2022-10-14T23:07:09Z",
             "apiVersion": "v2.1-preview.1"
-          },
+          }
+        ],
+        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2022-08-31\u0026nextLink=2!236!MDAwMTMyIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzI3MDhlNWQwLTFmOTMtNDMyOC1iYTg0LTg1Mjk4ZWJlNGExNS8yNzA4ZTVkMC0xZjkzLTQzMjgtYmE4NC04NTI5OGViZTRhMTUuanNvbiEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-"
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels?api-version=2022-08-31\u0026nextLink=2!236!MDAwMTMyIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzI3MDhlNWQwLTFmOTMtNDMyOC1iYTg0LTg1Mjk4ZWJlNGExNS8yNzA4ZTVkMC0xZjkzLTQzMjgtYmE4NC04NTI5OGViZTRhMTUuanNvbiEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:12:10 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "7d638f42-e41c-48bd-a17f-214928bb8d02"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "be461557-42f8-46e5-b60d-2fd1475c7503",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:12:13 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "4072",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "value": [
           {
             "modelId": "270d302f-c19c-40e5-bce1-3d72816bbde8",
             "createdDateTime": "2020-08-19T23:15:08Z",
@@ -3590,36 +3613,7 @@
             "createdDateTime": "2021-04-14T18:47:23Z",
             "expirationDateTime": "2023-04-14T18:47:23Z",
             "apiVersion": "v2.1-preview.3"
-          }
-        ],
-        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2023-02-28-preview\u0026nextLink=2!236!MDAwMTMyIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzI3NTRiYzY2LTcxNzktNDljOS1hOWUzLTRhOTdiODk2ZjM5YS8yNzU0YmM2Ni03MTc5LTQ5YzktYTllMy00YTk3Yjg5NmYzOWEuanNvbiEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-"
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels?api-version=2023-02-28-preview\u0026nextLink=2!236!MDAwMTMyIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzI3NTRiYzY2LTcxNzktNDljOS1hOWUzLTRhOTdiODk2ZjM5YS8yNzU0YmM2Ni03MTc5LTQ5YzktYTllMy00YTk3Yjg5NmYzOWEuanNvbiEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:14:55 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "390bd790-9767-4a6b-b6f4-4f4fff677602"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "6566da03-0445-4837-85f5-5d13c9577a54",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:14:56 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "Transfer-Encoding": "chunked",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "3383",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "value": [
+          },
           {
             "modelId": "27622b22-4a34-4de1-aad9-ed7db8978937",
             "createdDateTime": "2021-06-03T19:29:45Z",
@@ -3742,6 +3736,12 @@
             "apiVersion": "v2.1-preview.1"
           },
           {
+            "modelId": "28a29104-6e6d-43b0-80ea-6dac9f189b3c",
+            "createdDateTime": "2023-04-14T18:15:16Z",
+            "expirationDateTime": "2025-04-13T18:15:16Z",
+            "apiVersion": "v2.1"
+          },
+          {
             "modelId": "28a4481c-0d84-4d16-ad81-1f48cdf97973",
             "createdDateTime": "2023-04-13T22:37:54Z",
             "expirationDateTime": "2025-04-12T22:37:54Z",
@@ -3752,12 +3752,6 @@
             "createdDateTime": "2020-08-20T21:23:42Z",
             "expirationDateTime": "2022-08-20T21:23:42Z",
             "apiVersion": "v2.0"
-          },
-          {
-            "modelId": "7074d0e9-8189-473a-8261-e6c5bac2bdfe",
-            "createdDateTime": "2023-03-14T18:20:58Z",
-            "expirationDateTime": "2025-03-13T18:20:58Z",
-            "apiVersion": "2023-02-28-preview"
           },
           {
             "modelId": "28d0a948-05de-4e81-b0ce-3faedc407f89",
@@ -4139,12 +4133,6 @@
             "apiVersion": "v2.1-preview.1"
           },
           {
-            "modelId": "8d72c6ec-2d63-43c5-b749-6e4e410d4d59",
-            "createdDateTime": "2023-04-13T22:44:33Z",
-            "expirationDateTime": "2025-04-12T22:44:33Z",
-            "apiVersion": "2023-02-28-preview"
-          },
-          {
             "modelId": "2cdf6fd3-340c-4802-9572-dce3360afae6",
             "createdDateTime": "2020-10-14T21:50:17Z",
             "expirationDateTime": "2022-10-14T21:50:17Z",
@@ -4361,69 +4349,9 @@
             "createdDateTime": "2021-03-22T11:30:19Z",
             "expirationDateTime": "2023-03-22T11:30:19Z",
             "apiVersion": "v2.1-preview.3"
-          },
-          {
-            "modelId": "2f723b54-d2c1-4ad0-a74c-63bd83758767",
-            "createdDateTime": "2020-11-03T06:01:01Z",
-            "expirationDateTime": "2022-11-03T06:01:01Z",
-            "apiVersion": "v2.1-preview.1"
-          },
-          {
-            "modelId": "2fa718c2-89ac-40ec-bbed-21f4e4b5a25d",
-            "createdDateTime": "2021-05-25T19:17:30Z",
-            "expirationDateTime": "2023-05-25T19:17:30Z",
-            "apiVersion": "v2.1"
-          },
-          {
-            "modelId": "2fcb4f92-2e9a-4000-b69b-79f8497bb147",
-            "createdDateTime": "2023-04-13T22:47:49Z",
-            "expirationDateTime": "2025-04-12T22:47:49Z",
-            "apiVersion": "v2.1"
-          },
-          {
-            "modelId": "2fcc5e61-f851-497e-870c-691dab0fee51",
-            "createdDateTime": "2020-09-24T23:39:42Z",
-            "expirationDateTime": "2022-09-24T23:39:42Z",
-            "apiVersion": "v2.1-preview.1"
-          },
-          {
-            "modelId": "2fe9f8bc-91f1-4e13-925d-27d2b6241b0d",
-            "createdDateTime": "2022-08-25T18:13:15Z",
-            "expirationDateTime": "2024-08-24T18:13:15Z",
-            "apiVersion": "v2.1"
-          },
-          {
-            "modelId": "2fea9af3-0a4c-4099-8c3a-ea29c3647b90",
-            "createdDateTime": "2021-06-03T19:29:16Z",
-            "expirationDateTime": "2023-06-03T19:29:16Z",
-            "apiVersion": "v2.1"
-          },
-          {
-            "modelId": "2fee8ad5-f857-4b5b-8a66-59ca1a2314e3",
-            "createdDateTime": "2020-11-03T05:58:00Z",
-            "expirationDateTime": "2022-11-03T05:58:00Z",
-            "apiVersion": "v2.1-preview.1"
-          },
-          {
-            "modelId": "2ff93465-0c6f-4b6a-88ff-71aae6b1f596",
-            "createdDateTime": "2023-04-13T22:35:18Z",
-            "expirationDateTime": "2025-04-12T22:35:18Z",
-            "apiVersion": "v2.1"
-          },
-          {
-            "modelId": "3012252e-ef9b-4b74-b921-2a3e75b7dd68",
-            "createdDateTime": "2020-10-26T20:56:00Z",
-            "expirationDateTime": "2022-10-26T20:56:00Z",
-            "apiVersion": "v2.1-preview.1"
-          },
-          {
-            "modelId": "302681a2-2321-4b18-ae29-bc6a4f6e6d60",
-            "createdDateTime": "2020-09-10T20:28:49Z",
-            "expirationDateTime": "2022-09-10T20:28:49Z",
-            "apiVersion": "v2.0"
           }
         ],
-        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2023-02-28-preview\u0026nextLink=2!232!MDAwMTMwIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzMwMmEyNzlhLWY3ZjgtNDhlMy1hN2ZmLWNkNWNmN2ZmZjRhZi8zMDJhMjc5YS1mN2Y4LTQ4ZTMtYTdmZi1jZDVjZjdmZmY0YWYuZ3ohMDAwMDI4ITk5OTktMTItMzFUMjM6NTk6NTkuOTk5OTk5OVoh"
+        "nextLink": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/documentModels?api-version=2022-08-31\u0026nextLink=2!236!MDAwMTMyIXN1YnNjcmlwdGlvbnMvZWM5YzAyMDVhYWI2NDBkMjlhM2ViYjk3NWU3YjEyMzAvbW9kZWxzLzJmNzEyNGQ5LTdiMTQtNDA5MC1hNDZhLTliNmQ4MzA2NGM4NS8yZjcxMjRkOS03YjE0LTQwOTAtYTQ2YS05YjZkODMwNjRjODUuanNvbiEwMDAwMjghOTk5OS0xMi0zMVQyMzo1OTo1OS45OTk5OTk5WiE-"
       }
     }
   ],

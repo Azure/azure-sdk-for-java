@@ -6,18 +6,18 @@
       "RequestHeaders": {
         "Accept": "application/json",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:13:23 GMT",
+        "Date": "Thu, 20 Apr 2023 20:11:51 GMT",
         "Ocp-Apim-Subscription-Key": "REDACTED",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "fdf1befe-3987-4c97-9039-fd592bf33ea5"
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "53de08e3-b091-4253-8872-d3b971935fad"
       },
       "RequestBody": null,
       "StatusCode": 401,
       "ResponseHeaders": {
-        "apim-request-id": "dc3014bb-612c-4860-94ef-05f7c13ec068",
+        "apim-request-id": "87fa9710-ab74-4e96-9954-f0431953ee28",
         "Content-Length": "224",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:13:21 GMT"
+        "Date": "Thu, 20 Apr 2023 20:11:50 GMT"
       },
       "ResponseBody": {
         "error": {

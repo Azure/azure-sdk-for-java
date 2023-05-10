@@ -20,7 +20,6 @@ public final class CurrencyValue {
      * Currency symbol label, if any.
      */
     private String symbol;
-    private String code;
 
     /**
      * Get the amount property: Currency amount.
@@ -58,18 +57,6 @@ public final class CurrencyValue {
         this.symbol = symbol;
     }
 
-    /**
-     * Get the resolved currency code (ISO 4217), if any.
-     *
-     * @return the code value.
-     */
-    public String getCode() {
-        return code;
-    }
-
-    private void setCode(String code) {
-        this.code = code;
-    }
 
     static {
         CurrencyValueHelper.setAccessor(new CurrencyValueHelper.CurrencyValueAccessor() {
@@ -82,11 +69,6 @@ public final class CurrencyValue {
             @Override
             public void setSymbol(CurrencyValue currencyValue, String currencySymbol) {
                 currencyValue.setSymbol(currencySymbol);
-            }
-
-            @Override
-            public void setCode(CurrencyValue currencyValue, String code) {
-                currencyValue.setCode(code);
             }
         });
     }

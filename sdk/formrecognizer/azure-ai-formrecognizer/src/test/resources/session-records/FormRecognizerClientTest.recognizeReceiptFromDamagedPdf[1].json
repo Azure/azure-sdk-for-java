@@ -8,21 +8,21 @@
         "Authorization": "Sanitized",
         "Content-Length": "7",
         "Content-Type": "application/pdf",
-        "Date": "Fri, 14 Apr 2023 18:19:49 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "82a31784-cff1-4c2a-9fd5-b1ff66c1d91b"
+        "Date": "Thu, 20 Apr 2023 20:19:17 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "26c39af9-6c63-4fed-901b-1d5cb945cc60"
       },
       "RequestBody": "JVBERlVVVQ==",
       "StatusCode": 400,
       "ResponseHeaders": {
-        "apim-request-id": "d49c84f8-9844-4cb8-92fe-3453032fa728",
+        "apim-request-id": "a789676b-05e7-4a92-9df1-f687b1aa605f",
         "Content-Length": "95",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:19:47 GMT",
+        "Date": "Thu, 20 Apr 2023 20:19:17 GMT",
         "ms-azure-ai-errorcode": "BadArgument",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "5",
+        "x-envoy-upstream-service-time": "4",
         "x-ms-region": "East US"
       },
       "ResponseBody": {

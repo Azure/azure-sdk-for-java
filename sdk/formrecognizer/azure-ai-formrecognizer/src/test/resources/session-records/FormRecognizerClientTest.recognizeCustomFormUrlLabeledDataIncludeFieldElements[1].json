@@ -8,9 +8,9 @@
         "Authorization": "Sanitized",
         "Content-Length": "84",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:17:38 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "d6e0f394-91f6-4e9c-80a4-3dcbd2493770"
+        "Date": "Thu, 20 Apr 2023 20:16:20 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "38dceb84-aca0-4129-bd3b-ecff1646e890"
       },
       "RequestBody": {
         "source": "REDACTED",
@@ -21,35 +21,163 @@
       },
       "StatusCode": 201,
       "ResponseHeaders": {
-        "apim-request-id": "ec196a2e-df49-40f6-aa48-b840ffb3f6bd",
+        "apim-request-id": "8ff186a9-c50c-4705-ba91-539ba45f2104",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:17:37 GMT",
-        "Location": "https://shafangfr.cognitiveservices.azure.com/formrecognizer/v2.1/custom/models/3e4183c4-6450-4d32-a354-30c3bd2fafc8",
+        "Date": "Thu, 20 Apr 2023 20:16:21 GMT",
+        "Location": "https://REDACTED/formrecognizer/v2.1/custom/models/3e329d01-838b-40bd-8c56-29c96c0aed44",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "719",
+        "x-envoy-upstream-service-time": "898",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/3e4183c4-6450-4d32-a354-30c3bd2fafc8?includeKeys=true",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/3e329d01-838b-40bd-8c56-29c96c0aed44?includeKeys=true",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:17:44 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "de9cb29a-0e54-4325-8d1d-083b3d30d646"
+        "Date": "Thu, 20 Apr 2023 20:16:26 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "2ab46282-6677-4b6b-8592-9a93a88b2250"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "fdf52db9-0c34-46af-97fe-a6aaf179d8b2",
+        "apim-request-id": "26b58751-cc03-4db1-acef-0c1ef0890965",
         "Content-Length": "1242",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:17:42 GMT",
+        "Date": "Thu, 20 Apr 2023 20:16:26 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "22",
+        "x-ms-region": "East US"
+      },
+      "ResponseBody": {
+        "modelInfo": {
+          "modelId": "3e329d01-838b-40bd-8c56-29c96c0aed44",
+          "attributes": {
+            "isComposed": false
+          },
+          "status": "ready",
+          "createdDateTime": "2023-04-20T20:16:21Z",
+          "lastUpdatedDateTime": "2023-04-20T20:16:24Z"
+        },
+        "trainResult": {
+          "averageModelAccuracy": 0.96,
+          "trainingDocuments": [
+            {
+              "documentName": "Form_1.jpg",
+              "pages": 1,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "Form_2.jpg",
+              "pages": 1,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "Form_3.jpg",
+              "pages": 1,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "Form_4.jpg",
+              "pages": 1,
+              "status": "succeeded"
+            },
+            {
+              "documentName": "Form_5.jpg",
+              "pages": 1,
+              "status": "succeeded"
+            }
+          ],
+          "fields": [
+            {
+              "fieldName": "CompanyAddress",
+              "accuracy": 0.8
+            },
+            {
+              "fieldName": "CompanyName",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "CompanyPhoneNumber",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "DatedAs",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Email",
+              "accuracy": 0.8
+            },
+            {
+              "fieldName": "Merchant",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "PhoneNumber",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "PurchaseOrderNumber",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Quantity",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Signature",
+              "accuracy": 0.8
+            },
+            {
+              "fieldName": "Subtotal",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Tax",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Total",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "VendorName",
+              "accuracy": 0.995
+            },
+            {
+              "fieldName": "Website",
+              "accuracy": 0.995
+            }
+          ],
+          "errors": []
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/3e329d01-838b-40bd-8c56-29c96c0aed44?includeKeys=true",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Thu, 20 Apr 2023 20:16:26 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "afe43006-2fb6-4163-8107-ee3ad502e84f"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "6949015e-5416-4cca-9717-1cfeefeb6164",
+        "Content-Length": "1242",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 20 Apr 2023 20:16:26 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
         "x-envoy-upstream-service-time": "23",
@@ -57,13 +185,13 @@
       },
       "ResponseBody": {
         "modelInfo": {
-          "modelId": "3e4183c4-6450-4d32-a354-30c3bd2fafc8",
+          "modelId": "3e329d01-838b-40bd-8c56-29c96c0aed44",
           "attributes": {
             "isComposed": false
           },
           "status": "ready",
-          "createdDateTime": "2023-04-14T18:17:37Z",
-          "lastUpdatedDateTime": "2023-04-14T18:17:41Z"
+          "createdDateTime": "2023-04-20T20:16:21Z",
+          "lastUpdatedDateTime": "2023-04-20T20:16:24Z"
         },
         "trainResult": {
           "averageModelAccuracy": 0.96,
@@ -161,188 +289,60 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/3e4183c4-6450-4d32-a354-30c3bd2fafc8?includeKeys=true",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:17:44 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "ebb2685e-388b-4220-a389-6fb7fd69b9dc"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "a65866aa-53a0-47fc-b7a4-31defd803e44",
-        "Content-Length": "1242",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:17:42 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "21",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "modelInfo": {
-          "modelId": "3e4183c4-6450-4d32-a354-30c3bd2fafc8",
-          "attributes": {
-            "isComposed": false
-          },
-          "status": "ready",
-          "createdDateTime": "2023-04-14T18:17:37Z",
-          "lastUpdatedDateTime": "2023-04-14T18:17:41Z"
-        },
-        "trainResult": {
-          "averageModelAccuracy": 0.96,
-          "trainingDocuments": [
-            {
-              "documentName": "Form_1.jpg",
-              "pages": 1,
-              "status": "succeeded"
-            },
-            {
-              "documentName": "Form_2.jpg",
-              "pages": 1,
-              "status": "succeeded"
-            },
-            {
-              "documentName": "Form_3.jpg",
-              "pages": 1,
-              "status": "succeeded"
-            },
-            {
-              "documentName": "Form_4.jpg",
-              "pages": 1,
-              "status": "succeeded"
-            },
-            {
-              "documentName": "Form_5.jpg",
-              "pages": 1,
-              "status": "succeeded"
-            }
-          ],
-          "fields": [
-            {
-              "fieldName": "CompanyAddress",
-              "accuracy": 0.8
-            },
-            {
-              "fieldName": "CompanyName",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "CompanyPhoneNumber",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "DatedAs",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "Email",
-              "accuracy": 0.8
-            },
-            {
-              "fieldName": "Merchant",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "PhoneNumber",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "PurchaseOrderNumber",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "Quantity",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "Signature",
-              "accuracy": 0.8
-            },
-            {
-              "fieldName": "Subtotal",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "Tax",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "Total",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "VendorName",
-              "accuracy": 0.995
-            },
-            {
-              "fieldName": "Website",
-              "accuracy": 0.995
-            }
-          ],
-          "errors": []
-        }
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/3e4183c4-6450-4d32-a354-30c3bd2fafc8/analyze?includeTextDetails=true",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/3e329d01-838b-40bd-8c56-29c96c0aed44/analyze?includeTextDetails=true",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "21",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 18:17:44 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "b7079749-6c7d-45b1-8aba-1639eb824ae2"
+        "Date": "Thu, 20 Apr 2023 20:16:26 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "37908513-7d9b-4d33-a12b-d81cea591b01"
       },
       "RequestBody": {
         "source": "REDACTED"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "df7dbee1-9374-4fcb-a50b-03172e1adc6b",
+        "apim-request-id": "3a72d888-9e95-4a1f-ae9b-0e600ec38286",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:17:43 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/v2.1/custom/models/3e4183c4-6450-4d32-a354-30c3bd2fafc8/analyzeresults/9b224f4b-4815-4bab-89f1-84c2490878fd",
+        "Date": "Thu, 20 Apr 2023 20:16:26 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/v2.1/custom/models/3e329d01-838b-40bd-8c56-29c96c0aed44/analyzeresults/2b55b1b9-7176-4bcc-9390-8cbebfbee305",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "116",
+        "x-envoy-upstream-service-time": "115",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/3e4183c4-6450-4d32-a354-30c3bd2fafc8/analyzeResults/9b224f4b-4815-4bab-89f1-84c2490878fd",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/3e329d01-838b-40bd-8c56-29c96c0aed44/analyzeResults/2b55b1b9-7176-4bcc-9390-8cbebfbee305",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:17:50 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "156cdc84-8385-4c81-bf62-315009c0b445"
+        "Date": "Thu, 20 Apr 2023 20:16:32 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "fbff53fc-fdd4-400e-9fae-edf9052176ce"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "da71c4c7-d213-4d32-9baa-e6a663a6924b",
+        "apim-request-id": "9cd8c320-c085-41c7-9cde-d1db5aeb6b11",
         "Content-Length": "28842",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:17:49 GMT",
+        "Date": "Thu, 20 Apr 2023 20:16:31 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "41",
+        "x-envoy-upstream-service-time": "36",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:17:44Z",
-        "lastUpdatedDateTime": "2023-04-14T18:17:47Z",
+        "createdDateTime": "2023-04-20T20:16:27Z",
+        "lastUpdatedDateTime": "2023-04-20T20:16:31Z",
         "analyzeResult": {
           "version": "2.1.0",
           "readResults": [
@@ -3912,53 +3912,51 @@
           ],
           "documentResults": [
             {
-              "docType": "custom:3e4183c4-6450-4d32-a354-30c3bd2fafc8",
-              "modelId": "3e4183c4-6450-4d32-a354-30c3bd2fafc8",
+              "docType": "custom:3e329d01-838b-40bd-8c56-29c96c0aed44",
+              "modelId": "3e329d01-838b-40bd-8c56-29c96c0aed44",
               "pageRange": [
                 1,
                 1
               ],
               "fields": {
-                "CompanyName": {
+                "Email": {
                   "type": "string",
-                  "valueString": "Higgly Wiggly Books",
-                  "text": "Higgly Wiggly Books",
+                  "valueString": "accounts@herolimited.com",
+                  "text": "accounts@herolimited.com",
                   "page": 1,
                   "boundingBox": [
-                    375.0,
-                    646.0,
-                    629.0,
-                    646.0,
-                    629.0,
-                    679.0,
-                    375.0,
-                    679.0
+                    164.0,
+                    479.0,
+                    471.0,
+                    479.0,
+                    471.0,
+                    503.0,
+                    164.0,
+                    503.0
                   ],
-                  "confidence": 0.993,
+                  "confidence": 0.953,
                   "elements": [
-                    "#/readResults/0/lines/11/words/2",
-                    "#/readResults/0/lines/11/words/3",
-                    "#/readResults/0/lines/11/words/4"
+                    "#/readResults/0/lines/7/words/0"
                   ]
                 },
-                "Total": {
-                  "type": "string",
-                  "valueString": "$144.00",
-                  "text": "$144.00",
+                "Quantity": {
+                  "type": "number",
+                  "valueNumber": 20.0,
+                  "text": "20",
                   "page": 1,
                   "boundingBox": [
-                    1427.0,
-                    1669.0,
-                    1527.0,
-                    1669.0,
-                    1527.0,
-                    1698.0,
-                    1427.0,
-                    1698.0
+                    860.0,
+                    1094.0,
+                    888.0,
+                    1094.0,
+                    888.0,
+                    1119.0,
+                    860.0,
+                    1119.0
                   ],
-                  "confidence": 0.995,
+                  "confidence": 0.99,
                   "elements": [
-                    "#/readResults/0/lines/47/words/0"
+                    "#/readResults/0/lines/26/words/0"
                   ]
                 },
                 "CompanyPhoneNumber": {
@@ -3981,6 +3979,68 @@
                     "#/readResults/0/lines/14/words/1"
                   ]
                 },
+                "PhoneNumber": {
+                  "type": "string",
+                  "valueString": "555-348-6512",
+                  "text": "555-348-6512",
+                  "page": 1,
+                  "boundingBox": [
+                    365.0,
+                    351.0,
+                    525.0,
+                    351.0,
+                    525.0,
+                    378.0,
+                    365.0,
+                    378.0
+                  ],
+                  "confidence": 0.992,
+                  "elements": [
+                    "#/readResults/0/lines/3/words/2"
+                  ]
+                },
+                "PurchaseOrderNumber": {
+                  "type": "string",
+                  "valueString": "948284",
+                  "text": "948284",
+                  "page": 1,
+                  "boundingBox": [
+                    1278.0,
+                    461.0,
+                    1372.0,
+                    461.0,
+                    1372.0,
+                    489.0,
+                    1278.0,
+                    489.0
+                  ],
+                  "confidence": 0.994,
+                  "elements": [
+                    "#/readResults/0/lines/8/words/3"
+                  ]
+                },
+                "CompanyName": {
+                  "type": "string",
+                  "valueString": "Higgly Wiggly Books",
+                  "text": "Higgly Wiggly Books",
+                  "page": 1,
+                  "boundingBox": [
+                    375.0,
+                    646.0,
+                    629.0,
+                    646.0,
+                    629.0,
+                    679.0,
+                    375.0,
+                    679.0
+                  ],
+                  "confidence": 0.993,
+                  "elements": [
+                    "#/readResults/0/lines/11/words/2",
+                    "#/readResults/0/lines/11/words/3",
+                    "#/readResults/0/lines/11/words/4"
+                  ]
+                },
                 "Website": {
                   "type": "string",
                   "valueString": "www.herolimited.com",
@@ -4001,24 +4061,24 @@
                     "#/readResults/0/lines/4/words/1"
                   ]
                 },
-                "PhoneNumber": {
+                "Subtotal": {
                   "type": "string",
-                  "valueString": "555-348-6512",
-                  "text": "555-348-6512",
+                  "valueString": "$140.00",
+                  "text": "$140.00",
                   "page": 1,
                   "boundingBox": [
-                    365.0,
-                    351.0,
-                    525.0,
-                    351.0,
-                    525.0,
-                    378.0,
-                    365.0,
-                    378.0
+                    1428.0,
+                    1572.0,
+                    1528.0,
+                    1572.0,
+                    1528.0,
+                    1599.0,
+                    1428.0,
+                    1599.0
                   ],
-                  "confidence": 0.992,
+                  "confidence": 0.994,
                   "elements": [
-                    "#/readResults/0/lines/3/words/2"
+                    "#/readResults/0/lines/42/words/0"
                   ]
                 },
                 "CompanyAddress": {
@@ -4046,27 +4106,6 @@
                     "#/readResults/0/lines/13/words/1",
                     "#/readResults/0/lines/13/words/2",
                     "#/readResults/0/lines/13/words/3"
-                  ]
-                },
-                "VendorName": {
-                  "type": "string",
-                  "valueString": "Hillary Swank",
-                  "text": "Hillary Swank",
-                  "page": 1,
-                  "boundingBox": [
-                    349.0,
-                    609.0,
-                    520.0,
-                    609.0,
-                    520.0,
-                    639.0,
-                    349.0,
-                    639.0
-                  ],
-                  "confidence": 0.991,
-                  "elements": [
-                    "#/readResults/0/lines/10/words/2",
-                    "#/readResults/0/lines/10/words/3"
                   ]
                 },
                 "Signature": {
@@ -4111,104 +4150,25 @@
                     "#/readResults/0/lines/1/words/1"
                   ]
                 },
-                "Quantity": {
-                  "type": "number",
-                  "valueNumber": 20.0,
-                  "text": "20",
-                  "page": 1,
-                  "boundingBox": [
-                    860.0,
-                    1094.0,
-                    888.0,
-                    1094.0,
-                    888.0,
-                    1119.0,
-                    860.0,
-                    1119.0
-                  ],
-                  "confidence": 0.99,
-                  "elements": [
-                    "#/readResults/0/lines/26/words/0"
-                  ]
-                },
-                "Email": {
+                "VendorName": {
                   "type": "string",
-                  "valueString": "accounts@herolimited.com",
-                  "text": "accounts@herolimited.com",
+                  "valueString": "Hillary Swank",
+                  "text": "Hillary Swank",
                   "page": 1,
                   "boundingBox": [
-                    164.0,
-                    479.0,
-                    471.0,
-                    479.0,
-                    471.0,
-                    503.0,
-                    164.0,
-                    503.0
+                    349.0,
+                    609.0,
+                    520.0,
+                    609.0,
+                    520.0,
+                    639.0,
+                    349.0,
+                    639.0
                   ],
-                  "confidence": 0.953,
+                  "confidence": 0.991,
                   "elements": [
-                    "#/readResults/0/lines/7/words/0"
-                  ]
-                },
-                "Subtotal": {
-                  "type": "string",
-                  "valueString": "$140.00",
-                  "text": "$140.00",
-                  "page": 1,
-                  "boundingBox": [
-                    1428.0,
-                    1572.0,
-                    1528.0,
-                    1572.0,
-                    1528.0,
-                    1599.0,
-                    1428.0,
-                    1599.0
-                  ],
-                  "confidence": 0.994,
-                  "elements": [
-                    "#/readResults/0/lines/42/words/0"
-                  ]
-                },
-                "PurchaseOrderNumber": {
-                  "type": "string",
-                  "valueString": "948284",
-                  "text": "948284",
-                  "page": 1,
-                  "boundingBox": [
-                    1278.0,
-                    461.0,
-                    1372.0,
-                    461.0,
-                    1372.0,
-                    489.0,
-                    1278.0,
-                    489.0
-                  ],
-                  "confidence": 0.994,
-                  "elements": [
-                    "#/readResults/0/lines/8/words/3"
-                  ]
-                },
-                "Tax": {
-                  "type": "string",
-                  "valueString": "$4.00",
-                  "text": "$4.00",
-                  "page": 1,
-                  "boundingBox": [
-                    1458.0,
-                    1615.0,
-                    1529.0,
-                    1615.0,
-                    1529.0,
-                    1643.0,
-                    1458.0,
-                    1643.0
-                  ],
-                  "confidence": 0.994,
-                  "elements": [
-                    "#/readResults/0/lines/44/words/0"
+                    "#/readResults/0/lines/10/words/2",
+                    "#/readResults/0/lines/10/words/3"
                   ]
                 },
                 "DatedAs": {
@@ -4229,6 +4189,46 @@
                   "confidence": 0.994,
                   "elements": [
                     "#/readResults/0/lines/6/words/2"
+                  ]
+                },
+                "Total": {
+                  "type": "string",
+                  "valueString": "$144.00",
+                  "text": "$144.00",
+                  "page": 1,
+                  "boundingBox": [
+                    1427.0,
+                    1669.0,
+                    1527.0,
+                    1669.0,
+                    1527.0,
+                    1698.0,
+                    1427.0,
+                    1698.0
+                  ],
+                  "confidence": 0.995,
+                  "elements": [
+                    "#/readResults/0/lines/47/words/0"
+                  ]
+                },
+                "Tax": {
+                  "type": "string",
+                  "valueString": "$4.00",
+                  "text": "$4.00",
+                  "page": 1,
+                  "boundingBox": [
+                    1458.0,
+                    1615.0,
+                    1529.0,
+                    1615.0,
+                    1529.0,
+                    1643.0,
+                    1458.0,
+                    1643.0
+                  ],
+                  "confidence": 0.994,
+                  "elements": [
+                    "#/readResults/0/lines/44/words/0"
                   ]
                 }
               },
@@ -4240,32 +4240,32 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/3e4183c4-6450-4d32-a354-30c3bd2fafc8/analyzeResults/9b224f4b-4815-4bab-89f1-84c2490878fd",
+      "RequestUri": "https://REDACTED/formrecognizer/v2.1/custom/models/3e329d01-838b-40bd-8c56-29c96c0aed44/analyzeResults/2b55b1b9-7176-4bcc-9390-8cbebfbee305",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 18:17:50 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "19456a12-6820-4879-8b6b-a9b73f12414a"
+        "Date": "Thu, 20 Apr 2023 20:16:32 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "ceaf0052-3d5f-41e7-bbd9-2619348cd441"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "128d8ae5-875d-44f0-9731-b36406e395ff",
+        "apim-request-id": "e585564b-9419-408d-b0a9-b50c0851822e",
         "Content-Length": "28842",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 18:17:49 GMT",
+        "Date": "Thu, 20 Apr 2023 20:16:31 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "31",
+        "x-envoy-upstream-service-time": "34",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T18:17:44Z",
-        "lastUpdatedDateTime": "2023-04-14T18:17:47Z",
+        "createdDateTime": "2023-04-20T20:16:27Z",
+        "lastUpdatedDateTime": "2023-04-20T20:16:31Z",
         "analyzeResult": {
           "version": "2.1.0",
           "readResults": [
@@ -7835,53 +7835,51 @@
           ],
           "documentResults": [
             {
-              "docType": "custom:3e4183c4-6450-4d32-a354-30c3bd2fafc8",
-              "modelId": "3e4183c4-6450-4d32-a354-30c3bd2fafc8",
+              "docType": "custom:3e329d01-838b-40bd-8c56-29c96c0aed44",
+              "modelId": "3e329d01-838b-40bd-8c56-29c96c0aed44",
               "pageRange": [
                 1,
                 1
               ],
               "fields": {
-                "CompanyName": {
+                "Email": {
                   "type": "string",
-                  "valueString": "Higgly Wiggly Books",
-                  "text": "Higgly Wiggly Books",
+                  "valueString": "accounts@herolimited.com",
+                  "text": "accounts@herolimited.com",
                   "page": 1,
                   "boundingBox": [
-                    375.0,
-                    646.0,
-                    629.0,
-                    646.0,
-                    629.0,
-                    679.0,
-                    375.0,
-                    679.0
+                    164.0,
+                    479.0,
+                    471.0,
+                    479.0,
+                    471.0,
+                    503.0,
+                    164.0,
+                    503.0
                   ],
-                  "confidence": 0.993,
+                  "confidence": 0.953,
                   "elements": [
-                    "#/readResults/0/lines/11/words/2",
-                    "#/readResults/0/lines/11/words/3",
-                    "#/readResults/0/lines/11/words/4"
+                    "#/readResults/0/lines/7/words/0"
                   ]
                 },
-                "Total": {
-                  "type": "string",
-                  "valueString": "$144.00",
-                  "text": "$144.00",
+                "Quantity": {
+                  "type": "number",
+                  "valueNumber": 20.0,
+                  "text": "20",
                   "page": 1,
                   "boundingBox": [
-                    1427.0,
-                    1669.0,
-                    1527.0,
-                    1669.0,
-                    1527.0,
-                    1698.0,
-                    1427.0,
-                    1698.0
+                    860.0,
+                    1094.0,
+                    888.0,
+                    1094.0,
+                    888.0,
+                    1119.0,
+                    860.0,
+                    1119.0
                   ],
-                  "confidence": 0.995,
+                  "confidence": 0.99,
                   "elements": [
-                    "#/readResults/0/lines/47/words/0"
+                    "#/readResults/0/lines/26/words/0"
                   ]
                 },
                 "CompanyPhoneNumber": {
@@ -7904,6 +7902,68 @@
                     "#/readResults/0/lines/14/words/1"
                   ]
                 },
+                "PhoneNumber": {
+                  "type": "string",
+                  "valueString": "555-348-6512",
+                  "text": "555-348-6512",
+                  "page": 1,
+                  "boundingBox": [
+                    365.0,
+                    351.0,
+                    525.0,
+                    351.0,
+                    525.0,
+                    378.0,
+                    365.0,
+                    378.0
+                  ],
+                  "confidence": 0.992,
+                  "elements": [
+                    "#/readResults/0/lines/3/words/2"
+                  ]
+                },
+                "PurchaseOrderNumber": {
+                  "type": "string",
+                  "valueString": "948284",
+                  "text": "948284",
+                  "page": 1,
+                  "boundingBox": [
+                    1278.0,
+                    461.0,
+                    1372.0,
+                    461.0,
+                    1372.0,
+                    489.0,
+                    1278.0,
+                    489.0
+                  ],
+                  "confidence": 0.994,
+                  "elements": [
+                    "#/readResults/0/lines/8/words/3"
+                  ]
+                },
+                "CompanyName": {
+                  "type": "string",
+                  "valueString": "Higgly Wiggly Books",
+                  "text": "Higgly Wiggly Books",
+                  "page": 1,
+                  "boundingBox": [
+                    375.0,
+                    646.0,
+                    629.0,
+                    646.0,
+                    629.0,
+                    679.0,
+                    375.0,
+                    679.0
+                  ],
+                  "confidence": 0.993,
+                  "elements": [
+                    "#/readResults/0/lines/11/words/2",
+                    "#/readResults/0/lines/11/words/3",
+                    "#/readResults/0/lines/11/words/4"
+                  ]
+                },
                 "Website": {
                   "type": "string",
                   "valueString": "www.herolimited.com",
@@ -7924,24 +7984,24 @@
                     "#/readResults/0/lines/4/words/1"
                   ]
                 },
-                "PhoneNumber": {
+                "Subtotal": {
                   "type": "string",
-                  "valueString": "555-348-6512",
-                  "text": "555-348-6512",
+                  "valueString": "$140.00",
+                  "text": "$140.00",
                   "page": 1,
                   "boundingBox": [
-                    365.0,
-                    351.0,
-                    525.0,
-                    351.0,
-                    525.0,
-                    378.0,
-                    365.0,
-                    378.0
+                    1428.0,
+                    1572.0,
+                    1528.0,
+                    1572.0,
+                    1528.0,
+                    1599.0,
+                    1428.0,
+                    1599.0
                   ],
-                  "confidence": 0.992,
+                  "confidence": 0.994,
                   "elements": [
-                    "#/readResults/0/lines/3/words/2"
+                    "#/readResults/0/lines/42/words/0"
                   ]
                 },
                 "CompanyAddress": {
@@ -7969,27 +8029,6 @@
                     "#/readResults/0/lines/13/words/1",
                     "#/readResults/0/lines/13/words/2",
                     "#/readResults/0/lines/13/words/3"
-                  ]
-                },
-                "VendorName": {
-                  "type": "string",
-                  "valueString": "Hillary Swank",
-                  "text": "Hillary Swank",
-                  "page": 1,
-                  "boundingBox": [
-                    349.0,
-                    609.0,
-                    520.0,
-                    609.0,
-                    520.0,
-                    639.0,
-                    349.0,
-                    639.0
-                  ],
-                  "confidence": 0.991,
-                  "elements": [
-                    "#/readResults/0/lines/10/words/2",
-                    "#/readResults/0/lines/10/words/3"
                   ]
                 },
                 "Signature": {
@@ -8034,104 +8073,25 @@
                     "#/readResults/0/lines/1/words/1"
                   ]
                 },
-                "Quantity": {
-                  "type": "number",
-                  "valueNumber": 20.0,
-                  "text": "20",
-                  "page": 1,
-                  "boundingBox": [
-                    860.0,
-                    1094.0,
-                    888.0,
-                    1094.0,
-                    888.0,
-                    1119.0,
-                    860.0,
-                    1119.0
-                  ],
-                  "confidence": 0.99,
-                  "elements": [
-                    "#/readResults/0/lines/26/words/0"
-                  ]
-                },
-                "Email": {
+                "VendorName": {
                   "type": "string",
-                  "valueString": "accounts@herolimited.com",
-                  "text": "accounts@herolimited.com",
+                  "valueString": "Hillary Swank",
+                  "text": "Hillary Swank",
                   "page": 1,
                   "boundingBox": [
-                    164.0,
-                    479.0,
-                    471.0,
-                    479.0,
-                    471.0,
-                    503.0,
-                    164.0,
-                    503.0
+                    349.0,
+                    609.0,
+                    520.0,
+                    609.0,
+                    520.0,
+                    639.0,
+                    349.0,
+                    639.0
                   ],
-                  "confidence": 0.953,
+                  "confidence": 0.991,
                   "elements": [
-                    "#/readResults/0/lines/7/words/0"
-                  ]
-                },
-                "Subtotal": {
-                  "type": "string",
-                  "valueString": "$140.00",
-                  "text": "$140.00",
-                  "page": 1,
-                  "boundingBox": [
-                    1428.0,
-                    1572.0,
-                    1528.0,
-                    1572.0,
-                    1528.0,
-                    1599.0,
-                    1428.0,
-                    1599.0
-                  ],
-                  "confidence": 0.994,
-                  "elements": [
-                    "#/readResults/0/lines/42/words/0"
-                  ]
-                },
-                "PurchaseOrderNumber": {
-                  "type": "string",
-                  "valueString": "948284",
-                  "text": "948284",
-                  "page": 1,
-                  "boundingBox": [
-                    1278.0,
-                    461.0,
-                    1372.0,
-                    461.0,
-                    1372.0,
-                    489.0,
-                    1278.0,
-                    489.0
-                  ],
-                  "confidence": 0.994,
-                  "elements": [
-                    "#/readResults/0/lines/8/words/3"
-                  ]
-                },
-                "Tax": {
-                  "type": "string",
-                  "valueString": "$4.00",
-                  "text": "$4.00",
-                  "page": 1,
-                  "boundingBox": [
-                    1458.0,
-                    1615.0,
-                    1529.0,
-                    1615.0,
-                    1529.0,
-                    1643.0,
-                    1458.0,
-                    1643.0
-                  ],
-                  "confidence": 0.994,
-                  "elements": [
-                    "#/readResults/0/lines/44/words/0"
+                    "#/readResults/0/lines/10/words/2",
+                    "#/readResults/0/lines/10/words/3"
                   ]
                 },
                 "DatedAs": {
@@ -8152,6 +8112,46 @@
                   "confidence": 0.994,
                   "elements": [
                     "#/readResults/0/lines/6/words/2"
+                  ]
+                },
+                "Total": {
+                  "type": "string",
+                  "valueString": "$144.00",
+                  "text": "$144.00",
+                  "page": 1,
+                  "boundingBox": [
+                    1427.0,
+                    1669.0,
+                    1527.0,
+                    1669.0,
+                    1527.0,
+                    1698.0,
+                    1427.0,
+                    1698.0
+                  ],
+                  "confidence": 0.995,
+                  "elements": [
+                    "#/readResults/0/lines/47/words/0"
+                  ]
+                },
+                "Tax": {
+                  "type": "string",
+                  "valueString": "$4.00",
+                  "text": "$4.00",
+                  "page": 1,
+                  "boundingBox": [
+                    1458.0,
+                    1615.0,
+                    1529.0,
+                    1615.0,
+                    1529.0,
+                    1643.0,
+                    1458.0,
+                    1643.0
+                  ],
+                  "confidence": 0.994,
+                  "elements": [
+                    "#/readResults/0/lines/44/words/0"
                   ]
                 }
               },

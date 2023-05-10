@@ -1,19 +1,19 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels:build?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels:build?api-version=2022-08-31",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "119",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 19:01:12 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "a9541fb2-7c5d-4183-964b-80af1439cc17"
+        "Date": "Thu, 20 Apr 2023 20:14:48 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "59d8628e-cea0-449b-9916-6d90fbb1f897"
       },
       "RequestBody": {
-        "modelId": "3262a3e0-b6df-4add-a5db-e9c520889a8d",
+        "modelId": "d26495e5-0e58-42b4-b5cd-6b697f681e87",
         "buildMode": "template",
         "azureBlobSource": {
           "containerUrl": "REDACTED"
@@ -21,83 +21,83 @@
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "8fe57846-4489-447e-a6de-83444f387472",
+        "apim-request-id": "90dc2a63-289a-465a-91b6-de7dbfe3c1a1",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:15 GMT",
-        "operation-location": "https://REDACTED/formrecognizer/operations/31484869127_8fe57846-4489-447e-a6de-83444f387472?api-version=2023-02-28-preview",
+        "Date": "Thu, 20 Apr 2023 20:14:50 GMT",
+        "operation-location": "https://REDACTED/formrecognizer/operations/31484346311_90dc2a63-289a-465a-91b6-de7dbfe3c1a1?api-version=2022-08-31",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "3151",
+        "x-envoy-upstream-service-time": "2544",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/operations/31484869127_8fe57846-4489-447e-a6de-83444f387472?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31484346311_90dc2a63-289a-465a-91b6-de7dbfe3c1a1?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:17 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "6e5b1242-6368-4bde-bec3-3ee64cb00f7a"
+        "Date": "Thu, 20 Apr 2023 20:14:51 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "21b91e28-203d-48b1-aeb3-ec32e00ecad9"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "39e1d68f-2f48-4405-ad33-41c596193e59",
+        "apim-request-id": "d9f57484-042e-4158-a836-e3fa6ddcc2c7",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 19:01:15 GMT",
+        "Date": "Thu, 20 Apr 2023 20:14:50 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "25",
+        "x-envoy-upstream-service-time": "15",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "operationId": "31484869127_8fe57846-4489-447e-a6de-83444f387472",
+        "operationId": "31484346311_90dc2a63-289a-465a-91b6-de7dbfe3c1a1",
         "kind": "documentModelBuild",
-        "status": "notStarted",
-        "createdDateTime": "2023-04-14T19:01:12Z",
-        "lastUpdatedDateTime": "2023-04-14T19:01:12Z",
+        "status": "running",
+        "createdDateTime": "2023-04-20T20:14:48Z",
+        "lastUpdatedDateTime": "2023-04-20T20:14:51Z",
         "resourceLocation": "REDACTED"
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/operations/31484869127_8fe57846-4489-447e-a6de-83444f387472?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31484346311_90dc2a63-289a-465a-91b6-de7dbfe3c1a1?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:22 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "c183085a-f461-4e51-85dd-5bd48205cc4e"
+        "Date": "Thu, 20 Apr 2023 20:14:56 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "e4a38016-3e90-4b82-b2fb-2eabd1f619d1"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "0c3a1d77-9aba-4b50-a9f7-dfe709816c80",
+        "apim-request-id": "eac3266c-fffb-437f-9cc6-2a9bdbc5292e",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 19:01:20 GMT",
+        "Date": "Thu, 20 Apr 2023 20:14:56 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "17",
+        "x-envoy-upstream-service-time": "19",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "operationId": "31484869127_8fe57846-4489-447e-a6de-83444f387472",
+        "operationId": "31484346311_90dc2a63-289a-465a-91b6-de7dbfe3c1a1",
         "kind": "documentModelBuild",
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T19:01:12Z",
-        "lastUpdatedDateTime": "2023-04-14T19:01:16Z",
+        "createdDateTime": "2023-04-20T20:14:48Z",
+        "lastUpdatedDateTime": "2023-04-20T20:14:52Z",
         "resourceLocation": "REDACTED",
         "percentCompleted": 100,
         "result": {
           "docTypes": {
-            "3262a3e0-b6df-4add-a5db-e9c520889a8d": {
+            "d26495e5-0e58-42b4-b5cd-6b697f681e87": {
               "fieldSchema": {
                 "Merchant": {
                   "type": "string"
@@ -177,47 +177,47 @@
               }
             }
           },
-          "modelId": "3262a3e0-b6df-4add-a5db-e9c520889a8d",
-          "createdDateTime": "2023-04-14T19:01:16Z",
-          "expirationDateTime": "2025-04-13T19:01:16Z",
-          "apiVersion": "2023-02-28-preview"
+          "modelId": "d26495e5-0e58-42b4-b5cd-6b697f681e87",
+          "createdDateTime": "2023-04-20T20:14:51Z",
+          "expirationDateTime": "2025-04-19T20:14:51Z",
+          "apiVersion": "2022-08-31"
         }
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/operations/31484869127_8fe57846-4489-447e-a6de-83444f387472?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/operations/31484346311_90dc2a63-289a-465a-91b6-de7dbfe3c1a1?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:22 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "96367777-a3de-4b71-abff-340ee00ac9fc"
+        "Date": "Thu, 20 Apr 2023 20:14:56 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "74316dd1-1de1-4ee8-b70a-7d5518ff3a1c"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "7e82c623-e06b-4d7a-915a-81fd23bddbcf",
+        "apim-request-id": "b11737b7-c3e0-41cb-a439-3469501bde20",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 19:01:20 GMT",
+        "Date": "Thu, 20 Apr 2023 20:14:56 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "Transfer-Encoding": "chunked",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "17",
+        "x-envoy-upstream-service-time": "18",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
-        "operationId": "31484869127_8fe57846-4489-447e-a6de-83444f387472",
+        "operationId": "31484346311_90dc2a63-289a-465a-91b6-de7dbfe3c1a1",
         "kind": "documentModelBuild",
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T19:01:12Z",
-        "lastUpdatedDateTime": "2023-04-14T19:01:16Z",
+        "createdDateTime": "2023-04-20T20:14:48Z",
+        "lastUpdatedDateTime": "2023-04-20T20:14:52Z",
         "resourceLocation": "REDACTED",
         "percentCompleted": 100,
         "result": {
           "docTypes": {
-            "3262a3e0-b6df-4add-a5db-e9c520889a8d": {
+            "d26495e5-0e58-42b4-b5cd-6b697f681e87": {
               "fieldSchema": {
                 "Merchant": {
                   "type": "string"
@@ -297,216 +297,129 @@
               }
             }
           },
-          "modelId": "3262a3e0-b6df-4add-a5db-e9c520889a8d",
-          "createdDateTime": "2023-04-14T19:01:16Z",
-          "expirationDateTime": "2025-04-13T19:01:16Z",
-          "apiVersion": "2023-02-28-preview"
+          "modelId": "d26495e5-0e58-42b4-b5cd-6b697f681e87",
+          "createdDateTime": "2023-04-20T20:14:51Z",
+          "expirationDateTime": "2025-04-19T20:14:51Z",
+          "apiVersion": "2022-08-31"
         }
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/3262a3e0-b6df-4add-a5db-e9c520889a8d:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/d26495e5-0e58-42b4-b5cd-6b697f681e87:analyze?stringIndexType=utf16CodeUnit\u0026api-version=2022-08-31",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "24",
         "Content-Type": "application/json",
-        "Date": "Fri, 14 Apr 2023 19:01:23 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "146bb0fe-5284-41de-b4d1-d45a9d508e50"
+        "Date": "Thu, 20 Apr 2023 20:14:57 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b266c74d-dc27-4dde-b2ab-292af16c0e11"
       },
       "RequestBody": {
         "urlSource": "REDACTED"
       },
       "StatusCode": 202,
       "ResponseHeaders": {
-        "apim-request-id": "4f10c873-18d0-42cd-8d53-0f0c96480a91",
+        "apim-request-id": "b7e219ed-562c-4879-bd85-73b4e75161f7",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:22 GMT",
-        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/3262a3e0-b6df-4add-a5db-e9c520889a8d/analyzeResults/4f10c873-18d0-42cd-8d53-0f0c96480a91?api-version=2023-02-28-preview",
+        "Date": "Thu, 20 Apr 2023 20:14:57 GMT",
+        "Operation-Location": "https://REDACTED/formrecognizer/documentModels/d26495e5-0e58-42b4-b5cd-6b697f681e87/analyzeResults/b7e219ed-562c-4879-bd85-73b4e75161f7?api-version=2022-08-31",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "624",
+        "x-envoy-upstream-service-time": "568",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/3262a3e0-b6df-4add-a5db-e9c520889a8d/analyzeResults/4f10c873-18d0-42cd-8d53-0f0c96480a91?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/d26495e5-0e58-42b4-b5cd-6b697f681e87/analyzeResults/b7e219ed-562c-4879-bd85-73b4e75161f7?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:24 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "d3b3dc88-0172-4400-b5f4-775526f58830"
+        "Date": "Thu, 20 Apr 2023 20:14:58 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "f948f21d-afa0-4c77-8a16-93433da50d51"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "13a00edd-141b-46c3-ac6b-acca3e069d65",
+        "apim-request-id": "ff5d30c6-ed53-42b7-aa38-09d818f5c941",
         "Content-Length": "106",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 19:01:22 GMT",
+        "Date": "Thu, 20 Apr 2023 20:14:58 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "20",
+        "x-envoy-upstream-service-time": "19",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "running",
-        "createdDateTime": "2023-04-14T19:01:22Z",
-        "lastUpdatedDateTime": "2023-04-14T19:01:22Z"
+        "createdDateTime": "2023-04-20T20:14:57Z",
+        "lastUpdatedDateTime": "2023-04-20T20:14:57Z"
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/3262a3e0-b6df-4add-a5db-e9c520889a8d/analyzeResults/4f10c873-18d0-42cd-8d53-0f0c96480a91?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/d26495e5-0e58-42b4-b5cd-6b697f681e87/analyzeResults/b7e219ed-562c-4879-bd85-73b4e75161f7?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:29 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "7f7c9689-ac69-4307-8b7d-21428a37d77c"
+        "Date": "Thu, 20 Apr 2023 20:15:03 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "4417133a-8746-44cc-8ea4-f432d8f01adc"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "17b41595-7dfb-401b-9085-73bc1ac08e46",
+        "apim-request-id": "068a9831-c453-4a41-ac11-b0b38883869d",
         "Content-Length": "106",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 19:01:27 GMT",
+        "Date": "Thu, 20 Apr 2023 20:15:03 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "16",
+        "x-envoy-upstream-service-time": "19",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "running",
-        "createdDateTime": "2023-04-14T19:01:22Z",
-        "lastUpdatedDateTime": "2023-04-14T19:01:22Z"
+        "createdDateTime": "2023-04-20T20:14:57Z",
+        "lastUpdatedDateTime": "2023-04-20T20:14:57Z"
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/3262a3e0-b6df-4add-a5db-e9c520889a8d/analyzeResults/4f10c873-18d0-42cd-8d53-0f0c96480a91?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/d26495e5-0e58-42b4-b5cd-6b697f681e87/analyzeResults/b7e219ed-562c-4879-bd85-73b4e75161f7?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:34 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "a294a54c-7073-4b54-802e-82ec110bcd03"
+        "Date": "Thu, 20 Apr 2023 20:15:08 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "c7939b99-2ec6-4685-9093-7c703a32c60e"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "e3ae3095-b884-49f7-b7f3-512a7233177f",
-        "Content-Length": "106",
+        "apim-request-id": "c78457f6-64df-42ab-99a5-bf760f6bb292",
+        "Content-Length": "39965",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 19:01:33 GMT",
+        "Date": "Thu, 20 Apr 2023 20:15:08 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "14",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "status": "running",
-        "createdDateTime": "2023-04-14T19:01:22Z",
-        "lastUpdatedDateTime": "2023-04-14T19:01:22Z"
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/3262a3e0-b6df-4add-a5db-e9c520889a8d/analyzeResults/4f10c873-18d0-42cd-8d53-0f0c96480a91?api-version=2023-02-28-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:40 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "84c1986d-6e56-4af0-bda5-a230e1eb6985"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "2dd659ef-5e26-4bde-9b5f-a46b455f8a0d",
-        "Content-Length": "106",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 19:01:38 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "15",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "status": "running",
-        "createdDateTime": "2023-04-14T19:01:22Z",
-        "lastUpdatedDateTime": "2023-04-14T19:01:22Z"
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/3262a3e0-b6df-4add-a5db-e9c520889a8d/analyzeResults/4f10c873-18d0-42cd-8d53-0f0c96480a91?api-version=2023-02-28-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:45 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "d27d25b7-2e8b-4528-b201-319a40624fa5"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "69999c27-7e59-440e-aec3-9e09a07eb79a",
-        "Content-Length": "106",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 19:01:43 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "16",
-        "x-ms-region": "East US"
-      },
-      "ResponseBody": {
-        "status": "running",
-        "createdDateTime": "2023-04-14T19:01:22Z",
-        "lastUpdatedDateTime": "2023-04-14T19:01:22Z"
-      }
-    },
-    {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/3262a3e0-b6df-4add-a5db-e9c520889a8d/analyzeResults/4f10c873-18d0-42cd-8d53-0f0c96480a91?api-version=2023-02-28-preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json",
-        "Authorization": "Sanitized",
-        "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:50 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "8d9f3984-dd33-44e8-ad1c-5291d927c773"
-      },
-      "RequestBody": null,
-      "StatusCode": 200,
-      "ResponseHeaders": {
-        "apim-request-id": "32d50a07-bde7-4a3e-aa2e-5d253cf62180",
-        "Content-Length": "39973",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 19:01:48 GMT",
-        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
-        "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "41",
+        "x-envoy-upstream-service-time": "39",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T19:01:22Z",
-        "lastUpdatedDateTime": "2023-04-14T19:01:46Z",
+        "createdDateTime": "2023-04-20T20:14:57Z",
+        "lastUpdatedDateTime": "2023-04-20T20:15:04Z",
         "analyzeResult": {
-          "apiVersion": "2023-02-28-preview",
-          "modelId": "3262a3e0-b6df-4add-a5db-e9c520889a8d",
+          "apiVersion": "2022-08-31",
+          "modelId": "d26495e5-0e58-42b4-b5cd-6b697f681e87",
           "stringIndexType": "utf16CodeUnit",
           "content": "Company A Invoice\nInvoice For:\nAddress:\n567 Main St.\nRedmond, WA\n555-555-5555\nBilbo Baggins 123 Hobbit Lane Redmond, WA 555-555-5555\nItem\nQuantity\nPrice\nA\n1\n10.99\nB\n2\n14.67\nC\n4\n15.66\nD\n1\n12.00\nE\n4\n10.00\nF\n6\n12.00\nG\n8\n22.00\nSubtotal: 300.00\nTax: 30.00\nTip: 100.00\nTotal: 430.00\nSignature: ____Bilbo Baggins__________\n\nCompany B Invoice\nInvoice For:\nAddress:\n567 Main St.\nRedmond, WA\n555-555-5555\nFrodo Baggins 123 Hobbit Lane Redmond, WA 555-555-5555\nItem\nQuantity\nPrice\nA\n10\n100.99\nB\n20\n140.67\nC\n40\n150.66\nD\n10\n120.00\nE\n40\n100.00\nF\n60\n120.00\nG\n80\n220.00\nSubtotal: 3000.00\nTax: 300.00 Tip: 1000.00 Total: 4300.00\nSignature: ____Frodo Baggins__________",
           "pages": [
@@ -5338,7 +5251,7 @@
           "styles": [],
           "documents": [
             {
-              "docType": "3262a3e0-b6df-4add-a5db-e9c520889a8d:3262a3e0-b6df-4add-a5db-e9c520889a8d",
+              "docType": "d26495e5-0e58-42b4-b5cd-6b697f681e87:d26495e5-0e58-42b4-b5cd-6b697f681e87",
               "boundingRegions": [
                 {
                   "pageNumber": 1,
@@ -5381,30 +5294,57 @@
                 }
               ],
               "fields": {
-                "Total": {
+                "CustomerPhoneNumber": {
                   "type": "string",
-                  "valueString": "430.00",
-                  "content": "430.00",
+                  "valueString": "555-555-5555",
+                  "content": "555-555-5555",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        5.94,
-                        5.565,
-                        6.4,
-                        5.565,
-                        6.4,
-                        5.675,
-                        5.94,
-                        5.675
+                        6.01,
+                        2.12,
+                        6.935,
+                        2.12,
+                        6.935,
+                        2.225,
+                        6.01,
+                        2.225
                       ]
                     }
                   ],
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 270,
-                      "length": 6
+                      "offset": 120,
+                      "length": 12
+                    }
+                  ]
+                },
+                "FirstItem": {
+                  "type": "string",
+                  "valueString": "A",
+                  "content": "A",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        1.085,
+                        3.21,
+                        1.175,
+                        3.21,
+                        1.175,
+                        3.32,
+                        1.085,
+                        3.32
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 153,
+                      "length": 1
                     }
                   ]
                 },
@@ -5435,60 +5375,6 @@
                     }
                   ]
                 },
-                "Tax": {
-                  "type": "string",
-                  "valueString": "30.00",
-                  "content": "30.00",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        5.835,
-                        5.125,
-                        6.2,
-                        5.125,
-                        6.2,
-                        5.235,
-                        5.835,
-                        5.235
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 245,
-                      "length": 5
-                    }
-                  ]
-                },
-                "Customer2": {
-                  "type": "string",
-                  "valueString": "Frodo Baggins",
-                  "content": "Frodo Baggins",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 3,
-                      "polygon": [
-                        6.015,
-                        1.45,
-                        6.95,
-                        1.45,
-                        6.95,
-                        1.595,
-                        6.015,
-                        1.595
-                      ]
-                    }
-                  ],
-                  "confidence": 0.993,
-                  "spans": [
-                    {
-                      "offset": 395,
-                      "length": 13
-                    }
-                  ]
-                },
                 "Subtotal": {
                   "type": "string",
                   "valueString": "300.00",
@@ -5512,6 +5398,33 @@
                   "spans": [
                     {
                       "offset": 233,
+                      "length": 6
+                    }
+                  ]
+                },
+                "Tip": {
+                  "type": "string",
+                  "valueString": "100.00",
+                  "content": "100.00",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        5.81,
+                        5.345,
+                        6.26,
+                        5.345,
+                        6.26,
+                        5.455,
+                        5.81,
+                        5.455
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 256,
                       "length": 6
                     }
                   ]
@@ -5543,6 +5456,60 @@
                     }
                   ]
                 },
+                "Tax": {
+                  "type": "string",
+                  "valueString": "30.00",
+                  "content": "30.00",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        5.835,
+                        5.125,
+                        6.2,
+                        5.125,
+                        6.2,
+                        5.235,
+                        5.835,
+                        5.235
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 245,
+                      "length": 5
+                    }
+                  ]
+                },
+                "Signature2": {
+                  "type": "string",
+                  "valueString": "Frodo Baggins",
+                  "content": "____Frodo Baggins__________",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 3,
+                      "polygon": [
+                        2.07,
+                        6.655,
+                        3.09,
+                        6.655,
+                        3.09,
+                        6.8,
+                        2.07,
+                        6.8
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 623,
+                      "length": 27
+                    }
+                  ]
+                },
                 "CustomerName": {
                   "type": "string",
                   "valueString": "Bilbo Baggins",
@@ -5570,57 +5537,57 @@
                     }
                   ]
                 },
-                "MerchantPhoneNumber": {
+                "Customer2": {
                   "type": "string",
-                  "valueString": "555-555-5555",
-                  "content": "555-555-5555",
+                  "valueString": "Frodo Baggins",
+                  "content": "Frodo Baggins",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 3,
+                      "polygon": [
+                        6.015,
+                        1.45,
+                        6.95,
+                        1.45,
+                        6.95,
+                        1.595,
+                        6.015,
+                        1.595
+                      ]
+                    }
+                  ],
+                  "confidence": 0.993,
+                  "spans": [
+                    {
+                      "offset": 395,
+                      "length": 13
+                    }
+                  ]
+                },
+                "FirstPrice": {
+                  "type": "string",
+                  "valueString": "10.99",
+                  "content": "10.99",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        0.885,
-                        2.29,
-                        1.81,
-                        2.29,
-                        1.81,
-                        2.395,
-                        0.885,
-                        2.395
+                        5.425,
+                        3.21,
+                        5.78,
+                        3.21,
+                        5.78,
+                        3.32,
+                        5.425,
+                        3.32
                       ]
                     }
                   ],
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 65,
-                      "length": 12
-                    }
-                  ]
-                },
-                "MerchantAddress": {
-                  "type": "string",
-                  "valueString": "567 Main St. Redmond, WA",
-                  "content": "567 Main St.\nRedmond, WA",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        0.885,
-                        1.845,
-                        1.855,
-                        1.845,
-                        1.855,
-                        2.2,
-                        0.885,
-                        2.2
-                      ]
-                    }
-                  ],
-                  "confidence": 0.986,
-                  "spans": [
-                    {
-                      "offset": 40,
-                      "length": 24
+                      "offset": 157,
+                      "length": 5
                     }
                   ]
                 },
@@ -5651,30 +5618,57 @@
                     }
                   ]
                 },
-                "FirstItem": {
+                "Total": {
                   "type": "string",
-                  "valueString": "A",
-                  "content": "A",
+                  "valueString": "430.00",
+                  "content": "430.00",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        1.085,
-                        3.21,
-                        1.175,
-                        3.21,
-                        1.175,
-                        3.32,
-                        1.085,
-                        3.32
+                        5.94,
+                        5.565,
+                        6.4,
+                        5.565,
+                        6.4,
+                        5.675,
+                        5.94,
+                        5.675
                       ]
                     }
                   ],
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 153,
-                      "length": 1
+                      "offset": 270,
+                      "length": 6
+                    }
+                  ]
+                },
+                "MerchantAddress": {
+                  "type": "string",
+                  "valueString": "567 Main St. Redmond, WA",
+                  "content": "567 Main St.\nRedmond, WA",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        0.885,
+                        1.845,
+                        1.855,
+                        1.845,
+                        1.855,
+                        2.2,
+                        0.885,
+                        2.2
+                      ]
+                    }
+                  ],
+                  "confidence": 0.986,
+                  "spans": [
+                    {
+                      "offset": 40,
+                      "length": 24
                     }
                   ]
                 },
@@ -5732,57 +5726,30 @@
                     }
                   ]
                 },
-                "Signature2": {
+                "MerchantPhoneNumber": {
                   "type": "string",
-                  "valueString": "Frodo Baggins",
-                  "content": "____Frodo Baggins__________",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 3,
-                      "polygon": [
-                        2.07,
-                        6.655,
-                        3.09,
-                        6.655,
-                        3.09,
-                        6.8,
-                        2.07,
-                        6.8
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 623,
-                      "length": 27
-                    }
-                  ]
-                },
-                "FirstPrice": {
-                  "type": "string",
-                  "valueString": "10.99",
-                  "content": "10.99",
+                  "valueString": "555-555-5555",
+                  "content": "555-555-5555",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        5.425,
-                        3.21,
-                        5.78,
-                        3.21,
-                        5.78,
-                        3.32,
-                        5.425,
-                        3.32
+                        0.885,
+                        2.29,
+                        1.81,
+                        2.29,
+                        1.81,
+                        2.395,
+                        0.885,
+                        2.395
                       ]
                     }
                   ],
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 157,
-                      "length": 5
+                      "offset": 65,
+                      "length": 12
                     }
                   ]
                 },
@@ -5810,60 +5777,6 @@
                     {
                       "offset": 288,
                       "length": 27
-                    }
-                  ]
-                },
-                "Tip": {
-                  "type": "string",
-                  "valueString": "100.00",
-                  "content": "100.00",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        5.81,
-                        5.345,
-                        6.26,
-                        5.345,
-                        6.26,
-                        5.455,
-                        5.81,
-                        5.455
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 256,
-                      "length": 6
-                    }
-                  ]
-                },
-                "CustomerPhoneNumber": {
-                  "type": "string",
-                  "valueString": "555-555-5555",
-                  "content": "555-555-5555",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        6.01,
-                        2.12,
-                        6.935,
-                        2.12,
-                        6.935,
-                        2.225,
-                        6.01,
-                        2.225
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 120,
-                      "length": 12
                     }
                   ]
                 }
@@ -5881,59 +5794,59 @@
       }
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/3262a3e0-b6df-4add-a5db-e9c520889a8d?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/d26495e5-0e58-42b4-b5cd-6b697f681e87?api-version=2022-08-31",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:50 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "c916d309-63f5-454d-84e0-d68ab085d805"
+        "Date": "Thu, 20 Apr 2023 20:15:08 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "dc753f7b-9679-46c2-bd11-18b1d80a001a"
       },
       "RequestBody": null,
       "StatusCode": 204,
       "ResponseHeaders": {
-        "apim-request-id": "193accbc-42e6-4c0b-81e1-597163b91458",
+        "apim-request-id": "400b7e74-c3f7-4f89-b74f-cb009e1f58f0",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:48 GMT",
+        "Date": "Thu, 20 Apr 2023 20:15:08 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "66",
+        "x-envoy-upstream-service-time": "62",
         "x-ms-region": "East US"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/formrecognizer/documentModels/3262a3e0-b6df-4add-a5db-e9c520889a8d/analyzeResults/4f10c873-18d0-42cd-8d53-0f0c96480a91?api-version=2023-02-28-preview",
+      "RequestUri": "https://REDACTED/formrecognizer/documentModels/d26495e5-0e58-42b4-b5cd-6b697f681e87/analyzeResults/b7e219ed-562c-4879-bd85-73b4e75161f7?api-version=2022-08-31",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/json",
         "Authorization": "Sanitized",
         "Content-Length": "0",
-        "Date": "Fri, 14 Apr 2023 19:01:50 GMT",
-        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-        "x-ms-client-request-id": "05e292e9-8865-411f-a5e8-fcc2f7132264"
+        "Date": "Thu, 20 Apr 2023 20:15:08 GMT",
+        "User-Agent": "azsdk-java-azure-ai-formrecognizer/4.0.6 (17.0.1; Windows 11; 10.0)",
+        "x-ms-client-request-id": "ac48a0b0-72a6-4203-98f9-978e313aeff3"
       },
       "RequestBody": null,
       "StatusCode": 200,
       "ResponseHeaders": {
-        "apim-request-id": "af53a84f-7601-4818-bb74-b2468c8b657a",
-        "Content-Length": "39973",
+        "apim-request-id": "1624e5cc-263f-4626-958c-cc83c6afc2f9",
+        "Content-Length": "39965",
         "Content-Type": "application/json; charset=utf-8",
-        "Date": "Fri, 14 Apr 2023 19:01:49 GMT",
+        "Date": "Thu, 20 Apr 2023 20:15:08 GMT",
         "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
         "X-Content-Type-Options": "nosniff",
-        "x-envoy-upstream-service-time": "44",
+        "x-envoy-upstream-service-time": "35",
         "x-ms-region": "East US"
       },
       "ResponseBody": {
         "status": "succeeded",
-        "createdDateTime": "2023-04-14T19:01:22Z",
-        "lastUpdatedDateTime": "2023-04-14T19:01:46Z",
+        "createdDateTime": "2023-04-20T20:14:57Z",
+        "lastUpdatedDateTime": "2023-04-20T20:15:04Z",
         "analyzeResult": {
-          "apiVersion": "2023-02-28-preview",
-          "modelId": "3262a3e0-b6df-4add-a5db-e9c520889a8d",
+          "apiVersion": "2022-08-31",
+          "modelId": "d26495e5-0e58-42b4-b5cd-6b697f681e87",
           "stringIndexType": "utf16CodeUnit",
           "content": "Company A Invoice\nInvoice For:\nAddress:\n567 Main St.\nRedmond, WA\n555-555-5555\nBilbo Baggins 123 Hobbit Lane Redmond, WA 555-555-5555\nItem\nQuantity\nPrice\nA\n1\n10.99\nB\n2\n14.67\nC\n4\n15.66\nD\n1\n12.00\nE\n4\n10.00\nF\n6\n12.00\nG\n8\n22.00\nSubtotal: 300.00\nTax: 30.00\nTip: 100.00\nTotal: 430.00\nSignature: ____Bilbo Baggins__________\n\nCompany B Invoice\nInvoice For:\nAddress:\n567 Main St.\nRedmond, WA\n555-555-5555\nFrodo Baggins 123 Hobbit Lane Redmond, WA 555-555-5555\nItem\nQuantity\nPrice\nA\n10\n100.99\nB\n20\n140.67\nC\n40\n150.66\nD\n10\n120.00\nE\n40\n100.00\nF\n60\n120.00\nG\n80\n220.00\nSubtotal: 3000.00\nTax: 300.00 Tip: 1000.00 Total: 4300.00\nSignature: ____Frodo Baggins__________",
           "pages": [
@@ -10765,7 +10678,7 @@
           "styles": [],
           "documents": [
             {
-              "docType": "3262a3e0-b6df-4add-a5db-e9c520889a8d:3262a3e0-b6df-4add-a5db-e9c520889a8d",
+              "docType": "d26495e5-0e58-42b4-b5cd-6b697f681e87:d26495e5-0e58-42b4-b5cd-6b697f681e87",
               "boundingRegions": [
                 {
                   "pageNumber": 1,
@@ -10808,30 +10721,57 @@
                 }
               ],
               "fields": {
-                "Total": {
+                "CustomerPhoneNumber": {
                   "type": "string",
-                  "valueString": "430.00",
-                  "content": "430.00",
+                  "valueString": "555-555-5555",
+                  "content": "555-555-5555",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        5.94,
-                        5.565,
-                        6.4,
-                        5.565,
-                        6.4,
-                        5.675,
-                        5.94,
-                        5.675
+                        6.01,
+                        2.12,
+                        6.935,
+                        2.12,
+                        6.935,
+                        2.225,
+                        6.01,
+                        2.225
                       ]
                     }
                   ],
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 270,
-                      "length": 6
+                      "offset": 120,
+                      "length": 12
+                    }
+                  ]
+                },
+                "FirstItem": {
+                  "type": "string",
+                  "valueString": "A",
+                  "content": "A",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        1.085,
+                        3.21,
+                        1.175,
+                        3.21,
+                        1.175,
+                        3.32,
+                        1.085,
+                        3.32
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 153,
+                      "length": 1
                     }
                   ]
                 },
@@ -10862,60 +10802,6 @@
                     }
                   ]
                 },
-                "Tax": {
-                  "type": "string",
-                  "valueString": "30.00",
-                  "content": "30.00",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        5.835,
-                        5.125,
-                        6.2,
-                        5.125,
-                        6.2,
-                        5.235,
-                        5.835,
-                        5.235
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 245,
-                      "length": 5
-                    }
-                  ]
-                },
-                "Customer2": {
-                  "type": "string",
-                  "valueString": "Frodo Baggins",
-                  "content": "Frodo Baggins",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 3,
-                      "polygon": [
-                        6.015,
-                        1.45,
-                        6.95,
-                        1.45,
-                        6.95,
-                        1.595,
-                        6.015,
-                        1.595
-                      ]
-                    }
-                  ],
-                  "confidence": 0.993,
-                  "spans": [
-                    {
-                      "offset": 395,
-                      "length": 13
-                    }
-                  ]
-                },
                 "Subtotal": {
                   "type": "string",
                   "valueString": "300.00",
@@ -10939,6 +10825,33 @@
                   "spans": [
                     {
                       "offset": 233,
+                      "length": 6
+                    }
+                  ]
+                },
+                "Tip": {
+                  "type": "string",
+                  "valueString": "100.00",
+                  "content": "100.00",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        5.81,
+                        5.345,
+                        6.26,
+                        5.345,
+                        6.26,
+                        5.455,
+                        5.81,
+                        5.455
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 256,
                       "length": 6
                     }
                   ]
@@ -10970,6 +10883,60 @@
                     }
                   ]
                 },
+                "Tax": {
+                  "type": "string",
+                  "valueString": "30.00",
+                  "content": "30.00",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        5.835,
+                        5.125,
+                        6.2,
+                        5.125,
+                        6.2,
+                        5.235,
+                        5.835,
+                        5.235
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 245,
+                      "length": 5
+                    }
+                  ]
+                },
+                "Signature2": {
+                  "type": "string",
+                  "valueString": "Frodo Baggins",
+                  "content": "____Frodo Baggins__________",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 3,
+                      "polygon": [
+                        2.07,
+                        6.655,
+                        3.09,
+                        6.655,
+                        3.09,
+                        6.8,
+                        2.07,
+                        6.8
+                      ]
+                    }
+                  ],
+                  "confidence": 0.99,
+                  "spans": [
+                    {
+                      "offset": 623,
+                      "length": 27
+                    }
+                  ]
+                },
                 "CustomerName": {
                   "type": "string",
                   "valueString": "Bilbo Baggins",
@@ -10997,57 +10964,57 @@
                     }
                   ]
                 },
-                "MerchantPhoneNumber": {
+                "Customer2": {
                   "type": "string",
-                  "valueString": "555-555-5555",
-                  "content": "555-555-5555",
+                  "valueString": "Frodo Baggins",
+                  "content": "Frodo Baggins",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 3,
+                      "polygon": [
+                        6.015,
+                        1.45,
+                        6.95,
+                        1.45,
+                        6.95,
+                        1.595,
+                        6.015,
+                        1.595
+                      ]
+                    }
+                  ],
+                  "confidence": 0.993,
+                  "spans": [
+                    {
+                      "offset": 395,
+                      "length": 13
+                    }
+                  ]
+                },
+                "FirstPrice": {
+                  "type": "string",
+                  "valueString": "10.99",
+                  "content": "10.99",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        0.885,
-                        2.29,
-                        1.81,
-                        2.29,
-                        1.81,
-                        2.395,
-                        0.885,
-                        2.395
+                        5.425,
+                        3.21,
+                        5.78,
+                        3.21,
+                        5.78,
+                        3.32,
+                        5.425,
+                        3.32
                       ]
                     }
                   ],
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 65,
-                      "length": 12
-                    }
-                  ]
-                },
-                "MerchantAddress": {
-                  "type": "string",
-                  "valueString": "567 Main St. Redmond, WA",
-                  "content": "567 Main St.\nRedmond, WA",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        0.885,
-                        1.845,
-                        1.855,
-                        1.845,
-                        1.855,
-                        2.2,
-                        0.885,
-                        2.2
-                      ]
-                    }
-                  ],
-                  "confidence": 0.986,
-                  "spans": [
-                    {
-                      "offset": 40,
-                      "length": 24
+                      "offset": 157,
+                      "length": 5
                     }
                   ]
                 },
@@ -11078,30 +11045,57 @@
                     }
                   ]
                 },
-                "FirstItem": {
+                "Total": {
                   "type": "string",
-                  "valueString": "A",
-                  "content": "A",
+                  "valueString": "430.00",
+                  "content": "430.00",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        1.085,
-                        3.21,
-                        1.175,
-                        3.21,
-                        1.175,
-                        3.32,
-                        1.085,
-                        3.32
+                        5.94,
+                        5.565,
+                        6.4,
+                        5.565,
+                        6.4,
+                        5.675,
+                        5.94,
+                        5.675
                       ]
                     }
                   ],
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 153,
-                      "length": 1
+                      "offset": 270,
+                      "length": 6
+                    }
+                  ]
+                },
+                "MerchantAddress": {
+                  "type": "string",
+                  "valueString": "567 Main St. Redmond, WA",
+                  "content": "567 Main St.\nRedmond, WA",
+                  "boundingRegions": [
+                    {
+                      "pageNumber": 1,
+                      "polygon": [
+                        0.885,
+                        1.845,
+                        1.855,
+                        1.845,
+                        1.855,
+                        2.2,
+                        0.885,
+                        2.2
+                      ]
+                    }
+                  ],
+                  "confidence": 0.986,
+                  "spans": [
+                    {
+                      "offset": 40,
+                      "length": 24
                     }
                   ]
                 },
@@ -11159,57 +11153,30 @@
                     }
                   ]
                 },
-                "Signature2": {
+                "MerchantPhoneNumber": {
                   "type": "string",
-                  "valueString": "Frodo Baggins",
-                  "content": "____Frodo Baggins__________",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 3,
-                      "polygon": [
-                        2.07,
-                        6.655,
-                        3.09,
-                        6.655,
-                        3.09,
-                        6.8,
-                        2.07,
-                        6.8
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 623,
-                      "length": 27
-                    }
-                  ]
-                },
-                "FirstPrice": {
-                  "type": "string",
-                  "valueString": "10.99",
-                  "content": "10.99",
+                  "valueString": "555-555-5555",
+                  "content": "555-555-5555",
                   "boundingRegions": [
                     {
                       "pageNumber": 1,
                       "polygon": [
-                        5.425,
-                        3.21,
-                        5.78,
-                        3.21,
-                        5.78,
-                        3.32,
-                        5.425,
-                        3.32
+                        0.885,
+                        2.29,
+                        1.81,
+                        2.29,
+                        1.81,
+                        2.395,
+                        0.885,
+                        2.395
                       ]
                     }
                   ],
                   "confidence": 0.99,
                   "spans": [
                     {
-                      "offset": 157,
-                      "length": 5
+                      "offset": 65,
+                      "length": 12
                     }
                   ]
                 },
@@ -11237,60 +11204,6 @@
                     {
                       "offset": 288,
                       "length": 27
-                    }
-                  ]
-                },
-                "Tip": {
-                  "type": "string",
-                  "valueString": "100.00",
-                  "content": "100.00",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        5.81,
-                        5.345,
-                        6.26,
-                        5.345,
-                        6.26,
-                        5.455,
-                        5.81,
-                        5.455
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 256,
-                      "length": 6
-                    }
-                  ]
-                },
-                "CustomerPhoneNumber": {
-                  "type": "string",
-                  "valueString": "555-555-5555",
-                  "content": "555-555-5555",
-                  "boundingRegions": [
-                    {
-                      "pageNumber": 1,
-                      "polygon": [
-                        6.01,
-                        2.12,
-                        6.935,
-                        2.12,
-                        6.935,
-                        2.225,
-                        6.01,
-                        2.225
-                      ]
-                    }
-                  ],
-                  "confidence": 0.99,
-                  "spans": [
-                    {
-                      "offset": 120,
-                      "length": 12
                     }
                   ]
                 }
