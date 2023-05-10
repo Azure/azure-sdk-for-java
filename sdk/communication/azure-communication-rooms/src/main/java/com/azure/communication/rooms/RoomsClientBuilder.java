@@ -39,6 +39,25 @@ import java.util.Objects;
 
 /**
  * RoomsClientBuilder that creates RoomsAsyncClient and RoomsClient.
+ * <p>
+ * <strong>Instantiating a Rooms CLient Builder</strong>
+ * </p>
+ *
+ * <p>
+ * <strong>Using room client builder build a Rooms Client</strong>
+ * </p>
+ *
+ * <!-- src_embed readme-sample-createRoomsClientUsingAzureKeyCredential
+ * -->
+ *
+ * <pre>
+ * RoomsClient roomsClient = new RoomsClientBuilder()
+ *      .endpoint&#40;endpoint&#41;
+ *      .credential&#40;azureKeyCredential&#41;
+ *      .buildClient&#40;&#41;;
+ * </pre>
+ *
+ * <!-- end readme-sample-createRoomsClientUsingAzureKeyCredential -->
  */
 @ServiceClientBuilder(serviceClients = {RoomsClient.class, RoomsAsyncClient.class})
 public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientBuilder>, ConnectionStringTrait<RoomsClientBuilder>, TokenCredentialTrait<RoomsClientBuilder>, AzureKeyCredentialTrait<RoomsClientBuilder>, EndpointTrait<RoomsClientBuilder> {
@@ -66,6 +85,7 @@ public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientB
      * @param endpoint url of the service
      * @return RoomsClientBuilder
      */
+    @Override
     public RoomsClientBuilder endpoint(String endpoint) {
         this.endpoint = Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
         return this;
@@ -90,6 +110,7 @@ public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientB
      * @return The updated {@link RoomsClientBuilder} object.
      * @throws NullPointerException If {@code tokenCredential} is null.
      */
+    @Override
     public RoomsClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = Objects.requireNonNull(tokenCredential, "'tokenCredential' cannot be null.");
         return this;
@@ -102,6 +123,7 @@ public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientB
      * @return The updated {@link RoomsClientBuilder} object.
      * @throws NullPointerException If {@code keyCredential} is null.
      */
+    @Override
     public RoomsClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
         return this;
@@ -113,6 +135,7 @@ public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientB
      * @param connectionString connection string for setting endpoint and initalizing AzureKeyCredential
      * @return RoomsClientBuilder
      */
+    @Override
     public RoomsClientBuilder connectionString(String connectionString) {
         Objects.requireNonNull(connectionString, "'connectionString' cannot be null.");
         CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
@@ -141,6 +164,7 @@ public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientB
      * @param configuration Configuration store used to retrieve environment configurations.
      * @return the updated RoomsClientBuilder object
      */
+    @Override
     public RoomsClientBuilder configuration(Configuration configuration) {
         this.configuration = Objects.requireNonNull(configuration, "'configuration' cannot be null.");
         return this;
@@ -249,6 +273,7 @@ public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientB
         this.clientOptions = clientOptions;
         return this;
     }
+
     private HttpPipelinePolicy createHttpPipelineAuthPolicy() {
         if (this.tokenCredential != null && this.azureKeyCredential != null) {
             throw logger.logExceptionAsError(
