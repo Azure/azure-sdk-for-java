@@ -1780,7 +1780,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         // The operation performing recurring renewal by subscribing to 'renewalMono' before the message expires each time.
         // The periodic renewal stops when the object is disposed of, or when the 'maxRenewalDuration' elapses.
         final LockRenewalOperation recurringRenewal = new LockRenewalOperation(lockToken, maxRenewalDuration, false, __ -> renewalMono, initialExpireAt);
-        // TODO: anu ^ - (alloc improvement)
+        // TODO: anu ^ - (allocation improvement)
         //  Update LockRenewalOperation::Ctr to take Mono<OffsetDateTime> instead of a Function<String, Mono<OffsetDateTime>>
         try {
             // Track the recurring renewal operation in client scope so that it can be disposed of (to prevent memory leak)
