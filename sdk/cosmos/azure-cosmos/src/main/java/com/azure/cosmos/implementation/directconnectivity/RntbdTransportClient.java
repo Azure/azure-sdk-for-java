@@ -279,11 +279,16 @@ public class RntbdTransportClient extends TransportClient {
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
 
+        final RntbdEndpoint.Config config = this.endpointProvider.config();
+
+        final int minConnectionPoolSizePerEndpoint = (config != null) ?
+                config.minConnectionPoolSizePerEndpoint() : Configs.getMinConnectionPoolSizePerEndpoint();
+
         final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(
                 request.requestContext.locationEndpointToRoute,
                 addressUri,
                 this.proactiveOpenConnectionsProcessor,
-                this.endpointProvider.config().minConnectionPoolSizePerEndpoint());
+                minConnectionPoolSizePerEndpoint);
 
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
