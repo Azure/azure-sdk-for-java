@@ -6,6 +6,8 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.util.Collection;
+
 /**
  * Defines values for SummarySentencesOrder.
  */
@@ -29,5 +31,10 @@ public final class SummarySentencesOrder extends ExpandableStringEnum<SummarySen
      */
     public static SummarySentencesOrder fromString(String name) {
         return fromString(name, SummarySentencesOrder.class);
+    }
+
+    /** @return known SummarySentencesOrder values. */
+    public static Collection<SummarySentencesOrder> values() {
+        return values(SummarySentencesOrder.class);
     }
 }

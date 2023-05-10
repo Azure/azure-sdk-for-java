@@ -19,7 +19,6 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -37,7 +36,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
 
 class JobRouterTestBase extends TestBase {
     protected static final String JAVA_LIVE_TESTS = "JAVA_LIVE_TESTS";
@@ -50,9 +48,25 @@ class JobRouterTestBase extends TestBase {
         return connectionString;
     }
 
-    <T> T clientSetup(Function<HttpPipeline, T> clientBuilder) {
-        HttpClient httpClient;
+    protected RouterAdministrationClient getRouterAdministrationClient(HttpClient client) {
+        HttpPipeline httpPipeline = buildHttpPipeline(client);
+        RouterAdministrationClient routerAdministrationClient = new RouterAdministrationClientBuilder()
+            .connectionString(getConnectionString())
+            .pipeline(httpPipeline)
+            .buildClient();
+        return routerAdministrationClient;
+    }
 
+    protected RouterClient getRouterClient(HttpClient client) {
+        HttpPipeline httpPipeline = buildHttpPipeline(client);
+        RouterClient routerClient = new RouterClientBuilder()
+            .connectionString(getConnectionString())
+            .pipeline(httpPipeline)
+            .buildClient();
+        return routerClient;
+    }
+
+    private HttpPipeline buildHttpPipeline(HttpClient httpClient) {
         CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
         AzureKeyCredential credential = new AzureKeyCredential(connectionString.getAccessKey());
 
@@ -72,8 +86,6 @@ class JobRouterTestBase extends TestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             httpClient = interceptorManager.getPlaybackClient();
-        } else {
-            httpClient = new NettyAsyncHttpClientBuilder().wiretap(true).build();
         }
         policies.add(interceptorManager.getRecordPolicy());
 
@@ -82,10 +94,7 @@ class JobRouterTestBase extends TestBase {
             .httpClient(httpClient)
             .build();
 
-        T client;
-        client = clientBuilder.apply(pipeline);
-
-        return Objects.requireNonNull(client);
+        return pipeline;
     }
 
     protected JobQueue createQueue(RouterAdministrationClient routerAdminClient, String queueId, String distributionPolicyId) {

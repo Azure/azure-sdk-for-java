@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CommunicationIdentifierModelKind. */
+/** Type of CommunicationIdentifierModel. */
 public final class CommunicationIdentifierModelKind extends ExpandableStringEnum<CommunicationIdentifierModelKind> {
     /** Static value unknown for CommunicationIdentifierModelKind. */
     public static final CommunicationIdentifierModelKind UNKNOWN = fromString("unknown");
@@ -21,6 +21,14 @@ public final class CommunicationIdentifierModelKind extends ExpandableStringEnum
 
     /** Static value microsoftTeamsUser for CommunicationIdentifierModelKind. */
     public static final CommunicationIdentifierModelKind MICROSOFT_TEAMS_USER = fromString("microsoftTeamsUser");
+
+    /**
+     * Creates a new instance of CommunicationIdentifierModelKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CommunicationIdentifierModelKind() {}
 
     /**
      * Creates or finds a CommunicationIdentifierModelKind from its string representation.

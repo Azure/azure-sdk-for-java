@@ -114,7 +114,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
         ConfigurationAsyncClient client = getAsyncClient();
 
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string
-        client.getConfigurationSetting("prodDBConnection", null)
+        client.getConfigurationSetting("prodDBConnection", "westUS")
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string
@@ -124,7 +124,7 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
          */
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string-OffsetDateTime
         client.getConfigurationSetting(
-            "prodDBConnection", null, OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1))
+            "prodDBConnection", "westUS", OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1))
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string-OffsetDateTime
@@ -157,13 +157,13 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     public void deleteConfigurationSettingsCodeSnippet() {
         ConfigurationAsyncClient client = getAsyncClient();
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#string-string
-        client.deleteConfigurationSetting("prodDBConnection", null)
+        client.deleteConfigurationSetting("prodDBConnection", "westUS")
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getLabel(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#string-string
 
         // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#ConfigurationSetting
-        client.deleteConfigurationSetting(new ConfigurationSetting().setKey("prodDBConnection"))
+        client.deleteConfigurationSetting(new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"))
             .subscribe(response -> System.out.printf("Key: %s, Label: %s, Value: %s",
                 response.getKey(), response.getValue()));
         // END: com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#ConfigurationSetting

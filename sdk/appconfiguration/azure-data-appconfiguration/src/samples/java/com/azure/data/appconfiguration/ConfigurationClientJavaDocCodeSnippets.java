@@ -179,7 +179,7 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string
         ConfigurationSetting resultNoDateTime =
-            configurationClient.getConfigurationSetting("prodDBConnection", null);
+            configurationClient.getConfigurationSetting("prodDBConnection", "westUS");
         System.out.printf("Key: %s, Value: %s", resultNoDateTime.getKey(), resultNoDateTime.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string
 
@@ -188,13 +188,13 @@ public final class ConfigurationClientJavaDocCodeSnippets {
      */
         // BEGIN: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime
         ConfigurationSetting result =
-            configurationClient.getConfigurationSetting("prodDBConnection", null, null);
+            configurationClient.getConfigurationSetting("prodDBConnection", "westUS", null);
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string-OffsetDateTime
 
         // BEGIN: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting
         ConfigurationSetting setting = configurationClient.getConfigurationSetting(
-            new ConfigurationSetting().setKey("prodDBConnection"));
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"));
         System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting
 
@@ -218,13 +218,13 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     public void deleteConfigurationSetting() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string
-        ConfigurationSetting result = configurationClient.deleteConfigurationSetting("prodDBConnection", null);
+        ConfigurationSetting result = configurationClient.deleteConfigurationSetting("prodDBConnection", "westUS");
         System.out.printf("Key: %s, Value: %s", result.getKey(), result.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#string-string
 
         // BEGIN: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting
         ConfigurationSetting setting = configurationClient.deleteConfigurationSetting(
-            new ConfigurationSetting().setKey("prodDBConnection"));
+            new ConfigurationSetting().setKey("prodDBConnection").setLabel("westUS"));
         System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         // END: com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting
 

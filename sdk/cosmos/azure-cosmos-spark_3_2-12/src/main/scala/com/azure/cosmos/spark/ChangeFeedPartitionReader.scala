@@ -78,6 +78,7 @@ private case class ChangeFeedPartitionReader
     val options = CosmosChangeFeedRequestOptions
       .createForProcessingFromContinuation(this.partition.continuationState.get)
       .setMaxItemCount(readConfig.maxItemCount)
+    ThroughputControlHelper.populateThroughputControlGroupName(options, readConfig.throughputControlConfig)
 
     var factoryMethod: java.util.function.Function[JsonNode, _] = (_: JsonNode) => {}
       cosmosChangeFeedConfig.changeFeedMode match {
