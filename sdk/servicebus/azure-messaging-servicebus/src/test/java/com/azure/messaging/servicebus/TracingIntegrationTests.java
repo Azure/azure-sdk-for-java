@@ -165,7 +165,6 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         CountDownLatch processedFound = new CountDownLatch(1);
         spanProcessor.notifyIfCondition(processedFound, s -> s.getName().equals("ServiceBus.process"));
 
-        AtomicReference<ServiceBusReceivedMessage> received = new AtomicReference<>();
         StepVerifier.create(receiver.receiveMessages()
             .next()
             .flatMap(msg -> receiver.renewMessageLock(msg, Duration.ofSeconds(10))
@@ -174,10 +173,10 @@ public class TracingIntegrationTests extends IntegrationTestBase {
                 List<ReadableSpan> spans = spanProcessor.getEndedSpans();
 
                 List<ReadableSpan> processed = findSpans(spans, "ServiceBus.process");
-                assertConsumerSpan(processed.get(0), received.get(), "ServiceBus.process");
+                assertConsumerSpan(processed.get(0), msg, "ServiceBus.process");
 
                 List<ReadableSpan> renewLock = findSpans(spans, "ServiceBus.renewMessageLock");
-                assertClientSpan(renewLock.get(0), Collections.singletonList(received.get()), "ServiceBus.renewMessageLock", null);
+                assertClientSpan(renewLock.get(0), Collections.singletonList(msg), "ServiceBus.renewMessageLock", null);
             })
             .verifyComplete();
         assertTrue(processedFound.await(20, TimeUnit.SECONDS));
