@@ -18,7 +18,6 @@ import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.protocol.ProtocolVersion;
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.SocketOptions;
-import redis.clients.jedis.Jedis;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;

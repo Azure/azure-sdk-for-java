@@ -10,7 +10,7 @@
 
 #### Prerequisites
 - Configuration of Role and Role Assignments is required before using the sample code in this document.
-- Familiarity with the [Redisson](https://github.com/redisson/redisson) and [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) client libraries is required.
+- Familiarity with the [Redisson](https://github.com/redisson/redisson) and [Azure Identity for Java](https://learn.microsoft.com/azure/developer/java/sdk/identity) client libraries is required.
 - **Dependency Requirements:**
    ```xml
     <dependency>
@@ -76,14 +76,14 @@ redisson.shutdown();
 ```
 
 ##### Supported Token Credentials for Azure AD Authentication
-**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch an Azure AD access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://docs.microsoft.com/azure/developer/java/sdk/identity) are as follows:
-* [Client Certificate Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
-* [Client Secret Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
-* [Managed Identity Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
-* [Username Password Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-user-auth#username-password-credential)
-* [Azure CLI Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
-* [Interactive Browser Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-user-auth#interactive-browser-credential)
-* [Device Code Credential](https://docs.microsoft.com/azure/developer/java/sdk/identity-user-auth#device-code-credential)
+**Note:** The samples in this doc use the Azure Identity library's `DefaultAzureCredential` to fetch an Azure AD access token. The other supported `TokenCredential` implementations that can be used from [Azure Identity for Java](https://learn.microsoft.com/azure/developer/java/sdk/identity) are as follows:
+* [Client Certificate Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-certificate-credential)
+* [Client Secret Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-service-principal-auth#client-secret-credential)
+* [Managed Identity Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-azure-hosted-auth#managed-identity-credential)
+* [Username Password Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-user-auth#username-password-credential)
+* [Azure CLI Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
+* [Interactive Browser Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-user-auth#interactive-browser-credential)
+* [Device Code Credential](https://learn.microsoft.com/azure/developer/java/sdk/identity-user-auth#device-code-credential)
 
 #### Authenticate with Azure AD: Handle Reauthentication
 This sample is intended to assist in authenticating with Azure AD via Redisson client library. It focuses on displaying the logic required to fetch an Azure AD access token and to use it as password when setting up the Redisson client instance. It also shows how to recreate and authenticate the Redisson client instance when its connection is broken in error/exception scenarios.
