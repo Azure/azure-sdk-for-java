@@ -47,10 +47,10 @@ stages:
             - $(sub-config-cosmos-azure-cloud-test-resources)
       MatrixConfigs:
         - Name: Cosmos_live_test_integration
-          Path: sdk/cosmos/integration-matrix.json
+          Path: sdk/spring/cosmos-integration-matrix.json
           Selection: all
           GenerateVMJobs: true
-      ServiceDirectory: cosmos
+      ServiceDirectory: spring
       Artifacts:
         - name: azure-spring-data-cosmos-test
           groupId: com.azure

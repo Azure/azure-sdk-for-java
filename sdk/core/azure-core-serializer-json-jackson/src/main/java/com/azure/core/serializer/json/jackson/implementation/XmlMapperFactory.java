@@ -4,12 +4,13 @@
 package com.azure.core.serializer.json.jackson.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.cfg.MapperBuilder;
+import com.fasterxml.jackson.databind.cfg.PackageVersion;
 
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
 import java.lang.reflect.Array;
 
 public final class XmlMapperFactory {
@@ -26,16 +27,8 @@ public final class XmlMapperFactory {
     private final MethodHandle enableEmptyElementAsNull;
     private final Object emptyElementAsNull;
 
-
-    private static final String MUTABLE_COERCION_CONFIG = "com.fasterxml.jackson.databind.cfg.MutableCoercionConfig";
-    private static final String COERCION_INPUT_SHAPE = "com.fasterxml.jackson.databind.cfg.CoercionInputShape";
-    private static final String COERCION_ACTION = "com.fasterxml.jackson.databind.cfg.CoercionAction";
-
-    private final MethodHandle coercionConfigDefaults;
-    private final MethodHandle setCoercion;
-    private final Object coercionInputShapeEmptyString;
-    private final Object coercionActionAsNull;
-    private final boolean useReflectionToSetCoercion;
+    private final boolean useJackson212;
+    private boolean jackson212IsSafe = true;
 
     public static final XmlMapperFactory INSTANCE = new XmlMapperFactory();
 
@@ -84,42 +77,7 @@ public final class XmlMapperFactory {
         this.enableEmptyElementAsNull = enableEmptyElementAsNull;
         this.emptyElementAsNull = emptyElementAsNull;
 
-        MethodHandle coercionConfigDefaults = null;
-        MethodHandle setCoercion = null;
-        Object coercionInputShapeEmptyString = null;
-        Object coercionActionAsNull = null;
-        boolean useReflectionToSetCoercion = false;
-        try {
-            Class<?> mutableCoercionConfig = Class.forName(MUTABLE_COERCION_CONFIG);
-            Class<?> coercionInputShapeClass = Class.forName(COERCION_INPUT_SHAPE);
-            Class<?> coercionActionClass = Class.forName(COERCION_ACTION);
-
-            coercionConfigDefaults = publicLookup.findVirtual(ObjectMapper.class, "coercionConfigDefaults",
-                MethodType.methodType(mutableCoercionConfig));
-            setCoercion = publicLookup.findVirtual(mutableCoercionConfig, "setCoercion",
-                MethodType.methodType(mutableCoercionConfig, coercionInputShapeClass, coercionActionClass));
-            coercionInputShapeEmptyString = publicLookup.findStaticGetter(coercionInputShapeClass, "EmptyString",
-                coercionInputShapeClass).invoke();
-            coercionActionAsNull = publicLookup.findStaticGetter(coercionActionClass, "AsNull", coercionActionClass)
-                .invoke();
-            useReflectionToSetCoercion = true;
-        } catch (Throwable ex) {
-            // Throw the Error only if it isn't a LinkageError.
-            // This initialization is attempting to use classes that may not exist.
-            if (ex instanceof Error && !(ex instanceof LinkageError)) {
-                throw (Error) ex;
-            }
-
-            LOGGER.verbose("Failed to retrieve MethodHandles used to set coercion configurations. "
-                + "Setting coercion configurations will be skipped. "
-                + "Please update your Jackson dependencies to at least version 2.12", ex);
-        }
-
-        this.coercionConfigDefaults = coercionConfigDefaults;
-        this.setCoercion = setCoercion;
-        this.coercionInputShapeEmptyString = coercionInputShapeEmptyString;
-        this.coercionActionAsNull = coercionActionAsNull;
-        this.useReflectionToSetCoercion = useReflectionToSetCoercion;
+        this.useJackson212 = PackageVersion.VERSION.getMinorVersion() >= 12;
     }
 
     public ObjectMapper createXmlMapper() {
@@ -146,19 +104,17 @@ public final class XmlMapperFactory {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.", e));
         }
 
-        if (useReflectionToSetCoercion) {
+        if (useJackson212 && jackson212IsSafe) {
             try {
-                Object object = coercionConfigDefaults.invoke(xmlMapper);
-                setCoercion.invoke(object, coercionInputShapeEmptyString, coercionActionAsNull);
-            } catch (Throwable e) {
-                if (e instanceof Error) {
-                    throw (Error) e;
+                return JacksonDatabind212.mutateXmlCoercions(xmlMapper);
+            } catch (Throwable ex) {
+                if (ex instanceof LinkageError) {
+                    jackson212IsSafe = false;
+                    LOGGER.log(LogLevel.VERBOSE, JacksonVersion::getHelpInfo, ex);
                 }
 
-                LOGGER.verbose("Failed to set coercion actions.", e);
+                throw ex;
             }
-        } else {
-            LOGGER.verbose("Didn't set coercion defaults as it wasn't found on the classpath.");
         }
 
         return xmlMapper;

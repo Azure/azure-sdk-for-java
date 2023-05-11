@@ -10,6 +10,7 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Fluent credential builder for instantiating a {@link AzureCliCredential}.
@@ -63,7 +64,8 @@ public class AzureCliCredentialBuilder extends CredentialBuilderBase<AzureCliCre
      * @return An updated instance of this builder with the timeout specified.
      */
     public AzureCliCredentialBuilder processTimeout(Duration processTimeout) {
-        this.identityClientOptions.setProcessTimeout(processTimeout);
+        Objects.requireNonNull(processTimeout);
+        this.identityClientOptions.setCredentialProcessTimeout(processTimeout);
         return this;
     }
 

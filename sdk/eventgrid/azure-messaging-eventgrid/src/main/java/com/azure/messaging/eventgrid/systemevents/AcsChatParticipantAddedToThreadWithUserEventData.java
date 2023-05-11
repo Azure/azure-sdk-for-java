@@ -32,6 +32,9 @@ public final class AcsChatParticipantAddedToThreadWithUserEventData extends AcsC
     @JsonProperty(value = "participantAdded")
     private AcsChatThreadParticipantProperties participantAdded;
 
+    /** Creates an instance of AcsChatParticipantAddedToThreadWithUserEventData class. */
+    public AcsChatParticipantAddedToThreadWithUserEventData() {}
+
     /**
      * Get the time property: The time at which the user was added to the thread.
      *

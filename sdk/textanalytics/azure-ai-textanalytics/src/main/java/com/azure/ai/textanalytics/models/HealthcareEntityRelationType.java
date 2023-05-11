@@ -6,6 +6,8 @@ package com.azure.ai.textanalytics.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 
+import java.util.Collection;
+
 /**
  * Defines values for {@link HealthcareEntityRelationType}.
  */
@@ -76,5 +78,10 @@ public final class HealthcareEntityRelationType extends ExpandableStringEnum<Hea
      */
     public static HealthcareEntityRelationType fromString(String name) {
         return fromString(name, HealthcareEntityRelationType.class);
+    }
+
+    /** @return known HealthcareEntityRelationType values. */
+    public static Collection<HealthcareEntityRelationType> values() {
+        return values(HealthcareEntityRelationType.class);
     }
 }

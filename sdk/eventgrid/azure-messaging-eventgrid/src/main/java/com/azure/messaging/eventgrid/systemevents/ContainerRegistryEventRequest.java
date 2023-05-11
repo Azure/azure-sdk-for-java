@@ -17,16 +17,15 @@ public final class ContainerRegistryEventRequest {
     private String id;
 
     /*
-     * The IP or hostname and possibly port of the client connection that
-     * initiated the event. This is the RemoteAddr from the standard http
-     * request.
+     * The IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr
+     * from the standard http request.
      */
     @JsonProperty(value = "addr")
     private String addr;
 
     /*
-     * The externally accessible hostname of the registry instance, as
-     * specified by the http host header on incoming requests.
+     * The externally accessible hostname of the registry instance, as specified by the http host header on incoming
+     * requests.
      */
     @JsonProperty(value = "host")
     private String host;
@@ -42,6 +41,9 @@ public final class ContainerRegistryEventRequest {
      */
     @JsonProperty(value = "useragent")
     private String useragent;
+
+    /** Creates an instance of ContainerRegistryEventRequest class. */
+    public ContainerRegistryEventRequest() {}
 
     /**
      * Get the id property: The ID of the request that initiated the event.

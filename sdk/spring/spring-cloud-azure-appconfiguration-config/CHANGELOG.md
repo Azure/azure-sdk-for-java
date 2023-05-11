@@ -1,6 +1,6 @@
 # Release History
 
-## 5.1.0-beta.1 (Unreleased)
+## 5.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,13 @@
 
 ### Bugs Fixed
 
+- Fixes issue where credential from Azure Spring global properties was being overridden.
+
 ### Other Changes
+
+## 5.1.0 (2023-04-26)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#510-2023-04-26) for more details.
 
 ## 4.7.0 (2023-03-23)
 

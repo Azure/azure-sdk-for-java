@@ -3,6 +3,7 @@
 package com.azure.core.test;
 
 import com.azure.core.test.annotation.DoNotRecord;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 
 import java.lang.reflect.Method;
 
@@ -21,6 +22,7 @@ public class TestContextManager {
     private final boolean testRan;
 
     private Integer testIteration;
+    private final boolean skipRecordingRequestBody;
 
     /**
      * Constructs a {@link TestContextManager} based on the test method.
@@ -29,7 +31,7 @@ public class TestContextManager {
      * @param testMode The {@link TestMode} the test is running in.
      */
     public TestContextManager(Method testMethod, TestMode testMode) {
-        this(testMethod, testMode, false);
+        this(testMethod, testMode, false, false);
     }
 
     /**
@@ -38,12 +40,17 @@ public class TestContextManager {
      * @param testMethod Test method being ran.
      * @param testMode The {@link TestMode} the test is running in.
      * @param enableTestProxy True if the external test proxy is in use.
+     * @param recordWithoutRequestBodyClassAnnotation flag indicating if {@code RecordWithoutRequestBody} annotation
+     * present on test class.
      */
-    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy) {
+    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy, boolean recordWithoutRequestBodyClassAnnotation) {
         this.testName = testMethod.getName();
         this.className = testMethod.getDeclaringClass().getSimpleName();
         this.testMode = testMode;
         this.enableTestProxy = enableTestProxy;
+
+        RecordWithoutRequestBody recordWithoutRequestBody = testMethod.getAnnotation(RecordWithoutRequestBody.class);
+        this.skipRecordingRequestBody = recordWithoutRequestBody != null || recordWithoutRequestBodyClassAnnotation;
 
         DoNotRecord doNotRecordAnnotation = testMethod.getAnnotation(DoNotRecord.class);
         boolean skipInPlayback;
@@ -113,6 +120,15 @@ public class TestContextManager {
      */
     public boolean doNotRecordTest() {
         return doNotRecord;
+    }
+
+    /**
+     * Returns whether the test is recording request body when run {@link TestMode#RECORD record} mode.
+     *
+     * @return Flag indicating whether test should record request bodies.
+     */
+    public boolean skipRecordingRequestBody() {
+        return skipRecordingRequestBody;
     }
 
     /**

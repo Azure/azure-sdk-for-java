@@ -13,6 +13,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
@@ -1287,6 +1288,9 @@ public class ImplementationBridgeHelpers {
 
             void setFaultInjectionRuleId(CosmosException cosmosException, String faultInjectionRuleId);
             String getFaultInjectionRuleId(CosmosException cosmosException);
+
+            void setFaultInjectionEvaluationResults(CosmosException cosmosException, List<String> faultInjectionRuleEvaluationResults);
+            List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException);
         }
     }
 
@@ -1400,6 +1404,47 @@ public class ImplementationBridgeHelpers {
             String getDatabaseName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity);
+        }
+    }
+
+    public static final class CosmosContainerProactiveInitConfigHelper {
+
+        private static final AtomicReference<Boolean> cosmosContainerProactiveInitConfigClassLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<CosmosContainerProactiveInitConfigAccessor> accessor = new AtomicReference<>();
+
+        private CosmosContainerProactiveInitConfigHelper() {}
+
+        public static CosmosContainerProactiveInitConfigAccessor getCosmosContainerProactiveInitConfigAccessor() {
+
+            if (!cosmosContainerProactiveInitConfigClassLoaded.get()) {
+                logger.debug("Initializing CosmosContainerProactiveInitConfigAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosContainerProactiveInitConfigAccessor snapshot = accessor.get();
+
+            if (snapshot == null) {
+                logger.error("CosmosContainerProactiveInitConfigAccessor is not initialized yet!");
+                System.exit(9726); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosContainerProactiveInitConfigAccessor(final CosmosContainerProactiveInitConfigAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosContainerProactiveInitConfigAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosContainerProactiveInitConfigAccessor...");
+                cosmosContainerProactiveInitConfigClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosContainerProactiveInitConfigAccessor {
+            Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
         }
     }
 }

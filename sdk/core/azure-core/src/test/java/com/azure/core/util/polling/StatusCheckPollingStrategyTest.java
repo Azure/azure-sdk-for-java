@@ -32,7 +32,7 @@ public class StatusCheckPollingStrategyTest {
                 new TestPollResult("ActivationDone"));
         });
 
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new StatusCheckPollingStrategy<>(), POLL_RESULT_TYPE_REFERENCE,
             POLL_RESULT_TYPE_REFERENCE);
 
