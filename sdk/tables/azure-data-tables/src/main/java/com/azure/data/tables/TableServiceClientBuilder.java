@@ -39,12 +39,15 @@ import java.util.List;
 import static com.azure.data.tables.BuilderHelper.validateCredentials;
 
 /**
+ * Provides a fluent builder API to help aid the configuration and instantiation of {@link TableServiceClient} and {@link TableServiceAsyncClient}.
+ * 
  * <h2>Overview</h2>
+ * 
  * <p>This class provides a fluent builder API to help aid the configuration and instantiation of
  * {@link TableServiceClient} and {@link TableServiceAsyncClient} objects. Call {@link #buildClient()} or
  * {@link #buildAsyncClient()}, respectively, to construct an instance of the desired client.</p>
  *
- * <h3>Initializing a Service Client</h3>
+ * <h2>Initializing a Service Client</h2>
  * 
  * <p>The minimal configuration options required by {@link TableServiceClientBuilder} to build a {@link TableServiceClient} or
  * {@link TableServiceAsyncClient} are an {@link String endpoint} and a form of authentication,
@@ -52,36 +55,97 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * {@link TableServiceClientBuilder#credential(AzureNamedKeyCredential)}, {@link TableServiceClientBuilder#credential(TokenCredential)}, {@link TableServiceClientBuilder#credential(AzureSasCredential)},
  *  or {@link TableServiceClientBuilder#sasToken(String)}</p>
  *
- * <h3>Authentication via Connection String</h3>
+ * <h2>Authentication via Connection String</h2>
  * 
  * <p>To use a connection string to authorize the client, call the builder's {@link TableServiceClientBuilder#connectionString(String)} method with your connection string. When authenticating via a 
  * connection string, providing an endpoint is not required</p>
+ *
+ * <!-- src_embed com.azure.data.tables.tableServiceClientBuilder.connectionString#string -->
+ * <pre>
+ * String connectionString = &quot;connectionstring&quot;;
+ * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClientBuilder.connectionString#string -->
  * 
- * INSERT CodeSnippet: TableServiceClientBuilder-ConnectionString
- * 
- * <h3>Authentication via Shared Key</h3>
+ * <h2>Authentication via Shared Key</h2>
  * 
  * <p>To use shared key authentication, create an instance of {@link com.azure.core.credential.AzureNamedKeyCredential AzureNamedKeyCredential} and pass it to the builder's
  * {@link TableServiceClientBuilder#credential(AzureNamedKeyCredential)} method. Pass the account URL to the builder's {@link TableServiceClientBuilder#endpoint(String)} method.</p>
  * 
- * INSERT CodeSnippet: TableServiceClientBuilder-SharedKeyCredential
+ * <!-- src_embed com.azure.data.tables.tableServiceClientBuilder.credential#sharedKeyCredential -->
+ * <pre>
+ * AzureNamedKeyCredential credential = new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;;
+ * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;endpoint&quot;&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClientBuilder.credential#sharedKeyCredential -->
  * 
- * <h3>Authentication via Shared Access Signature (SAS)</h3>
+ * <h2>Authentication via Shared Access Signature (SAS)</h2>
  * 
  * <p>When authorizing a client utilizing a Shared Access Signature (SAS), you have the option of using {@link com.azure.core.credential.AzureSasCredential AzureSasCredential} or
  * the SAS token directly. To use an AzureSasCredential, pass it to the builder's {@link TableServiceClientBuilder#credential(AzureSasCredential)} method. When authenticating with a SAS token, pass it to the
  * builder's {@link TableServiceClientBuilder#sasToken(String)} method. Pass the account URL to the builder's {@link TableServiceClientBuilder#endpoint(String)} method.</p>
  * 
- * INSERT CodeSnippet: TableServiceClientBuilder-AzureSasCredential
+ * <p>Using {@link com.azure.core.credential.AzureSasCredential AzureSasCredential}:</p>
+ * <!-- src_embed com.azure.data.tables.tableServiceClientBuilder.credential#azureSasCredential -->
+ * <pre>
+ * AzureSasCredential azureSasCredential = new AzureSasCredential&#40;&quot;sasToken&quot;&#41;;
+ * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;endpoint&quot;&#41;
+ *     .credential&#40;azureSasCredential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClientBuilder.credential#azureSasCredential -->
  * 
- * INSERT CodeSnippet: TableServiceClientBuilder-SasToken
+ * <p>Using a SAS token:</p>
+ * <!-- src_embed com.azure.data.tables.tableServiceClientBuilder.sasToken#string -->
+ * <pre>
+ * String sasToken = &quot;sasToken&quot;;
+ * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;endpoint&quot;&#41;
+ *     .sasToken&#40;sasToken&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClientBuilder.sasToken#string -->
  * 
- * <h3>Authentication via Token Credential</h3>
+ * <h2>Authentication via Token Credential</h2>
  * <p>To use token credential authentication, create an instance of a credential class that implements {@link com.azure.core.credential.TokenCredential TokenCredential} and pass it to the
  * builder's {@link TableServiceClientBuilder#credential(TokenCredential)} method. Pass the account URL to the builder's {@link TableServiceClientBuilder#endpoint(String)} method.</p>
  * 
- * INSERT CodeSnippet: TableServiceClientBuilder-TokenCredential
+ * <!-- src_embed com.azure.data.tables.tableServiceClientBuilder.credential#tokenCredential -->
+ * <pre>
+ * TokenCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;endpoint&quot;&#41;
+ *     .credential&#40;tokenCredential&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClientBuilder.credential#tokenCredential -->
  *
+ * <h2>Building a Service Client</h2>
+ * <p>To build a {@link TableServiceClient} or {@link TableServiceAsyncClient} instance, call {@link TableServiceClientBuilder#buildClient()} or {@link TableServiceClientBuilder#buildAsyncClient()},
+ * respectively.</p>
+ * 
+ * <strong>Building a {@link TableServiceClient}</strong>
+ * <!-- src_embed com.azure.data.tables.tableServiceClientBuilder.sync -->
+ * <pre>
+ * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;connectionString&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClientBuilder.sync -->
+ * <strong>Building a {@link TableServiceAsyncClient}</strong>
+ * <!-- src_embed com.azure.data.tables.tableServiceClientBuilder.async -->
+ * <pre>
+ * TableServiceAsyncClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;connectionString&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClientBuilder.async -->
  * @see TableServiceAsyncClient
  * @see TableServiceClient
  */

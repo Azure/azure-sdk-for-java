@@ -3,6 +3,7 @@
 package com.azure.data.tables.codesnippets;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.data.tables.TableAsyncClient;
 import com.azure.data.tables.TableServiceAsyncClient;
 import com.azure.data.tables.TableServiceClientBuilder;
 import com.azure.data.tables.models.ListTablesOptions;
@@ -54,6 +55,21 @@ public class TableServiceAsyncClientJavaDocCodeSnippets {
                     response.getStatusCode(), response.getValue().getTableName()));
         // END: com.azure.data.tables.tableServiceAsyncClient.createTableWithResponse#String
     }
+
+    /**
+     * Generates code samples for using {@link TableServiceAsyncClient#getTableClient(String)()}
+     */
+    public void getTableClient() {
+        TableServiceAsyncClient tableServiceAsyncClient = createAsyncClient();
+
+        // BEGIN: com.azure.data.tables.tableServiceAsyncClient.getTableClient#String
+        TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient("myTable");
+        
+        System.out.printf("Table with name '%s' was retrieved.", tableAsyncClient.getTableName());
+        // END: com.azure.data.tables.tableServiceAsyncClient.getTableClient#String
+    }
+
+    
 
     /**
      * Generates code samples for using {@link TableServiceAsyncClient#createTableIfNotExists(String)} and
