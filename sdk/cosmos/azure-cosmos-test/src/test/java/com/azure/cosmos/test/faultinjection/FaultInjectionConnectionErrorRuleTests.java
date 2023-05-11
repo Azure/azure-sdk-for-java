@@ -48,9 +48,6 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
 
     @DataProvider(name = "connectionErrorTypeProvider")
     public static Object[][] connectionErrorTypeProvider() {
-        // data provider arguments
-        // 1. fault injection connection error type
-        // 2. should container be part of the connection warm up flow
         return new Object[][]{
                 {FaultInjectionConnectionErrorType.CONNECTION_CLOSE},
                 {FaultInjectionConnectionErrorType.CONNECTION_RESET}
