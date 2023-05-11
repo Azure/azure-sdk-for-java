@@ -39,7 +39,7 @@ stages:
 
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      TestName: 'Integration'
+      TestName: 'Spring_Data_Cosmos_Integration'
       CloudConfig:
         Public:
           SubscriptionConfigurations:
