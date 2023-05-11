@@ -779,7 +779,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                         serviceEndpoint,
                         durableEndpointMetrics,
                         proactiveOpenConnectionsProcessor,
-                            minRequiredChannelsForEndpoint);
+                        minRequiredChannelsForEndpoint);
 
                     durableEndpointMetrics.setEndpoint(endpoint);
 
