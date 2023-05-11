@@ -4,6 +4,7 @@
 package com.azure.core.experimental.util.tracing;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.TracingOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
@@ -14,7 +15,6 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.core.util.tracing.TracingLink;
 
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -207,7 +207,9 @@ public class LoggingTracerProvider implements TracerProvider {
          * Generates random id with given length up to 32 chars.
          */
         private static String getRandomId(int length) {
-            return UUID.randomUUID().toString().replace("-", "").substring(32 - length);
+            return CoreUtils.randomUuid().toString()
+                .replace("-", "")
+                .substring(32 - length);
         }
     }
 }
