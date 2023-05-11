@@ -237,7 +237,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
-    @Disabled
     public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 

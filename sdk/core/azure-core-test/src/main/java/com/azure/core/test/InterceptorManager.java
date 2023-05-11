@@ -385,7 +385,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     private File getTestProxyRecordFile() {
         Path repoRoot = TestUtils.getRepoRoot();
-        Path filePath = Paths.get(System.getProperty("user.dir"), "src/test/resources/session-records", playbackRecordName + ".json");
+        Path filePath = Paths.get(Paths.get("" ).toString(), "src/test/resources/session-records", playbackRecordName + ".json");
         return repoRoot.relativize(filePath).toFile();
     }
 

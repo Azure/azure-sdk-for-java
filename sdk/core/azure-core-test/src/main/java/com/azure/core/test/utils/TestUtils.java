@@ -150,7 +150,7 @@ public final class TestUtils {
      * @throws RuntimeException The eng folder could not be located.
      */
     public static Path getRepoRoot() {
-        Path path = Paths.get(System.getProperty("user.dir"));
+        Path path = Paths.get("");
         Path candidate = null;
         while (path != null) {
             candidate = path.resolve("eng");
