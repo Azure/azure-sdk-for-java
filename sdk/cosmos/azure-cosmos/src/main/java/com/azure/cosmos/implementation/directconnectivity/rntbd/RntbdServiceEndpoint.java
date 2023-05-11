@@ -759,7 +759,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             final URI serviceEndpoint,
             final Uri addressUri,
             ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
-            int minChannelsRequiredCount) {
+            int minRequiredChannelsForEndpoint) {
             return endpoints.computeIfAbsent(
                 addressUri.getURI().getAuthority(),
                 authority -> {
@@ -779,7 +779,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                         serviceEndpoint,
                         durableEndpointMetrics,
                         proactiveOpenConnectionsProcessor,
-                        minChannelsRequiredCount);
+                            minRequiredChannelsForEndpoint);
 
                     durableEndpointMetrics.setEndpoint(endpoint);
 

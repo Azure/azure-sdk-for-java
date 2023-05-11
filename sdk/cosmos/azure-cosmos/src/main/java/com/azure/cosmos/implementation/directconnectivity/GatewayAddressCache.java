@@ -290,6 +290,22 @@ public class GatewayAddressCache implements IAddressCache {
                                 cachedAddresses -> this.getAddressesForRangeId(request, partitionKeyRangeIdentity, true, cachedAddresses));
                     }
 
+                    if (forceRefreshPartitionAddressesModified) {
+
+                        String collectionRid = partitionKeyRangeIdentity.getCollectionRid();
+
+                        if (this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
+
+                            List<String> addressUrisAsString = Arrays
+                                    .stream(addressesValueHolder.v)
+                                    .map(addressInformation -> addressInformation.getPhysicalUri().getURIAsString())
+                                    .collect(Collectors.toList());
+
+                            this.proactiveOpenConnectionsProcessor
+                                    .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(collectionRid, addressUrisAsString);
+                        }
+                    }
+
                     return addressesValueHolder;
                 })
                 .onErrorResume(ex -> {
@@ -889,13 +905,20 @@ public class GatewayAddressCache implements IAddressCache {
 
         if (addressesNeedToValidation.size() > 0 && this.proactiveOpenConnectionsProcessor != null) {
             logger.debug("Addresses to validate: [{}]", addressesNeedToValidation);
+
+            final boolean isCollectionRidUnderOpenConnectionsFlow = this.proactiveOpenConnectionsProcessor
+                    .isCollectionRidUnderOpenConnectionsFlow(collectionRid);
+
+            final int minConnectionsRequiredForEndpoint = (isCollectionRidUnderOpenConnectionsFlow) ? Configs.getMinConnectionPoolSizePerEndpoint() : 1;
+
             for (Uri addressToBeValidated : addressesNeedToValidation) {
+
                 Mono.fromFuture(this.proactiveOpenConnectionsProcessor
                         .submitOpenConnectionTaskOutsideLoop(
                                 collectionRid,
                                 this.serviceEndpoint,
                                 addressToBeValidated,
-                                Configs.getMinConnectionPoolSizePerEndpoint()))
+                                minConnectionsRequiredForEndpoint))
                     .subscribeOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
                     .subscribe();
             }
@@ -972,7 +995,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         return Flux.concat(tasks)
                 .flatMap(list -> {
-                    List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> addressInfos =
+                    List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> pkrIdToAddressInfosList =
                             list.stream()
                                     .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
                                     .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
@@ -980,14 +1003,25 @@ public class GatewayAddressCache implements IAddressCache {
                                     .stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
                                     .collect(Collectors.toList());
 
-                    return Flux.fromIterable(addressInfos)
-                            .flatMap(addressInfo -> {
-                                this.serverPartitionAddressCache.set(addressInfo.getLeft(), addressInfo.getRight());
-                                return Flux.fromArray(addressInfo.getRight());
+                    return Flux.fromIterable(pkrIdToAddressInfosList)
+                            .flatMap(pkrIdToAddressInfos -> {
+                                PartitionKeyRangeIdentity partitionKeyRangeIdentity = pkrIdToAddressInfos.getLeft();
+                                AddressInformation[] addressInfos = pkrIdToAddressInfos.getRight();
+
+                                this.serverPartitionAddressCache.set(partitionKeyRangeIdentity, addressInfos);
+
+                                List<String> addressUrisAsString = Arrays
+                                        .stream(addressInfos)
+                                        .map(addressInformation -> addressInformation.getPhysicalUri().getURIAsString())
+                                        .collect(Collectors.toList());
+
+                                this.proactiveOpenConnectionsProcessor
+                                        .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(containerLink, addressUrisAsString);
+
+                                return Flux.fromArray(pkrIdToAddressInfos.getRight());
                             }, Configs.getCPUCnt() * 10, Configs.getCPUCnt() * 3)
                             .flatMap(addressInformation -> Mono.just(new ImmutablePair<>(new ImmutablePair<>(containerLink, collection), addressInformation)));
                 });
-
     }
 
     public Mono<OpenConnectionResponse> submitOpenConnectionTask(

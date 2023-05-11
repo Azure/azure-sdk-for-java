@@ -87,16 +87,20 @@ public class RntbdConnectionStateListener {
             return;
         }
 
+        Uri addressUri = this.addressUris.stream().findFirst().get();
+
         // connection state listener submits an open connection task for an endpoint
-        // and only submits the task for that endpoint when the previous task has been
-        // completed
+        // and only submits the task for that endpoint if and only if the previous task has been
+        // completed and the endpoint is used by a container which was part of the connection
+        // warm up flow
         // it is okay to lose a task, since each task will attempt to attain a certain no. of
         // connection as denoted by the min required no. of connections for that endpoint
-        if (this.endpointValidationInProgress.compareAndSet(false, true)) {
+        if (this.endpointValidationInProgress.compareAndSet(false, true)
+                && this.proactiveOpenConnectionsProcessor.isAddressUriUnderOpenConnectionsFlow(addressUri.getURIAsString())) {
             Mono.fromFuture(this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
                 "",
                 this.endpoint.serviceEndpoint(),
-                this.addressUris.stream().findFirst().get(),
+                addressUri,
                 this.endpoint.getMinChannelsRequired()
             ))
             .doFinally(signalType -> {

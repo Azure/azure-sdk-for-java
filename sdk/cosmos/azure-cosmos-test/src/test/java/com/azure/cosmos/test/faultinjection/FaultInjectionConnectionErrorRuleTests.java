@@ -87,8 +87,9 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
             Thread.sleep(Duration.ofSeconds(2).toMillis());
             // validate that a connection is closed by fault injection
             provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().totalChannelsClosedMetric()).isEqualTo(1));
-            // validate that a min required no. of connections is opened back by proactive connection management
-            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().getEndpoint().channelsMetrics()).isEqualTo(1));
+            // validate that proactive connection management does not reopen connections
+            // this is because the openConnectionsAndInitCaches flow was not invoked for the client
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().getEndpoint().channelsMetrics()).isEqualTo(0));
             long ruleHitCount = connectionErrorRule.getHitCount();
             assertThat(ruleHitCount).isGreaterThanOrEqualTo(1);
             assertThat(connectionErrorRule.getHitCountDetails()).isNull();
