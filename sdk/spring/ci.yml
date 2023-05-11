@@ -582,6 +582,3 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterappconfigurationconfig }}
-    AdditionalModules:
-      - name: azure-spring-data-cosmos-test
-        groupId: com.azure
