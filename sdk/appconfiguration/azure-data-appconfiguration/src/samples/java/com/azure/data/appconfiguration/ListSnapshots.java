@@ -101,7 +101,7 @@ public class ListSnapshots {
             recoveredSnapshot.getName(), recoveredSnapshot.getCreatedAt(), recoveredSnapshot.getStatus());
 
         // List the configuration settings in the snapshot
-        client.listConfigurationSettingsBySnapshot(snapshotNameProduct).forEach(
+        client.listConfigurationSettingsForSnapshot(snapshotNameProduct).forEach(
             settingInSnapshot -> {
                 System.out.printf(String.format("[ConfigurationSetting in snapshot] Key: %s, Value: %s%n",
                     settingInSnapshot.getKey(), settingInSnapshot.getValue()));

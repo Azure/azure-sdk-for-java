@@ -32,6 +32,7 @@ import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
@@ -837,18 +838,24 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshot-->
-     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshot -->
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshot -->
+     * <pre>
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     * configurationClient.listConfigurationSettingsForSnapshot&#40;snapshotName&#41;.forEach&#40;setting -&gt; &#123;
+     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshot -->
      *
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
-     *                     be the name of the snapshot.
+     * be the name of the snapshot.
      * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
      * provided, the List contains all of the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listConfigurationSettingsBySnapshot(String snapshotName) {
-        return listConfigurationSettingsBySnapshot(snapshotName, Context.NONE);
+    public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName) {
+        return listConfigurationSettingsForSnapshot(snapshotName, null, Context.NONE);
     }
 
     /**
@@ -858,27 +865,30 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshotMaxOverload -->
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload -->
      * <pre>
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
      * Context ctx = new Context&#40;key2, value2&#41;;
+     * SettingFields[] fields = new SettingFields[] &#123; SettingFields.KEY &#125;;
      *
-     * configurationClient.listConfigurationSettingsBySnapshot&#40;snapshotName, ctx&#41;.forEach&#40;setting -&gt; &#123;
+     * configurationClient.listConfigurationSettingsForSnapshot&#40;snapshotName, fields, ctx&#41;.forEach&#40;setting -&gt; &#123;
      *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshotMaxOverload -->
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload -->
      *
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
-     *                     be the name of the snapshot.
+     * be the name of the snapshot.
+     * @param fields Optional. The fields to select for the query response. If none are set, the service will return the
+     * ConfigurationSettings with a default set of properties.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
      * provided, the {@link PagedIterable} contains all the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationSetting> listConfigurationSettingsBySnapshot(String snapshotName,
-                                                                                   Context context) {
+    public PagedIterable<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
+        SettingFields[] fields, Context context) {
         return new PagedIterable<>(
             () -> {
                 final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(
@@ -886,7 +896,7 @@ public final class ConfigurationClient {
                     null,
                     null,
                     null,
-                    null,
+                    fields == null ? null : toSettingFieldsList(fields),
                     snapshotName,
                     enableSyncRestProxy(addTracingNamespace(context)));
                 return toConfigurationSettingWithPagedResponse(pagedResponse);

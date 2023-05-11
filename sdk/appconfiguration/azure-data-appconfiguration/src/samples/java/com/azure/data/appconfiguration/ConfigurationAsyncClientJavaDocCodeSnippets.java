@@ -5,6 +5,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
+import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
@@ -259,16 +260,31 @@ public class ConfigurationAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippets for {@link ConfigurationAsyncClient#listConfigurationSettingsBySnapshot(String)}
+     * Code snippets for {@link ConfigurationAsyncClient#listConfigurationSettingsForSnapshot(String)}
      */
-    public void listConfigurationSettingsBySnapshot() {
+    public void listConfigurationSettingsForSnapshot() {
         ConfigurationAsyncClient client = getAsyncClient();
-        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsBySnapshot
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshot
         String snapshotName = "{snapshotName}";
-        client.listConfigurationSettingsBySnapshot(snapshotName)
+        client.listConfigurationSettingsForSnapshot(snapshotName)
             .subscribe(setting ->
                 System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
-        // END: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsBySnapshot
+        // END: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshot
+    }
+
+    /**
+     * Code snippets for {@link ConfigurationAsyncClient#listConfigurationSettingsForSnapshot(String, SettingFields[])}
+     */
+    public void listConfigurationSettingsForSnapshotMaxOverload() {
+        ConfigurationAsyncClient client = getAsyncClient();
+        // BEGIN: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload
+        String snapshotName = "{snapshotName}";
+        SettingFields[] fields = new SettingFields[] { SettingFields.KEY };
+
+        client.listConfigurationSettingsForSnapshot(snapshotName, fields)
+            .subscribe(setting ->
+                System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
+        // END: com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload
     }
 
     /**

@@ -1705,7 +1705,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
                 MINIMUM_RETENTION_PERIOD, Long.valueOf(15000), Long.valueOf(50), null, snapshotResult);
 
 
-            StepVerifier.create(client.listConfigurationSettingsBySnapshot(name))
+            StepVerifier.create(client.listConfigurationSettingsForSnapshot(name))
                 .expectNextCount(numberExpected)
                 .verifyComplete();
 

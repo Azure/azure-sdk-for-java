@@ -100,7 +100,7 @@ public class CreateSnapshotAsync {
         TimeUnit.MILLISECONDS.sleep(1000);
 
         // List the configuration settings in the snapshot
-        client.listConfigurationSettingsBySnapshot(snapshotName).subscribe(
+        client.listConfigurationSettingsForSnapshot(snapshotName).subscribe(
             settingInSnapshot -> {
                 System.out.printf(String.format("[ConfigurationSetting in snapshot] Key: %s, Value: %s.%n",
                     settingInSnapshot.getKey(), settingInSnapshot.getValue()));

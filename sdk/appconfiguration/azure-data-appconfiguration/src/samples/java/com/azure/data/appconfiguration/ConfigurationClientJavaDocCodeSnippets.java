@@ -11,6 +11,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.CreateSnapshotOperationDetail;
+import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.data.appconfiguration.models.SnapshotSelector;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
@@ -327,31 +328,32 @@ public final class ConfigurationClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettingsBySnapshot(String)}
+     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettingsForSnapshot(String)}
      */
-    public void listConfigurationSettingsBySnapshot() {
+    public void listConfigurationSettingsForSnapshot() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshot
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshot
         String snapshotName = "{snapshotName}";
-        configurationClient.listConfigurationSettingsBySnapshot(snapshotName).forEach(setting -> {
+        configurationClient.listConfigurationSettingsForSnapshot(snapshotName).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
-        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshot
+        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshot
     }
 
     /**
-     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettingsBySnapshot(String, Context)}
+     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettingsForSnapshot(String, SettingFields[], Context)}
      */
-    public void listConfigurationSettingsBySnapshotMaxOverload() {
+    public void listConfigurationSettingsForSnapshotMaxOverload() {
         ConfigurationClient configurationClient = createSyncConfigurationClient();
-        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshotMaxOverload
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload
         String snapshotName = "{snapshotName}";
         Context ctx = new Context(key2, value2);
+        SettingFields[] fields = new SettingFields[] { SettingFields.KEY };
 
-        configurationClient.listConfigurationSettingsBySnapshot(snapshotName, ctx).forEach(setting -> {
+        configurationClient.listConfigurationSettingsForSnapshot(snapshotName, fields, ctx).forEach(setting -> {
             System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
         });
-        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshotMaxOverload
+        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload
     }
 
     /**

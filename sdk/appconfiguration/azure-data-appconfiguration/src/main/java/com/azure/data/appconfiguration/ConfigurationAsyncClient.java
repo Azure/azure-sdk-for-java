@@ -813,23 +813,23 @@ public final class ConfigurationAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsBySnapshot -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshot -->
      * <pre>
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
-     * client.listConfigurationSettingsBySnapshot&#40;snapshotName&#41;
+     * client.listConfigurationSettingsForSnapshot&#40;snapshotName&#41;
      *     .subscribe&#40;setting -&gt;
      *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsBySnapshot -->
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshot -->
      *
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
-     *                     be the name of the snapshot.
+     * be the name of the snapshot.
      * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
      * contains all of the current settings in the service.
      * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<ConfigurationSetting> listConfigurationSettingsBySnapshot(String snapshotName) {
+    public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName) {
         return new PagedFlux<>(
             () -> withContext(
                 context -> serviceClient.getKeyValuesSinglePageAsync(
@@ -838,6 +838,55 @@ public final class ConfigurationAsyncClient {
                         null,
                         null,
                         null,
+                        snapshotName,
+                        addTracingNamespace(context))
+                    .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
+            nextLink -> withContext(
+                context -> serviceClient.getKeyValuesNextSinglePageAsync(
+                        nextLink,
+                        null,
+                        addTracingNamespace(context))
+                    .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse)))
+        );
+    }
+
+    /**
+     * Fetches the configuration settings in a snapshot that matches the {@code snapshotName}. If {@code snapshotName}
+     * is {@code null}, then all the {@link ConfigurationSetting configuration settings} are fetched with their
+     * current values.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload -->
+     * <pre>
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     * SettingFields[] fields = new SettingFields[] &#123; SettingFields.KEY &#125;;
+     *
+     * client.listConfigurationSettingsForSnapshot&#40;snapshotName, fields&#41;
+     *     .subscribe&#40;setting -&gt;
+     *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettingsForSnapshotMaxOverload -->
+     *
+     * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
+     * be the name of the snapshot.
+     * @param fields Optional. The fields to select for the query response. If none are set, the service will return the
+     * ConfigurationSettings with a default set of properties.
+     * @return A Flux of ConfigurationSettings that matches the {@code selector}. If no options were provided, the Flux
+     * contains all of the current settings in the service.
+     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<ConfigurationSetting> listConfigurationSettingsForSnapshot(String snapshotName,
+                                                                                SettingFields[] fields) {
+        return new PagedFlux<>(
+            () -> withContext(
+                context -> serviceClient.getKeyValuesSinglePageAsync(
+                        null,
+                        null,
+                        null,
+                        null,
+                        fields == null ? null : toSettingFieldsList(fields),
                         snapshotName,
                         addTracingNamespace(context))
                     .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
