@@ -2713,5 +2713,12 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
   </Match>
 
+  <!-- Field is not initialized in Ctr but necessary safety measures are in place when accessing it -->
+  <Match>
+    <Class name="com.azure.messaging.servicebus.NonSessionProcessor"/>
+    <Field name="pump"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
   <!-- Comment to force CI to run Spotbugs against all SDKs -->
 </FindBugsFilter>
