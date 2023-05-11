@@ -2676,4 +2676,11 @@
     <Field name="instance"/>
     <Bug pattern="LI_LAZY_INIT_STATIC"/>
   </Match>
+  <!-- Field is not initialized in Ctr but necessary safety measures are in place when accessing it -->
+  <Match>
+    <Class name="com.azure.messaging.servicebus.NonSessionProcessor"/>
+    <Field name="pump"/>
+    <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
+  </Match>
+
 </FindBugsFilter>
