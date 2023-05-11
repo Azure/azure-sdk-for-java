@@ -182,18 +182,18 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
                     .endpointDiscoveryEnabled(true)
                     .buildAsyncClient();
 
-            CosmosAsyncContainer containerToUse = connectionWarmupClient.getDatabase(databaseId).getContainer(containerId);
+            singlePartitionContainer = connectionWarmupClient.getDatabase(databaseId).getContainer(containerId);
 
             // validate one channel exists
             TestItem createdItem = TestItem.createNewItem();
-            containerToUse.createItem(createdItem).block();
+            singlePartitionContainer.createItem(createdItem).block();
 
             RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(connectionWarmupClient);
             RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
 
             // provider has 4 endpoints because the connection warm up flow
-            // opens a connection to each endpoint in the single partition
-            // container
+            // opens a connection to each endpoint in the container
+            // which also happens to be a single partition container
             // each time a connection is opened on an address, the endpoint
             // associated with the address is instantiated and added to the provider
             assertThat(provider.count()).isEqualTo(4);
@@ -242,7 +242,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
                             .duration(Duration.ofSeconds(2))
                             .build();
 
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(containerToUse, Arrays.asList(connectionErrorRule)).block();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(singlePartitionContainer, Arrays.asList(connectionErrorRule)).block();
 
             Thread.sleep(Duration.ofSeconds(2).toMillis());
             // validate that a connection is closed by fault injection
