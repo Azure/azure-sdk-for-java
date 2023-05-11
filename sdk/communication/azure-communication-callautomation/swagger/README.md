@@ -24,11 +24,6 @@ cd <swagger-folder>
 autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 ```
 
-## Update generated files for call automation
-To update generated files for call automation, run the following command
-
-> autorest README.md --java --v4
-
 ### Code generation settings
 ``` yaml
 tag: package-2023-01-15-preview

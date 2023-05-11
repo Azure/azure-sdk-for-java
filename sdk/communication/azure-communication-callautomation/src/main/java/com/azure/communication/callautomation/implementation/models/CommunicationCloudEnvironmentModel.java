@@ -20,14 +20,6 @@ public final class CommunicationCloudEnvironmentModel extends ExpandableStringEn
     public static final CommunicationCloudEnvironmentModel GCCH = fromString("gcch");
 
     /**
-     * Creates a new instance of CommunicationCloudEnvironmentModel value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public CommunicationCloudEnvironmentModel() {}
-
-    /**
      * Creates or finds a CommunicationCloudEnvironmentModel from its string representation.
      *
      * @param name a name to look for.
@@ -38,11 +30,7 @@ public final class CommunicationCloudEnvironmentModel extends ExpandableStringEn
         return fromString(name, CommunicationCloudEnvironmentModel.class);
     }
 
-    /**
-     * Gets known CommunicationCloudEnvironmentModel values.
-     *
-     * @return known CommunicationCloudEnvironmentModel values.
-     */
+    /** @return known CommunicationCloudEnvironmentModel values. */
     public static Collection<CommunicationCloudEnvironmentModel> values() {
         return values(CommunicationCloudEnvironmentModel.class);
     }
