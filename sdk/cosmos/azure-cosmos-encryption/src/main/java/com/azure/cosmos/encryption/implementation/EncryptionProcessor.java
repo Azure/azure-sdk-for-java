@@ -571,7 +571,7 @@ public class EncryptionProcessor {
         } else if (propertyValueHolder.isArray()) {
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
             Iterator<JsonNode> checkArrayIterator = arrayNode.elements();
-            Boolean hasElements = checkArrayIterator.hasNext();
+            boolean hasElements = checkArrayIterator.hasNext();
             if (hasElements) {
                 JsonNode nextNode = checkArrayIterator.next();
                 hasElements &= nextNode.isObject() || nextNode.isArray();
