@@ -1011,7 +1011,7 @@ public class GatewayAddressCache implements IAddressCache {
                                         .collect(Collectors.toList());
 
                                 this.proactiveOpenConnectionsProcessor
-                                        .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(containerLink, addressUrisAsString);
+                                        .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(collection.getResourceId(), addressUrisAsString);
 
                                 return Flux.fromArray(pkrIdToAddressInfos.getRight());
                             }, Configs.getCPUCnt() * 10, Configs.getCPUCnt() * 3)

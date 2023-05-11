@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -87,16 +88,27 @@ public class RntbdConnectionStateListener {
             return;
         }
 
-        Uri addressUri = this.addressUris.stream().findFirst().get();
+        Optional<Uri> addressUriOptional = this.addressUris.stream().findFirst();
+        Uri addressUri = null;
+
+        if (addressUriOptional.isPresent()) {
+            addressUri = addressUriOptional.get();
+        } else {
+            logger.debug("addressUri cannot be null...");
+        }
+
+        // connection state listener will attempt to open a closed connection only
+        // when the endpoint / address uri is used by a container which was part of
+        // the connection warmup flow
+        if (!this.proactiveOpenConnectionsProcessor.isAddressUriUnderOpenConnectionsFlow(addressUri.getURIAsString())) {
+            return;
+        }
 
         // connection state listener submits an open connection task for an endpoint
         // and only submits the task for that endpoint if and only if the previous task has been
-        // completed and the endpoint is used by a container which was part of the connection
-        // warm up flow
-        // it is okay to lose a task, since each task will attempt to attain a certain no. of
+        // completed as it is okay to lose a task, since each task will attempt to attain a certain no. of
         // connection as denoted by the min required no. of connections for that endpoint
-        if (this.endpointValidationInProgress.compareAndSet(false, true)
-                && this.proactiveOpenConnectionsProcessor.isAddressUriUnderOpenConnectionsFlow(addressUri.getURIAsString())) {
+        if (this.endpointValidationInProgress.compareAndSet(false, true)) {
             Mono.fromFuture(this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
                 "",
                 this.endpoint.serviceEndpoint(),

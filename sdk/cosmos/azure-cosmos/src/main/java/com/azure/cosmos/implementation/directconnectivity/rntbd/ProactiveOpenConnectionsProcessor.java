@@ -207,10 +207,16 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
     
     public void recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(String collectionRid, List<String> addressUrisAsString) {
-        this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.putIfAbsent(collectionRid, new HashSet<>());
-        this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.computeIfPresent(collectionRid, (ignore, urisAsString) -> {
-            urisAsString.addAll(addressUrisAsString);
+        this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.compute(collectionRid, (ignore, urisAsString) -> {
+
+            if (urisAsString == null) {
+                urisAsString = new HashSet<>(addressUrisAsString);
+            } else {
+                urisAsString.addAll(addressUrisAsString);
+            }
+
             this.addressUrisUnderOpenConnectionsAndInitCaches.addAll(addressUrisAsString);
+
             return urisAsString;
         });
     }
