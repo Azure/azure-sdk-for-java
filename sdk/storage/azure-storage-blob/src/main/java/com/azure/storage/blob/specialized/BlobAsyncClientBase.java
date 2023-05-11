@@ -17,7 +17,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -105,6 +104,8 @@ import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -126,8 +127,10 @@ import static com.azure.core.util.FluxUtil.withContext;
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
 public class BlobAsyncClientBase {
-
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClientBase.class);
+
+    private static final Set<OpenOption> DEFAULT_OPEN_OPTIONS_SET = Collections.unmodifiableSet(new HashSet<>(
+        Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.READ, StandardOpenOption.WRITE)));
 
     /**
      * Backing REST client for the blob client.
@@ -1533,10 +1536,7 @@ public class BlobAsyncClientBase {
         // Default behavior is not to overwrite
         Set<OpenOption> openOptions = options.getOpenOptions();
         if (openOptions == null) {
-            openOptions = new HashSet<>();
-            openOptions.add(StandardOpenOption.CREATE_NEW);
-            openOptions.add(StandardOpenOption.WRITE);
-            openOptions.add(StandardOpenOption.READ);
+            openOptions = DEFAULT_OPEN_OPTIONS_SET;
         }
 
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
@@ -1587,8 +1587,8 @@ public class BlobAsyncClientBase {
                     .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
                         finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
                         response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
-                            progressReporter == null ? null : progressReporter.createChild()
-                        ).flux()), finalParallelTransferOptions.getMaxConcurrency())
+                            progressReporter == null ? null : progressReporter.createChild()).flux()),
+                        finalParallelTransferOptions.getMaxConcurrency())
 
                     // Only the first download call returns a value.
                     .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
@@ -1600,7 +1600,8 @@ public class BlobAsyncClientBase {
         ProgressReporter progressReporter) {
 
         long position = chunkNum * finalParallelTransferOptions.getBlockSizeLong();
-        return response.writeValueToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
+        return FluxUtil.writeFile(response.getValue(), file, position);
+        //return response.writeValueToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
