@@ -75,11 +75,7 @@
       <version>1.39.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
-    <dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-common</artifactId>
-      <version>4.1.90.Final</version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
-    </dependency>
+
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-handler</artifactId>
@@ -136,6 +132,21 @@
       <classifier>${boring-ssl-classifier}</classifier>
     </dependency>
 
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-common</artifactId>
+      <version>4.1.90.Final</version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-resolver-dns</artifactId>
+      <version>4.1.90.Final</version> <!-- {x-version-update;io.netty:netty-resolver-dns;external_dependency} -->
+    </dependency>
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-resolver-dns-native-macos</artifactId>
+      <version>4.1.90.Final</version> <!-- {x-version-update;io.netty:netty-resolver-dns-native-macos;external_dependency} -->
+    </dependency>
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty-http</artifactId>
