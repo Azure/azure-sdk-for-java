@@ -6,7 +6,6 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,8 +40,6 @@ public final class CosmosDiagnostics {
 
     private CosmosDiagnosticsContext diagnosticsContext;
     private final AtomicBoolean diagnosticsCapturedInPagedFlux;
-
-    static final String USER_AGENT = Utils.getUserAgent();
     static final String USER_AGENT_KEY = "userAgent";
 
     CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
@@ -253,17 +250,15 @@ public final class CosmosDiagnostics {
         return combinedStatistics;
     }
 
-
-
     void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
         if (this.feedResponseDiagnostics != null) {
             if (parentNode != null) {
-                parentNode.put(USER_AGENT_KEY, USER_AGENT);
+                parentNode.put(USER_AGENT_KEY, this.feedResponseDiagnostics.getUserAgent());
                 parentNode.putPOJO(COSMOS_DIAGNOSTICS_KEY, feedResponseDiagnostics);
             }
 
             if (stringBuilder != null) {
-                stringBuilder.append(USER_AGENT_KEY + "=").append(USER_AGENT).append(System.lineSeparator());
+                stringBuilder.append(USER_AGENT_KEY + "=").append(this.feedResponseDiagnostics.getUserAgent()).append(System.lineSeparator());
                 stringBuilder.append(feedResponseDiagnostics);
             }
         } else {
