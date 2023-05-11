@@ -331,6 +331,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     protected Message decodeDelivery(Delivery delivery) {
+        assert !this.isV2;
         final int messageSize = delivery.pending();
         final byte[] buffer = new byte[messageSize];
         final int read = receiver.recv(buffer, 0, messageSize);
@@ -393,15 +394,14 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     protected void onHandlerClose() {
-        // Note: Given the disposition is a generic AMQP feature of brokers that support receive-link with UNSETTLED
-        // settlement mode, in near future we will enable delivery disposition API in amqp-core 'ReceiverLinkHandler'.
-        // Such a future API in 'ReceiverLinkHandler' means the handler will own the 'ReceiverUnsettledDeliveries'
-        // object, and the closing of the handler (i.e., handler.close()) will close 'ReceiverUnsettledDeliveries'.
-        // TODO: anuchan: Remove onHandlerClose
-        // This 'onHandlerClose' method is a temporary internal method for the 'ServiceBusReactorReceiver' to close
-        // the 'ReceiverUnsettledDeliveries' for the interim while we rollout the full disposition API support in
-        // amqp-core. The 'onHandlerClose' method will be removed once ownership of the 'ReceiverUnsettledDeliveries'
-        // is abstracted within 'ReceiverLinkHandler', so 'ServiceBusReactorReceiver' no longer have to own it.
+        assert !this.isV2;
+        // Note: The 'onHandlerClose' was introduced as a temporary internal method (in the March-2023 release)
+        // in the v1 stack - https://github.com/Azure/azure-sdk-for-java/pull/33593.
+        // The purpose of 'onHandlerClose' was to allow 'ServiceBusReactorReceiver' to close 'ReceiverUnsettledDeliveries'.
+        // In the v2 stack, the 'ReceiverUnsettledDeliveries' is abstracted in 'ReceiverLinkHandler2', which means
+        // once we're entirely on v2 (i.e., when v1-v2 side-by-side support is no longer needed), we'll remove
+        // 'onHandlerClose' method.
+        // TODO: anuchan: Once entirely on v2, Remove onHandlerClose, make ReceiverUnsettledDeliveries amqp-core package private.
     }
 
     /**
