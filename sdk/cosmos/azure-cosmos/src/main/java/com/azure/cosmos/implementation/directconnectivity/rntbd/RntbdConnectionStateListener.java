@@ -95,6 +95,7 @@ public class RntbdConnectionStateListener {
             addressUri = addressUriOptional.get();
         } else {
             logger.debug("addressUri cannot be null...");
+            return;
         }
 
         // connection state listener will attempt to open a closed connection only
