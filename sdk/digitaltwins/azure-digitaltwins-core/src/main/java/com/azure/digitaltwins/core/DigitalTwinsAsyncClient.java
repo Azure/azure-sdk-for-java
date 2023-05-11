@@ -2713,7 +2713,7 @@ public final class DigitalTwinsAsyncClient {
      *
      * <!-- src_embed com.azure.digitaltwins.core.DigitalTwinsAsyncClient.listImportJobs#ImportJobDigitalTwinOptions -->
      * <pre>
-     * digitalTwinsAsyncClient.listImportJobs&#40;new ImportJobDigitalTwinOptions&#40;&#41;.setMaxItemsPerPage&#40;5&#41;&#41;
+     * digitalTwinsAsyncClient.listImportJobs&#40;new DigitalTwinsImportJobOptions&#40;&#41;.setMaxItemsPerPage&#40;5&#41;&#41;
      *     .doOnNext&#40;importJob -&gt; System.out.println&#40;&quot;Retrieved event route with Id: &quot; + importJob.getId&#40;&#41;&#41;&#41;
      *     .subscribe&#40;&#41;;
      * </pre>

@@ -1960,8 +1960,8 @@ public final class DigitalTwinsClient {
      * <pre>
      *
      * PagedIterable&lt;DigitalTwinsImportJob&gt; digitalTwinsImportJobs = digitalTwinsSyncClient.listImportJobs&#40;&#41;;
-     * digitalTwinsImportJobs.forEach&#40;importJob -&gt; System.out.println&#40;&quot;Retrieved import job with Id: &quot; +
-     *     importJob.getId&#40;&#41;&#41;&#41;;
+     * digitalTwinsImportJobs.forEach&#40;importJob -&gt; System.out.println&#40;&quot;Retrieved import job with Id: &quot;
+     *     + importJob.getId&#40;&#41;&#41;&#41;;
      *
      * </pre>
      * <!-- end com.azure.digitaltwins.core.DigitalTwinsClient.listImportJobs -->
@@ -1983,10 +1983,10 @@ public final class DigitalTwinsClient {
      * <pre>
      *
      * PagedIterable&lt;DigitalTwinsImportJob&gt; importJobsWithOptions = digitalTwinsSyncClient.listImportJobs&#40;
-     *     new ImportJobDigitalTwinOptions&#40;&#41;.setMaxItemsPerPage&#40;5&#41;,
+     *     new DigitalTwinsImportJobOptions&#40;&#41;.setMaxItemsPerPage&#40;5&#41;,
      *     new Context&#40;&quot;key&quot;, &quot;value&quot;&#41;&#41;;
-     * importJobsWithOptions.forEach&#40;importJob -&gt; System.out.println&#40;&quot;Retrieved import job with Id: &quot; +
-     *     importJob.getId&#40;&#41;&#41;&#41;;
+     * importJobsWithOptions.forEach&#40;importJob -&gt; System.out.println&#40;&quot;Retrieved import job with Id: &quot;
+     *     + importJob.getId&#40;&#41;&#41;&#41;;
      *
      * </pre>
      * <!-- end com.azure.digitaltwins.core.DigitalTwinsClient.listImportJobs#ImportJobDigitalTwinOptions-Context -->

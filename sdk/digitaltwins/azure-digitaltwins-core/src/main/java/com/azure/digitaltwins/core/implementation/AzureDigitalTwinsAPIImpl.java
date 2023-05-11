@@ -157,7 +157,7 @@ public final class AzureDigitalTwinsAPIImpl {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.host = host;
-        this.apiVersion = "2023-02-27-preview";
+        this.apiVersion = "2023-06-30";
         this.digitalTwinModels = new DigitalTwinModelsImpl(this);
         this.queries = new QueriesImpl(this);
         this.digitalTwins = new DigitalTwinsImpl(this);
