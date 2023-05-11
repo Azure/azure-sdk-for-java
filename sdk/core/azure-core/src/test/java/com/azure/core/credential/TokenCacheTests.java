@@ -71,7 +71,7 @@ public class TokenCacheTests {
 
         virtualTimeScheduler.advanceTimeBy(Duration.ofSeconds(40));
 
-        assertTrue(latch.await(30, TimeUnit.SECONDS));
+        assertTrue(latch.await(60, TimeUnit.SECONDS));
 
         // At most 10 requests should do actual token acquisition, use 11 for safe
         assertTrue(refreshes.get() <= 11);

@@ -51,7 +51,6 @@ public class CosmosException extends AzureException {
     private static final long serialVersionUID = 1L;
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    private final static String USER_AGENT = Utils.getUserAgent();
 
     /**
      * Status code
@@ -428,7 +427,7 @@ public class CosmosException extends AzureException {
         try {
             ObjectNode exceptionMessageNode = mapper.createObjectNode();
             exceptionMessageNode.put("ClassName", getClass().getSimpleName());
-            exceptionMessageNode.put(USER_AGENT_KEY, USER_AGENT);
+            exceptionMessageNode.put(USER_AGENT_KEY, this.getUserAgent());
             exceptionMessageNode.put("statusCode", statusCode);
             exceptionMessageNode.put("resourceAddress", resourceAddress);
             if (cosmosError != null) {
@@ -460,7 +459,7 @@ public class CosmosException extends AzureException {
                 "%s {%s=%s, error=%s, resourceAddress=%s, statusCode=%s, message=%s, causeInfo=%s, responseHeaders=%s, requestHeaders=%s, faultInjectionRuleId=[%s] }",
                 getClass().getSimpleName(),
                 USER_AGENT_KEY,
-                USER_AGENT,
+                this.getUserAgent(),
                 cosmosError,
                 resourceAddress,
                 statusCode,
@@ -566,6 +565,15 @@ public class CosmosException extends AzureException {
 
     void setSendingRequestHasStarted(boolean hasSendingRequestStarted) {
         this.sendingRequestHasStarted = hasSendingRequestStarted;
+    }
+
+    private String getUserAgent() {
+        String userAgent = Utils.getUserAgent();
+        if (this.requestHeaders != null) {
+            userAgent = this.requestHeaders.getOrDefault(HttpConstants.HttpHeaders.USER_AGENT, userAgent);
+        }
+
+        return userAgent;
     }
 
     void setFaultInjectionRuleId(String faultInjectionRUleId) {

@@ -38,6 +38,16 @@
      <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
       com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
       com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
+    <javaModulesSurefireArgLine>
+      --add-reads com.azure.core.tracing.opentelemetry=com.azure.core.test
+      --add-reads com.azure.core.tracing.opentelemetry=com.azure.core.experimental
+      --add-reads com.azure.core.tracing.opentelemetry=org.junit.jupiter.api
+      --add-reads com.azure.core.tracing.opentelemetry=org.junit.jupiter.params
+      --add-reads com.azure.core.tracing.opentelemetry=org.junit.platform.commons
+      --add-opens com.azure.core.tracing.opentelemetry/com.azure.core.tracing.opentelemetry=ALL-UNNAMED
+      --add-exports org.junit.platform.commons/org.junit.platform.commons.util=ALL-UNNAMED
+      --add-exports org.junit.platform.commons/org.junit.platform.commons.logging=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
   </properties>
 
   <dependencies>
@@ -63,6 +73,12 @@
       <groupId>io.opentelemetry</groupId>
       <artifactId>opentelemetry-sdk</artifactId>
       <version>1.23.0</version> <!-- {x-version-update;io.opentelemetry:opentelemetry-sdk;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-core-experimental</artifactId>
+      <version>1.0.0-beta.40</version>  <!-- {x-version-update;com.azure:azure-core-experimental;current} -->
       <scope>test</scope>
     </dependency>
     <dependency>
