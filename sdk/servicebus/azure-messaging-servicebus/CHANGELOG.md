@@ -14,6 +14,8 @@
 
 - Fixed mapping of `ServiceBusManagementError` to corresponding `AzureExceptions` in `ServiceBusAdministrationClient`. ([33609](https://github.com/Azure/azure-sdk-for-java/issues/33609))
 
+- Fixed issue causing updates to TopicProperties w/AuthorizationRules to return 400 Bad request([#34880](https://github.com/Azure/azure-sdk-for-java/issues/34880))
+
 ### Other Changes
 
 ## 7.15.0-beta.2 (2023-07-18)
