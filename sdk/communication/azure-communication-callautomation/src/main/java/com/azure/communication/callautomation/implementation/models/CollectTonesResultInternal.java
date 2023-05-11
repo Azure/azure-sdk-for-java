@@ -17,9 +17,6 @@ public final class CollectTonesResultInternal {
     @JsonProperty(value = "tones", access = JsonProperty.Access.WRITE_ONLY)
     private List<DtmfToneInternal> tones;
 
-    /** Creates an instance of CollectTonesResultInternal class. */
-    public CollectTonesResultInternal() {}
-
     /**
      * Get the tones property: The tones property.
      *
