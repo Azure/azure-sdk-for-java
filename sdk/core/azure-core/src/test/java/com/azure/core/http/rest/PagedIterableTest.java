@@ -137,8 +137,7 @@ public class PagedIterableTest {
     @ParameterizedTest
     @ValueSource(ints = {0, 5})
     public void streamByPageMap(int numberOfPages) {
-        PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(numberOfPages);
-        PagedIterable<Integer> pagedIterable = new PagedIterable<>(pagedFlux);
+        PagedIterable<Integer> pagedIterable = getIntegerPagedIterable(numberOfPages);
         List<PagedResponse<String>> pages = pagedIterable.mapPage(String::valueOf).streamByPage()
             .collect(Collectors.toList());
 

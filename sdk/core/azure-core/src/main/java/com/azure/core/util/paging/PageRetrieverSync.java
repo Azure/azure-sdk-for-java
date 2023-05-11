@@ -3,6 +3,8 @@
 
 package com.azure.core.util.paging;
 
+import java.util.stream.Stream;
+
 /**
  * This class handles retrieving page synchronously.
  *
@@ -22,4 +24,9 @@ public interface PageRetrieverSync<C, P> {
      * @return A page of elements type <P>.
      */
     P getPage(C continuationToken, Integer pageSize);
+
+    default Stream<P> getPageStream(C continuationToken, Integer pageSize) {
+        return null;
+    }
 }
+

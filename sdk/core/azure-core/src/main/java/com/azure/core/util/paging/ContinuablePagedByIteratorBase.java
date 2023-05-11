@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Stream;
 
 /**
  * Internal class that is a blocking iterator base class.
@@ -104,6 +105,15 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
             P page = pageRetrieverSync.getPage(continuationState.getLastContinuationToken(), defaultPageSize);
             if (page != null) {
                 receivePage(receivedPages, page);
+            } else {
+                Stream<P> streamPage =
+                    pageRetrieverSync.getPageStream(continuationState.getLastContinuationToken(), defaultPageSize);
+                if (streamPage != null) {
+                    streamPage.map(innerPage -> {
+                        receivePage(receivedPages, innerPage);
+                        return innerPage;
+                    });
+                }
             }
         }
 

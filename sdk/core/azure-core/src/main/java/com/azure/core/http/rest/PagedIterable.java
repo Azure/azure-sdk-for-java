@@ -3,12 +3,14 @@
 
 package com.azure.core.http.rest;
 
+import com.azure.core.http.HttpRequest;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.PageRetrieverSync;
 
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -149,8 +151,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
         Function<String, PagedResponse<T>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) ->
             continuationToken == null
-                 ? firstPageRetriever.get()
-                 : nextPageRetriever.apply(continuationToken), true);
+                ? firstPageRetriever.get()
+                : nextPageRetriever.apply(continuationToken), true);
     }
 
     /**
@@ -187,7 +189,32 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      */
     @SuppressWarnings("deprecation")
     public <S> PagedIterable<S> mapPage(Function<T, S> mapper) {
-        return new PagedIterable<>(pagedFlux.mapPage(mapper));
+        Supplier<PageRetrieverSync<String, PagedResponse<S>>> provider = () -> {
+            return new PageRetrieverSync<String, PagedResponse<S>>() {
+                @Override
+                public PagedResponse<S> getPage(String continuationToken, Integer pageSize) {
+                    return null;
+                }
+
+                @Override
+                public Stream<PagedResponse<S>> getPageStream(String continuationToken, Integer pageSize) {
+                    Stream<PagedResponse<T>> pagedResponseStream = (continuationToken == null)
+                        ? PagedIterable.super.streamByPage()
+                        : PagedIterable.super.streamByPage(continuationToken);
+                    return pagedResponseStream.map(PagedIterable.this.mapPagedResponse(mapper));
+                }
+            };
+        };
+        return new PagedIterable<S>(provider, true);
+    }
+
+    private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T,S> mapper) {
+        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
+            pagedResponse.getStatusCode(),
+            pagedResponse.getHeaders(),
+            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
+            pagedResponse.getContinuationToken(),
+            null);
     }
 
     /**
