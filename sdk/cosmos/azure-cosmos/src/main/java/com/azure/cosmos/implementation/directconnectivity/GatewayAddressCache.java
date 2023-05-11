@@ -636,7 +636,7 @@ public class GatewayAddressCache implements IAddressCache {
                                         toPartitionAddressAndRange(collectionRid, addresses);
 
                                 if (forceRefresh) {
-                                    recordCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(collectionRid, pkrIdToAddressInfos.getRight());
+                                    refreshCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(collectionRid, pkrIdToAddressInfos.getRight());
                                 }
 
                                 return pkrIdToAddressInfos;
@@ -1063,7 +1063,7 @@ public class GatewayAddressCache implements IAddressCache {
         return addressInformations.length < ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize;
     }
 
-    private void recordCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(String collectionRid, AddressInformation[] addressInfos) {
+    private void refreshCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(String collectionRid, AddressInformation[] addressInfos) {
         if (this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
 
             List<String> addressUrisAsString = Arrays
