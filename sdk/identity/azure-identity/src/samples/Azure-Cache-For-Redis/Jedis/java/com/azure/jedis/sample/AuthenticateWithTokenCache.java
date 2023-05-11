@@ -64,6 +64,11 @@ public class AuthenticateWithTokenCache {
                 if (jedis.isBroken()) {
                     jedis.close();
                     jedis = createJedisClient(cacheHostname, 6380, "<USERNAME>", tokenRefreshCache.getAccessToken(), useSsl);
+
+                    // Configure the jedis instance for proactive authentication before token expires.
+                    tokenRefreshCache
+                        .setJedisInstanceToAuthenticate(jedis)
+                        .setUsername("<USERNAME>");
                 }
             }
             i++;
@@ -103,7 +108,7 @@ public class AuthenticateWithTokenCache {
         public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext) {
             this.tokenCredential = tokenCredential;
             this.tokenRequestContext = tokenRequestContext;
-            this.timer = new Timer();
+            this.timer = new Timer(true);
         }
 
         /**

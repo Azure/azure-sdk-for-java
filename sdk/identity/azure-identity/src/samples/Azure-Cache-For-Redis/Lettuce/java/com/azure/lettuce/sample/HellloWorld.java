@@ -11,7 +11,7 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.SocketOptions;
 import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisStringCommands;
+import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.protocol.ProtocolVersion;
 
@@ -31,10 +31,10 @@ public class HellloWorld {
 
         // Build Redis URI with host and authentication details.
         // TODO: Replace Host Name with Azure Cache for Redis Host Name.
-        RedisURI redisURI = RedisURI.Builder.redis("azsdktest.redis.cache.windows.net") // Host Name is Required.
+        RedisURI redisURI = RedisURI.Builder.redis("<HOST_NAME>") // Host Name is Required.
             .withPort(6380) //Port is Required.
             .withSsl(true) // SSL Connection is Required.
-            .withAuthentication("c21a53bd-e8d7-412c-b60f-19e9f7fb0c7e", token) // Username is Required.
+            .withAuthentication("<USERNAME>", token) // Username is Required.
             .withClientName("LettuceClient")
             .build();
 
@@ -52,7 +52,7 @@ public class HellloWorld {
         StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
         // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-        RedisStringCommands<String, String> sync = connection.sync();
+        RedisCommands<String, String> sync = connection.sync();
         sync.set("Az:testKey", "testVal");
         System.out.println(sync.get("Az:testKey"));
     }
