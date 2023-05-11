@@ -3,9 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
-import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SnapshotSettingFilter;
 
 import java.util.ArrayList;

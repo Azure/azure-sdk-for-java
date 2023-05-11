@@ -1340,7 +1340,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1367,7 +1367,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1405,7 +1405,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1442,7 +1442,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1473,7 +1473,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshotWithResponse(snapshotResult, false))
-                .assertNext(response-> assertConfigurationSettingSnapshotWithResponse(200, name,
+                .assertNext(response -> assertConfigurationSettingSnapshotWithResponse(200, name,
                     SnapshotStatus.ARCHIVED, filters, CompositionType.KEY,
                     MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
                 .verifyComplete();
@@ -1506,7 +1506,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(name,
+                .assertNext(response -> assertEqualsConfigurationSettingSnapshot(name,
                     SnapshotStatus.ARCHIVED, filters, CompositionType.KEY,
                     MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
                 .verifyComplete();
@@ -1539,19 +1539,19 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
 
             // Recover the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.recoverSnapshotWithResponse(snapshotResult, false))
-                .assertNext(response-> assertConfigurationSettingSnapshotWithResponse(200, name,
+                .assertNext(response -> assertConfigurationSettingSnapshotWithResponse(200, name,
                     SnapshotStatus.READY, filters, CompositionType.KEY,
                     MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1581,19 +1581,19 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
 
             // Recover the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.recoverSnapshot(name))
-                .assertNext(response-> assertEqualsConfigurationSettingSnapshot(name,
+                .assertNext(response -> assertEqualsConfigurationSettingSnapshot(name,
                     SnapshotStatus.READY, filters, CompositionType.KEY,
                     MINIMUM_RETENTION_PERIOD, Long.valueOf(1000), Long.valueOf(0), null, response))
                 .verifyComplete();
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }
@@ -1652,7 +1652,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
 
@@ -1666,7 +1666,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(snapshot.getName()))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         }
     }
@@ -1711,7 +1711,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
 
             // Archived the snapshot, it will be deleted automatically when retention period expires.
             StepVerifier.create(client.archiveSnapshot(name))
-                .assertNext(response-> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
+                .assertNext(response -> assertEquals(SnapshotStatus.ARCHIVED, response.getStatus()))
                 .verifyComplete();
         });
     }

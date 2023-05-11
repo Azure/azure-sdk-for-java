@@ -837,8 +837,8 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshot#String -->
-     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshot#String -->
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshot-->
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshot -->
      *
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
      *                     be the name of the snapshot.
@@ -858,15 +858,16 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshotMaxOverload -->
      * <pre>
-     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
      * Context ctx = new Context&#40;key2, value2&#41;;
-     * configurationClient.listConfigurationSettings&#40;settingSelector, ctx&#41;.forEach&#40;setting -&gt; &#123;
+     *
+     * configurationClient.listConfigurationSettingsBySnapshot&#40;snapshotName, ctx&#41;.forEach&#40;setting -&gt; &#123;
      *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * &#125;&#41;;
      * </pre>
-     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsBySnapshotMaxOverload -->
      *
      * @param snapshotName Optional. A filter used get {@link ConfigurationSetting}s for a snapshot. The value should
      *                     be the name of the snapshot.
@@ -996,13 +997,13 @@ public final class ConfigurationClient {
      * &#47;&#47; Key Name also supports RegExp but only support prefix end with &quot;*&quot;, such as &quot;k*&quot; and is case-sensitive.
      * filters.add&#40;new SnapshotSettingFilter&#40;&quot;&#123;keyName&#125;&quot;&#41;&#41;;
      * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     *
      * SyncPoller&lt;CreateSnapshotOperationDetail, ConfigurationSettingSnapshot&gt; poller =
      *     client.beginCreateSnapshot&#40;snapshotName, filters&#41;;
-     *
      * poller.setPollInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;;
      * poller.waitForCompletion&#40;&#41;;
+     * ConfigurationSettingSnapshot snapshot = poller.getFinalResult&#40;&#41;;
      *
-     * ConfigurationSettingSnapshot snapshot= poller.getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Snapshot name=%s is created at %s%n&quot;, snapshot.getName&#40;&#41;, snapshot.getCreatedAt&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapshot -->
@@ -1024,8 +1025,24 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxoverload -->
-     * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxoverload -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxOverload -->
+     * <pre>
+     * List&lt;SnapshotSettingFilter&gt; filters = new ArrayList&lt;&gt;&#40;&#41;;
+     * &#47;&#47; Key Name also supports RegExp but only support prefix end with &quot;*&quot;, such as &quot;k*&quot; and is case-sensitive.
+     * filters.add&#40;new SnapshotSettingFilter&#40;&quot;&#123;keyName&#125;&quot;&#41;&#41;;
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     * Context ctx = new Context&#40;key2, value2&#41;;
+     *
+     * SyncPoller&lt;CreateSnapshotOperationDetail, ConfigurationSettingSnapshot&gt; poller =
+     *     client.beginCreateSnapshot&#40;snapshotName,
+     *         new ConfigurationSettingSnapshot&#40;filters&#41;.setRetentionPeriod&#40;Duration.ofHours&#40;1&#41;&#41;, ctx&#41;;
+     * poller.setPollInterval&#40;Duration.ofSeconds&#40;10&#41;&#41;;
+     * poller.waitForCompletion&#40;&#41;;
+     * ConfigurationSettingSnapshot snapshot = poller.getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Snapshot name=%s is created at %s%n&quot;, snapshot.getName&#40;&#41;, snapshot.getCreatedAt&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.beginCreateSnapshotMaxOverload -->
      *
      * @param name The name of the {@link ConfigurationSettingSnapshot} to create.
      * @param snapshot The snapshot to create.
@@ -1044,8 +1061,14 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.getSnapshot#String -->
-     * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshot#String -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.getSnapshotByName -->
+     * <pre>
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     * ConfigurationSettingSnapshot getSnapshot = client.getSnapshot&#40;snapshotName&#41;;
+     * System.out.printf&#40;&quot;Snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
+     *     getSnapshot.getName&#40;&#41;, getSnapshot.getCreatedAt&#40;&#41;, getSnapshot.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshotByName -->
      *
      * @param name the snapshot name.
      * @return A {@link ConfigurationSettingSnapshot}.
@@ -1060,8 +1083,15 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.getSnapshotWithResponse#String-Context -->
-     * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshotWithResponse#String-Context -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload -->
+     * <pre>
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     * Context ctx = new Context&#40;key2, value2&#41;;
+     * ConfigurationSettingSnapshot getSnapshot = client.getSnapshotWithResponse&#40;snapshotName, ctx&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
+     *     getSnapshot.getName&#40;&#41;, getSnapshot.getCreatedAt&#40;&#41;, getSnapshot.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.getSnapshotByNameMaxOverload -->
      *
      * @param name the snapshot name.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -1079,8 +1109,14 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.archiveSnapshot#String -->
-     * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshot#String -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.archiveSnapshotByName -->
+     * <pre>
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     * ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshot&#40;snapshotName&#41;;
+     * System.out.printf&#40;&quot;Archived snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
+     *     archivedSnapshot.getName&#40;&#41;, archivedSnapshot.getCreatedAt&#40;&#41;, archivedSnapshot.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshotByName -->
      *
      * @param name The snapshot name.
      * @return A {@link ConfigurationSettingSnapshot}.
@@ -1099,8 +1135,16 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.archiveSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
-     * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload -->
+     * <pre>
+     * Context ctx = new Context&#40;key2, value2&#41;;
+     *
+     * ConfigurationSettingSnapshot archivedSnapshot = client.archiveSnapshotWithResponse&#40;snapshot, false,
+     *     ctx&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Archived snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
+     *     archivedSnapshot.getName&#40;&#41;, archivedSnapshot.getCreatedAt&#40;&#41;, archivedSnapshot.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.archiveSnapshotByNameMaxOverload -->
      *
      * @param snapshot The snapshot to be archived.
      * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag ETag} is
@@ -1124,8 +1168,14 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.recoverSnapshot#String -->
-     * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshot#String -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.recoverSnapshotByName -->
+     * <pre>
+     * String snapshotName = &quot;&#123;snapshotName&#125;&quot;;
+     * ConfigurationSettingSnapshot recoveredSnapshot = client.recoverSnapshot&#40;snapshotName&#41;;
+     * System.out.printf&#40;&quot;Recovered snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
+     *     recoveredSnapshot.getName&#40;&#41;, recoveredSnapshot.getCreatedAt&#40;&#41;, recoveredSnapshot.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshotByName -->
      *
      * @param name The snapshot name.
      * @return A {@link ConfigurationSettingSnapshot}.
@@ -1144,8 +1194,14 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.recoverSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
-     * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshotWithResponse#ConfigurationSettingSnapshot-boolean-Context -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload -->
+     * <pre>
+     * ConfigurationSettingSnapshot recoveredSnapshot = client.recoverSnapshotWithResponse&#40;snapshot, false,
+     *     ctx&#41;.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Recovered snapshot name=%s is created at %s, snapshot status is %s.%n&quot;,
+     *     recoveredSnapshot.getName&#40;&#41;, recoveredSnapshot.getCreatedAt&#40;&#41;, recoveredSnapshot.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.recoverSnapshotMaxOverload -->
      *
      * @param snapshot The snapshot to be archived.
      * @param ifUnchanged Flag indicating if the {@code snapshot} {@link ConfigurationSettingSnapshot#getEtag()} ETag}
@@ -1169,8 +1225,16 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listSnapshots#SnapshotSelector -->
-     * <!-- end com.azure.data.appconfiguration.configurationclient.listSnapshots#SnapshotSelector -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listSnapshots -->
+     * <pre>
+     * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
+     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setName&#40;snapshotNameFilter&#41;&#41;
+     *     .forEach&#40;snapshotResult -&gt; &#123;
+     *         System.out.printf&#40;&quot;Listed Snapshot name = %s is created at %s, snapshot status is %s.%n&quot;,
+     *             snapshotResult.getName&#40;&#41;, snapshotResult.getCreatedAt&#40;&#41;, snapshotResult.getStatus&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.listSnapshots -->
      *
      * @param selector Optional. Used to filter {@link ConfigurationSettingSnapshot} from the service.
      * @return A {@link PagedIterable} of {@link ConfigurationSettingSnapshot}.
@@ -1185,8 +1249,18 @@ public final class ConfigurationClient {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listSnapshots#SnapshotSelector-Context -->
-     * <!-- end com.azure.data.appconfiguration.configurationclient.listSnapshots#SnapshotSelector-Context -->
+     * <!-- src_embed com.azure.data.appconfiguration.configurationclient.listSnapshotsMaxOverload -->
+     * <pre>
+     * String snapshotNameFilter = &quot;&#123;snapshotNamePrefix&#125;*&quot;;
+     * Context ctx = new Context&#40;key2, value2&#41;;
+     *
+     * client.listSnapshots&#40;new SnapshotSelector&#40;&#41;.setName&#40;snapshotNameFilter&#41;, ctx&#41;
+     *     .forEach&#40;snapshotResult -&gt; &#123;
+     *         System.out.printf&#40;&quot;Listed Snapshot name = %s is created at %s, snapshot status is %s.%n&quot;,
+     *             snapshotResult.getName&#40;&#41;, snapshotResult.getCreatedAt&#40;&#41;, snapshotResult.getStatus&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.appconfiguration.configurationclient.listSnapshotsMaxOverload -->
      *
      * @param selector Optional. Used to filter {@link ConfigurationSettingSnapshot} from the service.
      * @param context Additional context that is passed through the Http pipeline during the service call.

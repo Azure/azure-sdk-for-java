@@ -29,7 +29,6 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.data.appconfiguration.implementation.models.State.NOT_STARTED;
 import static com.azure.data.appconfiguration.implementation.models.State.RUNNING;
 import static com.azure.data.appconfiguration.implementation.models.State.SUCCEEDED;
-import static reactor.core.Scannable.Attr.CANCELLED;
 
 /**
  * A helper util client for creating a snapshot.
@@ -38,7 +37,7 @@ class CreateSnapshotUtilClient {
     private static final ClientLogger LOGGER = new ClientLogger(CreateSnapshotUtilClient.class);
     private static final Duration DEFAULT_POLL_INTERVAL = Duration.ofSeconds(30);
 
-    AzureAppConfigurationImpl service;
+    private final AzureAppConfigurationImpl service;
 
     CreateSnapshotUtilClient(AzureAppConfigurationImpl service) {
         this.service = service;
@@ -188,8 +187,6 @@ class CreateSnapshotUtilClient {
             status = LongRunningOperationStatus.IN_PROGRESS;
         } else if (SUCCEEDED.equals(state)) {
             status = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-        } else if (CANCELLED.equals(state)) {
-            status = LongRunningOperationStatus.USER_CANCELLED;
         } else {
             status = LongRunningOperationStatus.fromString(
                 response.getValue().toString(), true);
