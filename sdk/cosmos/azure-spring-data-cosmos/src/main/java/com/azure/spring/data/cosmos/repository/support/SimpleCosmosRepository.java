@@ -92,7 +92,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @param <S> type of entity
      * @return entity
      */
-    @Override
     public <S extends T> S save(S entity) {
         Assert.notNull(entity, "entity must not be null");
 
@@ -142,7 +141,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @param <S> type of entities
      * @return return the saved entities
      */
-    @Override
     public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
         Assert.notNull(entities, "Iterable entities should not be null");
 
@@ -160,7 +158,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      *
      * @return return Iterable of the found entities List
      */
-    @Override
     public Iterable<T> findAll() {
         return operation.findAll(information.getContainerName(), information.getJavaType());
     }
@@ -171,7 +168,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @param ids id list used to find entities
      * @return return a List of all found entities
      */
-    @Override
     public Iterable<T> findAllById(Iterable<ID> ids) {
         Assert.notNull(ids, "Iterable ids should not be null");
 
@@ -184,7 +180,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @param id an id used to find entity
      * @return return the searching result
      */
-    @Override
     public Optional<T> findById(ID id) {
         Assert.notNull(id, "id must not be null");
 
@@ -214,7 +209,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      *
      * @return count of documents in one container without partitions
      */
-    @Override
     public long count() {
         return operation.count(information.getContainerName());
     }
@@ -224,7 +218,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      *
      * @param id an id used to specify the deleted document
      */
-    @Override
     public void deleteById(ID id) {
         Assert.notNull(id, "id to be deleted should not be null");
 
@@ -244,14 +237,12 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      *
      * @param entity the entity used to specify a document
      */
-    @Override
     public void delete(T entity) {
         Assert.notNull(entity, "entity to be deleted should not be null");
 
         operation.deleteEntity(information.getContainerName(), entity);
     }
 
-    @Override
     public void deleteAllById(Iterable<? extends ID> ids) {
         Assert.notNull(ids, "Iterable entities should not be null");
         StreamSupport.stream(ids.spliterator(), true).forEach(this::deleteById);
@@ -260,7 +251,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     /**
      * delete all the domains of a container
      */
-    @Override
     public void deleteAll() {
         operation.deleteAll(information.getContainerName(), information.getJavaType());
     }
@@ -270,7 +260,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      *
      * @param entities list of entities to be deleted
      */
-    @Override
     public void deleteAll(Iterable<? extends T> entities) {
         Assert.notNull(entities, "Iterable entities should not be null");
 
@@ -283,7 +272,6 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
      * @param primaryKey an id to specify an entity
      * @return if the entity exists
      */
-    @Override
     public boolean existsById(ID primaryKey) {
         Assert.notNull(primaryKey, "primaryKey should not be null");
 

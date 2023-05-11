@@ -98,7 +98,6 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         return cosmosOperations.findAll(partitionKey, entityInformation.getJavaType());
     }
 
-    @Override
     public <S extends T> Mono<S> save(S entity) {
 
         Assert.notNull(entity, "Entity must not be null!");
@@ -124,7 +123,6 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         return cosmosOperations.patch(id, partitionKey, domainType, patchOperations, options);
     }
 
-    @Override
     public <S extends T> Flux<S> saveAll(Iterable<S> entities) {
 
         Assert.notNull(entities, "The given Iterable of entities must not be null!");
@@ -132,7 +130,6 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         return Flux.fromIterable(entities).flatMap(this::save);
     }
 
-    @Override
     public <S extends T> Flux<S> saveAll(Publisher<S> entityStream) {
 
         Assert.notNull(entityStream, "The given Publisher of entities must not be null!");
@@ -140,14 +137,12 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
         return Flux.from(entityStream).flatMap(this::save);
     }
 
-    @Override
     public Mono<T> findById(K id) {
         Assert.notNull(id, "The given id must not be null!");
         return cosmosOperations.findById(entityInformation.getContainerName(), id,
             entityInformation.getJavaType());
     }
 
-    @Override
     public Mono<T> findById(Publisher<K> publisher) {
         Assert.notNull(publisher, "The given id must not be null!");
 
@@ -163,7 +158,6 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
             entityInformation.getJavaType(), partitionKey);
     }
 
-    @Override
     public Mono<Boolean> existsById(K id) {
         Assert.notNull(id, "The given id must not be null!");
 
@@ -171,7 +165,6 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
             entityInformation.getContainerName());
     }
 
-    @Override
     public Mono<Boolean> existsById(Publisher<K> publisher) {
         Assert.notNull(publisher, "The given id must not be null!");
 
@@ -180,37 +173,31 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
             entityInformation.getContainerName()));
     }
 
-    @Override
     public Flux<T> findAll() {
         return cosmosOperations.findAll(entityInformation.getContainerName(),
             entityInformation.getJavaType());
     }
 
-    @Override
     public Flux<T> findAllById(Iterable<K> ids) {
         Assert.notNull(ids, "Iterable ids should not be null");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public Flux<T> findAllById(Publisher<K> ids) {
         Assert.notNull(ids, "The given Publisher of Id's must not be null!");
         throw new UnsupportedOperationException();
     }
 
-    @Override
     public Mono<Long> count() {
         return cosmosOperations.count(entityInformation.getContainerName());
     }
 
-    @Override
     public Mono<Void> deleteById(K id) {
         Assert.notNull(id, "The given id must not be null!");
 
         return cosmosOperations.deleteById(entityInformation.getContainerName(), id, null);
     }
 
-    @Override
     public Mono<Void> deleteById(Publisher<K> publisher) {
         Assert.notNull(publisher, "Id must not be null!");
 
@@ -227,27 +214,23 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
 
     }
 
-    @Override
     public Mono<Void> delete(@NonNull T entity) {
         Assert.notNull(entity, "entity to be deleted must not be null!");
 
         return cosmosOperations.deleteEntity(entityInformation.getContainerName(), entity);
     }
 
-    @Override
     public Mono<Void> deleteAllById(Iterable<? extends K> ids) {
         Assert.notNull(ids, "The given Iterable of ids must not be null!");
         return Flux.fromIterable(ids).flatMap(this::deleteById).then();
     }
 
-    @Override
     public Mono<Void> deleteAll(Iterable<? extends T> entities) {
         Assert.notNull(entities, "The given Iterable of entities must not be null!");
 
         return Flux.fromIterable(entities).flatMap(this::delete).then();
     }
 
-    @Override
     public Mono<Void> deleteAll(Publisher<? extends T> entityStream) {
 
         Assert.notNull(entityStream, "The given Publisher of entities must not be null!");
@@ -258,7 +241,6 @@ public class SimpleReactiveCosmosRepository<T, K extends Serializable> implement
                    .then();
     }
 
-    @Override
     public Mono<Void> deleteAll() {
         return cosmosOperations.deleteAll(entityInformation.getContainerName(), entityInformation.getJavaType());
     }
