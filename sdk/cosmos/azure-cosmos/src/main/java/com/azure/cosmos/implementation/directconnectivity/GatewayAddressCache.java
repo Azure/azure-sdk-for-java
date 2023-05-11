@@ -909,7 +909,8 @@ public class GatewayAddressCache implements IAddressCache {
             final boolean isCollectionRidUnderOpenConnectionsFlow = this.proactiveOpenConnectionsProcessor
                     .isCollectionRidUnderOpenConnectionsFlow(collectionRid);
 
-            final int minConnectionsRequiredForEndpoint = (isCollectionRidUnderOpenConnectionsFlow) ? Configs.getMinConnectionPoolSizePerEndpoint() : 1;
+            final int minConnectionsRequiredForEndpoint = (isCollectionRidUnderOpenConnectionsFlow) ?
+                    Configs.getMinConnectionPoolSizePerEndpoint() : 1;
 
             for (Uri addressToBeValidated : addressesNeedToValidation) {
 
