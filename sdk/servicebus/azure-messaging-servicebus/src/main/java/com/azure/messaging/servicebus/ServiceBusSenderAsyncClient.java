@@ -16,7 +16,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
 import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
