@@ -290,22 +290,6 @@ public class GatewayAddressCache implements IAddressCache {
                                 cachedAddresses -> this.getAddressesForRangeId(request, partitionKeyRangeIdentity, true, cachedAddresses));
                     }
 
-                    if (forceRefreshPartitionAddressesModified) {
-
-                        String collectionRid = partitionKeyRangeIdentity.getCollectionRid();
-
-                        if (this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
-
-                            List<String> addressUrisAsString = Arrays
-                                    .stream(addressesValueHolder.v)
-                                    .map(addressInformation -> addressInformation.getPhysicalUri().getURIAsString())
-                                    .collect(Collectors.toList());
-
-                            this.proactiveOpenConnectionsProcessor
-                                    .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(collectionRid, addressUrisAsString);
-                        }
-                    }
-
                     return addressesValueHolder;
                 })
                 .onErrorResume(ex -> {
@@ -647,8 +631,18 @@ public class GatewayAddressCache implements IAddressCache {
                             .collect(Collectors.groupingBy(Address::getParitionKeyRangeId))
                             .values()
                             .stream()
-                            .map(groupedAddresses -> toPartitionAddressAndRange(collectionRid, addresses))
-                            .collect(Collectors.toList());
+                            .map(groupedAddresses -> {
+                                Pair<PartitionKeyRangeIdentity, AddressInformation[]> pkrIdToAddressInfos =
+                                        toPartitionAddressAndRange(collectionRid, addresses);
+
+                                if (forceRefresh) {
+                                    recordCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(collectionRid, pkrIdToAddressInfos.getRight());
+                                }
+
+                                return pkrIdToAddressInfos;
+                            })
+                            .collect(Collectors.toList())
+                            ;
                 });
 
         Mono<List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>>> result =
@@ -1067,6 +1061,19 @@ public class GatewayAddressCache implements IAddressCache {
 
     private boolean notAllReplicasAvailable(AddressInformation[] addressInformations) {
         return addressInformations.length < ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize;
+    }
+
+    private void recordCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(String collectionRid, AddressInformation[] addressInfos) {
+        if (this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
+
+            List<String> addressUrisAsString = Arrays
+                    .stream(addressInfos)
+                    .map(addressInformation -> addressInformation.getPhysicalUri().getURIAsString())
+                    .collect(Collectors.toList());
+
+            this.proactiveOpenConnectionsProcessor
+                    .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(collectionRid, addressUrisAsString);
+        }
     }
 
     private static String logAddressResolutionStart(
