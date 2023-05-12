@@ -104,10 +104,6 @@ public final class CosmosClientTelemetryConfig {
         return this;
     }
 
-    public void suppressClientTelemetry() {
-
-    }
-
     Boolean isSendClientTelemetryToServiceEnabled() {
         Boolean effectiveSnapshot = this.effectiveIsClientTelemetryEnabled;
         Boolean currentSnapshot = this.clientTelemetryEnabled;
