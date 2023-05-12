@@ -17,6 +17,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.io.IOUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
@@ -1600,8 +1601,7 @@ public class BlobAsyncClientBase {
         ProgressReporter progressReporter) {
 
         long position = chunkNum * finalParallelTransferOptions.getBlockSizeLong();
-        return FluxUtil.writeFile(response.getValue(), file, position);
-        //return response.writeValueToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
+        return response.writeValueToAsync(IOUtils.toAsynchronousByteChannel(file, position), progressReporter);
     }
 
     private void downloadToFileCleanup(AsynchronousFileChannel channel, String filePath, SignalType signalType) {
