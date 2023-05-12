@@ -16,6 +16,9 @@ public final class ContainerRegistryEventConnectedRegistry {
     @JsonProperty(value = "name")
     private String name;
 
+    /** Creates an instance of ContainerRegistryEventConnectedRegistry class. */
+    public ContainerRegistryEventConnectedRegistry() {}
+
     /**
      * Get the name property: The name of the connected registry that generated this event.
      *

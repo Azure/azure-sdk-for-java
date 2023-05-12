@@ -398,6 +398,11 @@ public class HttpConstants {
 
         public static final int INCORRECT_CONTAINER_RID_SUB_STATUS = 1024;
 
+        // SDK Codes - Java specific clinet-side substatus codes
+        // IMPORTANT - whenever possible rather use consistency substaus codes that .Net SDK also uses
+        // 20000-20999 - consistent client side sdk status codes
+        // 21000-21999 - consistent service sdk status codes
+
         // Client generated gateway network error substatus
         public static final int GATEWAY_ENDPOINT_UNAVAILABLE = 10001;
 
@@ -416,12 +421,14 @@ public class HttpConstants {
         public static final int USER_REQUEST_RATE_TOO_LARGE = 3200;
 
         //SDK Codes(Client)
+        // IMPORTANT - whenever possible use consistency substaus codes that .Net SDK also uses
         public static final int TRANSPORT_GENERATED_410 = 20001;
         public static final int TIMEOUT_GENERATED_410 = 20002;
         // Client generated operation timeout exception
         public static final int CLIENT_OPERATION_TIMEOUT = 20008;
 
         //SDK Codes (Server)
+        // IMPORTANT - whenever possible use consistency substaus codes that .Net SDK also uses
         public static final int NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT = 21001;
         public static final int PARTITION_KEY_RANGE_GONE_EXCEEDED_RETRY_LIMIT = 21002;
         public static final int COMPLETING_SPLIT_EXCEEDED_RETRY_LIMIT = 21003;

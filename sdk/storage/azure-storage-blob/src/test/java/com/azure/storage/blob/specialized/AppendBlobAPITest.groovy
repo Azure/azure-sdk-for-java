@@ -17,6 +17,8 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.blob.models.PublicAccessType
 import com.azure.storage.blob.options.AppendBlobSealOptions
 import com.azure.storage.blob.options.BlobGetTagsOptions
+import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import spock.lang.IgnoreIf
 import spock.lang.Unroll
@@ -489,6 +491,24 @@ class AppendBlobAPITest extends APISpec {
         def os = new ByteArrayOutputStream()
         bc.download(os)
         os.toByteArray() == data.defaultBytes
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2022_11_02")
+    def "Append block high throughput"() {
+        setup:
+        def size = 5 * Constants.MB
+        def randomData = getRandomByteArray(size) // testing upload of size greater than 4MB
+        def uploadStream = new ByteArrayInputStream(randomData)
+        def downloadStream = new ByteArrayOutputStream(size)
+
+        when:
+        def response = bc.appendBlockWithResponse(uploadStream, size, null, null, null,
+            null)
+
+        then:
+        response.getStatusCode() == 201
+        bc.downloadStream(downloadStream) // Check if block was appended correctly by downloading the block
+        downloadStream.toByteArray() == randomData
     }
 
     def "Append block from URL min"() {
