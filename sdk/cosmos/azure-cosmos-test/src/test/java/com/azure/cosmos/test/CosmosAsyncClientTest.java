@@ -19,7 +19,7 @@ import java.lang.reflect.Method;
 public abstract class CosmosAsyncClientTest implements ITest {
 
     protected static final String ROUTING_GATEWAY_EMULATOR_PORT = ":8081";
-    protected static final String COMPUTE_GATEWAY_EMULATOR_PORT = ":8903";
+    protected static final String COMPUTE_GATEWAY_EMULATOR_PORT = ":9443";
     private final CosmosClientBuilder clientBuilder;
     private String testName;
 
