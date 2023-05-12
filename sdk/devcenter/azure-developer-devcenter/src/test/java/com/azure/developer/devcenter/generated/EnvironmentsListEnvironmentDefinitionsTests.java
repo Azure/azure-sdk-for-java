@@ -22,8 +22,7 @@ public final class EnvironmentsListEnvironmentDefinitionsTests extends DevCenter
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
 
         int numberOfEnvDefinitions = 0;
-        for(BinaryData data: response)
-        {
+        for(BinaryData data: response){
             numberOfEnvDefinitions++;
             Map<String, Object> envDefinition = data.toObject(new TypeReference<Map<String, Object>>() {});
             System.out.println(envDefinition.get("name"));

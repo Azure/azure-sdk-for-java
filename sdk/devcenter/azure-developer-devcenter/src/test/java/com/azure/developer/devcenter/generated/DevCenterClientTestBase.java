@@ -37,9 +37,9 @@ class DevCenterClientTestBase extends TestBase {
 
     protected DeploymentEnvironmentsClient deploymentEnvironmentsClient;
 
-    protected String DevEnvironmentName = "envname";
+    protected String DevEnvironmentName = "envName";
 
-    protected String DevBoxName = "mydevbox";
+    protected String DevBoxName = "myDevBox";
 
     protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
 
@@ -156,8 +156,7 @@ class DevCenterClientTestBase extends TestBase {
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deleteOperation.waitForCompletion().getStatus());
     }
 
-    protected void createDevBox()
-    {
+    protected void createDevBox() {
         BinaryData body = BinaryData.fromString(String.format("{\"poolName\": \"%s\"}", poolName));
         RequestOptions requestOptions = new RequestOptions();
 
