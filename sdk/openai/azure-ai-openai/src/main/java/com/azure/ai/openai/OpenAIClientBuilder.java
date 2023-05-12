@@ -224,7 +224,9 @@ public final class OpenAIClientBuilder
     private OpenAIClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         ServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : AzureOpenAIServiceVersion.getLatest();
+                (serviceVersion != null) ? serviceVersion :
+                    (isAzure() ? AzureOpenAIServiceVersion.getLatest() : OpenAIServiceVersion.getLatest());
+
         OpenAIClientImpl client =
                 new OpenAIClientImpl(
                     localPipeline,
@@ -281,7 +283,10 @@ public final class OpenAIClientBuilder
     }
 
     private boolean isAzure() {
-        return tokenCredential != null && !(tokenCredential instanceof OpenAITokenCredential);
+        // AAD actually sets the tokenCredential member, therefore we check
+        // Azure key credential is not set OR that our tokenInstance is not an OpenAI one
+        return azureKeyCredential != null ||
+            tokenCredential != null && !(tokenCredential instanceof OpenAITokenCredential);
     }
 
     /**

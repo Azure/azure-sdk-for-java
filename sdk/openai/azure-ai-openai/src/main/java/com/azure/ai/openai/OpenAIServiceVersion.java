@@ -16,4 +16,8 @@ public enum OpenAIServiceVersion implements ServiceVersion {
     public String getVersion() {
         return this.version;
     }
+
+    public static OpenAIServiceVersion getLatest() {
+        return V1;
+    }
 }
