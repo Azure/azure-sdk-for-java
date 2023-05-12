@@ -22,8 +22,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -75,7 +73,8 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public Queue<String> startPlayback(File recordFile) {
         HttpRequest request = null;
-        String assetJsonPath = getAssetJsonPath();
+        // subpath removes nodes "src/test/resources/session-records"
+        String assetJsonPath = recordFile.toPath().subpath(0, 3) + "\\assets.json";
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
                 .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath), SerializerEncoding.JSON));
@@ -202,15 +201,5 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     private boolean isPlayingBack() {
         return xRecordingId != null;
-    }
-
-    private String getAssetJsonPath() {
-        Path rootPath;
-        try {
-            rootPath = Paths.get(System.getProperty("user.dir") + "/.." + "/.." + "/..").toRealPath();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
-        return rootPath.relativize(Paths.get(System.getProperty("user.dir"))) + "\\assets.json";
     }
 }

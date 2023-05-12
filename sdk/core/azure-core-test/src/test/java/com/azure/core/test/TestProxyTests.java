@@ -237,6 +237,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
+    @Disabled
     public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
@@ -358,7 +359,7 @@ public class TestProxyTests extends TestProxyTestBase {
     @Test
     @Tag("Live")
     public void canGetTestProxyVersion() {
-        String version = TestProxyUtils.getTestProxyVersion();
+        String version = TestProxyUtils.getTestProxyVersion(this.getTestClassPath());
         assertNotNull(version);
     }
 

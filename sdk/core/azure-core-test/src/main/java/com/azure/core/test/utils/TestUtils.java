@@ -13,7 +13,6 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Objects;
 
@@ -133,7 +132,13 @@ public final class TestUtils {
     }
 
 
-    private static URI toURI(URL url, ClientLogger logger) {
+    /**
+     *  Returns a {@link java.net.URI} equivalent to this URL.
+     * @param url the url to be converted to URI
+     * @param logger the respective logger
+     * @return the URI
+     */
+    public static URI toURI(URL url, ClientLogger logger) {
         try {
             return url.toURI();
         } catch (URISyntaxException ex) {
@@ -145,22 +150,25 @@ public final class TestUtils {
     }
 
     /**
-     * Locates the root of the current repo by finding the eng folder's parent.
+     * Locates the root of the current repo until the provided folder's parent.
+     *
+     * @param testClassPath the test class path
+     * @param resolveFolder the folder parent to resolve the path until
      * @return The {@link Path} to the root of the repo.
-     * @throws RuntimeException The eng folder could not be located.
+     * @throws RuntimeException The specified folder could not be located.
      */
-    public static Path getRepoRoot() {
-        Path path = Paths.get("");
+    public static Path getRepoRootResolveUntil(Path testClassPath, String resolveFolder) {
+        Path path = testClassPath;
         Path candidate = null;
         while (path != null) {
-            candidate = path.resolve("eng");
+            candidate = path.resolve(resolveFolder);
             if (Files.exists(candidate)) {
                 break;
             }
             path = path.getParent();
         }
         if (path == null) {
-            throw new RuntimeException("Could not locate eng folder");
+            throw new RuntimeException(String.format("Could not locate %s folder", resolveFolder));
         }
         return path;
     }

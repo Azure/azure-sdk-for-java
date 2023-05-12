@@ -26,6 +26,8 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +35,13 @@ import java.util.Locale;
 import java.util.ServiceLoader;
 import java.util.stream.Stream;
 
+import static com.azure.core.test.utils.TestUtils.toURI;
+
 /**
  * Base class for running live and playback tests using {@link InterceptorManager}.
  */
 public abstract class TestBase implements BeforeEachCallback {
+    private static final ClientLogger LOGGER = new ClientLogger(TestBase.class);
     // Environment variable name used to determine the TestMode.
     private static final String AZURE_TEST_HTTP_CLIENTS = "AZURE_TEST_HTTP_CLIENTS";
 
@@ -148,9 +153,10 @@ public abstract class TestBase implements BeforeEachCallback {
         } else if (testInfo.getTags().contains("Live")) {
             localTestMode = TestMode.LIVE;
         }
+        Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class"), LOGGER));
         this.testContextManager =
             new TestContextManager(testInfo.getTestMethod().get(), localTestMode, isTestProxyEnabled(),
-                testInfo.getTestClass().get().getAnnotation(RecordWithoutRequestBody.class) != null);
+                testInfo.getTestClass().get().getAnnotation(RecordWithoutRequestBody.class) != null, testClassPath);
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
         logger.info("Test Mode: {}, Name: {}", localTestMode, testContextManager.getTestName());
 
@@ -178,7 +184,6 @@ public abstract class TestBase implements BeforeEachCallback {
         } else {
             testResourceNamer = new TestResourceNamer(testContextManager, interceptorManager.getRecordedData());
         }
-
         beforeTest();
     }
 
@@ -317,6 +322,14 @@ public abstract class TestBase implements BeforeEachCallback {
 
     void setProxyUrl(URL proxyUrl) {
         this.proxyUrl = proxyUrl;
+    }
+
+    /**
+     * Get test class path
+     * @return the test class path
+     */
+    protected Path getTestClassPath() {
+        return testContextManager.getTestClassPath();
     }
 
     /**

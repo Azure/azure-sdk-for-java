@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.Map;
@@ -25,12 +26,13 @@ public class TestProxyManager {
 
     /**
      * Construct a {@link TestProxyManager} for controlling the external test proxy.
+     * @param testClassPath the test class path
      */
-    public TestProxyManager() {
+    public TestProxyManager(Path testClassPath) {
         // This is necessary to stop the proxy when the debugger is stopped.
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
         if (runningLocally()) {
-            TestProxyDownloader.installTestProxy();
+            TestProxyDownloader.installTestProxy(testClassPath);
         }
     }
 

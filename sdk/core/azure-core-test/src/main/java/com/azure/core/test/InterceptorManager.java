@@ -75,6 +75,8 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
     private HttpClient httpClient;
+    private final Path testClassPath;
+
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -97,7 +99,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     @Deprecated
     public InterceptorManager(String testName, TestMode testMode) {
-        this(testName, testName, testMode, false, false, false);
+        this(testName, testName, testMode, false, false, false, null);
     }
 
     /**
@@ -123,10 +125,10 @@ public class InterceptorManager implements AutoCloseable {
     public InterceptorManager(TestContextManager testContextManager) {
         this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
             testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
-            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody());
+            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody(), testContextManager.getTestClassPath());
     }
 
-    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy, boolean skipRecordingRequestBody) {
+    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy, boolean skipRecordingRequestBody, Path testClassPath) {
         this.testProxyEnabled = enableTestProxy;
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
@@ -135,6 +137,7 @@ public class InterceptorManager implements AutoCloseable {
         this.testMode = testMode;
         this.textReplacementRules = new HashMap<>();
         this.skipRecordingRequestBody = skipRecordingRequestBody;
+        this.testClassPath = testClassPath;
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
@@ -216,6 +219,7 @@ public class InterceptorManager implements AutoCloseable {
         this.allowedToRecordValues = false;
         this.testProxyEnabled = false;
         this.skipRecordingRequestBody = false;
+        this.testClassPath = null;
 
         this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
         this.textReplacementRules = textReplacementRules;
@@ -384,8 +388,9 @@ public class InterceptorManager implements AutoCloseable {
      * @return A {@link File} with the partial path to where the record file lives.
      */
     private File getTestProxyRecordFile() {
-        Path repoRoot = TestUtils.getRepoRoot();
-        Path filePath = Paths.get(Paths.get("" ).toString(), "src/test/resources/session-records", playbackRecordName + ".json");
+        Path repoRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
+        Path targetFolderRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "target");
+        Path filePath = Paths.get(targetFolderRoot.toString(), "src/test/resources/session-records", playbackRecordName + ".json");
         return repoRoot.relativize(filePath).toFile();
     }
 
