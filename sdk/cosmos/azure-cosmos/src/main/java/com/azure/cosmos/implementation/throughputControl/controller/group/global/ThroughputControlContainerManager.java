@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.throughputControl.config.GlobalThroughputControlGroup;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
@@ -216,5 +217,11 @@ public class ThroughputControlContainerManager {
                 return Mono.empty();
             })
             .thenReturn(this);
+    }
+
+    CosmosContainerIdentity getContainerIdentity() {
+        return new CosmosContainerIdentity(
+            this.globalControlContainer.getDatabase().getId(),
+            this.globalControlContainer.getId());
     }
 }

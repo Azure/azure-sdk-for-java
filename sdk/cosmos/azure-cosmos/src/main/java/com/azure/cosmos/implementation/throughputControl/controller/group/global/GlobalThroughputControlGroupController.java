@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.throughputControl.controller.group.global;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.guava25.collect.EvictingQueue;
@@ -120,7 +122,25 @@ public class GlobalThroughputControlGroupController extends ThroughputGroupContr
                 }
             })
             .onErrorResume(throwable -> {
-                logger.warn("Calculate throughput task failed ", throwable);
+                logger.warn(
+                    "Calculate throughput task failed for container {}",
+                    this.containerManager.getContainerIdentity(),
+                    throwable);
+
+                if (throwable instanceof CosmosException) {
+                    CosmosException cosmosError = (CosmosException) throwable;
+                    CosmosDiagnostics diag = cosmosError.getDiagnostics();
+                    if (cosmosError.getStatusCode() == 404 &&
+                        diag!= null &&
+                        diag.getDiagnosticsContext() != null &&
+                        diag.getDiagnosticsContext().getResourceType() == "Collection") {
+                            String msg = String.format(
+                                "Container %s does not exist anymore.",
+                                this.containerManager.getContainerIdentity());
+                        Mono.error(new IllegalStateException(msg, throwable));
+                    }
+                }
+
                 return Mono.empty();
             })
             .then()
