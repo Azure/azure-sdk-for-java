@@ -22,7 +22,7 @@ public final class EnvironmentsGetEnvironmentByUserTests extends DevCenterClient
         Response<BinaryData> response =
                 deploymentEnvironmentsClient.getEnvironmentWithResponse(projectName, "me", environmentName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        var environmentData = response.getValue().toObject(LinkedHashMap.class);
+        LinkedHashMap environmentData = response.getValue().toObject(LinkedHashMap.class);
 
         Assertions.assertEquals(environmentName, environmentData.get("name"));
         deleteEnvironment(environmentName);

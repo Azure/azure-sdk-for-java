@@ -28,7 +28,7 @@ public final class DevBoxesListPoolsTests extends DevCenterClientTestBase {
         for(BinaryData data: response)
         {
             numberOfPools++;
-            var pool = data.toObject(LinkedHashMap.class);
+            LinkedHashMap pool = data.toObject(LinkedHashMap.class);
             Assertions.assertEquals(pool.get("name"), poolName);
         }
 

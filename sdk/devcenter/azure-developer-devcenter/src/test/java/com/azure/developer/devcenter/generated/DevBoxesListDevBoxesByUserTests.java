@@ -25,7 +25,7 @@ public final class DevBoxesListDevBoxesByUserTests extends DevCenterClientTestBa
         int numberOfDevboxes = 0;
         for (BinaryData data : response) {
             numberOfDevboxes++;
-            var devBoxData = data.toObject(LinkedHashMap.class);
+            LinkedHashMap devBoxData = data.toObject(LinkedHashMap.class);
             Assertions.assertEquals(DevBoxName, devBoxData.get("name"));
         }
 

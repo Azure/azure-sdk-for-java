@@ -20,7 +20,7 @@ public final class DevBoxesGetScheduleByPoolTests extends DevCenterClientTestBas
         Response<BinaryData> response =
                 devBoxesClient.getScheduleWithResponse(projectName, poolName, "default", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        var poolData = response.getValue().toObject(LinkedHashMap.class);
+        LinkedHashMap poolData = response.getValue().toObject(LinkedHashMap.class);
         Assertions.assertEquals("default", poolData.get("name"));
     }
 }

@@ -20,7 +20,7 @@ public final class DevBoxesListSchedulesByPoolTests extends DevCenterClientTestB
         PagedIterable<BinaryData> response = devBoxesClient.listSchedules(projectName, poolName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
 
-        var poolData = response.iterator().next().toObject(LinkedHashMap.class);
+        LinkedHashMap poolData = response.iterator().next().toObject(LinkedHashMap.class);
         Assertions.assertEquals("default", poolData.get("name"));
     }
 }

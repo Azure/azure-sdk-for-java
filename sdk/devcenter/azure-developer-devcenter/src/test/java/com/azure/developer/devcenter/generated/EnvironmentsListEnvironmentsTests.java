@@ -26,7 +26,7 @@ public final class EnvironmentsListEnvironmentsTests extends DevCenterClientTest
         int numberOfEnvironments = 0;
         for (BinaryData data : response) {
             numberOfEnvironments++;
-            var envType = data.toObject(LinkedHashMap.class);
+            LinkedHashMap envType = data.toObject(LinkedHashMap.class);
             Assertions.assertEquals(environmentName, envType.get("name"));
         }
 

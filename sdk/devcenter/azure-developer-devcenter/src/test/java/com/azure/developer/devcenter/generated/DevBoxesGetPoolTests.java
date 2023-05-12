@@ -21,7 +21,7 @@ public final class DevBoxesGetPoolTests extends DevCenterClientTestBase {
 
         Response<BinaryData> response = devBoxesClient.getPoolWithResponse(projectName, poolName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        var poolData = response.getValue().toObject(LinkedHashMap.class);
+        LinkedHashMap poolData = response.getValue().toObject(LinkedHashMap.class);
         Assertions.assertEquals(poolName, poolData.get("name"));
     }
 }

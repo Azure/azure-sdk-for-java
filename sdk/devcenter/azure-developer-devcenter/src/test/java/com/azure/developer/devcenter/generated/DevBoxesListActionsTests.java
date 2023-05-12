@@ -25,7 +25,7 @@ public final class DevBoxesListActionsTests extends DevCenterClientTestBase {
         int numberOfActions = 0;
         for (BinaryData data : response) {
             numberOfActions++;
-            var devBoxData = data.toObject(LinkedHashMap.class);
+            LinkedHashMap devBoxData = data.toObject(LinkedHashMap.class);
             Assertions.assertEquals("schedule-default", devBoxData.get("name"));
         }
 

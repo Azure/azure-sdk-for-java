@@ -25,7 +25,7 @@ public final class EnvironmentsListEnvironmentDefinitionsByCatalogTests extends 
         int numberOfEnvDefinitions = 0;
         for (BinaryData data : response) {
             numberOfEnvDefinitions++;
-            var envDefinition = data.toObject(LinkedHashMap.class);
+            LinkedHashMap envDefinition = data.toObject(LinkedHashMap.class);
             System.out.println(envDefinition.get("name"));
         }
 

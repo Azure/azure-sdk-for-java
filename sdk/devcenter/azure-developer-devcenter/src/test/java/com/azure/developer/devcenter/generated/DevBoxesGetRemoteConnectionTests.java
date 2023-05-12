@@ -23,7 +23,7 @@ public final class DevBoxesGetRemoteConnectionTests extends DevCenterClientTestB
                 devBoxesClient.getRemoteConnectionWithResponse(projectName, "me", DevBoxName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
 
-        var connectionStringData = response.getValue().toObject(LinkedHashMap.class);
+        LinkedHashMap connectionStringData = response.getValue().toObject(LinkedHashMap.class);
         Assertions.assertNotNull(connectionStringData.get("webUrl"));
 
         deleteDevBox();

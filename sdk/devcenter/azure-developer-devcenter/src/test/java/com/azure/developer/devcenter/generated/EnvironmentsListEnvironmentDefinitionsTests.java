@@ -26,7 +26,7 @@ public final class EnvironmentsListEnvironmentDefinitionsTests extends DevCenter
         for(BinaryData data: response)
         {
             numberOfEnvDefinitions++;
-            var envDefinition = data.toObject(LinkedHashMap.class);
+            LinkedHashMap envDefinition = data.toObject(LinkedHashMap.class);
             System.out.println(envDefinition.get("name"));
         }
 
