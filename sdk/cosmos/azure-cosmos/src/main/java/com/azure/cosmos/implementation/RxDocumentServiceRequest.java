@@ -1038,9 +1038,10 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     @Override
     public RxDocumentServiceRequest clone() {
-        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
+        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(),
+            this.resourceId, this.isNameBased, this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
-        rxDocumentServiceRequest.setContentBytes(rxDocumentServiceRequest.contentAsByteArray);
+        rxDocumentServiceRequest.setContentBytes(this.contentAsByteArray);
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());
         rxDocumentServiceRequest.setEndpointOverride(this.getEndpointOverride());
@@ -1054,7 +1055,18 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.requestContext = this.requestContext;
         rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
         rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
+        rxDocumentServiceRequest.setResourceAddress(this.resourceAddress);
+        rxDocumentServiceRequest.requestContext = this.requestContext.clone();
+        rxDocumentServiceRequest.feedRange = this.feedRange;
+        rxDocumentServiceRequest.effectiveRange = this.effectiveRange;
         return rxDocumentServiceRequest;
+    }
+
+    // Used by clone
+    private static RxDocumentServiceRequest create(DiagnosticsClientContext clientContext, OperationType operationType, String resourceId,
+                                                   boolean isNameBased, ResourceType resourceType, Map<String, String> headers) {
+        return new RxDocumentServiceRequest(clientContext, operationType, resourceId,resourceType, (ByteBuffer) null, headers,
+            isNameBased, AuthorizationTokenType.PrimaryMasterKey) ;
     }
 
     public void dispose() {

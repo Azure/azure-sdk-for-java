@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -120,6 +121,13 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
+        CosmosE2EOperationRetryPolicyConfig e2EOperationRetryConfig =
+            ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
+                getCosmosQueryRequestOptionsAccessor()
+                .getE2EOperationRetryPolicyConfig(cosmosQueryRequestOptions);
+        if (e2EOperationRetryConfig != null) {
+            request.requestContext.setEndToEndOperationLatencyPolicyConfig(e2EOperationRetryConfig);
+        }
         return request;
     }
 
@@ -302,7 +310,13 @@ implements IDocumentQueryExecutionContext<T> {
                 this.resourceLink,
                     // AuthorizationTokenType.PrimaryMasterKey,
                 requestHeaders);
-
+            CosmosE2EOperationRetryPolicyConfig e2EOperationRetryConfig =
+                ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
+                    getCosmosQueryRequestOptionsAccessor()
+                    .getE2EOperationRetryPolicyConfig(cosmosQueryRequestOptions);
+            if (e2EOperationRetryConfig != null) {
+                executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(e2EOperationRetryConfig);
+            }
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
             executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));
             break;
