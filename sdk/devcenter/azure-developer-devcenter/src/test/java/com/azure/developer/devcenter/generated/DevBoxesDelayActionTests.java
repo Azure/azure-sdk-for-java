@@ -4,32 +4,29 @@
 
 package com.azure.developer.devcenter.generated;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import java.time.OffsetDateTime;
+import java.util.LinkedHashMap;
+
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DevBoxesDelayActionTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesDelayActionTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.delayActionWithResponse(
-                        "myProject",
-                        "me",
-                        "myDevBox",
-                        "schedule-default",
-                        OffsetDateTime.parse("2022-09-30T17:00:00Z"),
-                        requestOptions);
+            devBoxesClient.delayActionWithResponse(
+                projectName, "me", DevBoxName, "schedule-default", OffsetDateTime.parse("2023-05-06T05:00:00Z"), requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"schedule-default\",\"actionType\":\"Stop\",\"next\":{\"scheduledTime\":\"2022-09-30T17:00:00Z\"},\"sourceId\":\"/projects/myProject/pools/myPool/schedules/default\",\"suspendedUntil\":\"2022-09-30T17:00:00Z\"}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
+        Assertions.assertEquals("schedule-default", response.getValue().toObject(LinkedHashMap.class).get("name"));
+
+        deleteDevBox();
     }
 }

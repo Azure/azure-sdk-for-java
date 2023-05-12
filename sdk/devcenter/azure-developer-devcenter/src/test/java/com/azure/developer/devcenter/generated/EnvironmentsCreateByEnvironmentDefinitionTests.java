@@ -6,6 +6,7 @@ package com.azure.developer.devcenter.generated;
 
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
@@ -14,16 +15,22 @@ import org.junit.jupiter.api.Test;
 
 public final class EnvironmentsCreateByEnvironmentDefinitionTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testEnvironmentsCreateByEnvironmentDefinitionTests() {
-        BinaryData body =
-                BinaryData.fromString(
-                        "{\"catalogName\":\"main\",\"environmentDefinitionName\":\"helloworld\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"}}");
+        String environmentName = getFirstEnvironmentDefinition();
+
+        BinaryData environmentBody = BinaryData.fromString(
+            "{\"catalogItemName\":\"" + environmentName
+                + "\", \"catalogName\":\"" + catalogName
+                + "\", \"environmentType\":\"" + envTypeName + "\"}");
+
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, BinaryData> response =
-                deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(
-                        "myProject", "me", "mydevenv", body, requestOptions);
+        SyncPoller<BinaryData, BinaryData> createOperation =
+            deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(
+                projectName, "me", DevEnvironmentName, environmentBody, requestOptions);
+
         Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createOperation.waitForCompletion().getStatus());
+
+        deleteEnvironment(DevEnvironmentName);
     }
 }

@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
+
 public final class DevBoxesListSchedulesByPoolTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesListSchedulesByPoolTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listSchedules("myProject", "DevPool", requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listSchedules(projectName, poolName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"default\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"17:30\",\"timeZone\":\"America/Los_Angeles\"}")
-                        .toObject(Object.class),
-                response.iterator().next().toObject(Object.class));
+
+        var poolData = response.iterator().next().toObject(LinkedHashMap.class);
+        Assertions.assertEquals("default", poolData.get("name"));
     }
 }

@@ -7,21 +7,21 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
+
 public final class DevBoxesGetPoolTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesGetPoolTests() {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = devBoxesClient.getPoolWithResponse("myProject", "DevPool", requestOptions);
+
+        Response<BinaryData> response = devBoxesClient.getPoolWithResponse(projectName, poolName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"LargeDevWorkStationPool\",\"hardwareProfile\":{\"memoryGB\":32,\"vCPUs\":8},\"healthStatus\":\"Healthy\",\"hibernateSupport\":\"Enabled\",\"imageReference\":{\"name\":\"DevImage\",\"publishedDate\":\"2022-03-01T00:13:23.323Z\",\"version\":\"1.0.0\"},\"location\":\"centralus\",\"osType\":\"Windows\",\"stopOnDisconnect\":{\"gracePeriodMinutes\":60,\"status\":\"Enabled\"},\"storageProfile\":{\"osDisk\":{\"diskSizeGB\":1024}}}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
+        var poolData = response.getValue().toObject(LinkedHashMap.class);
+        Assertions.assertEquals(poolName, poolData.get("name"));
     }
 }

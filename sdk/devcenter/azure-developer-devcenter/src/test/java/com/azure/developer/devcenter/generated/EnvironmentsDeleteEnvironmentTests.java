@@ -14,12 +14,14 @@ import org.junit.jupiter.api.Test;
 
 public final class EnvironmentsDeleteEnvironmentTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testEnvironmentsDeleteEnvironmentTests() {
+        String environmentName = createEnvironment();
+
         RequestOptions requestOptions = new RequestOptions();
-        SyncPoller<BinaryData, Void> response =
-                deploymentEnvironmentsClient.beginDeleteEnvironment("myProject", "me", "mydevenv", requestOptions);
+        SyncPoller<BinaryData, Void> deleteOperation =
+            deploymentEnvironmentsClient.beginDeleteEnvironment(projectName, "me", environmentName.toLowerCase(), requestOptions);
+
         Assertions.assertEquals(
-                LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+            LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, deleteOperation.waitForCompletion().getStatus());
     }
 }

@@ -11,18 +11,20 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
+
 public final class EnvironmentsGetEnvironmentByUserTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testEnvironmentsGetEnvironmentByUserTests() {
+        String environmentName = createEnvironment();
+
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                deploymentEnvironmentsClient.getEnvironmentWithResponse("myProject", "me", "mydevenv", requestOptions);
+                deploymentEnvironmentsClient.getEnvironmentWithResponse(projectName, "me", environmentName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"mydevenv\",\"catalogName\":\"main\",\"environmentDefinitionName\":\"helloworld\",\"environmentType\":\"DevTest\",\"parameters\":{\"functionAppRuntime\":\"node\",\"storageAccountType\":\"Standard_LRS\"},\"provisioningState\":\"Succeeded\",\"resourceGroupId\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg028321\",\"user\":\"b08e39b4-2ac6-4465-a35e-48322efb0f98\"}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
+        var environmentData = response.getValue().toObject(LinkedHashMap.class);
+
+        Assertions.assertEquals(environmentName, environmentData.get("name"));
+        deleteEnvironment(environmentName);
     }
 }

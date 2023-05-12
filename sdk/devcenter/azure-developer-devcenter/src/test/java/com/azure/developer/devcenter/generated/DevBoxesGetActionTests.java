@@ -11,18 +11,19 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
+
 public final class DevBoxesGetActionTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesGetActionTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getActionWithResponse("myProject", "me", "myDevBox", "schedule-default", requestOptions);
+                devBoxesClient.getActionWithResponse(projectName, "me", DevBoxName, "schedule-default", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(
-                BinaryData.fromString(
-                                "{\"name\":\"schedule-default\",\"actionType\":\"Stop\",\"next\":{\"scheduledTime\":\"2022-09-30T17:00:00Z\"},\"sourceId\":\"/projects/myProject/pools/myPool/schedules/default\"}")
-                        .toObject(Object.class),
-                response.getValue().toObject(Object.class));
+        Assertions.assertEquals("schedule-default", response.getValue().toObject(LinkedHashMap.class).get("name"));
+
+        deleteDevBox();
     }
 }

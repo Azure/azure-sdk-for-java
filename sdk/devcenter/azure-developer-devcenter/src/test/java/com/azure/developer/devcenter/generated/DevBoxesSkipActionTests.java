@@ -12,12 +12,14 @@ import org.junit.jupiter.api.Test;
 
 public final class DevBoxesSkipActionTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesSkipActionTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
-        Response<Void> response =
-                devBoxesClient.skipActionWithResponse(
-                        "myProject", "me", "myDevBox", "schedule-default", requestOptions);
+        Response<Void> response = devBoxesClient.skipActionWithResponse(
+                        projectName, "me", DevBoxName, "schedule-default", requestOptions);
         Assertions.assertEquals(204, response.getStatusCode());
+
+        deleteDevBox();
     }
 }

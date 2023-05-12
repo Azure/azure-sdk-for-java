@@ -14,12 +14,16 @@ import org.junit.jupiter.api.Test;
 
 public final class DevBoxesStartDevBoxTests extends DevCenterClientTestBase {
     @Test
-    @Disabled
     public void testDevBoxesStartDevBoxTests() {
+        createDevBox();
+
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
-                devBoxesClient.beginStartDevBox("myProject", "me", "MyDevBox", requestOptions);
+                devBoxesClient.beginStartDevBox(projectName, "me", DevBoxName, requestOptions);
+
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
+
+        deleteDevBox();
     }
 }
