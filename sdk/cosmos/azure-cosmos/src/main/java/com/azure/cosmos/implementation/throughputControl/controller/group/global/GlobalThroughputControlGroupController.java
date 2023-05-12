@@ -133,7 +133,7 @@ public class GlobalThroughputControlGroupController extends ThroughputGroupContr
                     if (cosmosError.getStatusCode() == 404 &&
                         diag!= null &&
                         diag.getDiagnosticsContext() != null &&
-                        diag.getDiagnosticsContext().getResourceType() == "Collection") {
+                        "Collection".equals(diag.getDiagnosticsContext().getResourceType())) {
                             String msg = String.format(
                                 "Container %s does not exist anymore.",
                                 this.containerManager.getContainerIdentity());
