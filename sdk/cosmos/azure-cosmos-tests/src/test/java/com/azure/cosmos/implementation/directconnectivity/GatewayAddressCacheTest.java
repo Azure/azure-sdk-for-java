@@ -374,9 +374,9 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesInfosFromCacheObs = cache.tryGetAddresses(req, partitionKeyRangeIdentity, true);
         ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
-        // isCollectionRidUnderOpenConnectionsFlow called twice
-        // 1. forceRefreshPartitionAddresses = true which forces isCollectionRidUnderOpenConnectionsFlow when refreshing
-        // collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
+        // isCollectionRidUnderOpenConnectionsFlow is called twice
+        // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
+        // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
         // under connection warm up flow
         // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
         // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
@@ -457,8 +457,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         ArrayList<AddressInformation> addressInfosFromCache = Lists.newArrayList(getSuccessResult(addressesInfosFromCacheObs, TIMEOUT).v);
 
         // isCollectionRidUnderOpenConnectionsFlow called twice
-        // 1. forceRefreshPartitionAddresses = true which forces isCollectionRidUnderOpenConnectionsFlow when refreshing
-        // collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
+        // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
+        // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
         // under connection warm up flow
         // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
         // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
@@ -969,8 +969,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
             if (submitOpenConnectionTasksAndInitCaches) {
                 // If submitOpenConnectionTasksAndInitCaches is called, then replica validation will also include for unknown status
                 // isCollectionRidUnderOpenConnectionsFlow called twice
-                // 1. forceRefreshPartitionAddresses = true which forces isCollectionRidUnderOpenConnectionsFlow when refreshing
-                // collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
+                // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
+                // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
                 // under connection warm up flow
                 // 2. replica validation will get triggered in case of unhealthyPending / unknown addresses, replica validation will do a
                 // submitOpenConnectionTaskOutsideLoop for each of these addresses but before that it will also do
@@ -987,8 +987,8 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                     .verify(proactiveOpenConnectionsProcessorMock, Mockito.times(0))
                     .submitOpenConnectionTaskOutsideLoop(Mockito.any(), serviceEndpointArguments.capture(), openConnectionArguments.capture(), Mockito.anyInt());
                 // isCollectionRidUnderOpenConnectionsFlow called once
-                // 1. forceRefreshPartitionAddresses = true which forces isCollectionRidUnderOpenConnectionsFlow when refreshing
-                // collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
+                // 1. as forceRefreshPartitionAddresses = true, this invokes isCollectionRidUnderOpenConnectionsFlow eventually
+                // refreshing collectionRid->addresses map maintained by proactiveOpenConnectionsProcessor to track containers / addresses
                 // under connection warm up flow
                 // 2. replica validation will get triggered only in case of unhealthyPending addresses (if no connection warm up is used at all),
                 Mockito.verify(proactiveOpenConnectionsProcessorMock, Mockito.times(1))
