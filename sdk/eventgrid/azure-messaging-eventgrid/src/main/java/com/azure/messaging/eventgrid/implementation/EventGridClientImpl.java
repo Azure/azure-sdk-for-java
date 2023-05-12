@@ -35,9 +35,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.eventgrid.EventGridPublisherServiceVersion;
 import com.azure.messaging.eventgrid.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.models.AcknowledgeResult;
+import com.azure.messaging.eventgrid.models.PublishResult;
 import com.azure.messaging.eventgrid.models.ReceiveResult;
 import com.azure.messaging.eventgrid.models.RejectOptions;
 import com.azure.messaging.eventgrid.models.RejectResult;
@@ -45,6 +47,7 @@ import com.azure.messaging.eventgrid.models.ReleaseOptions;
 import com.azure.messaging.eventgrid.models.ReleaseResult;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
 import java.util.List;
 
 /** Initializes a new instance of the EventGridClient type. */
@@ -341,10 +344,19 @@ public final class EventGridClientImpl {
                                 contentType,
                                 topicName,
                                 accept,
-                                BinaryData.fromObject(event),
+                                removeExtraFields(event),
                                 requestOptions,
                                 context)
                             .map(resp -> new SimpleResponse<>(resp, resp.getValue().toObject(PublishResult.class))));
+    }
+
+    BinaryData removeExtraFields(CloudEvent event) {
+        try {
+            String json = getSerializerAdapter().serialize(event, SerializerEncoding.JSON);
+            return BinaryData.fromString(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**

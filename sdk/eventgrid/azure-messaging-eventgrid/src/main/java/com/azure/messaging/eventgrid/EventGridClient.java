@@ -17,6 +17,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.models.CloudEvent;
 import com.azure.messaging.eventgrid.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.models.AcknowledgeResult;
+import com.azure.messaging.eventgrid.models.PublishResult;
 import com.azure.messaging.eventgrid.models.ReceiveResult;
 import com.azure.messaging.eventgrid.models.RejectOptions;
 import com.azure.messaging.eventgrid.models.RejectResult;
