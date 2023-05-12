@@ -9,10 +9,8 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class DevCenterListAllDevBoxesTests extends DevCenterClientTestBase {
@@ -32,7 +30,6 @@ public final class DevCenterListAllDevBoxesTests extends DevCenterClientTestBase
         }
 
         Assertions.assertEquals(1, numberOfDevboxes);
-
         deleteDevBox();
     }
 }

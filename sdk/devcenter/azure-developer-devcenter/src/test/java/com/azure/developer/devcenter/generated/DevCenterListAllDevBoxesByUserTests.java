@@ -30,7 +30,6 @@ public final class DevCenterListAllDevBoxesByUserTests extends DevCenterClientTe
         }
 
         Assertions.assertEquals(1, numberOfDevboxes);
-
         deleteDevBox();
     }
 }

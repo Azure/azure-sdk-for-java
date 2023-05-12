@@ -4,7 +4,6 @@
 
 package com.azure.developer.devcenter.generated;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -12,7 +11,6 @@ import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class DevBoxesDelayActionTests extends DevCenterClientTestBase {
@@ -26,7 +24,6 @@ public final class DevBoxesDelayActionTests extends DevCenterClientTestBase {
                 projectName, "me", DevBoxName, "schedule-default", OffsetDateTime.parse("2023-05-06T05:00:00Z"), requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals("schedule-default", response.getValue().toObject(LinkedHashMap.class).get("name"));
-
         deleteDevBox();
     }
 }

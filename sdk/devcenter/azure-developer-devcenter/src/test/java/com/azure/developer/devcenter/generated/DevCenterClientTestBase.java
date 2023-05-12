@@ -16,6 +16,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.serializer.TypeReference;
 import com.azure.developer.devcenter.DeploymentEnvironmentsClient;
 import com.azure.developer.devcenter.DeploymentEnvironmentsClientBuilder;
 import com.azure.developer.devcenter.DevBoxesClient;
@@ -24,7 +25,7 @@ import com.azure.developer.devcenter.DevCenterClient;
 import com.azure.developer.devcenter.DevCenterClientBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import java.time.OffsetDateTime;
-import java.util.LinkedHashMap;
+import java.util.Map;
 
 import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
@@ -115,7 +116,7 @@ class DevCenterClientTestBase extends TestBase {
 
         String environmentDefinitionName = "";
         for (BinaryData data : response) {
-            var envDefinition = data.toObject(LinkedHashMap.class);
+            Map<String, Object> envDefinition = data.toObject(new TypeReference<Map<String, Object>>() {});
             environmentDefinitionName = (String) envDefinition.get("name");
             break;
         }
