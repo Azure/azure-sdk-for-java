@@ -37,23 +37,25 @@ class DevCenterClientTestBase extends TestBase {
 
     protected DeploymentEnvironmentsClient deploymentEnvironmentsClient;
 
-    protected String devEnvironmentName = "envName";
+    protected String devEnvironmentName = "envName".toLowerCase();
 
-    protected String devBoxName = "myDevBox";
+    protected String devBoxName = "myDevBox".toLowerCase();
 
-    protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
+    protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "sdk-project-x2z4o4ohvwcbi");
 
-    protected String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "myCatalog");
+    protected String catalogName = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "sdk-default-catalog");
 
-    protected String envTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "myEnvType");
+    protected String envTypeName = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "sdk-environment-type-xmfrmxvisxmbu");
 
-    protected String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "myPool");
+    protected String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-pool-6ieikn5v2nfnu");
+
+    protected String endpoint = Configuration.getGlobalConfiguration().get("ENDPOINT", "https://8ab2df1c-ed88-4946-a8a9-e1bbb3e4d1fd-sdk-dc-fmzegocvsahko.eastus.devcenter.azure.com/");
 
     @Override
     protected void beforeTest() {
         DevCenterClientBuilder devCenterClientbuilder =
                 new DevCenterClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .endpoint(endpoint)
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -71,7 +73,7 @@ class DevCenterClientTestBase extends TestBase {
 
         DevBoxesClientBuilder devBoxesClientbuilder =
                 new DevBoxesClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .endpoint(endpoint)
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -89,7 +91,7 @@ class DevCenterClientTestBase extends TestBase {
 
         DeploymentEnvironmentsClientBuilder deploymentEnvironmentsClientbuilder =
                 new DeploymentEnvironmentsClientBuilder()
-                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .endpoint(endpoint)
                         .httpClient(HttpClient.createDefault())
                         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
