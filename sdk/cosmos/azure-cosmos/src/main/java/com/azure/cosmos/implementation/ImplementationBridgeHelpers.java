@@ -76,6 +76,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
+import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
+
 public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
 
@@ -710,6 +712,8 @@ public class ImplementationBridgeHelpers {
                 Collection<ClientSideRequestStatistics> requestStatistics);
 
             void setSamplingRateSnapshot(CosmosDiagnostics cosmosDiagnostics, double samplingRate);
+
+            CosmosDiagnostics create(DiagnosticsClientContext clientContext, double samplingRate);
         }
     }
 

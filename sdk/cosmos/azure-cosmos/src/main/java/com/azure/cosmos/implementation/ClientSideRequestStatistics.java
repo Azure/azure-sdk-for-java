@@ -619,9 +619,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
-            if (statistics.samplingRateSnapshot < 1) {
-                generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
-            }
+            generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
 
             try {
                 SystemInformation systemInformation = fetchSystemInformation();

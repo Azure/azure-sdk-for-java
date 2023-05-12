@@ -398,6 +398,11 @@ public final class CosmosDiagnostics {
 
                     cosmosDiagnostics.setSamplingRateSnapshot(samplingRate);
                 }
+
+                @Override
+                public CosmosDiagnostics create(DiagnosticsClientContext clientContext, double samplingRate) {
+                    return new CosmosDiagnostics(clientContext).setSamplingRateSnapshot(samplingRate);
+                }
             });
     }
 

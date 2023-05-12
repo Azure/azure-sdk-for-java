@@ -1240,7 +1240,9 @@ public class CosmosTracerTest extends TestSuiteBase {
         assertThat(mockTracer).isNotNull();
         assertThat(cosmosDiagnostics).isNotNull();
         assertThat(cosmosDiagnostics.getSamplingRateSnapshot()).isEqualTo(samplingRate);
-        assertThat(cosmosDiagnostics.toString().contains("samplingRateSnapshot")).isEqualTo(samplingRate < 1);
+        assertThat(
+            cosmosDiagnostics.toString().contains("\"samplingRateSnapshot\":" + String.valueOf(samplingRate)))
+            .isEqualTo(true);
 
         TracerUnderTest.SpanRecord currentSpan = mockTracer.getCurrentSpan();
 
@@ -1503,7 +1505,9 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         assertThat(cosmosDiagnostics).isNotNull();
         assertThat(cosmosDiagnostics.getSamplingRateSnapshot()).isEqualTo(samplingRate);
-        assertThat(cosmosDiagnostics.toString().contains("samplingRateSnapshot")).isEqualTo(samplingRate < 1);
+        assertThat(
+            cosmosDiagnostics.toString().contains("\"samplingRateSnapshot\":" + String.valueOf(samplingRate)))
+            .isEqualTo(true);
 
         TracerUnderTest.SpanRecord currentSpan = mockTracer.getCurrentSpan();
 

@@ -36,7 +36,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;

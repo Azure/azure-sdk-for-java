@@ -478,10 +478,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     @Override
     public CosmosDiagnostics createDiagnostics() {
-       return BridgeInternal
-           .createCosmosDiagnostics(this, ctxAccessor.getSamplingRate(this.clientTelemetryConfig));
+       return diagnosticsAccessor.create(this, ctxAccessor.getSamplingRate(this.clientTelemetryConfig));
     }
-
     private void initializeGatewayConfigurationReader() {
         this.gatewayConfigurationReader = new GatewayServiceConfigurationReader(this.globalEndpointManager);
         DatabaseAccount databaseAccount = this.globalEndpointManager.getLatestDatabaseAccount();
