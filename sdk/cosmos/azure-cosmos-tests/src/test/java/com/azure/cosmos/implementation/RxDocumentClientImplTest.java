@@ -398,7 +398,7 @@ public class RxDocumentClientImplTest {
 
             @Override
             public CosmosDiagnostics createDiagnostics() {
-                return BridgeInternal.createCosmosDiagnostics(this) ;
+                return diagnosticsAccessor.create(this, 1d) ;
             }
 
             @Override
@@ -413,7 +413,7 @@ public class RxDocumentClientImplTest {
     }
 
     private static CosmosDiagnostics dummyCosmosDiagnostics() {
-        return BridgeInternal.createCosmosDiagnostics(new DiagnosticsClientContext() {
+        return diagnosticsAccessor.create(new DiagnosticsClientContext() {
             @Override
             public DiagnosticsClientConfig getConfig() {
                 return new DiagnosticsClientConfig();
@@ -428,6 +428,6 @@ public class RxDocumentClientImplTest {
             public String getUserAgent() {
                 return Utils.getUserAgent();
             }
-        });
+        }, 1d);
     }
 }

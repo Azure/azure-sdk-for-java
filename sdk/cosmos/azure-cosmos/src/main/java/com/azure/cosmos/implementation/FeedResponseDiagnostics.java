@@ -140,4 +140,12 @@ public class FeedResponseDiagnostics {
         // return default one
         return Utils.getUserAgent();
     }
+
+    public FeedResponseDiagnostics setSamplingRateSnapshot(double samplingRateSnapshot) {
+        for (ClientSideRequestStatistics c: this.clientSideRequestStatistics) {
+            c.setSamplingRateSnapshot(samplingRateSnapshot);
+        }
+
+        return this;
+    }
 }

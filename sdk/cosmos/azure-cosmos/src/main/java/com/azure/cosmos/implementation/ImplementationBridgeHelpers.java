@@ -76,6 +76,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
+import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
+
 public class ImplementationBridgeHelpers {
     private final static Logger logger = LoggerFactory.getLogger(ImplementationBridgeHelpers.class);
 
@@ -708,6 +710,10 @@ public class ImplementationBridgeHelpers {
             void addClientSideDiagnosticsToFeed(
                 CosmosDiagnostics cosmosDiagnostics,
                 Collection<ClientSideRequestStatistics> requestStatistics);
+
+            void setSamplingRateSnapshot(CosmosDiagnostics cosmosDiagnostics, double samplingRate);
+
+            CosmosDiagnostics create(DiagnosticsClientContext clientContext, double samplingRate);
         }
     }
 
@@ -796,6 +802,8 @@ public class ImplementationBridgeHelpers {
             Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics(CosmosDiagnosticsContext ctx);
 
             String getSpanName(CosmosDiagnosticsContext ctx);
+
+            void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate);
         }
     }
 
@@ -1359,8 +1367,8 @@ public class ImplementationBridgeHelpers {
             boolean isTransportLevelTracingEnabled(CosmosClientTelemetryConfig config);
             Tracer getOrCreateTracer(CosmosClientTelemetryConfig config);
             void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
-
             void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
+            double getSamplingRate(CosmosClientTelemetryConfig config);
         }
     }
 
