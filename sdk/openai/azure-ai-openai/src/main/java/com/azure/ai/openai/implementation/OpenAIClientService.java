@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 //@Host("{endpoint}/{api-version}")
 @Host("{endpoint}/v1")
 @ServiceInterface(name = "OpenAIClient")
-interface OpenAIClientService extends OpenAIServiceBase {
+interface OpenAIClientService extends AzureOpenAIClientService {
     @Post("/embeddings")
     @ExpectedResponses({200})
     @UnexpectedResponseExceptionType(

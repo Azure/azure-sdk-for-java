@@ -200,21 +200,6 @@ public final class OpenAIClientBuilder
     }
 
     /*
-     * Flag defining whether the underlying service should be Azure
-     */
-    private boolean isAzure = true;
-
-    /**
-     * Sets which backend service we should point to
-     *
-     * @param isAzure set to true for Azure backend service; false for public OpenAI
-     */
-    public OpenAIClientBuilder isAzure(boolean isAzure) {
-        this.isAzure = isAzure;
-        return this;
-    }
-
-    /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
     @Generated private RetryPolicy retryPolicy;
@@ -246,7 +231,7 @@ public final class OpenAIClientBuilder
                     JacksonAdapter.createDefaultSerializerAdapter(),
                     endpoint,
                     localServiceVersion,
-                    isAzure);
+                    isAzure());
         return client;
     }
 
@@ -293,6 +278,10 @@ public final class OpenAIClientBuilder
                         .clientOptions(localClientOptions)
                         .build();
         return httpPipeline;
+    }
+
+    private boolean isAzure() {
+        return tokenCredential != null && !(tokenCredential instanceof OpenAITokenCredential);
     }
 
     /**
