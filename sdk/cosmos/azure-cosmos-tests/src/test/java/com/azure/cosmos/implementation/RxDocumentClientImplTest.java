@@ -398,7 +398,7 @@ public class RxDocumentClientImplTest {
 
             @Override
             public CosmosDiagnostics createDiagnostics() {
-                return BridgeInternal.createCosmosDiagnostics(this) ;
+                return BridgeInternal.createCosmosDiagnostics(this, 1d) ;
             }
 
             @Override
@@ -428,6 +428,6 @@ public class RxDocumentClientImplTest {
             public String getUserAgent() {
                 return Utils.getUserAgent();
             }
-        });
+        }, 1d);
     }
 }

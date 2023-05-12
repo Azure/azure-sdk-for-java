@@ -708,6 +708,8 @@ public class ImplementationBridgeHelpers {
             void addClientSideDiagnosticsToFeed(
                 CosmosDiagnostics cosmosDiagnostics,
                 Collection<ClientSideRequestStatistics> requestStatistics);
+
+            void setSamplingRateSnapshot(CosmosDiagnostics cosmosDiagnostics, double samplingRate);
         }
     }
 
@@ -796,6 +798,8 @@ public class ImplementationBridgeHelpers {
             Collection<ClientSideRequestStatistics> getDistinctCombinedClientSideRequestStatistics(CosmosDiagnosticsContext ctx);
 
             String getSpanName(CosmosDiagnosticsContext ctx);
+
+            void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate);
         }
     }
 
@@ -1359,8 +1363,8 @@ public class ImplementationBridgeHelpers {
             boolean isTransportLevelTracingEnabled(CosmosClientTelemetryConfig config);
             Tracer getOrCreateTracer(CosmosClientTelemetryConfig config);
             void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
-
             void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
+            double getSamplingRate(CosmosClientTelemetryConfig config);
         }
     }
 

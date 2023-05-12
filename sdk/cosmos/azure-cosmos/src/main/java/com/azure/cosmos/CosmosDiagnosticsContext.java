@@ -65,6 +65,9 @@ public final class CosmosDiagnosticsContext {
     private String cachedRequestDiagnostics = null;
     private final AtomicBoolean isCompleted = new AtomicBoolean(false);
 
+    private boolean isSampledOut = false;
+    private Double samplingRateSnapshot;
+
     CosmosDiagnosticsContext(
         String spanName,
         String accountName,
@@ -251,6 +254,9 @@ public final class CosmosDiagnosticsContext {
     void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
         synchronized (this.spanName) {
+            if (this.samplingRateSnapshot != null) {
+                diagAccessor.setSamplingRateSnapshot(cosmosDiagnostics, this.samplingRateSnapshot);
+            }
             this.addRequestSize(diagAccessor.getRequestPayloadSizeInBytes(cosmosDiagnostics));
             this.addResponseSize(diagAccessor.getTotalResponsePayloadSizeInBytes(cosmosDiagnostics));
             this.diagnostics.add(cosmosDiagnostics);
@@ -457,6 +463,13 @@ public final class CosmosDiagnosticsContext {
             }
             this.duration = Duration.between(this.startTime, Instant.now());
             this.cachedRequestDiagnostics = null;
+        }
+    }
+
+    synchronized void setSamplingRateSnapshot(double samplingRate) {
+        this.samplingRateSnapshot = samplingRate;
+        for (CosmosDiagnostics d : this.diagnostics) {
+            diagAccessor.setSamplingRateSnapshot(d, samplingRate);
         }
     }
 
@@ -679,6 +692,12 @@ public final class CosmosDiagnosticsContext {
                     public String getSpanName(CosmosDiagnosticsContext ctx) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         return ctx.getSpanName();
+                    }
+
+                    @Override
+                    public void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        ctx.setSamplingRateSnapshot(samplingRate);
                     }
                 });
     }
