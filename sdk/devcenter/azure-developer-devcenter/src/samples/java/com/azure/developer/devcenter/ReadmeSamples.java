@@ -72,13 +72,11 @@ public final class ReadmeSamples {
 
         // BEGIN: com.azure.developer.devcenter.readme.environments
         // BEGIN: com.azure.developer.devcenter.readme.createEnvironmentsClient
-        DeploymentEnvironmentsClientBuilder deploymentEnvironmentsClientbuilder =
-                        new DeploymentEnvironmentsClientBuilder()
-                            .endpoint("ENDPOINT")
-                            .httpClient(HttpClient.createDefault())
-                            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-
-        DeploymentEnvironmentsClient environmentsClient = deploymentEnvironmentsClientbuilder.buildClient();
+        DeploymentEnvironmentsClient environmentsClient =
+                            new DeploymentEnvironmentsClientBuilder()
+                                    .endpoint("ENDPOINT")
+                                    .credential(new DefaultAzureCredentialBuilder().build())
+                                    .buildClient();
         // END: com.azure.developer.devcenter.readme.createEnvironmentsClient
 
         // BEGIN: com.azure.developer.devcenter.readme.getEnvironmentDefinitionsAndTypes
@@ -103,7 +101,7 @@ public final class ReadmeSamples {
         // Create an environment
         BinaryData environmentBody = BinaryData.fromString("{\"environmentDefinitionName\":\"myEnvironmentDefinition\", \"environmentType\":\"myEnvironmentType\", \"catalogName\":\"myCatalog\"}");
         SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-                environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
+                        environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
         environmentCreateResponse.waitForCompletion();
         // END: com.azure.developer.devcenter.readme.createEnvironment
 
