@@ -45,7 +45,8 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
-import com.azure.data.appconfiguration.models.FeatureFlagFilter;
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
@@ -386,12 +387,12 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         List<ConfigurationSetting> featureList = new ArrayList<>();
         FeatureFlagConfigurationSetting featureFlag = new FeatureFlagConfigurationSetting("Alpha", true);
-        featureFlag.setValue("{\"conditions\":{\"requirement_type\":\"All\"}}");
-        featureFlag.addClientFilter(new FeatureFlagFilter("AlwaysOn"));
+        featureFlag.setValue("{\"id\":null,\"description\":null,\"display_name\":null,\"enabled\":true,\"conditions\":{\"requirement_type\":\"All\", \"client_filters\":[{\"name\":\"AlwaysOn\",\"parameters\":{}}]}}");
         featureList.add(featureFlag);
 
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);
         when(replicaClientMock.listSettings(Mockito.any())).thenReturn(featureList);
+        when(replicaClientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, null));
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
             null, stores);
@@ -411,7 +412,9 @@ public class AppConfigurationPropertySourceLocatorTest {
                 KEY_FILTER + "store1/\0"
             };
             assertEquals(expectedSourceNames.length, sources.size());
-            Object[] propertSources = sources.stream().map(c -> c.getProperty("feature-management.Alpha")).toArray();
+            Object[] propertySources = sources.stream().map(c -> c.getProperty("feature-management.Alpha")).toArray();
+            Feature alpha = (Feature) propertySources[0];
+            assertEquals("All", alpha.getRequirementType());
             assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
             
         }

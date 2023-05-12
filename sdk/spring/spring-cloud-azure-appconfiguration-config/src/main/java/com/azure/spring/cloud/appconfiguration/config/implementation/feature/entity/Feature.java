@@ -22,7 +22,7 @@ public final class Feature {
 
     @JsonProperty("enabled-for")
     private Map<Integer, FeatureFlagFilter> enabledFor;
-    
+
     @JsonProperty("requirement-type")
     private String requirementType = "Any";
 
@@ -76,6 +76,20 @@ public final class Feature {
      */
     public void setEnabledFor(Map<Integer, FeatureFlagFilter> enabledFor) {
         this.enabledFor = enabledFor;
+    }
+
+    /**
+     * @return the requirementType
+     */
+    public String getRequirementType() {
+        return requirementType;
+    }
+
+    /**
+     * @param requirementType the requirementType to set
+     */
+    public void setRequirementType(String requirementType) {
+        this.requirementType = requirementType;
     }
 
 }
