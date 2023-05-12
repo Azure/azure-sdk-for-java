@@ -105,7 +105,7 @@ public class GoneException extends CosmosException {
     }
 
     /**
-     * Instantiates a new Gone exception.
+     * Instantiates a new Gone exception
      *
      * @param message the message
      * @param headers the headers
