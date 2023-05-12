@@ -8,6 +8,7 @@ import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 
 import java.time.Duration;
 
+@SuppressWarnings("rawtypes")
 public class IntegrationTestCollectionManager extends AbstractIntegrationTestCollectionManager<CosmosTemplate> {
 
     @Override

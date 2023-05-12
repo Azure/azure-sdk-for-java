@@ -30,10 +30,11 @@
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.convert=com.fasterxml.jackson.databind
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.converter=ALL-UNNAMED
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.mapping=spring.core
-      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository=ALL-UNNAMED
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository=ALL-UNNAMED,spring.core
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository.query=ALL-UNNAMED
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository.support=ALL-UNNAMED,spring.core
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain=com.fasterxml.jackson.databind,spring.core,spring.data.commons
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain.inheritance=com.fasterxml.jackson.databind,spring.core,spring.data.commons
     </javaModulesSurefireArgLine>
     <azure.test.resourcegroup>azure-spring-data-cosmos-test</azure.test.resourcegroup>
     <azure.test.dbname>testdb-${maven.build.timestamp}</azure.test.dbname>

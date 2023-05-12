@@ -13,6 +13,7 @@ import org.springframework.data.annotation.Version;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
+@SuppressWarnings("rawtypes")
 public class ContainerLock {
 
     private static CosmosEntityInformation<LockEntry, String> lockEntityInfo;
