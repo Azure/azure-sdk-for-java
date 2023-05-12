@@ -75,8 +75,9 @@ public final class BridgeInternal {
     private BridgeInternal() {}
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosDiagnostics createCosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
-        return new CosmosDiagnostics(diagnosticsClientContext);
+    public static CosmosDiagnostics createCosmosDiagnostics(
+        DiagnosticsClientContext diagnosticsClientContext, double samplingRateSnapshot) {
+        return new CosmosDiagnostics(diagnosticsClientContext).setSamplingRateSnapshot(samplingRateSnapshot);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

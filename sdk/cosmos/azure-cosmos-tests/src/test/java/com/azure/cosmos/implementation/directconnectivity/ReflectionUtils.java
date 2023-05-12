@@ -186,6 +186,11 @@ public class ReflectionUtils {
 
     public static void setClientTelemetryConfig(CosmosAsyncClient cosmosAsyncClient, CosmosClientTelemetryConfig cfg){
         set(cosmosAsyncClient, cfg, "clientTelemetryConfig");
+        AsyncDocumentClient asyncClient = get(
+            AsyncDocumentClient.class, cosmosAsyncClient, "asyncDocumentClient");
+        if (asyncClient instanceof RxDocumentClientImpl) {
+            set(((RxDocumentClientImpl)asyncClient), cfg, "clientTelemetryConfig");
+        }
     }
 
     public static ConnectionPolicy getConnectionPolicy(CosmosClientBuilder cosmosClientBuilder){

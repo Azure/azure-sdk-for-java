@@ -51,6 +51,8 @@ public class ClientSideRequestStatistics {
     private int requestPayloadSizeInBytes = 0;
     private final String userAgent;
 
+    private double samplingRateSnapshot = 1;
+
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
         this.requestStartTimeUTC = Instant.now();
@@ -67,6 +69,7 @@ public class ClientSideRequestStatistics {
         this.retryContext = new RetryContext();
         this.requestPayloadSizeInBytes = 0;
         this.userAgent = diagnosticsClientContext.getUserAgent();
+        this.samplingRateSnapshot = 1;
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -87,6 +90,7 @@ public class ClientSideRequestStatistics {
         this.retryContext = new RetryContext(toBeCloned.retryContext);
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
         this.userAgent = toBeCloned.userAgent;
+        this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
     }
 
     @JsonIgnore
@@ -503,6 +507,12 @@ public class ClientSideRequestStatistics {
         return gatewayStatistics;
     }
 
+    public ClientSideRequestStatistics setSamplingRateSnapshot(double samplingRateSnapshot) {
+        this.samplingRateSnapshot = samplingRateSnapshot;
+
+        return this;
+    }
+
     public static class StoreResponseStatistics {
         @JsonSerialize(using = StoreResultDiagnostics.StoreResultDiagnosticsSerializer.class)
         private StoreResultDiagnostics storeResult;
@@ -609,6 +619,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
+            generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
 
             try {
                 SystemInformation systemInformation = fetchSystemInformation();
