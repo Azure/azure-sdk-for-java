@@ -110,7 +110,7 @@ public class CosmosException extends AzureException {
     /**
      * Request URI
      */
-    Uri requestUri;
+    private Uri requestUri;
 
     /**
      * Resource address
@@ -422,6 +422,14 @@ public class CosmosException extends AzureException {
         return Double.parseDouble(value);
     }
 
+    void setRequestUri(Uri requestUri) {
+        this.requestUri = requestUri;
+    }
+
+    Uri getRequestUri() {
+        return this.requestUri;
+    }
+
     @Override
     public String toString() {
         try {
@@ -644,6 +652,16 @@ public class CosmosException extends AzureException {
                     @Override
                     public List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException) {
                         return cosmosException.getFaultInjectionEvaluationResults();
+                    }
+
+                    @Override
+                    public void setRequestUri(CosmosException cosmosException, Uri requestUri) {
+                        cosmosException.setRequestUri(requestUri);
+                    }
+
+                    @Override
+                    public Uri getRequestUri(CosmosException cosmosException) {
+                        return cosmosException.getRequestUri();
                     }
                 });
     }

@@ -355,11 +355,6 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <E extends CosmosException> Uri getRequestUri(CosmosException cosmosException) {
-        return cosmosException.requestUri;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> void setRequestHeaders(CosmosException cosmosException,
                                                                      Map<String, String> requestHeaders) {
         cosmosException.requestHeaders = requestHeaders;
