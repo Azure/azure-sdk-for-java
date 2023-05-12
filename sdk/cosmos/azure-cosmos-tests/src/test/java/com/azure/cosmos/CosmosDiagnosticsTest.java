@@ -659,8 +659,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             }
         }
 
-
-
         InternalObjectNode internalObjectNode = getInternalObjectNode();
         CosmosItemResponse<InternalObjectNode> createResponse = containerDirect.createItem(internalObjectNode);
         validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), directClient, this.directClientUserAgent);
