@@ -323,6 +323,7 @@ public class StoreReader {
         boolean requiresValidLsn,
         boolean useLocalLSNBasedHeaders,
         List<String> replicaStatusList) {
+
         // record the diagnostics for in-progress requests
         for (CosmosException cosmosException : request.requestContext.rntbdCancelledRequestMap.values()) {
             Uri storePhysicalAddress =

@@ -121,9 +121,9 @@ public class LocalThroughputControllerTests {
     private RxDocumentServiceRequest createMockRequest() {
         RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
         Mockito.doReturn(OperationType.Read).when(requestMock).getOperationType();
-        DocumentServiceRequestContext requestContextMock = Mockito.mock(DocumentServiceRequestContext.class);
-        requestContextMock.resolvedPartitionKeyRange = pkRange1;
-        requestMock.requestContext = requestContextMock;
+        DocumentServiceRequestContext requestContext = new DocumentServiceRequestContext();
+        requestContext.resolvedPartitionKeyRange = pkRange1;
+        requestMock.requestContext = requestContext;
 
         return requestMock;
     }

@@ -38,6 +38,7 @@ public class GlobalThroughputRequestControllerTests {
     @Test(groups = "unit")
     public void canHandleRequest() {
         RxDocumentServiceRequest requestMock = Mockito.mock(RxDocumentServiceRequest.class);
+        requestMock.requestContext = new DocumentServiceRequestContext();
         assertThat(requestController.canHandleRequest(requestMock)).isTrue();
     }
 

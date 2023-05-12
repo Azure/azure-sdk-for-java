@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import org.mockito.Mockito;
 
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TestUtils {
     private static final String DATABASES_PATH_SEGMENT = "dbs";
@@ -57,7 +58,7 @@ public class TestUtils {
 
     public static RxDocumentServiceRequest mockDocumentServiceRequest(DiagnosticsClientContext clientContext) {
         RxDocumentServiceRequest dsr = Mockito.mock(RxDocumentServiceRequest.class);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
         dsr.requestContext.cosmosDiagnostics = clientContext.createDiagnostics();
         Mockito.doReturn(clientContext.createDiagnostics()).when(dsr).createCosmosDiagnostics();
         Mockito.doReturn(UUID.randomUUID()).when(dsr).getActivityId();

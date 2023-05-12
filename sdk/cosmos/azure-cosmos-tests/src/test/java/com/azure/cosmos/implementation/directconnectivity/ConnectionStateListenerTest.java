@@ -115,7 +115,7 @@ public class ConnectionStateListenerTest {
         try {
             client.invokeResourceOperationAsync(targetUri, req).block();
         } catch (Exception e) {
-            logger.info("expected failed request with reason {}", e);
+            //  no op here - as this is expected
         }
 
         if (markUnhealthy) {

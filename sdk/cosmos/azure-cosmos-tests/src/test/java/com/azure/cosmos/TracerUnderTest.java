@@ -106,14 +106,15 @@ public class TracerUnderTest implements Tracer {
         if (parent == null) {
 
             if (this.currentSpan.getError() != null) {
-                LOGGER.info("Span-Error: {}", this.currentSpan.getError().getMessage(), this.currentSpan.getError());
+                // LOGGER.info("Span-Error: {}", this.currentSpan.getError().getMessage(), this.currentSpan.getError());
+                LOGGER.info("Span-Error: {}", this.currentSpan.getError().getMessage());
             }
 
             if (this.currentSpan.getStatusMessage() != null) {
                 LOGGER.info("Span-StatusMessage: {}", this.currentSpan.getStatusMessage());
             }
 
-            LOGGER.info("Span-Json: {}", this.currentSpan.toJson());
+            //  LOGGER.info("Span-Json: {}", this.currentSpan.toJson());
         } else {
             this.currentSpan = parent;
         }
