@@ -222,90 +222,16 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     }
 
     public boolean isAddressUriUnderOpenConnectionsFlow(String addressUriAsString) {
-        return this.addressUrisUnderOpenConnectionsAndInitCaches.contains(addressUriAsString);
+        return false;
     }
 
     public boolean isCollectionRidUnderOpenConnectionsFlow(String collectionRid) {
-        return this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.containsKey(collectionRid);
+        return false;
     }
 
     private Disposable getBackgroundOpenConnectionsPublisher() {
 
-        ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
-
-        Map<String, List<OpenConnectionTask>> mapSnapshot = new ConcurrentHashMap<>();
-
-        this.endpointsUnderMonitorMapWriteLock.lock();
-        try {
-            this.instantiateOpenConnectionsPublisher();
-            mapSnapshot.putAll(this.endpointsUnderMonitorMap);
-        } finally {
-            this.endpointsUnderMonitorMapWriteLock.unlock();
-        }
-
-        Flux<OpenConnectionTask> initialFlux  = Flux.fromIterable(
-            mapSnapshot
-                .keySet()
-                .stream()
-                .map(endpoint -> mapSnapshot.get(endpoint).get(0))
-                .collect(Collectors.toList()));
-
-        return Flux.from(openConnectionsTaskSink.asFlux())
-                .mergeWith(initialFlux)
-                .publishOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .onErrorResume(throwable -> {
-                    logger.warn("An error occurred with proactiveOpenConnectionsProcessor, re-initializing open connections sink", throwable);
-                    this.reInstantiateOpenConnectionsPublisherAndSubscribe(false);
-                    return Mono.empty();
-                })
-                .parallel(concurrencyConfiguration.openConnectionTaskEmissionConcurrency)
-                .runOn(CosmosSchedulers.OPEN_CONNECTIONS_BOUNDED_ELASTIC)
-                .flatMap(openConnectionTask -> {
-
-                    RntbdEndpoint endpoint = getOrCreateEndpoint(openConnectionTask);
-
-                    return Flux.zip(Mono.just(openConnectionTask), openConnectionsHandler.openConnections(
-                                    openConnectionTask.getCollectionRid(),
-                                    Arrays.asList(endpoint),
-                                    openConnectionTask.getMinConnectionsRequiredForEndpoint()))
-                            .onErrorResume(throwable -> {
-                                logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
-                                return Flux.empty();
-                            });
-                }, true, concurrencyConfiguration.openConnectionExecutionConcurrency)
-                .flatMap(openConnectionTaskToResponse -> {
-                    OpenConnectionTask openConnectionTask = openConnectionTaskToResponse.getT1();
-                    OpenConnectionResponse openConnectionResponse = openConnectionTaskToResponse.getT2();
-
-                    if (openConnectionResponse.isConnected() && openConnectionResponse.isOpenConnectionAttempted()) {
-                        this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
-                        return Mono.just(openConnectionResponse);
-                    }
-
-                    // open connections handler has created the min. required connections for the endpoint
-                    if (openConnectionResponse.isConnected() && !openConnectionResponse.isOpenConnectionAttempted()) {
-                        // for the specific service endpoint, it has met the mini pool size requirements, so remove from the map
-                        this.removeEndpointFromMonitor(openConnectionTask.getAddressUri().toString(), openConnectionResponse);
-                        return Mono.just(openConnectionResponse);
-                    }
-
-                    return openConnectionTask
-                            .getRetryPolicy()
-                            .shouldRetry((Exception) openConnectionResponse.getException())
-                            .flatMap(shouldRetryResult -> {
-                                if (shouldRetryResult.shouldRetry) {
-                                    return enqueueOpenConnectionTaskForRetry(openConnectionTask, shouldRetryResult)
-                                            .onErrorResume(throwable -> {
-                                                logger.warn("An error occurred in proactiveOpenConnectionsProcessor", throwable);
-                                                return Mono.empty();
-                                            });
-                                }
-
-                                this.removeEndpointFromMonitor(openConnectionTask.getAddressUri().toString(), openConnectionResponse);
-                                return Mono.just(openConnectionResponse);
-                            });
-                }, true)
-                .subscribe();
+        return null;
     }
 
     private RntbdEndpoint getOrCreateEndpoint(OpenConnectionTask openConnectionTask) {
