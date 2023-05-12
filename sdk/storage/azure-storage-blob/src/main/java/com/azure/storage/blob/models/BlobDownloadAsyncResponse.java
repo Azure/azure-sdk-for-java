@@ -92,6 +92,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      */
     public Mono<Void> writeValueToAsync(AsynchronousByteChannel channel, ProgressReporter progressReporter) {
         Objects.requireNonNull(channel, "'channel' must not be null");
+        // Retaining commented out code as there will be a fix within the Core libraries, specifically HTTP Netty,
+        // where this performance enhancement will be re-enabled again in the future.
 //        if (sourceResponse != null) {
 //            return IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, sourceResponse, onErrorResume,
 //                progressReporter, retryOptions.getMaxRetryRequests());
