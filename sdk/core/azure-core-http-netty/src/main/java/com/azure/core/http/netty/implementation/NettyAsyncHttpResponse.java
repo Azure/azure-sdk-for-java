@@ -6,7 +6,6 @@ package com.azure.core.http.netty.implementation;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.FluxUtil;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -69,12 +68,9 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        return bodyIntern().retain()
-            .flatMapSequential(nettyBuffer ->
-                FluxUtil.writeToAsynchronousByteChannel(Flux.just(nettyBuffer.nioBuffer()), channel)
-                    .doFinally(ignored -> nettyBuffer.release()), 1, 1)
-            .doFinally(ignored -> close())
-            .then();
+        return Mono.<Void>create(sink -> bodyIntern().retain()
+            .subscribe(new ByteBufFluxAsyncWriteSubscriber(channel, sink)))
+            .doFinally(ignored -> close());
     }
 
     @Override

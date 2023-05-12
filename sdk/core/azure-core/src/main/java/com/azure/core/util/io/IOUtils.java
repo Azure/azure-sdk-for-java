@@ -157,10 +157,7 @@ public final class IOUtils {
         int maxRetries, int retryCount) {
 
         return response.writeValueToAsync(targetChannel)
-            .doFinally(ignored -> response.close())
             .onErrorResume(Exception.class, exception -> {
-                response.close();
-
                 int updatedRetryCount = retryCount + 1;
 
                 if (updatedRetryCount > maxRetries) {
@@ -176,7 +173,8 @@ public final class IOUtils {
                 return onErrorResume.apply(exception, targetChannel.getBytesWritten())
                     .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(
                         targetChannel, newResponse, onErrorResume, maxRetries, updatedRetryCount));
-            });
+            })
+            .doFinally(ignored -> response.close());
     }
 
     /*
