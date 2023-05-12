@@ -7,7 +7,6 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -17,10 +16,7 @@ import java.util.Map;
 public final class DevBoxesListPoolsTests extends DevCenterClientTestBase {
     @Test
     public void testDevBoxesListPoolsTests() {
-        String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
-        String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "myPool");
         RequestOptions requestOptions = new RequestOptions();
-
         PagedIterable<BinaryData> response = devBoxesClient.listPools(projectName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
 
