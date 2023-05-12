@@ -2,30 +2,18 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.CosmosSchedulers;
-import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
-import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Disposable;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.core.publisher.SignalType;
-import reactor.core.publisher.Sinks;
 
 import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
-import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -33,16 +21,13 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     private static final Logger logger = LoggerFactory.getLogger(ProactiveOpenConnectionsProcessor.class);
-    private Sinks.Many<OpenConnectionTask> openConnectionsTaskSink;
     private final ConcurrentHashMap<String, List<OpenConnectionTask>> endpointsUnderMonitorMap;
-    private final ReentrantReadWriteLock.WriteLock endpointsUnderMonitorMapWriteLock;
     private final ReentrantReadWriteLock.ReadLock endpointsUnderMonitorMapReadLock;
     private final Set<String> containersUnderOpenConnectionAndInitCaches;
     private final Map<String, Set<String>> collectionRidsAndUrisUnderOpenConnectionAndInitCaches;
@@ -50,34 +35,20 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final Object containersUnderOpenConnectionAndInitCachesLock;
     private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
     private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
-    private static final Map<ConnectionOpenFlowAggressivenessHint, ConcurrencyConfiguration> concurrencySettings = new HashMap<>();
-    private final IOpenConnectionsHandler openConnectionsHandler;
     private final RntbdEndpoint.Provider endpointProvider;
     private Disposable openConnectionBackgroundTask;
-    private final Sinks.EmitFailureHandler serializedEmitFailureHandler;
-    private static final int OPEN_CONNECTION_SINK_BUFFER_SIZE = 100_000;
 
     public ProactiveOpenConnectionsProcessor(final RntbdEndpoint.Provider endpointProvider) {
         this.aggressivenessHint = new AtomicReference<>(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
         this.endpointsUnderMonitorMap = new ConcurrentHashMap<>();
         ReentrantReadWriteLock throughputReadWriteLock = new ReentrantReadWriteLock();
-        this.endpointsUnderMonitorMapWriteLock = throughputReadWriteLock.writeLock();
         this.endpointsUnderMonitorMapReadLock = throughputReadWriteLock.readLock();
 
-        this.openConnectionsHandler = new RntbdOpenConnectionsHandler(endpointProvider);
         this.endpointProvider = endpointProvider;
-        this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
         this.containersUnderOpenConnectionAndInitCaches = ConcurrentHashMap.newKeySet();
         this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches = new ConcurrentHashMap<>();
         this.addressUrisUnderOpenConnectionsAndInitCaches = ConcurrentHashMap.newKeySet();
         this.containersUnderOpenConnectionAndInitCachesLock = new Object();
-
-        concurrencySettings.put(
-            ConnectionOpenFlowAggressivenessHint.AGGRESSIVE,
-            new ConcurrencyConfiguration(Configs.getAggressiveWarmupConcurrency(), Configs.getAggressiveWarmupConcurrency()));
-        concurrencySettings.put(
-            ConnectionOpenFlowAggressivenessHint.DEFENSIVE,
-            new ConcurrencyConfiguration(Configs.getDefensiveWarmupConcurrency(), Configs.getDefensiveWarmupConcurrency()));
     }
 
     public void init() {
@@ -144,15 +115,13 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     //
     // Using synchronized here to reduce the Sinks.EmitResult.FAIL_NON_SERIALIZED errors.
     private synchronized void submitOpenConnectionWithinLoopInternal(OpenConnectionTask openConnectionTask) {
-        openConnectionsTaskSink.emitNext(openConnectionTask, serializedEmitFailureHandler);
+
     }
 
     @Override
     public void close() throws IOException {
         if (isClosed.compareAndSet(false, true)) {
             logger.info("Shutting down ProactiveOpenConnectionsProcessor...");
-            completeSink(openConnectionsTaskSink);
-
             // Fail all pending tasks
             this.endpointsUnderMonitorMap.forEach((addresses, taskList) -> {
                 for (OpenConnectionTask openConnectionTask : taskList) {
@@ -248,18 +217,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         return endpoint;
     }
 
-    private void removeEndpointFromMonitor(String addressUriString, OpenConnectionResponse openConnectionResponse) {
-        List<OpenConnectionTask> openConnectionTasks = this.endpointsUnderMonitorMap.remove(addressUriString);
-
-        logger.debug("Open connections completed for endpoint : {}, no. of connections opened : {}", addressUriString, openConnectionResponse.getOpenConnectionCountToEndpoint());
-
-        if (openConnectionTasks != null && !openConnectionTasks.isEmpty()) {
-            for (OpenConnectionTask connectionTask : openConnectionTasks) {
-                connectionTask.complete(openConnectionResponse);
-            }
-        }
-    }
-
     private synchronized void reInstantiateOpenConnectionsPublisherAndSubscribe(boolean shouldForceDefensiveOpenConnections) {
         if (shouldForceDefensiveOpenConnections) {
             logger.debug("Force defensive opening of connections");
@@ -274,71 +231,9 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.openConnectionBackgroundTask = this.getBackgroundOpenConnectionsPublisher();
     }
 
-    private Mono<OpenConnectionResponse> enqueueOpenConnectionTaskForRetry(
-            OpenConnectionTask openConnectionTask,
-            ShouldRetryResult retryResult) {
-        if (retryResult.backOffTime == Duration.ZERO || retryResult.backOffTime == null) {
-            this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
-            return Mono.empty();
-        } else {
-            return Mono
-                    .delay(retryResult.backOffTime)
-                    .flatMap(ignore -> {
-                        this.submitOpenConnectionWithinLoopInternal(openConnectionTask);
-                        return Mono.empty();
-                    });
-        }
-    }
-
-    // when the flux associated with openConnectionsTaskSink is cancelled
-    // this method provides for a way to resume emitting pushed tasks to
-    // the sink
-    private void instantiateOpenConnectionsPublisher() {
-        logger.debug("Re-instantiate open connections task sink");
-        openConnectionsTaskSink = Sinks.many().multicast().onBackpressureBuffer(OPEN_CONNECTION_SINK_BUFFER_SIZE);
-    }
-
     private void forceDefensiveOpenConnections() {
         if (aggressivenessHint.get() == ConnectionOpenFlowAggressivenessHint.AGGRESSIVE) {
             aggressivenessHint.set(ConnectionOpenFlowAggressivenessHint.DEFENSIVE);
-        }
-    }
-
-    private void completeSink(Sinks.Many<OpenConnectionTask> sink) {
-        Sinks.EmitResult completeEmitResult = sink.tryEmitComplete();
-
-        if (completeEmitResult == Sinks.EmitResult.OK) {
-            logger.debug("Sink completed.");
-        } else if (completeEmitResult == Sinks.EmitResult.FAIL_CANCELLED ||
-                completeEmitResult == Sinks.EmitResult.FAIL_TERMINATED) {
-            logger.debug("Sink already completed, EmitResult: {}", completeEmitResult);
-        } else {
-            logger.warn("Sink completion failed, EmitResult: {}", completeEmitResult);
-        }
-    }
-
-    private static class ConcurrencyConfiguration {
-        final int openConnectionTaskEmissionConcurrency;
-        final int openConnectionExecutionConcurrency;
-
-        public ConcurrencyConfiguration(int openConnectionTaskEmissionConcurrency, int openConnectionExecutionConcurrency) {
-            this.openConnectionTaskEmissionConcurrency = openConnectionTaskEmissionConcurrency;
-            this.openConnectionExecutionConcurrency = openConnectionExecutionConcurrency;
-        }
-    }
-
-    private static class SerializedEmitFailureHandler implements Sinks.EmitFailureHandler {
-
-        @Override
-        public boolean onEmitFailure(SignalType signalType, Sinks.EmitResult emitResult) {
-            if (emitResult.equals(Sinks.EmitResult.FAIL_NON_SERIALIZED) || emitResult.equals(Sinks.EmitResult.FAIL_OVERFLOW)) {
-                logger.debug("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);
-
-                return true;
-            }
-
-            logger.debug("SerializedEmitFailureHandler.onEmitFailure - Signal:{}, Result: {}", signalType, emitResult);
-            return false;
         }
     }
 
