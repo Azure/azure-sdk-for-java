@@ -8,11 +8,13 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public final class DevBoxesGetPoolTests extends DevCenterClientTestBase {
     @Test
@@ -21,7 +23,7 @@ public final class DevBoxesGetPoolTests extends DevCenterClientTestBase {
 
         Response<BinaryData> response = devBoxesClient.getPoolWithResponse(projectName, poolName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        LinkedHashMap poolData = response.getValue().toObject(LinkedHashMap.class);
+        Map<String, Object> poolData = response.getValue().toObject(new TypeReference<Map<String, Object>>() {});
         Assertions.assertEquals(poolName, poolData.get("name"));
     }
 }

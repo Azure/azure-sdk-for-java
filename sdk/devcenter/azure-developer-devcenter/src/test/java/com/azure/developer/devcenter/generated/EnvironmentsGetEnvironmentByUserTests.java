@@ -7,11 +7,13 @@ package com.azure.developer.devcenter.generated;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 public final class EnvironmentsGetEnvironmentByUserTests extends DevCenterClientTestBase {
     @Test
@@ -22,8 +24,7 @@ public final class EnvironmentsGetEnvironmentByUserTests extends DevCenterClient
         Response<BinaryData> response =
                 deploymentEnvironmentsClient.getEnvironmentWithResponse(projectName, "me", environmentName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        LinkedHashMap environmentData = response.getValue().toObject(LinkedHashMap.class);
-
+        Map<String, Object> environmentData = response.getValue().toObject(new TypeReference<Map<String, Object>>() {});
         Assertions.assertEquals(environmentName, environmentData.get("name"));
         deleteEnvironment(environmentName);
     }

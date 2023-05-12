@@ -9,7 +9,9 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import java.time.OffsetDateTime;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
+import com.azure.core.util.serializer.TypeReference;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -27,7 +29,7 @@ public final class DevBoxesDelayActionsTests extends DevCenterClientTestBase {
         int numberOfActions = 0;
         for (BinaryData data : response) {
             numberOfActions++;
-            LinkedHashMap devBoxData = data.toObject(LinkedHashMap.class);
+            Map<String, Object> devBoxData = data.toObject(new TypeReference<Map<String, Object>>() {});
             Assertions.assertEquals("schedule-default", devBoxData.get("name"));
             Assertions.assertEquals("Stop", devBoxData.get("actionType"));
         }
