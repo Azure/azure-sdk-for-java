@@ -9,8 +9,7 @@ import com.azure.core.util.ServiceVersion;
 /** Service version of EventGridPublisherClient. */
 public enum EventGridPublisherServiceVersion implements ServiceVersion {
     /** Enum value 2023-06-01-preview. */
-    V2023_06_01_PREVIEW("2023-06-01-preview"),
-    V2022_05_01("2022-05-01");
+    V2023_06_01_PREVIEW("2023-06-01-preview");
 
     private final String version;
 
