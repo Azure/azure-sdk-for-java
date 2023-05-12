@@ -89,7 +89,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"emulater"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputLocalControl_requestOptions(OperationType operationType) {
         this.ensureContainer();
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
@@ -117,7 +117,7 @@ public class ThroughputControlTests extends TestSuiteBase {
             BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode());
     }
 
-    @Test(groups = {"emulater"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputLocalControl_default(OperationType operationType) {
         this.ensureContainer();
 
@@ -155,7 +155,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void throughputLocalControlWithThroughputQuery() {
         // Will need to use a new client here to make sure the throughput query mono will be passed down to throughputContainerController
         CosmosAsyncClient cosmosAsyncClient = null;
@@ -205,7 +205,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputLocalControlPriorityLevel(OperationType operationType) {
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
@@ -228,7 +228,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         assertThat(createItemResponse.getStatusCode()).isEqualTo(201);
     }
 
-    @Test(groups = {"emulater"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputGlobalControl(OperationType operationType) {
         this.ensureContainer();
         String controlContainerId = "tcc" + UUID.randomUUID();
@@ -274,7 +274,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void throughputGlobalControlWithThroughputQuery() {
         this.ensureContainer();
         // Will need to use a new client here to make sure the throughput query mono will be passed down to throughputContainerController
@@ -339,7 +339,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputGlobalControlCanUpdateConfig(OperationType operationType) {
         this.ensureContainer();
         String controlContainerId = "tcc" + UUID.randomUUID();
@@ -413,7 +413,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
     public void throughputLocalControlForContainerCreateDeleteWithSameName(OperationType operationType) throws InterruptedException {
         this.ensureContainer();
         ConnectionMode connectionMode = BridgeInternal.getContextClient(client).getConnectionPolicy().getConnectionMode();
@@ -481,7 +481,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void throughputLocalControl_createItem() throws InterruptedException {
         this.ensureContainer();
         // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario
@@ -517,7 +517,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         validateItemSuccess(container.createItem(itemGetThrottled), successValidator);
     }
 
-    @Test(groups = {"emulater"}, dataProvider = "allowRequestToContinueOnInitErrorProvider", timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, dataProvider = "allowRequestToContinueOnInitErrorProvider", timeOut = TIMEOUT)
     public void throughputControlContinueOnInitError(boolean continueOnInitError) {
         this.ensureContainer();
         // Purposely not creating the throughput control container so to test allowRequestContinueOnInitError
@@ -557,7 +557,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT * 4)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 4)
     public void throughputGlobalControlMultipleClients() throws InterruptedException {
         this.ensureContainer();
         List<CosmosAsyncClient> cosmosAsyncClients = new ArrayList<>();
@@ -614,7 +614,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT * 4)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 4)
     public void enableSameGroupMultipleTimes() {
         this.ensureContainer();
 
@@ -691,7 +691,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
-    @BeforeClass(groups = { "emulater" }, timeOut = 4 * SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ThroughputBudgetControllerTest() {
         this.ensureContainer();
     }
@@ -718,7 +718,7 @@ public class ThroughputControlTests extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = {"emulater"}, timeOut = TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, timeOut = TIMEOUT, alwaysRun = true)
     public void after_ThroughputBudgetControllerTest() {
         safeClose(this.client);
     }

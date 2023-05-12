@@ -35,7 +35,7 @@ public class PatchTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "emulater" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_PatchTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().contentResponseOnWriteEnabled(true).buildClient();
@@ -43,13 +43,13 @@ public class PatchTest extends TestSuiteBase {
         container = client.getDatabase(asyncContainer.getDatabase().getId()).getContainer(asyncContainer.getId());
     }
 
-    @AfterClass(groups = { "emulater" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = {  "emulater"  }, timeOut = TIMEOUT * 10)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
     public void itemConditionalPatchSuccess() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 
@@ -114,7 +114,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(responsePass.getItem()).isEqualTo(patchedItem);
     }
 
-    @Test(groups = {  "emulater"  }, timeOut = TIMEOUT * 10)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
     public void itemPatchSuccess() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
         ToDoActivity testItem1 = ToDoActivity.createRandomItem(this.container);
@@ -167,7 +167,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
-    @Test(groups = {  "emulater"  }, timeOut = TIMEOUT * 10)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
     public void itemPatchContentResponseOnWriteEnabled() {
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
 
@@ -229,7 +229,7 @@ public class PatchTest extends TestSuiteBase {
         assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
-    @Test(groups = {  "emulater"  }, timeOut = TIMEOUT)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
     public void itemPatchFailure() {
         // Create an item
         ToDoActivity testItem = ToDoActivity.createRandomItem(this.container);
@@ -284,7 +284,7 @@ public class PatchTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {  "emulater"  }, timeOut = TIMEOUT * 10)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT * 10)
     public void itemPatchSuccessForNullValue() {
         // Null value should be allowed for add, set, and replace
 

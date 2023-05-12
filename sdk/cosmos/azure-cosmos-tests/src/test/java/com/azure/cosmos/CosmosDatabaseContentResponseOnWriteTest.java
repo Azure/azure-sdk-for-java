@@ -33,14 +33,14 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"emulater"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = {"emulater"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteSyncDatabase(createdDatabase);
         for (String dbId : databases) {
@@ -49,7 +49,7 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
         safeCloseSyncClient(client);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withContentResponseOnWriteDisabled() {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -59,7 +59,7 @@ public class CosmosDatabaseContentResponseOnWriteTest extends TestSuiteBase {
         validateDatabaseResponse(databaseDefinition, createResponse);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void readDatabase_withContentResponseOnWriteDisabled() throws Exception {
         CosmosDatabase database = client.getDatabase(createdDatabase.getId());
         CosmosDatabaseProperties properties = new CosmosDatabaseProperties(createdDatabase.getId());

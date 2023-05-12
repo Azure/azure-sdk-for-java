@@ -36,13 +36,13 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"emulater"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosDatabaseTest() {
         client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = {"emulater"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteSyncDatabase(createdDatabase);
         for (String dbId : databases) {
@@ -52,7 +52,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withPropertiesAndOptions() {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -63,7 +63,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         validateDatabaseResponse(databaseDefinition, createResponse);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withProperties() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -74,7 +74,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         validateDatabaseResponse(databaseDefinition, createResponse);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_alreadyExists() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -90,7 +90,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withId() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -99,7 +99,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         validateDatabaseResponse(databaseDefinition, createResponse);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withPropertiesThroughputAndOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -114,7 +114,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withPropertiesAndThroughput() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -133,7 +133,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createDatabase_withIdAndThroughput() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -163,7 +163,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         validateDatabaseResponse(properties, read1);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void readAllDatabases() throws Exception {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
@@ -176,7 +176,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         assertThat(readIterator1.iterableByPage(2).iterator().hasNext()).isTrue();
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void queryAllDatabases() throws Exception {
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         String query = String.format("SELECT * from c where c.getId = '%s'", createdDatabase.getId());
@@ -193,7 +193,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void deleteDatabase() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -203,7 +203,7 @@ public class CosmosDatabaseTest extends TestSuiteBase {
         client.getDatabase(databaseDefinition.getId()).delete();
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void deleteDatabase_withOptions() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());

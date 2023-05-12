@@ -33,7 +33,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @Test(groups = { "emulater" })
+    @Test(groups = { "emulator" })
     public void validateMultipleDefaultGroups() {
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
@@ -62,7 +62,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
             .hasMessage("A default group already exists");
     }
 
-    @Test(groups = { "emulater" })
+    @Test(groups = { "emulator" })
     public void validateGlobalThroughputControlGroup() {
         GlobalThroughputControlConfigBuilder globalControlConfigBuilder =
             client.createGlobalThroughputControlConfigBuilder(database.getId(), container.getId());
@@ -100,7 +100,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
             .hasMessage("All targetThroughput, targetThroughputThreshold and priorityLevel cannot be null or empty.");
     }
 
-    @BeforeClass(groups = { "emulater" }, timeOut = 4 * SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = 4 * SETUP_TIMEOUT)
     public void before_ThroughputControlGroupConfigurationTests() {
         client = getClientBuilder().buildAsyncClient();
         database = getSharedCosmosDatabase(client);

@@ -33,20 +33,20 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"emulater"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = {"emulater"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteSyncDatabase(createdDatabase);
         safeCloseSyncClient(client);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createContainer_withContentResponseOnWriteDisabled() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -56,7 +56,7 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, containerResponse);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readContainer_withContentResponseOnWriteDisabled() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -73,7 +73,7 @@ public class CosmosContainerContentResponseOnWriteTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, read1);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void replaceContainer_withContentResponseOnWriteDisabled() throws Exception {
 
         String collectionName = UUID.randomUUID().toString();

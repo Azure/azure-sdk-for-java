@@ -58,18 +58,18 @@ public class ChangeFeedProcessorMigrationTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "emulater", "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
+    @BeforeClass(groups = { "emulator", "simple" }, timeOut = SETUP_TIMEOUT, alwaysRun = true)
     public void before_ChangeFeedProcessorMigrateTests() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
-    @AfterClass(groups = { "emulater", "simple" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator", "simple" }, timeOut = 2 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }
 
-    @Test(groups = { "emulater" }, timeOut = 2 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 2 * TIMEOUT)
     public void readFeedDocumentsBootstrapFromPkVersion() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollection = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);

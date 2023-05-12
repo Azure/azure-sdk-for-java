@@ -31,7 +31,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
     private static final Duration IDLE_ENDPOINT_TIMEOUT = Duration.ofSeconds(20);
     private static final int MAX_CONNECTION_POOL_SIZE = 500;
 
-    @Test(groups = { "emulater" })
+    @Test(groups = { "emulator" })
     public void buildClient_withDefaultGatewayConnectionConfig() {
         GatewayConnectionConfig gatewayConnectionConfig = GatewayConnectionConfig.getDefaultConfig();
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -48,7 +48,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         safeCloseSyncClient(cosmosClient);
     }
 
-    @Test(groups = { "emulater" })
+    @Test(groups = { "emulator" })
     public void buildClient_withCustomGatewayConnectionConfig() {
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         gatewayConnectionConfig.setMaxConnectionPoolSize(100);
@@ -77,7 +77,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         safeCloseSyncClient(cosmosClient);
     }
 
-    @Test(groups = { "emulater" })
+    @Test(groups = { "emulator" })
     public void buildClient_withDefaultDirectConnectionConfig() {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -95,7 +95,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         safeCloseSyncClient(cosmosClient);
     }
 
-    @Test(groups = { "emulater" })
+    @Test(groups = { "emulator" })
     public void buildClient_withCustomDirectConnectionConfig() {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         directConnectionConfig.setConnectTimeout(CONNECTION_TIMEOUT);
@@ -124,7 +124,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         safeCloseSyncClient(cosmosClient);
     }
 
-    @Test(groups = { "emulater" })
+    @Test(groups = { "emulator" })
     public void buildClient_withDirectAndGatewayConnectionConfig() {
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
@@ -163,7 +163,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         validateDirectAndGatewayConnectionConfig(connectionPolicy, cosmosClientBuilder, directConnectionConfig, gatewayConnectionConfig);
     }
 
-    @Test(groups = { "emulater" })
+    @Test(groups = { "emulator" })
     public void buildClient_withNoConnectionConfig() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)

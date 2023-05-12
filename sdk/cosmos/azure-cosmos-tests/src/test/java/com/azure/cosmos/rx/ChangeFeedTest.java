@@ -268,20 +268,20 @@ public class ChangeFeedTest extends TestSuiteBase {
             getContinuationToken()).as("Response continuation should not be null").isNotNull();
     }
 
-    @Test(groups = { "emulater" }, enabled = false, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, enabled = false, timeOut = TIMEOUT)
     @Tag(name = "EnableFullFidelity")
     public void changeFeed_fullFidelity_fromNow() throws Exception {
         changeFeed_withUpdatesAndDelete(true);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     @Tag(name = "EnableFullFidelity")
     @Ignore("TODO fabianm - re-enable when bug in emulator always using FF change feed on conatiners with retention is fixed")
     public void changeFeed_incrementalOnFullFidelityContainer_fromNow() throws Exception {
         changeFeed_withUpdatesAndDelete(false);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     @Tag(name = "DisableFullFidelity")
     public void changeFeed_incremental_fromNow() throws Exception {
         changeFeed_withUpdatesAndDelete(false);
@@ -475,14 +475,14 @@ public class ChangeFeedTest extends TestSuiteBase {
                    .map(ResourceResponse::getResource).collectList().block();
     }
 
-    @AfterMethod(groups = { "simple", "emulater" }, timeOut = SETUP_TIMEOUT)
+    @AfterMethod(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void removeCollection() {
         if (createdCollection != null) {
             deleteCollection(client, getCollectionLink());
         }
     }
 
-    @BeforeMethod(groups = { "simple", "emulater" }, timeOut = SETUP_TIMEOUT)
+    @BeforeMethod(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void populateDocuments(Method method) {
 
         checkNotNull(method, "Argument method must not be null.");
@@ -522,14 +522,14 @@ public class ChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @BeforeClass(groups = { "simple", "emulater" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "simple", "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_ChangeFeedTest() throws Exception {
         // set up the client
         client = clientBuilder().build();
         createdDatabase = SHARED_DATABASE;
     }
 
-    @AfterClass(groups = { "simple", "emulater" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "simple", "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

@@ -66,7 +66,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         this.subscriberValidationTimeout = TIMEOUT;
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void query() throws Exception {
         String query = "SELECT * FROM r";
 
@@ -118,7 +118,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         createDeleteContainerWithSameName(func);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void readItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
@@ -153,7 +153,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         createDeleteContainerWithSameName(func);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void deleteItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
@@ -187,7 +187,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         createDeleteContainerWithSameName(func);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void upsertItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
@@ -222,7 +222,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         createDeleteContainerWithSameName(func);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void createItem() throws Exception {
 
         Consumer<CosmosAsyncContainer> func = (container) -> {
@@ -251,7 +251,7 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         createDeleteContainerWithSameName(func);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public <T> void changeFeed() throws Exception {
         ObjectMapper objectMapper = Utils.getSimpleObjectMapper();
         BiConsumer<CosmosAsyncContainer, CosmosAsyncContainer> func = (feedContainer, leaseContainer) -> {
@@ -321,13 +321,13 @@ public class ContainerCreateDeleteWithSameNameTest extends TestSuiteBase {
         changeFeedCreateDeleteContainerWithSameName(func);
     }
 
-    @BeforeClass(groups = {"emulater"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_ContainerCreateDeleteWithSameNameTest() throws Exception {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(client);
     }
 
-    @AfterClass(groups = {"emulater"}, timeOut = SETUP_TIMEOUT)
+    @AfterClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void after_ContainerCreateDeleteWithSameNameTest() throws Exception {
         safeDeleteAllCollections(createdDatabase);
     }

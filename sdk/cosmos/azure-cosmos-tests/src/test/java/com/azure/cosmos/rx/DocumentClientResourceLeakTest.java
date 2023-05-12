@@ -31,7 +31,7 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(enabled = false, groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(enabled = false, groups = {"emulator"}, timeOut = TIMEOUT)
     public void resourceLeak() throws Exception {
 
         System.gc();
@@ -64,7 +64,7 @@ public class DocumentClientResourceLeakTest extends TestSuiteBase {
         assertThat(usedMemoryInBytesAfter - usedMemoryInBytesBefore).isLessThan(300 * ONE_MB);
     }
 
-    @BeforeClass(groups = {"emulater"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_DocumentClientResourceLeakTest() {
         CosmosAsyncClient client = this.getClientBuilder().buildAsyncClient();
         try {

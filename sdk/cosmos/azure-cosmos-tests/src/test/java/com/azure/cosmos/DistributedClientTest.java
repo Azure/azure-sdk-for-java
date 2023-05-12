@@ -31,7 +31,7 @@ public class DistributedClientTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT * 10)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 10)
     public void createDocument() throws Exception {
         String id = UUID.randomUUID().toString();
         ObjectNode properties = getObjectNode(id);
@@ -53,14 +53,14 @@ public class DistributedClientTest extends TestSuiteBase {
         newClient.getDatabase(container.getDatabase().getId()).getContainer(container.getId()).readItem(id, new PartitionKey(id), ObjectNode.class).block();
     }
 
-    @BeforeClass(groups = { "emulater" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_DocumentCrudTest() {
         assertThat(this.client).isNull();
         this.client = this.getClientBuilder().buildAsyncClient();
         this.container = getSharedMultiPartitionCosmosContainer(this.client);
     }
 
-    @AfterClass(groups = { "emulater" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();

@@ -104,7 +104,7 @@ Note: When running the Azure Cosmos DB Emulator in a virtual machine you may rec
 
 Azure Cosmos Java SDK has different Integration tests which can be run with Azure Cosmos Emulator or Azure Cosmos DB production Account. 
 
-Emulator Integration tests are with test group `emulator`, labeled in the code as `groups = { "emulater" }` and can be run from IntelliJ after starting Azure Cosmos DB Emulator on the local development machine. For example, `DocumentCrudTest` is of group emulator.
+Emulator Integration tests are with test group `emulator`, labeled in the code as `groups = { "emulator" }` and can be run from IntelliJ after starting Azure Cosmos DB Emulator on the local development machine. For example, `DocumentCrudTest` is of group emulator.
 
 Latest version of Azure Cosmos DB Emulator can be downloaded and installed from [here](https://learn.microsoft.com/azure/cosmos-db/local-emulator)
 Our CI pipelines start Azure Cosmos DB Emulator with these parameters. It is highly recommended to use these for local development and testing.

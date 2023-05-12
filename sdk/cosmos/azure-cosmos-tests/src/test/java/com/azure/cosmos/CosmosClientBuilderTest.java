@@ -49,7 +49,7 @@ public class CosmosClientBuilderTest {
         }
     }
 
-    @Test(groups = "emulater")
+    @Test(groups = "emulator")
     public void validateIsClientTelemetryEnabledConflicts() {
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
             telemetryAccessor = ImplementationBridgeHelpers
@@ -167,7 +167,7 @@ public class CosmosClientBuilderTest {
         client.close();
     }
 
-    @Test(groups = "emulater")
+    @Test(groups = "emulator")
     public void validateApiTypePresent() {
         ApiType apiType = ApiType.TABLE;
         DirectConnectionConfig directConnectionConfig = DirectConnectionConfig.getDefaultConfig();

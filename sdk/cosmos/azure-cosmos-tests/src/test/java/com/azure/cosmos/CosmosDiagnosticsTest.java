@@ -1213,7 +1213,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(storeResult.get("rntbdResponseLengthInBytes").asInt(-1)).isGreaterThan(expectedResponsePayloadSize);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void addressResolutionStatistics() {
         CosmosClient client1 = null;
         CosmosClient client2 = null;

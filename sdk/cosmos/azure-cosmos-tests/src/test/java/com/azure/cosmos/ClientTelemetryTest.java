@@ -47,7 +47,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
     private CosmosClient telemetryDisabledClient = null;
     private HttpProxyServer httpProxyServer;
 
-    @BeforeClass(groups = {"emulater"})
+    @BeforeClass(groups = {"emulator"})
     public void beforeClass() {
         List<String> preferredRegion = new ArrayList<>();
         preferredRegion.add("East US 2");
@@ -81,7 +81,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         httpProxyServer.start();
     }
 
-    @AfterClass(groups = {"emulater"}, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, alwaysRun = true)
     public void afterClass() {
         if (this.gatewayClient != null) {
             this.gatewayClient.close();
@@ -117,7 +117,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = {"emulater"}, dataProvider = "clients", timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, dataProvider = "clients", timeOut = TIMEOUT)
     public void operationsList(CosmosClient cosmosClient) throws Exception {
         CosmosAsyncContainer asyncContainer = getSharedMultiPartitionCosmosContainer(cosmosClient.asyncClient());
         CosmosContainer cosmosContainer =
@@ -176,7 +176,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         assertThat(clientTelemetry.getClientTelemetryInfo().getOperationInfoMap().size()).isEqualTo(2);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void operationsListWithNoTelemetry() throws Exception {
         CosmosAsyncContainer asyncContainer =
             getSharedMultiPartitionCosmosContainer(telemetryDisabledClient.asyncClient());
@@ -217,7 +217,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         assertThat(clientTelemetry.getClientTelemetryInfo().getOperationInfoMap().size()).isEqualTo(0);
     }
 
-    @Test(groups = {"emulater"}, dataProvider = "clients", timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, dataProvider = "clients", timeOut = TIMEOUT)
     public void systemInfo(CosmosClient cosmosClient) throws Exception {
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
         readClientTelemetry(clientTelemetry);
@@ -232,7 +232,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, dataProvider = "clients", timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, dataProvider = "clients", timeOut = TIMEOUT)
     public void httpClientTests(CosmosClient cosmosClient) throws Exception {
         // Test using different http client for client telemetry requests and metaRequests
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
@@ -350,7 +350,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void clientTelemetryUseBaseUserAgent() {
         CosmosAsyncClient client = null;
         String userAgentSuffix = "clientTelemetryUseBaseUserAgent";

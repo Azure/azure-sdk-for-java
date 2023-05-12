@@ -29,13 +29,13 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"emulater"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosDatabaseTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = {"emulater"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(createdDatabase);
         for (String dbId : databases) {
@@ -44,7 +44,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
         safeClose(client);
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void createClientEncryptionKey() {
         EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("key1", "tempmetadata1", "custom", "algo");
         byte[] key = decodeHexString(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
@@ -63,7 +63,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
         validateClientEncryptionKeyResponse(cosmosClientEncryptionKeyProperties, keyResponse.getProperties());
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void replaceClientEncryptionKey() {
         EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("custom", "key2", "tempmetadata1", "algo");
         byte[] key = decodeHexString(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +
@@ -86,7 +86,7 @@ public class CosmosClientEncryptionKeyTest extends TestSuiteBase {
         validateClientEncryptionKeyResponse(cosmosClientEncryptionKeyProperties, keyResponse.getProperties());
     }
 
-    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
     public void queryClientEncryptionKeys() {
         EncryptionKeyWrapMetadata encryptionKeyWrapMetadata = new EncryptionKeyWrapMetadata("custom", "key3", "tempmetadata1", "algo");
         byte[] key = decodeHexString(("34 62 52 77 f9 ee 11 9f 04 8c 6f 50 9c e4 c2 5b b3 39 f4 d0 4d c1 6a 32 fa 2b 3b aa " +

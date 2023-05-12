@@ -70,14 +70,14 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @AfterClass(groups = { "emulater" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
         safeDeleteSyncDatabase(createdDatabase);
         safeCloseSyncClient(client);
     }
 
-    @AfterMethod(groups = { "emulater" })
+    @AfterMethod(groups = { "emulator" })
     public void afterTest() throws Exception {
         if (this.createdContainer != null) {
             try {
@@ -90,21 +90,21 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @BeforeMethod(groups = { "emulater" })
+    @BeforeMethod(groups = { "emulator" })
     public void beforeTest() throws Exception {
         this.createdContainer = null;
         this.createdAsyncContainer = null;
         this.partitionKeyToDocuments.clear();
     }
 
-    @BeforeClass(groups = { "emulater" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
         client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
         createdAsyncDatabase = client.asyncClient().getDatabase(createdDatabase.getId());
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT * 5)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 5)
     public void asyncChangeFeed_fromBeginning_incremental_forFullRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
@@ -142,7 +142,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT )
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT )
     public void asyncChangeFeed_fromBeginning_incremental_forFullRange_withSmallPageSize() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
@@ -188,7 +188,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             expectedEventCountAfterUpdates);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void asyncChangeFeed_fromBeginning_incremental_forLogicalPartition() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
@@ -241,7 +241,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromBeginning_incremental_forEPK() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
@@ -312,7 +312,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromBeginning_incremental_forFeedRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
@@ -360,7 +360,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         drainAndValidateChangeFeedResults(options, null, expectedTotalEventCountAfterUpdates);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromBeginning_fullFidelity_forFullRange() throws Exception {
         assertThrows(
             IllegalStateException.class,
@@ -370,7 +370,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromNow_incremental_forFullRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
@@ -410,7 +410,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
     }
 
     //TODO Temporarily disabling
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT, enabled = false)
     public void asyncChangeFeed_fromNow_fullFidelity_forFullRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
@@ -472,7 +472,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
             expectedEventCountAfterSecondSetOfUpdates);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromPointInTime_incremental_forFullRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())
@@ -514,7 +514,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
         drainAndValidateChangeFeedResults(options, null, expectedEventCountAfterUpdates);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void asyncChangeFeed_fromPointInTime_fullFidelity_forFullRange() throws Exception {
         assertThrows(
             IllegalStateException.class,
@@ -525,7 +525,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .allVersionsAndDeletes());
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void syncChangeFeed_fromBeginning_incremental_forFullRange() throws Exception {
         this.createContainer(
             (cp) -> cp.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy())

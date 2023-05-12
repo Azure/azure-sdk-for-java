@@ -35,7 +35,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readAndReplaceOffer() {
 
         List<Offer> offers = client.readOffers(null).map(FeedResponse::getResults).flatMap(list -> Flux.fromIterable(list)).collectList().block();
@@ -74,7 +74,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
         validateSuccess(replaceObservable, validatorForReplace);
     }
 
-    @BeforeClass(groups = { "emulater" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_OfferReadReplaceTest() {
         client = clientBuilder().build();
         createdDatabase = createDatabase(client, databaseId);
@@ -82,7 +82,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
                 getCollectionDefinition());
     }
 
-    @AfterClass(groups = { "emulater" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(client, createdDatabase);
         safeClose(client);

@@ -38,20 +38,20 @@ public class PatchAsyncTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = { "emulater" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_PatchAsyncTest() {
         assertThat(this.client).isNull();
         this.client = getClientBuilder().contentResponseOnWriteEnabled(true).buildAsyncClient();
         container = getSharedMultiPartitionCosmosContainer(this.client);
     }
 
-    @AfterClass(groups = { "emulater" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         assertThat(this.client).isNotNull();
         this.client.close();
     }
 
-    @Test(groups = {  "emulater"  }, timeOut = TIMEOUT)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
     public void patchInBatch() {
         BatchTestBase.TestDoc testDoc = this.populateTestDoc(this.partitionKey1);
         com.azure.cosmos.models.CosmosPatchOperations cosmosPatchOperations = com.azure.cosmos.models.CosmosPatchOperations.create();
@@ -78,7 +78,7 @@ public class PatchAsyncTest extends BatchTestBase {
         this.verifyByRead(container, testDoc);
     }
 
-    @Test(groups = {  "emulater"  }, timeOut = TIMEOUT)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
     public void conditionalPatchInBatch() {
         BatchTestBase.TestDoc testDoc = this.populateTestDoc(this.partitionKey1);
 
@@ -137,7 +137,7 @@ public class PatchAsyncTest extends BatchTestBase {
         this.verifyByRead(container, testDoc);
     }
 
-    @Test(groups = {  "emulater"  }, timeOut = TIMEOUT)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
     public void patchInBulk() {
         List<CosmosItemOperation> operations = new ArrayList<>();
 
@@ -256,7 +256,7 @@ public class PatchAsyncTest extends BatchTestBase {
         this.verifyByRead(container, testDocForPatch);
     }
 
-    @Test(groups = {  "emulater"  }, timeOut = TIMEOUT)
+    @Test(groups = {  "emulator"  }, timeOut = TIMEOUT)
     public void itemPatchSuccessForNullValue() {
         // Null value should be allowed for add, set, and replace
 

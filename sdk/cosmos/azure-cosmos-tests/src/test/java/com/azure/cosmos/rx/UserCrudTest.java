@@ -33,7 +33,7 @@ public class UserCrudTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void createUser() throws Exception {
         //create user
         CosmosUserProperties user = new CosmosUserProperties();
@@ -49,7 +49,7 @@ public class UserCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void readUser() throws Exception {
 
         //create user
@@ -71,7 +71,7 @@ public class UserCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void deleteUser() throws Exception {
         //create user
         CosmosUserProperties user = new CosmosUserProperties();
@@ -95,7 +95,7 @@ public class UserCrudTest extends TestSuiteBase {
         validateFailure(readObservable, notFoundValidator);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void upsertUser() throws Exception {
 
         //create user
@@ -113,7 +113,7 @@ public class UserCrudTest extends TestSuiteBase {
         validateSuccess(upsertObservable, validatorForUpsert);
     }
 
-    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
     public void replaceUser() throws Exception {
 
         //create user
@@ -148,13 +148,13 @@ public class UserCrudTest extends TestSuiteBase {
         validateSuccess(updateObservable, validatorForUpdate);
     }
 
-    @BeforeClass(groups = { "emulater" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
     public void before_UserCrudTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, databaseId);
     }
 
-    @AfterClass(groups = { "emulater" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(createdDatabase);
         safeClose(client);
