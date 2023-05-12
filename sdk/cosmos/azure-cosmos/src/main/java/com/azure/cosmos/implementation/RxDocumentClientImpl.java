@@ -6,6 +6,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.SimpleTokenCache;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.CoreUtils;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
@@ -99,6 +100,7 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -548,7 +550,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             clientTelemetry = new ClientTelemetry(
                     this,
                     null,
-                    UUID.randomUUID().toString(),
+                    randomUuid().toString(),
                     ManagementFactory.getRuntimeMXBean().getName(),
                     connectionPolicy.getConnectionMode(),
                     globalEndpointManager.getLatestDatabaseAccount().getId(),
@@ -897,7 +899,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .getCosmosQueryRequestOptionsAccessor()
             .getCorrelationActivityId(options);
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
-            correlationActivityIdOfRequestOptions : UUID.randomUUID();
+            correlationActivityIdOfRequestOptions : randomUuid();
 
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this,
             getOperationContextAndListenerTuple(options));
@@ -2606,7 +2608,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return Flux.empty();
         }
 
-        UUID activityId = UUID.randomUUID();
+        UUID activityId = randomUuid();
         IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
         Flux<? extends IDocumentQueryExecutionContext<T>> executionContext =
             DocumentQueryExecutionContextFactory.createReadManyQueryAsync(this, queryClient, collection.getResourceId(),
@@ -2793,7 +2795,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             SqlQuerySpec querySpec = createLogicalPartitionScanQuerySpec(partitionKey, pkSelector);
 
             String resourceLink = parentResourceLinkToQueryLink(collectionLink, ResourceType.Document);
-            UUID activityId = UUID.randomUUID();
+            UUID activityId = randomUuid();
             IDocumentQueryClient queryClient = documentQueryClientImpl(RxDocumentClientImpl.this, getOperationContextAndListenerTuple(options));
 
             final CosmosQueryRequestOptions effectiveOptions =
@@ -4487,5 +4489,28 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static FeedRange toFeedRange(PartitionKeyRange pkRange) {
         return new FeedRangeEpkImpl(pkRange.toRange());
+    }
+
+    /**
+     * Creates a type 4 (pseudo randomly generated) UUID.
+     * <p>
+     * The {@link UUID} is generated using a non-cryptographically strong pseudo random number generator.
+     *
+     * @return A randomly generated {@link UUID}.
+     */
+    public static UUID randomUuid() {
+        // Note: Copied from CoreUtils
+        return randomUuid(ThreadLocalRandom.current().nextLong(), ThreadLocalRandom.current().nextLong());
+    }
+
+    static UUID randomUuid(long msb, long lsb) {
+        msb &= 0xffffffffffff0fffL; // Clear the UUID version.
+        msb |= 0x0000000000004000L; // Set the UUID version to 4.
+        lsb &= 0x3fffffffffffffffL; // Clear the variant.
+        lsb |= 0x8000000000000000L; // Set the variant to IETF.
+
+        // Use new UUID(long, long) instead of UUID.randomUUID as UUID.randomUUID may be blocking.
+        // For environments using Reactor's BlockHound this will raise an exception if called in non-blocking threads.
+        return new UUID(msb, lsb);
     }
 }

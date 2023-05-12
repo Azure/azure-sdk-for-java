@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.models.PriorityLevel;
+
 /**
  * Throughput control group configuration.
  */
@@ -10,6 +12,7 @@ public final class ThroughputControlGroupConfig {
     private final String groupName;
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
+    private final PriorityLevel priorityLevel;
     private final boolean isDefault;
     private final boolean continueOnInitError;
 
@@ -17,11 +20,13 @@ public final class ThroughputControlGroupConfig {
             String groupName,
             Integer targetThroughput,
             Double targetThroughputThreshold,
+            PriorityLevel priorityLevel,
             boolean isDefault,
             boolean continueOnInitError) {
        this.groupName = groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
+       this.priorityLevel = priorityLevel;
        this.isDefault = isDefault;
        this.continueOnInitError = continueOnInitError;
     }
@@ -58,6 +63,18 @@ public final class ThroughputControlGroupConfig {
     public Double getTargetThroughputThreshold() {
         return this.targetThroughputThreshold;
     }
+
+    /**
+     * Get the throughput control group priority level.
+     * Priority level is used to determine which group will be throttled first when the total throughput of all groups exceeds the max throughput.
+     *
+     * Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
+     *
+     * Refer to https://aka.ms/CosmosDB/PriorityBasedExecution for more details.
+     *
+     * @return the priority level of the throughput control group.
+     */
+    public PriorityLevel getPriorityLevel() { return this.priorityLevel; }
 
     /**
      * Get whether this throughput control group will be used by default.
