@@ -81,7 +81,7 @@ public final class ReadmeSamples {
         DeploymentEnvironmentsClient environmentsClient = deploymentEnvironmentsClientbuilder.buildClient();
         // END: com.azure.developer.devcenter.readme.createEnvironmentsClient
 
-        // BEGIN: com.azure.developer.devcenter.readme.getEnvironmentDefinitionsAndEnvironmentTypes
+        // BEGIN: com.azure.developer.devcenter.readme.getEnvironmentDefinitionsAndTypes
         // Fetch available environment definitions and environment types
         PagedIterable<BinaryData> listCatalogsResponse = environmentsClient.listCatalogs("myProject", null);
         for (BinaryData p: listCatalogsResponse) {
@@ -97,7 +97,7 @@ public final class ReadmeSamples {
         for (BinaryData p: environmentTypesListResponse) {
             System.out.println(p);
         }
-        // END: com.azure.developer.devcenter.readme.getCatalogItemsAndEnvironmentTypes
+        // END: com.azure.developer.devcenter.readme.getEnvironmentDefinitionsAndTypes
 
         // BEGIN: com.azure.developer.devcenter.readme.createEnvironment
         // Create an environment
