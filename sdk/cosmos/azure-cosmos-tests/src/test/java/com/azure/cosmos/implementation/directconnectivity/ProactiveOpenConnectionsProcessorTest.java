@@ -249,8 +249,9 @@ public class ProactiveOpenConnectionsProcessorTest extends BatchTestBase {
                     throughputResponse.getProperties().getManualThroughput());
             throughputResponse = containerUnderOpenConnectionsAndInitCaches.readThroughput().block();
 
-            // Wait for the throughput update to complete so that we get the partition split
-            logger.debug("Waiting for split to complete...");
+            // wait for the throughput update to complete so that we get the partition split
+            logger.info("Waiting for split to complete...");
+
             while (true) {
                 assert throughputResponse != null;
                 if (!throughputResponse.isReplacePending()) {
