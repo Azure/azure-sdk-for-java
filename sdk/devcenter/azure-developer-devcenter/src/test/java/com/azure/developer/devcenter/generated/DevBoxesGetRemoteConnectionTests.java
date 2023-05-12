@@ -20,7 +20,7 @@ public final class DevBoxesGetRemoteConnectionTests extends DevCenterClientTestB
 
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getRemoteConnectionWithResponse(projectName, "me", DevBoxName, requestOptions);
+                devBoxesClient.getRemoteConnectionWithResponse(projectName, "me", devBoxName, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
 
         Map<String, Object> connectionStringData = response.getValue().toObject(new TypeReference<Map<String, Object>>() {});

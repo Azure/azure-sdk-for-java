@@ -24,11 +24,11 @@ public final class EnvironmentsCreateByEnvironmentDefinitionTests extends DevCen
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> createOperation =
             deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(
-                projectName, "me", DevEnvironmentName, environmentBody, requestOptions);
+                projectName, "me", devEnvironmentName, environmentBody, requestOptions);
 
         Assertions.assertEquals(
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createOperation.waitForCompletion().getStatus());
 
-        deleteEnvironment(DevEnvironmentName);
+        deleteEnvironment(devEnvironmentName);
     }
 }

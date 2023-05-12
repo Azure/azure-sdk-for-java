@@ -18,7 +18,7 @@ public final class DevBoxesCreateDevBoxTests extends DevCenterClientTestBase {
         RequestOptions requestOptions = new RequestOptions();
 
         SyncPoller<BinaryData, BinaryData> response =
-                devBoxesClient.beginCreateDevBox(projectName, "me", DevBoxName, body, requestOptions);
+                devBoxesClient.beginCreateDevBox(projectName, "me", devBoxName, body, requestOptions);
 
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());

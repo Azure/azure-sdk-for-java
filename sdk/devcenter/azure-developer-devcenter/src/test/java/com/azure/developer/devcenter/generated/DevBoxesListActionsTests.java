@@ -19,7 +19,7 @@ public final class DevBoxesListActionsTests extends DevCenterClientTestBase {
         createDevBox();
 
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listActions(projectName, "me", DevBoxName, requestOptions);
+        PagedIterable<BinaryData> response = devBoxesClient.listActions(projectName, "me", devBoxName, requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
 
         int numberOfActions = 0;

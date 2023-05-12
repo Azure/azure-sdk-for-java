@@ -19,7 +19,7 @@ public final class DevBoxesGetActionTests extends DevCenterClientTestBase {
 
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                devBoxesClient.getActionWithResponse(projectName, "me", DevBoxName, "schedule-default", requestOptions);
+                devBoxesClient.getActionWithResponse(projectName, "me", devBoxName, "schedule-default", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals("schedule-default", response.getValue().toObject(LinkedHashMap.class).get("name"));
 

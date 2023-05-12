@@ -37,9 +37,9 @@ class DevCenterClientTestBase extends TestBase {
 
     protected DeploymentEnvironmentsClient deploymentEnvironmentsClient;
 
-    protected String DevEnvironmentName = "envName";
+    protected String devEnvironmentName = "envName";
 
-    protected String DevBoxName = "myDevBox";
+    protected String devBoxName = "myDevBox";
 
     protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "myProject");
 
@@ -139,12 +139,12 @@ class DevCenterClientTestBase extends TestBase {
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> createOperation =
             deploymentEnvironmentsClient.beginCreateOrUpdateEnvironment(
-                projectName, "me", DevEnvironmentName, environmentBody, requestOptions);
+                projectName, "me", devEnvironmentName, environmentBody, requestOptions);
 
         Assertions.assertEquals(
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, createOperation.waitForCompletion().getStatus());
 
-        return DevEnvironmentName;
+        return devEnvironmentName;
     }
 
     protected void deleteEnvironment(String environmentName) {
@@ -161,7 +161,7 @@ class DevCenterClientTestBase extends TestBase {
         RequestOptions requestOptions = new RequestOptions();
 
         SyncPoller<BinaryData, BinaryData> response =
-            devBoxesClient.beginCreateDevBox(projectName, "me", DevBoxName, body, requestOptions);
+            devBoxesClient.beginCreateDevBox(projectName, "me", devBoxName, body, requestOptions);
 
         Assertions.assertEquals(
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());
@@ -171,7 +171,7 @@ class DevCenterClientTestBase extends TestBase {
         RequestOptions requestOptions = new RequestOptions();
 
         SyncPoller<BinaryData, Void> response =
-            devBoxesClient.beginDeleteDevBox(projectName, "me", DevBoxName, requestOptions);
+            devBoxesClient.beginDeleteDevBox(projectName, "me", devBoxName, requestOptions);
 
         Assertions.assertEquals(
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());

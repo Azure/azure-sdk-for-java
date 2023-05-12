@@ -22,7 +22,7 @@ public final class DevBoxesDelayActionsTests extends DevCenterClientTestBase {
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response =
                 devBoxesClient.delayAllActions(
-                        projectName, "me", DevBoxName, OffsetDateTime.parse("2023-05-06T05:00:00Z"), requestOptions);
+                        projectName, "me", devBoxName, OffsetDateTime.parse("2023-05-06T05:00:00Z"), requestOptions);
 
         int numberOfActions = 0;
         for (BinaryData data : response) {

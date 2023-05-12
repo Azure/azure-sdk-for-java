@@ -18,7 +18,7 @@ public final class DevBoxesStopDevBoxTests extends DevCenterClientTestBase {
 
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
-            devBoxesClient.beginStopDevBox(projectName, "me", DevBoxName, requestOptions);
+            devBoxesClient.beginStopDevBox(projectName, "me", devBoxName, requestOptions);
 
         Assertions.assertEquals(
             LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());

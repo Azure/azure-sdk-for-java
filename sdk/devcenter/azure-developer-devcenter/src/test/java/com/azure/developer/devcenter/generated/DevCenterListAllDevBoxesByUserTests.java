@@ -26,7 +26,7 @@ public final class DevCenterListAllDevBoxesByUserTests extends DevCenterClientTe
         for (BinaryData data : response) {
             numberOfDevboxes++;
             Map<String, Object> devBoxData = data.toObject(new TypeReference<Map<String, Object>>() {});
-            Assertions.assertEquals(DevBoxName, devBoxData.get("name"));
+            Assertions.assertEquals(devBoxName, devBoxData.get("name"));
         }
 
         Assertions.assertEquals(1, numberOfDevboxes);

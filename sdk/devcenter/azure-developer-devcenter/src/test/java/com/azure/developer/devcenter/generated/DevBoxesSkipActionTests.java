@@ -16,7 +16,7 @@ public final class DevBoxesSkipActionTests extends DevCenterClientTestBase {
 
         RequestOptions requestOptions = new RequestOptions();
         Response<Void> response = devBoxesClient.skipActionWithResponse(
-                        projectName, "me", DevBoxName, "schedule-default", requestOptions);
+                        projectName, "me", devBoxName, "schedule-default", requestOptions);
         Assertions.assertEquals(204, response.getStatusCode());
 
         deleteDevBox();
