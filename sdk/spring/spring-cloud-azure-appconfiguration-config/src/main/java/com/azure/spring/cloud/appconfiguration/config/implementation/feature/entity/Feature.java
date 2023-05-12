@@ -8,7 +8,6 @@ import java.util.Map;
 
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,8 +20,11 @@ public final class Feature {
     @JsonProperty("key")
     private String key;
 
-    @JsonAlias("enabled-for")
+    @JsonProperty("enabled-for")
     private Map<Integer, FeatureFlagFilter> enabledFor;
+    
+    @JsonProperty("requirement-type")
+    private String requirementType = "Any";
 
     /**
      * Feature Flag object.
@@ -36,7 +38,7 @@ public final class Feature {
      * @param key Name of the Feature Flag
      * @param featureItem Configurations of the Feature Flag.
      */
-    public Feature(String key, FeatureFlagConfigurationSetting featureItem) {
+    public Feature(String key, FeatureFlagConfigurationSetting featureItem, String requirementType) {
         this.key = key;
         List<FeatureFlagFilter> filterMapper = featureItem.getClientFilters();
 
@@ -45,6 +47,7 @@ public final class Feature {
         for (int i = 0; i < filterMapper.size(); i++) {
             enabledFor.put(i, filterMapper.get(i));
         }
+        this.requirementType = requirementType;
     }
 
     /**

@@ -32,7 +32,10 @@ import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.TracingInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
@@ -127,7 +130,17 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
     @SuppressWarnings("unchecked")
     private Object createFeature(FeatureFlagConfigurationSetting item) {
         String key = getFeatureSimpleName(item);
-        Feature feature = new Feature(key, item);
+        String requirementType = "Any";
+        try {
+            JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(item.getValue());
+            JsonNode conditions = node.get("conditions");
+            if (conditions != null && conditions.get("requirement_type") != null) {
+                requirementType = conditions.get("requirement_type").asText();
+            }
+        } catch (JsonProcessingException e) {
+
+        }
+        Feature feature = new Feature(key, item, requirementType);
         Map<Integer, FeatureFlagFilter> featureEnabledFor = feature.getEnabledFor();
 
         // Setting Enabled For to null, but enabled = true will result in the feature
@@ -170,7 +183,7 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
         return feature;
 
     }
-    
+
     /**
      * Looks at each filter used in a Feature Flag to check what types it is using.
      * 

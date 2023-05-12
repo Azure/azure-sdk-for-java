@@ -45,6 +45,7 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
@@ -347,7 +348,13 @@ public class AppConfigurationPropertySourceLocatorTest {
         featureFlagStore.setEnabled(true);
         featureFlagStore.validateAndInit();
 
+        List<ConfigurationSetting> featureList = new ArrayList<>();
+        FeatureFlagConfigurationSetting featureFlag = new FeatureFlagConfigurationSetting("Alpha", false);
+        featureFlag.setValue("{}");
+        featureList.add(featureFlag);
+
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);
+        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(featureList);
 
         locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
             null, stores);
@@ -372,6 +379,45 @@ public class AppConfigurationPropertySourceLocatorTest {
     }
 
     @Test
+    public void storeCreatedWithFeatureFlagsRequireAll() {
+        FeatureFlagStore featureFlagStore = new FeatureFlagStore();
+        featureFlagStore.setEnabled(true);
+        featureFlagStore.validateAndInit();
+
+        List<ConfigurationSetting> featureList = new ArrayList<>();
+        FeatureFlagConfigurationSetting featureFlag = new FeatureFlagConfigurationSetting("Alpha", true);
+        featureFlag.setValue("{\"conditions\":{\"requirement_type\":\"All\"}}");
+        featureFlag.addClientFilter(new FeatureFlagFilter("AlwaysOn"));
+        featureList.add(featureFlag);
+
+        when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);
+        when(replicaClientMock.listSettings(Mockito.any())).thenReturn(featureList);
+
+        locator = new AppConfigurationPropertySourceLocator(appProperties, clientFactoryMock, keyVaultClientFactory,
+            null, stores);
+
+        try (MockedStatic<StateHolder> stateHolderMock = Mockito.mockStatic(StateHolder.class)) {
+            stateHolderMock.when(() -> StateHolder.updateState(Mockito.any())).thenReturn(null);
+            PropertySource<?> source = locator.locate(emptyEnvironment);
+            assertTrue(source instanceof CompositePropertySource);
+
+            Collection<PropertySource<?>> sources = ((CompositePropertySource) source).getPropertySources();
+            // Application name: foo and active profile: dev,prod, should construct below
+            // composite Property Source:
+            // [/foo_prod/, /foo_dev/, /foo/, /application_prod/, /application_dev/,
+            // /application/]
+            String[] expectedSourceNames = new String[] {
+                "FM_store1/ ",
+                KEY_FILTER + "store1/\0"
+            };
+            assertEquals(expectedSourceNames.length, sources.size());
+            Object[] propertSources = sources.stream().map(c -> c.getProperty("feature-management.Alpha")).toArray();
+            assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
+            
+        }
+    }
+
+    @Test
     public void storeCreatedWithFeatureFlagsWithMonitoring() {
         AppConfigurationStoreMonitoring monitoring = new AppConfigurationStoreMonitoring();
         monitoring.setEnabled(true);
@@ -381,6 +427,7 @@ public class AppConfigurationPropertySourceLocatorTest {
 
         List<ConfigurationSetting> featureList = new ArrayList<>();
         FeatureFlagConfigurationSetting featureFlag = new FeatureFlagConfigurationSetting("Alpha", false);
+        featureFlag.setValue("{}");
         featureList.add(featureFlag);
 
         when(configStoreMock.getFeatureFlags()).thenReturn(featureFlagStore);

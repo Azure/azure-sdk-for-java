@@ -2,10 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.models;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
 
 /**
  * App Configuration Feature defines the feature name and a Map of FeatureFilterEvaluationContexts.
@@ -19,10 +21,11 @@ public class Feature {
     @JsonProperty("evaluate")
     private Boolean evaluate = true;
 
-    private String requirementType = "Any";
+    @JsonProperty("requirement-type")
+    private String requirementType = "Any";;
 
     @JsonProperty("enabled-for")
-    private HashMap<Integer, FeatureFilterEvaluationContext> enabledFor;
+    private Map<Integer, FeatureFilterEvaluationContext> enabledFor;
 
     /**
      * @return the key
@@ -55,7 +58,7 @@ public class Feature {
     /**
      * @return the enabledFor
      */
-    public HashMap<Integer, FeatureFilterEvaluationContext> getEnabledFor() {
+    public Map<Integer, FeatureFilterEvaluationContext> getEnabledFor() {
         return enabledFor;
     }
 
