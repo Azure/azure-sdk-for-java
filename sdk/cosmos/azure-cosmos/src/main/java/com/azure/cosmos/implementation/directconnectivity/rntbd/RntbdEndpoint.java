@@ -117,7 +117,7 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         int evictions();
 
-        RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri addressUri, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minRequiredChannels);
+        RntbdEndpoint createIfAbsent(URI serviceEndpoint, Uri addressUri, ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor, int minRequiredChannelsForEndpoint);
 
         RntbdEndpoint get(URI physicalAddress);
 
