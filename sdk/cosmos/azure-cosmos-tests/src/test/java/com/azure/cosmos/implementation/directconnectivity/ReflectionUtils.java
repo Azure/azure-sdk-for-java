@@ -305,6 +305,11 @@ public class ReflectionUtils {
     }
 
     @SuppressWarnings("unchecked")
+    public static Set<String> getAddressUrisAsStringUnderOpenConnectionsAndInitCachesFlow(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+        return get(Set.class, proactiveOpenConnectionsProcessor, "addressUrisUnderOpenConnectionsAndInitCaches");
+    }
+
+    @SuppressWarnings("unchecked")
     public static ThroughputRequestThrottler getRequestThrottler(GlobalThroughputRequestController requestController) {
         return get(ThroughputRequestThrottler.class, requestController, "requestThrottler");
     }
