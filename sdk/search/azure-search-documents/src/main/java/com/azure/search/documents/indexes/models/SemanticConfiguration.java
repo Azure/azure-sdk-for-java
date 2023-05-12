@@ -100,9 +100,10 @@ public final class SemanticConfiguration implements JsonSerializable<SemanticCon
                         }
                     }
                     if (nameFound && prioritizedFieldsFound) {
-                        SemanticConfiguration deserializedValue = new SemanticConfiguration(name, prioritizedFields);
+                        SemanticConfiguration deserializedSemanticConfiguration =
+                                new SemanticConfiguration(name, prioritizedFields);
 
-                        return deserializedValue;
+                        return deserializedSemanticConfiguration;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

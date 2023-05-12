@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters;
 
 /** Samples for Vaults CheckNameAvailability. */
 public final class VaultsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/checkVaultNameAvailability.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/checkVaultNameAvailability.json
      */
     /**
      * Sample code: Validate a vault name.
@@ -24,6 +23,6 @@ public final class VaultsCheckNameAvailabilitySamples {
             .serviceClient()
             .getVaults()
             .checkNameAvailabilityWithResponse(
-                new VaultCheckNameAvailabilityParameters().withName("sample-vault"), Context.NONE);
+                new VaultCheckNameAvailabilityParameters().withName("sample-vault"), com.azure.core.util.Context.NONE);
     }
 }

@@ -32,7 +32,7 @@ public final class ApiCollectionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"displayName\":\"kqiyvnd\",\"additionalData\":{\"esymzqh\":\"g\",\"ujqbbgsimwejl\":\"qpfzlpejtznxlue\"}},\"id\":\"bkbpjzobd\",\"name\":\"bcpr\",\"type\":\"swku\"}]}";
+            "{\"value\":[{\"properties\":{\"displayName\":\"zwhpjlwyxedz\",\"additionalData\":{\"ckewvm\":\"rfo\",\"utxfptofhgnuyw\":\"ifopxfjjtpdyz\"}},\"id\":\"zygvadgaaqwvkgjp\",\"name\":\"tpmpvd\",\"type\":\"ogehluf\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class ApiCollectionsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<ApiCollectionResponse> response =
-            manager.apiCollections().list("ti", "gufy", com.azure.core.util.Context.NONE);
+            manager.apiCollections().list("gyedzfzqi", "uqhtdereuno", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kqiyvnd", response.iterator().next().displayName());
-        Assertions.assertEquals("g", response.iterator().next().additionalData().get("esymzqh"));
+        Assertions.assertEquals("zwhpjlwyxedz", response.iterator().next().displayName());
+        Assertions.assertEquals("rfo", response.iterator().next().additionalData().get("ckewvm"));
     }
 }

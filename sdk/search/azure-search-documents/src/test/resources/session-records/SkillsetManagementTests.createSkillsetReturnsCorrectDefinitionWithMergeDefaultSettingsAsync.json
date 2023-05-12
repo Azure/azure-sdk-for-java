@@ -1,54 +1,143 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "59f53c9f-5378-424a-8e84-3744788684cb",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/skillsets?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "465",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:18:50 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "87c9a31d-863e-400e-9760-1a72a2135123"
+      },
+      "RequestBody": {
+        "name": "merge-skillset49122e97ce97971b243",
+        "description": "Skillset for testing default configuration",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Text.MergeSkill",
+            "inputs": [
+              {
+                "name": "text",
+                "source": "/document/text"
+              },
+              {
+                "name": "itemsToInsert",
+                "source": "/document/textitems"
+              },
+              {
+                "name": "offsets",
+                "source": "/document/offsets"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "mergedText",
+                "targetName": "myMergedText"
+              }
+            ],
+            "name": "mymerge",
+            "description": "Tested Merged Text skill",
+            "context": "/document"
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "87c9a31d-863e-400e-9760-1a72a2135123",
+        "Content-Length": "812",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:18:50 GMT",
+        "elapsed-time": "47",
+        "ETag": "W/\u00220x8DB20DB7EEED10B\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/skillsets(\u0027merge-skillset49122e97ce97971b243\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "87c9a31d-863e-400e-9760-1a72a2135123",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "87c9a31d-863e-400e-9760-1a72a2135123"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\u00220x8DB20DB7EEED10B\u0022",
+        "name": "merge-skillset49122e97ce97971b243",
+        "description": "Skillset for testing default configuration",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Text.MergeSkill",
+            "name": "mymerge",
+            "description": "Tested Merged Text skill",
+            "context": "/document",
+            "insertPreTag": null,
+            "insertPostTag": null,
+            "inputs": [
+              {
+                "name": "text",
+                "source": "/document/text",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "itemsToInsert",
+                "source": "/document/textitems",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "offsets",
+                "source": "/document/offsets",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "mergedText",
+                "targetName": "myMergedText"
+              }
+            ]
+          }
+        ],
+        "cognitiveServices": null,
+        "knowledgeStore": null,
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "59f53c9f-5378-424a-8e84-3744788684cb",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:46:14 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "59f53c9f-5378-424a-8e84-3744788684cb",
-      "ETag" : "W/\"0x8DAF8CBE09EED84\"",
-      "elapsed-time" : "48",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "800",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBE09EED84\\\"\",\"name\":\"merge-skillset28840a518f7ae2b1841\",\"description\":\"Skillset for testing default configuration\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Text.MergeSkill\",\"name\":\"mymerge\",\"description\":\"Tested Merged Text skill\",\"context\":\"/document\",\"insertPreTag\":null,\"insertPostTag\":null,\"inputs\":[{\"name\":\"text\",\"source\":\"/document/text\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"itemsToInsert\",\"source\":\"/document/textitems\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"offsets\",\"source\":\"/document/offsets\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"mergedText\",\"targetName\":\"myMergedText\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "59f53c9f-5378-424a-8e84-3744788684cb",
-      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('merge-skillset28840a518f7ae2b1841')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('merge-skillset28840a518f7ae2b1841')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "774fc8df-1c06-4727-92c8-d87a15c79d3e"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "774fc8df-1c06-4727-92c8-d87a15c79d3e",
-      "elapsed-time" : "37",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "774fc8df-1c06-4727-92c8-d87a15c79d3e",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:46:15 GMT",
-      "x-ms-client-request-id" : "774fc8df-1c06-4727-92c8-d87a15c79d3e"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "merge-skillset28840a518f7ae2b1841" ]
+    {
+      "RequestUri": "https://REDACTED/skillsets(\u0027merge-skillset49122e97ce97971b243\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:18:51 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "11794a98-53f0-431f-8e84-9e0cef225418"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "11794a98-53f0-431f-8e84-9e0cef225418",
+        "Date": "Thu, 09 Mar 2023 20:18:50 GMT",
+        "elapsed-time": "65",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "11794a98-53f0-431f-8e84-9e0cef225418",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "11794a98-53f0-431f-8e84-9e0cef225418"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "merge-skillset49122e97ce97971b243"
+  }
 }

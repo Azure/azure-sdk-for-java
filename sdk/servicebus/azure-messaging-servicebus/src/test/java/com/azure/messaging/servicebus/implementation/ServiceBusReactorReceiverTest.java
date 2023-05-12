@@ -117,7 +117,7 @@ class ServiceBusReactorReceiverTest {
         when(connection.getShutdownSignals()).thenReturn(Flux.never());
 
         reactorReceiver = new ServiceBusReactorReceiver(connection, ENTITY_PATH, receiver, receiveLinkHandler,
-            tokenManager, reactorProvider, Duration.ofSeconds(20), retryPolicy);
+            tokenManager, reactorProvider, retryPolicy);
     }
 
     @AfterEach

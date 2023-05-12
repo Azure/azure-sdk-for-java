@@ -34,7 +34,7 @@ public final class SecurityContactsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"emails\":\"frhjulrsulwzp\",\"phone\":\"usnaw\",\"alertNotifications\":{\"state\":\"Unsupported\",\"minimalSeverity\":\"Medium\"},\"notificationsByRole\":{\"state\":\"Skipped\",\"roles\":[]}},\"id\":\"yrgkoekv\",\"name\":\"wxxyxhighctx\",\"type\":\"xmolpcqydeyk\"}]}";
+            "{\"value\":[{\"properties\":{\"emails\":\"tresr\",\"phone\":\"tshuvftwaivm\",\"alertNotifications\":{\"state\":\"Skipped\",\"minimalSeverity\":\"High\"},\"notificationsByRole\":{\"state\":\"Unsupported\",\"roles\":[]}},\"id\":\"anhx\",\"name\":\"pdxxzetwwz\",\"type\":\"wot\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,11 +64,11 @@ public final class SecurityContactsListMockTests {
 
         PagedIterable<SecurityContact> response = manager.securityContacts().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("frhjulrsulwzp", response.iterator().next().emails());
-        Assertions.assertEquals("usnaw", response.iterator().next().phone());
-        Assertions.assertEquals(State.UNSUPPORTED, response.iterator().next().alertNotifications().state());
+        Assertions.assertEquals("tresr", response.iterator().next().emails());
+        Assertions.assertEquals("tshuvftwaivm", response.iterator().next().phone());
+        Assertions.assertEquals(State.SKIPPED, response.iterator().next().alertNotifications().state());
         Assertions
-            .assertEquals(MinimalSeverity.MEDIUM, response.iterator().next().alertNotifications().minimalSeverity());
-        Assertions.assertEquals(State.SKIPPED, response.iterator().next().notificationsByRole().state());
+            .assertEquals(MinimalSeverity.HIGH, response.iterator().next().alertNotifications().minimalSeverity());
+        Assertions.assertEquals(State.UNSUPPORTED, response.iterator().next().notificationsByRole().state());
     }
 }

@@ -10,14 +10,14 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSets Redeploy. */
 public final class VirtualMachineScaleSetsRedeploySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Redeploy_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Redeploy_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Redeploy_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Redeploy_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsRedeployMinimumSetGen(
+    public static void virtualMachineScaleSetRedeployMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -28,14 +28,14 @@ public final class VirtualMachineScaleSetsRedeploySamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_Redeploy_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_Redeploy_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_Redeploy_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_Redeploy_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsRedeployMaximumSetGen(
+    public static void virtualMachineScaleSetRedeployMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()

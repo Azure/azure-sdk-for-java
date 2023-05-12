@@ -13,7 +13,7 @@ public final class ApiCollectionResponseListTests {
         ApiCollectionResponseList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"displayName\":\"ewijymrhbguz\",\"additionalData\":{}},\"id\":\"kyewnfnzhhhqo\",\"name\":\"mffjkutycyarn\",\"type\":\"oohguabzoghkt\"},{\"properties\":{\"displayName\":\"czhcoeocnh\",\"additionalData\":{}},\"id\":\"rottjzcfyjzptw\",\"name\":\"lohap\",\"type\":\"infsz\"},{\"properties\":{\"displayName\":\"lqdhmrjzr\",\"additionalData\":{}},\"id\":\"cxpjbyypsj\",\"name\":\"qcjenkyhf\",\"type\":\"zv\"}],\"nextLink\":\"xfxjelgcmpzqj\"}")
+                    "{\"value\":[{\"properties\":{\"displayName\":\"yjq\",\"additionalData\":{}},\"id\":\"kfnozoeoqbvj\",\"name\":\"vefgwbmqjchntas\",\"type\":\"ay\"}],\"nextLink\":\"b\"}")
                 .toObject(ApiCollectionResponseList.class);
     }
 

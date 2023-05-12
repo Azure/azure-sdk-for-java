@@ -21,10 +21,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @JsonSerialize(using = ClientSideRequestStatistics.ClientSideRequestStatisticsSerializer.class)
 public class ClientSideRequestStatistics {
@@ -47,6 +49,7 @@ public class ClientSideRequestStatistics {
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
     private int requestPayloadSizeInBytes = 0;
+    private final String userAgent;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
@@ -63,6 +66,7 @@ public class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
         this.requestPayloadSizeInBytes = 0;
+        this.userAgent = diagnosticsClientContext.getUserAgent();
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -82,6 +86,7 @@ public class ClientSideRequestStatistics {
             new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
         this.retryContext = new RetryContext(toBeCloned.retryContext);
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
+        this.userAgent = toBeCloned.userAgent;
     }
 
     @JsonIgnore
@@ -101,6 +106,10 @@ public class ClientSideRequestStatistics {
 
     public Instant getRequestStartTimeUTC() {
         return requestStartTimeUTC;
+    }
+
+    public Instant getRequestEndTimeUTC() {
+        return requestEndTimeUTC;
     }
 
     public DiagnosticsClientContext.DiagnosticsClientConfig getDiagnosticsClientConfig() {
@@ -184,6 +193,7 @@ public class ClientSideRequestStatistics {
             this.gatewayStatistics.partitionKeyRangeId = storeResponseDiagnostics.getPartitionKeyRangeId();
             this.gatewayStatistics.exceptionMessage = storeResponseDiagnostics.getExceptionMessage();
             this.gatewayStatistics.exceptionResponseHeaders = storeResponseDiagnostics.getExceptionResponseHeaders();
+            this.gatewayStatistics.responsePayloadSizeInBytes = storeResponseDiagnostics.getResponsePayloadLength();
             this.activityId = storeResponseDiagnostics.getActivityId();
         }
     }
@@ -196,7 +206,7 @@ public class ClientSideRequestStatistics {
         URI targetEndpoint,
         boolean forceRefresh,
         boolean forceCollectionRoutingMapRefresh) {
-        String identifier = Utils
+        String identifier = UUID
             .randomUUID()
             .toString();
 
@@ -234,6 +244,168 @@ public class ClientSideRequestStatistics {
             resolutionStatistics.endTimeUTC = responseTime;
             resolutionStatistics.exceptionMessage = exceptionMessage;
             resolutionStatistics.inflightRequest = false;
+        }
+    }
+
+    private void mergeContactedReplicas(List<URI> otherContactedReplicas) {
+        if (otherContactedReplicas == null) {
+            return;
+        }
+
+        if (this.contactedReplicas == null || this.contactedReplicas.isEmpty()) {
+            this.contactedReplicas = otherContactedReplicas;
+            return;
+        }
+
+        LinkedHashSet<URI> totalContactedReplicas = new LinkedHashSet<>();
+        totalContactedReplicas.addAll(otherContactedReplicas);
+        totalContactedReplicas.addAll(this.contactedReplicas);
+
+        this.setContactedReplicas(new ArrayList<>(totalContactedReplicas));
+    }
+
+    private void mergeSupplementalResponses(List<StoreResponseStatistics> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.supplementalResponseStatisticsList == null || this.supplementalResponseStatisticsList.isEmpty()) {
+            this.supplementalResponseStatisticsList = other;
+            return;
+        }
+
+        this.supplementalResponseStatisticsList.addAll(other);
+    }
+
+    private void mergeResponseStatistics(List<StoreResponseStatistics> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.responseStatisticsList == null || this.responseStatisticsList.isEmpty()) {
+            this.responseStatisticsList = other;
+            return;
+        }
+
+        this.responseStatisticsList.addAll(other);
+        this.responseStatisticsList.sort(
+            (StoreResponseStatistics left, StoreResponseStatistics right) -> {
+                if (left == null || left.requestStartTimeUTC == null) {
+                    return -1;
+                }
+
+                if (right == null || right.requestStartTimeUTC == null) {
+                    return 1;
+                }
+                return left.requestStartTimeUTC.compareTo(right.requestStartTimeUTC);
+            }
+        );
+    }
+
+    private void mergeAddressResolutionStatistics(
+        Map<String, AddressResolutionStatistics> otherAddressResolutionStatistics) {
+        if (otherAddressResolutionStatistics == null) {
+            return;
+        }
+
+        if (this.addressResolutionStatistics == null || this.addressResolutionStatistics.isEmpty()) {
+            this.addressResolutionStatistics = otherAddressResolutionStatistics;
+            return;
+        }
+
+        for (Map.Entry<String, AddressResolutionStatistics> pair : otherAddressResolutionStatistics.entrySet()) {
+            this.addressResolutionStatistics.putIfAbsent(
+                pair.getKey(),
+                pair.getValue());
+        }
+    }
+
+    private void mergeFailedReplica(Set<URI> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.failedReplicas == null || this.failedReplicas.isEmpty()) {
+            this.failedReplicas = other;
+            return;
+        }
+
+        for (URI uri : other) {
+            this.failedReplicas.add(uri);
+        }
+    }
+
+    private void mergeLocationEndpointsContacted(Set<URI> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.locationEndpointsContacted == null || this.locationEndpointsContacted.isEmpty()) {
+            this.locationEndpointsContacted = other;
+            return;
+        }
+
+        for (URI uri : other) {
+            this.locationEndpointsContacted.add(uri);
+        }
+    }
+
+    private void mergeRegionsContacted(Set<String> other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.regionsContacted == null || this.regionsContacted.isEmpty()) {
+            this.regionsContacted = other;
+            return;
+        }
+
+        for (String region : other) {
+            this.regionsContacted.add(region);
+        }
+    }
+
+    private void mergeStartTime(Instant other) {
+        if (other == null) {
+            return;
+        }
+
+        if (this.requestStartTimeUTC == null || this.requestStartTimeUTC.isAfter(other)) {
+            this.requestStartTimeUTC = other;
+        }
+    }
+
+    private void mergeEndTime(Instant other) {
+        if (other == null || this.requestEndTimeUTC == null) {
+            return;
+        }
+
+        if (this.requestEndTimeUTC.isBefore(other)) {
+            this.requestEndTimeUTC = other;
+        }
+    }
+
+    public void recordContributingPointOperation(ClientSideRequestStatistics other) {
+
+        if (other == null) {
+            return;
+        }
+
+        this.mergeAddressResolutionStatistics(other.addressResolutionStatistics);
+        this.mergeContactedReplicas(other.contactedReplicas);
+        this.mergeFailedReplica(other.failedReplicas);
+        this.mergeLocationEndpointsContacted(other.locationEndpointsContacted);
+        this.mergeRegionsContacted(other.regionsContacted);
+        this.mergeStartTime(other.requestStartTimeUTC);
+        this.mergeEndTime(other.requestEndTimeUTC);
+        this.mergeSupplementalResponses(other.supplementalResponseStatisticsList);
+        this.mergeResponseStatistics(other.responseStatisticsList);
+        this.requestPayloadSizeInBytes = Math.max(this.requestPayloadSizeInBytes, other.requestPayloadSizeInBytes);
+
+        if (this.retryContext == null) {
+            this.retryContext = other.retryContext;
+        } else {
+            this.retryContext.merge(other.retryContext);
         }
     }
 
@@ -289,8 +461,17 @@ public class ClientSideRequestStatistics {
         return responseStatisticsList;
     }
 
+    @JsonIgnore
+    public String getUserAgent() {
+        return this.userAgent;
+    }
+
     public int getMaxResponsePayloadSizeInBytes() {
         if (responseStatisticsList == null || responseStatisticsList.isEmpty()) {
+            if (this.gatewayStatistics != null) {
+                return this.gatewayStatistics.responsePayloadSizeInBytes;
+            }
+
             return 0;
         }
 
@@ -415,7 +596,7 @@ public class ClientSideRequestStatistics {
             Duration duration = statistics
                 .getDuration();
             long requestLatency = duration != null ? duration.toMillis() : 0;
-            generator.writeStringField("userAgent", Utils.getUserAgent());
+            generator.writeStringField("userAgent", statistics.userAgent);
             generator.writeStringField("activityId", statistics.activityId);
             generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
@@ -515,6 +696,8 @@ public class ClientSideRequestStatistics {
         private String exceptionMessage;
         private String exceptionResponseHeaders;
 
+        private int responsePayloadSizeInBytes;
+
         public String getSessionToken() {
             return sessionToken;
         }
@@ -554,6 +737,8 @@ public class ClientSideRequestStatistics {
         public String getExceptionResponseHeaders() {
             return exceptionResponseHeaders;
         }
+
+        public int getResponsePayloadSizeInBytes() { return this.responsePayloadSizeInBytes; }
     }
 
     public static SystemInformation fetchSystemInformation() {

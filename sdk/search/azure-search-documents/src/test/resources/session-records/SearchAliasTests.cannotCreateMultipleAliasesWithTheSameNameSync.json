@@ -1,59 +1,99 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/aliases?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "fc7399cd-9f5d-4bf4-a6e6-fbff6dce627d",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/aliases?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "89",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:59:07 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "61ff6a54-25fe-4578-a649-b36f1f5c2730"
+      },
+      "RequestBody": {
+        "name": "my-alias84890d5826def9",
+        "indexes": [
+          "azsearch-search-shared-hotel-instance-one"
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "61ff6a54-25fe-4578-a649-b36f1f5c2730",
+        "Content-Length": "188",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 19:59:07 GMT",
+        "elapsed-time": "70",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/aliases(\u0027my-alias84890d5826def9\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "61ff6a54-25fe-4578-a649-b36f1f5c2730",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "61ff6a54-25fe-4578-a649-b36f1f5c2730"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#aliases/$entity",
+        "name": "my-alias84890d5826def9",
+        "indexes": [
+          "azsearch-search-shared-hotel-instance-one"
+        ]
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "fc7399cd-9f5d-4bf4-a6e6-fbff6dce627d",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:26:42 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "fc7399cd-9f5d-4bf4-a6e6-fbff6dce627d",
-      "elapsed-time" : "46",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "176",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#aliases/$entity\",\"name\":\"my-alias7899655a8a266c\",\"indexes\":[\"azsearch-search-shared-hotel-instance-one\"]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "fc7399cd-9f5d-4bf4-a6e6-fbff6dce627d",
-      "Location" : "https://alzimmer-basic.search.windows.net/aliases('my-alias7899655a8a266c')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/aliases?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c768cbca-9660-4149-94b6-16852b1bb38b",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "c768cbca-9660-4149-94b6-16852b1bb38b",
-      "StatusCode" : "400",
-      "Date" : "Tue, 17 Jan 2023 20:26:42 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "c768cbca-9660-4149-94b6-16852b1bb38b",
-      "elapsed-time" : "4",
-      "Expires" : "-1",
-      "Content-Length" : "773",
-      "Body" : "{\"error\":{\"code\":\"ResourceNameAlreadyInUse\",\"message\":\"An index alias cannot have the same name as another alias within the search service. Alias – 'my-alias7899655a8a266c' already exists within the search service – 'alzimmer-basic'. If this is intended to be an update request on an existing alias, use PUT. Learn more at https://aka.ms/azurecognitivesearchcreateupdatealias\",\"details\":[{\"code\":\"CannotCreateExistingIndexAlias\",\"message\":\"An index alias cannot have the same name as another alias within the search service. Alias – 'my-alias7899655a8a266c' already exists within the search service – 'alzimmer-basic'. If this is intended to be an update request on an existing alias, use PUT. Learn more at https://aka.ms/azurecognitivesearchcreateupdatealias\"}]}}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "c768cbca-9660-4149-94b6-16852b1bb38b",
-      "Content-Language" : "en",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "my-alias7899655a8a266c" ]
+    {
+      "RequestUri": "https://REDACTED/aliases?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "89",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:59:08 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d28ed6e1-2506-4865-b2ad-ea570c5cdde9"
+      },
+      "RequestBody": {
+        "name": "my-alias84890d5826def9",
+        "indexes": [
+          "azsearch-search-shared-hotel-instance-one"
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "d28ed6e1-2506-4865-b2ad-ea570c5cdde9",
+        "Content-Language": "en",
+        "Content-Length": "797",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Thu, 09 Mar 2023 19:59:07 GMT",
+        "elapsed-time": "5",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "d28ed6e1-2506-4865-b2ad-ea570c5cdde9",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "d28ed6e1-2506-4865-b2ad-ea570c5cdde9"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ResourceNameAlreadyInUse",
+          "message": "An index alias cannot have the same name as another alias within the search service. Alias \u2013 \u0027my-alias84890d5826def9\u0027 already exists within the search service \u2013 \u0027azs-java-alzimmertestproxy\u0027. If this is intended to be an update request on an existing alias, use PUT. Learn more at https://aka.ms/azurecognitivesearchcreateupdatealias",
+          "details": [
+            {
+              "code": "CannotCreateExistingIndexAlias",
+              "message": "An index alias cannot have the same name as another alias within the search service. Alias \u2013 \u0027my-alias84890d5826def9\u0027 already exists within the search service \u2013 \u0027azs-java-alzimmertestproxy\u0027. If this is intended to be an update request on an existing alias, use PUT. Learn more at https://aka.ms/azurecognitivesearchcreateupdatealias"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "my-alias84890d5826def9"
+  }
 }

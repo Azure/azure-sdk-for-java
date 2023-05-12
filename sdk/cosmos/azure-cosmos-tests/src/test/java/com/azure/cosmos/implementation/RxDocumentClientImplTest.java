@@ -7,6 +7,7 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -56,6 +57,9 @@ import java.util.stream.Collectors;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class RxDocumentClientImplTest {
+    private final static
+    ImplementationBridgeHelpers.CosmosDiagnosticsHelper.CosmosDiagnosticsAccessor diagnosticsAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsHelper.getCosmosDiagnosticsAccessor();
 
     private URI serviceEndpointMock;
     private String masterKeyOrResourceTokenMock;
@@ -72,6 +76,7 @@ public class RxDocumentClientImplTest {
     private RxClientCollectionCache collectionCacheMock;
     private RxPartitionKeyRangeCache partitionKeyRangeCacheMock;
     private IRetryPolicyFactory resetSessionTokenRetryPolicyMock;
+    private CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig;
 
     @BeforeClass(groups = "unit")
     public void setUp() {
@@ -91,6 +96,7 @@ public class RxDocumentClientImplTest {
         this.collectionCacheMock = Mockito.mock(RxClientCollectionCache.class);
         this.partitionKeyRangeCacheMock = Mockito.mock(RxPartitionKeyRangeCache.class);
         this.resetSessionTokenRetryPolicyMock = Mockito.mock(IRetryPolicyFactory.class);
+        this.endToEndOperationLatencyPolicyConfig = Mockito.mock(CosmosE2EOperationRetryPolicyConfig.class);
     }
 
     @Test(groups = {"unit"})
@@ -208,7 +214,8 @@ public class RxDocumentClientImplTest {
             this.metadataCachesSnapshotMock,
             this.apiTypeMock,
             this.cosmosClientTelemetryConfigMock,
-            this.clientCorrelationIdMock
+            this.clientCorrelationIdMock,
+            this.endToEndOperationLatencyPolicyConfig
         );
 
         ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);
@@ -243,8 +250,8 @@ public class RxDocumentClientImplTest {
                 assertThat(feedResponse.getResults().size()).isEqualTo(expectedResultSize);
                 assertThat(feedResponse.getRequestCharge()).isEqualTo(expectedRequestCharge);
 
-                assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics())).isNotNull();
-                assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(expectedClientSideRequestStatisticsSize);
+                assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics())).isNotNull();
+                assertThat(diagnosticsAccessor.getClientSideRequestStatistics(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(expectedClientSideRequestStatisticsSize);
                 assertThat(BridgeInternal.queryMetricsFromFeedResponse(feedResponse)).isNotNull();
 
                 List<InternalObjectNode> readManyResults = feedResponse.getResults();
@@ -393,6 +400,11 @@ public class RxDocumentClientImplTest {
             public CosmosDiagnostics createDiagnostics() {
                 return BridgeInternal.createCosmosDiagnostics(this) ;
             }
+
+            @Override
+            public String getUserAgent() {
+                return Utils.getUserAgent();
+            }
         }, storeResponse);
 
         documentServiceResponse.setCosmosDiagnostics(dummyCosmosDiagnostics());
@@ -410,6 +422,11 @@ public class RxDocumentClientImplTest {
             @Override
             public CosmosDiagnostics createDiagnostics() {
                 return null;
+            }
+
+            @Override
+            public String getUserAgent() {
+                return Utils.getUserAgent();
             }
         });
     }

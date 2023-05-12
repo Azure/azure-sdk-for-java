@@ -34,7 +34,6 @@ module com.azure.cosmos {
     exports com.azure.cosmos.util;
 
     // export packages for multiple different modules
-    opens com.azure.cosmos to com.fasterxml.jackson.databind, com.azure.spring.data.cosmos, com.azure.cosmos.test;
     exports com.azure.cosmos.implementation to com.azure.cosmos.encryption, com.azure.cosmos.test;
     exports com.azure.cosmos.implementation.caches to com.azure.cosmos.encryption, com.azure.cosmos.test;
     exports com.azure.cosmos.implementation.feedranges to com.azure.cosmos.encryption, com.azure.cosmos.test;
@@ -77,6 +76,7 @@ module com.azure.cosmos {
     exports com.azure.cosmos.implementation.faultinjection to com.azure.cosmos.test;
     exports com.azure.cosmos.implementation.directconnectivity.rntbd to com.azure.cosmos.test;
     exports com.azure.cosmos.implementation.routing to com.azure.cosmos.test;
+    opens com.azure.cosmos to com.azure.cosmos.test, com.azure.spring.data.cosmos, com.fasterxml.jackson.databind, com.fasterxml.jackson.module.afterburner, java.logging;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
     uses com.azure.core.util.tracing.Tracer;

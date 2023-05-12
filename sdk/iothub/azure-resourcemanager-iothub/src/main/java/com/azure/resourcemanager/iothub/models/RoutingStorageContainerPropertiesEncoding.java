@@ -24,6 +24,15 @@ public final class RoutingStorageContainerPropertiesEncoding
     public static final RoutingStorageContainerPropertiesEncoding JSON = fromString("JSON");
 
     /**
+     * Creates a new instance of RoutingStorageContainerPropertiesEncoding value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RoutingStorageContainerPropertiesEncoding() {
+    }
+
+    /**
      * Creates or finds a RoutingStorageContainerPropertiesEncoding from its string representation.
      *
      * @param name a name to look for.

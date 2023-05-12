@@ -94,10 +94,10 @@ public final class SuggestDocumentsResult implements JsonSerializable<SuggestDoc
                         }
                     }
                     if (resultsFound) {
-                        SuggestDocumentsResult deserializedValue = new SuggestDocumentsResult(results);
-                        deserializedValue.coverage = coverage;
+                        SuggestDocumentsResult deserializedSuggestDocumentsResult = new SuggestDocumentsResult(results);
+                        deserializedSuggestDocumentsResult.coverage = coverage;
 
-                        return deserializedValue;
+                        return deserializedSuggestDocumentsResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!resultsFound) {

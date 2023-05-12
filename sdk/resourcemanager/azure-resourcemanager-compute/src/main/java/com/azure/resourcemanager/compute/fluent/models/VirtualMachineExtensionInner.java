@@ -9,6 +9,7 @@ import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.ResourceWithOptionalLocation;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** Describes a Virtual Machine Extension. */
@@ -323,6 +324,31 @@ public final class VirtualMachineExtensionInner extends ResourceWithOptionalLoca
             this.innerProperties = new VirtualMachineExtensionProperties();
         }
         this.innerProperties().withProtectedSettingsFromKeyVault(protectedSettingsFromKeyVault);
+        return this;
+    }
+
+    /**
+     * Get the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * provisioned.
+     *
+     * @return the provisionAfterExtensions value.
+     */
+    public List<String> provisionAfterExtensions() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisionAfterExtensions();
+    }
+
+    /**
+     * Set the provisionAfterExtensions property: Collection of extension names after which this extension needs to be
+     * provisioned.
+     *
+     * @param provisionAfterExtensions the provisionAfterExtensions value to set.
+     * @return the VirtualMachineExtensionInner object itself.
+     */
+    public VirtualMachineExtensionInner withProvisionAfterExtensions(List<String> provisionAfterExtensions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineExtensionProperties();
+        }
+        this.innerProperties().withProvisionAfterExtensions(provisionAfterExtensions);
         return this;
     }
 

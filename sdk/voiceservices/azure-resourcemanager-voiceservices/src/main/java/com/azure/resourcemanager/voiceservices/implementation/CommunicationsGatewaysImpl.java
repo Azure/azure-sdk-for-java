@@ -19,11 +19,11 @@ public final class CommunicationsGatewaysImpl implements CommunicationsGateways 
 
     private final CommunicationsGatewaysClient innerClient;
 
-    private final com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager;
+    private final com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager;
 
     public CommunicationsGatewaysImpl(
         CommunicationsGatewaysClient innerClient,
-        com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager) {
+        com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -176,7 +176,7 @@ public final class CommunicationsGatewaysImpl implements CommunicationsGateways 
         return this.innerClient;
     }
 
-    private com.azure.resourcemanager.voiceservices.VoiceservicesManager manager() {
+    private com.azure.resourcemanager.voiceservices.VoiceServicesManager manager() {
         return this.serviceManager;
     }
 

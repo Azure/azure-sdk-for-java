@@ -30,7 +30,7 @@ public final class ExternalSecuritySolutionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"kind\":\"ExternalSecuritySolution\",\"location\":\"likyohz\",\"id\":\"xyqhfnkvycqqqd\",\"name\":\"eipnquwzx\",\"type\":\"rptyo\"}";
+            "{\"kind\":\"ExternalSecuritySolution\",\"location\":\"jfccylhtrht\",\"id\":\"vazjpwexcd\",\"name\":\"zp\",\"type\":\"o\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,7 +61,7 @@ public final class ExternalSecuritySolutionsGetWithResponseMockTests {
         ExternalSecuritySolution response =
             manager
                 .externalSecuritySolutions()
-                .getWithResponse("gxfqpan", "ceov", "gzwhsxyrujmtik", com.azure.core.util.Context.NONE)
+                .getWithResponse("atpf", "saebwfwhxorpwal", "zwuge", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

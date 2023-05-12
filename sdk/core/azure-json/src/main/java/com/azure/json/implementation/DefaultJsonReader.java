@@ -14,7 +14,6 @@ import com.azure.json.implementation.jackson.core.json.JsonReadFeature;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
-import java.io.UncheckedIOException;
 
 /**
  * Default {@link JsonReader} implementation.
@@ -158,11 +157,7 @@ public final class DefaultJsonReader extends JsonReader {
         JsonToken currentToken = currentToken();
         if (currentToken == JsonToken.START_OBJECT || currentToken == JsonToken.FIELD_NAME) {
             String json = readRemainingFieldsAsJsonObject();
-            try {
-                return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, nonNumericNumbersSupported);
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
+            return new DefaultJsonReader(FACTORY.createParser(json), true, null, json, nonNumericNumbersSupported);
         } else {
             throw new IllegalStateException("Cannot buffer a JSON object from a non-object, non-field name "
                 + "starting location. Starting location: " + currentToken());
@@ -170,7 +165,7 @@ public final class DefaultJsonReader extends JsonReader {
     }
 
     @Override
-    public boolean resetSupported() {
+    public boolean isResetSupported() {
         return resetSupported;
     }
 
@@ -180,16 +175,12 @@ public final class DefaultJsonReader extends JsonReader {
             throw new IllegalStateException("'reset' isn't supported by this JsonReader.");
         }
 
-        try {
-            if (jsonBytes != null) {
-                return new DefaultJsonReader(FACTORY.createParser(jsonBytes), true, jsonBytes, null,
-                    nonNumericNumbersSupported);
-            } else {
-                return new DefaultJsonReader(FACTORY.createParser(jsonString), true, null, jsonString,
-                    nonNumericNumbersSupported);
-            }
-        } catch (IOException ex) {
-            throw new UncheckedIOException(ex);
+        if (jsonBytes != null) {
+            return new DefaultJsonReader(FACTORY.createParser(jsonBytes), true, jsonBytes, null,
+                nonNumericNumbersSupported);
+        } else {
+            return new DefaultJsonReader(FACTORY.createParser(jsonString), true, null, jsonString,
+                nonNumericNumbersSupported);
         }
     }
 

@@ -1,6 +1,6 @@
 # Release History
 
-## 4.7.0-beta.1 (Unreleased)
+## 4.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,7 +8,13 @@
 
 ### Bugs Fixed
 
+- Fixes issue where credential from Azure Spring global properties was being overridden.
+
 ### Other Changes
+
+## 4.7.0 (2023-03-23)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#470-2023-03-23) for more details.
 
 ## 4.0.0-beta.1 (2023-02-16)
 

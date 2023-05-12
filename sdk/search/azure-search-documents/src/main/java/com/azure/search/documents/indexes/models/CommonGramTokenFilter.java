@@ -166,11 +166,12 @@ public final class CommonGramTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound && commonWordsFound) {
-                        CommonGramTokenFilter deserializedValue = new CommonGramTokenFilter(name, commonWords);
-                        deserializedValue.caseIgnored = caseIgnored;
-                        deserializedValue.queryModeUsed = queryModeUsed;
+                        CommonGramTokenFilter deserializedCommonGramTokenFilter =
+                                new CommonGramTokenFilter(name, commonWords);
+                        deserializedCommonGramTokenFilter.caseIgnored = caseIgnored;
+                        deserializedCommonGramTokenFilter.queryModeUsed = queryModeUsed;
 
-                        return deserializedValue;
+                        return deserializedCommonGramTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

@@ -81,7 +81,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         httpProxyServer.start();
     }
 
-    @AfterClass(groups = {"emulator"})
+    @AfterClass(groups = {"emulator"}, alwaysRun = true)
     public void afterClass() {
         if (this.gatewayClient != null) {
             this.gatewayClient.close();
@@ -335,12 +335,39 @@ public class ClientTelemetryTest extends TestSuiteBase {
             }).verifyComplete();
         } finally {
             if (cosmosClient != null) {
-                cosmosClient.getDatabase(databaseId).delete();
+                try {
+                    cosmosClient.getDatabase(databaseId).delete();
+                } catch(CosmosException error) {
+                    if (error.getStatusCode() != 404) {
+                        throw error;
+                    }
+                }
             }
             safeCloseSyncClient(cosmosClient);
 
             // clear system property
             System.clearProperty("COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void clientTelemetryUseBaseUserAgent() {
+        CosmosAsyncClient client = null;
+        String userAgentSuffix = "clientTelemetryUseBaseUserAgent";
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .userAgentSuffix(userAgentSuffix)
+                .buildAsyncClient();
+
+            ClientTelemetry clientTelemetry = client.getContextClient().getClientTelemetry();
+            assertThat(clientTelemetry.getClientTelemetryInfo().getUserAgent().contains(userAgentSuffix)).isFalse();
+        } finally {
+            if (client != null) {
+                client.close();
+            }
         }
     }
 
@@ -370,7 +397,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
         if (shouldContainsSession) {
             assertThat(ctJson).contains("\"consistency\":\"Session\"");
         } else {
-            assertThat(ctJson).doesNotContain("consistency");
+            assertThat(ctJson).doesNotContain("\"consistency\":\"Session\"");
         }
 
         if (shouldContainsPreferredRegion) {

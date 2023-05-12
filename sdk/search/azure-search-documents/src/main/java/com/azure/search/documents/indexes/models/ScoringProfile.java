@@ -165,12 +165,12 @@ public final class ScoringProfile implements JsonSerializable<ScoringProfile> {
                         }
                     }
                     if (nameFound) {
-                        ScoringProfile deserializedValue = new ScoringProfile(name);
-                        deserializedValue.textWeights = textWeights;
-                        deserializedValue.functions = functions;
-                        deserializedValue.functionAggregation = functionAggregation;
+                        ScoringProfile deserializedScoringProfile = new ScoringProfile(name);
+                        deserializedScoringProfile.textWeights = textWeights;
+                        deserializedScoringProfile.functions = functions;
+                        deserializedScoringProfile.functionAggregation = functionAggregation;
 
-                        return deserializedValue;
+                        return deserializedScoringProfile;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

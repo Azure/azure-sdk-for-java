@@ -39,7 +39,7 @@ public final class PlaySourceInternal {
      * used for play
      */
     @JsonProperty(value = "ssmlSource")
-    private SsmlSource ssmlSource;
+    private SsmlSourceInternal ssmlSource;
 
     /**
      * Get the sourceType property: Defines the type of the play source.
@@ -126,7 +126,7 @@ public final class PlaySourceInternal {
      *
      * @return the ssmlSource value.
      */
-    public SsmlSource getSsmlSource() {
+    public SsmlSourceInternal getSsmlSource() {
         return this.ssmlSource;
     }
 
@@ -136,7 +136,7 @@ public final class PlaySourceInternal {
      * @param ssmlSource the ssmlSource value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySourceInternal setSsmlSource(SsmlSource ssmlSource) {
+    public PlaySourceInternal setSsmlSource(SsmlSourceInternal ssmlSource) {
         this.ssmlSource = ssmlSource;
         return this;
     }

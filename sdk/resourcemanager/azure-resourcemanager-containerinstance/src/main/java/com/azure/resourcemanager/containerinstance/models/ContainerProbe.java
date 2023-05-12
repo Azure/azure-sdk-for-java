@@ -52,6 +52,10 @@ public final class ContainerProbe {
     @JsonProperty(value = "timeoutSeconds")
     private Integer timeoutSeconds;
 
+    /** Creates an instance of ContainerProbe class. */
+    public ContainerProbe() {
+    }
+
     /**
      * Get the exec property: The execution command to probe.
      *

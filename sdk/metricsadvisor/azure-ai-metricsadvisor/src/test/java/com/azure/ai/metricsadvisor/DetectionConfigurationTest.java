@@ -45,7 +45,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
         MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
         final AtomicReference<String> id = new AtomicReference<>();
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
@@ -83,7 +83,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
                                                               MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
         final AtomicReference<String> id = new AtomicReference<>();
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
@@ -120,7 +120,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
                                                                       MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
         final AtomicReference<String> id = new AtomicReference<>();
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);
@@ -160,7 +160,7 @@ public class DetectionConfigurationTest extends DetectionConfigurationTestBase {
                                              MetricsAdvisorServiceVersion serviceVersion) {
         DataFeed dataFeed = null;
         MetricsAdvisorAdministrationClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true).buildClient();
         final AtomicReference<String> id = new AtomicReference<>();
         try {
             dataFeed = super.createDataFeed(httpClient, serviceVersion);

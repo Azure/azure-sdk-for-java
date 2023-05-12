@@ -142,7 +142,7 @@ public final class AppliancesManagementClientImpl implements AppliancesManagemen
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-04-15-preview";
+        this.apiVersion = "2022-10-27";
         this.appliances = new AppliancesClientImpl(this);
     }
 

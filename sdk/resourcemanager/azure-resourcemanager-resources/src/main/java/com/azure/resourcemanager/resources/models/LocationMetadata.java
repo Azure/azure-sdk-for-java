@@ -24,6 +24,12 @@ public final class LocationMetadata {
     private RegionCategory regionCategory;
 
     /*
+     * The geography of the location.
+     */
+    @JsonProperty(value = "geography", access = JsonProperty.Access.WRITE_ONLY)
+    private String geography;
+
+    /*
      * The geography group of the location.
      */
     @JsonProperty(value = "geographyGroup", access = JsonProperty.Access.WRITE_ONLY)
@@ -79,6 +85,15 @@ public final class LocationMetadata {
      */
     public RegionCategory regionCategory() {
         return this.regionCategory;
+    }
+
+    /**
+     * Get the geography property: The geography of the location.
+     *
+     * @return the geography value.
+     */
+    public String geography() {
+        return this.geography;
     }
 
     /**

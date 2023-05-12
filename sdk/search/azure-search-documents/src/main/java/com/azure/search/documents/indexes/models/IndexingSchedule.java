@@ -108,10 +108,10 @@ public final class IndexingSchedule implements JsonSerializable<IndexingSchedule
                         }
                     }
                     if (intervalFound) {
-                        IndexingSchedule deserializedValue = new IndexingSchedule(interval);
-                        deserializedValue.startTime = startTime;
+                        IndexingSchedule deserializedIndexingSchedule = new IndexingSchedule(interval);
+                        deserializedIndexingSchedule.startTime = startTime;
 
-                        return deserializedValue;
+                        return deserializedIndexingSchedule;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!intervalFound) {

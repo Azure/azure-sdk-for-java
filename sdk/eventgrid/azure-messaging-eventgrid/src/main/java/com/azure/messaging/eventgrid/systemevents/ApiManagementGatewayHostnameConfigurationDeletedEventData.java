@@ -14,12 +14,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ApiManagementGatewayHostnameConfigurationDeletedEventData {
     /*
-     * The fully qualified ID of the resource that the compliance state change
-     * is for, including the resource name and resource type. Uses the format,
+     * The fully qualified ID of the resource that the compliance state change is for, including the resource name and
+     * resource type. Uses the format,
      * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/gateways/<GatewayName>/hostnameConfigurations/<ResourceName>`
      */
     @JsonProperty(value = "resourceUri")
     private String resourceUri;
+
+    /** Creates an instance of ApiManagementGatewayHostnameConfigurationDeletedEventData class. */
+    public ApiManagementGatewayHostnameConfigurationDeletedEventData() {}
 
     /**
      * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,

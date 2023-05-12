@@ -134,11 +134,11 @@ public final class FieldMapping implements JsonSerializable<FieldMapping> {
                         }
                     }
                     if (sourceFieldNameFound) {
-                        FieldMapping deserializedValue = new FieldMapping(sourceFieldName);
-                        deserializedValue.targetFieldName = targetFieldName;
-                        deserializedValue.mappingFunction = mappingFunction;
+                        FieldMapping deserializedFieldMapping = new FieldMapping(sourceFieldName);
+                        deserializedFieldMapping.targetFieldName = targetFieldName;
+                        deserializedFieldMapping.mappingFunction = mappingFunction;
 
-                        return deserializedValue;
+                        return deserializedFieldMapping;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!sourceFieldNameFound) {

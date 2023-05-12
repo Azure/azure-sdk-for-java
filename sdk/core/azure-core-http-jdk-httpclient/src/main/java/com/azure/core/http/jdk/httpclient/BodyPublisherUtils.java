@@ -3,6 +3,7 @@
 
 package com.azure.core.http.jdk.httpclient;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -56,7 +57,8 @@ final class BodyPublisherUtils {
                 publisher = fromPublisher(JdkFlowAdapter.publisherToFlowPublisher(request.getBody()));
             }
 
-            publisher = toBodyPublisherWithLength(publisher, request.getHeaders().getValue("content-length"));
+            publisher = toBodyPublisherWithLength(publisher, request.getHeaders()
+                .getValue(HttpHeaderName.CONTENT_LENGTH));
         }
 
         return getPublisherWithReporter(publisher, progressReporter);

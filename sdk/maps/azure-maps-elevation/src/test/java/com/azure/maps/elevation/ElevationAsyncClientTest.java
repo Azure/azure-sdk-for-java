@@ -88,7 +88,7 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
     public void testAsyncGetDataForPolyline(HttpClient httpClient, ElevationServiceVersion serviceVersion) throws IOException {
         ElevationAsyncClient client = getElevationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDataForPolyline(Arrays.asList(
-                new GeoPosition(-121.66853362143818, 46.84646479863713), 
+                new GeoPosition(-121.66853362143818, 46.84646479863713),
                 new GeoPosition(-121.65853362143818, 46.85646479863713)), 5))
             .assertNext(actualResults -> {
                 try {
@@ -106,7 +106,7 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
     public void testAsyncGetDataForPolylineWithResponse(HttpClient httpClient, ElevationServiceVersion serviceVersion) {
         ElevationAsyncClient client = getElevationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDataForPolylineWithResponse(Arrays.asList(
-                new GeoPosition(-121.66853362143818, 46.84646479863713), 
+                new GeoPosition(-121.66853362143818, 46.84646479863713),
                 new GeoPosition(-121.65853362143818, 46.85646479863713)), 5, null))
             .assertNext(response -> {
                 try {
@@ -123,7 +123,7 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
     public void testAsyncInvalidGetDataForPolylineWithResponse(HttpClient httpClient, ElevationServiceVersion serviceVersion) {
         ElevationAsyncClient client = getElevationAsyncClient(httpClient, serviceVersion);
         StepVerifier.create(client.getDataForPolylineWithResponse(Arrays.asList(
-                new GeoPosition(-1000000, 46.84646479863713), 
+                new GeoPosition(-1000000, 46.84646479863713),
                 new GeoPosition(-121.65853362143818, 46.85646479863713)), 5, null))
             .verifyErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;
@@ -136,7 +136,7 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
     @MethodSource("com.azure.maps.elevation.TestUtils#getTestParameters")
     public void testAsyncGetDataForBoundingBox(HttpClient httpClient, ElevationServiceVersion serviceVersion) throws IOException {
         ElevationAsyncClient client = getElevationAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getDataForBoundingBox(new GeoBoundingBox(-121.668533621438f, 46.8464647986371f, 
+        StepVerifier.create(client.getDataForBoundingBox(new GeoBoundingBox(-121.668533621438f, 46.8464647986371f,
                 -121.658533621438f, 46.8564647986371f), 3, 3))
             .assertNext(actualResults -> {
                 try {
@@ -153,7 +153,7 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
     @MethodSource("com.azure.maps.elevation.TestUtils#getTestParameters")
     public void testAsyncGetDataForBoundingBoxWithResponse(HttpClient httpClient, ElevationServiceVersion serviceVersion) {
         ElevationAsyncClient client = getElevationAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getDataForBoundingBoxWithResponse(new GeoBoundingBox(-121.668533621438f, 46.8464647986371f, 
+        StepVerifier.create(client.getDataForBoundingBoxWithResponse(new GeoBoundingBox(-121.668533621438f, 46.8464647986371f,
                 -121.658533621438f, 46.8564647986371f), 3, 3, null))
             .assertNext(response -> {
                 try {
@@ -169,7 +169,7 @@ public class ElevationAsyncClientTest extends ElevationClientTestBase {
     @MethodSource("com.azure.maps.elevation.TestUtils#getTestParameters")
     public void testAsyncInvalidGetDataForBoundingBoxWithResponse(HttpClient httpClient, ElevationServiceVersion serviceVersion) {
         ElevationAsyncClient client = getElevationAsyncClient(httpClient, serviceVersion);
-        StepVerifier.create(client.getDataForBoundingBoxWithResponse(new GeoBoundingBox(-121.668533621438f, 46.8464647986371f, 
+        StepVerifier.create(client.getDataForBoundingBoxWithResponse(new GeoBoundingBox(-121.668533621438f, 46.8464647986371f,
                 -10000000f, 46.8564647986371f), 3, 3, null))
             .verifyErrorSatisfies(ex -> {
                 final HttpResponseException httpResponseException = (HttpResponseException) ex;

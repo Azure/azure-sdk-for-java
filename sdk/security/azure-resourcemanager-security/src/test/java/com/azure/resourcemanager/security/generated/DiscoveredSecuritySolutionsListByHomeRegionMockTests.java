@@ -33,7 +33,7 @@ public final class DiscoveredSecuritySolutionsListByHomeRegionMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"dlhvdv\",\"publisher\":\"iphbeaeqjzmhk\",\"sku\":\"clacr\"},\"location\":\"zfmunerkelux\",\"id\":\"shxzezb\",\"name\":\"uzudlevzskejcg\",\"type\":\"fsgqkstyecupyuij\"}]}";
+            "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"kll\",\"publisher\":\"ynqanhkigglc\",\"sku\":\"walhvubh\"},\"location\":\"phetxdqc\",\"id\":\"yctajqz\",\"name\":\"vale\",\"type\":\"xb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class DiscoveredSecuritySolutionsListByHomeRegionMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<DiscoveredSecuritySolution> response =
-            manager.discoveredSecuritySolutions().listByHomeRegion("xlniwmcpm", com.azure.core.util.Context.NONE);
+            manager.discoveredSecuritySolutions().listByHomeRegion("tpzcr", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals(SecurityFamily.VA, response.iterator().next().securityFamily());
-        Assertions.assertEquals("dlhvdv", response.iterator().next().offer());
-        Assertions.assertEquals("iphbeaeqjzmhk", response.iterator().next().publisher());
-        Assertions.assertEquals("clacr", response.iterator().next().sku());
+        Assertions.assertEquals("kll", response.iterator().next().offer());
+        Assertions.assertEquals("ynqanhkigglc", response.iterator().next().publisher());
+        Assertions.assertEquals("walhvubh", response.iterator().next().sku());
     }
 }

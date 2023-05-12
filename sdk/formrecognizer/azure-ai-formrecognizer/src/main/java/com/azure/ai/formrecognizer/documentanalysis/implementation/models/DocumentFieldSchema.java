@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -41,8 +42,15 @@ public final class DocumentFieldSchema {
     @JsonProperty(value = "properties")
     private Map<String, DocumentFieldSchema> properties;
 
-    /** Creates an instance of DocumentFieldSchema class. */
-    public DocumentFieldSchema() {}
+    /**
+     * Creates an instance of DocumentFieldSchema class.
+     *
+     * @param type the type value to set.
+     */
+    @JsonCreator
+    public DocumentFieldSchema(@JsonProperty(value = "type", required = true) DocumentFieldType type) {
+        this.type = type;
+    }
 
     /**
      * Get the type property: Semantic data type of the field value.
@@ -51,17 +59,6 @@ public final class DocumentFieldSchema {
      */
     public DocumentFieldType getType() {
         return this.type;
-    }
-
-    /**
-     * Set the type property: Semantic data type of the field value.
-     *
-     * @param type the type value to set.
-     * @return the DocumentFieldSchema object itself.
-     */
-    public DocumentFieldSchema setType(DocumentFieldType type) {
-        this.type = type;
-        return this;
     }
 
     /**

@@ -12,7 +12,7 @@ import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -45,8 +45,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 /**
  * Tests for Form Training client builder
  */
-public class FormTrainingClientBuilderTest extends TestBase {
-    private static final String FORM_JPG = "Form_1.jpg";
+public class FormTrainingClientBuilderTest extends TestProxyTestBase {
+    private static final String TEST_FILE = URL_TEST_FILE_FORMAT + "Form_1.jpg";
 
     /**
      * Test client builder with invalid API key
@@ -197,7 +197,7 @@ public class FormTrainingClientBuilderTest extends TestBase {
             getEndpoint(), credential);
         // Update to valid key
         credential.update(getApiKey());
-        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
+        testRunner.apply(clientBuilder).accept(TEST_FILE);
     }
 
     void clientBuilderWithNullServiceVersionRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -206,7 +206,7 @@ public class FormTrainingClientBuilderTest extends TestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .retryPolicy(new RetryPolicy())
                 .serviceVersion(null);
-        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
+        testRunner.apply(clientBuilder).accept(TEST_FILE);
     }
 
     void clientBuilderWithDefaultPipelineRunner(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion,
@@ -215,7 +215,7 @@ public class FormTrainingClientBuilderTest extends TestBase {
             createClientBuilder(httpClient, serviceVersion, getEndpoint(), new AzureKeyCredential(getApiKey()))
                 .configuration(Configuration.getGlobalConfiguration())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-        testRunner.apply(clientBuilder).accept(URL_TEST_FILE_FORMAT + FORM_JPG);
+        testRunner.apply(clientBuilder).accept(TEST_FILE);
     }
 
     String getEndpoint() {
@@ -236,10 +236,10 @@ public class FormTrainingClientBuilderTest extends TestBase {
         final FormTrainingClientBuilder clientBuilder = new FormTrainingClientBuilder()
             .credential(credential)
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .serviceVersion(serviceVersion);
 
-        if (!interceptorManager.isPlaybackMode()) {
+        if (interceptorManager.isRecordMode()) {
             clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 

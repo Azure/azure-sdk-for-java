@@ -1,14 +1,26 @@
 # Release History
 
-## 12.15.0-beta.2 (Unreleased)
+## 12.16.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Added `DataLakeFileClient.getOutputStream()` which allows users to open an `OutputStream` on the file and write data 
+to it using `ParallelTransferOptions`.
+- Added support for 2023-01-03 service version.
+- Added owner, group, and permissions properties to `PathProperties`.
+- Added encryptionContext property to `FileParallelUploadOptions`.
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.15.0 (2023-04-13)
+
+### Features Added
+- Added support for 2022-11-02 service version.
+- Adding support for Encryption Context on DataLake files, a string value that can be passed to allow users to generate
+  file-level encryption keys. This value is returned on `DataLakeFileClient.getProperties()`, `DataLakeFileClient.readWithResponse()`,
+  and `DataLakeFileClient.listPaths()`.
 
 ## 12.15.0-beta.1 (2023-03-28)
 

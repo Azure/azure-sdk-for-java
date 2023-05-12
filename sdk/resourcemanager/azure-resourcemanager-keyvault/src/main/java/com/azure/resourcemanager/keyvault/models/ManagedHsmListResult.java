@@ -24,6 +24,10 @@ public final class ManagedHsmListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ManagedHsmListResult class. */
+    public ManagedHsmListResult() {
+    }
+
     /**
      * Get the value property: The list of managed HSM Pools.
      *

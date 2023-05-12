@@ -190,10 +190,6 @@ public final class IotHubDescriptionImpl
         return serviceManager.iotHubResources().listKeys(resourceGroupName, resourceName, context);
     }
 
-    public JobResponse exportDevices(ExportDevicesRequest exportDevicesParameters) {
-        return serviceManager.iotHubResources().exportDevices(resourceGroupName, resourceName, exportDevicesParameters);
-    }
-
     public Response<JobResponse> exportDevicesWithResponse(
         ExportDevicesRequest exportDevicesParameters, Context context) {
         return serviceManager
@@ -201,8 +197,8 @@ public final class IotHubDescriptionImpl
             .exportDevicesWithResponse(resourceGroupName, resourceName, exportDevicesParameters, context);
     }
 
-    public JobResponse importDevices(ImportDevicesRequest importDevicesParameters) {
-        return serviceManager.iotHubResources().importDevices(resourceGroupName, resourceName, importDevicesParameters);
+    public JobResponse exportDevices(ExportDevicesRequest exportDevicesParameters) {
+        return serviceManager.iotHubResources().exportDevices(resourceGroupName, resourceName, exportDevicesParameters);
     }
 
     public Response<JobResponse> importDevicesWithResponse(
@@ -210,6 +206,10 @@ public final class IotHubDescriptionImpl
         return serviceManager
             .iotHubResources()
             .importDevicesWithResponse(resourceGroupName, resourceName, importDevicesParameters, context);
+    }
+
+    public JobResponse importDevices(ImportDevicesRequest importDevicesParameters) {
+        return serviceManager.iotHubResources().importDevices(resourceGroupName, resourceName, importDevicesParameters);
     }
 
     public IotHubDescriptionImpl withRegion(Region location) {

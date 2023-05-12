@@ -51,7 +51,6 @@ public class CosmosException extends AzureException {
     private static final long serialVersionUID = 1L;
 
     private static final ObjectMapper mapper = new ObjectMapper();
-    private final static String USER_AGENT = Utils.getUserAgent();
 
     /**
      * Status code
@@ -147,6 +146,11 @@ public class CosmosException extends AzureException {
      * Fault injection ruleId
      */
     private String faultInjectionRuleId;
+
+    /**
+     * Fault injection rule not applicable evaluation result.
+     */
+    private List<String> faultInjectionEvaluationResults;
 
     /**
      * Creates a new instance of the CosmosException class.
@@ -270,6 +274,16 @@ public class CosmosException extends AzureException {
             }
             return innerErrorMessage() + ", " + cosmosDiagnostics.toString();
         }
+    }
+
+    /**
+     * Returns the error message without any diagnostics - using this method is only useful when
+     * also logging the {@link CosmosException#getDiagnostics()} separately. Without diagnostics it will often
+     * be impossible to determine the root cause of an error.
+     * @return the error message without any diagnostics
+     */
+    public String getShortMessage() {
+        return innerErrorMessage();
     }
 
     /**
@@ -413,7 +427,7 @@ public class CosmosException extends AzureException {
         try {
             ObjectNode exceptionMessageNode = mapper.createObjectNode();
             exceptionMessageNode.put("ClassName", getClass().getSimpleName());
-            exceptionMessageNode.put(USER_AGENT_KEY, USER_AGENT);
+            exceptionMessageNode.put(USER_AGENT_KEY, this.getUserAgent());
             exceptionMessageNode.put("statusCode", statusCode);
             exceptionMessageNode.put("resourceAddress", resourceAddress);
             if (cosmosError != null) {
@@ -445,7 +459,7 @@ public class CosmosException extends AzureException {
                 "%s {%s=%s, error=%s, resourceAddress=%s, statusCode=%s, message=%s, causeInfo=%s, responseHeaders=%s, requestHeaders=%s, faultInjectionRuleId=[%s] }",
                 getClass().getSimpleName(),
                 USER_AGENT_KEY,
-                USER_AGENT,
+                this.getUserAgent(),
                 cosmosError,
                 resourceAddress,
                 statusCode,
@@ -553,12 +567,29 @@ public class CosmosException extends AzureException {
         this.sendingRequestHasStarted = hasSendingRequestStarted;
     }
 
+    private String getUserAgent() {
+        String userAgent = Utils.getUserAgent();
+        if (this.requestHeaders != null) {
+            userAgent = this.requestHeaders.getOrDefault(HttpConstants.HttpHeaders.USER_AGENT, userAgent);
+        }
+
+        return userAgent;
+    }
+
     void setFaultInjectionRuleId(String faultInjectionRUleId) {
         this.faultInjectionRuleId = faultInjectionRUleId;
     }
 
     String getFaultInjectionRuleId() {
         return this.faultInjectionRuleId;
+    }
+
+    void setFaultInjectionEvaluationResults(List<String> faultInjectionEvaluationResults) {
+        this.faultInjectionEvaluationResults = faultInjectionEvaluationResults;
+    }
+
+    List<String> getFaultInjectionEvaluationResults() {
+        return this.faultInjectionEvaluationResults;
     }
 
     List<String> getReplicaStatusList() {
@@ -605,6 +636,15 @@ public class CosmosException extends AzureException {
                         return cosmosException.getFaultInjectionRuleId();
                     }
 
+                    @Override
+                    public void setFaultInjectionEvaluationResults(CosmosException cosmosException, List<String> faultInjectionRuleEvaluationResults) {
+                        cosmosException.setFaultInjectionEvaluationResults(faultInjectionRuleEvaluationResults);
+                    }
+
+                    @Override
+                    public List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException) {
+                        return cosmosException.getFaultInjectionEvaluationResults();
+                    }
                 });
     }
 

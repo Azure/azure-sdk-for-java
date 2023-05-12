@@ -3,11 +3,13 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.containers.containerregistry.implementation.ConstructorAccessors;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
 /**
  * The result of getting a manifest from the registry.
  */
+@Immutable
 public final class GetManifestResult {
     static {
         ConstructorAccessors.setGetManifestResultAccessor(GetManifestResult::new);

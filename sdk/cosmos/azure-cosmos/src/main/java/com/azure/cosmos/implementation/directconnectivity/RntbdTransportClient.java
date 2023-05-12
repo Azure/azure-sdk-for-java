@@ -9,14 +9,16 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.GoneException;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.OpenConnectionResponse;
+import com.azure.cosmos.implementation.LifeCycleUtils;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
 import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdObjectMapper;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
@@ -26,6 +28,7 @@ import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -50,6 +53,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.EnumSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletionException;
@@ -104,6 +108,7 @@ public class RntbdTransportClient extends TransportClient {
     private final GlobalEndpointManager globalEndpointManager;
     private final CosmosClientTelemetryConfig metricConfig;
     private final RntbdServerErrorInjector serverErrorInjector;
+    private final ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor;
 
     // endregion
 
@@ -117,15 +122,16 @@ public class RntbdTransportClient extends TransportClient {
      * @param userAgent        The {@linkplain UserAgentContainer user agent} identifying.
      * @param addressResolver  The address resolver to be used for connection endpoint rediscovery, if connection
      *                         endpoint rediscovery is enabled by {@code connectionPolicy}.
+     * @param clientTelemetry  The {@link ClientTelemetry} instance.
+     * @param globalEndpointManager The {@link GlobalEndpointManager} instance.
      */
     public RntbdTransportClient(
-        final Configs configs,
-        final ConnectionPolicy connectionPolicy,
-        final UserAgentContainer userAgent,
-        final IAddressResolver addressResolver,
-        final ClientTelemetry clientTelemetry,
-        final GlobalEndpointManager globalEndpointManager) {
-
+            final Configs configs,
+            final ConnectionPolicy connectionPolicy,
+            final UserAgentContainer userAgent,
+            final IAddressResolver addressResolver,
+            final ClientTelemetry clientTelemetry,
+            final GlobalEndpointManager globalEndpointManager) {
         this(
             new Options.Builder(connectionPolicy).userAgent(userAgent).build(),
             configs.getSslContext(),
@@ -142,6 +148,7 @@ public class RntbdTransportClient extends TransportClient {
         this.tag = RntbdTransportClient.tag(this.id);
         this.globalEndpointManager = null;
         this.metricConfig = null;
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProvider);
         this.serverErrorInjector = new RntbdServerErrorInjector();
     }
 
@@ -160,6 +167,9 @@ public class RntbdTransportClient extends TransportClient {
             addressResolver,
             clientTelemetry,
             this.serverErrorInjector);
+
+        this.proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(this.endpointProvider);
+        this.proactiveOpenConnectionsProcessor.init();
 
         this.id = instanceCount.incrementAndGet();
         this.tag = RntbdTransportClient.tag(this.id);
@@ -195,6 +205,7 @@ public class RntbdTransportClient extends TransportClient {
 
         if (this.closed.compareAndSet(false, true)) {
             logger.debug("close {}", this);
+            LifeCycleUtils.closeQuietly(this.proactiveOpenConnectionsProcessor);
             this.endpointProvider.close();
             return;
         }
@@ -205,6 +216,21 @@ public class RntbdTransportClient extends TransportClient {
     @Override
     protected GlobalEndpointManager getGlobalEndpointManager() {
         return this.globalEndpointManager;
+    }
+
+    @Override
+    public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
+        return this.proactiveOpenConnectionsProcessor;
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.proactiveOpenConnectionsProcessor.recordOpenConnectionsAndInitCachesCompleted(cosmosContainerIdentities);
+    }
+
+    @Override
+    public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+        this.proactiveOpenConnectionsProcessor.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
     /**
@@ -250,11 +276,21 @@ public class RntbdTransportClient extends TransportClient {
         this.throwIfClosed();
 
         final URI address = addressUri.getURI();
-        request.requestContext.storePhysicalAddressUri = addressUri;
 
         final RntbdRequestArgs requestArgs = new RntbdRequestArgs(request, addressUri);
 
-        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(request.requestContext.locationEndpointToRoute, addressUri.getURI());
+        final boolean isAddressUriUnderOpenConnectionsFlow = this.proactiveOpenConnectionsProcessor
+                .isAddressUriUnderOpenConnectionsFlow(addressUri.getURIAsString());
+
+        final int minRequiredChannelsForEndpoint = (isAddressUriUnderOpenConnectionsFlow) ?
+                Configs.getMinConnectionPoolSizePerEndpoint() : 1;
+
+        final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(
+                request.requestContext.locationEndpointToRoute,
+                addressUri,
+                this.proactiveOpenConnectionsProcessor,
+                minRequiredChannelsForEndpoint);
+
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
         final Context reactorContext = Context.of(KEY_ON_ERROR_DROPPED, onErrorDropHookWithReduceLogLevel);
@@ -278,6 +314,8 @@ public class RntbdTransportClient extends TransportClient {
             storeResponse.setRequestPayloadLength(request.getContentLength());
             storeResponse.setFaultInjectionRuleId(
                 request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
+            storeResponse.setFaultInjectionRuleEvaluationResults(
+                request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(record.transportRequestId()));
             if (this.channelAcquisitionContextEnabled) {
                 storeResponse.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
@@ -309,7 +347,8 @@ public class RntbdTransportClient extends TransportClient {
                 error = new GoneException(
                     lenientFormat("an unexpected %s occurred: %s", unexpectedError),
                     address,
-                    error instanceof Exception ? (Exception) error : new RuntimeException(error));
+                    error instanceof Exception ? (Exception) error : new RuntimeException(error),
+                    HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410);
             }
 
             assert error instanceof CosmosException;
@@ -330,6 +369,14 @@ public class RntbdTransportClient extends TransportClient {
                 .setFaultInjectionRuleId(
                     cosmosException,
                     request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
+
+            ImplementationBridgeHelpers
+                .CosmosExceptionHelper
+                .getCosmosExceptionAccessor()
+                .setFaultInjectionEvaluationResults(
+                    cosmosException,
+                    request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(record.transportRequestId()));
+
             if (this.channelAcquisitionContextEnabled) {
                 BridgeInternal.setChannelAcquisitionTimeline(cosmosException, record.getChannelAcquisitionTimeline());
             }
@@ -346,22 +393,6 @@ public class RntbdTransportClient extends TransportClient {
             record.cancel(true);
 
         }).contextWrite(reactorContext);
-    }
-
-    @Override
-    public Mono<OpenConnectionResponse> openConnection(Uri addressUri, RxDocumentServiceRequest openConnectionRequest) {
-        checkNotNull(openConnectionRequest, "Argument 'openConnectionRequest' should not be null");
-        checkNotNull(addressUri, "Argument 'addressUri' should not be null");
-
-        this.throwIfClosed();
-
-        final RntbdRequestArgs requestArgs = new RntbdRequestArgs(openConnectionRequest, addressUri);
-        final RntbdEndpoint endpoint =
-            this.endpointProvider.createIfAbsent(
-                openConnectionRequest.requestContext.locationEndpointToRoute,
-                addressUri.getURI());
-
-        return Mono.fromFuture(endpoint.openConnection(requestArgs));
     }
 
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {

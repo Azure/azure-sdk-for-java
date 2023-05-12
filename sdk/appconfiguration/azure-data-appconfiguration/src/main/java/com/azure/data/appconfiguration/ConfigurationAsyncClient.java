@@ -19,10 +19,10 @@ import com.azure.data.appconfiguration.implementation.AzureAppConfigurationImpl;
 import com.azure.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.data.appconfiguration.implementation.models.GetKeyValueHeaders;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.data.appconfiguration.implementation.models.KeyValueFields;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import com.azure.data.appconfiguration.models.SettingFields;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import reactor.core.publisher.Mono;
 
@@ -38,7 +38,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.getEtag;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
-import static com.azure.data.appconfiguration.implementation.Utility.toKeyValueFieldsList;
+import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.validateSettingAsync;
 
 /**
@@ -341,7 +341,7 @@ public final class ConfigurationAsyncClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string -->
      * <pre>
-     * client.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, null&#41;
+     * client.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
      *         response.getKey&#40;&#41;, response.getLabel&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
      * </pre>
@@ -371,7 +371,7 @@ public final class ConfigurationAsyncClient {
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#string-string-OffsetDateTime -->
      * <pre>
      * client.getConfigurationSetting&#40;
-     *     &quot;prodDBConnection&quot;, null, OffsetDateTime.now&#40;ZoneOffset.UTC&#41;.minusMinutes&#40;1&#41;&#41;
+     *     &quot;prodDBConnection&quot;, &quot;westUS&quot;, OffsetDateTime.now&#40;ZoneOffset.UTC&#41;.minusMinutes&#40;1&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
      *         response.getKey&#40;&#41;, response.getLabel&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
      * </pre>
@@ -495,7 +495,7 @@ public final class ConfigurationAsyncClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#string-string -->
      * <pre>
-     * client.deleteConfigurationSetting&#40;&quot;prodDBConnection&quot;, null&#41;
+     * client.deleteConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
      *         response.getKey&#40;&#41;, response.getLabel&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
      * </pre>
@@ -530,7 +530,7 @@ public final class ConfigurationAsyncClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#ConfigurationSetting -->
      * <pre>
-     * client.deleteConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;
+     * client.deleteConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;&#41;
      *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
      *         response.getKey&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
      * </pre>
@@ -772,8 +772,7 @@ public final class ConfigurationAsyncClient {
         final String keyFilter = selector == null ? null : selector.getKeyFilter();
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-        final List<KeyValueFields> keyValueFields = selector == null ? null
-                                                        : toKeyValueFieldsList(selector.getFields());
+        final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         return new PagedFlux<>(
             () -> withContext(
                 context -> serviceClient.getKeyValuesSinglePageAsync(
@@ -781,7 +780,7 @@ public final class ConfigurationAsyncClient {
                     labelFilter,
                     null,
                     acceptDateTime,
-                    keyValueFields,
+                    settingFields,
                     null,
                     addTracingNamespace(context))
                                .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
@@ -825,8 +824,7 @@ public final class ConfigurationAsyncClient {
         final String keyFilter = selector == null ? null : selector.getKeyFilter();
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-        final List<KeyValueFields> keyValueFields = selector == null ? null
-                                                        : toKeyValueFieldsList(selector.getFields());
+        final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         return new PagedFlux<>(
             () -> withContext(
                 context -> serviceClient.getRevisionsSinglePageAsync(
@@ -834,7 +832,7 @@ public final class ConfigurationAsyncClient {
                     labelFilter,
                     null,
                     acceptDateTime,
-                    keyValueFields,
+                    settingFields,
                     addTracingNamespace(context))
                                .map(pagedResponse -> toConfigurationSettingWithPagedResponse(pagedResponse))),
             nextLink -> withContext(
