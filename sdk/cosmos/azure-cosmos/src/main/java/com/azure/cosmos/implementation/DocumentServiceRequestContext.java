@@ -46,7 +46,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
-    public volatile Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
+    public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
     public DocumentServiceRequestContext() {}
 
