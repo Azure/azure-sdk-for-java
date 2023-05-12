@@ -316,7 +316,7 @@ public class Configs {
     }
 
     public static int speculationThreshold() {
-        return getJVMConfigAsInt(SPECULATION_THRESHOLD, 200);
+        return getJVMConfigAsInt(SPECULATION_THRESHOLD, 500);
     }
 
     public static int speculationThresholdStep() {
