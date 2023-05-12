@@ -40,17 +40,17 @@ public class HttpTimeoutPolicyTest {
         WebExceptionRetryPolicy retryPolicy = new WebExceptionRetryPolicy(retryContext);
 
         retryPolicy.onBeforeSendRequest(dsr);
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofMillis(500));
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         assertThat(getBackOffTime(retryPolicy)).isEqualTo(0);
 
         retryContext.addStatusAndSubStatusCode(408, 10002);
         retryPolicy.onBeforeSendRequest(dsr);
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         assertThat(getBackOffTime(retryPolicy)).isEqualTo(1);
 
         retryContext.addStatusAndSubStatusCode(408, 10002);
         retryPolicy.onBeforeSendRequest(dsr);
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         assertThat(getBackOffTime(retryPolicy)).isEqualTo(0);
 
 
@@ -83,18 +83,18 @@ public class HttpTimeoutPolicyTest {
         retryPolicy = new WebExceptionRetryPolicy(retryContext);
 
         retryPolicy.onBeforeSendRequest(dsr);
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(5));
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         assertThat(getBackOffTime(retryPolicy)).isEqualTo(0);
 
 
         retryContext.addStatusAndSubStatusCode(408, 10002);
         retryPolicy.onBeforeSendRequest(dsr);
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(10));
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         assertThat(getBackOffTime(retryPolicy)).isEqualTo(1);
 
         retryContext.addStatusAndSubStatusCode(408, 10002);
         retryPolicy.onBeforeSendRequest(dsr);
-        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(20));
+        assertThat(dsr.getResponseTimeout()).isEqualTo(Duration.ofSeconds(60));
         assertThat(getBackOffTime(retryPolicy)).isEqualTo(0);
     }
 
