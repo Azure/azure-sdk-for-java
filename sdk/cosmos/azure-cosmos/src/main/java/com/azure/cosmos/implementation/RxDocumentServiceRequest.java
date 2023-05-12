@@ -1032,7 +1032,8 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     @Override
     public RxDocumentServiceRequest clone() {
-        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(), this.resourceId, true, this.getResourceType(),this.getHeaders());
+        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(),
+            this.resourceId, this.isNameBased, this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
         rxDocumentServiceRequest.setContentBytes(this.contentAsByteArray);
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
@@ -1056,8 +1057,10 @@ public class RxDocumentServiceRequest implements Cloneable {
     }
 
     // Used by clone
-    private static RxDocumentServiceRequest create(DiagnosticsClientContext clientContext, OperationType operationType, String resourceId, boolean b, ResourceType resourceType, Map<String, String> headers) {
-        return new RxDocumentServiceRequest(clientContext, operationType, resourceId,resourceType, (ByteBuffer) null, headers, b, AuthorizationTokenType.PrimaryMasterKey) ;
+    private static RxDocumentServiceRequest create(DiagnosticsClientContext clientContext, OperationType operationType, String resourceId,
+                                                   boolean isNameBased, ResourceType resourceType, Map<String, String> headers) {
+        return new RxDocumentServiceRequest(clientContext, operationType, resourceId,resourceType, (ByteBuffer) null, headers,
+            isNameBased, AuthorizationTokenType.PrimaryMasterKey) ;
     }
 
     public void dispose() {

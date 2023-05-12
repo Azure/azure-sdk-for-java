@@ -371,10 +371,6 @@ public class HttpConstants {
 
         public static final int SERVICE_UNAVAILABLE = 503;
         public static final int INTERNAL_SERVER_ERROR = 500;
-        /**
-         * Used by {@link RequestCancelledException} to indicate a client side request cancellation
-         */
-        public static final int REQUEST_CANCELLED = 499;
     }
 
     public static class SubStatusCodes {

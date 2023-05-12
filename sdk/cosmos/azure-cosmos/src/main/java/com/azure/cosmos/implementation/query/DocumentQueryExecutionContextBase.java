@@ -124,7 +124,7 @@ implements IDocumentQueryExecutionContext<T> {
         CosmosE2EOperationRetryPolicyConfig e2EOperationRetryConfig =
             ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
                 getCosmosQueryRequestOptionsAccessor()
-                .getE2EOperationRetryConfig(cosmosQueryRequestOptions);
+                .getE2EOperationRetryPolicyConfig(cosmosQueryRequestOptions);
         if (e2EOperationRetryConfig != null) {
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(e2EOperationRetryConfig);
         }
@@ -313,7 +313,7 @@ implements IDocumentQueryExecutionContext<T> {
             CosmosE2EOperationRetryPolicyConfig e2EOperationRetryConfig =
                 ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
                     getCosmosQueryRequestOptionsAccessor()
-                    .getE2EOperationRetryConfig(cosmosQueryRequestOptions);
+                    .getE2EOperationRetryPolicyConfig(cosmosQueryRequestOptions);
             if (e2EOperationRetryConfig != null) {
                 executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(e2EOperationRetryConfig);
             }

@@ -127,7 +127,6 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.throughputControlCycleId = this.throughputControlCycleId;
         context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
         context.e2EOperationRetryPolicyConfig = this.e2EOperationRetryPolicyConfig;
-        context.effectivePartitionKey = this.effectivePartitionKey;
         return context;
     }
 

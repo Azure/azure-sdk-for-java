@@ -3,7 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.OperationCancelledException;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -22,6 +22,10 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.test.faultinjection.IFaultInjectionResult;
 import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider;
 import com.azure.cosmos.util.CosmosPagedFlux;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -33,8 +37,12 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
+
+import static com.azure.cosmos.CosmosDiagnostics.OBJECT_MAPPER;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
     private static final int DEFAULT_NUM_DOCUMENTS = 100;
@@ -44,18 +52,24 @@ public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
     private final List<TestObject> createdDocuments = new ArrayList<>();
     private final CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig;
 
+    // These regions should match the ones in test-resources.json
+//    private final List<String> regions = ImmutableList.of("West Central US", "Central US");
+    private final List<String> regions = ImmutableList.of("West US 2", "East US 2");
+
     @Factory(dataProvider = "clientBuildersWithDirectTcpSession")
     public EndToEndTimeOutWithSpeculationTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         random = new Random();
-        endToEndOperationLatencyPolicyConfig = new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1))
+        endToEndOperationLatencyPolicyConfig = new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(10))
             .build();
     }
 
-    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT * 100)
+    @BeforeClass(groups = {"multi-region"}, timeOut = SETUP_TIMEOUT * 100)
     public void beforeClass() throws Exception {
         System.setProperty(Configs.SPECULATION_TYPE, "1");
-        CosmosAsyncClient client = this.getClientBuilder().buildAsyncClient();
+        CosmosClientBuilder builder = this.getClientBuilder();
+        builder.preferredRegions(regions);
+        CosmosAsyncClient client = builder.buildAsyncClient();
         CosmosAsyncDatabase createdDatabase = getSharedCosmosDatabase(client);
         createdContainer = getSharedMultiPartitionCosmosContainer(client);
         truncateCollection(createdContainer);
@@ -63,7 +77,7 @@ public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
         createdDocuments.addAll(this.insertDocuments(DEFAULT_NUM_DOCUMENTS, null, createdContainer));
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    @Test(groups = {"multi-region"}, timeOut = 10000L)
     public void readItemWithEndToEndTimeoutPolicyInOptionWithSpeculationShouldNotTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
@@ -81,26 +95,35 @@ public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
         rule.disable();
     }
 
-    private static void verifyExpectError(Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono) {
+    private void verifySuccess(Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono) {
         StepVerifier.create(cosmosItemResponseMono)
-            .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException)
-            .verify();
-    }
-
-    private static void verifySuccess(Mono<CosmosItemResponse<TestObject>> cosmosItemResponseMono) {
-        StepVerifier.create(cosmosItemResponseMono)
-            .expectNextCount(1)
+            .expectNextMatches(cosmosItemResponse -> {
+                ObjectNode diagnosticsNode = null;
+                try {
+                    // Since we are injecting fault in region 0, we make sure response is from region 1 in the list above
+                    diagnosticsNode = (ObjectNode) OBJECT_MAPPER.readTree(cosmosItemResponse.getDiagnostics().toString());
+                    assertResponseFromSpeculatedRegion(diagnosticsNode);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+                return true;
+            })
             .verifyComplete();
     }
 
-    @Test(groups = {"simple"}, timeOut = 10000L)
+    private void assertResponseFromSpeculatedRegion(ObjectNode diagnosticsNode) {
+        JsonNode responseStatisticsList = diagnosticsNode.get("responseStatisticsList");
+        assertThat(responseStatisticsList.isArray()).isTrue();
+        assertThat(responseStatisticsList.size()).isGreaterThan(0);
+        JsonNode storeResult = responseStatisticsList.get(0).get("storeResult");
+        assertThat(storeResult.get("storePhysicalAddress").toString()).contains(StringUtils.deleteWhitespace(regions.get(1).toLowerCase(Locale.ROOT)));
+    }
+
+    @Test(groups = {"multi-region"}, timeOut = 10000L)
     public void queryItemWithEndToEndTimeoutPolicyWithSpeculationShouldNotTimeout() {
         if (getClientBuilder().buildConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
             throw new SkipException("Failure injection only supported for DIRECT mode");
         }
-        CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig =
-            new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1))
-                .build();
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
         options.setCosmosE2EOperationRetryPolicyConfig(endToEndOperationLatencyPolicyConfig);
@@ -110,12 +133,20 @@ public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
         String queryText = "select top 1 * from c";
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
 
-        injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
+        FaultInjectionRule faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
         CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
 
-        StepVerifier.create(queryPagedFlux)
-            .expectNextCount(1)
+        StepVerifier.create(queryPagedFlux.byPage())
+            .expectNextMatches(response -> {
+                ObjectNode diagnosticsNode = null;
+                // Since we are injecting fault in region 0, we make sure response is from region 1 in the list above
+                assertThat(response.getCosmosDiagnostics().getClientSideRequestStatistics().iterator().next().getResponseStatisticsList().get(0).getRegionName())
+                    .isEqualTo(regions.get(1).toLowerCase(Locale.ROOT));
+
+                return true;
+            })
             .verifyComplete();
+        faultInjectionRule.disable();
     }
 
     private FaultInjectionRule injectFailure(
@@ -125,7 +156,7 @@ public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
 
         FaultInjectionServerErrorResultBuilder faultInjectionResultBuilder = FaultInjectionResultBuilders
             .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
-            .delay(Duration.ofMillis(1500))
+            .delay(Duration.ofMillis(5000))
             .times(1);
 
         if (suppressServiceRequests != null) {
@@ -133,9 +164,10 @@ public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
         }
 
         IFaultInjectionResult result = faultInjectionResultBuilder.build();
-
+        logger.info("Injecting fault: {}", regions.get(0));
         FaultInjectionCondition condition = new FaultInjectionConditionBuilder()
             .operationType(operationType)
+            .region(regions.get(0))
             .connectionType(FaultInjectionConnectionType.DIRECT)
             .build();
 

@@ -26,6 +26,11 @@ public class ThresholdBasedSpeculation implements SpeculativeProcessor{
     }
 
     @Override
+    public Duration getThresholdStepDuration(CosmosE2EOperationRetryPolicyConfig config, long stepNumber) {
+        return Duration.ofMillis(stepNumber * Configs.speculationThresholdStep());
+    }
+
+    @Override
     public boolean shouldIncludeOriginalRequestRegion() {
         return true;
     }

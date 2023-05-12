@@ -18,6 +18,8 @@ public interface SpeculativeProcessor {
 
     Duration getThreshold(CosmosE2EOperationRetryPolicyConfig config);
 
+    Duration getThresholdStepDuration(CosmosE2EOperationRetryPolicyConfig config, long stepNumber);
+
     boolean shouldIncludeOriginalRequestRegion();
 
     void onResponseReceived(URI region, Duration latency);

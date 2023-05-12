@@ -161,7 +161,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
         String queryText = "select top 1 * from c";
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
 
-        injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
+        FaultInjectionRule faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
         CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
 
         StepVerifier.create(queryPagedFlux)
@@ -169,6 +169,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 && ((OperationCancelledException) throwable).getSubStatusCode()
                 == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
             .verify();
+        faultInjectionRule.disable();
     }
 
     @Test(groups = {"simple"}, timeOut = 10000L)
@@ -222,7 +223,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .expectComplete()
                 .verify();
 
-            injectFailure(container, FaultInjectionOperationType.QUERY_ITEM, null);
+            FaultInjectionRule faultInjectionRule = injectFailure(container, FaultInjectionOperationType.QUERY_ITEM, null);
 
             // Should timeout after injected delay
             StepVerifier.create(queryPagedFlux)
@@ -256,6 +257,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .expectComplete()
                 .verify();
 
+            faultInjectionRule.disable();
             // delete the database
             cosmosAsyncClient.getDatabase(dbname).delete().block();
         }

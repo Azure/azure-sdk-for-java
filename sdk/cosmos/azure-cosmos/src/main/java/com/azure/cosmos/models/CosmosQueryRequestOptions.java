@@ -821,7 +821,7 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
-                public CosmosE2EOperationRetryPolicyConfig getE2EOperationRetryConfig(CosmosQueryRequestOptions options) {
+                public CosmosE2EOperationRetryPolicyConfig getE2EOperationRetryPolicyConfig(CosmosQueryRequestOptions options) {
                     return options.getE2EOperationRetryConfig();
                 }
             });
