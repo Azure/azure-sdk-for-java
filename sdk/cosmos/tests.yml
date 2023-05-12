@@ -13,7 +13,7 @@ stages:
           SubscriptionConfigurations:
             - $(sub-config-azure-cloud-test-resources)
             - $(sub-config-cosmos-azure-cloud-test-resources)
-      Clouds: 'Cosmos_Public'
+      Clouds: 'Cosmos_Public_Integration'
       MatrixConfigs:
         - Name: Cosmos_live_test
           Path: sdk/cosmos/platform-matrix.json
