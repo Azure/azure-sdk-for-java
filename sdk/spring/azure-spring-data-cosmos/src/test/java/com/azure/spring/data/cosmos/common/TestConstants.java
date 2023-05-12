@@ -129,6 +129,10 @@ public final class TestConstants {
     public static final Integer PATCH_AGE_1 = 25;
     public static final Integer PATCH_AGE_INCREMENT = 2;
 
+    //  Some constants from Cosmos HttpConstants
+    public static final int PRECONDITION_FAILED_STATUS_CODE = 412;
+    public static final int CONFLICT_STATUS_CODE = 409;
+
     public static final Map<String, String> PASSPORT_IDS_BY_COUNTRY = new HashMap<String, String>() {{
         put("United States of America", "123456789");
         put("Côte d'Ivoire", "IC1234567");

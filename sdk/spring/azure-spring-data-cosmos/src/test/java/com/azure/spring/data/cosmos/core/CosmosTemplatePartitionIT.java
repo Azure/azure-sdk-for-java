@@ -6,8 +6,6 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
-import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.spring.data.cosmos.CosmosFactory;
@@ -139,23 +137,24 @@ public class CosmosTemplatePartitionIT {
         assertEquals(TEST_PERSON, result.get(0));
     }
 
+    //  TODO: Find a way to test the query plan cache contents without using implementation package
     @Test
     public void testFindWithPartitionWithQueryPlanCachingEnabled() {
         Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, PROPERTY_ZIP_CODE,
             Collections.singletonList(ZIP_CODE), Part.IgnoreCaseType.NEVER);
         CosmosQuery query = new CosmosQuery(criteria);
-        SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
+//        SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
         List<PartitionPerson> result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
             PartitionPerson.class.getSimpleName()));
 
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON, result.get(0));
 
-        CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
-        AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
-        Map<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
-        assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
-        int initialSize = initialCache.size();
+//        CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
+//        AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
+//        Map<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
+//        assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
+//        int initialSize = initialCache.size();
 
         cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(TEST_PERSON_2.getZipCode()));
 
@@ -163,13 +162,13 @@ public class CosmosTemplatePartitionIT {
             Collections.singletonList(NEW_ZIP_CODE), Part.IgnoreCaseType.NEVER);
         query = new CosmosQuery(criteria);
         //  Fire the same query but with different partition key value to make sure query plan caching is enabled
-        sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
+//        sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(query);
         result = TestUtils.toList(cosmosTemplate.find(query, PartitionPerson.class,
             PartitionPerson.class.getSimpleName()));
 
-        Map<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
-        assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
-        assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
+//        Map<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
+//        assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
+//        assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
         assertThat(result.size()).isEqualTo(1);
         assertEquals(TEST_PERSON_2, result.get(0));
     }

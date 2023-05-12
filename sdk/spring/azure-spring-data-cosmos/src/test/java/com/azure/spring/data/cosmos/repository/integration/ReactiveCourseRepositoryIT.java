@@ -2,11 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Course;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -376,6 +376,6 @@ public class ReactiveCourseRepositoryIT {
         options.setFilterPredicate("FROM course a WHERE a.department = 'dummy'");
         Mono<Course> patchedCourse = repository.save(COURSE_ID_1, new PartitionKey(DEPARTMENT_NAME_3), Course.class, patchSetOperation, options);
         StepVerifier.create(patchedCourse).expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
-            ((CosmosAccessException) ex).getCosmosException() instanceof PreconditionFailedException).verify();
+            ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
     }
 }

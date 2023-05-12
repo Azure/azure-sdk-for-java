@@ -7,8 +7,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -182,7 +180,7 @@ public class ReactiveCosmosTemplateIT {
             new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
         StepVerifier.create(insertMono)
                     .expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
-                        ((CosmosAccessException) ex).getCosmosException() instanceof ConflictException)
+                        ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.CONFLICT_STATUS_CODE)
                     .verify();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
@@ -341,7 +339,7 @@ public class ReactiveCosmosTemplateIT {
         options.setFilterPredicate("FROM person p WHERE p.lastName = 'dummy'");
         Mono<Person> person = cosmosTemplate.patch(insertedPerson.getId(), new PartitionKey(insertedPerson.getLastName()), Person.class, operations, options);
         StepVerifier.create(person).expectErrorMatches(ex -> ex instanceof CosmosAccessException &&
-                ((CosmosAccessException) ex).getCosmosException() instanceof PreconditionFailedException).verify();
+                ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.PRECONDITION_FAILED_STATUS_CODE).verify();
     }
 
     @Test

@@ -6,8 +6,6 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.ConflictException;
-import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -184,7 +182,7 @@ public class CosmosTemplateIT {
                 new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON)));
             fail();
         } catch (CosmosAccessException ex) {
-            assertThat(ex.getCosmosException()).isInstanceOf(ConflictException.class);
+            assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.CONFLICT_STATUS_CODE);
             assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         }
     }
@@ -330,7 +328,7 @@ public class CosmosTemplateIT {
             assertEquals(patchedPerson.getAge(), PATCH_AGE_1);
             fail();
         } catch (CosmosAccessException ex) {
-            assertThat(ex.getCosmosException()).isInstanceOf(PreconditionFailedException.class);
+            assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
             assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         }
     }

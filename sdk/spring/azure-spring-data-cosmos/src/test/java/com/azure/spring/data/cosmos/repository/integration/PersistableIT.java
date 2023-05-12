@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.cosmos.implementation.ConflictException;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.PersistableEntity;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
@@ -22,6 +22,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -78,7 +79,7 @@ public class PersistableIT {
             repository.save(entity);
             fail("expecting conflict exception");
         } catch (CosmosAccessException ex) {
-            assertTrue(ex.getCosmosException() instanceof ConflictException);
+            assertEquals(TestConstants.CONFLICT_STATUS_CODE, ex.getCosmosException().getStatusCode());
         }
     }
 
@@ -90,7 +91,7 @@ public class PersistableIT {
 
         final Mono<PersistableEntity> saveSecond = reactiveRepository.save(entity);
         StepVerifier.create(saveSecond)
-            .expectErrorMatches(ex -> ex instanceof CosmosAccessException && ((CosmosAccessException) ex).getCosmosException() instanceof ConflictException)
+            .expectErrorMatches(ex -> ex instanceof CosmosAccessException && ((CosmosAccessException) ex).getCosmosException().getStatusCode() == TestConstants.CONFLICT_STATUS_CODE)
             .verify();
     }
 

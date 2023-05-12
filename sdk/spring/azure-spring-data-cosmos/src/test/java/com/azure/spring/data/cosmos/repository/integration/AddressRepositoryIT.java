@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.integration;
 
-import com.azure.cosmos.implementation.PreconditionFailedException;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
@@ -287,7 +286,7 @@ public class AddressRepositoryIT {
             assertThat(patchedAddress.getStreet()).isEqualTo(TestConstants.NEW_STREET);
             Assert.fail();
         } catch (CosmosAccessException ex) {
-            assertThat(ex.getCosmosException()).isInstanceOf(PreconditionFailedException.class);
+            assertThat(ex.getCosmosException().getStatusCode()).isEqualTo(TestConstants.PRECONDITION_FAILED_STATUS_CODE);
         }
     }
 }
