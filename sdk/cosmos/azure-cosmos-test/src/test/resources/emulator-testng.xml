@@ -21,11 +21,11 @@
   ~ SOFTWARE.
   -->
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="emulater">
-  <test name="emulater" group-by-instances="true">
+<suite name="emulator">
+  <test name="emulator" group-by-instances="true">
     <groups>
       <run>
-        <include name="emulater"/>
+        <include name="emulator"/>
       </run>
     </groups>
     <packages>
