@@ -23,12 +23,14 @@ import java.util.Map;
 public class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
     private Process proxy;
+    private final Path testClassPath;
 
     /**
      * Construct a {@link TestProxyManager} for controlling the external test proxy.
      * @param testClassPath the test class path
      */
     public TestProxyManager(Path testClassPath) {
+        this.testClassPath = testClassPath;
         // This is necessary to stop the proxy when the debugger is stopped.
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
         if (runningLocally()) {
@@ -50,7 +52,7 @@ public class TestProxyManager {
 
                 ProcessBuilder builder = new ProcessBuilder(commandLine,
                     "--storage-location",
-                    Paths.get(System.getProperty("user.dir") + "/.." + "/.." + "/..").toRealPath().toString());
+                    TestUtils.getRepoRootResolveUntil(testClassPath, "eng").toString());
                 Map<String, String> environment = builder.environment();
                 environment.put("LOGGING__LOGLEVEL", "Information");
                 environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");

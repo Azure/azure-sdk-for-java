@@ -325,8 +325,9 @@ public abstract class TestBase implements BeforeEachCallback {
     }
 
     /**
-     * Get test class path
-     * @return the test class path
+     * Returns the path of the class to which the test belongs.
+     *
+     * @return The file path of the test class.
      */
     protected Path getTestClassPath() {
         return testContextManager.getTestClassPath();

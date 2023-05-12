@@ -83,7 +83,7 @@ public class TestContextManager {
      *
      * @return The file path of the test class.
      */
-    public Path getTestClassPath() {
+    Path getTestClassPath() {
         return testClassPath;
     }
 

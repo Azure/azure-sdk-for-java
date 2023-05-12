@@ -207,11 +207,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
         @Override
         public Mono<String> getBodyAsString() {
-            if (body != null) {
-                return Mono.just(CoreUtils.bomAwareToString(body.array(), getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
-            } else {
-                return null;
-            }
+            return Mono.just(CoreUtils.bomAwareToString(body.array(), getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
         }
 
         @Override
