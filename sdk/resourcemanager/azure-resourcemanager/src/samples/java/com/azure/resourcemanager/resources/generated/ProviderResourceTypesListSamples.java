@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.generated;
 /** Samples for ProviderResourceTypes List. */
 public final class ProviderResourceTypesListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetProviderResourceTypes.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/GetProviderResourceTypes.json
      */
     /**
      * Sample code: Get provider resource types.

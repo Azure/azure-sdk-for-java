@@ -26,6 +26,7 @@ import reactor.core.publisher.Flux;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -82,6 +83,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile Map<String, Object> properties;
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
+    private volatile Duration responseTimeout;
 
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 
@@ -1158,5 +1160,13 @@ public class RxDocumentServiceRequest implements Cloneable {
         if (priorityLevel != null) {
             this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.name());
         }
+    }
+  
+    public Duration getResponseTimeout() {
+        return responseTimeout;
+    }
+
+    public void setResponseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
     }
 }

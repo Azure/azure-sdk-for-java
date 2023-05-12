@@ -6,6 +6,7 @@ package com.azure.ai.formrecognizer.documentanalysis;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
 import com.azure.ai.formrecognizer.documentanalysis.models.AddressValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.documentanalysis.models.CurrencyValue;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentAnalysisAudience;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentField;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
@@ -15,10 +16,8 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMark
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentSelectionMarkState;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.Point;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -31,7 +30,6 @@ import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Assertions;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.InputStream;
@@ -39,7 +37,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -82,7 +79,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
 
         DocumentAnalysisClientBuilder builder = new DocumentAnalysisClientBuilder()
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .audience(audience);
@@ -94,6 +91,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             }
         } else {
             if (interceptorManager.isPlaybackMode()) {
@@ -102,9 +101,13 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
-        interceptorManager.addSanitizers(getTestProxySanitizers());
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
+        }
         return builder;
     }
 
@@ -119,7 +122,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
 
         DocumentModelAdministrationClientBuilder builder = new DocumentModelAdministrationClientBuilder()
             .endpoint(endpoint)
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+            .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
             .audience(audience);
@@ -131,22 +134,23 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             }
         } else {
             if (interceptorManager.isPlaybackMode()) {
-                builder.credential(new TokenCredential() {
-                    @Override
-                    public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext) {
-                        return Mono.just(new AccessToken("mockToken", OffsetDateTime.now().plusHours(2)));
-                    }
-                });
+                builder.credential(new MockTokenCredential());
                 setMatchers();
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
-        interceptorManager.addSanitizers(getTestProxySanitizers());
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
+        }
         return builder;
     }
     static TokenCredential getCredentialByAuthority(String endpoint) {
@@ -411,6 +415,12 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertEquals(EXPECTED_MERCHANT_NAME, invoicePage1Fields.get("VendorName")
             .getValueAsString());
         assertNotNull(invoicePage1Fields.get("VendorName").getConfidence());
+        DocumentField subtotalField = invoicePage1Fields.get("Subtotal");
+        CurrencyValue subtotal =
+            subtotalField.getValueAsCurrency();
+        Assertions.assertEquals(100.0, subtotal.getAmount());
+        Assertions.assertEquals("USD", subtotal.getCode());
+        Assertions.assertEquals("$", subtotal.getSymbol());
 
         Map<String, DocumentField> itemsMap
             = invoicePage1Fields.get("Items").getValueAsList().get(0).getValueAsMap();
@@ -420,8 +430,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
         assertNotNull(itemsMap.get("Date").getConfidence());
         assertEquals("34278587", itemsMap.get("ProductCode").getValueAsString());
         assertNotNull(itemsMap.get("ProductCode").getConfidence());
-        // assertEquals(DocumentFieldType.CURRENCY, itemsMap.get("Tax").getType());
-        // Assertions.assertNotNull(itemsMap.get("Tax").getConfidence());
+        Assertions.assertNotNull(analyzeResult.getPages());
     }
 
     static void validateMultipageInvoiceData(AnalyzeResult analyzeResult) {

@@ -120,7 +120,7 @@ public class ContainerRegistryContentClientIntegrationTests extends ContainerReg
         client = getContentClient("oci-artifact", httpClient);
         setManifestPrerequisites();
 
-        SetManifestOptions options  = new SetManifestOptions(BinaryData.fromObject(MANIFEST), ManifestMediaType.OCI_MANIFEST);
+        SetManifestOptions options  = new SetManifestOptions(BinaryData.fromObject(MANIFEST), ManifestMediaType.OCI_IMAGE_MANIFEST);
         SetManifestResult result = client.setManifestWithResponse(options, Context.NONE).getValue();
         assertNotNull(result);
         assertNotNull(result.getDigest());

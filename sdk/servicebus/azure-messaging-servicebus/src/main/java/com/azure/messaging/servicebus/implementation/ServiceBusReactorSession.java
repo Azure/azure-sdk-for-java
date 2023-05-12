@@ -167,7 +167,7 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
     protected ReactorReceiver createConsumer(String entityPath, Receiver receiver,
         ReceiveLinkHandler receiveLinkHandler, TokenManager tokenManager, ReactorProvider reactorProvider) {
         return new ServiceBusReactorReceiver(amqpConnection, entityPath, receiver, receiveLinkHandler, tokenManager,
-            reactorProvider, retryOptions.getTryTimeout(), retryPolicy);
+            reactorProvider, retryPolicy);
     }
 
     private Mono<ServiceBusReceiveLink> createConsumer(String linkName, String entityPath,

@@ -41,6 +41,7 @@ import static com.azure.ai.formrecognizer.documentanalysis.TestUtils.getTestProx
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class DocumentModelAdministrationClientTestBase extends TestProxyTestBase {
+    private static final String BLANK_PDF_PATH = TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF;
     Duration durationTestMode;
 
     /**
@@ -64,7 +65,6 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             .serviceVersion(serviceVersion)
             .audience(audience);
 
-
         if (useKeyCredential) {
             if (interceptorManager.isPlaybackMode()) {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -72,6 +72,8 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
             }
         } else {
             if (interceptorManager.isPlaybackMode()) {
@@ -80,9 +82,13 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
             } else if (interceptorManager.isRecordMode()) {
                 builder.credential(getCredentialByAuthority(endpoint));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
+            } else if (interceptorManager.isLiveMode()) {
+                builder.credential(getCredentialByAuthority(endpoint));
             }
         }
-        interceptorManager.addSanitizers(getTestProxySanitizers());
+        if (!interceptorManager.isLiveMode()) {
+            interceptorManager.addSanitizers(getTestProxySanitizers());
+        }
         return builder;
     }
     private void setMatchers() {
@@ -131,10 +137,10 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestProx
     }
 
     void blankPdfDataRunner(BiConsumer<InputStream, Long> testRunner) {
-        final long fileLength = new File(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF).length();
+        final long fileLength = new File(BLANK_PDF_PATH).length();
 
         try {
-            testRunner.accept(new FileInputStream(TestUtils.LOCAL_FILE_PATH + TestUtils.BLANK_PDF), fileLength);
+            testRunner.accept(new FileInputStream(BLANK_PDF_PATH), fileLength);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("Local file not found.", e);
         }

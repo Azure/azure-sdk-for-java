@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.generated;
 /** Samples for Providers GetAtTenantScope. */
 public final class ProvidersGetAtTenantScopeSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/GetNamedProviderAtTenant.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/GetNamedProviderAtTenant.json
      */
     /**
      * Sample code: Get a resource provider at tenant scope.

@@ -14,6 +14,7 @@ import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Context;
@@ -59,6 +60,13 @@ public class QueueTestBase extends TestProxyTestBase {
             interceptorManager.addSanitizers(
                 Collections.singletonList(new TestProxySanitizer("sig=(.*)", "REDACTED", TestProxySanitizerType.URL)));
         }
+
+        // Ignore changes to the order of query parameters and wholly ignore the 'sv' (service version) query parameter
+        // in SAS tokens.
+        // TODO (alzimmer): Once all Storage libraries are migrated to test proxy move this into the common parent.
+        interceptorManager.addMatchers(Arrays.asList(new CustomMatcher()
+            .setQueryOrderingIgnored(true)
+            .setIgnoredQueryParameters(Arrays.asList("sv"))));
     }
 
     private static String getCrc32(String input) {

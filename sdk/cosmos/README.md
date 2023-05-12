@@ -9,7 +9,7 @@ This project provides SDK library in Java for interacting with [SQL API][sql_api
 
 To get started with a specific library, see the **README.md** file located in the library's project folder. You can find service libraries in the `/sdk/cosmos/` directory.
 - [Azure Cosmos](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos/README.md) is Microsoft's Azure Cosmos DB Java SDK which provides client-side logical representation to access the Azure Cosmos DB SQL API. The SDK provides Reactor Core based async APIs.
-- [Azure Spring Data Cosmos](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-spring-data-cosmos/README.md) provides Spring Data support for Azure Cosmos DB using the SQL API, based on Spring Data framework.
+- [Azure Spring Data Cosmos](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/azure-spring-data-cosmos/README.md) provides Spring Data support for Azure Cosmos DB using the SQL API, based on Spring Data framework.
 - [Azure Cosmos Encryption](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-encryption/README.md) supports encryption for Azure Cosmos DB using SQL API. This plugin library is still under development and not is not ready to be consumed yet. 
 - [Azure Cosmos Benchmark](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-benchmark/README.md) is the benchmarking tool which provides different kinds of benchmarking workloads including but not limited to `readLatency`, `readThroughput`, `writeThroughput`, `readMyWrites`, etc.
 - [Azure Cosmos DotNet Benchmark](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-dotnet-benchmark/README.md) is the port of CosmosDB .NET benchmarking tool. 

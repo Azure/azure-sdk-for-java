@@ -16,6 +16,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.Binary;
@@ -513,7 +514,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         .flatMap(connection -> connection.getManagementNode(entityName, entityType))
                         .flatMapMany(managementNode -> managementNode.schedule(messageBatch.getMessages(), scheduledEnqueueTime,
                             messageBatch.getMaxSizeInBytes(), linkName.get(), transactionContext)),
-                    messageBatch.getMessages(), ServiceBusMessage::getContext)
+                    messageBatch.getMessages())
             ).onErrorMap(this::mapError);
     }
 

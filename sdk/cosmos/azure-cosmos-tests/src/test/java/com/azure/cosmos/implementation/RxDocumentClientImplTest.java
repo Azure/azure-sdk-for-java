@@ -400,6 +400,11 @@ public class RxDocumentClientImplTest {
             public CosmosDiagnostics createDiagnostics() {
                 return BridgeInternal.createCosmosDiagnostics(this) ;
             }
+
+            @Override
+            public String getUserAgent() {
+                return Utils.getUserAgent();
+            }
         }, storeResponse);
 
         documentServiceResponse.setCosmosDiagnostics(dummyCosmosDiagnostics());
@@ -417,6 +422,11 @@ public class RxDocumentClientImplTest {
             @Override
             public CosmosDiagnostics createDiagnostics() {
                 return null;
+            }
+
+            @Override
+            public String getUserAgent() {
+                return Utils.getUserAgent();
             }
         });
     }

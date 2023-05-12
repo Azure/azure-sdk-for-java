@@ -16,7 +16,7 @@ import java.time.Instant;
 /**
  * Contains convenience methods to instrument specific calls with traces and metrics.
  */
-public class ServiceBusReceiverInstrumentation {
+public final class ServiceBusReceiverInstrumentation {
     private final ServiceBusMeter meter;
     private final ServiceBusTracer tracer;
 
@@ -61,7 +61,7 @@ public class ServiceBusReceiverInstrumentation {
             return Mono.defer(() -> {
                 long startTime = Instant.now().toEpochMilli();
                 Context span = tracer.startSpanWithLink(getSettlementSpanName(status), ServiceBusTracer.OperationName.SETTLE,
-                    message, messageContext, messageContext);
+                    message, messageContext);
                 return publisher
                     .doOnEach(signal -> {
                         meter.reportSettlement(startTime, message.getSequenceNumber(), status, signal.getThrowable(), false, span);

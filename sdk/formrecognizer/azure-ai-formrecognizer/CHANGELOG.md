@@ -1,14 +1,26 @@
 # Release History
 
-## 4.1.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
+## 4.1.0-beta.2 (2023-05-10)
 ### Bugs Fixed
+- Document Table cell now returns correct values for bounding boxes.
 
 ### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+
+## 4.0.7 (2023-05-10)
+
+### Bugs Fixed
+- Document Table cell now returns correct values for bounding boxes.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
 
 ## 4.0.6 (2023-04-19)
 
