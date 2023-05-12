@@ -22,7 +22,7 @@ import java.net.URL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ScrubEtagPolicyTest {
-    private static final String ETAG_VALUE = "RU3FchB4PhtZdVy44UQO5CGkyZM";
+    private static final String ETAG_VALUE = "Dummy-Etag";
 
     @SyncAsyncTest
     public void scrubEtagDoNothing() {
@@ -51,7 +51,7 @@ public class ScrubEtagPolicyTest {
     @SyncAsyncTest
     public void scrubEtagWithQuotes() {
         final HttpHeaders headers = new HttpHeaders();
-        headers.set(HttpHeaderName.ETAG, "\"RU3FchB4PhtZdVy44UQO5CGkyZM\"");
+        headers.set(HttpHeaderName.ETAG, String.format("\"%s\"", ETAG_VALUE));
         HttpResponse mockResponse = new MockHttpResponse(null, 200, headers);
 
         final HttpPipeline pipeline = new HttpPipelineBuilder()
