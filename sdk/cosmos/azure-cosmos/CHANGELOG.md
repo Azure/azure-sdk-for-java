@@ -11,6 +11,8 @@
 
 #### Bugs Fixed
 * Fixed `IllegalArgumentException` in changeFeedProcessor when `maxScaleCount` is configured - See [PR 34618](https://github.com/Azure/azure-sdk-for-java/pull/34618)
+* Enabled proactive connection management to only reopen closed / reset connections to those endpoints used by containers which
+were part of the connection warm up flow - See [PR 34892](https://github.com/Azure/azure-sdk-for-java/pull/34892)
 
 #### Other Changes
 
