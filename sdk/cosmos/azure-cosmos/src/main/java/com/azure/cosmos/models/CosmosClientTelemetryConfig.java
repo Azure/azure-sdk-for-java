@@ -397,7 +397,7 @@ public final class CosmosClientTelemetryConfig {
      * usage to reduce overhead for capturing diagnostics temporarily.
      * The sampling is applied to operations in the SDK - so, a single operation is either sampled out completely or
      * all diagnostics (logs, tracing, metrics depending on what diagnostics are enabled) are captured. The main
-     * motivation or applying sampling for an entire operation is that a significant part of the CPU overhead happens
+     * motivation for applying sampling for an entire operation is that a significant part of the CPU overhead happens
      * when injecting the Context into the reactor pipeline - and the CPU usage reduction would be lower when sampling
      * out metrics on one operation (but still capture traces) and traces on another operation (but still capturing
      * metrics). In this case both operations would still have significant overhead - so, it is more efficient to
