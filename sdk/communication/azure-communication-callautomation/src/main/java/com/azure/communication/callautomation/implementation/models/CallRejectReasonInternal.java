@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The rejection reason. */
+/** Defines values for CallRejectReasonInternal. */
 public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRejectReasonInternal> {
     /** Static value none for CallRejectReasonInternal. */
     public static final CallRejectReasonInternal NONE = fromString("none");
@@ -18,14 +18,6 @@ public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRej
 
     /** Static value forbidden for CallRejectReasonInternal. */
     public static final CallRejectReasonInternal FORBIDDEN = fromString("forbidden");
-
-    /**
-     * Creates a new instance of CallRejectReasonInternal value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public CallRejectReasonInternal() {}
 
     /**
      * Creates or finds a CallRejectReasonInternal from its string representation.
@@ -38,11 +30,7 @@ public final class CallRejectReasonInternal extends ExpandableStringEnum<CallRej
         return fromString(name, CallRejectReasonInternal.class);
     }
 
-    /**
-     * Gets known CallRejectReasonInternal values.
-     *
-     * @return known CallRejectReasonInternal values.
-     */
+    /** @return known CallRejectReasonInternal values. */
     public static Collection<CallRejectReasonInternal> values() {
         return values(CallRejectReasonInternal.class);
     }

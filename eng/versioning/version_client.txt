@@ -37,7 +37,7 @@ com.azure:azure-sdk-all;1.0.0;1.0.0
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-anomalydetector;3.0.0-beta.5;3.0.0-beta.6
-com.azure:azure-ai-formrecognizer;4.0.6;4.1.0-beta.2
+com.azure:azure-ai-formrecognizer;4.0.7;4.1.0-beta.3
 com.azure:azure-ai-formrecognizer-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-personalizer;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-ai-documenttranslator;1.0.0-beta.1;1.0.0-beta.2
@@ -71,7 +71,7 @@ com.azure:azure-communication-phonenumbers;1.1.1;1.2.0-beta.1
 com.azure:azure-communication-networktraversal;1.1.0-beta.2;1.1.0-beta.3
 com.azure:azure-communication-jobrouter;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-rooms;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-containers-containerregistry;1.0.14;1.1.0
+com.azure:azure-containers-containerregistry;1.1.0;1.2.0-beta.1
 com.azure:azure-containers-containerregistry-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-core;1.39.0;1.40.0-beta.1
 com.azure:azure-core-amqp;2.8.5;2.9.0-beta.1
@@ -119,7 +119,7 @@ com.azure:azure-iot-deviceupdate;1.0.6;1.1.0-beta.1
 com.azure:azure-iot-modelsrepository;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-traffic;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-weather;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-maps-elevation;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-maps-elevation;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-maps-timezone;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-geolocation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-maps-render;1.0.0-beta.1;1.0.0-beta.2
@@ -147,7 +147,7 @@ com.azure:azure-mixedreality-remoterendering;1.1.17;1.2.0-beta.1
 com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.8;1.0.0-beta.9
 com.azure:azure-monitor-ingestion;1.0.1;1.1.0-beta.1
 com.azure:azure-monitor-ingestion-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-monitor-query;1.1.3;1.2.0
+com.azure:azure-monitor-query;1.2.0;1.3.0-beta.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
@@ -410,6 +410,7 @@ com.azure.resourcemanager:azure-resourcemanager-graphservices;1.0.0-beta.1;1.0.0
 com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-qumulo;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0-beta.1;1.0.0-beta.1
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
 com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 

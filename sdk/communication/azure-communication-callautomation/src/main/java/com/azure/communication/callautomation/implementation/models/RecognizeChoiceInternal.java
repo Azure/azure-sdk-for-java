@@ -29,9 +29,6 @@ public final class RecognizeChoiceInternal {
     @JsonProperty(value = "tone")
     private DtmfToneInternal tone;
 
-    /** Creates an instance of RecognizeChoiceInternal class. */
-    public RecognizeChoiceInternal() {}
-
     /**
      * Get the label property: Identifier for a given choice.
      *

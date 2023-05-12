@@ -36,9 +36,6 @@ public final class PlayRequest {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of PlayRequest class. */
-    public PlayRequest() {}
-
     /**
      * Get the playSourceInfo property: The source of the audio to be played.
      *
