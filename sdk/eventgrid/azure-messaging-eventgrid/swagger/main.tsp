@@ -43,6 +43,11 @@ namespace Azure.Messaging.EventGrid {
   using Azure.Core;
   using Azure.Core.Foundations;
 
+  enum ServiceApiVersions {
+    @useDependency(Azure.Core.Versions.v1_0_Preview_2)
+    v2023_06_01_preview: "2023-06-01-preview"
+  }
+
   @doc("Properties of an event published to an Azure Messaging EventGrid Namespace topic using the CloudEvent 1.0 Schema.")
   model CloudEvent {
     @doc("An identifier for the event. The combination of id and source must be unique for each distinct event.")
@@ -56,7 +61,7 @@ namespace Azure.Messaging.EventGrid {
 
     @doc("Event data specific to the event type, encoded as a base64 string.")
     data_base64?: bytes;
-    
+
     @doc("Type of event related to the originating occurrence.")
     type: string;
 
@@ -81,8 +86,8 @@ namespace Azure.Messaging.EventGrid {
     @doc("The token used to lock the event.")
     lockToken: string;
 
-    @doc("The attempt count for deliverying the event.")
-    deliveryAttemptCount: int32;
+    @doc("The attempt count for delivering the event.")
+    deliveryCount: int32;
   }
 
   @doc("Receive operation details per Cloud Event.")
@@ -99,7 +104,7 @@ namespace Azure.Messaging.EventGrid {
     @doc("Array of receive responses, one per cloud event.")
     value: ReceiveDetails[];
   }
-   
+
   @doc("Failed LockToken information.")
   model FailedLockToken {
     @doc("LockToken value")
@@ -109,13 +114,11 @@ namespace Azure.Messaging.EventGrid {
     errorCode: string;
 
     @doc("Description of the token error.")
-    errorDescription: string; 
+    errorDescription: string;
   }
 
   @doc("The result of the Publish operation.")
-  model PublishResult {
-          result?: string;
-  }
+  model PublishResult {}
 
   @doc("The result of the Acknowledge operation.")
   model AcknowledgeResult {
@@ -177,12 +180,13 @@ namespace Azure.Messaging.EventGrid {
     topicName: string;
 
     @doc("Single Cloud Event being published.")
-    @body 
+    @body
     event: CloudEvent;
   }, PublishResult>;
 
 
-  @doc("Publish Batch Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status code with an empty JSON object in response. Otherwise, the server can return various error codes. For example, 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410: which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error. ")  @route("/topics/{topicName}:publish", {shared: true})
+  @doc("Publish Batch Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status code with an empty JSON object in response. Otherwise, the server can return various error codes. For example, 401: which indicates authorization failure, 403: which indicates quota exceeded or message is too large, 410: which indicates that specific topic is not found, 400: for bad request, and 500: for internal server error. ")
+  @route("/topics/{topicName}:publish", {shared: true})
   @post op PublishCloudEvents is Azure.Core.RpcOperation<{
     @doc("content type")
     @header("content-type")
@@ -199,7 +203,7 @@ namespace Azure.Messaging.EventGrid {
 
   // Receive Operation:
   // POST https://{namespaceName}.{region}.eventgrid.azure.net/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive?api-Version={apiVersion}&maxWaitTime=60&maxEvents={maxEvents}
-   
+
   @doc("Receive Batch of Cloud Events from the Event Subscription.")
   @route("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive")
   @post op ReceiveCloudEvents is Azure.Core.RpcOperation<{
@@ -245,8 +249,8 @@ namespace Azure.Messaging.EventGrid {
   }, AcknowledgeResult>;
 
   // Release Operation:
-  // POST https://{namespaceName}.{region}.eventgrid.azure.net/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release?api-version={apiVersion}&eventDeliveryDelayInSeconds={eventDeliveryDelayInSeconds}
-  
+  // POST https://{namespaceName}.{region}.eventgrid.azure.net/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release?api-version={apiVersion}
+
   @doc("Release batch of Cloud Events. The server responds with an HTTP 200 status code if at least one event is successfully released. The response body will include the set of successfully released lockTokens, along with other failed lockTokens with their corresponding error information.")
   @route("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release")
   @post op ReleaseCloudEvents is Azure.Core.RpcOperation<{
@@ -262,12 +266,8 @@ namespace Azure.Messaging.EventGrid {
     @path
     eventSubscriptionName: string;
 
-    @doc("Delivery delay for the event in seconds. When value is 0, the event is released immediately. It is an optional parameter and if not specified, the default value is 0.")
-    @query
-    eventDeliveryDelayInSeconds?: int32 = 0;
-
     @doc("ReleaseOptions")
-    @body    
+    @body
     lockTokens : ReleaseOptions;
   }, ReleaseResult>;
 
