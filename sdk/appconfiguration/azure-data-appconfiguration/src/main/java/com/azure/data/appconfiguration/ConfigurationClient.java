@@ -40,10 +40,14 @@ import static com.azure.data.appconfiguration.implementation.Utility.toSettingFi
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
- * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
- * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, deleting, set read-only
- * status ConfigurationSettings, and listing settings or revision of a setting based on a
- * {@link SettingSelector filter}.
+ * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings},
+ * {@link FeatureFlagConfigurationSetting FeatureFlagConfigurationSetting} or
+ * {@link SecretReferenceConfigurationSetting SecretReferenceConfigurationSetting} in Azure App Configuration Store.
+ * Operations allowed by the client are adding, retrieving, deleting, set read-only status ConfigurationSettings, and
+ * listing settings or revision of a setting based on a {@link SettingSelector filter}.
+ *
+ * Additionally, this class allows to add an external synchronization token to ensure service requests receive
+ * up-to-date values. Use the {@link #updateSyncToken(String) updateSyncToken} method.
  *
  * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *

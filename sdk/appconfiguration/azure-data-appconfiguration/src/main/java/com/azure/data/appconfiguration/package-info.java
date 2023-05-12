@@ -124,5 +124,9 @@
  * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
+ *
+ * @see com.azure.data.appconfiguration.models.ConfigurationSetting
+ * @see com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting
+ * @see com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting
  */
 package com.azure.data.appconfiguration;
