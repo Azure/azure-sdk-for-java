@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
@@ -44,6 +45,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile String throughputControlCycleId;
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
+    private CosmosE2EOperationRetryPolicyConfig e2EOperationRetryPolicyConfig;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
@@ -128,7 +130,16 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.resourcePhysicalAddress = this.resourcePhysicalAddress;
         context.throughputControlCycleId = this.throughputControlCycleId;
         context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
+        context.e2EOperationRetryPolicyConfig = this.e2EOperationRetryPolicyConfig;
         return context;
+    }
+
+    public CosmosE2EOperationRetryPolicyConfig getE2EOperationRetryPolicyConfig() {
+        return e2EOperationRetryPolicyConfig;
+    }
+
+    public void setEndToEndOperationLatencyPolicyConfig(CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig) {
+        this.e2EOperationRetryPolicyConfig = endToEndOperationLatencyPolicyConfig;
     }
 }
 

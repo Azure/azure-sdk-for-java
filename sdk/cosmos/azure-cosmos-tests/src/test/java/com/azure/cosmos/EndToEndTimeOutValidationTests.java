@@ -154,14 +154,14 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .build();
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
+        options.setCosmosE2EOperationRetryPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
         TestObject itemToQuery = createdDocuments.get(random.nextInt(createdDocuments.size()));
 
         String queryText = "select top 1 * from c";
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec(queryText);
 
-        injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
+        FaultInjectionRule faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
         CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
 
         StepVerifier.create(queryPagedFlux)
@@ -169,6 +169,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 && ((OperationCancelledException) throwable).getSubStatusCode()
                 == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
             .verify();
+        faultInjectionRule.disable();
     }
 
     @Test(groups = {"simple"}, timeOut = 10000L)
@@ -222,7 +223,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .expectComplete()
                 .verify();
 
-            injectFailure(container, FaultInjectionOperationType.QUERY_ITEM, null);
+            FaultInjectionRule faultInjectionRule = injectFailure(container, FaultInjectionOperationType.QUERY_ITEM, null);
 
             // Should timeout after injected delay
             StepVerifier.create(queryPagedFlux)
@@ -246,7 +247,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
             // Enabling at client level and disabling at the query item operation level should not fail the request even
             // with injected delay
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions()
-                .setCosmosEndToEndOperationLatencyPolicyConfig(
+                .setCosmosE2EOperationRetryPolicyConfig(
                     new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1))
                         .enable(false)
                         .build());
@@ -256,6 +257,7 @@ public class EndToEndTimeOutValidationTests extends TestSuiteBase {
                 .expectComplete()
                 .verify();
 
+            faultInjectionRule.disable();
             // delete the database
             cosmosAsyncClient.getDatabase(dbname).delete().block();
         }

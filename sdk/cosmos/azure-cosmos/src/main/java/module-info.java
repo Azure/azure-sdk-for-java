@@ -28,7 +28,7 @@ module com.azure.cosmos {
     requires java.logging;
 	requires HdrHistogram;
 
-	// public API surface area
+    // public API surface area
     exports com.azure.cosmos;
     exports com.azure.cosmos.models;
     exports com.azure.cosmos.util;

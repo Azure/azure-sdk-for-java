@@ -18,6 +18,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
@@ -266,6 +267,7 @@ public class ImplementationBridgeHelpers {
             RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options);
             void applyMaxItemCount(CosmosQueryRequestOptions requestOptions, CosmosPagedFluxOptions fluxOptions);
+            CosmosE2EOperationRetryPolicyConfig getE2EOperationRetryPolicyConfig(CosmosQueryRequestOptions options);
         }
     }
 
