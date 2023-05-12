@@ -65,7 +65,6 @@ public final class CosmosDiagnosticsContext {
     private String cachedRequestDiagnostics = null;
     private final AtomicBoolean isCompleted = new AtomicBoolean(false);
 
-    private boolean isSampledOut = false;
     private Double samplingRateSnapshot;
 
     CosmosDiagnosticsContext(
