@@ -40,7 +40,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         super(cosmosClientBuilder);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromNowForLogicalPartition() throws Exception {
         CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
         try {
@@ -185,7 +185,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromContinuationToken() throws Exception {
         CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
         try {
@@ -260,7 +260,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void fullFidelityChangeFeed_FromContinuationTokenOperationsOrder() throws Exception {
         CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
         try {
@@ -318,7 +318,7 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
     }
 
     // TODO: re-enable this test once pipeline emulator has these changes - currently only in preview
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, enabled = false)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT, enabled = false)
     public void fullFidelityChangeFeed_VerifyPreviousPresentOnReplace() throws Exception {
         CosmosAsyncContainer cosmosContainer = initializeFFCFContainer();
         try {
@@ -406,14 +406,14 @@ public class FullFidelityChangeFeedTest extends TestSuiteBase {
         return createCollection(client, createdDatabase.getId(), cosmosContainerProperties);
     }
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulater" }, timeOut = SETUP_TIMEOUT)
     public void before_ChangeFeedTest() throws Exception {
         // set up the client
         client = this.getClientBuilder().buildAsyncClient();
         createdDatabase = getSharedCosmosDatabase(this.client);
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulater" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeClose(client);
     }

@@ -27,7 +27,7 @@ public class StoredProcedureRetryThrottleTest extends TestSuiteBase {
 
     public StoredProcedureRetryThrottleTest() {}
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void storedProcedureRetryThrottle() {
         client = SpyClientUnderTestFactory.createClientWithGatewaySpy(createGatewayRxDocumentClient());
 
@@ -65,17 +65,17 @@ public class StoredProcedureRetryThrottleTest extends TestSuiteBase {
         assertThat(storedProcedureResponse.getStatusCode()).isEqualTo(200);
     }
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulater" }, timeOut = SETUP_TIMEOUT)
     public void before_RetryThrottleTest() {
         createdCollection = SHARED_SINGLE_PARTITION_COLLECTION;
     }
 
-    @AfterMethod(groups = { "emulator" })
+    @AfterMethod(groups = { "emulater" })
     private void afterMethod() {
         safeClose(client);
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT)
+    @AfterClass(groups = { "emulater" }, timeOut = SHUTDOWN_TIMEOUT)
     public void afterClass() {
     }
 }

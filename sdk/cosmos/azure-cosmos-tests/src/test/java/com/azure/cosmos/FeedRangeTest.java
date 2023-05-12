@@ -26,21 +26,21 @@ public class FeedRangeTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulater"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
         cosmosClientBuilderUnderTest = getClientBuilder();
         houseKeepingClient = createGatewayHouseKeepingDocumentClient(false).buildClient();
         houseKeepingClient.createDatabase(preExistingDatabaseId);
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulater"}, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
         safeDeleteSyncDatabase(houseKeepingClient.getDatabase(preExistingDatabaseId));
         safeCloseSyncClient(houseKeepingClient);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void feedRange_RecreateContainerWithSameName() {
         String containerName = UUID.randomUUID().toString();
         String databaseName = preExistingDatabaseId;

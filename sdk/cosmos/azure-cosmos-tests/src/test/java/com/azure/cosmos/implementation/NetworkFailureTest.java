@@ -26,7 +26,7 @@ public class NetworkFailureTest extends TestSuiteBase {
         this.collectionDefinition = getCollectionDefinition();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createCollectionWithUnreachableHost() {
         SpyClientUnderTestFactory.ClientWithGatewaySpy client = null;
 
@@ -67,7 +67,7 @@ public class NetworkFailureTest extends TestSuiteBase {
         }
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulater" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         AsyncDocumentClient client = createGatewayHouseKeepingDocumentClient().build();
         safeDeleteCollection(client, collectionDefinition);

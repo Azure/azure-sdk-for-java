@@ -55,7 +55,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulater"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosMultiHashTest() {
         client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
@@ -78,14 +78,14 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         createdMultiHashContainer = createdDatabase.getContainer(collectionName);
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulater"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting cleanup....");
         safeDeleteSyncDatabase(createdDatabase);
         safeCloseSyncClient(client);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     public void itemCRUD() throws Exception {
 
         List<String> pkIds = new ArrayList<>();
@@ -109,7 +109,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         createdMultiHashContainer.deleteItem(documentId, partitionKey, new CosmosItemRequestOptions());
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     public void invalidPartitionKeys() throws CosmosException {
         //Try to use an invalid depth in partition key definition
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
@@ -168,7 +168,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
             .isEqualTo(expectedId);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     private void validateDocCRUDandQuery() throws Exception {
 
         ArrayList<ObjectNode> docs = createItems();
@@ -374,7 +374,7 @@ public class CosmosMultiHashTest extends TestSuiteBase {
         deleteAllItems();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     private void multiHashQueryTests() throws Exception {
         ArrayList<ObjectNode> docs = createItems();
 

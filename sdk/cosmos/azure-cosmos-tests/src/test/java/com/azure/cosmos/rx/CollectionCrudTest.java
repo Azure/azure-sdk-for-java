@@ -70,7 +70,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
@@ -84,7 +84,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void createCollectionWithTTL(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
@@ -101,7 +101,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createCollectionWithCompositeIndexAndSpatialSpec() throws InterruptedException {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
         ArrayList<String> paths = new ArrayList<String>();
@@ -179,7 +179,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
@@ -194,7 +194,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollectionWithTTL(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
@@ -212,7 +212,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void readCollection_DoesntExist(String collectionName) throws Exception {
 
         Mono<CosmosContainerResponse> readObservable = database
@@ -225,7 +225,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         validateFailure(readObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void deleteCollection(String collectionName) throws InterruptedException {
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
 
@@ -239,7 +239,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         validateSuccess(deleteObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void replaceCollection(String collectionName) throws InterruptedException  {
         // create a collection
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
@@ -262,7 +262,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         safeDeleteAllCollections(database);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT, dataProvider = "collectionCrudArgProvider")
     public void replaceCollectionWithTTL(String collectionName) throws InterruptedException {
         // create a collection
         CosmosContainerProperties collectionDefinition = getCollectionDefinition(collectionName);
@@ -290,7 +290,7 @@ public class CollectionCrudTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
+    @Test(groups = { "emulater" }, timeOut = 10 * TIMEOUT, retryAnalyzer = RetryAnalyzer.class)
     public void sessionTokenConsistencyCollectionDeleteCreateSameName() {
         CosmosAsyncClient client1 = getClientBuilder().buildAsyncClient();
         CosmosAsyncClient client2 = getClientBuilder().buildAsyncClient();
@@ -359,7 +359,7 @@ public class CollectionCrudTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     public void replaceProvisionedThroughput(){
         CosmosContainerProperties containerProperties = new CosmosContainerProperties("testCol", "/myPk");
         database.createContainer(
@@ -381,13 +381,13 @@ public class CollectionCrudTest extends TestSuiteBase {
     }
 
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulater" }, timeOut = SETUP_TIMEOUT)
     public void before_CollectionCrudTest() {
         client = getClientBuilder().buildAsyncClient();
         database = createDatabase(client, databaseId);
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulater" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(database);
         safeClose(client);

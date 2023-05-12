@@ -182,7 +182,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         assertThat(retryPolicy.getRetryContext().getStatusAndSubStatusCodes().size()).isEqualTo(retryPolicy.getRetryContext().getRetryCount());
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     public void retryContextMockTestOnCRUDOperation() throws NoSuchFieldException, IllegalAccessException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
@@ -264,7 +264,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         cosmosClient.close();
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
     public void goneExceptionSuccessScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -349,7 +349,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
     public void goneAndThrottlingExceptionSuccessScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -443,7 +443,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
     public void goneExceptionFailureScenario() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -492,7 +492,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
     public void sessionNonAvailableExceptionScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -582,7 +582,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT * 2)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT * 2)
     @SuppressWarnings("unchecked")
     public void sessionNonAvailableExceptionFailureScenario() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -634,7 +634,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
     public void throttlingExceptionScenario() throws JsonProcessingException {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
@@ -720,7 +720,7 @@ public class RetryContextOnDiagnosticTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     @SuppressWarnings("unchecked")
     public void throttlingExceptionGatewayModeScenario() {
         CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()

@@ -64,26 +64,26 @@ public class CosmosContainerTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"emulater"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
         client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
         createEncryptionKey();
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"emulater"}, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
         safeDeleteSyncDatabase(createdDatabase);
         safeCloseSyncClient(client);
     }
 
-    @BeforeMethod(groups = { "emulator" })
+    @BeforeMethod(groups = { "emulater" })
     public void beforeTest() throws Exception {
         this.createdContainer = null;
     }
 
-    @AfterMethod(groups = { "emulator" })
+    @AfterMethod(groups = { "emulater" })
     public void afterTest() throws Exception {
         if (this.createdContainer != null) {
             try {
@@ -96,7 +96,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createContainer_withProperties() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -107,7 +107,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, containerResponse);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createContainer_withEncryption() {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -143,7 +143,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponseWithEncryption(containerProperties, containerResponse, clientEncryptionPolicy);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     public void createContainer_withPartitionKeyWrongPolicyFormatVersion() {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -217,7 +217,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponseWithEncryption(containerProperties, containerResponse, clientEncryptionPolicy);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     public void createEncryptionPolicy_withIdWrongPolicyFormatVersion() {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -247,7 +247,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     public void createContainer_withPartitionKeyInEncryption() {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -324,7 +324,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponseWithEncryption(containerProperties, containerResponse, clientEncryptionPolicy);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     public void createEncryptionPolicy_withIdWrongEncryptionType() {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -365,7 +365,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         };
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT, dataProvider = "analyticalTTLProvider", enabled = false)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT, dataProvider = "analyticalTTLProvider", enabled = false)
     public void createContainer_withAnalyticalTTL(Integer analyticalTTL) throws Exception {
         // not working with emulator yet. TODO: enable when emulator has support for this.
         String collectionName = UUID.randomUUID().toString();
@@ -384,7 +384,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(containerResponse.getProperties().getAnalyticalStoreTimeToLiveInSeconds()).isEqualTo(analyticalTTL);
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     public void createContainer_alreadyExists() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -401,7 +401,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createContainer_withThroughput() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -413,7 +413,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, containerResponse);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createContainer_withFullFidelityChangeFeedPolicy() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -432,7 +432,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isEqualTo(Duration.ofMinutes(8));
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createContainer_withIncrementalChangeFeedPolicy() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -449,7 +449,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isEqualTo(Duration.ZERO);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createContainer_withDefaultChangeFeedPolicy() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -465,7 +465,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isEqualTo(Duration.ZERO);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createContainer_withOptions() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -476,7 +476,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, containerResponse);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createContainer_withThroughputAndOptions() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -489,7 +489,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, containerResponse);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createContainer_withNameAndPartitionKeyPath() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         String partitionKeyPath = "/mypk";
@@ -499,7 +499,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(new CosmosContainerProperties(collectionName, partitionKeyPath), containerResponse);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createContainer_withNamePartitionPathAndThroughput() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         String partitionKeyPath = "/mypk";
@@ -511,7 +511,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(new CosmosContainerProperties(collectionName, partitionKeyPath), containerResponse);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void readContainer() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -529,7 +529,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, read1);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void getFeedRanges() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -548,7 +548,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertFeedRange(feedRanges.get(0), "{\"Range\":{\"min\":\"\",\"max\":\"FF\"}}");
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void trySplitRanges_for_NonExistingContainer() throws Exception {
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
         CosmosAsyncContainer nonExistingContainer =
@@ -580,7 +580,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             ));
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void getNormalizedFeedRanges_HashV1() {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -622,7 +622,7 @@ public class CosmosContainerTest extends TestSuiteBase {
                 false));
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void getNormalizedFeedRanges_HashV2() {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinitionForHashV2(collectionName);
@@ -664,7 +664,7 @@ public class CosmosContainerTest extends TestSuiteBase {
                 false));
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void getFeedRanges_withMultiplePartitions() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -712,7 +712,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isTrue();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void getFeedRanges_withMultiplePartitions_HashV2() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinitionForHashV2(collectionName);
@@ -782,7 +782,7 @@ public class CosmosContainerTest extends TestSuiteBase {
                     ).block()))).block();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void deleteContainer() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -794,7 +794,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void deleteContainer_withOptions() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -806,7 +806,7 @@ public class CosmosContainerTest extends TestSuiteBase {
 
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void replace() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -836,7 +836,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isEqualTo(true);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void enableFullFidelityChangeFeedForExistingContainer() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -862,7 +862,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isEqualTo(Duration.ofMinutes(4));
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void changeFullFidelityChangeFeedRetentionDurationForExistingContainer() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -889,7 +889,7 @@ public class CosmosContainerTest extends TestSuiteBase {
             .isEqualTo(Duration.ofMinutes(6));
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void readAllContainers() throws Exception{
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
@@ -906,7 +906,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         assertThat(feedResponseIterator1.iterator().hasNext()).isTrue();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void crudMultiHashContainer() throws Exception {
         String collectionName = UUID.randomUUID().toString();
 
@@ -941,7 +941,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         CosmosContainerResponse deleteResponse = multiHashContainer.delete();
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void queryContainer() throws Exception{
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);

@@ -623,7 +623,7 @@ public class ClientMetricsTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT * 10)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT * 10)
     public void itemPatchSuccess() {
         this.beforeTest(CosmosMetricCategory.DEFAULT);
         try {

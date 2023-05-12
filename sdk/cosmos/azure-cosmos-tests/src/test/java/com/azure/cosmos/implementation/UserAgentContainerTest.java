@@ -53,7 +53,7 @@ public class UserAgentContainerTest {
         }
     }
 
-    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    @Test(groups = {"emulater"}, timeOut = TIMEOUT)
     public void UserAgentIntegration() {
         String userProvidedSuffix = "test-application-id";
         CosmosAsyncClient gatewayClient = null;

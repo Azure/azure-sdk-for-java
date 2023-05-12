@@ -32,7 +32,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createDatabase() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -46,7 +46,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
         validateSuccess(createObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void createDatabase_AlreadyExists() throws Exception {
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
         databases.add(databaseDefinition.getId());
@@ -64,7 +64,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
         validateFailure(createObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void readDatabase() throws Exception {
         // read database
         Mono<CosmosDatabaseResponse> readObservable = client.getDatabase(preExistingDatabaseId).read();
@@ -75,7 +75,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
         validateSuccess(readObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void readDatabase_DoesntExist() throws Exception {
         // read database
         Mono<CosmosDatabaseResponse> readObservable = client.getDatabase("I don't exist").read();
@@ -89,7 +89,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
     }
 
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void deleteDatabase() throws Exception {
         // create the database
         CosmosDatabaseProperties databaseDefinition = new CosmosDatabaseProperties(CosmosDatabaseForTest.generateId());
@@ -107,7 +107,7 @@ public class DatabaseCrudTest extends TestSuiteBase {
         validateSuccess(deleteObservable, validator);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulater" }, timeOut = TIMEOUT)
     public void deleteDatabase_DoesntExist() throws Exception {
         // delete the database
         Mono<CosmosDatabaseResponse> deleteObservable = client.getDatabase("I don't exist").delete();
@@ -120,13 +120,13 @@ public class DatabaseCrudTest extends TestSuiteBase {
         validateFailure(deleteObservable, validator);
     }
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulater" }, timeOut = SETUP_TIMEOUT)
     public void before_DatabaseCrudTest() {
         client = getClientBuilder().buildAsyncClient();
         createdDatabase = createDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulater" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(createdDatabase);
         for(String dbId: databases) {
