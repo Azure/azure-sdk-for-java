@@ -635,8 +635,11 @@ public class GatewayAddressCache implements IAddressCache {
                                 Pair<PartitionKeyRangeIdentity, AddressInformation[]> pkrIdToAddressInfos =
                                         toPartitionAddressAndRange(collectionRid, addresses);
 
+                                // refresh / record new addresses in proactiveOpenConnectionsProcessor
+                                // when forceRefresh is true
                                 if (forceRefresh) {
-                                    refreshCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(collectionRid, pkrIdToAddressInfos.getRight());
+                                    refreshCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(
+                                            collectionRid, pkrIdToAddressInfos.getRight());
                                 }
 
                                 return pkrIdToAddressInfos;
@@ -905,6 +908,18 @@ public class GatewayAddressCache implements IAddressCache {
 
             final int minConnectionsRequiredForEndpoint = (isCollectionRidUnderOpenConnectionsFlow) ?
                     Configs.getMinConnectionPoolSizePerEndpoint() : 1;
+
+            // 1. replica validation can ensure that for addresses with unknown (only when connection warm up is opted in) /
+            // unhealthyPending statuses, open connections flow kicks in
+            // 2. replica validation can kick in when there are new partitions (possibly due to split)
+            // whose endpoint health statuses are can be in unknown / unhealthyPending state
+            // 3. this also results in an update of the set of addresses which are under the open connections
+            // flow provided these addresses are used by a container in the connection warm up flow
+            if (isCollectionRidUnderOpenConnectionsFlow) {
+                this.proactiveOpenConnectionsProcessor
+                        .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(
+                                collectionRid, addressesNeedToValidation.stream().map(Uri::getURIAsString).collect(Collectors.toList()));
+            }
 
             for (Uri addressToBeValidated : addressesNeedToValidation) {
 
