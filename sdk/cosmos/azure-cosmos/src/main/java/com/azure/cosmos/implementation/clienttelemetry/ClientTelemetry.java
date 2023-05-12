@@ -214,6 +214,8 @@ public class ClientTelemetry {
 
     public void init() {
         loadAzureVmMetaData();
+
+        
         sendClientTelemetry().subscribe();
     }
 
