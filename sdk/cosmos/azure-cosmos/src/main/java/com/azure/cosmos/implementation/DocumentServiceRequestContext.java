@@ -14,6 +14,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -43,6 +44,9 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile String throughputControlCycleId;
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
+
+    // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
+    public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
     public DocumentServiceRequestContext() {}
 
