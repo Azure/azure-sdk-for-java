@@ -41,7 +41,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
 
         TableTransactionActionResponse build() {
             TableTransactionActionResponse response =
-                ModelHelper.createTableTransactionActionResponse(statusCode, value);
+                TableTransactionActionResponseAccessHelper.createTableTransactionActionResponse(statusCode, value);
 
             headers.forEach(h -> response.getHeaders().set(h.getName(), h.getValue()));
 

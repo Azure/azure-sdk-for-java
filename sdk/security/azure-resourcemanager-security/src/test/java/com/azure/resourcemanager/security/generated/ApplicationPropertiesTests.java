@@ -16,10 +16,10 @@ public final class ApplicationPropertiesTests {
         ApplicationProperties model =
             BinaryData
                 .fromString(
-                    "{\"displayName\":\"ggiycwkdtaawxwf\",\"description\":\"aumrrqmbzmqkrat\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datawbjsidbirkf\",\"datakso\"]}")
+                    "{\"displayName\":\"ydjfb\",\"description\":\"yv\",\"sourceResourceType\":\"Assessments\",\"conditionSets\":[\"datalrtywikdmhlakuf\",\"datagbhgau\",\"datacdixmx\"]}")
                 .toObject(ApplicationProperties.class);
-        Assertions.assertEquals("ggiycwkdtaawxwf", model.displayName());
-        Assertions.assertEquals("aumrrqmbzmqkrat", model.description());
+        Assertions.assertEquals("ydjfb", model.displayName());
+        Assertions.assertEquals("yv", model.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, model.sourceResourceType());
     }
 
@@ -27,13 +27,13 @@ public final class ApplicationPropertiesTests {
     public void testSerialize() throws Exception {
         ApplicationProperties model =
             new ApplicationProperties()
-                .withDisplayName("ggiycwkdtaawxwf")
-                .withDescription("aumrrqmbzmqkrat")
+                .withDisplayName("ydjfb")
+                .withDescription("yv")
                 .withSourceResourceType(ApplicationSourceResourceType.ASSESSMENTS)
-                .withConditionSets(Arrays.asList("datawbjsidbirkf", "datakso"));
+                .withConditionSets(Arrays.asList("datalrtywikdmhlakuf", "datagbhgau", "datacdixmx"));
         model = BinaryData.fromObject(model).toObject(ApplicationProperties.class);
-        Assertions.assertEquals("ggiycwkdtaawxwf", model.displayName());
-        Assertions.assertEquals("aumrrqmbzmqkrat", model.description());
+        Assertions.assertEquals("ydjfb", model.displayName());
+        Assertions.assertEquals("yv", model.description());
         Assertions.assertEquals(ApplicationSourceResourceType.ASSESSMENTS, model.sourceResourceType());
     }
 }

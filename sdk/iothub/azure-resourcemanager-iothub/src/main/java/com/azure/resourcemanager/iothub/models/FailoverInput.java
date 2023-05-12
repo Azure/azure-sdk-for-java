@@ -17,6 +17,10 @@ public final class FailoverInput {
     @JsonProperty(value = "failoverRegion", required = true)
     private String failoverRegion;
 
+    /** Creates an instance of FailoverInput class. */
+    public FailoverInput() {
+    }
+
     /**
      * Get the failoverRegion property: Region the hub will be failed over to.
      *

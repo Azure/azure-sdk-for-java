@@ -70,6 +70,8 @@ public final class IdentityClientOptions implements Cloneable {
     private List<HttpPipelinePolicy> perRetryPolicies;
     private boolean instanceDiscovery;
 
+    private Duration credentialProcessTimeout = Duration.ofSeconds(10);
+
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
@@ -657,12 +659,13 @@ public final class IdentityClientOptions implements Cloneable {
     }
 
     /**
-     * Disable instance discovery. Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
+     * Disables authority validation and instance discovery.
+     * Instance discovery is acquiring metadata about an authority from https://login.microsoft.com
      * to validate that authority. This may need to be disabled in private cloud or ADFS scenarios.
      *
      * @return the updated client options
      */
-    public IdentityClientOptions disableInstanceDisovery() {
+    public IdentityClientOptions disableInstanceDiscovery() {
         this.instanceDiscovery = false;
         return this;
     }
@@ -671,7 +674,7 @@ public final class IdentityClientOptions implements Cloneable {
      * Gets the instance discovery policy.
      * @return boolean indicating if instance discovery is enabled.
      */
-    public boolean getInstanceDiscovery() {
+    public boolean isInstanceDiscoveryEnabled() {
         return this.instanceDiscovery;
     }
 
@@ -687,6 +690,22 @@ public final class IdentityClientOptions implements Cloneable {
         cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         multiTenantAuthDisabled = configuration
             .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
+    }
+
+    /**
+     * Gets the timeout to apply to developer credential operations.
+     * @return The timeout value for developer credential operations.
+     */
+    public Duration getCredentialProcessTimeout() {
+        return credentialProcessTimeout;
+    }
+
+    /**
+     * Sets the timeout for developer credential operations.
+     * @param credentialProcessTimeout The timeout value for developer credential operations.
+     */
+    public void setCredentialProcessTimeout(Duration credentialProcessTimeout) {
+        this.credentialProcessTimeout = credentialProcessTimeout;
     }
 
     public IdentityClientOptions clone() {
@@ -718,8 +737,8 @@ public final class IdentityClientOptions implements Cloneable {
             .setRetryPolicy(this.retryPolicy)
             .setPerCallPolicies(this.perCallPolicies)
             .setPerRetryPolicies(this.perRetryPolicies);
-        if (!getInstanceDiscovery()) {
-            clone.disableInstanceDisovery();
+        if (!isInstanceDiscoveryEnabled()) {
+            clone.disableInstanceDiscovery();
         }
         return clone;
     }

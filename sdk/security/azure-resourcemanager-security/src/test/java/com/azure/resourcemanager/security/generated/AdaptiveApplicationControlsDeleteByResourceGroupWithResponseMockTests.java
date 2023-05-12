@@ -58,6 +58,6 @@ public final class AdaptiveApplicationControlsDeleteByResourceGroupWithResponseM
 
         manager
             .adaptiveApplicationControls()
-            .deleteByResourceGroupWithResponse("nm", "wgpterdiuw", com.azure.core.util.Context.NONE);
+            .deleteByResourceGroupWithResponse("cfogxhcxnwjt", "fdz", com.azure.core.util.Context.NONE);
     }
 }

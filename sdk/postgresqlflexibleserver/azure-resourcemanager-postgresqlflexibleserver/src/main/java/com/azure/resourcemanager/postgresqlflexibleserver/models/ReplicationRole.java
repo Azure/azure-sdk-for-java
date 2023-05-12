@@ -16,20 +16,8 @@ public final class ReplicationRole extends ExpandableStringEnum<ReplicationRole>
     /** Static value Primary for ReplicationRole. */
     public static final ReplicationRole PRIMARY = fromString("Primary");
 
-    /** Static value Secondary for ReplicationRole. */
-    public static final ReplicationRole SECONDARY = fromString("Secondary");
-
-    /** Static value WalReplica for ReplicationRole. */
-    public static final ReplicationRole WAL_REPLICA = fromString("WalReplica");
-
-    /** Static value SyncReplica for ReplicationRole. */
-    public static final ReplicationRole SYNC_REPLICA = fromString("SyncReplica");
-
     /** Static value AsyncReplica for ReplicationRole. */
     public static final ReplicationRole ASYNC_REPLICA = fromString("AsyncReplica");
-
-    /** Static value GeoSyncReplica for ReplicationRole. */
-    public static final ReplicationRole GEO_SYNC_REPLICA = fromString("GeoSyncReplica");
 
     /** Static value GeoAsyncReplica for ReplicationRole. */
     public static final ReplicationRole GEO_ASYNC_REPLICA = fromString("GeoAsyncReplica");

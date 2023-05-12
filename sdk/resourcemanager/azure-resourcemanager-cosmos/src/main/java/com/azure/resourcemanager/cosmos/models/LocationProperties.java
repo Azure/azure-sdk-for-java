@@ -29,6 +29,24 @@ public final class LocationProperties {
     @JsonProperty(value = "backupStorageRedundancies", access = JsonProperty.Access.WRITE_ONLY)
     private List<BackupStorageRedundancy> backupStorageRedundancies;
 
+    /*
+     * Flag indicating whether the subscription have access in region for Non-Availability Zones.
+     */
+    @JsonProperty(value = "isSubscriptionRegionAccessAllowedForRegular", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isSubscriptionRegionAccessAllowedForRegular;
+
+    /*
+     * Flag indicating whether the subscription have access in region for Availability Zones(Az).
+     */
+    @JsonProperty(value = "isSubscriptionRegionAccessAllowedForAz", access = JsonProperty.Access.WRITE_ONLY)
+    private Boolean isSubscriptionRegionAccessAllowedForAz;
+
+    /*
+     * Enum to indicate current buildout status of the region.
+     */
+    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
+    private Status status;
+
     /** Creates an instance of LocationProperties class. */
     public LocationProperties() {
     }
@@ -59,6 +77,35 @@ public final class LocationProperties {
      */
     public List<BackupStorageRedundancy> backupStorageRedundancies() {
         return this.backupStorageRedundancies;
+    }
+
+    /**
+     * Get the isSubscriptionRegionAccessAllowedForRegular property: Flag indicating whether the subscription have
+     * access in region for Non-Availability Zones.
+     *
+     * @return the isSubscriptionRegionAccessAllowedForRegular value.
+     */
+    public Boolean isSubscriptionRegionAccessAllowedForRegular() {
+        return this.isSubscriptionRegionAccessAllowedForRegular;
+    }
+
+    /**
+     * Get the isSubscriptionRegionAccessAllowedForAz property: Flag indicating whether the subscription have access in
+     * region for Availability Zones(Az).
+     *
+     * @return the isSubscriptionRegionAccessAllowedForAz value.
+     */
+    public Boolean isSubscriptionRegionAccessAllowedForAz() {
+        return this.isSubscriptionRegionAccessAllowedForAz;
+    }
+
+    /**
+     * Get the status property: Enum to indicate current buildout status of the region.
+     *
+     * @return the status value.
+     */
+    public Status status() {
+        return this.status;
     }
 
     /**

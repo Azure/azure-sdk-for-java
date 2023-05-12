@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -99,11 +100,6 @@ public final class BridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Document documentFromObject(Object document, ObjectMapper mapper) {
         return Document.fromObject(document, mapper);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static ByteBuffer serializeJsonToByteBuffer(Object document, ObjectMapper mapper) {
-        return InternalObjectNode.serializeJsonToByteBuffer(document, mapper);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -657,8 +653,9 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosException createServiceUnavailableException(Exception innerException) {
-        return new ServiceUnavailableException(innerException.getMessage(), innerException, null, null);
+    public static CosmosException createServiceUnavailableException(Exception innerException, int subStatusCode) {
+        return new ServiceUnavailableException(innerException.getMessage(), innerException, null, null,
+            subStatusCode);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -698,5 +695,6 @@ public final class BridgeInternal {
         DirectConnectionConfig.initialize();
         CosmosAsyncClient.initialize();
         CosmosDiagnosticsThresholds.initialize();
+        CosmosContainerProactiveInitConfig.initialize();
     }
 }

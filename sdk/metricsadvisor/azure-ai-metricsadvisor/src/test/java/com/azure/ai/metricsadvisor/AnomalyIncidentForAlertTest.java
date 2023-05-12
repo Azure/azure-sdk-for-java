@@ -40,7 +40,7 @@ public class AnomalyIncidentForAlertTest extends IncidentForAlertTestBase {
     @MethodSource("com.azure.ai.metricsadvisor.TestUtils#getTestParameters")
     @Disabled
     public void listIncidentsForAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
-        MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion).buildClient();
+        MetricsAdvisorClient client = getMetricsAdvisorBuilder(httpClient, serviceVersion, true).buildClient();
 
         PagedIterable<AnomalyIncident> incidentsIterable
             = client.listIncidentsForAlert(

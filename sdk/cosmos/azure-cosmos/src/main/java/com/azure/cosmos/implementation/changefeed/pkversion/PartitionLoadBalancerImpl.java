@@ -119,30 +119,30 @@ class PartitionLoadBalancerImpl implements PartitionLoadBalancer {
                         if (cancellationToken.isCancellationRequested()) return Mono.empty();
                         return this.partitionController.addOrUpdateLease(lease);
                     })
-                    .then(Mono.just(this)
-                        .flatMap(value -> {
-                            if (cancellationToken.isCancellationRequested()) {
-                                return Mono.empty();
-                            }
-
-                            Instant stopTimer = Instant.now().plus(this.leaseAcquireInterval);
-                            return Mono.just(value)
-                                .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
-                                .repeat( () -> {
-                                    Instant currentTime = Instant.now();
-                                    return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
-                                }).last();
-                        })
-                    );
+                    .then();
             })
             .onErrorResume(throwable -> {
                 // "catch all" exception handler to keep the loop going until the user stops the change feed processor
                 logger.warn("Unexpected exception thrown while trying to acquire available leases", throwable);
                 return Mono.empty();
             })
-            .repeat(() -> {
-                return !cancellationToken.isCancellationRequested();
-            })
+            .then(
+                Mono.just(this)
+                        .flatMap(value -> {
+                            if (cancellationToken.isCancellationRequested()) {
+                                return Mono.empty();
+                            }
+                            Instant stopTimer = Instant.now().plus(this.leaseAcquireInterval);
+                            return Mono.just(value)
+                                .delayElement(Duration.ofMillis(100), CosmosSchedulers.COSMOS_PARALLEL)
+                                .repeat(() -> {
+                                    Instant currentTime = Instant.now();
+                                    return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
+                                })
+                                .then();
+                        })
+            )
+            .repeat(() -> !cancellationToken.isCancellationRequested())
             .then()
             .onErrorResume(throwable -> {
                 // We should not get here.

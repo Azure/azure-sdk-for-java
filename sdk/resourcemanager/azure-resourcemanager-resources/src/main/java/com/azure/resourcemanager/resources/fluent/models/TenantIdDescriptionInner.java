@@ -13,13 +13,13 @@ import java.util.List;
 @Immutable
 public final class TenantIdDescriptionInner {
     /*
-     * The fully qualified ID of the tenant. For example, /tenants/00000000-0000-0000-0000-000000000000.
+     * The fully qualified ID of the tenant. For example, /tenants/8d65815f-a5b6-402f-9298-045155da7d74
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
+     * The tenant ID. For example, 8d65815f-a5b6-402f-9298-045155da7d74
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
@@ -78,7 +78,7 @@ public final class TenantIdDescriptionInner {
 
     /**
      * Get the id property: The fully qualified ID of the tenant. For example,
-     * /tenants/00000000-0000-0000-0000-000000000000.
+     * /tenants/8d65815f-a5b6-402f-9298-045155da7d74.
      *
      * @return the id value.
      */
@@ -87,7 +87,7 @@ public final class TenantIdDescriptionInner {
     }
 
     /**
-     * Get the tenantId property: The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
+     * Get the tenantId property: The tenant ID. For example, 8d65815f-a5b6-402f-9298-045155da7d74.
      *
      * @return the tenantId value.
      */

@@ -29,7 +29,6 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
     private static final String REACTOR_HTTP_TRACE_CONTEXT_KEY = "instrumentation-context-key";
     private static final HttpHeaderName SERVICE_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
-    private static final HttpHeaderName CLIENT_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-client-request-id");
     private static final String LEGACY_OTEL_POLICY_NAME = "io.opentelemetry.javaagent.instrumentation.azurecore.v1_19.shaded.com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy";
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
 
@@ -90,6 +89,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
     }
 
+    @SuppressWarnings("deprecation")
     private Context startSpan(HttpPipelineCallContext azContext) {
         HttpRequest request = azContext.getHttpRequest();
 
@@ -102,17 +102,18 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         addPostSamplingAttributes(span, request);
 
+        // TODO (alzimmer): Add injectContext(BiConsumer<HttpHeaderName, String>, Context)
         tracer.injectContext((k, v) -> request.getHeaders().set(k, v), span);
         return span;
     }
 
     private void addPostSamplingAttributes(Context span, HttpRequest request) {
-        String userAgent = request.getHeaders().getValue("User-Agent");
+        String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
         if (!CoreUtils.isNullOrEmpty(userAgent)) {
             tracer.setAttribute(HTTP_USER_AGENT, userAgent, span);
         }
 
-        String requestId = request.getHeaders().getValue(CLIENT_REQUEST_ID_HEADER);
+        String requestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         if (!CoreUtils.isNullOrEmpty(requestId)) {
             tracer.setAttribute(CLIENT_REQUEST_ID_ATTRIBUTE, requestId, span);
         }

@@ -45,6 +45,10 @@ public final class RoutingProperties {
     @JsonProperty(value = "enrichments")
     private List<EnrichmentProperties> enrichments;
 
+    /** Creates an instance of RoutingProperties class. */
+    public RoutingProperties() {
+    }
+
     /**
      * Get the endpoints property: The properties related to the custom endpoints to which your IoT hub routes messages
      * based on the routing rules. A maximum of 10 custom endpoints are allowed across all endpoint types for paid hubs

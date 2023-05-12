@@ -6,6 +6,7 @@ package com.azure.containers.containerregistry;
 import com.azure.containers.containerregistry.implementation.AzureContainerRegistryImpl;
 import com.azure.containers.containerregistry.implementation.ContainerRegistriesImpl;
 import com.azure.containers.containerregistry.implementation.UtilsImpl;
+import com.azure.containers.containerregistry.implementation.models.AcrErrorsException;
 import com.azure.containers.containerregistry.implementation.models.RepositoryWriteableProperties;
 import com.azure.containers.containerregistry.models.ArtifactManifestOrder;
 import com.azure.containers.containerregistry.models.ArtifactManifestProperties;
@@ -29,6 +30,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
+import static com.azure.containers.containerregistry.implementation.UtilsImpl.mapAcrErrorsException;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 
@@ -132,13 +134,9 @@ public final class ContainerRepositoryAsync {
     }
 
     private Mono<Response<Void>> deleteWithResponse(Context context) {
-        try {
-            return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context)
-                .flatMap(response -> Mono.just(UtilsImpl.deleteResponseToSuccess(response)))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return this.serviceClient.deleteRepositoryWithResponseAsync(repositoryName, context)
+            .map(UtilsImpl::deleteResponseToSuccess)
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -244,32 +242,24 @@ public final class ContainerRepositoryAsync {
     }
 
     private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesSinglePageAsync(Integer pageSize, ArtifactManifestOrder order, Context context) {
-        try {
-            if (pageSize != null && pageSize < 0) {
-                return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
-            }
-
-            final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
-            return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderString, context)
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
-                    baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName,
-                        registryLoginServer)))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
+        if (pageSize != null && pageSize < 0) {
+            return monoError(LOGGER, new IllegalArgumentException("'pageSize' cannot be negative."));
         }
+
+        final String orderString = order == ArtifactManifestOrder.NONE ? null : order.toString();
+        return this.serviceClient.getManifestsSinglePageAsync(repositoryName, null, pageSize, orderString, context)
+            .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
+                baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName,
+                    registryLoginServer)))
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     private Mono<PagedResponse<ArtifactManifestProperties>> listManifestPropertiesNextSinglePageAsync(String nextLink, Context context) {
-        try {
-            return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context)
-                .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
-                    baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName,
-                        registryLoginServer)))
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
-        }
+        return this.serviceClient.getManifestsNextSinglePageAsync(nextLink, context)
+            .map(res -> UtilsImpl.getPagedResponseWithContinuationToken(res,
+                baseArtifacts -> UtilsImpl.mapManifestsProperties(baseArtifacts, repositoryName,
+                    registryLoginServer)))
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -299,12 +289,8 @@ public final class ContainerRepositoryAsync {
     }
 
     private Mono<Response<ContainerRepositoryProperties>> getPropertiesWithResponse(Context context) {
-        try {
-            return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context)
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException ex) {
-            return monoError(LOGGER, ex);
-        }
+        return this.serviceClient.getPropertiesWithResponseAsync(repositoryName, context)
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**
@@ -360,23 +346,19 @@ public final class ContainerRepositoryAsync {
     }
 
     private Mono<Response<ContainerRepositoryProperties>> updatePropertiesWithResponse(ContainerRepositoryProperties repositoryProperties, Context context) {
-        try {
-            if (repositoryProperties == null) {
-                return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
-            }
+        if (repositoryProperties == null) {
+            return monoError(LOGGER, new NullPointerException("'value' cannot be null."));
+        }
 
-            RepositoryWriteableProperties writableProperties = new RepositoryWriteableProperties()
-                .setDeleteEnabled(repositoryProperties.isDeleteEnabled())
-                .setListEnabled(repositoryProperties.isListEnabled())
-                .setWriteEnabled(repositoryProperties.isWriteEnabled())
-                .setReadEnabled(repositoryProperties.isReadEnabled());
+        RepositoryWriteableProperties writableProperties = new RepositoryWriteableProperties()
+            .setDeleteEnabled(repositoryProperties.isDeleteEnabled())
+            .setListEnabled(repositoryProperties.isListEnabled())
+            .setWriteEnabled(repositoryProperties.isWriteEnabled())
+            .setReadEnabled(repositoryProperties.isReadEnabled());
 //                .setTeleportEnabled(repositoryProperties.isTeleportEnabled());
 
-            return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context)
-                .onErrorMap(UtilsImpl::mapException);
-        } catch (RuntimeException e) {
-            return monoError(LOGGER, e);
-        }
+        return this.serviceClient.updatePropertiesWithResponseAsync(repositoryName, writableProperties, context)
+            .onErrorMap(AcrErrorsException.class, UtilsImpl::mapAcrErrorsException);
     }
 
     /**

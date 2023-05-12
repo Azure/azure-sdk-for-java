@@ -23,6 +23,10 @@ public final class EncryptionPropertiesDescription {
     @JsonProperty(value = "keyVaultProperties")
     private List<KeyVaultKeyProperties> keyVaultProperties;
 
+    /** Creates an instance of EncryptionPropertiesDescription class. */
+    public EncryptionPropertiesDescription() {
+    }
+
     /**
      * Get the keySource property: The source of the key.
      *

@@ -32,7 +32,7 @@ public final class AdaptiveNetworkHardeningsListByExtendedResourceMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"rules\":[],\"rulesCalculationTime\":\"2021-06-10T22:12:36Z\",\"effectiveNetworkSecurityGroups\":[]},\"id\":\"h\",\"name\":\"shthmgpczqu\",\"type\":\"ptkbvcpxtzhi\"}]}";
+            "{\"value\":[{\"properties\":{\"rules\":[],\"rulesCalculationTime\":\"2021-10-09T16:12:07Z\",\"effectiveNetworkSecurityGroups\":[]},\"id\":\"qmqipaydhfnzoc\",\"name\":\"mtfshksnyzmspa\",\"type\":\"wbwmbnlslcefiq\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +63,11 @@ public final class AdaptiveNetworkHardeningsListByExtendedResourceMockTests {
         PagedIterable<AdaptiveNetworkHardening> response =
             manager
                 .adaptiveNetworkHardenings()
-                .listByExtendedResource("xi", "mlnfyz", "vfrbypic", "bkpdjtaqhsmq", com.azure.core.util.Context.NONE);
+                .listByExtendedResource(
+                    "qmipfj", "foygizmshxxba", "zabulnvgsk", "toxjdzj", com.azure.core.util.Context.NONE);
 
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-06-10T22:12:36Z"), response.iterator().next().rulesCalculationTime());
+                OffsetDateTime.parse("2021-10-09T16:12:07Z"), response.iterator().next().rulesCalculationTime());
     }
 }

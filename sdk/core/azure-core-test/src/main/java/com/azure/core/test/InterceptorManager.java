@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -68,6 +69,7 @@ public class InterceptorManager implements AutoCloseable {
     // A state machine ensuring a test is always reset before another one is setup
     private final RecordedData recordedData;
     private final boolean testProxyEnabled;
+    private final boolean skipRecordingRequestBody;
     private TestProxyRecordPolicy testProxyRecordPolicy;
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
@@ -94,7 +96,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     @Deprecated
     public InterceptorManager(String testName, TestMode testMode) {
-        this(testName, testName, testMode, false, false);
+        this(testName, testName, testMode, false, false, false);
     }
 
     /**
@@ -119,10 +121,11 @@ public class InterceptorManager implements AutoCloseable {
      */
     public InterceptorManager(TestContextManager testContextManager) {
         this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
-            testContextManager.getTestMode(), testContextManager.doNotRecordTest(), testContextManager.isTestProxyEnabled());
+            testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
+            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody());
     }
 
-    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy) {
+    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy, boolean skipRecordingRequestBody) {
         this.testProxyEnabled = enableTestProxy;
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
@@ -130,6 +133,7 @@ public class InterceptorManager implements AutoCloseable {
         this.playbackRecordName = CoreUtils.isNullOrEmpty(playbackRecordName) ? testName : playbackRecordName;
         this.testMode = testMode;
         this.textReplacementRules = new HashMap<>();
+        this.skipRecordingRequestBody = skipRecordingRequestBody;
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
@@ -210,6 +214,7 @@ public class InterceptorManager implements AutoCloseable {
         this.allowedToReadRecordedValues = !doNotRecord;
         this.allowedToRecordValues = false;
         this.testProxyEnabled = false;
+        this.skipRecordingRequestBody = false;
 
         this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
         this.textReplacementRules = textReplacementRules;
@@ -320,7 +325,7 @@ public class InterceptorManager implements AutoCloseable {
             }
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient);
-                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(playbackRecordName));
+                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile()));
             }
             return testProxyPlaybackClient;
         } else {
@@ -367,10 +372,21 @@ public class InterceptorManager implements AutoCloseable {
             if (!isRecordMode()) {
                 throw new IllegalStateException("A recording policy can only be requested in RECORD mode.");
             }
-            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient);
-            testProxyRecordPolicy.startRecording(playbackRecordName);
+            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient, skipRecordingRequestBody);
+            testProxyRecordPolicy.startRecording(getTestProxyRecordFile());
         }
         return testProxyRecordPolicy;
+    }
+
+    /**
+     * Computes the relative path of the record file to the repo root.
+     * @return A {@link File} with the partial path to where the record file lives.
+     */
+    private File getTestProxyRecordFile() {
+        Path recordFolder = TestUtils.getRecordFolder().toPath();
+        Path repoRoot = TestUtils.getRepoRoot();
+        File recordFile = new File(recordFolder.toFile(), playbackRecordName + ".json");
+        return repoRoot.relativize(recordFile.toPath()).toFile();
     }
 
     /*

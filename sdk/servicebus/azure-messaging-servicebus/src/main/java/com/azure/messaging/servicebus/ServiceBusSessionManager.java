@@ -16,6 +16,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -68,6 +69,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final List<Scheduler> schedulers;
     private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
     private final Duration maxSessionLockRenewDuration;
+    private final Duration sessionIdleTimeout;
 
     /**
      * SessionId to receiver mapping.
@@ -75,12 +77,14 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final ConcurrentHashMap<String, ServiceBusSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
     private final EmitterProcessor<Flux<ServiceBusMessageContext>> processor;
     private final FluxSink<Flux<ServiceBusMessageContext>> sessionReceiveSink;
+    private final ServiceBusTracer tracer;
 
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier,
+        ServiceBusTracer tracer) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
@@ -89,6 +93,7 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.messageSerializer = messageSerializer;
         this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
         this.identifier = identifier;
+        this.tracer = tracer;
 
         // According to the documentation, if a sequence is not finite, it should be published on their own scheduler.
         // It's possible that some of these sessions have a lot of messages.
@@ -107,13 +112,16 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.processor = EmitterProcessor.create(numberOfSchedulers, false);
         this.sessionReceiveSink = processor.sink();
         this.receiveLink = receiveLink;
+        this.sessionIdleTimeout = receiverOptions.getSessionIdleTimeout() != null
+            ? receiverOptions.getSessionIdleTimeout()
+            : connectionProcessor.getRetryOptions().getTryTimeout();
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier, ServiceBusTracer tracer) {
         this(entityPath, entityType, connectionProcessor,
-            messageSerializer, receiverOptions, null, identifier);
+            messageSerializer, receiverOptions, null, identifier, tracer);
     }
 
     /**
@@ -188,12 +196,13 @@ class ServiceBusSessionManager implements AutoCloseable {
                 final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
-                return channel.renewSessionLock(sessionId, associatedLinkName).handle((offsetDateTime, sink) -> {
-                    if (receiver != null) {
-                        receiver.setSessionLockedUntil(offsetDateTime);
-                    }
-                    sink.next(offsetDateTime);
-                });
+                return tracer.traceMono("ServiceBus.renewSessionLock", channel.renewSessionLock(sessionId, associatedLinkName))
+                    .handle((offsetDateTime, sink) -> {
+                        if (receiver != null) {
+                            receiver.setSessionLockedUntil(offsetDateTime);
+                        }
+                        sink.next(offsetDateTime);
+                    });
             }));
     }
 
@@ -279,9 +288,16 @@ class ServiceBusSessionManager implements AutoCloseable {
             .flatMap(link -> link.getEndpointStates()
                 .filter(e -> e == AmqpEndpointState.ACTIVE)
                 .next()
-                // While waiting for the link to ACTIVE, if the broker detaches the link without an error condition,
+                // The reason for using 'switchIfEmpty' operator -
+                //
+                // While waiting for the link to ACTIVE, if the broker detaches the link without an error-condition,
                 // the link-endpoint-state publisher will transition to completion without ever emitting ACTIVE. Map
-                // such publisher completion to transient (i.e., retriable) AmqpException to enable processor recovery.
+                // such publisher completion to transient (i.e., retriable) AmqpException to enable retry.
+                //
+                // A detach without an error-condition can happen when Service upgrades. Also, while the service often
+                // detaches with the error-condition 'com.microsoft:timeout' when there is no session, sometimes,
+                // when a free or new session is unavailable, detach can happen without the error-condition.
+                //
                 .switchIfEmpty(Mono.error(() ->
                     new AmqpException(true, "Session receive link completed without being active", null)))
                 .timeout(operationTimeout)
@@ -297,10 +313,16 @@ class ServiceBusSessionManager implements AutoCloseable {
                     return Mono.<Long>error(new AmqpException(false, "SessionManager is already disposed.", failure,
                         getErrorContext()));
                 } else if (failure instanceof TimeoutException) {
-                    return Mono.empty(); // Retry always
+                    return Mono.delay(Duration.ZERO);
                 } else if (failure instanceof AmqpException
                     && ((AmqpException) failure).getErrorCondition() == AmqpErrorCondition.TIMEOUT_ERROR) {
-                    return Mono.empty(); // Retry always
+                    // The link closed remotely with 'Detach {errorCondition:com.microsoft:timeout}' frame because
+                    // the broker waited for N seconds (60 sec hard limit today) but there was no free or new session.
+                    //
+                    // Given N seconds elapsed since the last session acquire attempt, request for a session on
+                    // the 'parallel' Scheduler and free the 'QPid' thread for other IO.
+                    //
+                    return Mono.delay(Duration.ZERO);
                 } else {
                     final long id = System.nanoTime();
                     LOGGER.atInfo()
@@ -335,8 +357,8 @@ class ServiceBusSessionManager implements AutoCloseable {
                 }
 
                 return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
-                    receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
-                    maxSessionLockRenewDuration);
+                    receiverOptions.getPrefetchCount(), scheduler, this::renewSessionLock,
+                    maxSessionLockRenewDuration, disposeOnIdle ? sessionIdleTimeout : null);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 LOGGER.atVerbose()

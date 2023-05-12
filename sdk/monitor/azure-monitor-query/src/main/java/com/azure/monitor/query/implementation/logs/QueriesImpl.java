@@ -65,10 +65,32 @@ public final class QueriesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/workspaces/{workspaceId}/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<QueryResults> getSync(
+                @HostParam("$host") String host,
+                @PathParam("workspaceId") String workspaceId,
+                @QueryParam("query") String query,
+                @QueryParam("timespan") Duration timespan,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/workspaces/{workspaceId}/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<QueryResults>> execute(
+                @HostParam("$host") String host,
+                @PathParam("workspaceId") String workspaceId,
+                @HeaderParam("Prefer") String prefer,
+                @BodyParam("application/json") QueryBody body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/workspaces/{workspaceId}/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<QueryResults> executeSync(
                 @HostParam("$host") String host,
                 @PathParam("workspaceId") String workspaceId,
                 @HeaderParam("Prefer") String prefer,
@@ -87,10 +109,32 @@ public final class QueriesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/{resourceId}/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<QueryResults> resourceGetSync(
+                @HostParam("$host") String host,
+                @PathParam(value = "resourceId", encoded = true) String resourceId,
+                @QueryParam("query") String query,
+                @QueryParam("timespan") Duration timespan,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/{resourceId}/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<QueryResults>> resourceExecute(
+                @HostParam("$host") String host,
+                @PathParam(value = "resourceId", encoded = true) String resourceId,
+                @HeaderParam("Prefer") String prefer,
+                @BodyParam("application/json") QueryBody body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/{resourceId}/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<QueryResults> resourceExecuteSync(
                 @HostParam("$host") String host,
                 @PathParam(value = "resourceId", encoded = true) String resourceId,
                 @HeaderParam("Prefer") String prefer,
@@ -107,6 +151,15 @@ public final class QueriesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Post("/$batch")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<BatchResponse> batchSync(
+                @HostParam("$host") String host,
+                @BodyParam("application/json") BatchRequest body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Get("/{resourceId}/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
@@ -118,10 +171,32 @@ public final class QueriesImpl {
                 @HeaderParam("Accept") String accept,
                 Context context);
 
+        @Get("/{resourceId}/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<QueryResults> resourceGetXmsSync(
+                @HostParam("$host") String host,
+                @PathParam(value = "resourceId", encoded = true) String resourceId,
+                @QueryParam("query") String query,
+                @QueryParam("timespan") Duration timespan,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
         @Post("/{resourceId}/query")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<QueryResults>> resourceExecuteXms(
+                @HostParam("$host") String host,
+                @PathParam(value = "resourceId", encoded = true) String resourceId,
+                @HeaderParam("Prefer") String prefer,
+                @BodyParam("application/json") QueryBody body,
+                @HeaderParam("Accept") String accept,
+                Context context);
+
+        @Post("/{resourceId}/query")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ErrorResponseException.class)
+        Response<QueryResults> resourceExecuteXmsSync(
                 @HostParam("$host") String host,
                 @PathParam(value = "resourceId", encoded = true) String resourceId,
                 @HeaderParam("Prefer") String prefer,
@@ -148,14 +223,13 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> getWithResponseAsync(String workspaceId, String query, Duration timespan) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (workspaceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
         }
         if (query == null) {
-            return Mono.error(new IllegalArgumentException("Parameter query is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -182,14 +256,13 @@ public final class QueriesImpl {
     public Mono<Response<QueryResults>> getWithResponseAsync(
             String workspaceId, String query, Duration timespan, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (workspaceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
         }
         if (query == null) {
-            return Mono.error(new IllegalArgumentException("Parameter query is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
         final String accept = "application/json";
         return service.get(this.client.getHost(), workspaceId, query, timespan, accept, context);
@@ -256,7 +329,17 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResults> getWithResponse(
             String workspaceId, String query, Duration timespan, Context context) {
-        return getWithResponseAsync(workspaceId, query, timespan, context).block();
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (workspaceId == null) {
+            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
+        }
+        if (query == null) {
+            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getHost(), workspaceId, query, timespan, accept, context);
     }
 
     /**
@@ -297,14 +380,13 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<QueryResults>> executeWithResponseAsync(String workspaceId, QueryBody body, String prefer) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (workspaceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         } else {
             body.validate();
         }
@@ -333,14 +415,13 @@ public final class QueriesImpl {
     public Mono<Response<QueryResults>> executeWithResponseAsync(
             String workspaceId, QueryBody body, String prefer, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (workspaceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workspaceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         } else {
             body.validate();
         }
@@ -409,7 +490,19 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResults> executeWithResponse(
             String workspaceId, QueryBody body, String prefer, Context context) {
-        return executeWithResponseAsync(workspaceId, body, prefer, context).block();
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (workspaceId == null) {
+            throw new IllegalArgumentException("Parameter workspaceId is required and cannot be null.");
+        }
+        if (body == null) {
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.executeSync(this.client.getHost(), workspaceId, prefer, body, accept, context);
     }
 
     /**
@@ -453,14 +546,13 @@ public final class QueriesImpl {
     public Mono<Response<QueryResults>> resourceGetWithResponseAsync(
             String resourceId, String query, Duration timespan) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (resourceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
         if (query == null) {
-            return Mono.error(new IllegalArgumentException("Parameter query is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -489,14 +581,13 @@ public final class QueriesImpl {
     public Mono<Response<QueryResults>> resourceGetWithResponseAsync(
             String resourceId, String query, Duration timespan, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (resourceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
         if (query == null) {
-            return Mono.error(new IllegalArgumentException("Parameter query is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
         final String accept = "application/json";
         return service.resourceGet(this.client.getHost(), resourceId, query, timespan, accept, context);
@@ -570,7 +661,17 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResults> resourceGetWithResponse(
             String resourceId, String query, Duration timespan, Context context) {
-        return resourceGetWithResponseAsync(resourceId, query, timespan, context).block();
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (resourceId == null) {
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
+        }
+        if (query == null) {
+            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
+        }
+        final String accept = "application/json";
+        return service.resourceGetSync(this.client.getHost(), resourceId, query, timespan, accept, context);
     }
 
     /**
@@ -615,14 +716,13 @@ public final class QueriesImpl {
     public Mono<Response<QueryResults>> resourceExecuteWithResponseAsync(
             String resourceId, QueryBody body, String prefer) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (resourceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         } else {
             body.validate();
         }
@@ -652,14 +752,13 @@ public final class QueriesImpl {
     public Mono<Response<QueryResults>> resourceExecuteWithResponseAsync(
             String resourceId, QueryBody body, String prefer, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (resourceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         } else {
             body.validate();
         }
@@ -732,7 +831,19 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResults> resourceExecuteWithResponse(
             String resourceId, QueryBody body, String prefer, Context context) {
-        return resourceExecuteWithResponseAsync(resourceId, body, prefer, context).block();
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (resourceId == null) {
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
+        }
+        if (body == null) {
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.resourceExecuteSync(this.client.getHost(), resourceId, prefer, body, accept, context);
     }
 
     /**
@@ -772,11 +883,10 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BatchResponse>> batchWithResponseAsync(BatchRequest body) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         } else {
             body.validate();
         }
@@ -801,11 +911,10 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BatchResponse>> batchWithResponseAsync(BatchRequest body, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         } else {
             body.validate();
         }
@@ -866,7 +975,16 @@ public final class QueriesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchResponse> batchWithResponse(BatchRequest body, Context context) {
-        return batchWithResponseAsync(body, context).block();
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (body == null) {
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.batchSync(this.client.getHost(), body, accept, context);
     }
 
     /**
@@ -908,14 +1026,13 @@ public final class QueriesImpl {
     public Mono<Response<QueryResults>> resourceGetXmsWithResponseAsync(
             String resourceId, String query, Duration timespan) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (resourceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
         if (query == null) {
-            return Mono.error(new IllegalArgumentException("Parameter query is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -944,14 +1061,13 @@ public final class QueriesImpl {
     public Mono<Response<QueryResults>> resourceGetXmsWithResponseAsync(
             String resourceId, String query, Duration timespan, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (resourceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
         if (query == null) {
-            return Mono.error(new IllegalArgumentException("Parameter query is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
         }
         final String accept = "application/json";
         return service.resourceGetXms(this.client.getHost(), resourceId, query, timespan, accept, context);
@@ -1025,7 +1141,17 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResults> resourceGetXmsWithResponse(
             String resourceId, String query, Duration timespan, Context context) {
-        return resourceGetXmsWithResponseAsync(resourceId, query, timespan, context).block();
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (resourceId == null) {
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
+        }
+        if (query == null) {
+            throw new IllegalArgumentException("Parameter query is required and cannot be null.");
+        }
+        final String accept = "application/json";
+        return service.resourceGetXmsSync(this.client.getHost(), resourceId, query, timespan, accept, context);
     }
 
     /**
@@ -1070,14 +1196,13 @@ public final class QueriesImpl {
     public Mono<Response<QueryResults>> resourceExecuteXmsWithResponseAsync(
             String resourceId, QueryBody body, String prefer) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (resourceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         } else {
             body.validate();
         }
@@ -1108,14 +1233,13 @@ public final class QueriesImpl {
     public Mono<Response<QueryResults>> resourceExecuteXmsWithResponseAsync(
             String resourceId, QueryBody body, String prefer, Context context) {
         if (this.client.getHost() == null) {
-            return Mono.error(
-                    new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
         }
         if (resourceId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceId is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
         }
         if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
         } else {
             body.validate();
         }
@@ -1189,7 +1313,19 @@ public final class QueriesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueryResults> resourceExecuteXmsWithResponse(
             String resourceId, QueryBody body, String prefer, Context context) {
-        return resourceExecuteXmsWithResponseAsync(resourceId, body, prefer, context).block();
+        if (this.client.getHost() == null) {
+            throw new IllegalArgumentException("Parameter this.client.getHost() is required and cannot be null.");
+        }
+        if (resourceId == null) {
+            throw new IllegalArgumentException("Parameter resourceId is required and cannot be null.");
+        }
+        if (body == null) {
+            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return service.resourceExecuteXmsSync(this.client.getHost(), resourceId, prefer, body, accept, context);
     }
 
     /**

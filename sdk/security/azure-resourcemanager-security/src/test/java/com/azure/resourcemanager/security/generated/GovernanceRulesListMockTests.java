@@ -35,7 +35,7 @@ public final class GovernanceRulesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"tenantId\":\"iauesugmocpcjy\",\"displayName\":\"boel\",\"description\":\"ttwfldsiuorini\",\"remediationTimeframe\":\"edpksriwmmtmqrxr\",\"isGracePeriod\":false,\"rulePriority\":509534967,\"isDisabled\":true,\"ruleType\":\"ServiceNow\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"ubt\",\"mbxiqahra\",\"pxmib\"],\"conditionSets\":[\"datanupoyryefqmwovyz\",\"dataxlnomfpbjcee\",\"datavyieztkutnjilluk\",\"datarehyhtmj\"],\"includeMemberScopes\":false,\"ownerSource\":{\"type\":\"Manually\",\"value\":\"ulxfaryrvjl\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":false,\"disableOwnerEmailNotification\":false},\"metadata\":{\"createdBy\":\"ahoyiyaxqvj\",\"createdOn\":\"2020-12-23T11:34:58Z\",\"updatedBy\":\"tcz\",\"updatedOn\":\"2021-02-12T19:56:53Z\"}},\"id\":\"nvovbooqbmdqrxy\",\"name\":\"laetscflwtjdtlr\",\"type\":\"e\"}]}";
+            "{\"value\":[{\"properties\":{\"tenantId\":\"oaeoc\",\"displayName\":\"ajtfey\",\"description\":\"bdgddkrh\",\"remediationTimeframe\":\"cxbeuuqutkzwtjww\",\"isGracePeriod\":false,\"rulePriority\":574110550,\"isDisabled\":false,\"ruleType\":\"Integrated\",\"sourceResourceType\":\"Assessments\",\"excludedScopes\":[\"nondegjdyd\"],\"conditionSets\":[\"datakkkbjuckcatuqbh\",\"dataowcnxtpz\",\"datalyseidtoak\",\"datat\"],\"includeMemberScopes\":true,\"ownerSource\":{\"type\":\"ByTag\",\"value\":\"hzbqfdpfawrptvcs\"},\"governanceEmailNotification\":{\"disableManagerEmailNotification\":true,\"disableOwnerEmailNotification\":true},\"metadata\":{\"createdBy\":\"tbqgdirdamm\",\"createdOn\":\"2021-04-05T19:23:11Z\",\"updatedBy\":\"cfjfxtbwjj\",\"updatedOn\":\"2021-06-25T16:41:01Z\"}},\"id\":\"uydgfttmdofgeoa\",\"name\":\"fuof\",\"type\":\"nxodwxmdajwiyg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,28 +64,27 @@ public final class GovernanceRulesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<GovernanceRule> response =
-            manager.governanceRules().list("woxfaxdtnqifbsa", com.azure.core.util.Context.NONE);
+            manager.governanceRules().list("yjfzi", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("boel", response.iterator().next().displayName());
-        Assertions.assertEquals("ttwfldsiuorini", response.iterator().next().description());
-        Assertions.assertEquals("edpksriwmmtmqrxr", response.iterator().next().remediationTimeframe());
+        Assertions.assertEquals("ajtfey", response.iterator().next().displayName());
+        Assertions.assertEquals("bdgddkrh", response.iterator().next().description());
+        Assertions.assertEquals("cxbeuuqutkzwtjww", response.iterator().next().remediationTimeframe());
         Assertions.assertEquals(false, response.iterator().next().isGracePeriod());
-        Assertions.assertEquals(509534967, response.iterator().next().rulePriority());
-        Assertions.assertEquals(true, response.iterator().next().isDisabled());
-        Assertions.assertEquals(GovernanceRuleType.SERVICE_NOW, response.iterator().next().ruleType());
+        Assertions.assertEquals(574110550, response.iterator().next().rulePriority());
+        Assertions.assertEquals(false, response.iterator().next().isDisabled());
+        Assertions.assertEquals(GovernanceRuleType.INTEGRATED, response.iterator().next().ruleType());
         Assertions
             .assertEquals(
                 GovernanceRuleSourceResourceType.ASSESSMENTS, response.iterator().next().sourceResourceType());
-        Assertions.assertEquals("ubt", response.iterator().next().excludedScopes().get(0));
-        Assertions.assertEquals(false, response.iterator().next().includeMemberScopes());
-        Assertions
-            .assertEquals(GovernanceRuleOwnerSourceType.MANUALLY, response.iterator().next().ownerSource().type());
-        Assertions.assertEquals("ulxfaryrvjl", response.iterator().next().ownerSource().value());
-        Assertions
-            .assertEquals(
-                false, response.iterator().next().governanceEmailNotification().disableManagerEmailNotification());
+        Assertions.assertEquals("nondegjdyd", response.iterator().next().excludedScopes().get(0));
+        Assertions.assertEquals(true, response.iterator().next().includeMemberScopes());
+        Assertions.assertEquals(GovernanceRuleOwnerSourceType.BY_TAG, response.iterator().next().ownerSource().type());
+        Assertions.assertEquals("hzbqfdpfawrptvcs", response.iterator().next().ownerSource().value());
         Assertions
             .assertEquals(
-                false, response.iterator().next().governanceEmailNotification().disableOwnerEmailNotification());
+                true, response.iterator().next().governanceEmailNotification().disableManagerEmailNotification());
+        Assertions
+            .assertEquals(
+                true, response.iterator().next().governanceEmailNotification().disableOwnerEmailNotification());
     }
 }

@@ -7,37 +7,36 @@ package com.azure.resourcemanager.elastic.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.models.CompanyInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CompanyInfoTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CompanyInfo model =
             BinaryData
                 .fromString(
-                    "{\"domain\":\"dkfthwxmnt\",\"business\":\"waopvkmijcmmxd\",\"employeesNumber\":\"fufsrpymzi\",\"state\":\"sezcxtb\",\"country\":\"gfycc\"}")
+                    "{\"domain\":\"ndv\",\"business\":\"ozwyiftyhxhuro\",\"employeesNumber\":\"tyxolniwpwc\",\"state\":\"jfkgiawxk\",\"country\":\"ypl\"}")
                 .toObject(CompanyInfo.class);
-        Assertions.assertEquals("dkfthwxmnt", model.domain());
-        Assertions.assertEquals("waopvkmijcmmxd", model.business());
-        Assertions.assertEquals("fufsrpymzi", model.employeesNumber());
-        Assertions.assertEquals("sezcxtb", model.state());
-        Assertions.assertEquals("gfycc", model.country());
+        Assertions.assertEquals("ndv", model.domain());
+        Assertions.assertEquals("ozwyiftyhxhuro", model.business());
+        Assertions.assertEquals("tyxolniwpwc", model.employeesNumber());
+        Assertions.assertEquals("jfkgiawxk", model.state());
+        Assertions.assertEquals("ypl", model.country());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CompanyInfo model =
             new CompanyInfo()
-                .withDomain("dkfthwxmnt")
-                .withBusiness("waopvkmijcmmxd")
-                .withEmployeesNumber("fufsrpymzi")
-                .withState("sezcxtb")
-                .withCountry("gfycc");
+                .withDomain("ndv")
+                .withBusiness("ozwyiftyhxhuro")
+                .withEmployeesNumber("tyxolniwpwc")
+                .withState("jfkgiawxk")
+                .withCountry("ypl");
         model = BinaryData.fromObject(model).toObject(CompanyInfo.class);
-        Assertions.assertEquals("dkfthwxmnt", model.domain());
-        Assertions.assertEquals("waopvkmijcmmxd", model.business());
-        Assertions.assertEquals("fufsrpymzi", model.employeesNumber());
-        Assertions.assertEquals("sezcxtb", model.state());
-        Assertions.assertEquals("gfycc", model.country());
+        Assertions.assertEquals("ndv", model.domain());
+        Assertions.assertEquals("ozwyiftyhxhuro", model.business());
+        Assertions.assertEquals("tyxolniwpwc", model.employeesNumber());
+        Assertions.assertEquals("jfkgiawxk", model.state());
+        Assertions.assertEquals("ypl", model.country());
     }
 }

@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 
 module com.azure.core.serializer.json.jackson {
+    requires com.azure.json;
     requires transitive com.azure.core;
 
     requires transitive com.fasterxml.jackson.core;
@@ -11,6 +12,7 @@ module com.azure.core.serializer.json.jackson {
 
     exports com.azure.core.serializer.json.jackson;
 
+    provides com.azure.json.JsonProvider with com.azure.core.serializer.json.jackson.JacksonJsonProvider;
     provides com.azure.core.util.serializer.MemberNameConverterProvider
         with com.azure.core.serializer.json.jackson.JacksonJsonSerializerProvider;
     provides com.azure.core.util.serializer.JsonSerializerProvider

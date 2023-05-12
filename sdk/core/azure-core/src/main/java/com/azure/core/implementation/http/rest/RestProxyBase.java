@@ -33,6 +33,7 @@ import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.json.JsonSerializable;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -310,7 +311,7 @@ public abstract class RestProxyBase {
             .append(httpResponse.getStatusCode())
             .append(", ");
 
-        final String contentType = httpResponse.getHeaderValue("Content-Type");
+        final String contentType = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_TYPE);
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
             String contentLength = httpResponse.getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
@@ -382,7 +383,7 @@ public abstract class RestProxyBase {
      * @return The {@link ByteBuffer} representing the serialized {@code jsonSerializable}.
      * @throws IOException If an error occurs during serialization.
      */
-    static ByteBuffer serializeAsJsonSerializable(Object jsonSerializable) throws IOException {
+    static ByteBuffer serializeAsJsonSerializable(JsonSerializable<?> jsonSerializable) throws IOException {
         return ReflectionSerializable.serializeJsonSerializableToByteBuffer(jsonSerializable);
     }
 

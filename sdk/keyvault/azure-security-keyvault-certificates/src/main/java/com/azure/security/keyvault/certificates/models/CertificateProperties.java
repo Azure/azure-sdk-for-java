@@ -17,8 +17,7 @@ import java.util.Map;
  * Represents base properties of a certificate.
  */
 public class CertificateProperties {
-
-    private final ClientLogger logger = new ClientLogger(CertificateProperties.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateProperties.class);
 
     /**
      * URL for the Azure KeyVault service.
@@ -273,7 +272,7 @@ public class CertificateProperties {
                 this.name = (tokens.length >= 3 ? tokens[2] : null);
                 this.version = (tokens.length >= 4 ? tokens[3] : null);
             } catch (MalformedURLException e) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault endpoint url is malformed.", e));
             }
         }
     }

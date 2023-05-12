@@ -91,8 +91,8 @@ public final class MapsRenderAsyncClient {
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
      * MapTileOptions mapTileOptions2 = new MapTileOptions&#40;&#41;;
-     * mapTileOptions.setTilesetId&#40;TilesetId.MICROSOFT_BASE_ROAD&#41;;
-     * mapTileOptions.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;10&#41;.setY&#40;22&#41;.setZ&#40;6&#41;&#41;;
+     * mapTileOptions2.setTilesetId&#40;TilesetId.MICROSOFT_BASE_ROAD&#41;;
+     * mapTileOptions2.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;10&#41;.setY&#40;22&#41;.setZ&#40;6&#41;&#41;;
      * asyncClient.getMapTile&#40;mapTileOptions2&#41;.block&#40;&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_map_tile -->
@@ -123,8 +123,8 @@ public final class MapsRenderAsyncClient {
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
      * MapTileOptions mapTileOptions2 = new MapTileOptions&#40;&#41;;
-     * mapTileOptions.setTilesetId&#40;TilesetId.MICROSOFT_BASE_ROAD&#41;;
-     * mapTileOptions.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;10&#41;.setY&#40;22&#41;.setZ&#40;6&#41;&#41;;
+     * mapTileOptions2.setTilesetId&#40;TilesetId.MICROSOFT_BASE_ROAD&#41;;
+     * mapTileOptions2.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;10&#41;.setY&#40;22&#41;.setZ&#40;6&#41;&#41;;
      * asyncClient.getMapTile&#40;mapTileOptions2&#41;.block&#40;&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_map_tile -->
@@ -157,8 +157,8 @@ public final class MapsRenderAsyncClient {
      * <pre>
      * System.out.println&#40;&quot;Get Map Tile&quot;&#41;;
      * MapTileOptions mapTileOptions2 = new MapTileOptions&#40;&#41;;
-     * mapTileOptions.setTilesetId&#40;TilesetId.MICROSOFT_BASE_ROAD&#41;;
-     * mapTileOptions.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;10&#41;.setY&#40;22&#41;.setZ&#40;6&#41;&#41;;
+     * mapTileOptions2.setTilesetId&#40;TilesetId.MICROSOFT_BASE_ROAD&#41;;
+     * mapTileOptions2.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;10&#41;.setY&#40;22&#41;.setZ&#40;6&#41;&#41;;
      * asyncClient.getMapTile&#40;mapTileOptions2&#41;.block&#40;&#41;.toStream&#40;&#41;;
      * </pre>
      * <!-- end com.azure.maps.render.async.get_map_tile -->

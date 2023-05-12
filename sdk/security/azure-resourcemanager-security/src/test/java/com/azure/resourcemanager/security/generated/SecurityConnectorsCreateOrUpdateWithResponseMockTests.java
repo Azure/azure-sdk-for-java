@@ -36,7 +36,7 @@ public final class SecurityConnectorsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"hierarchyIdentifier\":\"mmovzwd\",\"hierarchyIdentifierTrialEndDate\":\"2021-09-19T07:02:31Z\",\"environmentName\":\"Github\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"fovanyrvapr\",\"tags\":{\"wewikfya\":\"l\",\"dmym\":\"a\"},\"id\":\"qoq\",\"name\":\"umov\",\"type\":\"fbpbvzopaxmfmvsm\"}";
+            "{\"properties\":{\"hierarchyIdentifier\":\"m\",\"hierarchyIdentifierTrialEndDate\":\"2021-06-20T07:23:24Z\",\"environmentName\":\"AWS\",\"offerings\":[],\"environmentData\":{\"environmentType\":\"EnvironmentData\"}},\"location\":\"rpvsgloiovs\",\"tags\":{\"suvw\":\"v\",\"i\":\"enbg\",\"oa\":\"pkhc\"},\"id\":\"xukuicjuftekio\",\"name\":\"anduew\",\"type\":\"hvpxjhxz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,20 +67,20 @@ public final class SecurityConnectorsCreateOrUpdateWithResponseMockTests {
         SecurityConnector response =
             manager
                 .securityConnectors()
-                .define("fsh")
-                .withRegion("lkq")
-                .withExistingResourceGroup("ulpyuflq")
-                .withTags(mapOf("rzwimbzayspz", "kixnmbzmecu", "mdzxp", "rietvfp", "lzmgschnzrs", "gtpvdva"))
-                .withHierarchyIdentifier("yohi")
-                .withEnvironmentName(CloudName.AZURE)
+                .define("qpqsdoctpzpuj")
+                .withRegion("hfwlfxzfwugeup")
+                .withExistingResourceGroup("krjflsgaojb")
+                .withTags(mapOf("sytqpdzfyxcnwawo", "ecexkgrvfpsjdmn", "bejqfbifopfjx", "cg", "q", "wdrpa"))
+                .withHierarchyIdentifier("cdsgxceluji")
+                .withEnvironmentName(CloudName.AWS)
                 .withOfferings(Arrays.asList())
                 .withEnvironmentData(new EnvironmentData())
                 .create();
 
-        Assertions.assertEquals("fovanyrvapr", response.location());
-        Assertions.assertEquals("l", response.tags().get("wewikfya"));
-        Assertions.assertEquals("mmovzwd", response.hierarchyIdentifier());
-        Assertions.assertEquals(CloudName.GITHUB, response.environmentName());
+        Assertions.assertEquals("rpvsgloiovs", response.location());
+        Assertions.assertEquals("v", response.tags().get("suvw"));
+        Assertions.assertEquals("m", response.hierarchyIdentifier());
+        Assertions.assertEquals(CloudName.AWS, response.environmentName());
     }
 
     @SuppressWarnings("unchecked")

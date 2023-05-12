@@ -13,10 +13,10 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
-import com.azure.cosmos.CosmosDiagnosticsLoggerConfig;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
@@ -126,6 +126,8 @@ public class ImplementationBridgeHelpers {
             ApiType getCosmosClientApiType(CosmosClientBuilder builder);
 
             ConnectionPolicy getConnectionPolicy(CosmosClientBuilder builder);
+
+            ConnectionPolicy buildConnectionPolicy(CosmosClientBuilder builder);
 
             Configs getConfigs(CosmosClientBuilder builder);
 
@@ -343,6 +345,14 @@ public class ImplementationBridgeHelpers {
             CosmosItemRequestOptions setHeader(CosmosItemRequestOptions cosmosItemRequestOptions, String name, String value);
             Map<String, String> getHeader(CosmosItemRequestOptions cosmosItemRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosItemRequestOptions cosmosItemRequestOptions);
+            CosmosItemRequestOptions setNonIdempotentWriteRetryPolicy(
+                CosmosItemRequestOptions options,
+                boolean enabled,
+                boolean useTrackingIds);
+            WriteRetryPolicy calculateAndGetEffectiveNonIdempotentRetriesEnabled(
+                CosmosItemRequestOptions cosmosItemRequestOptions,
+                WriteRetryPolicy clientDefault,
+                boolean operationDefault);
         }
     }
 
@@ -453,11 +463,20 @@ public class ImplementationBridgeHelpers {
                                                                byte[] contentAsByteArray, Class<T> classType,
                                                                ItemDeserializer itemDeserializer);
 
+
+            <T> CosmosItemResponse<T> withRemappedStatusCode(
+                CosmosItemResponse<T> originalResponse,
+                int newStatusCode,
+                double additionalRequestCharge,
+                boolean isContentResponseOnWriteEnabled);
+
             byte[] getByteArrayContent(CosmosItemResponse<byte[]> response);
 
             void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content);
 
             ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response);
+
+            boolean hasTrackingId(CosmosItemResponse<?> response, String candidate);
         }
     }
 
@@ -685,7 +704,6 @@ public class ImplementationBridgeHelpers {
             Collection<ClientSideRequestStatistics> getClientSideRequestStatisticsForQueryPipelineAggregations(CosmosDiagnostics cosmosDiagnostics);
             int getTotalResponsePayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
             int getRequestPayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
-
             ClientSideRequestStatistics getClientSideRequestStatisticsRaw(CosmosDiagnostics cosmosDiagnostics);
             void addClientSideDiagnosticsToFeed(
                 CosmosDiagnostics cosmosDiagnostics,
@@ -736,7 +754,8 @@ public class ImplementationBridgeHelpers {
                 String operationId,
                 ConsistencyLevel consistencyLevel,
                 Integer maxItemCount,
-                CosmosDiagnosticsThresholds thresholds);
+                CosmosDiagnosticsThresholds thresholds,
+                String trackingId);
 
             void startOperation(CosmosDiagnosticsContext ctx);
 
@@ -816,6 +835,11 @@ public class ImplementationBridgeHelpers {
                 CosmosAsyncContainer cosmosAsyncContainer,
                 CosmosChangeFeedRequestOptions cosmosChangeFeedRequestOptions,
                 Class<T> classType);
+
+            void enableLocalThroughputControlGroup(
+                CosmosAsyncContainer cosmosAsyncContainer,
+                ThroughputControlGroupConfig groupConfig,
+                Mono<Integer> throughputQueryMono);
 
             void enableGlobalThroughputControlGroup(
                 CosmosAsyncContainer cosmosAsyncContainer,
@@ -1169,6 +1193,9 @@ public class ImplementationBridgeHelpers {
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
             CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name);
+            boolean isEffectiveContentResponseOnWriteEnabled(
+                CosmosAsyncClient client,
+                Boolean requestOptionsContentResponseEnabled);
 
             ConsistencyLevel getEffectiveConsistencyLevel(
                 CosmosAsyncClient client,
@@ -1261,6 +1288,9 @@ public class ImplementationBridgeHelpers {
 
             void setFaultInjectionRuleId(CosmosException cosmosException, String faultInjectionRuleId);
             String getFaultInjectionRuleId(CosmosException cosmosException);
+
+            void setFaultInjectionEvaluationResults(CosmosException cosmosException, List<String> faultInjectionRuleEvaluationResults);
+            List<String> getFaultInjectionEvaluationResults(CosmosException cosmosException);
         }
     }
 
@@ -1374,6 +1404,47 @@ public class ImplementationBridgeHelpers {
             String getDatabaseName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerName(CosmosContainerIdentity cosmosContainerIdentity);
             String getContainerLink(CosmosContainerIdentity cosmosContainerIdentity);
+        }
+    }
+
+    public static final class CosmosContainerProactiveInitConfigHelper {
+
+        private static final AtomicReference<Boolean> cosmosContainerProactiveInitConfigClassLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<CosmosContainerProactiveInitConfigAccessor> accessor = new AtomicReference<>();
+
+        private CosmosContainerProactiveInitConfigHelper() {}
+
+        public static CosmosContainerProactiveInitConfigAccessor getCosmosContainerProactiveInitConfigAccessor() {
+
+            if (!cosmosContainerProactiveInitConfigClassLoaded.get()) {
+                logger.debug("Initializing CosmosContainerProactiveInitConfigAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosContainerProactiveInitConfigAccessor snapshot = accessor.get();
+
+            if (snapshot == null) {
+                logger.error("CosmosContainerProactiveInitConfigAccessor is not initialized yet!");
+                System.exit(9726); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosContainerProactiveInitConfigAccessor(final CosmosContainerProactiveInitConfigAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosContainerProactiveInitConfigAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosContainerProactiveInitConfigAccessor...");
+                cosmosContainerProactiveInitConfigClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosContainerProactiveInitConfigAccessor {
+            Map<String, Integer> getContainerLinkToMinConnectionsMap(CosmosContainerProactiveInitConfig cosmosContainerProactiveInitConfig);
         }
     }
 }

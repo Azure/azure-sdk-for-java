@@ -1,54 +1,138 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('testskillset3960289c60a55855d467')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "35808c5d-d8ad-463f-8f5b-89223a004c45",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/skillsets(\u0027testskillset770110f1a1622029a414\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "430",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:18:32 GMT",
+        "Prefer": "return=representation",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b406a97d-d0a3-4688-9c95-ec16e4ab49da"
+      },
+      "RequestBody": {
+        "name": "testskillset770110f1a1622029a414",
+        "description": "Skillset for testing OCR",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
+            "inputs": [
+              {
+                "name": "url",
+                "source": "/document/url"
+              },
+              {
+                "name": "queryString",
+                "source": "/document/queryString"
+              }
+            ],
+            "outputs": [
+              {
+                "name": "text",
+                "targetName": "mytext0"
+              }
+            ],
+            "name": "myocr-0",
+            "description": "Tested OCR skill",
+            "context": "/document",
+            "defaultLanguageCode": "en",
+            "detectOrientation": false
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "b406a97d-d0a3-4688-9c95-ec16e4ab49da",
+        "Content-Length": "752",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:18:30 GMT",
+        "elapsed-time": "46",
+        "ETag": "W/\u00220x8DB20DB73E1F02F\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/skillsets(\u0027testskillset770110f1a1622029a414\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "b406a97d-d0a3-4688-9c95-ec16e4ab49da",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "b406a97d-d0a3-4688-9c95-ec16e4ab49da"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#skillsets/$entity",
+        "@odata.etag": "\u00220x8DB20DB73E1F02F\u0022",
+        "name": "testskillset770110f1a1622029a414",
+        "description": "Skillset for testing OCR",
+        "skills": [
+          {
+            "@odata.type": "#Microsoft.Skills.Vision.OcrSkill",
+            "name": "myocr-0",
+            "description": "Tested OCR skill",
+            "context": "/document",
+            "textExtractionAlgorithm": null,
+            "lineEnding": null,
+            "defaultLanguageCode": "en",
+            "detectOrientation": false,
+            "inputs": [
+              {
+                "name": "url",
+                "source": "/document/url",
+                "sourceContext": null,
+                "inputs": []
+              },
+              {
+                "name": "queryString",
+                "source": "/document/queryString",
+                "sourceContext": null,
+                "inputs": []
+              }
+            ],
+            "outputs": [
+              {
+                "name": "text",
+                "targetName": "mytext0"
+              }
+            ]
+          }
+        ],
+        "cognitiveServices": null,
+        "knowledgeStore": null,
+        "encryptionKey": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "35808c5d-d8ad-463f-8f5b-89223a004c45",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:45:58 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "35808c5d-d8ad-463f-8f5b-89223a004c45",
-      "ETag" : "W/\"0x8DAF8CBD6E27997\"",
-      "elapsed-time" : "40",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "740",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#skillsets/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CBD6E27997\\\"\",\"name\":\"testskillset3960289c60a55855d467\",\"description\":\"Skillset for testing OCR\",\"skills\":[{\"@odata.type\":\"#Microsoft.Skills.Vision.OcrSkill\",\"name\":\"myocr-0\",\"description\":\"Tested OCR skill\",\"context\":\"/document\",\"textExtractionAlgorithm\":null,\"lineEnding\":null,\"defaultLanguageCode\":\"en\",\"detectOrientation\":false,\"inputs\":[{\"name\":\"url\",\"source\":\"/document/url\",\"sourceContext\":null,\"inputs\":[]},{\"name\":\"queryString\",\"source\":\"/document/queryString\",\"sourceContext\":null,\"inputs\":[]}],\"outputs\":[{\"name\":\"text\",\"targetName\":\"mytext0\"}]}],\"cognitiveServices\":null,\"knowledgeStore\":null,\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "35808c5d-d8ad-463f-8f5b-89223a004c45",
-      "Location" : "https://alzimmer-basic.search.windows.net/skillsets('testskillset3960289c60a55855d467')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/skillsets('testskillset3960289c60a55855d467')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "82d6919b-dba8-4709-868b-fe9f99ee72cc"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "82d6919b-dba8-4709-868b-fe9f99ee72cc",
-      "elapsed-time" : "26",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "82d6919b-dba8-4709-868b-fe9f99ee72cc",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:45:58 GMT",
-      "x-ms-client-request-id" : "82d6919b-dba8-4709-868b-fe9f99ee72cc"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "testskillset3960289c60a55855d467" ]
+    {
+      "RequestUri": "https://REDACTED/skillsets(\u0027testskillset770110f1a1622029a414\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:18:32 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8e33f34a-11c9-462f-8a02-e0e80bde6cc4"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "8e33f34a-11c9-462f-8a02-e0e80bde6cc4",
+        "Date": "Thu, 09 Mar 2023 20:18:30 GMT",
+        "elapsed-time": "47",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "8e33f34a-11c9-462f-8a02-e0e80bde6cc4",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "8e33f34a-11c9-462f-8a02-e0e80bde6cc4"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "testskillset770110f1a1622029a414"
+  }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.elastic.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for VMHost List. */
 public final class VMHostListSamples {
     /*
-     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2022-07-01-preview/examples/VMHost_List.json
+     * x-ms-original-file: specification/elastic/resource-manager/Microsoft.Elastic/preview/2023-02-01-preview/examples/VMHost_List.json
      */
     /**
      * Sample code: VMHost_List.
@@ -17,6 +15,6 @@ public final class VMHostListSamples {
      * @param manager Entry point to ElasticManager.
      */
     public static void vMHostList(com.azure.resourcemanager.elastic.ElasticManager manager) {
-        manager.vMHosts().list("myResourceGroup", "myMonitor", Context.NONE);
+        manager.vMHosts().list("myResourceGroup", "myMonitor", com.azure.core.util.Context.NONE);
     }
 }

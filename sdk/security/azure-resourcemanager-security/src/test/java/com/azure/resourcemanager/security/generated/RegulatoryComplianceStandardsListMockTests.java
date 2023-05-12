@@ -33,7 +33,7 @@ public final class RegulatoryComplianceStandardsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"state\":\"Skipped\",\"passedControls\":1645124612,\"failedControls\":64451344,\"skippedControls\":460693689,\"unsupportedControls\":529153759},\"id\":\"ukhsusmmorf\",\"name\":\"zhwilzzh\",\"type\":\"ijmri\"}]}";
+            "{\"value\":[{\"properties\":{\"state\":\"Failed\",\"passedControls\":1575047020,\"failedControls\":1278915874,\"skippedControls\":1490193432,\"unsupportedControls\":146432492},\"id\":\"wiinjdllw\",\"name\":\"tlepowavvqxua\",\"type\":\"g\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class RegulatoryComplianceStandardsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<RegulatoryComplianceStandard> response =
-            manager.regulatoryComplianceStandards().list("ratjhdhzybspij", com.azure.core.util.Context.NONE);
+            manager.regulatoryComplianceStandards().list("uiadhbatecaatsdo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(State.SKIPPED, response.iterator().next().state());
+        Assertions.assertEquals(State.FAILED, response.iterator().next().state());
     }
 }

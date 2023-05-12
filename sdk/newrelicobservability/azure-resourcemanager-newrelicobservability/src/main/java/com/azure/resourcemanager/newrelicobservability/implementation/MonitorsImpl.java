@@ -26,6 +26,7 @@ import com.azure.resourcemanager.newrelicobservability.models.MetricsStatusReque
 import com.azure.resourcemanager.newrelicobservability.models.MetricsStatusResponse;
 import com.azure.resourcemanager.newrelicobservability.models.MonitoredResource;
 import com.azure.resourcemanager.newrelicobservability.models.Monitors;
+import com.azure.resourcemanager.newrelicobservability.models.MonitorsSwitchBillingResponse;
 import com.azure.resourcemanager.newrelicobservability.models.NewRelicMonitorResource;
 import com.azure.resourcemanager.newrelicobservability.models.SwitchBillingRequest;
 import com.azure.resourcemanager.newrelicobservability.models.VMExtensionPayload;
@@ -162,13 +163,30 @@ public final class MonitorsImpl implements Monitors {
         return Utils.mapPage(inner, inner1 -> new AppServiceInfoImpl(inner1, this.manager()));
     }
 
-    public Response<Void> switchBillingWithResponse(
+    public Response<NewRelicMonitorResource> switchBillingWithResponse(
         String resourceGroupName, String monitorName, SwitchBillingRequest request, Context context) {
-        return this.serviceClient().switchBillingWithResponse(resourceGroupName, monitorName, request, context);
+        MonitorsSwitchBillingResponse inner =
+            this.serviceClient().switchBillingWithResponse(resourceGroupName, monitorName, request, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new NewRelicMonitorResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public void switchBilling(String resourceGroupName, String monitorName, SwitchBillingRequest request) {
-        this.serviceClient().switchBilling(resourceGroupName, monitorName, request);
+    public NewRelicMonitorResource switchBilling(
+        String resourceGroupName, String monitorName, SwitchBillingRequest request) {
+        NewRelicMonitorResourceInner inner =
+            this.serviceClient().switchBilling(resourceGroupName, monitorName, request);
+        if (inner != null) {
+            return new NewRelicMonitorResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public PagedIterable<VMInfo> listHosts(String resourceGroupName, String monitorName, HostsGetRequest request) {

@@ -5,6 +5,7 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -41,8 +42,25 @@ public final class DocumentBarcode {
     @JsonProperty(value = "confidence", required = true)
     private float confidence;
 
-    /** Creates an instance of DocumentBarcode class. */
-    public DocumentBarcode() {}
+    /**
+     * Creates an instance of DocumentBarcode class.
+     *
+     * @param kind the kind value to set.
+     * @param value the value value to set.
+     * @param span the span value to set.
+     * @param confidence the confidence value to set.
+     */
+    @JsonCreator
+    public DocumentBarcode(
+            @JsonProperty(value = "kind", required = true) DocumentBarcodeKind kind,
+            @JsonProperty(value = "value", required = true) String value,
+            @JsonProperty(value = "span", required = true) DocumentSpan span,
+            @JsonProperty(value = "confidence", required = true) float confidence) {
+        this.kind = kind;
+        this.value = value;
+        this.span = span;
+        this.confidence = confidence;
+    }
 
     /**
      * Get the kind property: Barcode kind.
@@ -54,34 +72,12 @@ public final class DocumentBarcode {
     }
 
     /**
-     * Set the kind property: Barcode kind.
-     *
-     * @param kind the kind value to set.
-     * @return the DocumentBarcode object itself.
-     */
-    public DocumentBarcode setKind(DocumentBarcodeKind kind) {
-        this.kind = kind;
-        return this;
-    }
-
-    /**
      * Get the value property: Barcode value.
      *
      * @return the value value.
      */
     public String getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: Barcode value.
-     *
-     * @param value the value value to set.
-     * @return the DocumentBarcode object itself.
-     */
-    public DocumentBarcode setValue(String value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -114,33 +110,11 @@ public final class DocumentBarcode {
     }
 
     /**
-     * Set the span property: Location of the barcode in the reading order concatenated content.
-     *
-     * @param span the span value to set.
-     * @return the DocumentBarcode object itself.
-     */
-    public DocumentBarcode setSpan(DocumentSpan span) {
-        this.span = span;
-        return this;
-    }
-
-    /**
      * Get the confidence property: Confidence of correctly extracting the barcode.
      *
      * @return the confidence value.
      */
     public float getConfidence() {
         return this.confidence;
-    }
-
-    /**
-     * Set the confidence property: Confidence of correctly extracting the barcode.
-     *
-     * @param confidence the confidence value to set.
-     * @return the DocumentBarcode object itself.
-     */
-    public DocumentBarcode setConfidence(float confidence) {
-        this.confidence = confidence;
-        return this;
     }
 }
