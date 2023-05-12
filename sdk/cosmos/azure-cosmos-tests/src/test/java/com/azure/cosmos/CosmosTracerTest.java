@@ -1526,10 +1526,7 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         assertThat(attributes.get("db.type")).isEqualTo("Cosmos");
         assertThat(attributes.get("db.url"))
-            .matches(url -> url.equals(TestConfigurations.HOST) ||
-                url.equals(TestConfigurations.HOST.replace(
-                    ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT
-                )));
+            .matches(url -> url.equals(TestConfigurations.HOST));
         assertThat(attributes.get("db.statement")).isEqualTo(methodName);
 
         //verifying diagnostics as events

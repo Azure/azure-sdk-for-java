@@ -1144,26 +1144,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     @DataProvider
     public static Object[][] clientBuildersWithDirectSessionIncludeComputeGateway() {
-        Object[][] originalProviders = clientBuildersWithDirectSession(
+        return clientBuildersWithDirectSession(
             true,
             true,
             toArray(protocols));
-        List<Object[]> providers = new ArrayList<>(Arrays.asList(originalProviders));
-        Object[] injectedProviderParameters = new Object[1];
-        CosmosClientBuilder builder = createGatewayRxDocumentClient(
-            TestConfigurations.HOST.replace(ROUTING_GATEWAY_EMULATOR_PORT, COMPUTE_GATEWAY_EMULATOR_PORT),
-            ConsistencyLevel.SESSION,
-            false,
-            null,
-            true,
-            true);
-        injectedProviderParameters[0] = builder;
-
-        providers.add(injectedProviderParameters);
-
-        Object[][] array = new Object[providers.size()][];
-
-        return providers.toArray(array);
     }
 
     @DataProvider
