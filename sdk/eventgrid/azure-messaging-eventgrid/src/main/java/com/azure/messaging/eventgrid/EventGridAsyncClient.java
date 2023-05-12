@@ -19,6 +19,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.messaging.eventgrid.implementation.EventGridClientImpl;
 import com.azure.messaging.eventgrid.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.models.AcknowledgeResult;
+import com.azure.messaging.eventgrid.models.PublishResult;
 import com.azure.messaging.eventgrid.models.ReceiveResult;
 import com.azure.messaging.eventgrid.models.RejectOptions;
 import com.azure.messaging.eventgrid.models.RejectResult;
