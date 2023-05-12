@@ -50,7 +50,7 @@ public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
     private CosmosAsyncContainer createdContainer;
     private final Random random;
     private final List<TestObject> createdDocuments = new ArrayList<>();
-    private final CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig;
+    private final CosmosEndToEndOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig;
 
     // These regions should match the ones in test-resources.json
 //    private final List<String> regions = ImmutableList.of("West Central US", "Central US");
@@ -60,7 +60,7 @@ public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
     public EndToEndTimeOutWithSpeculationTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
         random = new Random();
-        endToEndOperationLatencyPolicyConfig = new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(10))
+        endToEndOperationLatencyPolicyConfig = new CosmosEndToEndOperationRetryPolicyConfigBuilder(Duration.ofSeconds(10))
             .build();
     }
 

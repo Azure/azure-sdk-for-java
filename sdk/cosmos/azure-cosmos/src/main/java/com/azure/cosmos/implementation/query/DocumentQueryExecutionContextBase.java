@@ -4,7 +4,7 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationRetryPolicyConfig;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -121,7 +121,7 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
-        CosmosE2EOperationRetryPolicyConfig e2EOperationRetryConfig =
+        CosmosEndToEndOperationRetryPolicyConfig e2EOperationRetryConfig =
             ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
                 getCosmosQueryRequestOptionsAccessor()
                 .getE2EOperationRetryPolicyConfig(cosmosQueryRequestOptions);
@@ -310,7 +310,7 @@ implements IDocumentQueryExecutionContext<T> {
                 this.resourceLink,
                     // AuthorizationTokenType.PrimaryMasterKey,
                 requestHeaders);
-            CosmosE2EOperationRetryPolicyConfig e2EOperationRetryConfig =
+            CosmosEndToEndOperationRetryPolicyConfig e2EOperationRetryConfig =
                 ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
                     getCosmosQueryRequestOptionsAccessor()
                     .getE2EOperationRetryPolicyConfig(cosmosQueryRequestOptions);

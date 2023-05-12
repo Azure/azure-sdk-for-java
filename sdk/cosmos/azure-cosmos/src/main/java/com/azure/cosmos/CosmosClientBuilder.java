@@ -132,7 +132,7 @@ public class CosmosClientBuilder implements
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
-    private CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig;
+    private CosmosEndToEndOperationRetryPolicyConfig cosmosEndToEndOperationRetryPolicyConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -790,21 +790,21 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the {@link CosmosE2EOperationRetryPolicyConfig} on the client
-     * @param cosmosE2EOperationRetryPolicyConfig the {@link CosmosE2EOperationRetryPolicyConfig}
+     * Sets the {@link CosmosEndToEndOperationRetryPolicyConfig} on the client
+     * @param cosmosEndToEndOperationRetryPolicyConfig the {@link CosmosEndToEndOperationRetryPolicyConfig}
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosE2EOperationRetryPolicyConfig cosmosE2EOperationRetryPolicyConfig){
-        this.cosmosE2EOperationRetryPolicyConfig = cosmosE2EOperationRetryPolicyConfig;
+    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationRetryPolicyConfig cosmosEndToEndOperationRetryPolicyConfig){
+        this.cosmosEndToEndOperationRetryPolicyConfig = cosmosEndToEndOperationRetryPolicyConfig;
         return this;
     }
 
     /**
-     * Gets the {@link CosmosE2EOperationRetryPolicyConfig}
-     * @return the {@link CosmosE2EOperationRetryPolicyConfig}
+     * Gets the {@link CosmosEndToEndOperationRetryPolicyConfig}
+     * @return the {@link CosmosEndToEndOperationRetryPolicyConfig}
      */
-    CosmosE2EOperationRetryPolicyConfig getEndToEndOperationConfig() {
-        return this.cosmosE2EOperationRetryPolicyConfig;
+    CosmosEndToEndOperationRetryPolicyConfig getEndToEndOperationConfig() {
+        return this.cosmosEndToEndOperationRetryPolicyConfig;
     }
 
     /**

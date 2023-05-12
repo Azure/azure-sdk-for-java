@@ -21,12 +21,4 @@ public enum PriorityLevel {
     PriorityLevel(int priorityValue) {
         this.priorityValue = priorityValue;
     }
-
-    /**
-     * Gets the numerical value of priority level
-     * @return priority numerical value.
-     */
-    public int getPriorityValue() {
-        return this.priorityValue;
-    }
 }

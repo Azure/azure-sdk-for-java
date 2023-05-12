@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationRetryPolicyConfig;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -27,7 +27,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
 import java.time.Duration;
@@ -158,7 +157,7 @@ public class ReplicatedResourceClient {
     }
 
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
-        CosmosE2EOperationRetryPolicyConfig config = request.requestContext.getE2EOperationRetryPolicyConfig();
+        CosmosEndToEndOperationRetryPolicyConfig config = request.requestContext.getE2EOperationRetryPolicyConfig();
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
         List<RxDocumentServiceRequest> requests = new ArrayList<>();
 
@@ -200,7 +199,7 @@ public class ReplicatedResourceClient {
             return false;
         }
 
-        CosmosE2EOperationRetryPolicyConfig config = request.requestContext.getE2EOperationRetryPolicyConfig();
+        CosmosEndToEndOperationRetryPolicyConfig config = request.requestContext.getE2EOperationRetryPolicyConfig();
         return config != null && config.isEnabled();
     }
 

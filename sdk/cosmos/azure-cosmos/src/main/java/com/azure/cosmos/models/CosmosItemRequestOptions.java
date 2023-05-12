@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
-import com.azure.cosmos.CosmosE2EOperationRetryPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationRetryPolicyConfig;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
@@ -40,7 +40,7 @@ public class CosmosItemRequestOptions {
     private CosmosDiagnosticsThresholds thresholds;
     private Boolean nonIdempotentWriteRetriesEnabled;
     private boolean useTrackingIds;
-    private CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig ;
+    private CosmosEndToEndOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig ;
 
     /**
      * copy constructor
@@ -289,11 +289,11 @@ public class CosmosItemRequestOptions {
     }
 
     /**
-     * Gets the {@link CosmosE2EOperationRetryPolicyConfig} defined
+     * Gets the {@link CosmosEndToEndOperationRetryPolicyConfig} defined
      *
-     * @return the {@link CosmosE2EOperationRetryPolicyConfig}
+     * @return the {@link CosmosEndToEndOperationRetryPolicyConfig}
      */
-    CosmosE2EOperationRetryPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
+    CosmosEndToEndOperationRetryPolicyConfig getCosmosEndToEndOperationLatencyPolicyConfig() {
         return endToEndOperationLatencyPolicyConfig;
     }
 
@@ -363,13 +363,13 @@ public class CosmosItemRequestOptions {
     }
 
     /**
-     * Sets the {@link CosmosE2EOperationRetryPolicyConfig} to be used for the request. If the config is already set
+     * Sets the {@link CosmosEndToEndOperationRetryPolicyConfig} to be used for the request. If the config is already set
      * on the client, then this will override the client level config for this request
      *
-     * @param endToEndOperationLatencyPolicyConfig the {@link CosmosE2EOperationRetryPolicyConfig}
+     * @param endToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationRetryPolicyConfig}
      * @return {@link CosmosItemRequestOptions}
      */
-    public CosmosItemRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosE2EOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig) {
+    public CosmosItemRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig) {
         this.endToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
         return this;
     }
