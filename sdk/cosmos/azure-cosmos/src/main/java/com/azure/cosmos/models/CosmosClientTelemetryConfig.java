@@ -395,16 +395,16 @@ public final class CosmosClientTelemetryConfig {
      * Can be used to enable sampling for capturing all diagnostics to reduce/disable any client resource
      * overhead (CPU and/or memory). The sampling rate can for example be reduced when an application has high CPU
      * usage to reduce overhead for capturing diagnostics temporarily.
-     * The sampling is applied top oeprations in the SDK - so, a single operation is either sampled out completely or
+     * The sampling is applied to operations in the SDK - so, a single operation is either sampled out completely or
      * all diagnostics (logs, tracing, metrics depending on what diagnostics are enabled) are captured. The main
-     * motivation or applying sampling for an entire operation is that a significant part of the CPU overhead happens
+     * motivation for applying sampling for an entire operation is that a significant part of the CPU overhead happens
      * when injecting the Context into the reactor pipeline - and the CPU usage reduction would be lower when sampling
      * out metrics on one operation (but still capture traces) and traces on another operation (but still capturing
      * metrics). In this case both operations would still have significant overhead - so, it is more efficient to
      * cover both metrics and traces for one operation and disable diagnostics completely for the second operation.
-     * It also make it easier to correlate metrics and traces for example when sampling is applied on the
+     * It also makes it easier to correlate metrics and traces for example when sampling is applied on the
      * operation-level as described above.
-     * @param samplingRate the sampling rate - 0 means no diagnostics will eb capture at all, 1 means no sampling
+     * @param samplingRate the sampling rate - 0 means no diagnostics will be capture at all, 1 means no sampling
      * applies and all diagnostics are captured.
      * @return current CosmosClientTelemetryConfig
      */
