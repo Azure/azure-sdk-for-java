@@ -404,7 +404,7 @@ public final class CosmosClientTelemetryConfig {
      * cover both metrics and traces for one operation and disable diagnostics completely for the second operation.
      * It also makes it easier to correlate metrics and traces for example when sampling is applied on the
      * operation-level as described above.
-     * @param samplingRate the sampling rate - 0 means no diagnostics will eb capture at all, 1 means no sampling
+     * @param samplingRate the sampling rate - 0 means no diagnostics will be capture at all, 1 means no sampling
      * applies and all diagnostics are captured.
      * @return current CosmosClientTelemetryConfig
      */
