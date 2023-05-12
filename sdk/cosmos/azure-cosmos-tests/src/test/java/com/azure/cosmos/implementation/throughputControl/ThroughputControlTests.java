@@ -705,6 +705,14 @@ public class ThroughputControlTests extends TestSuiteBase {
     }
 
     private void ensureContainer() {
+        CosmosAsyncClient clientSnapshot = this.client;
+        if (clientSnapshot != null) {
+            try {
+                clientSnapshot.close();
+            } catch (Exception error) {
+                logger.warn("Failed closing cosmos Client.", error);
+            }
+        }
         client = getClientBuilder().buildAsyncClient();
         database = getSharedCosmosDatabase(client);
         container = getSharedMultiPartitionCosmosContainer(client);
