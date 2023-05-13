@@ -252,7 +252,8 @@ public final class EventGridClientBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (azureKeyCredential != null) {
-            policies.add(new AzureKeyCredentialPolicy("SharedAccessKey", azureKeyCredential));
+            AzureKeyCredential credential = new AzureKeyCredential("SharedAccessKey " + azureKeyCredential.getKey());
+            policies.add(new AzureKeyCredentialPolicy("Authorization", credential));
         }
         this.pipelinePolicies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
