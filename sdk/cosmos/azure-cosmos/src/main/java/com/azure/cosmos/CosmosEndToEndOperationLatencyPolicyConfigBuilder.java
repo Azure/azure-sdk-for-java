@@ -10,26 +10,26 @@ import java.time.Duration;
 /**
  * Builder for CosmosEndToEndOperationLatencyPolicyConfig
  */
-public class CosmosEndToEndOperationRetryPolicyConfigBuilder {
+public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     private boolean isEnabled = true;
     private final Duration endToEndOperationTimeout;
 
     /**
-     * Create a builder for {@link CosmosEndToEndOperationRetryPolicyConfig} with end to end operation timeout
+     * Create a builder for {@link CosmosEndToEndOperationLatencyPolicyConfig} with end to end operation timeout
      * @param endToEndOperationTimeout the timeout for request cancellation in Duration. Setting very low timeouts
      *                                can cause the request to never succeed.
      */
-    public CosmosEndToEndOperationRetryPolicyConfigBuilder(Duration endToEndOperationTimeout) {
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration endToEndOperationTimeout) {
         this.endToEndOperationTimeout = endToEndOperationTimeout;
     }
 
     /**
-     * Builds {@link CosmosEndToEndOperationRetryPolicyConfig} with specified properties
+     * Builds {@link CosmosEndToEndOperationLatencyPolicyConfig} with specified properties
      *
-     * @return the {@link CosmosEndToEndOperationRetryPolicyConfig}
+     * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
-    public CosmosEndToEndOperationRetryPolicyConfig build() {
-        return new CosmosEndToEndOperationRetryPolicyConfig(isEnabled, endToEndOperationTimeout);
+    public CosmosEndToEndOperationLatencyPolicyConfig build() {
+        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout);
     }
 
     /**
@@ -39,7 +39,7 @@ public class CosmosEndToEndOperationRetryPolicyConfigBuilder {
      * @param isEnabled flag to enable or disable the policy
      * @return current CosmosEndToEndOperationConfigBuilder
      */
-    public CosmosEndToEndOperationRetryPolicyConfigBuilder enable(
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder enable(
         boolean isEnabled) {
         this.isEnabled = isEnabled;
         return this;

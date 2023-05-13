@@ -6,7 +6,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosEndToEndOperationRetryPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -157,7 +157,7 @@ public class ReplicatedResourceClient {
     }
 
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
-        CosmosEndToEndOperationRetryPolicyConfig config = request.requestContext.getEndToEndOperationRetryPolicyConfig();
+        CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
         List<RxDocumentServiceRequest> requests = new ArrayList<>();
 
@@ -199,7 +199,7 @@ public class ReplicatedResourceClient {
             return false;
         }
 
-        CosmosEndToEndOperationRetryPolicyConfig config = request.requestContext.getEndToEndOperationRetryPolicyConfig();
+        CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
         return config != null && config.isEnabled();
     }
 

@@ -6,7 +6,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.CosmosEndToEndOperationRetryPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -100,7 +100,7 @@ public interface AsyncDocumentClient {
         private ApiType apiType;
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
-        private CosmosEndToEndOperationRetryPolicyConfig cosmosEndToEndOperationRetryPolicyConfig;
+        private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -237,8 +237,8 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig) {
-            this.cosmosEndToEndOperationRetryPolicyConfig = endToEndOperationLatencyPolicyConfig;
+        public Builder withEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
+            this.cosmosEndToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
             return this;
         }
 
@@ -275,7 +275,7 @@ public interface AsyncDocumentClient {
                     apiType,
                     clientTelemetryConfig,
                     clientCorrelationId,
-                cosmosEndToEndOperationRetryPolicyConfig
+                cosmosEndToEndOperationLatencyPolicyConfig
             );
 
             client.init(state, null);

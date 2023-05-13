@@ -132,7 +132,7 @@ public class CosmosClientBuilder implements
     private ApiType apiType = null;
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
-    private CosmosEndToEndOperationRetryPolicyConfig cosmosEndToEndOperationRetryPolicyConfig;
+    private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -790,21 +790,21 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the {@link CosmosEndToEndOperationRetryPolicyConfig} on the client
-     * @param cosmosEndToEndOperationRetryPolicyConfig the {@link CosmosEndToEndOperationRetryPolicyConfig}
+     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} on the client
+     * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      * @return current CosmosClientBuilder
      */
-    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationRetryPolicyConfig cosmosEndToEndOperationRetryPolicyConfig){
-        this.cosmosEndToEndOperationRetryPolicyConfig = cosmosEndToEndOperationRetryPolicyConfig;
+    public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig){
+        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         return this;
     }
 
     /**
-     * Gets the {@link CosmosEndToEndOperationRetryPolicyConfig}
-     * @return the {@link CosmosEndToEndOperationRetryPolicyConfig}
+     * Gets the {@link CosmosEndToEndOperationLatencyPolicyConfig}
+     * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
-    CosmosEndToEndOperationRetryPolicyConfig getEndToEndOperationConfig() {
-        return this.cosmosEndToEndOperationRetryPolicyConfig;
+    CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationConfig() {
+        return this.cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
     /**

@@ -5,7 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
-import com.azure.cosmos.CosmosEndToEndOperationRetryPolicyConfig;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -54,7 +54,7 @@ public class CosmosQueryRequestOptions {
     private boolean emptyPageDiagnosticsEnabled;
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
-    private CosmosEndToEndOperationRetryPolicyConfig cosmosEndToEndOperationRetryPolicyConfig;
+    private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
 
     /**
      * Instantiates a new query request options.
@@ -97,7 +97,7 @@ public class CosmosQueryRequestOptions {
         this.queryName = options.queryName;
         this.feedRange = options.feedRange;
         this.thresholds = options.thresholds;
-        this.cosmosEndToEndOperationRetryPolicyConfig = options.cosmosEndToEndOperationRetryPolicyConfig;
+        this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -325,14 +325,14 @@ public class CosmosQueryRequestOptions {
     }
 
     /**
-     * Sets the {@link CosmosEndToEndOperationRetryPolicyConfig} to be used for the request. If the config is already set
+     * Sets the {@link CosmosEndToEndOperationLatencyPolicyConfig} to be used for the request. If the config is already set
      *      * on the client, then this will override the client level config for this request
      *
-     * @param cosmosEndToEndOperationRetryPolicyConfig the {@link CosmosEndToEndOperationRetryPolicyConfig}
+     * @param cosmosEndToEndOperationLatencyPolicyConfig the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      * @return the CosmosQueryRequestOptions
      */
-    public CosmosQueryRequestOptions setCosmosEndToEndOperationRetryPolicyConfig(CosmosEndToEndOperationRetryPolicyConfig cosmosEndToEndOperationRetryPolicyConfig) {
-        this.cosmosEndToEndOperationRetryPolicyConfig = cosmosEndToEndOperationRetryPolicyConfig;
+    public CosmosQueryRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+        this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         return this;
     }
 
@@ -788,7 +788,7 @@ public class CosmosQueryRequestOptions {
                     if (queryRequestOptions.thresholds != null) {
                         requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
                     }
-                    requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationRetryPolicyConfig);
+                    requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationLatencyPolicyConfig);
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
@@ -821,14 +821,14 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
-                public CosmosEndToEndOperationRetryPolicyConfig getEndToEndOperationRetryPolicyConfig(CosmosQueryRequestOptions options) {
-                    return options.getEndToEndOperationRetryConfig();
+                public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options) {
+                    return options.getEndToEndOperationLatencyConfig();
                 }
             });
     }
 
-    private CosmosEndToEndOperationRetryPolicyConfig getEndToEndOperationRetryConfig() {
-        return cosmosEndToEndOperationRetryPolicyConfig;
+    private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyConfig() {
+        return cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
     static { initialize(); }
