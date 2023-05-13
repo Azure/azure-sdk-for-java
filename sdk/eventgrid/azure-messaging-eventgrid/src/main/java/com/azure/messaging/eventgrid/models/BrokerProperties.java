@@ -18,7 +18,7 @@ public final class BrokerProperties {
     private String lockToken;
 
     /*
-     * The attempt count for deliverying the event.
+     * The attempt count for delivering the event.
      */
     @JsonProperty(value = "deliveryCount", required = true)
     private int deliveryCount;
@@ -27,14 +27,14 @@ public final class BrokerProperties {
      * Creates an instance of BrokerProperties class.
      *
      * @param lockToken the lockToken value to set.
-     * @param deliveryAttemptCount the deliveryAttemptCount value to set.
+     * @param deliveryCount the deliveryCount value to set.
      */
     @JsonCreator
     private BrokerProperties(
             @JsonProperty(value = "lockToken", required = true) String lockToken,
-            @JsonProperty(value = "deliveryCount", required = true) int deliveryAttemptCount) {
+            @JsonProperty(value = "deliveryCount", required = true) int deliveryCount) {
         this.lockToken = lockToken;
-        this.deliveryCount = deliveryAttemptCount;
+        this.deliveryCount = deliveryCount;
     }
 
     /**
@@ -47,9 +47,9 @@ public final class BrokerProperties {
     }
 
     /**
-     * Get the deliveryAttemptCount property: The attempt count for deliverying the event.
+     * Get the deliveryCount property: The attempt count for delivering the event.
      *
-     * @return the deliveryAttemptCount value.
+     * @return the deliveryCount value.
      */
     public int getDeliveryCount() {
         return this.deliveryCount;
