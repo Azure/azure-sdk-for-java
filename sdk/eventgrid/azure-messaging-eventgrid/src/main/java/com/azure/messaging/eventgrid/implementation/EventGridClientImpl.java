@@ -359,6 +359,16 @@ public final class EventGridClientImpl {
         }
     }
 
+    BinaryData removeExtraFields(List<CloudEvent> events) {
+        try {
+            String json = getSerializerAdapter().serialize(events, SerializerEncoding.JSON);
+            return BinaryData.fromString(json);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     /**
      * Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
      * code with an empty JSON object in response. Otherwise, the server can return various error codes. For example,
@@ -456,7 +466,7 @@ public final class EventGridClientImpl {
                         contentType,
                         topicName,
                         accept,
-                        BinaryData.fromObject(events),
+                        removeExtraFields(events),
                         requestOptions,
                         context)
                         .map(resp -> new SimpleResponse<>(resp, resp.getValue().toObject(PublishResult.class))))
