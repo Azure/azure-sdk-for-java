@@ -55,6 +55,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -1372,6 +1373,45 @@ public class ImplementationBridgeHelpers {
             void setUseLegacyTracing(CosmosClientTelemetryConfig config, boolean useLegacyTracing);
             void setTracer(CosmosClientTelemetryConfig config, Tracer tracer);
             double getSamplingRate(CosmosClientTelemetryConfig config);
+        }
+    }
+
+    public static final class PriorityLevelHelper {
+        private final static AtomicBoolean priorityLevelClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<PriorityLevelAccessor> accessor = new AtomicReference<>();
+
+        private PriorityLevelHelper() {
+        }
+
+        public static PriorityLevelAccessor getPriorityLevelAccessor() {
+            if (!priorityLevelClassLoaded.get()) {
+                logger.debug("Initializing PriorityLevelAccessor...");
+                initializeAllAccessors();
+            }
+
+            PriorityLevelAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("PriorityLevelAccessor is not initialized yet!");
+                System.exit(9728); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setPriorityLevelAccessor(final PriorityLevelAccessor newAccessor) {
+
+            assert(newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("PriorityLevelAccessor already initialized!");
+            } else {
+                logger.debug("Setting PriorityLevelAccessor...");
+                priorityLevelClassLoaded.set(true);
+            }
+        }
+
+        public interface PriorityLevelAccessor {
+            byte getPriorityValue(PriorityLevel level);
         }
     }
 
