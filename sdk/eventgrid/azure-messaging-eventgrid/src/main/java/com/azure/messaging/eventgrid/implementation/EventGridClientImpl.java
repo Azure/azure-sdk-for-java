@@ -36,7 +36,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.messaging.eventgrid.EventGridPublisherServiceVersion;
+import com.azure.messaging.eventgrid.EventGridMessagingServiceVersion;
 import com.azure.messaging.eventgrid.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.models.AcknowledgeResult;
 import com.azure.messaging.eventgrid.models.PublishResult;
@@ -68,14 +68,14 @@ public final class EventGridClientImpl {
     }
 
     /** Service version. */
-    private final EventGridPublisherServiceVersion serviceVersion;
+    private final EventGridMessagingServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      *
      * @return the serviceVersion value.
      */
-    public EventGridPublisherServiceVersion getServiceVersion() {
+    public EventGridMessagingServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -109,7 +109,7 @@ public final class EventGridClientImpl {
      * @param endpoint The host name of the namespace, e.g. namespaceName1.westus-1.eventgrid.azure.net.
      * @param serviceVersion Service version.
      */
-    public EventGridClientImpl(String endpoint, EventGridPublisherServiceVersion serviceVersion) {
+    public EventGridClientImpl(String endpoint, EventGridMessagingServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -127,7 +127,7 @@ public final class EventGridClientImpl {
      * @param serviceVersion Service version.
      */
     public EventGridClientImpl(
-            HttpPipeline httpPipeline, String endpoint, EventGridPublisherServiceVersion serviceVersion) {
+            HttpPipeline httpPipeline, String endpoint, EventGridMessagingServiceVersion serviceVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
@@ -143,7 +143,7 @@ public final class EventGridClientImpl {
             HttpPipeline httpPipeline,
             SerializerAdapter serializerAdapter,
             String endpoint,
-            EventGridPublisherServiceVersion serviceVersion) {
+            EventGridMessagingServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;

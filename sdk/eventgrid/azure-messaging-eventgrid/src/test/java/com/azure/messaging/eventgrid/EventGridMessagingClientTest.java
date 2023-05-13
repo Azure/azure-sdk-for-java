@@ -2,7 +2,6 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
@@ -34,7 +33,7 @@ class EventGridMessagingClientTest {
         EventGridClientBuilder builder = new EventGridClientBuilder()
             .httpClient(HttpClient.createDefault())
             .endpoint("https://billtestns.centraluseuap-1.eventgrid.azure.net")
-            .serviceVersion(EventGridPublisherServiceVersion.V2023_06_01_PREVIEW)
+            .serviceVersion(EventGridMessagingServiceVersion.V2023_06_01_PREVIEW)
             .credential(CREDENTIAL);
         return builder.buildClient();
     }

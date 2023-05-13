@@ -179,7 +179,7 @@ public final class EventGridClientBuilder
     /*
      * Service version
      */
-    @Generated private EventGridPublisherServiceVersion serviceVersion;
+    @Generated private EventGridMessagingServiceVersion serviceVersion;
 
     /**
      * Sets Service version.
@@ -188,7 +188,7 @@ public final class EventGridClientBuilder
      * @return the EventGridClientBuilder.
      */
     @Generated
-    public EventGridClientBuilder serviceVersion(EventGridPublisherServiceVersion serviceVersion) {
+    public EventGridClientBuilder serviceVersion(EventGridMessagingServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
         return this;
     }
@@ -218,8 +218,8 @@ public final class EventGridClientBuilder
     @Generated
     private EventGridClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        EventGridPublisherServiceVersion localServiceVersion =
-                (serviceVersion != null) ? serviceVersion : EventGridPublisherServiceVersion.getLatest();
+        EventGridMessagingServiceVersion localServiceVersion =
+                (serviceVersion != null) ? serviceVersion : EventGridMessagingServiceVersion.getLatest();
         EventGridClientImpl client =
                 new EventGridClientImpl(
                         localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
