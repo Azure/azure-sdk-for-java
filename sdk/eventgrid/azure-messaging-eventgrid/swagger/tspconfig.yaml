@@ -4,7 +4,7 @@ options:
   "@azure-tools/typespec-java":
     emitter-output-dir: "{project-root}/.."
     namespace: "com.azure.messaging.eventgrid"
-    service-name: "EventGridPublisherClient"
+    service-name: "EventGrid Messaging"
     partial-update: false
     namer: true
     generate-samples: false
