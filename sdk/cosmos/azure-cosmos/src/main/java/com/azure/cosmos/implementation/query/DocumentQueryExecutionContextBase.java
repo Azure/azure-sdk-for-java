@@ -121,12 +121,12 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         request.applyFeedRangeFilter(FeedRangeInternal.convert(feedRange));
-        CosmosEndToEndOperationRetryPolicyConfig e2EOperationRetryConfig =
+        CosmosEndToEndOperationRetryPolicyConfig endToEndOperationRetryConfig =
             ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
                 getCosmosQueryRequestOptionsAccessor()
-                .getE2EOperationRetryPolicyConfig(cosmosQueryRequestOptions);
-        if (e2EOperationRetryConfig != null) {
-            request.requestContext.setEndToEndOperationLatencyPolicyConfig(e2EOperationRetryConfig);
+                .getEndToEndOperationRetryPolicyConfig(cosmosQueryRequestOptions);
+        if (endToEndOperationRetryConfig != null) {
+            request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationRetryConfig);
         }
         return request;
     }
@@ -310,12 +310,12 @@ implements IDocumentQueryExecutionContext<T> {
                 this.resourceLink,
                     // AuthorizationTokenType.PrimaryMasterKey,
                 requestHeaders);
-            CosmosEndToEndOperationRetryPolicyConfig e2EOperationRetryConfig =
+            CosmosEndToEndOperationRetryPolicyConfig endToEndOperationRetryConfig =
                 ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.
                     getCosmosQueryRequestOptionsAccessor()
-                    .getE2EOperationRetryPolicyConfig(cosmosQueryRequestOptions);
-            if (e2EOperationRetryConfig != null) {
-                executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(e2EOperationRetryConfig);
+                    .getEndToEndOperationRetryPolicyConfig(cosmosQueryRequestOptions);
+            if (endToEndOperationRetryConfig != null) {
+                executeQueryRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationRetryConfig);
             }
             executeQueryRequest.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, MediaTypes.QUERY_JSON);
             executeQueryRequest.setByteBuffer(ModelBridgeInternal.serializeJsonToByteBuffer(querySpec));

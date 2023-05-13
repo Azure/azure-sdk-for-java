@@ -331,7 +331,7 @@ public class CosmosQueryRequestOptions {
      * @param cosmosEndToEndOperationRetryPolicyConfig the {@link CosmosEndToEndOperationRetryPolicyConfig}
      * @return the CosmosQueryRequestOptions
      */
-    public CosmosQueryRequestOptions setCosmosE2EOperationRetryPolicyConfig(CosmosEndToEndOperationRetryPolicyConfig cosmosEndToEndOperationRetryPolicyConfig) {
+    public CosmosQueryRequestOptions setCosmosEndToEndOperationRetryPolicyConfig(CosmosEndToEndOperationRetryPolicyConfig cosmosEndToEndOperationRetryPolicyConfig) {
         this.cosmosEndToEndOperationRetryPolicyConfig = cosmosEndToEndOperationRetryPolicyConfig;
         return this;
     }
@@ -821,13 +821,13 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
-                public CosmosEndToEndOperationRetryPolicyConfig getE2EOperationRetryPolicyConfig(CosmosQueryRequestOptions options) {
-                    return options.getE2EOperationRetryConfig();
+                public CosmosEndToEndOperationRetryPolicyConfig getEndToEndOperationRetryPolicyConfig(CosmosQueryRequestOptions options) {
+                    return options.getEndToEndOperationRetryConfig();
                 }
             });
     }
 
-    private CosmosEndToEndOperationRetryPolicyConfig getE2EOperationRetryConfig() {
+    private CosmosEndToEndOperationRetryPolicyConfig getEndToEndOperationRetryConfig() {
         return cosmosEndToEndOperationRetryPolicyConfig;
     }
 

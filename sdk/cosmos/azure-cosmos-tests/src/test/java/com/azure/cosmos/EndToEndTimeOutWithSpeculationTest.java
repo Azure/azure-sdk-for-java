@@ -126,7 +126,7 @@ public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
         }
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
-        options.setCosmosE2EOperationRetryPolicyConfig(endToEndOperationLatencyPolicyConfig);
+        options.setCosmosEndToEndOperationRetryPolicyConfig(endToEndOperationLatencyPolicyConfig);
 
         TestObject itemToQuery = createdDocuments.get(random.nextInt(createdDocuments.size()));
 

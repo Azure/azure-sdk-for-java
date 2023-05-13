@@ -266,7 +266,7 @@ public class ImplementationBridgeHelpers {
             RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions);
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options);
             void applyMaxItemCount(CosmosQueryRequestOptions requestOptions, CosmosPagedFluxOptions fluxOptions);
-            CosmosEndToEndOperationRetryPolicyConfig getE2EOperationRetryPolicyConfig(CosmosQueryRequestOptions options);
+            CosmosEndToEndOperationRetryPolicyConfig getEndToEndOperationRetryPolicyConfig(CosmosQueryRequestOptions options);
         }
     }
 

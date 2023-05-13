@@ -157,7 +157,7 @@ public class ReplicatedResourceClient {
     }
 
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
-        CosmosEndToEndOperationRetryPolicyConfig config = request.requestContext.getE2EOperationRetryPolicyConfig();
+        CosmosEndToEndOperationRetryPolicyConfig config = request.requestContext.getEndToEndOperationRetryPolicyConfig();
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
         List<RxDocumentServiceRequest> requests = new ArrayList<>();
 
@@ -199,7 +199,7 @@ public class ReplicatedResourceClient {
             return false;
         }
 
-        CosmosEndToEndOperationRetryPolicyConfig config = request.requestContext.getE2EOperationRetryPolicyConfig();
+        CosmosEndToEndOperationRetryPolicyConfig config = request.requestContext.getEndToEndOperationRetryPolicyConfig();
         return config != null && config.isEnabled();
     }
 

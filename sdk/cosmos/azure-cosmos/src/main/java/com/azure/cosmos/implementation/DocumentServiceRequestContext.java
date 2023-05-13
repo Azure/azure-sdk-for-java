@@ -45,7 +45,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile String throughputControlCycleId;
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
-    private CosmosEndToEndOperationRetryPolicyConfig e2EOperationRetryPolicyConfig;
+    private CosmosEndToEndOperationRetryPolicyConfig endToEndOperationRetryPolicyConfig;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
@@ -130,16 +130,16 @@ public class DocumentServiceRequestContext implements Cloneable {
         context.resourcePhysicalAddress = this.resourcePhysicalAddress;
         context.throughputControlCycleId = this.throughputControlCycleId;
         context.replicaAddressValidationEnabled = this.replicaAddressValidationEnabled;
-        context.e2EOperationRetryPolicyConfig = this.e2EOperationRetryPolicyConfig;
+        context.endToEndOperationRetryPolicyConfig = this.endToEndOperationRetryPolicyConfig;
         return context;
     }
 
-    public CosmosEndToEndOperationRetryPolicyConfig getE2EOperationRetryPolicyConfig() {
-        return e2EOperationRetryPolicyConfig;
+    public CosmosEndToEndOperationRetryPolicyConfig getEndToEndOperationRetryPolicyConfig() {
+        return endToEndOperationRetryPolicyConfig;
     }
 
     public void setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationRetryPolicyConfig endToEndOperationLatencyPolicyConfig) {
-        this.e2EOperationRetryPolicyConfig = endToEndOperationLatencyPolicyConfig;
+        this.endToEndOperationRetryPolicyConfig = endToEndOperationLatencyPolicyConfig;
     }
 }
 
