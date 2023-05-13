@@ -5,6 +5,7 @@ package com.azure.core.test;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
+import com.azure.core.test.annotation.SkipExternalizeTestRecording;
 import com.azure.core.test.http.PlaybackClient;
 import com.azure.core.test.implementation.TestIterationContext;
 import com.azure.core.test.implementation.TestingHelpers;
@@ -155,8 +156,12 @@ public abstract class TestBase implements BeforeEachCallback {
         }
         Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class"), LOGGER));
         this.testContextManager =
-            new TestContextManager(testInfo.getTestMethod().get(), localTestMode, isTestProxyEnabled(),
-                testInfo.getTestClass().get().getAnnotation(RecordWithoutRequestBody.class) != null, testClassPath);
+            new TestContextManager(testInfo.getTestMethod().get(),
+                localTestMode,
+                isTestProxyEnabled(),
+                testInfo.getTestClass().get().getAnnotation(RecordWithoutRequestBody.class) != null,
+                testClassPath,
+                testInfo.getTestClass().get().getAnnotation(SkipExternalizeTestRecording.class) != null);
         testContextManager.setTestIteration(testIterationContext.getTestIteration());
         logger.info("Test Mode: {}, Name: {}", localTestMode, testContextManager.getTestName());
 

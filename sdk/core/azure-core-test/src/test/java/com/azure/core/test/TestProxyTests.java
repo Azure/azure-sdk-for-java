@@ -14,6 +14,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
+import com.azure.core.test.annotation.SkipExternalizeTestRecording;
 import com.azure.core.test.http.TestProxyTestServer;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
@@ -29,7 +30,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -237,7 +237,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
-    @Disabled
+    @SkipExternalizeTestRecording
     public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
@@ -315,7 +315,7 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
-    @Disabled
+    @SkipExternalizeTestRecording
     public void testBodyRegexRedactRecord() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 

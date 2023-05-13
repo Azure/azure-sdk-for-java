@@ -25,6 +25,7 @@ public class TestContextManager {
     private Integer testIteration;
     private final boolean skipRecordingRequestBody;
     private final Path testClassPath;
+    private final boolean skipExternalizeRecording;
 
     /**
      * Constructs a {@link TestContextManager} based on the test method.
@@ -33,7 +34,7 @@ public class TestContextManager {
      * @param testMode The {@link TestMode} the test is running in.
      */
     public TestContextManager(Method testMethod, TestMode testMode) {
-        this(testMethod, testMode, false, false, null);
+        this(testMethod, testMode, false, false, null, false);
     }
 
     /**
@@ -45,12 +46,16 @@ public class TestContextManager {
      * @param recordWithoutRequestBodyClassAnnotation flag indicating if {@code RecordWithoutRequestBody} annotation
      * present on test class.
      * @param testClassPath the test class path
+     * @param skipExternalizeRecording flag indicating if {@code SkipExternalizeTestRecording} annotation
+     * present on test method.
      */
-    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy, boolean recordWithoutRequestBodyClassAnnotation, Path testClassPath) {
+    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy, boolean recordWithoutRequestBodyClassAnnotation, Path testClassPath,
+                              boolean skipExternalizeRecording) {
         this.testName = testMethod.getName();
         this.className = testMethod.getDeclaringClass().getSimpleName();
         this.testMode = testMode;
         this.enableTestProxy = enableTestProxy;
+        this.skipExternalizeRecording = skipExternalizeRecording;
 
         RecordWithoutRequestBody recordWithoutRequestBody = testMethod.getAnnotation(RecordWithoutRequestBody.class);
         this.skipRecordingRequestBody = recordWithoutRequestBody != null || recordWithoutRequestBodyClassAnnotation;
@@ -159,5 +164,14 @@ public class TestContextManager {
      */
     void setTestIteration(Integer testIteration) {
         this.testIteration = testIteration;
+    }
+
+    /**
+     * Returns a boolean indicating if the test recording should be externalized.
+     *
+     * @return Flag indicating if the test recording should be externalized.
+     */
+    public boolean skipExternalizeRecording() {
+        return skipExternalizeRecording;
     }
 }
