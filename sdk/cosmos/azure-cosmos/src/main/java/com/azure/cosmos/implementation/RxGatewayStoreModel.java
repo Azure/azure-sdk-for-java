@@ -35,12 +35,14 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 
 import static com.azure.cosmos.implementation.HttpConstants.HttpHeaders.INTENDED_COLLECTION_RID_HEADER;
 
@@ -237,7 +239,14 @@ public class RxGatewayStoreModel implements RxStoreModel {
                 httpHeaders,
                 contentAsByteArray);
 
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, request.getResponseTimeout());
+            Duration responseTimeout = Duration.ofSeconds(Configs.getHttpResponseTimeoutInSeconds());
+            if (OperationType.QueryPlan.equals(request.getOperationType())) {
+                responseTimeout = Duration.ofSeconds(Configs.getQueryPlanResponseTimeoutInSeconds());
+            } else if (request.isAddressRefresh()) {
+                responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+            }
+
+            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
             return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
 
         } catch (Exception e) {
@@ -475,11 +484,8 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     private Mono<RxDocumentServiceResponse> invokeAsync(RxDocumentServiceRequest request) {
 
-        final WebExceptionRetryPolicy policyInstance = new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics));
-        return BackoffRetryUtility.executeRetry(() -> {
-            policyInstance.onBeforeSendRequest(request);
-            return invokeAsyncInternal(request);
-        }, policyInstance);
+        Callable<Mono<RxDocumentServiceResponse>> funcDelegate = () -> invokeAsyncInternal(request).single();
+        return BackoffRetryUtility.executeRetry(funcDelegate, new WebExceptionRetryPolicy(BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics)));
     }
 
     @Override

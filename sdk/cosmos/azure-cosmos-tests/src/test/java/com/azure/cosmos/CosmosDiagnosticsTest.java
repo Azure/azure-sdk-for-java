@@ -613,7 +613,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                 .key(TestConfigurations.MASTER_KEY)
                 .endpoint(TestConfigurations.HOST)
                 .endToEndOperationLatencyPolicyConfig(
-                    new CosmosE2EOperationRetryPolicyConfigBuilder(Duration.ofSeconds(1)).build()
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1)).build()
                 ).buildAsyncClient();
 
             CosmosAsyncContainer container =
