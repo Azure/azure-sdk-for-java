@@ -6,6 +6,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.util.StorageBlockingSink;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
@@ -156,7 +157,12 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
             final AppendBlobRequestConditions appendBlobRequestConditions) {
-            super(AppendBlobClient.MAX_APPEND_BLOCK_BYTES);
+            // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service
+            // versions support up to 4MB
+            super(client.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()
+                ? AppendBlobClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW
+                : AppendBlobClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE);
+
             this.client = client;
             this.appendBlobRequestConditions = (appendBlobRequestConditions == null)
                 ? new AppendBlobRequestConditions() : appendBlobRequestConditions;

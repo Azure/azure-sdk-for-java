@@ -43,10 +43,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Deque;
+import java.util.ArrayDeque;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -180,7 +180,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
     private final AtomicReference<Timeout> acquisitionAndIdleEndpointDetectionTimeout = new AtomicReference<>();
 
     private final ConcurrentHashMap<Channel, Channel> acquiredChannels = new ConcurrentHashMap<>();
-    private final Deque<Channel> availableChannels = new ConcurrentLinkedDeque<>();
+    private final Deque<Channel> availableChannels = new ArrayDeque<>();
     private final AtomicBoolean closed = new AtomicBoolean();
     private final AtomicBoolean connecting = new AtomicBoolean();
 
@@ -1173,8 +1173,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     if (logger.isDebugEnabled()) {
                         logger.debug("Channel to endpoint {} is closed. " +
-                                "isInAvailableChannels={}, " +
-                                "isInAcquiredChannels={}, " +
                                 "isOnChannelEventLoop={}, " +
                                 "isActive={}, " +
                                 "isOpen={}, " +
@@ -1182,8 +1180,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
                                 "isWritable={}, " +
                                 "threadName={}",
                             channel.remoteAddress(),
-                            availableChannels.contains(channel),
-                            acquiredChannels.contains(channel),
                             channel.eventLoop().inEventLoop(),
                             channel.isActive(),
                             channel.isOpen(),

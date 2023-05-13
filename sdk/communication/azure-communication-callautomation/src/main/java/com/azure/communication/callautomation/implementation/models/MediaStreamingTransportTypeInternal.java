@@ -8,19 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of transport to be used for media streaming, eg. Websocket. */
+/** Defines values for MediaStreamingTransportTypeInternal. */
 public final class MediaStreamingTransportTypeInternal
         extends ExpandableStringEnum<MediaStreamingTransportTypeInternal> {
     /** Static value websocket for MediaStreamingTransportTypeInternal. */
     public static final MediaStreamingTransportTypeInternal WEBSOCKET = fromString("websocket");
-
-    /**
-     * Creates a new instance of MediaStreamingTransportTypeInternal value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public MediaStreamingTransportTypeInternal() {}
 
     /**
      * Creates or finds a MediaStreamingTransportTypeInternal from its string representation.
@@ -33,11 +25,7 @@ public final class MediaStreamingTransportTypeInternal
         return fromString(name, MediaStreamingTransportTypeInternal.class);
     }
 
-    /**
-     * Gets known MediaStreamingTransportTypeInternal values.
-     *
-     * @return known MediaStreamingTransportTypeInternal values.
-     */
+    /** @return known MediaStreamingTransportTypeInternal values. */
     public static Collection<MediaStreamingTransportTypeInternal> values() {
         return values(MediaStreamingTransportTypeInternal.class);
     }

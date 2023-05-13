@@ -416,9 +416,9 @@ public final class DocumentAnalysisClient {
                 document,
                 null,
                 finalContext).apply(cxt)),
-            pollingOperation(classifierId, finalContext),
+            pollingClassifierOperation(classifierId, finalContext),
             getCancellationIsNotSupported(),
-            fetchingOperation(classifierId, finalContext));
+            fetchingClassifierOperation(classifierId, finalContext));
     }
 
     private Function<PollingContext<OperationResult>, OperationResult> analyzeActivationOperation(
