@@ -77,11 +77,11 @@ public class LocalThroughputControllerTests {
     public static Object[][] throughputControlConfigProvider() {
         return new Object[][]{
             { 6, null, null, 6 },
-            { 6, null, PriorityLevel.High, 6 },
+            { 6, null, PriorityLevel.HIGH, 6 },
             { null, 0.5, null, 3 },
-            { null, 0.5, PriorityLevel.High, 3 },
-            { Integer.MAX_VALUE, null, PriorityLevel.High, Integer.MAX_VALUE },
-            { Integer.MAX_VALUE, 0.5, PriorityLevel.High, 3 }
+            { null, 0.5, PriorityLevel.HIGH, 3 },
+            { Integer.MAX_VALUE, null, PriorityLevel.HIGH, Integer.MAX_VALUE },
+            { Integer.MAX_VALUE, 0.5, PriorityLevel.HIGH, 3 }
         };
     }
 

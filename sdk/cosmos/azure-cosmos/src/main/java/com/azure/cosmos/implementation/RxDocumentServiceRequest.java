@@ -16,9 +16,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.PriorityLevel;
-import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
@@ -1170,7 +1167,7 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setPriorityLevel(PriorityLevel priorityLevel) {
         if (priorityLevel != null) {
-            this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.name());
+            this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.toString());
         }
     }
   

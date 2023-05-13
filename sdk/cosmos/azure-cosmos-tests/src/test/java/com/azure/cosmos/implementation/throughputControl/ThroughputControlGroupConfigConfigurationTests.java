@@ -77,7 +77,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
                 .groupName("group-1")
-                .priorityLevel(PriorityLevel.High)
+                .priorityLevel(PriorityLevel.HIGH)
                 .build();
         assertThat(groupConfig.getTargetThroughput()).isEqualTo(Integer.MAX_VALUE);
     }
@@ -87,7 +87,7 @@ public class ThroughputControlGroupConfigConfigurationTests extends TestSuiteBas
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
                 .groupName("group-1")
-                .priorityLevel(PriorityLevel.High)
+                .priorityLevel(PriorityLevel.HIGH)
                 .targetThroughputThreshold(0.5)
                 .build();
         assertThat(groupConfig.getTargetThroughputThreshold()).isEqualTo(0.5);
