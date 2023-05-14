@@ -48,18 +48,6 @@ public class ReceiveLinkHandler2 extends LinkHandler {
     private final ReceiverUnsettledDeliveries unsettledDeliveries;
     private final ReceiverDeliveryHandler deliveryHandler;
 
-    /**
-     * @deprecated use {@link ReceiveLinkHandler2#ReceiveLinkHandler2(String, String, String, String, DeliverySettleMode,
-     * ReactorDispatcher, AmqpRetryOptions, boolean, AmqpMetricsProvider)} instead.
-     */
-    @Deprecated
-    public ReceiveLinkHandler2(String connectionId, String hostname, String linkName, String entityPath,
-        DeliverySettleMode settlingMode, ReactorDispatcher dispatcher,
-        AmqpRetryOptions retryOptions, boolean includeDeliveryTagInMessage) {
-        this(connectionId, hostname, linkName, entityPath, settlingMode, dispatcher, retryOptions,
-            includeDeliveryTagInMessage, new AmqpMetricsProvider(null, hostname, entityPath));
-    }
-
     public ReceiveLinkHandler2(String connectionId, String hostname, String linkName, String entityPath,
         DeliverySettleMode settlingMode, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions, boolean includeDeliveryTagInMessage,
         AmqpMetricsProvider metricsProvider) {
