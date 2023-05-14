@@ -13,19 +13,21 @@ import org.apache.qpid.proton.engine.Receiver;
 
 import java.util.Objects;
 
-// temporary type to support v1 and v2 side by side.
-public final class ConsumerSettings {
+// temporary type to support v1 and v2 side by side, enabling creating the AmqpReceiveLink consumer on v1 or v2 stack.
+public final class ConsumerFactory {
     private final boolean isV2;
     private final DeliverySettleMode settleMode;
     private final boolean includeDeliveryTagInMessage;
 
-    public ConsumerSettings() {
+    // Factory instance to create AmqpReceiveLink consumer hosted on v1 stack.
+    public ConsumerFactory() {
         this.isV2 = false;
         this.settleMode = null;
         this.includeDeliveryTagInMessage = false;
     }
 
-    public ConsumerSettings(DeliverySettleMode settlingMode, boolean includeDeliveryTagInMessage) {
+    // Factory instance to create AmqpReceiveLink consumer hosted on v1 stack.
+    public ConsumerFactory(DeliverySettleMode settlingMode, boolean includeDeliveryTagInMessage) {
         this.isV2 = true;
         this.settleMode = Objects.requireNonNull(settlingMode);
         this.includeDeliveryTagInMessage = includeDeliveryTagInMessage;
