@@ -13,14 +13,14 @@ import java.util.function.Supplier;
 /**
  * The type that tracks and sends credits for the receiver in message-flux.
  */
-abstract class CreditAccounting {
+abstract class CreditAccountingStrategy {
     private final AmqpReceiveLink receiver;
     protected final ClientLogger logger;
     protected final Subscription subscription;
     protected final int prefetch;
 
     /**
-     * Create new CreditAccounting to track credit associated with a receiver backing a mediator.
+     * Create new CreditAccountingStrategy to track credit associated with a receiver backing a mediator.
      *
      * @param receiver the receiver for sending credit to the broker.
      * @param subscription the subscription to the receiver's message publisher to request messages when
@@ -28,7 +28,7 @@ abstract class CreditAccounting {
      * @param prefetch the prefetch configured.
      * @param logger the logger.
      */
-    protected CreditAccounting(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
+    protected CreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
         this.receiver = receiver;
         this.subscription = subscription;
         this.prefetch = prefetch;
