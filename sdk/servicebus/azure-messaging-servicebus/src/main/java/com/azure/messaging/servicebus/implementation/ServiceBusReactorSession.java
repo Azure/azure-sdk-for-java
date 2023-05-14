@@ -9,7 +9,7 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.ClaimsBasedSecurityNode;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.ConsumerSettings;
+import com.azure.core.amqp.implementation.ConsumerFactory;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -203,21 +203,21 @@ class ServiceBusReactorSession extends ReactorSession implements ServiceBusSessi
                 return Mono.error(new RuntimeException("ReceiveMode is not supported: " + receiveMode));
         }
 
-        final ConsumerSettings consumerSettings;
+        final ConsumerFactory consumerFactory;
         if (this.isV2) {
-            consumerSettings = new ConsumerSettings(deliverySettleMode, true);
+            consumerFactory = new ConsumerFactory(deliverySettleMode, true);
         } else {
-            consumerSettings = new ConsumerSettings();
+            consumerFactory = new ConsumerFactory();
         }
 
         if (distributedTransactionsSupport) {
             return getOrCreateTransactionCoordinator().flatMap(transactionCoordinator -> super.createConsumer(linkName,
                 entityPath, timeout, retry, filter, linkProperties, null, senderSettleMode,
-                receiverSettleMode, consumerSettings)
+                receiverSettleMode, consumerFactory)
                 .cast(ServiceBusReceiveLink.class));
         } else {
             return super.createConsumer(linkName, entityPath, timeout, retry, filter, linkProperties,
-                null, senderSettleMode, receiverSettleMode, consumerSettings).cast(ServiceBusReceiveLink.class);
+                null, senderSettleMode, receiverSettleMode, consumerFactory).cast(ServiceBusReceiveLink.class);
         }
     }
 }
