@@ -12,7 +12,7 @@ import java.util.concurrent.atomic.AtomicLong;
  * The type tracks the downstream request accumulated since the last credit flow to the broker and once the accumulated
  * request is greater than or equal to the Prefetch, send it as the next credit.
  */
-final class RequestDrivenCreditAccounting extends CreditAccounting {
+final class RequestDrivenCreditAccountingStrategy extends CreditAccountingStrategy {
     private static final int MAX_INT_PREFETCH_BOUND = 100;
     private static final long MAX_LONG_REQUEST_BOUND = 1;
     private long pendingMessageCount;
@@ -20,7 +20,7 @@ final class RequestDrivenCreditAccounting extends CreditAccounting {
     private final AtomicLong requestAccumulated = new AtomicLong(0);
 
     /**
-     * Create new CreditAccounting to track the downstream request accumulated and use it to compute
+     * Create new CreditAccountingStrategy to track the downstream request accumulated and use it to compute
      * the credit to send.
      *
      * @param receiver the receiver for sending credit to the broker.
@@ -29,7 +29,7 @@ final class RequestDrivenCreditAccounting extends CreditAccounting {
      * @param prefetch the prefetch configured.
      * @param logger the logger.
      */
-    RequestDrivenCreditAccounting(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
+    RequestDrivenCreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
         super(receiver, subscription, validateAndGet(prefetch), logger);
     }
 

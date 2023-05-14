@@ -629,7 +629,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         private final CreditFlowMode creditFlowMode;
         private final ClientLogger logger;
         private final Disposable.Composite endpointStateDisposables = Disposables.composite();
-        private CreditAccounting creditAccounting;
+        private CreditAccountingStrategy creditAccounting;
         private volatile boolean ready;
         private volatile Subscription s;
         @SuppressWarnings("rawtypes")
@@ -739,10 +739,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             if (Operators.setOnce(S, this, s)) {
                 switch (creditFlowMode) {
                     case RequestDriven:
-                        creditAccounting = new RequestDrivenCreditAccounting(receiver, s, prefetch, logger);
+                        creditAccounting = new RequestDrivenCreditAccountingStrategy(receiver, s, prefetch, logger);
                         break;
                     case EmissionDriven:
-                        creditAccounting = new EmissionDrivenCreditAccounting(receiver, s, prefetch, logger);
+                        creditAccounting = new EmissionDrivenCreditAccountingStrategy(receiver, s, prefetch, logger);
                         break;
                     default:
                         throw new IllegalArgumentException("Unknown CreditFlowMode " + creditFlowMode);
