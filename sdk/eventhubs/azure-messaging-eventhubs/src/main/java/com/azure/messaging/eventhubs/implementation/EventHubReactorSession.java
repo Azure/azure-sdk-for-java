@@ -11,7 +11,7 @@ import com.azure.core.amqp.implementation.AmqpConstants;
 import com.azure.core.amqp.implementation.AmqpLinkProvider;
 import com.azure.core.amqp.implementation.AmqpReceiveLink;
 import com.azure.core.amqp.implementation.AmqpSendLink;
-import com.azure.core.amqp.implementation.ConsumerSettings;
+import com.azure.core.amqp.implementation.ConsumerFactory;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorHandlerProvider;
 import com.azure.core.amqp.implementation.ReactorProvider;
@@ -118,7 +118,7 @@ class EventHubReactorSession extends ReactorSession implements EventHubSession {
 
         // Use explicit settlement via dispositions (not pre-settled)
         return createConsumer(linkName, entityPath, timeout, retry, filter, properties, desiredCapabilities,
-            SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND, new ConsumerSettings());
+            SenderSettleMode.UNSETTLED, ReceiverSettleMode.SECOND, new ConsumerFactory());
     }
 
     private String getExpression(EventPosition eventPosition) {
