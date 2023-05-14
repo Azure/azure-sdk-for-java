@@ -14,6 +14,7 @@ public final class ServiceBusProcessorClientOptions {
 
     private int maxConcurrentCalls = 1;
     private boolean disableAutoComplete;
+    private boolean isNonSessionProcessorV2;
 
     /**
      * Returns true if the auto-complete and auto-abandon feature is disabled.
@@ -48,6 +49,15 @@ public final class ServiceBusProcessorClientOptions {
      */
     public ServiceBusProcessorClientOptions setMaxConcurrentCalls(int maxConcurrentCalls) {
         this.maxConcurrentCalls = maxConcurrentCalls;
+        return this;
+    }
+
+    public boolean isNonSessionProcessorV2() {
+        return this.isNonSessionProcessorV2;
+    }
+
+    public ServiceBusProcessorClientOptions setNonSessionProcessorV2(boolean isV2) {
+        this.isNonSessionProcessorV2 = isV2;
         return this;
     }
 }
