@@ -12,14 +12,14 @@ import java.util.concurrent.atomic.AtomicLong;
  * The type tracks the number of messages emitted downstream since the last credit flow to the broker, and once
  * the emission count is greater than or equal to a fraction (e.g., 0.5) of the Prefetch, send it as the next credit.
  */
-final class EmissionDrivenCreditAccounting extends CreditAccounting {
+final class EmissionDrivenCreditAccountingStrategy extends CreditAccountingStrategy {
     private static final int MAX_INT_PREFETCH_BOUND = 100;
     private boolean placedInitialCredit;
     private final int limit;
     private final AtomicLong emissionAccumulated = new AtomicLong(0);
 
     /**
-     * Create new CreditAccounting to track the messages emitted downstream and use it to compute
+     * Create new CreditAccountingStrategy to track the messages emitted downstream and use it to compute
      * the credit to send.
      *
      * @param receiver the receiver for sending credit to the broker.
@@ -28,7 +28,7 @@ final class EmissionDrivenCreditAccounting extends CreditAccounting {
      * @param prefetch the prefetch configured.
      * @param logger the logger.
      */
-    EmissionDrivenCreditAccounting(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
+    EmissionDrivenCreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
         super(receiver, subscription, validateAndGet(prefetch), logger);
         // Refill the buffer once 50% of the prefetch has emitted.
         this.limit = this.prefetch - (this.prefetch >> 1);
