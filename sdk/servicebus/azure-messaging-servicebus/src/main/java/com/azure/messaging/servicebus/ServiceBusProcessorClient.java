@@ -163,6 +163,8 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
     private final ServiceBusTracer tracer;
     private Disposable monitorDisposable;
     private boolean wasStopped = false;
+    // private final boolean isNonSessionProcessorV2;
+    // private final NonSessionProcessor nonSessionProcessorV2;
 
     /**
      * Constructor to create a sessions-enabled processor.
@@ -193,10 +195,12 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
         this.tracer = client.getInstrumentation().getTracer();
+        // this.isNonSessionProcessorV2 = false;
+        // this.nonSessionProcessorV2 = null;
     }
 
     /**
-     * Constructor to create a processor.
+     * Constructor to create a non-session processor.
      *
      * @param receiverBuilder The processor builder to create new instances of async clients.
      * @param queueName The name of the queue this processor is associated with.
@@ -222,6 +226,21 @@ public final class ServiceBusProcessorClient implements AutoCloseable {
         this.topicName = topicName;
         this.subscriptionName = subscriptionName;
         this.tracer = client.getInstrumentation().getTracer();
+        /**
+        this.isNonSessionProcessorV2 = this.processorOptions.isNonSessionProcessorV2();
+        if (this.isNonSessionProcessorV2) {
+            final int concurrency = this.processorOptions.getMaxConcurrentCalls();
+            final boolean enableAutoDisposition = !this.processorOptions.isDisableAutoComplete();
+            this.nonSessionProcessorV2 = new NonSessionProcessor(receiverBuilder, processMessage, processError,
+                concurrency, enableAutoDisposition);
+            this.tracer = null;
+        } else {
+            this.nonSessionProcessorV2 = null;
+            final ServiceBusReceiverAsyncClient client = receiverBuilder.buildAsyncClient();
+            this.asyncClient.set(client);
+            this.tracer = client.getInstrumentation().getTracer();
+        }
+        **/
     }
 
     /**

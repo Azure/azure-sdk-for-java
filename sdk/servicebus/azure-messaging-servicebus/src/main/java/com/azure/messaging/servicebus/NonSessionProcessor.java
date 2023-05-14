@@ -17,34 +17,37 @@ import reactor.util.retry.Retry;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
 
 /**
- *  Processor to pump messages from a session unaware entity.
+ *  Processor to stream messages from a session unaware entity.
  */
 public final class NonSessionProcessor {
     private final Object lock = new Object();
-    private final ServiceBusClientBuilder builder;
+    private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder;
     private final int concurrency;
     private final Consumer<ServiceBusReceivedMessageContext> processMessage;
     private final Consumer<ServiceBusErrorContext> processError;
-    private final boolean enableAutoLockRenew;
     private final boolean enableAutoDisposition;
     private boolean isRunning;
-    private RecoverableMessagePump pump;
+    private MessageStreaming streaming;
 
-    NonSessionProcessor(ServiceBusClientBuilder builder,
+    NonSessionProcessor(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-        int concurrency, boolean enableAutoLockRenew, boolean enableAutoDisposition) {
+        int concurrency, boolean enableAutoDisposition) {
         this.builder = builder;
         this.concurrency = concurrency;
         this.processError = processError;
         this.processMessage = processMessage;
-        this.enableAutoLockRenew = enableAutoLockRenew;
         this.enableAutoDisposition = enableAutoDisposition;
 
         synchronized (lock) {
@@ -53,17 +56,16 @@ public final class NonSessionProcessor {
     }
 
     void start() {
-        final RecoverableMessagePump p;
+        final MessageStreaming s;
         synchronized (lock) {
             if (isRunning) {
                 return;
             }
             isRunning = true;
-            pump = new RecoverableMessagePump(builder, processMessage, processError, concurrency, enableAutoLockRenew,
-                enableAutoDisposition);
-            p = pump;
+            streaming = new MessageStreaming(builder, processMessage, processError, concurrency, enableAutoDisposition);
+            s = streaming;
         }
-        p.begin();
+        s.begin();
     }
 
     boolean isRunning() {
@@ -73,51 +75,91 @@ public final class NonSessionProcessor {
     }
 
     void close() {
-        final RecoverableMessagePump p;
+        final MessageStreaming s;
         synchronized (lock) {
             if (!isRunning) {
                 return;
             }
             isRunning = false;
-            p = pump;
+            s = streaming;
         }
-        p.dispose();
+        s.dispose();
+    }
+
+    void stop() {
+        // Synonym for 'close' see https://github.com/Azure/azure-sdk-for-java/issues/34464
+        close();
+    }
+
+    String getIdentifier() {
+        final MessageStreaming s;
+        synchronized (lock) {
+            s = streaming;
+        }
+        return s == null ? null : s.getIdentifier();
     }
 
     /**
-     * The abstraction that wraps a {@link ParallelPumping} and transparently moves to the next 'ParallelPumping' when
-     * the current one terminates.
+     * The abstraction to stream messages using {@link ParallelPump}. {@link MessageStreaming} transparently switch
+     * to a new pump to continue streaming when the current pump terminates.
      */
-    private static final class RecoverableMessagePump {
-        static final RuntimeException PUMP_TERMINATED = new RuntimeException("Pump is Terminated (due to Processor close).");
-        private final ServiceBusClientBuilder builder;
+    private static final class MessageStreaming extends AtomicBoolean {
+        private static final String PUMP_ID_KEY = "pump-id";
+        private static final RuntimeException STREAMING_DISPOSED = new RuntimeException("The Processor closure disposed the streaming.");
+        private static final Duration NEXT_PUMP_BACKOFF = Duration.ofSeconds(5);
+        private final ClientLogger logger;
+        private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder;
         private final int concurrency;
         private final Consumer<ServiceBusReceivedMessageContext> processMessage;
         private final Consumer<ServiceBusErrorContext> processError;
         private final Disposable.Composite disposable = Disposables.composite();
-        private final boolean enableAutoLockRenew;
         private final boolean enableAutoDisposition;
+        private final AtomicReference<String> clientIdentifier = new AtomicReference<>();
 
-        RecoverableMessagePump(ServiceBusClientBuilder builder,
-                               Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
-                               int concurrency, boolean enableAutoLockRenew, boolean enableAutoDisposition) {
+        /**
+         * Instantiate {@link MessageStreaming} to stream messages.
+         *
+         * @param builder The builder to build the client for pulling messages from the broker.
+         * @param processMessage The consumer to invoke for each message.
+         * @param processError The consumer to report the errors.
+         * @param concurrency The parallelism, i.e., how many invocations of {@code processMessage} should happen in parallel.
+         * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
+         */
+        MessageStreaming(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
+            Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
+            int concurrency, boolean enableAutoDisposition) {
+            this.logger = new ClientLogger(MessageStreaming.class);
             this.builder = builder;
             this.concurrency = concurrency;
             this.processError = processError;
             this.processMessage = processMessage;
-            this.enableAutoLockRenew = enableAutoLockRenew;
             this.enableAutoDisposition = enableAutoDisposition;
         }
 
+        /**
+         * Begin streaming messages in parallel.
+         *
+         * @throws IllegalStateException If the API is called more than once or after the disposal.
+         */
         void begin() {
-            final Disposable d = Mono.defer(() -> {
-                final ServiceBusReceiverAsyncClient client = builder.receiver().buildAsyncClient();
-                final ParallelPumping parallelPumping = new ParallelPumping(client, processMessage, processError,
-                    concurrency, enableAutoLockRenew, enableAutoDisposition);
-                return parallelPumping.begin();
-            }).retryWhen(retryWhenSpec()).subscribe();
+            if (getAndSet(true)) {
+                throw logger.atInfo().log(new IllegalStateException("The streaming cannot begin more than once."));
+            }
 
-            disposable.add(d);
+            final Disposable d = Mono.defer(() -> {
+                final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
+                clientIdentifier.set(client.getIdentifier());
+                final ParallelPump pump = new ParallelPump(client, processMessage, processError, concurrency, enableAutoDisposition);
+                return pump.begin();
+            }).retryWhen(retrySpecForNextPump()).subscribe();
+
+            if (!disposable.add(d)) {
+                throw logger.atInfo().log(new IllegalStateException("Cannot begin streaming after the disposal."));
+            }
+        }
+
+        String getIdentifier() {
+            return clientIdentifier.get();
         }
 
         void dispose() {
@@ -125,175 +167,286 @@ public final class NonSessionProcessor {
         }
 
         /**
-         * Spec to Retry forever with a back-off until this pump is disposed of, which happens when the Processor
-         * is closed.
+         * Spec to Retry for the next {@link ParallelPump} with a back-off. If the spec is asked for retry after
+         * the streaming is disposed of (due to {@link NonSessionProcessor} closure), then a {@link RuntimeException}
+         * indicating the disposal state will be emitted.
          *
          * @return the retry spec.
          */
-        private Retry retryWhenSpec() {
+        private Retry retrySpecForNextPump() {
             return Retry.from(retrySignals -> retrySignals
                 .concatMap(retrySignal -> {
                     final Retry.RetrySignal signal = retrySignal.copy();
                     final Throwable error = signal.failure();
                     if (error == null) {
-                        return Mono.error(new IllegalStateException("RetrySignal::failure() not expected to be null."));
+                        return monoError(logger, new IllegalStateException("RetrySignal::failure() not expected to be null."));
                     }
-                    // to_do: log-error
+                    if (!(error instanceof PumpTerminatedException)) {
+                        return monoError(logger, new IllegalStateException("RetrySignal::failure() expected to be PumpTerminatedException.", error));
+                    }
+
+                    final PumpTerminatedException e = (PumpTerminatedException) error;
+
                     if (disposable.isDisposed()) {
-                        return Mono.error(PUMP_TERMINATED);
+                        e.logWithCause(logger, "The Processor closure disposed the streaming, canceling retry for the next pump.");
+                        return Mono.error(STREAMING_DISPOSED);
                     }
-                    return Mono.delay(Duration.ofSeconds(5), Schedulers.boundedElastic())
+
+                    e.logWithCause(logger, "The current pump is terminated, scheduling retry for the next pump.");
+
+                    return Mono.delay(NEXT_PUMP_BACKOFF, Schedulers.boundedElastic())
                         .handle((v, sink) -> {
                             if (disposable.isDisposed()) {
-                                sink.error(PUMP_TERMINATED);
+                                e.log(logger,
+                                    "During backoff, The Processor closure disposed the streaming, canceling retry for the next pump.");
+                                sink.error(STREAMING_DISPOSED);
                             } else {
+                                e.log(logger, "Retrying for the next pump.");
                                 sink.next(v);
                             }
                         });
                 }));
         }
-    }
 
-    /**
-     * Abstraction to pump messages as long as the associated 'ServiceBusReceiverAsyncClient' is healthy.
-     */
-    private static final class ParallelPumping {
-        static final RuntimeException PUMP_COMPLETED = new RuntimeException("Pump Terminated with completion.");
-        private static final AtomicLong COUNTER = new AtomicLong();
-        private final ClientLogger logger;
-        private final ServiceBusReceiverAsyncClient client;
-        private final Consumer<ServiceBusReceivedMessageContext> processMessage;
-        private final Consumer<ServiceBusErrorContext> processError;
-        private final int concurrency;
-        private final boolean enableAutoLockRenew;
-        private final boolean enableAutoDisposition;
-        private final String fqdn;
-        private final String entityPath;
+        /**
+         * Abstraction to pump messages from a 'ServiceBusReceiverAsyncClient' as long as the client is healthy.
+         */
+        private static final class ParallelPump {
+            private static final AtomicLong COUNTER = new AtomicLong();
+            private static final Duration CONNECTION_STATE_POLL_INTERVAL = Duration.ofSeconds(20);
+            private final long  pumpId;
+            private final ServiceBusReceiverAsyncClient client;
+            private final String fqdn;
+            private final String entityPath;
+            private final ClientLogger logger;
+            private final Consumer<ServiceBusReceivedMessageContext> processMessage;
+            private final Consumer<ServiceBusErrorContext> processError;
+            private final int concurrency;
+            private final boolean enableAutoDisposition;
+            private final boolean enableAutoLockRenew;
+            private final Scheduler workerScheduler;
 
-        ParallelPumping(ServiceBusReceiverAsyncClient client, Consumer<ServiceBusReceivedMessageContext> processMessage,
-            Consumer<ServiceBusErrorContext> processError, int concurrency, boolean enableAutoLockRenew,
-            boolean enableAutoDisposition) {
-            final Map<String, Object> loggingContext = new HashMap<>(1);
-            loggingContext.put("id", COUNTER.incrementAndGet());
-            this.logger = new ClientLogger(ParallelPumping.class, loggingContext);
+            /**
+             * Instantiate {@link ParallelPump} that pumps messages emitted by the given {@code client}. The messages
+             * are pumped to the {@code processMessage} concurrently with the parallelism equal to {@code concurrency}.
+             *
+             * @param client The client capable of emitting messages.
+             * @param processMessage The consumer that the pump should invoke for each message.
+             * @param processError The consumer that the pump should report the errors.
+             * @param concurrency The pumping concurrency, i.e., how many invocations of {@code processMessage} should happen in parallel.
+             * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
+             */
+            ParallelPump(ServiceBusReceiverAsyncClient client, Consumer<ServiceBusReceivedMessageContext> processMessage,
+                Consumer<ServiceBusErrorContext> processError, int concurrency, boolean enableAutoDisposition) {
 
-            this.client = client;
-            this.processError = processError;
-            this.processMessage = processMessage;
-            this.enableAutoLockRenew = enableAutoLockRenew;
-            this.enableAutoDisposition = enableAutoDisposition;
-            this.fqdn = client.getFullyQualifiedNamespace();
-            this.entityPath = client.getEntityPath();
-            this.concurrency = concurrency;
+                this.pumpId = COUNTER.incrementAndGet();
+                this.client = client;
+                this.fqdn = this.client.getFullyQualifiedNamespace();
+                this.entityPath = this.client.getEntityPath();
+
+                final Map<String, Object> loggingContext = new HashMap<>(3);
+                loggingContext.put(PUMP_ID_KEY, this.pumpId);
+                loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, this.fqdn);
+                loggingContext.put(ENTITY_PATH_KEY, this.entityPath);
+                this.logger = new ClientLogger(ParallelPump.class, loggingContext);
+
+                this.processMessage = processMessage;
+                this.processError = processError;
+                this.concurrency = concurrency;
+                this.enableAutoDisposition = enableAutoDisposition;
+                this.enableAutoLockRenew = client.isAutoLockRenewRequested();
+                this.workerScheduler = Schedulers.boundedElastic();
+            }
+
+            /**
+             * Begin pumping messages in parallel, with the parallelism equal to the configured {@code concurrency}.
+             *
+             * @return a mono that emits {@link PumpTerminatedException} when the pumping terminates.
+             * The pumping terminates when the underlying client encounters a non-retriable error, the retries exhaust,
+             * or rejection when scheduling concurrently.
+             */
+            Mono<Void> begin() {
+                final Mono<Void> terminatePumping = pollConnectionState();
+                final Mono<Void> pumpInParallel = client.nonSessionProcessorReceiveV2()
+                    .flatMap(new RunOnWorker(this::handleMessage, workerScheduler), concurrency, 1).then();
+
+                return Mono.firstWithSignal(pumpInParallel, terminatePumping)
+                    .onErrorMap(e -> new PumpTerminatedException(pumpId, fqdn, entityPath, e))
+                    .then(Mono.error(PumpTerminatedException.forCompletion(pumpId, fqdn, entityPath)));
+            }
+
+            private Mono<Void> pollConnectionState() {
+                return Flux.interval(CONNECTION_STATE_POLL_INTERVAL)
+                    .handle((ignored, sink) -> {
+                        if (client.isConnectionClosed()) {
+                            sink.error(new RuntimeException("Connection is terminated."));
+                        } else {
+                            sink.next(false);
+                        }
+                    })
+                    .ignoreElements()
+                    .then();
+            }
+
+            private void handleMessage(ServiceBusReceivedMessage message) {
+                final ServiceBusMessageContext messageContext = new ServiceBusMessageContext(message);
+                final Throwable error = messageContext.getThrowable();
+                if (error != null) {
+                    notifyError(error);
+                    return;
+                }
+                final Disposable lockRenewDisposable;
+                if (enableAutoLockRenew) {
+                    lockRenewDisposable = client.beginLockRenewal(messageContext);
+                } else {
+                    lockRenewDisposable = Disposables.disposed();
+                }
+                final boolean success = notifyMessage(messageContext);
+                if (enableAutoDisposition) {
+                    if (success) {
+                        complete(messageContext);
+                    } else {
+                        abandon(messageContext);
+                    }
+                }
+                lockRenewDisposable.dispose();
+            }
+
+            private boolean notifyMessage(ServiceBusMessageContext messageContext) {
+                Throwable error = null;
+                try {
+                    processMessage.accept(new ServiceBusReceivedMessageContext(client, messageContext));
+                } catch (Exception e) {
+                    error = e;
+                }
+
+                if (error != null) {
+                    final Context contextWithError = messageContext.getMessage().getContext()
+                        .addData(PROCESS_ERROR_KEY, error);
+                    messageContext.getMessage().setContext(contextWithError);
+                    notifyError(new ServiceBusException(error, ServiceBusErrorSource.USER_CALLBACK));
+                    return false;
+                }
+                return true;
+            }
+
+            private void notifyError(Throwable throwable) {
+                try {
+                    processError.accept(new ServiceBusErrorContext(throwable, fqdn, entityPath));
+                } catch (Exception e) {
+                    logger.atVerbose().log("Ignoring error from user processError handler.", e);
+                }
+            }
+
+            private void complete(ServiceBusMessageContext messageContext) {
+                try {
+                    client.complete(messageContext.getMessage()).block();
+                } catch (Exception e) {
+                    logger.atVerbose().log("Failed to complete message", e);
+                }
+            }
+
+            private void abandon(ServiceBusMessageContext messageContext) {
+                try {
+                    client.abandon(messageContext.getMessage()).block();
+                } catch (Exception e) {
+                    logger.atVerbose().log("Failed to abandon message", e);
+                }
+            }
+
+            /**
+             * A Function that when called, invokes {@link ServiceBusReceivedMessage} handler using a Worker.
+             */
+            private static final class RunOnWorker implements Function<ServiceBusReceivedMessage, Publisher<Void>> {
+                private final Consumer<ServiceBusReceivedMessage> handleMessage;
+                private final Scheduler workerScheduler;
+
+                /**
+                 * Instantiate {@link RunOnWorker} to run the given {@code handleMessage} handler using a Worker
+                 * from the provided {@code workerScheduler}.
+                 *
+                 * @param handleMessage The message handler.
+                 * @param workerScheduler The Scheduler hosting the Worker to run the message handler.
+                 */
+                RunOnWorker(Consumer<ServiceBusReceivedMessage> handleMessage, Scheduler workerScheduler) {
+                    this.handleMessage = handleMessage;
+                    this.workerScheduler = workerScheduler;
+                }
+
+                @Override
+                public Mono<Void> apply(ServiceBusReceivedMessage message) {
+                    return Mono.fromRunnable(() -> {
+                        handleMessage.accept(message);
+                    }).subscribeOn(workerScheduler).then();
+                    // The subscribeOn offloads message handling to a Worker from the Scheduler.
+                }
+            }
         }
 
         /**
-         * Begin pumping in parallel.
-         *
-         * @return A mono that terminates when pumping encounters an error i.e. underlying 'ServiceBusReceiverAsyncClient's
-         * retry exhausted or encountered a non-retriable error, or rejection when scheduling concurrently.
+         * Represents the exception emitted by the mono returned from the {@link ParallelPump#begin()}.
+         * The {@link PumpTerminatedException#getCause()}} indicates the cause for the termination of message pumping.
          */
-        Mono<Void> begin() {
-            final OnMessage onMessage = new OnMessage(this::onMessage, Schedulers.boundedElastic());
-            final Mono<Void> terminatePumping = channelTerminated();
-            final Mono<Void> pumpInParallel = client.nonSessionProcessorReceiveV2().flatMap(onMessage, concurrency, 1).then();
-            return Mono.firstWithSignal(pumpInParallel, terminatePumping).then(Mono.error(PUMP_COMPLETED));
-        }
+        private static final class PumpTerminatedException extends RuntimeException {
+            static final RuntimeException TERMINAL_COMPLETION = new RuntimeException("The pump reached completion.");
+            private final long pumpId;
+            private final String fqdn;
+            private final String entityPath;
 
-        private Mono<Void> channelTerminated() {
-            return Flux.interval(Duration.ofSeconds(20))
-                .handle((ignored, sink) -> {
-                    if (client.isConnectionClosed()) {
-                        sink.error(new RuntimeException("Channel is terminated."));
-                    } else {
-                        sink.next(false);
-                    }
-                })
-                .ignoreElements()
-                .then();
-        }
-
-        private void onMessage(ServiceBusReceivedMessage message) {
-            final ServiceBusMessageContext messageContext = new ServiceBusMessageContext(message);
-            final Throwable error = messageContext.getThrowable();
-            if (error != null) {
-                notifyError(error);
-                return;
-            }
-            final Disposable lockRenewDisposable;
-            if (enableAutoLockRenew) {
-                lockRenewDisposable = client.beginLockRenewal(messageContext);
-            } else {
-                lockRenewDisposable = Disposables.disposed();
-            }
-            final boolean success = notifyMessage(messageContext);
-            if (enableAutoDisposition) {
-                if (success) {
-                    complete(messageContext);
-                } else {
-                    abandon(messageContext);
-                }
-            }
-            lockRenewDisposable.dispose();
-        }
-
-        private boolean notifyMessage(ServiceBusMessageContext messageContext) {
-            Throwable error = null;
-            try {
-                processMessage.accept(new ServiceBusReceivedMessageContext(client, messageContext));
-            } catch (Exception e) {
-                error = e;
+            /**
+             * Instantiate {@link PumpTerminatedException} representing termination of a {@link ParallelPump}.
+             *
+             * @param pumpId The unique identifier of the pump that terminated.
+             * @param fqdn The FQDN of the host from which the message was pumping.
+             * @param entityPath The path to the entity within the FQDN streaming message.
+             * @param terminationCause The reason for the termination of the pump.
+             */
+            PumpTerminatedException(long pumpId, String fqdn, String entityPath, Throwable terminationCause) {
+                super(terminationCause);
+                this.pumpId = pumpId;
+                this.fqdn = fqdn;
+                this.entityPath = entityPath;
             }
 
-            if (error != null) {
-                final Context contextWithError = messageContext.getMessage().getContext()
-                    .addData(PROCESS_ERROR_KEY, error);
-                messageContext.getMessage().setContext(contextWithError);
-                notifyError(new ServiceBusException(error, ServiceBusErrorSource.USER_CALLBACK));
-                return false;
-            }
-            return true;
-        }
-
-        private void notifyError(Throwable throwable) {
-            try {
-                processError.accept(new ServiceBusErrorContext(throwable, fqdn, entityPath));
-            } catch (Exception e) {
-                logger.verbose("Ignoring error from user processError handler.", e);
-            }
-        }
-
-        private void complete(ServiceBusMessageContext messageContext) {
-            try {
-                client.complete(messageContext.getMessage()).block();
-            } catch (Exception e) {
-                logger.verbose("Failed to complete message", e);
-            }
-        }
-
-        private void abandon(ServiceBusMessageContext messageContext) {
-            try {
-                client.abandon(messageContext.getMessage()).block();
-            } catch (Exception e) {
-                logger.verbose("Failed to abandon message", e);
-            }
-        }
-
-        private static final class OnMessage implements Function<ServiceBusReceivedMessage, Publisher<Void>> {
-            private final Consumer<ServiceBusReceivedMessage> messageConsumer;
-            private final Scheduler consumingThreadScheduler;
-
-            OnMessage(Consumer<ServiceBusReceivedMessage> messageConsumer, Scheduler consumingThreadScheduler) {
-                this.messageConsumer = messageConsumer;
-                this.consumingThreadScheduler = consumingThreadScheduler;
+            /**
+             * Instantiate {@link PumpTerminatedException} that represents the case when the pump terminates by
+             * running into the completion.
+             *
+             * @param pumpId The unique identifier of the pump that terminated.
+             * @param fqdn The FQDN of the host from which the message was pumping.
+             * @param entityPath The path to the entity within the FQDN streaming message.
+             * @return the {@link PumpTerminatedException}.
+             */
+            static PumpTerminatedException forCompletion(long pumpId, String fqdn, String entityPath) {
+                return new PumpTerminatedException(pumpId, fqdn, entityPath, TERMINAL_COMPLETION);
             }
 
-            @Override
-            public Publisher<Void> apply(ServiceBusReceivedMessage message) {
-                return Mono.fromRunnable(() -> {
-                    messageConsumer.accept(message);
-                }).subscribeOn(consumingThreadScheduler).then();
-                // The subscribeOn ^ enabling parallelism.
+            /**
+             * Logs the cause for termination and the given {@code message} along with pump identifier, FQDN and entity path.
+             *
+             * @param logger The logger.
+             * @param message The message to log.
+             */
+            void logWithCause(ClientLogger logger, String message) {
+                logger.atInfo()
+                    .addKeyValue(PUMP_ID_KEY, pumpId)
+                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .log(message, getCause());
+            }
+
+            /**
+             * Logs the given {@code message} along with pump identifier, FQDN and entity path.
+             *
+             * @param logger The logger.
+             * @param message The message to log.
+             */
+            void log(ClientLogger logger, String message) {
+                logger.atInfo()
+                    .addKeyValue(PUMP_ID_KEY, pumpId)
+                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .log(message);
             }
         }
     }

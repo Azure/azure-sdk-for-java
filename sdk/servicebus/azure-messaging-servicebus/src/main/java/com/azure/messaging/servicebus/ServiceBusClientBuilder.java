@@ -892,17 +892,32 @@ public final class ServiceBusClientBuilder implements
         private ReactorConnectionCache<ServiceBusReactorAmqpConnection> sharedConnectionCache;
         private final AtomicInteger openClients = new AtomicInteger();
 
-        // Non-Session Async[Reactor|Processor]Client is on the new v2 stack by default, check if it is opted-out.
+        /**
+         * Non-Session Async[Reactor|Processor]Client is on the new v2 stack by default, check if it is opted-out.
+         *
+          * @param configuration the client configuration.
+         * @return true if the v2 stack is opted-out for Non-Session Async[Reactor|Processor] receiving.
+         */
         boolean isNonSessionAsyncReceiveApiOptedOut(Configuration configuration) {
             return checkApiOptedOut(configuration, NON_SESSION_ASYNC_RECEIVE_CONFIG_KEY, nonSessionAsyncReceiveApiFlag);
         }
 
-        // Non-Session SyncClient is on the v1 stack by default, check if it is opted-in to the new v2 stack.
+        /**
+         * Non-Session SyncClient is not on the v1 stack by default, check if it is opted-in to the new v2 stack.
+         *
+         * @param configuration the client configuration.
+         * @return true if the v2 stack is opted-in for Sync receiving.
+         */
         boolean isNonSessionSyncReceiveApiOptedIn(Configuration configuration) {
             return checkApiOptedIn(configuration, NON_SESSION_SYNC_RECEIVE_CONFIG_KEY, nonSessionSyncReceiveApiFlag);
         }
 
-        // Sender and RuleManager Client is on the new v2 stack by default, check if it is opted-out.
+        /**
+         * Sender and RuleManager Client is on the new v2 stack by default, check if it is opted-out.
+         *
+         * @param configuration the client configuration.
+         * @return true if the v2 stack is opted-out for Sender and RuleManager.
+         */
         boolean isSenderAndManageRulesApiOptedOut(Configuration configuration) {
             return checkApiOptedOut(configuration, SEND_MANAGE_RULES_CONFIG_KEY, nonReceiveApiFlag);
         }
@@ -1964,6 +1979,9 @@ public final class ServiceBusClientBuilder implements
          *     callbacks are not set.
          */
         public ServiceBusProcessorClient buildProcessorClient() {
+            final boolean nonSessionProcessorV2 = !v2StackSupport.isNonSessionAsyncReceiveApiOptedOut(configuration);
+            processorClientOptions.setNonSessionProcessorV2(nonSessionProcessorV2);
+            // Build the Processor Client for Non-session receiving.
             return new ServiceBusProcessorClient(serviceBusReceiverClientBuilder,
                     serviceBusReceiverClientBuilder.queueName, serviceBusReceiverClientBuilder.topicName,
                     serviceBusReceiverClientBuilder.subscriptionName,
