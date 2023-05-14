@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.util.Beta;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -17,6 +18,7 @@ public class ThroughputControlGroupConfigBuilder {
     private Integer targetThroughput;
     private Double targetThroughputThreshold;
     private boolean isDefault;
+    private PriorityLevel priorityLevel;
     private boolean continueOnInitError = DEFAULT_CONTINUE_ON_INIT_ERROR;
 
     /**
@@ -112,6 +114,22 @@ public class ThroughputControlGroupConfigBuilder {
     }
 
     /**
+     * Set the throughput control group priority level.
+     * The priority level is used to determine which requests will be throttled first when the total throughput of all control groups exceeds the max throughput.
+     *
+     * By Default PriorityLevel for each request is treated as High. It can be explicitly set to Low for some requests.
+     *
+     * Refer to https://aka.ms/CosmosDB/PriorityBasedExecution for more details.
+     *
+     * @param priorityLevel The priority level for the control group.
+     * @return The {@link ThroughputControlGroupConfigBuilder}.
+     */
+    public ThroughputControlGroupConfigBuilder priorityLevel(PriorityLevel priorityLevel) {
+        this.priorityLevel = priorityLevel;
+        return this;
+    }
+
+    /**
      * Set whether this throughput control group will be used by default.
      * If set to true, requests without explicit override of the throughput control group will be routed to this group.
      *
@@ -158,14 +176,18 @@ public class ThroughputControlGroupConfigBuilder {
         if (StringUtils.isEmpty(this.groupName)) {
             throw new IllegalArgumentException("Group name cannot be null nor empty");
         }
+        if (this.targetThroughput == null && this.targetThroughputThreshold == null && this.priorityLevel == null) {
+            throw new IllegalArgumentException("All targetThroughput, targetThroughputThreshold and priorityLevel cannot be null or empty.");
+        }
         if (this.targetThroughput == null && this.targetThroughputThreshold == null) {
-            throw new IllegalArgumentException("Neither targetThroughput nor targetThroughputThreshold is defined.");
+            this.targetThroughput = Integer.MAX_VALUE;
         }
 
         return new ThroughputControlGroupConfig(
                 this.groupName,
                 this.targetThroughput,
                 this.targetThroughputThreshold,
+                this.priorityLevel,
                 this.isDefault,
                 this.continueOnInitError);
     }

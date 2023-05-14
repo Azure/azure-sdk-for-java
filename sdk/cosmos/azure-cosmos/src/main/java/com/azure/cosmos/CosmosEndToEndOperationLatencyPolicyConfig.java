@@ -9,7 +9,7 @@ import java.time.Duration;
  * Represents End to end operation latency policy config
  * This enables requests to get cancelled by the client once the specified timeout is reached
  */
-public final class CosmosE2EOperationRetryPolicyConfig {
+public final class CosmosEndToEndOperationLatencyPolicyConfig {
     private final boolean isEnabled;
     private final Duration endToEndOperationTimeout;
 
@@ -20,7 +20,7 @@ public final class CosmosE2EOperationRetryPolicyConfig {
      * @param endToEndOperationTimeout the timeout for request cancellation in {@link Duration}. Setting very low timeouts
      *                                 can cause the request to never succeed.
      */
-    CosmosE2EOperationRetryPolicyConfig(
+    CosmosEndToEndOperationLatencyPolicyConfig(
         boolean isEnabled,
         Duration endToEndOperationTimeout) {
 

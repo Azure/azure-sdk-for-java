@@ -45,6 +45,12 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
@@ -70,6 +76,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -594,6 +601,75 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(pkRids).isEqualTo(partitionKeyRangeIds);
 
         deleteCollection(testcontainer);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void directDiagnosticsOnCancelledOperation() throws Exception {
+
+        CosmosAsyncClient client = null;
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .endToEndOperationLatencyPolicyConfig(
+                    new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(1)).build()
+                ).buildAsyncClient();
+
+            CosmosAsyncContainer container =
+                client.getDatabase(containerDirect.asyncContainer.getDatabase().getId()).getContainer(containerDirect.getId());
+
+            FaultInjectionRule faultInjectionRule =
+                new FaultInjectionRuleBuilder("connectionDelay")
+                    .condition(new FaultInjectionConditionBuilder().build())
+                    .result(
+                        FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                            .delay(Duration.ofSeconds(2))
+                            .build()
+                    )
+                    .hitLimit(2)
+                    .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultInjectionRule)).block();
+
+            // Test diagnostics for create item
+            InternalObjectNode internalObjectNode = getInternalObjectNode();
+            try {
+                container.createItem(internalObjectNode).block();
+                fail("expected OperationCancelledException");
+            } catch (CosmosException e) {
+                String cosmosDiagnosticsString = e.getDiagnostics().toString();
+                assertThat(cosmosDiagnosticsString).contains("\"statusCode\":408");
+                assertThat(cosmosDiagnosticsString).contains("\"subStatusCode\":20008");
+            }
+
+            // Test diagnostics for read item
+            try {
+                container.readItem("fakeId", new PartitionKey("fakePartitionKey"), JsonNode.class).block();
+                fail("expected OperationCancelledException");
+            } catch (CosmosException e) {
+                String cosmosDiagnosticsString = e.getDiagnostics().toString();
+                assertThat(cosmosDiagnosticsString).contains("\"statusCode\":408");
+                assertThat(cosmosDiagnosticsString).contains("\"subStatusCode\":20008");
+            }
+
+        } finally {
+            if (client != null) {
+                client.close();
+            }
+        }
+
+        InternalObjectNode internalObjectNode = getInternalObjectNode();
+        CosmosItemResponse<InternalObjectNode> createResponse = containerDirect.createItem(internalObjectNode);
+        validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), directClient, this.directClientUserAgent);
+
+        // validate that on failed operation request timeline is populated
+        try {
+            containerDirect.createItem(internalObjectNode);
+            fail("expected 409");
+        } catch (CosmosException e) {
+            validateDirectModeDiagnosticsOnException(e.getDiagnostics(), this.directClientUserAgent);
+        }
     }
 
     private void validateDirectModeDiagnosticsOnSuccess(
