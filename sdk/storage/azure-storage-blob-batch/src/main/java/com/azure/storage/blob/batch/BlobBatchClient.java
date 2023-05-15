@@ -33,10 +33,6 @@ public final class BlobBatchClient {
         this.client = client;
     }
 
-    BlobBatchAsyncClient getClient() {
-        return client;
-    }
-
     /**
      * Gets a {@link BlobBatch} used to configure a batching operation to send to Azure Storage blobs.
      *
