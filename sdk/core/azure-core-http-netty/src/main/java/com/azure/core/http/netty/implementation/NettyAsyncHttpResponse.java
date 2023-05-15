@@ -67,10 +67,9 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        int bufferSize = getBufferSize(getHeaders());
-        return Mono.<Void>create(sink -> bodyIntern()
-                .subscribe(new ByteBufAsyncWriteSubscriber(channel, sink, bufferSize)))
-            .subscribeOn(Schedulers.boundedElastic())
+        return Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic(), false)
+                .subscribe(new ByteBufAsyncWriteSubscriber(channel, sink,
+                getBodySize(getHeaders()))))
             .doFinally(ignored -> close());
     }
 
@@ -91,8 +90,8 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // complete. This introduces a previously seen, but in a different flavor, race condition where the write
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        int bufferSize = getBufferSize(getHeaders());
-        Mono.<Void>create(sink -> bodyIntern().subscribe(new ByteBufWriteSubscriber(channel, sink, bufferSize)))
+        Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic(), false)
+                .subscribe(new ByteBufWriteSubscriber(channel, sink, getBodySize(getHeaders()))))
             .subscribeOn(Schedulers.boundedElastic())
             .doFinally(ignored -> close())
             .block();
@@ -112,33 +111,17 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         return reactorNettyConnection;
     }
 
-    /*
-     * Helper method to optimize the size of the read buffer to reduce the number of reads and writes that have to be
-     * performed.
-     */
-    private static int getBufferSize(HttpHeaders headers) {
+    private static Long getBodySize(HttpHeaders headers) {
         String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
-        if (CoreUtils.isNullOrEmpty(contentLength)) {
-            return 16384; // 16KB
+        if (contentLength == null) {
+            return null;
         }
 
         try {
-            long size = Long.parseLong(contentLength);
-
-            if (size > 1024 * 1024 * 1024) { // 1GB+
-                return 262144; // 256KB
-            } else if (size > 100 * 1024 * 1024) { // 100MB+
-                return 131072; // 128KB
-            } else if (size > 10 * 1024 * 1024) { // 10MB+
-                return 65536; // 64KB
-            } else if (size > 1024 * 1024) { // 1MB+
-                return 32768; // 32KB
-            } else {
-                return 16384; // 16KB
-            }
+            return Long.parseLong(contentLength);
         } catch (NumberFormatException ex) {
-            // Don't let an NumberFormatException prevent transfer when we are only trying to gain information.
-            return 16384; // 16KB
+            // Don't let NumberFormatException fail the response as this is only optional.
+            return null;
         }
     }
 }

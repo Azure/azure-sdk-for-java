@@ -53,6 +53,30 @@ public final class Utility {
         }
     }
 
+    /**
+     * Gets the buffer size to use when using {@link ByteBufAsyncWriteSubscriber} and {@link ByteBufWriteSubscriber}.
+     *
+     * @param bodySize The size of the body, may be null if the body size isn't specified.
+     * @return The buffer size to use.
+     */
+    static int getByteBufSubscriberBufferSize(Long bodySize) {
+        if (bodySize == null) {
+            return 32768; // 32KB
+        }
+
+        if (bodySize > 1024 * 1024 * 1024) { // 1GB+
+            return 524288; // 512KB
+        } else if (bodySize > 100 * 1024 * 1024) { // 100MB+
+            return 262144; // 256KB
+        } else if (bodySize > 10 * 1024 * 1024) { // 10MB+
+            return 131072; // 128KB
+        } else if (bodySize > 1024 * 1024) { // 1MB+
+            return 65536; // 64KB
+        } else {
+            return 32768; // 32KB
+        }
+    }
+
     private Utility() {
     }
 }

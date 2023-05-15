@@ -40,10 +40,13 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
     private byte[] activeBuffer;
     private byte[] nextBuffer;
 
-    public ByteBufWriteSubscriber(WritableByteChannel channel, MonoSink<Void> emitter, int bufferSize) {
+    public ByteBufWriteSubscriber(WritableByteChannel channel, MonoSink<Void> emitter, Long bodySize) {
         this.channel = channel;
         this.emitter = emitter;
-        this.bufferSize = bufferSize;
+        int initialBufferSize = Utility.getByteBufSubscriberBufferSize(bodySize);
+        this.bufferSize = (bodySize != null)
+            ? (int) Math.max(initialBufferSize, bodySize)
+            : initialBufferSize;
         this.activeBuffer = new byte[bufferSize];
         this.nextBuffer = new byte[bufferSize];
     }
