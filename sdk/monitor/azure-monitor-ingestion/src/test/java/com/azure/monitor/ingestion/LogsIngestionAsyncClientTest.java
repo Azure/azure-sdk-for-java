@@ -5,6 +5,7 @@ package com.azure.monitor.ingestion;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.monitor.ingestion.models.LogsUploadException;
@@ -148,6 +149,7 @@ public class LogsIngestionAsyncClientTest extends LogsIngestionTestBase {
     }
 
     @Test
+    @RecordWithoutRequestBody
     public void testUploadLargeLogsProtocolMethod() {
         List<Object> logs = getObjects(375000);
         LogsIngestionAsyncClient client = clientBuilder.buildAsyncClient();
