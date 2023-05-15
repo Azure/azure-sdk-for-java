@@ -28,7 +28,7 @@ The Azure client libraries for Java have two logging options:
 * Support for logging using the [SLF4J](https://www.slf4j.org/) interface.
 
 Refer to the instructions in this reference document on how
-to [configure logging in Azure SDK for Java](https://docs.microsoft.com/azure/developer/java/sdk/logging-overview).
+to [configure logging in Azure SDK for Java](https://learn.microsoft.com/azure/developer/java/sdk/logging-overview).
 
 ### Enable HTTP request/response logging
 
@@ -69,14 +69,14 @@ clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-
 Azure Monitor Ingestion supports Azure Active Directory authentication. The LogsIngestionClientBuilder can be configured
 to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more details on 
 getting started, refer to the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-ingestion#create-the-client)
-of Azure Monitor Ingestion library. You can also refer to the [Azure Identity documentation](https://docs.microsoft.com/azure/developer/java/sdk/identity)
+of Azure Monitor Ingestion library. You can also refer to the [Azure Identity documentation](https://learn.microsoft.com/azure/developer/java/sdk/identity)
 for more details on the various types of credential supported in `azure-identity`.
 
 ### Dependency Conflicts
 
 If you see `NoSuchMethodError` or `NoClassDefFoundError` during your application runtime, this is due to a
-dependency version conflict. Please take a look at [troubleshooting dependency version conflicts](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict)
-for more information on why this happens and [ways to mitigate this issue](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict#mitigate-version-mismatch-issues).
+dependency version conflict. Please take a look at [troubleshooting dependency version conflicts](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict)
+for more information on why this happens and [ways to mitigate this issue](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict#mitigate-version-mismatch-issues).
 
 ## Troubleshooting Logs Ingestion
 
@@ -137,7 +137,7 @@ and resolve this issue, please ensure the following:
 If you experience delays when uploading logs, it could be due to reaching service limits, which may trigger the rate
 limiter to throttle your client. To determine if your client has reached service limits, you can enable logging and
 check if the service is returning errors with an HTTP status code 429. For more information on service limits, you can
-refer to the [Azure Monitor service limits documentation](https://learn.microsoft.com/en-us/azure/azure-monitor/service-limits#logs-ingestion-api).
+refer to the [Azure Monitor service limits documentation](https://learn.microsoft.com/azure/azure-monitor/service-limits#logs-ingestion-api).
 To enable client logging and troubleshoot this issue further, please follow the instructions provided in the section 
 titled ["Enable Client Logging."](#enable-client-logging)
 
