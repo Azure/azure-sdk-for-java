@@ -10,14 +10,10 @@ Monitor Ingestion client library for Java.
     * [Enable HTTP request/response logging](#enable-http-requestresponse-logging)
     * [Troubleshooting authentication issues](#authentication-errors)
     * [Troubleshooting NoSuchMethodError or NoClassDefFoundError](#dependency-conflicts)
-* [Troubleshooting Logs Ingestion](#troubleshooting-logs-query)
+* [Troubleshooting Logs Ingestion](#troubleshooting-logs-ingestion)
     * [Troubleshooting authorization errors](#troubleshooting-authorization-errors)
-    * [Troubleshooting invalid Kusto query](#troubleshooting-invalid-kusto-query)
-    * [Troubleshooting empty log query results](#troubleshooting-empty-log-query-results)
-    * [Troubleshooting client timeouts when executing logs query request](#troubleshooting-client-timeouts-when-executing-logs-query-request)
-    * [Troubleshooting server timeouts when executing logs query request](#troubleshooting-server-timeouts-when-executing-logs-query-request)
-    * [Troubleshooting server timeouts on OkHTTP client](#troubleshooting-server-timeouts-on-okhttp-client)
-    * [Troubleshooting partially successful logs query requests](#troubleshooting-partially-successful-logs-query-requests)
+    * [Troubleshooting missing logs](#troubleshooting-missing-logs)
+    * [Troubleshooting slow logs upload](#troubleshooting-slow-logs-upload)
 
 ## General Troubleshooting
 
@@ -116,7 +112,7 @@ authentication token provided does not have access to ingest data for the data c
 3. The permissions may take up to 30 minutes to propagate. So, if the permissions were granted recently, retry after
    some time.
 
-### Troubleshooting missing logs in Log Analytics workspace after successful ingestion
+### Troubleshooting missing logs
 
 When you send logs to Azure Monitor for ingestion, it's possible for the request to succeed, but you may not see the
 data appearing in the designated Log Analytics workspace table as configured in the Data Collection Rule. To investigate
