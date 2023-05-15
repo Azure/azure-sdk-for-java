@@ -27,6 +27,10 @@ pr:
 # boolean for each library. Note: AdditionalModules are never to have
 # parameter entries as those are not releasing libraries.
 parameters:
+- name: release_azurespringdatacosmos
+  displayName: 'azure-spring-data-cosmos'
+  type: boolean
+  default: true
 - name: release_springcloudazurecore
   displayName: 'spring-cloud-azure-core'
   type: boolean
@@ -230,6 +234,10 @@ extends:
     ServiceDirectory: spring
     EnableBatchRelease: true
     Artifacts:
+      - name: azure-spring-data-cosmos
+        groupId: com.azure
+        safeName: azurespringdatacosmos
+        releaseInBatch: ${{ parameters.release_azurespringdatacosmos }}
       - name: spring-cloud-azure-core
         groupId: com.azure.spring
         safeName: springcloudazurecore
@@ -574,3 +582,6 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterappconfigurationconfig }}
+    AdditionalModules:
+      - name: azure-spring-data-cosmos-test
+        groupId: com.azure

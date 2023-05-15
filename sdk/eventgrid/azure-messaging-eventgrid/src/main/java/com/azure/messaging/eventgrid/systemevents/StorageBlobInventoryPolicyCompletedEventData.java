@@ -30,8 +30,7 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
     private String ruleName;
 
     /*
-     * The status of inventory run, it can be
-     * Succeeded/PartiallySucceeded/Failed.
+     * The status of inventory run, it can be Succeeded/PartiallySucceeded/Failed.
      */
     @JsonProperty(value = "policyRunStatus")
     private String policyRunStatus;
@@ -53,6 +52,9 @@ public final class StorageBlobInventoryPolicyCompletedEventData {
      */
     @JsonProperty(value = "manifestBlobUrl")
     private String manifestBlobUrl;
+
+    /** Creates an instance of StorageBlobInventoryPolicyCompletedEventData class. */
+    public StorageBlobInventoryPolicyCompletedEventData() {}
 
     /**
      * Get the scheduleDateTime property: The time at which inventory policy was scheduled.

@@ -28,6 +28,9 @@ public final class AppServicePlanEventTypeDetail {
     @JsonProperty(value = "status")
     private AsyncStatus status;
 
+    /** Creates an instance of AppServicePlanEventTypeDetail class. */
+    public AppServicePlanEventTypeDetail() {}
+
     /**
      * Get the stampKind property: Kind of environment where app service plan is.
      *

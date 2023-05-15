@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PlayFailed model. */
 @Immutable
-public final class PlayFailed extends CallAutomationEventWithReasonCodeBase {
+public final class PlayFailed extends CallAutomationEventBaseWithReasonCode {
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
      */
