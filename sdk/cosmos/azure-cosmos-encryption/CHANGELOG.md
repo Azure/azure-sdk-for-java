@@ -1,6 +1,6 @@
 ## Release History
 
-### 2.1.0-beta.1 (Unreleased)
+### 2.2.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,13 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.1.0 (2023-05-12)
+#### Bugs Fixed
+* Fixed an issue where empty array causes `NoSuchElementException` in `EncryptionProcessor` - See [PR 34847](https://github.com/Azure/azure-sdk-for-java/pull/34847)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.45.0`.
 
 ### 2.0.0 (2023-04-25)
 

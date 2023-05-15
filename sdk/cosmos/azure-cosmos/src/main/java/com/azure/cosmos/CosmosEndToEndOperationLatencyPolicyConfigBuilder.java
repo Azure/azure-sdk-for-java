@@ -10,26 +10,26 @@ import java.time.Duration;
 /**
  * Builder for CosmosEndToEndOperationLatencyPolicyConfig
  */
-public class CosmosE2EOperationRetryPolicyConfigBuilder {
+public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     private boolean isEnabled = true;
     private final Duration endToEndOperationTimeout;
 
     /**
-     * Create a builder for {@link CosmosE2EOperationRetryPolicyConfig} with end to end operation timeout
+     * Create a builder for {@link CosmosEndToEndOperationLatencyPolicyConfig} with end to end operation timeout
      * @param endToEndOperationTimeout the timeout for request cancellation in Duration. Setting very low timeouts
      *                                can cause the request to never succeed.
      */
-    public CosmosE2EOperationRetryPolicyConfigBuilder(Duration endToEndOperationTimeout) {
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration endToEndOperationTimeout) {
         this.endToEndOperationTimeout = endToEndOperationTimeout;
     }
 
     /**
-     * Builds {@link CosmosE2EOperationRetryPolicyConfig} with specified properties
+     * Builds {@link CosmosEndToEndOperationLatencyPolicyConfig} with specified properties
      *
-     * @return the {@link CosmosE2EOperationRetryPolicyConfig}
+     * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
-    public CosmosE2EOperationRetryPolicyConfig build() {
-        return new CosmosE2EOperationRetryPolicyConfig(isEnabled, endToEndOperationTimeout);
+    public CosmosEndToEndOperationLatencyPolicyConfig build() {
+        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout);
     }
 
     /**
@@ -39,7 +39,7 @@ public class CosmosE2EOperationRetryPolicyConfigBuilder {
      * @param isEnabled flag to enable or disable the policy
      * @return current CosmosEndToEndOperationConfigBuilder
      */
-    public CosmosE2EOperationRetryPolicyConfigBuilder enable(
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder enable(
         boolean isEnabled) {
         this.isEnabled = isEnabled;
         return this;

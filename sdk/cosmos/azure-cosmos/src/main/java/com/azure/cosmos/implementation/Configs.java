@@ -20,6 +20,17 @@ import static com.azure.cosmos.implementation.guava25.base.Strings.emptyToNull;
 
 public class Configs {
     private static final Logger logger = LoggerFactory.getLogger(Configs.class);
+
+    /**
+     * Integer value specifying the speculation type
+     * <pre>
+     * 0 - No speculation
+     * 1 - Threshold based speculation
+     * </pre>
+     */
+    public static final String SPECULATION_TYPE = "COSMOS_SPECULATION_TYPE";
+    public static final String SPECULATION_THRESHOLD = "COSMOS_SPECULATION_THRESHOLD";
+    public static final String SPECULATION_THRESHOLD_STEP = "COSMOS_SPECULATION_THRESHOLD_STEP";
     private final SslContext sslContext;
 
     // The names we use are consistent with the:
@@ -298,6 +309,18 @@ public class Configs {
         return getJVMConfigAsInt(
             DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS_NAME,
             DEFAULT_SESSION_TOKEN_MISMATCH_MAXIMUM_BACKOFF_TIME_IN_MILLISECONDS);
+    }
+
+    public static int getSpeculationType() {
+        return getJVMConfigAsInt(SPECULATION_TYPE, 0);
+    }
+
+    public static int speculationThreshold() {
+        return getJVMConfigAsInt(SPECULATION_THRESHOLD, 500);
+    }
+
+    public static int speculationThresholdStep() {
+        return getJVMConfigAsInt(SPECULATION_THRESHOLD_STEP, 100);
     }
 
     public static boolean shouldSwitchOffIOThreadForResponse() {
