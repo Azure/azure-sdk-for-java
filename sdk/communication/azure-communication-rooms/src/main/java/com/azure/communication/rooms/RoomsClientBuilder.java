@@ -13,6 +13,7 @@ import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.ConnectionStringTrait;
 import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -25,10 +26,12 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.Configuration;
 
@@ -69,7 +72,7 @@ import java.util.Objects;
  * <!-- end readme-sample-createRoomsClientUsingAzureKeyCredential -->
  */
 @ServiceClientBuilder(serviceClients = {RoomsClient.class, RoomsAsyncClient.class})
-public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientBuilder>, ConnectionStringTrait<RoomsClientBuilder>, TokenCredentialTrait<RoomsClientBuilder>, AzureKeyCredentialTrait<RoomsClientBuilder>, EndpointTrait<RoomsClientBuilder> {
+public final class RoomsClientBuilder implements HttpTrait<RoomsClientBuilder>, ConfigurationTrait<RoomsClientBuilder>, ConnectionStringTrait<RoomsClientBuilder>, TokenCredentialTrait<RoomsClientBuilder>, AzureKeyCredentialTrait<RoomsClientBuilder>, EndpointTrait<RoomsClientBuilder> {
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
     private static final String APP_CONFIG_PROPERTIES = "azure-communication-rooms.properties";
@@ -86,6 +89,7 @@ public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientB
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
     private ClientOptions clientOptions;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
     private RoomsServiceVersion serviceVersion;
 
     /**
@@ -135,6 +139,18 @@ public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientB
     @Override
     public RoomsClientBuilder credential(AzureKeyCredential keyCredential)  {
         this.azureKeyCredential = Objects.requireNonNull(keyCredential, "'keyCredential' cannot be null.");
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} for all the requests made through the client.
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     * @return Updated {@link RoomsClientBuilder} object.
+     */
+    @Override
+    public RoomsClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         return this;
     }
 
@@ -321,7 +337,8 @@ public final class RoomsClientBuilder implements ConfigurationTrait<RoomsClientB
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         policyList.add(new UserAgentPolicy(applicationId, clientName, clientVersion, configuration));
         policyList.add(new RequestIdPolicy());
-        policyList.add((this.retryPolicy == null) ? new RetryPolicy() : this.retryPolicy);
+        policyList.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
+
         // auth policy is per request, should be after retry
         policyList.add(this.createHttpPipelineAuthPolicy());
         policyList.add(new CookiePolicy());
