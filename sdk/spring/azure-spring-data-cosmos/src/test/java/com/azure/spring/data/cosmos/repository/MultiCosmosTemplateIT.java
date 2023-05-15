@@ -10,7 +10,6 @@ import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Person;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -80,9 +79,9 @@ public class MultiCosmosTemplateIT {
     }
 
     @Test
-    public void testSingleCosmosClientForMultipleCosmosTemplate() throws IllegalAccessException {
-        final Field cosmosFactory = FieldUtils.getDeclaredField(ReactiveCosmosTemplate.class,
-            "cosmosFactory", true);
+    public void testSingleCosmosClientForMultipleCosmosTemplate() throws IllegalAccessException, NoSuchFieldException {
+        final Field cosmosFactory = ReactiveCosmosTemplate.class.getDeclaredField("cosmosFactory");
+        cosmosFactory.setAccessible(true);
         CosmosFactory cosmosFactory1 = (CosmosFactory) cosmosFactory.get(secondaryReactiveCosmosTemplate);
         CosmosAsyncClient client1 = cosmosFactory1.getCosmosAsyncClient();
         CosmosFactory cosmosFactory2 = (CosmosFactory) cosmosFactory.get(secondaryDiffDatabaseReactiveCosmosTemplate);

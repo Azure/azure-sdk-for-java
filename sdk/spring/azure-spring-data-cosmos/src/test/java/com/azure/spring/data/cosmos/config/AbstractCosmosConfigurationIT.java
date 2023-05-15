@@ -11,7 +11,6 @@ import com.azure.spring.data.cosmos.CosmosFactory;
 import com.azure.spring.data.cosmos.common.ExpressionResolver;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.assertj.core.api.Assertions;
 import org.junit.Rule;
 import org.junit.Test;
@@ -68,7 +67,7 @@ public class AbstractCosmosConfigurationIT {
     }
 
     @Test
-    public void testCosmosClientBuilderConfigurable() throws IllegalAccessException {
+    public void testCosmosClientBuilderConfigurable() throws IllegalAccessException, NoSuchFieldException {
         final AbstractApplicationContext context = new AnnotationConfigApplicationContext(
             RequestOptionsConfiguration.class);
         final CosmosFactory factory = context.getBean(CosmosFactory.class);
@@ -78,10 +77,10 @@ public class AbstractCosmosConfigurationIT {
         final CosmosAsyncClient cosmosAsyncClient =  factory.getCosmosAsyncClient();
 
         Assertions.assertThat(cosmosAsyncClient).isNotNull();
-        final Field consistencyLevelField = FieldUtils.getDeclaredField(CosmosAsyncClient.class,
-            "desiredConsistencyLevel", true);
+        Field desiredConsistencyLevel = cosmosAsyncClient.getClass().getDeclaredField("desiredConsistencyLevel");
+        desiredConsistencyLevel.setAccessible(true);
         ConsistencyLevel consistencyLevel =
-            (ConsistencyLevel) consistencyLevelField.get(cosmosAsyncClient);
+            (ConsistencyLevel) desiredConsistencyLevel.get(cosmosAsyncClient);
         Assertions.assertThat(consistencyLevel).isEqualTo(ConsistencyLevel.CONSISTENT_PREFIX);
     }
 

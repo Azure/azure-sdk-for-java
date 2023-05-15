@@ -5,7 +5,6 @@ package com.azure.spring.data.cosmos;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
-import org.apache.commons.lang3.reflect.FieldUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -85,7 +84,7 @@ public class CosmosFactoryTestIT {
     }
 
     @Test
-    public void testConnectionPolicyUserAgentKept() throws IllegalAccessException {
+    public void testConnectionPolicyUserAgentKept() throws IllegalAccessException, NoSuchFieldException {
 
         final CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
             .endpoint(cosmosDbUri)
@@ -96,9 +95,10 @@ public class CosmosFactoryTestIT {
         assertThat(uaSuffix).contains(Constants.USER_AGENT_SUFFIX);
     }
 
-    private String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder) throws IllegalAccessException {
-        final Field userAgentSuffix = FieldUtils.getDeclaredField(CosmosClientBuilder.class,
-            "userAgentSuffix", true);
+    private String getUserAgentSuffixValue(CosmosClientBuilder cosmosClientBuilder) throws IllegalAccessException,
+        NoSuchFieldException {
+        Field userAgentSuffix = CosmosClientBuilder.class.getDeclaredField("userAgentSuffix");
+        userAgentSuffix.setAccessible(true);
         return (String) userAgentSuffix.get(cosmosClientBuilder);
     }
 }
