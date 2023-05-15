@@ -25,7 +25,7 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       <!-- Azure Spring Data Cosmos tests need this -->
-      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos=spring.core
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos=ALL-UNNAMED,spring.core,com.fasterxml.jackson.databind
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.common=spring.core
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core=ALL-UNNAMED,spring.core
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.convert=com.fasterxml.jackson.databind

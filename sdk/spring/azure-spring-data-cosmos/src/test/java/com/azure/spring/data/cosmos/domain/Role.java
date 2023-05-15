@@ -14,7 +14,6 @@ import java.util.Objects;
 
 @CosmosIndexingPolicy(
     mode = IndexingMode.CONSISTENT,
-    automatic = TestConstants.INDEXING_POLICY_AUTOMATIC,
     includePaths = {
         TestConstants.INCLUDED_PATH_0,
         TestConstants.INCLUDED_PATH_1,

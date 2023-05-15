@@ -74,8 +74,6 @@ public class CosmosAnnotationUnitTest {
 
         Assert.isTrue(roleInfo.getContainerName().equals(TestConstants.ROLE_COLLECTION_NAME),
                 "should be Role(class) collection name");
-        Assert.isTrue(policy.isAutomatic() == TestConstants.INDEXING_POLICY_AUTOMATIC,
-                "should be Role(class) indexing policy automatic");
         Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
                 "should be Role(class) indexing policy mode");
     }

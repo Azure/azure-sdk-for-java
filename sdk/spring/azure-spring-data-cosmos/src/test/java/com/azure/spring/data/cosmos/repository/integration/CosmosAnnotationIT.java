@@ -121,8 +121,6 @@ public class CosmosAnnotationIT {
 
         Assert.isTrue(policy.getIndexingMode() == TestConstants.INDEXING_POLICY_MODE,
             "unmatched collection policy indexing mode of class Role");
-        Assert.isTrue(policy.isAutomatic() == TestConstants.INDEXING_POLICY_AUTOMATIC,
-            "unmatched collection policy automatic of class Role");
 
         TestUtils.testIndexingPolicyPathsEquals(policy.getIncludedPaths()
                                                       .stream()

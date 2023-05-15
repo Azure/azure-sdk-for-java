@@ -33,6 +33,8 @@ public class UniqueKeyPolicyEntity {
         this.city = city;
     }
 
+    public UniqueKeyPolicyEntity() {}
+
     public String getId() {
         return id;
     }
