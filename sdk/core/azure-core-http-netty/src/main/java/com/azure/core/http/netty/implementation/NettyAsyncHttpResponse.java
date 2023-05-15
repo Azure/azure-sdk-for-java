@@ -70,6 +70,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         int bufferSize = getBufferSize(getHeaders());
         return Mono.<Void>create(sink -> bodyIntern()
                 .subscribe(new ByteBufAsyncWriteSubscriber(channel, sink, bufferSize)))
+            .subscribeOn(Schedulers.boundedElastic())
             .doFinally(ignored -> close());
     }
 
@@ -91,8 +92,8 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
         int bufferSize = getBufferSize(getHeaders());
-        Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic())
-                .subscribe(new ByteBufWriteSubscriber(channel, sink, bufferSize)))
+        Mono.<Void>create(sink -> bodyIntern().subscribe(new ByteBufWriteSubscriber(channel, sink, bufferSize)))
+            .subscribeOn(Schedulers.boundedElastic())
             .doFinally(ignored -> close())
             .block();
     }
