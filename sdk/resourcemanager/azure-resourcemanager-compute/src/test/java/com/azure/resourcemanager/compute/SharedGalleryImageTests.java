@@ -100,7 +100,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(Region.US_WEST_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
@@ -124,7 +124,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 // Options - End
                 .create();
 
-        Assertions.fail(galleryImage.location());
         Assertions.assertNotNull(galleryImage);
         Assertions.assertNotNull(galleryImage.innerModel());
         Assertions.assertTrue(galleryImage.location().equalsIgnoreCase(region.toString()));
