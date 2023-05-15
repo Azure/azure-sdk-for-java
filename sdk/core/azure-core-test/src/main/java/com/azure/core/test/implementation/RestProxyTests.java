@@ -42,7 +42,6 @@ import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
 import com.azure.core.test.implementation.entities.HttpBinHeaders;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
-import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
@@ -58,12 +57,13 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
-import reactor.util.function.Tuples;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.Channels;
 import java.nio.charset.StandardCharsets;
@@ -79,6 +79,7 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -92,6 +93,9 @@ import static org.junit.jupiter.api.Assertions.fail;
 @SuppressWarnings("deprecation")
 public abstract class RestProxyTests {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final byte[] REPEATED_BYTES = "A quick brown fox jumped over the lazy dog.\n"
+        .getBytes(StandardCharsets.UTF_8);
+    private static final int REPEATED_BYTES_LENGTH = REPEATED_BYTES.length;
 
     /**
      * Get the HTTP client that will be used for each test. This will be called once per test.
@@ -672,8 +676,8 @@ public abstract class RestProxyTests {
     }
 
     /**
-     * LengthValidatingInputStream in rest proxy relies on reader
-     * reaching EOF. This test specifically targets InputStream to assert this behavior.
+     * LengthValidatingInputStream in rest proxy relies on reader reaching EOF. This test specifically targets
+     * InputStream to assert this behavior.
      */
     @Test
     public void asyncPutRequestWithStreamBinaryDataBodyAndLessThanContentLength() {
@@ -706,8 +710,8 @@ public abstract class RestProxyTests {
     }
 
     /**
-     * LengthValidatingInputStream in rest proxy relies on reader
-     * reaching EOF. This test specifically targets InputStream to assert this behavior.
+     * LengthValidatingInputStream in rest proxy relies on reader reaching EOF. This test specifically targets
+     * InputStream to assert this behavior.
      */
     @Test
     public void asyncPutRequestWithStreamBinaryDataBodyAndMoreThanContentLength() {
@@ -716,7 +720,7 @@ public abstract class RestProxyTests {
             .verifyErrorSatisfies(exception -> {
                 assertTrue(exception instanceof UnexpectedLengthException
                     || (exception.getSuppressed().length > 0
-                        && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
+                    && exception.getSuppressed()[0] instanceof UnexpectedLengthException));
                 assertTrue(exception.getMessage().contains("more than"));
             });
     }
@@ -1689,60 +1693,44 @@ public abstract class RestProxyTests {
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTest(Context context) {
-        StepVerifier.create(Flux.using(() -> createService(DownloadService.class).getBytes(context),
-                response -> response.getValue().map(ByteBuffer::remaining).reduce(0, Integer::sum),
-                StreamResponse::close))
-            .assertNext(count -> assertEquals(30720, count))
-            .verifyComplete();
+        byte[] expectedBytes = getRepeatedBytes(30720);
 
         StepVerifier.create(Flux.using(() -> createService(DownloadService.class).getBytes(context),
-                response -> Mono.zip(MessageDigestUtils.md5(response.getValue()), Mono.just(response.getHeaders().getValue("ETag"))),
-                StreamResponse::close))
-            .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
+                response -> FluxUtil.collectBytesInByteBufferStream(response.getValue(), 30720), StreamResponse::close))
+            .assertNext(actualBytes -> assertArraysEqual(expectedBytes, actualBytes))
             .verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void simpleDownloadTestAsync(Context context) {
-        StepVerifier.create(createService(DownloadService.class).getBytesAsync(context)
-                .flatMap(response -> response.getValue().map(ByteBuffer::remaining)
-                    .reduce(0, Integer::sum)
-                    .doFinally(ignore -> response.close())))
-            .assertNext(count -> assertEquals(30720, count))
-            .verifyComplete();
+        byte[] expectedBytes = getRepeatedBytes(30720);
 
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(context)
-                .flatMap(response -> Mono.zip(MessageDigestUtils.md5(response.getValue()), Mono.just(response.getHeaders().getValue("ETag")))
+                .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getValue(), 30720)
                     .doFinally(ignore -> response.close())))
-            .assertNext(hashTuple -> assertEquals(hashTuple.getT2(), hashTuple.getT1()))
+            .assertNext(actualBytes -> assertArraysEqual(expectedBytes, actualBytes))
             .verifyComplete();
     }
 
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void streamResponseCanTransferBody(Context context) throws IOException {
+        byte[] expectedBytes = getRepeatedBytes(30720);
+
         try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(context)) {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             streamResponse.writeValueTo(Channels.newChannel(bos));
-            assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
-                MessageDigestUtils.md5(bos.toByteArray()));
+            assertArraysEqual(expectedBytes, bos.toByteArray());
         }
 
         Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
         tempFile.toFile().deleteOnExit();
         try (StreamResponse streamResponse = createService(DownloadService.class).getBytes(context)) {
-            StepVerifier.create(Mono.using(
-                    () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                    streamResponse::writeValueToAsync,
-                    channel -> {
-                        try {
-                            channel.close();
-                        } catch (IOException e) {
-                            throw Exceptions.propagate(e);
-                        }
-                    }).then(Mono.fromCallable(() -> MessageDigestUtils.md5(Files.readAllBytes(tempFile)))))
-                .assertNext(hash -> assertEquals(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG), hash))
+            StepVerifier.create(Mono.using(() -> openAsyncChannel(tempFile), streamResponse::writeValueToAsync,
+                        RestProxyTests::quietCloseChannel)
+                    .then(Mono.fromCallable(() -> Files.readAllBytes(tempFile))))
+                .assertNext(actualBytes -> assertArraysEqual(expectedBytes, actualBytes))
                 .verifyComplete();
         }
     }
@@ -1750,6 +1738,8 @@ public abstract class RestProxyTests {
     @ParameterizedTest
     @MethodSource("downloadTestArgumentProvider")
     public void streamResponseCanTransferBodyAsync(Context context) throws IOException {
+        byte[] expectedBytes = getRepeatedBytes(30720);
+
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(context)
                 .publishOn(Schedulers.boundedElastic())
                 .map(streamResponse -> {
@@ -1759,33 +1749,19 @@ public abstract class RestProxyTests {
                     } finally {
                         streamResponse.close();
                     }
-                    return Tuples.of(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG),
-                        MessageDigestUtils.md5(bos.toByteArray()));
+                    return bos.toByteArray();
                 }))
-            .assertNext(hashTuple -> assertEquals(hashTuple.getT1(), hashTuple.getT2()))
+            .assertNext(actualBytes -> assertArraysEqual(expectedBytes, actualBytes))
             .verifyComplete();
 
         Path tempFile = Files.createTempFile("streamResponseCanTransferBody", null);
         tempFile.toFile().deleteOnExit();
         StepVerifier.create(createService(DownloadService.class).getBytesAsync(context)
-                .flatMap(streamResponse -> Mono.using(
-                        () -> IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                        streamResponse::writeValueToAsync,
-                        channel -> {
-                            try {
-                                channel.close();
-                            } catch (IOException e) {
-                                throw Exceptions.propagate(e);
-                            }
-                        }).doFinally(ignored -> streamResponse.close())
-                    .then(Mono.just(streamResponse.getHeaders().getValue(HttpHeaderName.ETAG)))))
-            .assertNext(hash -> {
-                try {
-                    assertEquals(hash, MessageDigestUtils.md5(Files.readAllBytes(tempFile)));
-                } catch (IOException e) {
-                    throw Exceptions.propagate(e);
-                }
-            })
+                .flatMap(streamResponse -> Mono.using(() -> openAsyncChannel(tempFile),
+                        streamResponse::writeValueToAsync, RestProxyTests::quietCloseChannel)
+                    .doFinally(ignored -> streamResponse.close())
+                    .then(Mono.fromCallable(() -> Files.readAllBytes(tempFile)))))
+            .assertNext(actualBytes -> assertArraysEqual(expectedBytes, actualBytes))
             .verifyComplete();
     }
 
@@ -1794,6 +1770,10 @@ public abstract class RestProxyTests {
             Arguments.of(Named.named("default", Context.NONE)),
             Arguments.of(Named.named("sync proxy enabled", Context.NONE
                 .addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true))));
+    }
+
+    private static AsynchronousByteChannel openAsyncChannel(Path path) throws IOException {
+        return IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(path, StandardOpenOption.WRITE), 0);
     }
 
     @Test
@@ -1849,7 +1829,7 @@ public abstract class RestProxyTests {
     interface BinaryDataUploadService {
         @Put("/put")
         Response<HttpBinJSON> put(@BodyParam("text/plain") BinaryData content,
-                                  @HeaderParam("Content-Length") long contentLength);
+            @HeaderParam("Content-Length") long contentLength);
     }
 
     @Test
@@ -2167,5 +2147,35 @@ public abstract class RestProxyTests {
             return;
         }
         fail("'" + url2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
+    }
+
+    private static void quietCloseChannel(Closeable closeable) {
+        try {
+            closeable.close();
+        } catch (IOException ex) {
+            throw Exceptions.propagate(ex);
+        }
+    }
+
+    /**
+     * Gets a consistent byte array that is a repeated set of bytes.
+     *
+     * @param length Length of the byte array.
+     * @return A consistent byte array.
+     */
+    public static byte[] getRepeatedBytes(int length) {
+        byte[] bytes = new byte[length];
+        int repetitions = length / REPEATED_BYTES_LENGTH;
+        int remainder = length - (repetitions * REPEATED_BYTES_LENGTH);
+
+        for (int i = 0; i < repetitions; i++) {
+            System.arraycopy(REPEATED_BYTES, 0, bytes, i * REPEATED_BYTES_LENGTH, REPEATED_BYTES_LENGTH);
+        }
+
+        if (remainder > 0) {
+            System.arraycopy(REPEATED_BYTES, 0, bytes, repetitions * REPEATED_BYTES_LENGTH, remainder);
+        }
+
+        return bytes;
     }
 }

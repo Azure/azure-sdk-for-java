@@ -29,7 +29,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
+
+import static com.azure.core.test.implementation.RestProxyTests.getRepeatedBytes;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
@@ -71,8 +72,7 @@ public class MockHttpClient extends NoOpHttpClient {
                         .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(byteCount));
                     byte[] content;
                     if (byteCount > 0) {
-                        content = new byte[byteCount];
-                        ThreadLocalRandom.current().nextBytes(content);
+                        content = getRepeatedBytes(byteCount);
                         newHeaders = newHeaders.set(HttpHeaderName.ETAG, MessageDigestUtils.md5(content));
                     } else {
                         content = null;

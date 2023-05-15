@@ -32,9 +32,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.stream.Collectors;
 
+import static com.azure.core.test.implementation.RestProxyTests.getRepeatedBytes;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -46,7 +46,6 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 
 public final class RestProxyTestsWireMockServer {
     private static final JacksonAdapter JACKSON_ADAPTER = new JacksonAdapter();
-    private static final Random RANDOM = new Random();
 
     public static WireMockServer getRestProxyTestsServer() {
         WireMockServer server = new WireMockServer(WireMockConfiguration.options()
@@ -124,9 +123,7 @@ public final class RestProxyTestsWireMockServer {
             rawHeaders.put("Content-Type", ContentType.APPLICATION_OCTET_STREAM);
             rawHeaders.put("Content-Length", String.valueOf(bodySize));
 
-            byte[] body = new byte[bodySize];
-            RANDOM.nextBytes(body);
-
+            byte[] body = getRepeatedBytes(bodySize);
             rawHeaders.put("ETag", MessageDigestUtils.md5(body));
 
             return new ResponseDefinitionBuilder().withStatus(200)

@@ -4,6 +4,7 @@
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Flux;
@@ -13,12 +14,9 @@ import reactor.netty.ByteBufFlux;
 import reactor.netty.Connection;
 import reactor.netty.http.client.HttpClientResponse;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
-import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 
@@ -69,7 +67,10 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        return writeBodyTo(Channels.newOutputStream(channel));
+        int bufferSize = getBufferSize(getHeaders());
+        return Mono.<Void>create(sink -> bodyIntern()
+                .subscribe(new ByteBufAsyncWriteSubscriber(channel, sink, bufferSize)))
+            .doFinally(ignored -> close());
     }
 
     @Override
@@ -89,36 +90,11 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // complete. This introduces a previously seen, but in a different flavor, race condition where the write
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        writeBodyTo(Channels.newOutputStream(channel)).block();
-    }
-
-    private Mono<Void> writeBodyTo(OutputStream outputStream) {
-        // Since this uses a synchronous write this doesn't need to retain the ByteBuf as the async version does.
-        // In fact, if retain is used here and there is a cancellation or exception during writing this will likely
-        // leak ByteBufs as it doesn't have the asynchronous stream handling to properly close them when errors happen
-        // during writing.
-        //
-        // This also must use subscribeOn rather than publishOn as subscribeOn will have the entire asynchronous chain
-        // run on the same subscriber where publishOn only affects reactive operations after the publishOn. While this
-        // doesn't seem like it would make much of a difference as this entire call will be blocked it fixes a race
-        // condition. reactor-netty's inbound receive uses a ByteBuf pool to handle the network response and the
-        // returned ByteBufFlux is configured to release the ByteBuf back to the pool when the onNext operation
-        // completes. Unfortunately, when publishOn is used each ByteBuf must be scheduled in the publisher thread using
-        // a future and the publishOn onNext handler will complete once that operation is scheduled, not when it's
-        // complete. This introduces a previously seen, but in a different flavor, race condition where the write
-        // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
-        // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        return bodyIntern().subscribeOn(Schedulers.boundedElastic())
-            .flatMap(byteBuf -> {
-                try {
-                    byteBuf.getBytes(0, outputStream, byteBuf.readableBytes());
-                    return Mono.empty();
-                } catch (IOException ex) {
-                    return Mono.error(ex);
-                }
-            })
+        int bufferSize = getBufferSize(getHeaders());
+        Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic())
+                .subscribe(new ByteBufWriteSubscriber(channel, sink, bufferSize)))
             .doFinally(ignored -> close())
-            .then();
+            .block();
     }
 
     @Override
@@ -133,5 +109,35 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     // used for testing only
     public Connection internConnection() {
         return reactorNettyConnection;
+    }
+
+    /*
+     * Helper method to optimize the size of the read buffer to reduce the number of reads and writes that have to be
+     * performed.
+     */
+    private static int getBufferSize(HttpHeaders headers) {
+        String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (CoreUtils.isNullOrEmpty(contentLength)) {
+            return 16384; // 16KB
+        }
+
+        try {
+            long size = Long.parseLong(contentLength);
+
+            if (size > 1024 * 1024 * 1024) { // 1GB+
+                return 262144; // 256KB
+            } else if (size > 100 * 1024 * 1024) { // 100MB+
+                return 131072; // 128KB
+            } else if (size > 10 * 1024 * 1024) { // 10MB+
+                return 65536; // 64KB
+            } else if (size > 1024 * 1024) { // 1MB+
+                return 32768; // 32KB
+            } else {
+                return 16384; // 16KB
+            }
+        } catch (NumberFormatException ex) {
+            // Don't let an NumberFormatException prevent transfer when we are only trying to gain information.
+            return 16384; // 16KB
+        }
     }
 }
