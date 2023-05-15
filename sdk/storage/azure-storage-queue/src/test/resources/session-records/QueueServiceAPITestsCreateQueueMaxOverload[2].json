@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/e712e701e712e7013e321404401407b270a442218b",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "fb876120-1326-4507-ac71-060cff41e97d"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "53662479-4003-00dc-4a09-415c7f000000",
+      "x-ms-client-request-id" : "fb876120-1326-4507-ac71-060cff41e97d",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.queue.core.windows.net/e712e701e712e7013e321404401407b270a442218b/messages",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "77828d97-7133-49ea-b828-ab8655fdb0f2",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "fde042b9-8003-00a1-2709-412d5c000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>c249561b-ab8a-45b0-9cdc-3f6070150cbe</MessageId><InsertionTime>Tue, 04 May 2021 17:18:37 GMT</InsertionTime><ExpirationTime>Tue, 11 May 2021 17:18:37 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAdgZDhQlB1wE=</PopReceipt><TimeNextVisible>Tue, 04 May 2021 17:18:37 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "x-ms-client-request-id" : "77828d97-7133-49ea-b828-ab8655fdb0f2",
+      "Date" : "Tue, 04 May 2021 17:18:37 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "e712e701e712e7013e321404401407b270a442218b" ]
+}

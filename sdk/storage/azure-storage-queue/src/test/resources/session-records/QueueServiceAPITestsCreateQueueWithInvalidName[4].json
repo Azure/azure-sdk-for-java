@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/ab",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2e43d553-dc9f-46b5-be26-d72843452482"
+    },
+    "Response" : {
+      "content-length" : "256",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "OutOfRangeInput",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "7b738651-2003-002e-5f09-41a436000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>OutOfRangeInput</Code><Message>The specified resource name length is not within the permissible limits.\nRequestId:7b738651-2003-002e-5f09-41a436000000\nTime:2021-05-04T17:18:38.6272971Z</Message></Error>",
+      "x-ms-client-request-id" : "2e43d553-dc9f-46b5-be26-d72843452482",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
