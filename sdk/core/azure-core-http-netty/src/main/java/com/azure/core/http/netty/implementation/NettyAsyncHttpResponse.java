@@ -68,7 +68,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
         int bufferSize = getBufferSize(getHeaders());
-        return Mono.<Void>create(sink -> bodyIntern()
+        return Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic())
                 .subscribe(new ByteBufAsyncWriteSubscriber(channel, sink, bufferSize)))
             .doFinally(ignored -> close());
     }
