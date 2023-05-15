@@ -35,8 +35,6 @@ public class ShareStorageCustomization extends Customization {
         shareTokenIntent.getJavadoc().setDescription("The request intent specifies requests that are intended for " +
             "backup/admin type operations, meaning that all file/directory ACLs are bypassed and full permissions are " +
             "granted. User must also have required RBAC permission.");
-
-        models.getClass("AccessRight").rename("ShareFileHandleAccessRights");
     }
 
     /*
