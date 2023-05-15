@@ -41,6 +41,7 @@
       com.azure.core.*:
       com.azure.resourcemanager.*.samples
     </javadoc.excludePackageNames>
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <developers>

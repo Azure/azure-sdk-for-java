@@ -124,11 +124,10 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 // Options - End
                 .create();
 
-        System.out.println(galleryImage.location());
-        System.out.println(region.toString());
+        Assertions.fail(galleryImage.location());
         Assertions.assertNotNull(galleryImage);
         Assertions.assertNotNull(galleryImage.innerModel());
-        Assertions.assertTrue(Region.fromName(galleryImage.location()).name().equalsIgnoreCase(region.name()));
+        Assertions.assertTrue(galleryImage.location().equalsIgnoreCase(region.toString()));
         Assertions.assertTrue(galleryImage.osType().equals(OperatingSystemTypes.WINDOWS));
         Assertions.assertTrue(galleryImage.osState().equals(OperatingSystemStateTypes.GENERALIZED));
         Assertions.assertEquals(2, galleryImage.unsupportedDiskTypes().size());

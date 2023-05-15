@@ -146,12 +146,6 @@
       <version>2.11.0</version> <!-- {x-version-update;commons-io:commons-io;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-security-keyvault-keys</artifactId>
-      <version>4.6.1</version> <!-- {x-version-update;com.azure:azure-security-keyvault-keys;dependency} -->
-      <scope>test</scope>
-    </dependency>
   </dependencies>
   <profiles>
     <profile>
