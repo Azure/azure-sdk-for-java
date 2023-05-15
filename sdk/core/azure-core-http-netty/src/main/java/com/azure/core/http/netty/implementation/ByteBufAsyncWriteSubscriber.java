@@ -40,9 +40,7 @@ public final class ByteBufAsyncWriteSubscriber implements Subscriber<ByteBuf> {
         this.channel = channel;
         this.emitter = emitter;
         int initialBufferSize = Utility.getByteBufSubscriberBufferSize(bodySize);
-        this.bufferSize = (bodySize != null)
-            ? (int) Math.max(initialBufferSize, bodySize)
-            : initialBufferSize;
+        this.bufferSize = (bodySize != null) ? (int) Math.min(initialBufferSize, bodySize) : initialBufferSize;
         this.activeBuffer = new byte[bufferSize];
         this.nextBuffer = new byte[bufferSize];
     }

@@ -67,7 +67,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        return Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic())
+        return Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic(), false)
                 .subscribe(new ByteBufAsyncWriteSubscriber(channel, sink,
                 getBodySize(getHeaders()))))
             .doFinally(ignored -> close());
@@ -90,7 +90,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // complete. This introduces a previously seen, but in a different flavor, race condition where the write
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic())
+        Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic(), false)
                 .subscribe(new ByteBufWriteSubscriber(channel, sink, getBodySize(getHeaders()))))
             .subscribeOn(Schedulers.boundedElastic())
             .doFinally(ignored -> close())
