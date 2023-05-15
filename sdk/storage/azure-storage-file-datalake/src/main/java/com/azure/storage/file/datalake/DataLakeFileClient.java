@@ -19,7 +19,6 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
-import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
@@ -47,7 +46,6 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
-import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
@@ -1104,34 +1102,6 @@ public class DataLakeFileClient extends DataLakePathClient {
         BlobInputStream inputStream = blockBlobClient.openInputStream(convertedOptions);
         return new InternalDataLakeFileOpenInputStreamResult(inputStream,
             Transforms.toPathProperties(inputStream.getProperties()));
-    }
-
-
-    /**
-     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
-     * will be overwritten.
-     *
-     * @return The {@link OutputStream} that can be used to write to the file.
-     * @throws DataLakeStorageException If a storage service error occurred.
-     */
-    public OutputStream getOutputStream() {
-        return getOutputStream(null);
-    }
-
-    /**
-     * Creates and opens an output stream to write data to the file. If the file already exists on the service, it
-     * will be overwritten.
-     * <p>
-     * To avoid overwriting, pass "*" to {@link DataLakeRequestConditions#setIfNoneMatch(String)}.
-     * </p>
-     *
-     * @param options {@link DataLakeFileOutputStreamOptions}
-     * @return The {@link OutputStream} that can be used to write to the file.
-     * @throws DataLakeStorageException If a storage service error occurred.
-     */
-    public OutputStream getOutputStream(DataLakeFileOutputStreamOptions options) {
-        BlockBlobOutputStreamOptions convertedOptions = Transforms.toBlockBlobOutputStreamOptions(options);
-        return blockBlobClient.getBlobOutputStream(convertedOptions);
     }
 
     /**
