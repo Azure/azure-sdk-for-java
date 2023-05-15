@@ -19,7 +19,7 @@ Monitor Ingestion client library for Java.
 
 ### Enable client logging
 
-To troubleshoot issues with Azure Monitor query library, it is important to first enable logging to monitor the
+To troubleshoot issues with Azure Monitor Ingestion library, it is important to first enable logging to monitor the
 behavior of the application. The errors and warnings in the logs generally provide
 useful insights into what went wrong and sometimes include corrective actions to fix issues.
 The Azure client libraries for Java have two logging options:
@@ -33,8 +33,7 @@ to [configure logging in Azure SDK for Java](https://docs.microsoft.com/azure/de
 ### Enable HTTP request/response logging
 
 Reviewing the HTTP request sent or response received over the wire to/from the Azure Monitor service can be useful in
-troubleshooting issues. To enable logging the HTTP request and response payload, the LogsQueryClient and the
-MetricsQueryClient can be configured as shown below:
+troubleshooting issues. To enable logging the HTTP request and response payload, the LogsIngestionClient can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
 LogsIngestionClient logsIngestionClient = new LogsIngestionClientBuilder()
@@ -89,7 +88,7 @@ and [ways to mitigate this issue](https://docs.microsoft.com/azure/developer/jav
 ### Troubleshooting authorization errors
 
 If you get an HTTP error with status code 403 (Forbidden), it means that the provided credentials does not have
-sufficient permissions to query the workspace.
+sufficient permissions to upload logs to the specified Data Collection Endpoint (DCE) and Data Collection Rule ID (DCR ID).
 
 ```text
 com.azure.core.exception.HttpResponseException: Status code 403, "{"error":{"code":"OperationFailed","message":"The 
@@ -104,7 +103,7 @@ authentication token provided does not have access to ingest data for the data c
       to [manage access to data collection rule](https://learn.microsoft.com/azure/azure-monitor/logs/tutorial-logs-ingestion-portal#assign-permissions-to-the-dcr)
     * To ingest logs, ensure the service principal is assigned the "Monitoring Metrics Publisher" role for the data
       collection rule.
-2. If the user or application is granted sufficient privileges to query the workspace, make sure you are
+2. If the user or application is granted sufficient privileges to upload logs, make sure you are
    authenticating as that user/application. If you are authenticating using the
    [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/README.md#authenticating-with-defaultazurecredential)
    then check the logs to verify that the credential used is the one you expected. To enable logging, see [enable
