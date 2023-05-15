@@ -6,6 +6,7 @@ package com.azure.core.http.rest;
 import com.azure.core.util.paging.PageRetrieverSync;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Stream;
 
 public class OnlyOnePageRetrieverSync implements PageRetrieverSync<Integer, OnlyOneContinuablePage> {
     private final AtomicInteger getCount = new AtomicInteger();
@@ -17,15 +18,15 @@ public class OnlyOnePageRetrieverSync implements PageRetrieverSync<Integer, Only
     }
 
     @Override
-    public OnlyOneContinuablePage getPage(Integer continuationToken, Integer pageSize) {
+    public Stream<OnlyOneContinuablePage> getPage(Integer continuationToken, Integer pageSize) {
         getCount.getAndIncrement();
         if (continuationToken != null && continuationToken == pageCount - 1) {
             pageSize = (pageSize == null) ? 10 : pageSize;
-            return new OnlyOneContinuablePage(continuationToken, null, pageSize);
+            return Stream.of(new OnlyOneContinuablePage(continuationToken, null, pageSize));
         } else {
             continuationToken = (continuationToken == null) ? 0 : continuationToken;
             pageSize = (pageSize == null) ? 10 : pageSize;
-            return new OnlyOneContinuablePage(continuationToken, continuationToken + 1, pageSize);
+            return Stream.of(new OnlyOneContinuablePage(continuationToken, continuationToken + 1, pageSize));
         }
     }
 

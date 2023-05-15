@@ -74,7 +74,6 @@ import java.util.stream.Stream;
  * @see IterableStream
  */
 public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
-    private final PagedFlux<T> pagedFlux;
 
     /**
      * Creates instance given {@link PagedFlux}.
@@ -82,7 +81,6 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      */
     public PagedIterable(PagedFlux<T> pagedFlux) {
         super(pagedFlux);
-        this.pagedFlux = pagedFlux;
     }
 
     /**
@@ -151,8 +149,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
         Function<String, PagedResponse<T>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) ->
             continuationToken == null
-                ? firstPageRetriever.get()
-                : nextPageRetriever.apply(continuationToken), true);
+                ? Stream.of(firstPageRetriever.get())
+                : Stream.of(nextPageRetriever.apply(continuationToken)), true);
     }
 
     /**
@@ -176,8 +174,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
     public PagedIterable(Function<Integer, PagedResponse<T>> firstPageRetriever,
         BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) -> continuationToken == null
-             ? firstPageRetriever.apply(pageSize)
-             : nextPageRetriever.apply(continuationToken, pageSize), true);
+             ? Stream.of(firstPageRetriever.apply(pageSize))
+             : Stream.of(nextPageRetriever.apply(continuationToken, pageSize)), true);
     }
 
     /**
@@ -189,26 +187,16 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      */
     @SuppressWarnings("deprecation")
     public <S> PagedIterable<S> mapPage(Function<T, S> mapper) {
-        Supplier<PageRetrieverSync<String, PagedResponse<S>>> provider = () -> {
-            return new PageRetrieverSync<String, PagedResponse<S>>() {
-                @Override
-                public PagedResponse<S> getPage(String continuationToken, Integer pageSize) {
-                    return null;
-                }
-
-                @Override
-                public Stream<PagedResponse<S>> getPageStream(String continuationToken, Integer pageSize) {
-                    Stream<PagedResponse<T>> pagedResponseStream = (continuationToken == null)
-                        ? PagedIterable.super.streamByPage()
-                        : PagedIterable.super.streamByPage(continuationToken);
-                    return pagedResponseStream.map(PagedIterable.this.mapPagedResponse(mapper));
-                }
-            };
+        Supplier<PageRetrieverSync<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
+            Stream<PagedResponse<T>> pagedResponseStream = (continuationToken == null)
+                ? PagedIterable.super.streamByPage()
+                : PagedIterable.super.streamByPage(continuationToken);
+            return pagedResponseStream.map(PagedIterable.this.mapPagedResponse(mapper));
         };
         return new PagedIterable<S>(provider, true);
     }
 
-    private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T,S> mapper) {
+    private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
         return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
             pagedResponse.getStatusCode(),
             pagedResponse.getHeaders(),
@@ -225,6 +213,5 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      */
     private PagedIterable(Supplier<PageRetrieverSync<String, PagedResponse<T>>> provider, boolean ignored) {
         super(provider);
-        this.pagedFlux = null;
     }
 }

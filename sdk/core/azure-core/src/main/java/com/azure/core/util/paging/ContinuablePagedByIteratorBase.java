@@ -102,18 +102,14 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
                     return page;
                 }).blockLast();
         } else if (pageRetrieverSync != null) {
-            P page = pageRetrieverSync.getPage(continuationState.getLastContinuationToken(), defaultPageSize);
-            if (page != null) {
-                receivePage(receivedPages, page);
-            } else {
-                Stream<P> streamPage =
-                    pageRetrieverSync.getPageStream(continuationState.getLastContinuationToken(), defaultPageSize);
-                if (streamPage != null) {
-                    streamPage.map(innerPage -> {
+            Stream<P> streamPage =
+                pageRetrieverSync.getPage(continuationState.getLastContinuationToken(), defaultPageSize);
+            if (streamPage != null) {
+                streamPage.forEach(innerPage -> {
+                    if (innerPage != null) {
                         receivePage(receivedPages, innerPage);
-                        return innerPage;
-                    });
-                }
+                    }
+                });
             }
         }
 
