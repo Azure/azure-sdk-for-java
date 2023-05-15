@@ -767,7 +767,6 @@ public final class EventGridClientImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>eventDeliveryDelayInSeconds</td><td>Integer</td><td>No</td><td>Delivery delay for the event in seconds. When value is 0, the event is released immediately. It is an optional parameter and if not specified, the default value is 0.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -839,7 +838,6 @@ public final class EventGridClientImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>eventDeliveryDelayInSeconds</td><td>Integer</td><td>No</td><td>Delivery delay for the event in seconds. When value is 0, the event is released immediately. It is an optional parameter and if not specified, the default value is 0.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}

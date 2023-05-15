@@ -251,7 +251,6 @@ public final class EventGridClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>eventDeliveryDelayInSeconds</td><td>Integer</td><td>No</td><td>Delivery delay for the event in seconds. When value is 0, the event is released immediately. It is an optional parameter and if not specified, the default value is 0.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -480,42 +479,6 @@ public final class EventGridClient {
         // Generated convenience method for acknowledgeCloudEventsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return acknowledgeCloudEventsWithResponse(
-                        topicName, eventSubscriptionName, lockTokens, requestOptions)
-                .getValue();
-    }
-
-    /**
-     * Release batch of Cloud Events. The server responds with an HTTP 200 status code if at least one event is
-     * successfully released. The response body will include the set of successfully released lockTokens, along with
-     * other failed lockTokens with their corresponding error information.
-     *
-     * @param topicName Topic Name.
-     * @param eventSubscriptionName Event Subscription Name.
-     * @param lockTokens ReleaseOptions.
-     * @param eventDeliveryDelayInSeconds Delivery delay for the event in seconds. When value is 0, the event is
-     *     released immediately. It is an optional parameter and if not specified, the default value is 0.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the Release operation.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReleaseResult releaseCloudEvents(
-            String topicName,
-            String eventSubscriptionName,
-            ReleaseOptions lockTokens,
-            Integer eventDeliveryDelayInSeconds) {
-        // Generated convenience method for releaseCloudEventsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        if (eventDeliveryDelayInSeconds != null) {
-            requestOptions.addQueryParam(
-                    "eventDeliveryDelayInSeconds", String.valueOf(eventDeliveryDelayInSeconds), false);
-        }
-        return releaseCloudEventsWithResponse(
                         topicName, eventSubscriptionName, lockTokens, requestOptions)
                 .getValue();
     }
