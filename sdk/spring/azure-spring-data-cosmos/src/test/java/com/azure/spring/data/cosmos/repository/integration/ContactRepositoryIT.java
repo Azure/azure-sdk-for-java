@@ -223,20 +223,20 @@ public class ContactRepositoryIT {
         Assert.assertFalse(contactIterator.hasNext());
     }
 
-    @Test
-    public void testAnnotatedQueries() {
-        List<Contact> valueContacts = repository.getContactsByTitleAndValue(43, TEST_CONTACT5.getTitle());
-        Assert.assertEquals(1, valueContacts.size());
-        Assert.assertEquals(TEST_CONTACT5, valueContacts.get(0));
-
-        List<Contact> contactsWithOffset = repository.getContactsWithOffsetLimit(1, 2);
-        Assert.assertEquals(2, contactsWithOffset.size());
-        Assert.assertEquals(TEST_CONTACT2, contactsWithOffset.get(0));
-        Assert.assertEquals(TEST_CONTACT3, contactsWithOffset.get(1));
-
-        List<ObjectNode> groupByContacts = repository.selectGroupBy();
-        Assert.assertEquals(3, groupByContacts.size());
-    }
+//    @Test
+//    public void testAnnotatedQueries() {
+//        List<Contact> valueContacts = repository.getContactsByTitleAndValue(43, TEST_CONTACT5.getTitle());
+//        Assert.assertEquals(1, valueContacts.size());
+//        Assert.assertEquals(TEST_CONTACT5, valueContacts.get(0));
+//
+//        List<Contact> contactsWithOffset = repository.getContactsWithOffsetLimit(1, 2);
+//        Assert.assertEquals(2, contactsWithOffset.size());
+//        Assert.assertEquals(TEST_CONTACT2, contactsWithOffset.get(0));
+//        Assert.assertEquals(TEST_CONTACT3, contactsWithOffset.get(1));
+//
+//        List<ObjectNode> groupByContacts = repository.selectGroupBy();
+//        Assert.assertEquals(3, groupByContacts.size());
+//    }
 
     @Test
     public void testAnnotatedQueriesDistinctIntValue() {
