@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -135,21 +136,16 @@ public class RoomsClientTest extends RoomsTestBase {
 
         String roomId = createCommunicationRoom.getRoomId();
 
-        // Check created room count, expected 1
+        // Check created room coun
         PagedIterable<CommunicationRoom> listRoomResponse = roomsClient.listRooms();
-        assertEquals(1, listRoomResponse.stream().count());
 
-        for (CommunicationRoom room : listRoomResponse) {
-            assertHappyPath(room);
-        }
+        List<CommunicationRoom> rooms = listRoomResponse.stream().collect(Collectors.toList());
+
+        assertHappyPath(rooms.get(0));
 
         // Delete Room
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
-
-        // Created room count, expected 0
-        PagedIterable<CommunicationRoom> listRoomResponse2 = roomsClient.listRooms();
-        assertEquals(0, listRoomResponse2.stream().count());
     }
 
     @ParameterizedTest

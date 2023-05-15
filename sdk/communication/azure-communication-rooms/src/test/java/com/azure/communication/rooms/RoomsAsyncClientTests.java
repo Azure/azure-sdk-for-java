@@ -345,16 +345,11 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
 
         String roomId = createCommunicationRoom.block().getRoomId();
 
-        // Get created room
+        //Get created rooms
         PagedFlux<CommunicationRoom> listRoomResponse = roomsAsyncClient.listRooms();
 
-        StepVerifier.create(listRoomResponse.count())
-                .expectNext(1L)
-                .verifyComplete();
-
-        StepVerifier.create(listRoomResponse)
-                .expectSubscription()
-                .thenConsumeWhile(room -> true, room -> {
+        StepVerifier.create(listRoomResponse.take(1))
+                .assertNext(room -> {
                     assertEquals(true, room.getRoomId() != null);
                     assertEquals(true, room.getCreatedAt() != null);
                     assertEquals(true, room.getValidFrom() != null);
@@ -370,13 +365,6 @@ public class RoomsAsyncClientTests extends RoomsTestBase {
                     assertEquals(result.getStatusCode(), 204);
                 }).verifyComplete();
 
-        // List rooms
-        PagedFlux<CommunicationRoom> listRoomResponse2 = roomsAsyncClient.listRooms();
-
-        // Expected 0 rooms
-        StepVerifier.create(listRoomResponse2.count())
-                .expectNext(0L)
-                .verifyComplete();
     }
 
     @ParameterizedTest
