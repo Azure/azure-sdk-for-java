@@ -147,8 +147,9 @@ and resolve this issue, please ensure the following:
 If you experience delays when uploading logs, it could be due to reaching service limits, which may trigger the rate
 limiter to throttle your client. To determine if your client has reached service limits, you can enable logging and
 check if the service is returning errors with an HTTP status code 429. For more information on service limits, you can
-refer to the Azure Monitor service limits documentation. To enable client logging and troubleshoot this issue further,
-please follow the instructions provided in the section titled "Enable Client Logging."
+refer to the [Azure Monitor service limits documentation](https://learn.microsoft.com/en-us/azure/azure-monitor/service-limits#logs-ingestion-api).
+To enable client logging and troubleshoot this issue further, please follow the instructions provided in the section 
+titled ["Enable Client Logging."](#enable-client-logging)
 
 If there are no throttling errors, then consider increasing the concurrency to upload multiple log requests in parallel.
 To set the concurrency, use `UploadLogsOptions` type to `setMaxConcurrency`.
