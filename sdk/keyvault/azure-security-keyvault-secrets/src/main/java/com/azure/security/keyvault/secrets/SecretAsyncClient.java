@@ -33,6 +33,20 @@ import static com.azure.core.util.FluxUtil.withContext;
  * {@link KeyVaultSecret secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a
  * soft-delete enabled Azure Key Vault.
  *
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
+ * {@link com.azure.security.keyvault.secrets.SecretAsyncClient} class, a vault url and a credential object.</p>
+ *
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally,
+ * we recommend using a
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">
+ * managed identity</a> for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
+ *     Azure Identity documentation"</a>.</p>
+ *
  * <p><strong>Construct the async client</strong></p>
  * <!-- src_embed com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
  * <pre>
@@ -43,7 +57,67 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
  *
+ * <hr/>
+ *
+ * <h2>Create a Secret</h2>
+ * The {@link com.azure.security.keyvault.secrets.SecretAsyncClient} can be used to create a secret in
+ * the Azure KeyVault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to create and store a secret in the key vault, using the
+ * {@link com.azure.security.keyvault.secrets.SecretAsyncClient}.</p>
+ *
+ * <!-- src_embed com.azure.keyvault.secrets.SecretClient.setSecret#string-string -->
+ * <pre>
+ * secretAsyncClient.setSecret&#40;&quot;secretName&quot;, &quot;secretValue&quot;&#41;
+ *     .subscribe&#40;secretResponse -&gt;
+ *         System.out.printf&#40;&quot;Secret is created with name %s and value %s%n&quot;,
+ *             secretResponse.getName&#40;&#41;, secretResponse.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.keyvault.secrets.SecretClient.setSecret#string-string -->
+ *
+ * <hr/>
+ *
+ * <h2>Get a Secret</h2>
+ * The {@link com.azure.security.keyvault.secrets.SecretAsyncClient} can be used to retrieve a secret from the
+ * Azure KeyVault.
+ *
+ * <p><strong>Asynchronous Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to synchronously retrieve a previously stored secret from the Azure
+ * KeyVault, using the {@link com.azure.security.keyvault.secrets.SecretAsyncClient}.</p>
+ *
+ * <!-- src_embed com.azure.keyvault.secrets.SecretClient.getSecret#string -->
+ * <pre>
+ * secretAsyncClient.getSecret&#40;&quot;secretName&quot;&#41;
+ *     .subscribe&#40;secretWithVersion -&gt;
+ *         System.out.printf&#40;&quot;Secret is returned with name %s and value %s %n&quot;,
+ *             secretWithVersion.getName&#40;&#41;, secretWithVersion.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.keyvault.secrets.SecretClient.getSecret#string -->
+ *
+ * <hr/>
+ *
+ * <h2>Delete Secret</h2>
+ * The {@link com.azure.security.keyvault.secrets.SecretAsyncClient} can be used to delete a secret from the
+ * Azure KeyVault.
+ *
+ * <p><strong>Code Sample:</strong></p>
+ * <p>The following code sample demonstrates how to delete a secret from the Azure KeyVault, using the
+ * {@link com.azure.security.keyvault.secrets.SecretAsyncClient}.</p>
+ *
+ * <!-- src_embed com.azure.keyvault.secrets.SecretClient.deleteSecret#String -->
+ * <pre>
+ * secretAsyncClient.beginDeleteSecret&#40;&quot;secretName&quot;&#41;
+ *     .subscribe&#40;pollResponse -&gt; &#123;
+ *         System.out.println&#40;&quot;Delete Status: &quot; + pollResponse.getStatus&#40;&#41;.toString&#40;&#41;&#41;;
+ *         System.out.println&#40;&quot;Deleted Secret Name: &quot; + pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+ *         System.out.println&#40;&quot;Deleted Secret Value: &quot; + pollResponse.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.keyvault.secrets.SecretClient.deleteSecret#String -->
+ *
  * @see SecretClientBuilder
+ * @see PollerFlux
  * @see PagedFlux
  */
 @ServiceClient(builder = SecretClientBuilder.class, isAsync = true,

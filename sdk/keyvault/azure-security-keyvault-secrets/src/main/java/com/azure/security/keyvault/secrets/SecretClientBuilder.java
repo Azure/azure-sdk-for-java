@@ -35,6 +35,7 @@ import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.secrets.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.secrets.implementation.SecretClientImpl;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
 import com.azure.security.keyvault.secrets.models.KeyVaultSecretIdentifier;
 
 import java.net.MalformedURLException;
@@ -49,6 +50,12 @@ import java.util.Map;
  * by calling {@link SecretClientBuilder#buildAsyncClient() buildAsyncClient} and {@link
  * SecretClientBuilder#buildClient() buildClient} respectively.
  * It constructs an instance of the desired client.
+ *
+ * <p>The {@link SecretClient}/{@link SecretAsyncClient}  both provide synchronous/asynchronous methods to manage
+ * {@link KeyVaultSecret secrets} in the Azure Key Vault. The client supports creating, retrieving, updating,
+ * deleting, purging, backing up, restoring, and listing the {@link KeyVaultSecret secrets}. The client also support
+ * listing {@link com.azure.security.keyvault.secrets.models.DeletedSecret deleted secrets} for a soft-delete enabled
+ * Azure Key Vault.</p>
  *
  * <p> The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build
  * {@link SecretAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
