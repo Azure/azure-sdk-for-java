@@ -100,7 +100,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_SOUTH_CENTRAL)
+                .withRegion(Region.US_WEST_CENTRAL)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
@@ -126,7 +126,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
 
         Assertions.assertNotNull(galleryImage);
         Assertions.assertNotNull(galleryImage.innerModel());
-        Assertions.assertTrue(galleryImage.location().equalsIgnoreCase(region.toString()));
+        Assertions.assertTrue(galleryImage.location().equalsIgnoreCase(region.name()));
         Assertions.assertTrue(galleryImage.osType().equals(OperatingSystemTypes.WINDOWS));
         Assertions.assertTrue(galleryImage.osState().equals(OperatingSystemStateTypes.GENERALIZED));
         Assertions.assertEquals(2, galleryImage.unsupportedDiskTypes().size());
