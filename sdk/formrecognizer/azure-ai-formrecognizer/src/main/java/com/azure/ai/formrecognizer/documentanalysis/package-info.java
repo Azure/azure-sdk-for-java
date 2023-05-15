@@ -2,6 +2,34 @@
 // Licensed under the MIT License.
 
 /**
+ * <p> <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">Azure Form Recognizer</a>
+ * is a cloud-based service provided by Microsoft Azure that utilizes machine learning to extract information
+ * from various types of documents. It is designed to automate the process of
+ * document analysis, data extraction, and form understanding. Azure Form Recognizer can handle structured
+ * forms, such as invoices, receipts, and surveys, as well as unstructured documents, such as contracts,
+ * agreements, and financial reports.</p>
+ *
+ * <p>The service uses advanced optical character recognition (OCR) technology to extract text and key-value
+ * pairs from documents, enabling organizations to automate data entry tasks that would otherwise require
+ * manual effort. It can recognize and extract information like dates, addresses, invoice numbers, line items,
+ * and other relevant data points from documents. </p>
+ *
+ * <p> The Azure Form Recognizer client library allows Java developers to interact with the Azure Form
+ *  Recognizer service.
+ * It provides a set of classes and methods that abstract the underlying RESTful API of Azure
+ * Form Recognizer, making it easier to integrate the service into Java applications.</p>
+ *
+ * <p>The Azure Form Recognizer client library provides the following capabilities:</p>
+ *
+ * <ol>
+ * <li>Document Analysis: It allows you to submit documents for analysis to extract information like text, key-value pairs, tables, and form fields. You can analyze both structured and unstructured documents.</li>
+ * <li>Model Management: It enables you to build custom models by providing training data. You can also list and delete existing models and see information for your operations.</li>
+ * <li>Analysis Results: It provides methods to retrieve and interpret analysis results, including extracted text and field values, confidence scores, and document layout information.</li>
+ * <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ * </ol>
+ *
+ * <h2>Getting Started</h2>
+ *
  * <p>The Azure Form Recognizer library provides
  * analysis clients like {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}
  * and {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} to connect to the Form Recognizer Azure Cognitive Service
@@ -10,10 +38,19 @@
  * It also provides administration clients like {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient}
  * and {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} to build and manage models from custom documents.
  *
- * <h2>Getting Started</h2>
- *
  * <p><strong>Note:</strong>This client only supports {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
  * To use an older service version, @see com.azure.ai.formrecognizer.FormRecognizerClient and @see com.azure.ai.formrecognizer.training.FormTrainingClient.</p>
+ *
+ * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient} is the synchronous service client and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} is the asynchronous service client.  The examples
+ * shown in this document use a credential object named DefaultAzureCredential for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
  *
  * <p><strong>Sample: Construct a DocumentAnalysisClient with DefaultAzureCredential</strong></p>
  *

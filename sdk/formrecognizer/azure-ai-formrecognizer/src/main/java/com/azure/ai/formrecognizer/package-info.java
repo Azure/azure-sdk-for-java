@@ -2,6 +2,33 @@
 // Licensed under the MIT License.
 
 /**
+ * <p> <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">Azure Form Recognizer</a>
+ * is a cloud-based service provided by Microsoft Azure that utilizes machine learning to extract information
+ * from various types of documents. It is designed to automate the process of
+ * document analysis, data extraction, and form understanding. Azure Form Recognizer can handle structured
+ * forms, such as invoices, receipts, and surveys, as well as unstructured documents, such as contracts,
+ * agreements, and financial reports.</p>
+ *
+ * <p>The service uses advanced optical character recognition (OCR) technology to extract text and key-value
+ * pairs from documents, enabling organizations to automate data entry tasks that would otherwise require
+ * manual effort. It can recognize and extract information like dates, addresses, invoice numbers, line items,
+ * and other relevant data points from documents. </p>
+ *
+ *<p> The Azure Form Recognizer client library allows Java developers to interact with the Azure Form
+ Recognizer service.
+ * It provides a set of classes and methods that abstract the underlying RESTful API of Azure
+ * Form Recognizer, making it easier to integrate the service into Java applications.</p>
+ *
+ * <p>The Azure Form Recognizer client library provides the following capabilities:</p>
+
+ * <ol>
+ * <li>Form recognizing: It allows you to submit forms to extract information like text, key-value pairs, tables, and form fields. You can analyze both structured and unstructured documents.</li>
+ * <li>Model Management: It enables you to train custom models by providing labeled training data. You can also list and delete existing models.</li>
+ * <li>Recognize Results: It provides methods to retrieve and interpret analysis results, including extracted text and field values, confidence scores, and document layout information.</li>
+ * <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ * </ol>
+ *
+ * <h2>Getting Started</h2>
  * <p>The Azure Form Recognizer library provides
  * analysis clients like {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient}
  * and {@link com.azure.ai.formrecognizer.FormRecognizerClient} to connect to the Form Recognizer Azure Cognitive Service
@@ -12,8 +39,16 @@
  * <p><strong>Note:</strong>This client only supports {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
  * Recommended to use a newer service version, @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient and @see com.azure.ai.formrecognizer.documentanalysis.administration.DocumentAdministrationClient.</p>
  * <p><strong>Refer to the <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md">Migration guide</a> to use API versions 2022-08-31 and up.</strong></p>
-
- * <h2>Getting Started</h2>
+ * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
+ * {@link com.azure.ai.formrecognizer.FormRecognizerClient} is the synchronous service client and
+ * {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient} is the asynchronous service client.  The examples
+ * shown in this document use a credential object named DefaultAzureCredential for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
  *
  * <p><strong>Sample: Construct a FormRecognizerClient with DefaultAzureCredential</strong></p>
  *
