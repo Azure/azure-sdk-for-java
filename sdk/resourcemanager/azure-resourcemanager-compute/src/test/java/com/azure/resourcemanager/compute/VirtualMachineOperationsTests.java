@@ -62,6 +62,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -78,7 +79,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private String rgName = "";
     private String rgName2 = "";
     private final Region region = Region.US_EAST;
-    private final Region regionProxPlacementGroup = Region.US_WEST;
+    private final Region regionProxPlacementGroup = Region.US_SOUTH_CENTRAL;
     private final Region regionProxPlacementGroup2 = Region.US_EAST;
     private final String vmName = "javavm";
     private final String proxGroupName = "testproxgroup1";
@@ -940,6 +941,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    @Disabled("Management Long running operation is Failed or Cancelled.")
     public void canForceDeleteVirtualMachine() {
         // Create
         computeManager.virtualMachines()
@@ -1198,6 +1200,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     }
 
     @Test
+    @Disabled("The subscription is not registered for the private preview of VirtualMachine Hibernation feature.")
     public void canHibernateVirtualMachine() {
         // preview feature
 

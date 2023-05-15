@@ -25,6 +25,7 @@ import java.util.Map;
 
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementTest {
@@ -603,6 +604,7 @@ public class VirtualMachineManagedDiskOperationsTests extends ComputeManagementT
     }
 
     @Test
+    @Disabled("'disk.supportsHibernation' is not supported for this subscription/region.")
     public void canCreateVirtualMachineWithHibernationEnabledUsingOsDisk() {
         String diskWithOSImage = prepareLinuxDiskWithOSImage();
 

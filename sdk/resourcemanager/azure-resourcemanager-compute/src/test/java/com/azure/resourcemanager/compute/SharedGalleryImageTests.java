@@ -35,7 +35,7 @@ import java.util.Map;
 
 public class SharedGalleryImageTests extends ComputeManagementTest {
     private String rgName = "";
-    private final Region region = Region.US_WEST_CENTRAL;
+    private final Region region = Region.US_SOUTH_CENTRAL;
     private final String vmName = "javavm";
 
     @Override
@@ -221,7 +221,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
@@ -258,7 +258,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .galleryImageVersions()
                 .define(versionName)
                 .withExistingImage(rgName, gallery.name(), galleryImage.name())
-                .withLocation(region.toString())
+                .withLocation(region)
                 .withSourceCustomImage(customImage)
                 // Options - Start
                 .withRegionAvailability(Region.US_WEST2, 1)
@@ -315,7 +315,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .computeManager
                 .galleries()
                 .define(galleryName)
-                .withRegion(Region.US_WEST_CENTRAL)
+                .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withDescription("java's image gallery")
                 .create();
