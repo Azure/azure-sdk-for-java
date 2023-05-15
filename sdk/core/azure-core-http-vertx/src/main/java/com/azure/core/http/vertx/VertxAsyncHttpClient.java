@@ -123,63 +123,47 @@ class VertxAsyncHttpClient implements HttpClient {
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        // boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-
-        RequestOptions options = new RequestOptions()
-                                     .setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
-                                     .setAbsoluteURI(request.getUrl());
-
-        return client.request(options, requestResult -> {
-            if (requestResult.failed()) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(requestResult.cause()));
-            }
-            try {
-                HttpClientRequest vertxHttpRequest = requestResult.result();
-                // Map to Vertx headers
-                request.getHeaders().stream()
-                    .forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
-                // Chunking if the size of request is unknown.
-                if (request.getHeaders().get("Content-Length") == null) {
-                    vertxHttpRequest.setChunked(true);
-                }
-
-
-                vertxHttpRequest.response(event -> {
-                    if (event.succeeded()) {
-                        HttpClientResponse vertxHttpResponse = event.result();
-                        return new BufferedVertxHttpResponse(request, vertxHttpResponse, null);
-//                        return vertxHttpResponse.bodyHandler(buffer -> new BufferedVertxHttpResponse(request, vertxHttpResponse, buffer));
-                    } else {
-                        throw LOGGER.logExceptionAsError(new RuntimeException(event.cause()));
-                    }
-                });
-
-
-
-                // TODO (alzimmer)
-                // For now Vertx will always use a buffered request until reliability issues when using streamin can be
-                // resolved.
-                Flux<ByteBuffer> requestBody = request.getBody();
-                if (requestBody == null) {
-                    vertxHttpRequest.end();
-                } else {
-                    if (progressReporter != null) {
-                        requestBody = requestBody.map(buffer -> {
-                            progressReporter.reportProgress(buffer.remaining());
-                            return buffer;
-                        });
-                    }
-
-                    FluxUtil.collectBytesFromNetworkResponse(requestBody, request.getHeaders())
-                        .subscribeOn(scheduler)
-                        .subscribe(bytes -> vertxHttpRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bytes))),
-                            sink::error, vertxHttpRequest::end);
-                }
-
-            } catch (Exception e) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-            }
-        });
+        return send(request, context).block();
+//        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+//
+//        RequestOptions options = new RequestOptions()
+//                                     .setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
+//                                     .setAbsoluteURI(request.getUrl());
+//
+//        AtomicReference<VertxHttpAsyncResponse> vertxHttpAsyncResponse = null;
+//
+//        client.request(options, requestResult -> {
+//            if (requestResult.failed()) {
+//                throw LOGGER.logExceptionAsError(new RuntimeException(requestResult.cause()));
+//            }
+//            try {
+//                HttpClientRequest vertxHttpRequest = requestResult.result();
+//                // Map to Vertx headers
+//                request.getHeaders().stream()
+//                    .forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
+//                // Chunking if the size of request is unknown.
+//                if (request.getHeaders().get("Content-Length") == null) {
+//                    vertxHttpRequest.setChunked(true);
+//                }
+//                vertxHttpRequest.response(event -> {
+//                    if (event.succeeded()) {
+//                        HttpClientResponse vertxHttpResponse = event.result();
+//
+//                        vertxHttpAsyncResponse.set(new VertxHttpAsyncResponse(request, vertxHttpResponse));
+////                        return vertxHttpResponse.bodyHandler(buffer -> new BufferedVertxHttpResponse(request, vertxHttpResponse, buffer));
+//                    } else {
+//                        throw LOGGER.logExceptionAsError(new RuntimeException(event.cause()));
+//                    }
+//                });
+//
+//
+//                vertxHttpRequest.send();
+//
+//
+//            } catch (Exception e) {
+//                throw LOGGER.logExceptionAsError(new RuntimeException(e));
+//            }
+//        });
+//        return vertxHttpAsyncResponse.get();
     }
 }
