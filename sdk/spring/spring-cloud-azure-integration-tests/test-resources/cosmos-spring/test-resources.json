@@ -9,13 +9,15 @@
       "type": "bool",
       "metadata": {
         "description": "Flag to enable or disable multiple write locations on CosmosDB Account"
-      }
+      },
+      "defaultValue": false
     },
     "defaultConsistencyLevel": {
       "type": "string",
       "metadata": {
         "description": "Default Cosmosdb Account level consistency"
-      }
+      },
+      "defaultValue": "Session"
     },
     "enableMultipleRegions": {
       "type": "bool",
