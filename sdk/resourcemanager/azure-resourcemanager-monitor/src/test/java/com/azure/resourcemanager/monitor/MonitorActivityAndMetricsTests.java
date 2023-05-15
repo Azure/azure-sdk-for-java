@@ -39,7 +39,7 @@ public class MonitorActivityAndMetricsTests extends MonitorManagementTest {
     @DoNotRecord(skipInPlayback = true)
     public void canListEventsAndMetrics() {
         // make sure there exists a VM
-        Region region = Region.US_WEST;
+        Region region = Region.US_SOUTH_CENTRAL;
         String vmName = generateRandomResourceName("jMonitorVm_", 18);
         VirtualMachine vm = ensureVM(region,
             resourceManager.resourceGroups().define(rgName).withRegion(region).create(),
