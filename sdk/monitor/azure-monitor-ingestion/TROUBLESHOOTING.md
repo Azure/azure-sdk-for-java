@@ -67,21 +67,16 @@ clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-
 ### Authentication errors
 
 Azure Monitor Ingestion supports Azure Active Directory authentication. The LogsIngestionClientBuilder can be configured
-to set the `credential`. To provide a valid credential, you can use
-`azure-identity` dependency. For more details on getting started, refer to
-the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-ingestion#create-the-client)
-of Azure Monitor Ingestion library. You can also refer to
-the [Azure Identity documentation](https://docs.microsoft.com/azure/developer/java/sdk/identity)
+to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more details on 
+getting started, refer to the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-ingestion#create-the-client)
+of Azure Monitor Ingestion library. You can also refer to the [Azure Identity documentation](https://docs.microsoft.com/azure/developer/java/sdk/identity)
 for more details on the various types of credential supported in `azure-identity`.
 
 ### Dependency Conflicts
 
 If you see `NoSuchMethodError` or `NoClassDefFoundError` during your application runtime, this is due to a
-dependency version conflict. Please take a look
-at [troubleshooting dependency version conflicts](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict)
-for more information on
-why this happens
-and [ways to mitigate this issue](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict#mitigate-version-mismatch-issues).
+dependency version conflict. Please take a look at [troubleshooting dependency version conflicts](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict)
+for more information on why this happens and [ways to mitigate this issue](https://docs.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict#mitigate-version-mismatch-issues).
 
 ## Troubleshooting Logs Ingestion
 
