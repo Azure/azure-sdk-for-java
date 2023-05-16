@@ -91,6 +91,8 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class DigitalTwinsAsyncClient {
     private static final ClientLogger LOGGER = new ClientLogger(DigitalTwinsAsyncClient.class);
     private static final Boolean INCLUDE_MODEL_DEFINITION_ON_GET = true;
+    private static final String DIGITAL_TWINS_TRACING_NAMESPACE_VALUE = "Microsoft.DigitalTwins";
+    private static final String AZ_TRACING_NAMESPACE_KEY = "az.namespace";
 
     private static final SerializerAdapter SERIALIZER_ADAPTER;
     private static final ObjectMapper MAPPER;
@@ -2482,7 +2484,7 @@ public final class DigitalTwinsAsyncClient {
                 id,
                 ImportJobConverter.map(importJob),
                 null,
-                context)
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(importJobResponse -> new SimpleResponse<>(
                 importJobResponse.getRequest(),
                 importJobResponse.getStatusCode(),
@@ -2545,7 +2547,7 @@ public final class DigitalTwinsAsyncClient {
             .deleteWithResponseAsync(
                 id,
                 null,
-                context);
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
     }
 
     /**
@@ -2607,7 +2609,7 @@ public final class DigitalTwinsAsyncClient {
             .cancelWithResponseAsync(
                 id,
                 null,
-                context)
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(importJobResponse -> new SimpleResponse<>(
                 importJobResponse.getRequest(),
                 importJobResponse.getStatusCode(),
@@ -2676,7 +2678,7 @@ public final class DigitalTwinsAsyncClient {
             .getByIdWithResponseAsync(
                 id,
                 null,
-                context)
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(importJobResponse -> new SimpleResponse<>(
                 importJobResponse.getRequest(),
                 importJobResponse.getStatusCode(),
@@ -2749,7 +2751,7 @@ public final class DigitalTwinsAsyncClient {
             .getImportJobs()
             .listSinglePageAsync(
                 OptionsConverter.toProtocolLayerOptions(options),
-                context)
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(pagedImportJobFunction);
     }
 
@@ -2766,7 +2768,7 @@ public final class DigitalTwinsAsyncClient {
             .listNextSinglePageAsync(
                 nextLink,
                 OptionsConverter.toProtocolLayerOptions(options),
-                context)
+                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
             .map(pagedImportJobFunction);
     }
 
