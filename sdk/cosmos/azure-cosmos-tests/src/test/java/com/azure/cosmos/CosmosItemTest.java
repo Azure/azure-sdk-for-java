@@ -318,7 +318,7 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readManyWithSingleTupleWithNonExistentId() throws Exception {
+    public void readManyWithNonExistentIds() throws Exception {
         String partitionKeyValue = UUID.randomUUID().toString();
         ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         HashSet<String> idSet = new HashSet<String>();
@@ -342,10 +342,9 @@ public class CosmosItemTest extends TestSuiteBase {
 
         FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
 
-       // assertThat(feedResponse).isNotNull();
-       // assertThat(feedResponse.getResults()).isNotNull();
-       // assertThat(feedResponse.getResults().size()).isEqualTo(1);
-       // assertThat(idSet.contains(feedResponse.getResults().get(0).getId())).isTrue();
+        assertThat(feedResponse).isNotNull();
+        assertThat(feedResponse.getResults()).isNotNull();
+        assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
