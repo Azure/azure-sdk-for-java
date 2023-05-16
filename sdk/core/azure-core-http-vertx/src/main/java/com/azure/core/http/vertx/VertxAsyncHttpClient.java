@@ -12,7 +12,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
-import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -32,8 +31,6 @@ import java.util.Objects;
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
-    private static final ClientLogger LOGGER = new ClientLogger(VertxAsyncHttpClient.class);
-
     private final Scheduler scheduler;
     final io.vertx.core.http.HttpClient client;
 
@@ -124,46 +121,5 @@ class VertxAsyncHttpClient implements HttpClient {
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
         return send(request, context).block();
-//        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-//
-//        RequestOptions options = new RequestOptions()
-//                                     .setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
-//                                     .setAbsoluteURI(request.getUrl());
-//
-//        AtomicReference<VertxHttpAsyncResponse> vertxHttpAsyncResponse = null;
-//
-//        client.request(options, requestResult -> {
-//            if (requestResult.failed()) {
-//                throw LOGGER.logExceptionAsError(new RuntimeException(requestResult.cause()));
-//            }
-//            try {
-//                HttpClientRequest vertxHttpRequest = requestResult.result();
-//                // Map to Vertx headers
-//                request.getHeaders().stream()
-//                    .forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
-//                // Chunking if the size of request is unknown.
-//                if (request.getHeaders().get("Content-Length") == null) {
-//                    vertxHttpRequest.setChunked(true);
-//                }
-//                vertxHttpRequest.response(event -> {
-//                    if (event.succeeded()) {
-//                        HttpClientResponse vertxHttpResponse = event.result();
-//
-//                        vertxHttpAsyncResponse.set(new VertxHttpAsyncResponse(request, vertxHttpResponse));
-////                        return vertxHttpResponse.bodyHandler(buffer -> new BufferedVertxHttpResponse(request, vertxHttpResponse, buffer));
-//                    } else {
-//                        throw LOGGER.logExceptionAsError(new RuntimeException(event.cause()));
-//                    }
-//                });
-//
-//
-//                vertxHttpRequest.send();
-//
-//
-//            } catch (Exception e) {
-//                throw LOGGER.logExceptionAsError(new RuntimeException(e));
-//            }
-//        });
-//        return vertxHttpAsyncResponse.get();
     }
 }
