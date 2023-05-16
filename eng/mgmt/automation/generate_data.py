@@ -94,12 +94,13 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                 finally:
                     os.chdir(pwd)
 
-                if require_sdk_integration:
-                    set_or_default_version(sdk_root, GROUP_ID, module)
-                    update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
-                    update_root_pom(sdk_root, service)
+                if succeeded:
+                    if require_sdk_integration:
+                        set_or_default_version(sdk_root, GROUP_ID, module)
+                        update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+                        update_root_pom(sdk_root, service)
 
-                compile_package(sdk_root, GROUP_ID, module)
+                    compile_package(sdk_root, GROUP_ID, module)
 
                 artifacts = [
                     '{0}/pom.xml'.format(sdk_folder)
