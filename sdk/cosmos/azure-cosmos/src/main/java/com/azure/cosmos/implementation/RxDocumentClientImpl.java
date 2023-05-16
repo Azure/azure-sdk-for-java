@@ -2658,8 +2658,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
-                    int statusCode = ((CosmosException) throwable).getStatusCode();
-                    CosmosDiagnostics diagnostics = ((CosmosException) throwable).getDiagnostics();
+                    CosmosException cosmosException = (CosmosException) throwable;
+
+                    int statusCode = cosmosException.getStatusCode();
+                    CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
 
                     switch (statusCode) {
                         case HttpConstants.StatusCodes.NOTFOUND:
