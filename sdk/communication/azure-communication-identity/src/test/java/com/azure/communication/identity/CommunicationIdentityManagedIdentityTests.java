@@ -9,6 +9,7 @@ import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,6 +20,12 @@ import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeam
 
 public class CommunicationIdentityManagedIdentityTests extends CommunicationIdentityClientTestBase {
     private CommunicationIdentityClient client;
+
+    @BeforeEach
+    public void setup() {
+        super.setup();
+        httpClient = buildSyncAssertingClient(httpClient);
+    }
 
     @Test
     public void createIdentityClient() {
