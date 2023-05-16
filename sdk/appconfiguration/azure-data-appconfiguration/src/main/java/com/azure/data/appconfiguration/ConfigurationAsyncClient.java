@@ -42,10 +42,14 @@ import static com.azure.data.appconfiguration.implementation.Utility.toSettingFi
 import static com.azure.data.appconfiguration.implementation.Utility.validateSettingAsync;
 
 /**
- * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings}
- * in Azure App Configuration Store. Operations allowed by the client are adding, retrieving, deleting, set read-only
- * status ConfigurationSettings, and listing settings or revision of a setting based on a
- * {@link SettingSelector filter}.
+ * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings},
+ * {@link FeatureFlagConfigurationSetting FeatureFlagConfigurationSetting} or
+ * {@link SecretReferenceConfigurationSetting SecretReferenceConfigurationSetting} in Azure App Configuration Store.
+ * Operations allowed by the client are adding, retrieving, deleting, set read-only status ConfigurationSettings, and
+ * listing settings or revision of a setting based on a {@link SettingSelector filter}.
+ *
+ * Additionally, this class allows to add an external synchronization token to ensure service requests receive
+ * up-to-date values. Use the {@link #updateSyncToken(String) updateSyncToken} method.
  *
  * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
  *
@@ -59,7 +63,98 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <p>View {@link ConfigurationClientBuilder this} for additional ways to construct the client.</p>
  *
+ * <p>App Configuration support multiple operations, such as create, update, retrieve, and delete a configuration setting.
+ * See methods in client level class below to explore all capabilities that library provides.</p>
+ *
+ * <p>For more configuration setting types, see
+ * {@link com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting} and
+ * {@link com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting}.</p>
+ *
+ * <p><strong>Code Samples</strong></p>
+ *
+ * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
+ * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSetting#ConfigurationSetting -->
+ * <pre>
+ * client.addConfigurationSetting&#40;
+ *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;
+ *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
+ *         response.getKey&#40;&#41;, response.getLabel&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.appconfiguration.configurationasyncclient.addConfigurationSetting#ConfigurationSetting -->
+ *
+ * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
+ * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSetting#ConfigurationSetting -->
+ * <pre>
+ * client.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;&#41;
+ *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
+ *         response.getKey&#40;&#41;, response.getLabel&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
+ * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;
+ * client.setConfigurationSetting&#40;
+ *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;
+ *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
+ *         response.getKey&#40;&#41;, response.getLabel&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.appconfiguration.configurationasyncclient.setConfigurationSetting#ConfigurationSetting -->
+ *
+ * <p>Retrieve the setting with the key "prodDBConnection".</p>
+ * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#ConfigurationSetting -->
+ * <pre>
+ * client.getConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;&#41;
+ *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
+ *         response.getKey&#40;&#41;, response.getLabel&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.appconfiguration.configurationasyncclient.getConfigurationSetting#ConfigurationSetting -->
+ *
+ * <p>Delete the setting with the key "prodDBConnection".</p>
+ * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#ConfigurationSetting -->
+ * <pre>
+ * client.deleteConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;
+ *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
+ *         response.getKey&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.appconfiguration.configurationasyncclient.deleteConfigurationSetting#ConfigurationSetting -->
+ *
+ * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
+ * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#ConfigurationSetting-boolean -->
+ * <pre>
+ * client.setReadOnly&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;
+ *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;,
+ *         response.getKey&#40;&#41;, response.getLabel&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#ConfigurationSetting-boolean -->
+ *
+ * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
+ * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
+ * <pre>
+ * client.setReadOnly&#40;new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, false&#41;
+ *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, response.getKey&#40;&#41;, response.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.appconfiguration.configurationasyncclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
+ *
+ * <p>Retrieve/List all settings that use the key "prodDBConnection".</p>
+ * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettings -->
+ * <pre>
+ * client.listConfigurationSettings&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
+ *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+ *     .subscribe&#40;setting -&gt;
+ *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listConfigurationSettings -->
+ *
+ * <p>Retrieve/List all revisions of the setting that has the key "prodDBConnection".</p>
+ * <!-- src_embed com.azure.data.appconfiguration.configurationasyncclient.listsettingrevisions -->
+ * <pre>
+ * client.listRevisions&#40;new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;&#41;
+ *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
+ *     .subscribe&#40;setting -&gt;
+ *         System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.appconfiguration.configurationasyncclient.listsettingrevisions -->
+ *
  * @see ConfigurationClientBuilder
+ * @see ConfigurationSetting
+ * @see FeatureFlagConfigurationSetting
+ * @see SecretReferenceConfigurationSetting
  */
 @ServiceClient(builder = ConfigurationClientBuilder.class, isAsync = true,
     serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)

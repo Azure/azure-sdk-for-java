@@ -101,6 +101,24 @@
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
  *
+ * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
+ * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
+ * <pre>
+ * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
+ *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;;
+ * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
+ *
+ * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
+ * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
+ * <pre>
+ * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
+ *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, false&#41;;
+ * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
+ *
  * <p>Retrieve/List all settings that use the key "prodDBConnection".</p>
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
  * <pre>
