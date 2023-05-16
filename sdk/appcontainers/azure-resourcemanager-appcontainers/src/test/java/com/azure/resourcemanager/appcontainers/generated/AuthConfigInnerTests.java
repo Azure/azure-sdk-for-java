@@ -16,11 +16,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AuthConfigInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AuthConfigInner model =
             BinaryData
                 .fromString(
@@ -38,8 +37,8 @@ public final class AuthConfigInnerTests {
         Assertions.assertEquals(false, model.httpSettings().requireHttps());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AuthConfigInner model =
             new AuthConfigInner()
                 .withPlatform(new AuthPlatform().withEnabled(false).withRuntimeVersion("jnqglhqgnu"))

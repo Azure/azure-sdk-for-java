@@ -32,6 +32,8 @@ public class CosmosPagedFluxOptions {
     private String operationId;
     public ConsistencyLevel effectiveConsistencyLevel;
 
+    public double samplingRateSnapshot = 1;
+
     public CosmosPagedFluxOptions() {}
 
     public String getContainerId() {
@@ -210,5 +212,13 @@ public class CosmosPagedFluxOptions {
         this.effectiveConsistencyLevel = clientAccessor
             .getEffectiveConsistencyLevel(cosmosAsyncClient, operationType, consistencyLevel);
         this.thresholds = thresholds;
+    }
+
+    public double getSamplingRateSnapshot() {
+        return this.samplingRateSnapshot;
+    }
+
+    public void setSamplingRateSnapshot(double samplingRateSnapshot) {
+        this.samplingRateSnapshot = samplingRateSnapshot;
     }
 }

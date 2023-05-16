@@ -87,7 +87,7 @@ public final class UtilsImpl {
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
 
     public static final String SUPPORTED_MANIFEST_TYPES = "*/*"
-        + "," + ManifestMediaType.OCI_MANIFEST
+        + "," + ManifestMediaType.OCI_IMAGE_MANIFEST
         + "," + ManifestMediaType.DOCKER_MANIFEST
         + ",application/vnd.oci.image.index.v1+json"
         + ",application/vnd.docker.distribution.manifest.list.v2+json"
@@ -494,6 +494,14 @@ public final class UtilsImpl {
         throw LOGGER.atError()
             .addKeyValue("contentRange", contentRangeHeader)
             .log(new ServiceResponseException("Missing or invalid content-range header in response"));
+    }
+
+    public static long getContentLength(HttpHeader contentLengthHeader) {
+        if (contentLengthHeader != null && contentLengthHeader.getValue() != null) {
+            return Long.parseLong(contentLengthHeader.getValue());
+        }
+
+        throw LOGGER.logExceptionAsError(new ServiceResponseException("Content-Length header in missing in the response"));
     }
 
     /**

@@ -11,7 +11,7 @@ import io.lettuce.core.RedisClient;
 import io.lettuce.core.RedisURI;
 import io.lettuce.core.SocketOptions;
 import io.lettuce.core.api.StatefulRedisConnection;
-import io.lettuce.core.api.sync.RedisStringCommands;
+import io.lettuce.core.api.sync.RedisCommands;
 import io.lettuce.core.codec.StringCodec;
 import io.lettuce.core.protocol.ProtocolVersion;
 
@@ -27,7 +27,7 @@ public class HellloWorld {
         // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
         String token = defaultAzureCredential
             .getToken(new TokenRequestContext()
-                .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
+                .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
 
         // Build Redis URI with host and authentication details.
         // TODO: Replace Host Name with Azure Cache for Redis Host Name.
@@ -52,7 +52,7 @@ public class HellloWorld {
         StatefulRedisConnection<String, String> connection = client.connect(StringCodec.UTF8);
 
         // Create the connection, in this case we're using a sync connection, but you can create async / reactive connections as needed.
-        RedisStringCommands<String, String> sync = connection.sync();
+        RedisCommands<String, String> sync = connection.sync();
         sync.set("Az:testKey", "testVal");
         System.out.println(sync.get("Az:testKey"));
     }

@@ -12,6 +12,7 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -87,16 +88,32 @@ public class RntbdConnectionStateListener {
             return;
         }
 
+        Optional<Uri> addressUriOptional = this.addressUris.stream().findFirst();
+        Uri addressUri;
+
+        if (addressUriOptional.isPresent()) {
+            addressUri = addressUriOptional.get();
+        } else {
+            logger.debug("addressUri cannot be null...");
+            return;
+        }
+
+        // connection state listener will attempt to open a closed connection only
+        // when the endpoint / address uri is used by a container which was part of
+        // the connection warmup flow
+        if (!this.proactiveOpenConnectionsProcessor.isAddressUriUnderOpenConnectionsFlow(addressUri.getURIAsString())) {
+            return;
+        }
+
         // connection state listener submits an open connection task for an endpoint
-        // and only submits the task for that endpoint when the previous task has been
-        // completed
-        // it is okay to lose a task, since each task will attempt to attain a certain no. of
+        // and only submits the task for that endpoint if the previous task has been
+        // completed. It is okay to lose a task, since each task will attempt to attain a certain no. of
         // connection as denoted by the min required no. of connections for that endpoint
         if (this.endpointValidationInProgress.compareAndSet(false, true)) {
             Mono.fromFuture(this.proactiveOpenConnectionsProcessor.submitOpenConnectionTaskOutsideLoop(
                 "",
                 this.endpoint.serviceEndpoint(),
-                this.addressUris.stream().findFirst().get(),
+                addressUri,
                 this.endpoint.getMinChannelsRequired()
             ))
             .doFinally(signalType -> {

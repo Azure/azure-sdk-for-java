@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 
 final class DefaultMeterProvider implements MeterProvider {
     private static final MeterProvider INSTANCE = new DefaultMeterProvider();
+    private static final MetricsOptions DEFAULT_OPTIONS = new MetricsOptions();
     private static final AutoCloseable NOOP_CLOSEABLE = () -> {
     };
 
@@ -31,8 +32,10 @@ final class DefaultMeterProvider implements MeterProvider {
     public Meter createMeter(String libraryName, String libraryVersion, MetricsOptions options) {
         Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
 
-        return METER_PROVIDER.create(provider -> provider.createMeter(libraryName, libraryVersion, options),
-            NoopMeter.INSTANCE, null);
+        final MetricsOptions finalOptions = options != null ? options : DEFAULT_OPTIONS;
+
+        return METER_PROVIDER.create(provider -> provider.createMeter(libraryName, libraryVersion, finalOptions),
+            NoopMeter.INSTANCE, finalOptions.getMeterProvider());
     }
 
     static final LongGauge NOOP_GAUGE = new LongGauge() {

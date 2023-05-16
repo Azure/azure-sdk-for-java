@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.fluent.models.AuthConfigInner;
 import com.azure.resourcemanager.appcontainers.models.AuthConfigCollection;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class AuthConfigCollectionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AuthConfigCollection model =
             BinaryData
                 .fromString(
@@ -20,8 +19,8 @@ public final class AuthConfigCollectionTests {
                 .toObject(AuthConfigCollection.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AuthConfigCollection model =
             new AuthConfigCollection()
                 .withValue(Arrays.asList(new AuthConfigInner(), new AuthConfigInner(), new AuthConfigInner()));

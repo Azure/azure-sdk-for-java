@@ -49,6 +49,8 @@ eventhub:
   suffix: generated
 graphservicesprod:
   service: graphservices
+help:
+  service: selfhelp
 hybridaks:
   service: hybridcontainerservice
 keyvault:

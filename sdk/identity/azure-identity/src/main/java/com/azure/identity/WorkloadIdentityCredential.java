@@ -12,6 +12,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.ValidationUtil;
 import reactor.core.publisher.Mono;
 
@@ -54,6 +55,7 @@ import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN
 public class WorkloadIdentityCredential implements TokenCredential {
     private static final ClientLogger LOGGER = new ClientLogger(WorkloadIdentityCredential.class);
     private final IdentityClient identityClient;
+    private final IdentitySyncClient identitySyncClient;
 
     /**
      * WorkloadIdentityCredential supports Azure workload identity on Kubernetes.
@@ -82,14 +84,16 @@ public class WorkloadIdentityCredential implements TokenCredential {
             || CoreUtils.isNullOrEmpty(federatedTokenFilePathInput)
             || CoreUtils.isNullOrEmpty(clientIdInput)
             || CoreUtils.isNullOrEmpty(identityClientOptions.getAuthorityHost()))) {
-            identityClient = new IdentityClientBuilder()
+            IdentityClientBuilder builder = new IdentityClientBuilder()
                 .clientAssertionPath(federatedTokenFilePathInput)
                 .clientId(clientId)
                 .tenantId(tenantIdInput)
-                .identityClientOptions(identityClientOptions)
-                .build();
+                .identityClientOptions(identityClientOptions);
+            identityClient = builder.build();
+            identitySyncClient = builder.buildSyncClient();
         } else {
             identityClient = null;
+            identitySyncClient = null;
         }
     }
 
@@ -101,7 +105,18 @@ public class WorkloadIdentityCredential implements TokenCredential {
                 + " guide for more information."
                 + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot")));
         }
-        return identityClient.authenticateWithExchangeToken(request);
+        return identityClient.authenticateWithWorkloadIdentityConfidentialClient(request);
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        if (identitySyncClient == null) {
+            throw LOGGER.logExceptionAsError(new CredentialUnavailableException("WorkloadIdentityCredential"
+                + " authentication unavailable. The workload options are not fully configured. See the troubleshooting"
+                + " guide for more information."
+                + " https://aka.ms/azsdk/java/identity/workloadidentitycredential/troubleshoot"));
+        }
+        return identitySyncClient.authenticateWithWorkloadIdentityConfidentialClient(request);
     }
 
     String getClientId() {
