@@ -317,7 +317,7 @@ public class CosmosItemTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" })
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyWithManyNonExistentItemIds() throws Exception {
         String partitionKeyValue = UUID.randomUUID().toString();
         ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
@@ -352,7 +352,7 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
     }
 
-    @Test(groups = { "simple" })
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyWithSingleNonExistentItemId() throws Exception {
         String partitionKeyValue = UUID.randomUUID().toString();
         ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
@@ -381,7 +381,6 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults()).isNotNull();
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
     }
-
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyOptimizationRequestChargeComparisonForSingleTupleWithSmallSize() throws Exception {
