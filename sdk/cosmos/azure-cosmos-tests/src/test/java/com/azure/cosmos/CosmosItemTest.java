@@ -318,6 +318,37 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readManyWithSingleTupleWithNonExistentId() throws Exception {
+        String partitionKeyValue = UUID.randomUUID().toString();
+        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        HashSet<String> idSet = new HashSet<String>();
+        int numDocuments = 5;
+
+        CosmosItemIdentity nonExistentItemIdentity = new CosmosItemIdentity(new PartitionKey(UUID.randomUUID().toString()), UUID.randomUUID().toString());
+
+        for (int i = 0; i < numDocuments; i++) {
+            String documentId = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
+            container.createItem(document);
+
+            PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+
+            cosmosItemIdentities.add(cosmosItemIdentity);
+            idSet.add(documentId);
+        }
+
+        cosmosItemIdentities.add(nonExistentItemIdentity);
+
+        FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
+
+       // assertThat(feedResponse).isNotNull();
+       // assertThat(feedResponse.getResults()).isNotNull();
+       // assertThat(feedResponse.getResults().size()).isEqualTo(1);
+       // assertThat(idSet.contains(feedResponse.getResults().get(0).getId())).isTrue();
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyOptimizationRequestChargeComparisonForSingleTupleWithSmallSize() throws Exception {
         String idAndPkValue = UUID.randomUUID().toString();
         ObjectNode doc = getDocumentDefinition(idAndPkValue, idAndPkValue);
