@@ -29,7 +29,7 @@ stages:
           safeName: springcloudazureintegrationtests
       TimeoutInMinutes: 240
       ServiceDirectory: spring
-      TestName: Spring-IT
+      TestName: Spring_IT
       TestGoals: 'verify'
       TestOptions: '-DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-'
       MatrixFilters:
@@ -53,7 +53,7 @@ stages:
           safeName: azurespringdatacosmos
       TimeoutInMinutes: 60
       ServiceDirectory: spring
-      TestName: Spring-Data-Cosmos-IT
+      TestName: Spring_Data_Cosmos_IT
       TestGoals: 'verify'
       TestOptions: '-P integration-test-azure'
       MatrixFilters:
