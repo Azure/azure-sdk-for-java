@@ -2482,7 +2482,7 @@ public final class DigitalTwinsAsyncClient {
                 id,
                 ImportJobConverter.map(importJob),
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
+                context)
             .map(importJobResponse -> new SimpleResponse<>(
                 importJobResponse.getRequest(),
                 importJobResponse.getStatusCode(),
@@ -2545,7 +2545,7 @@ public final class DigitalTwinsAsyncClient {
             .deleteWithResponseAsync(
                 id,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE));
+                context);
     }
 
     /**
@@ -2607,7 +2607,7 @@ public final class DigitalTwinsAsyncClient {
             .cancelWithResponseAsync(
                 id,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
+                context)
             .map(importJobResponse -> new SimpleResponse<>(
                 importJobResponse.getRequest(),
                 importJobResponse.getStatusCode(),
@@ -2676,7 +2676,7 @@ public final class DigitalTwinsAsyncClient {
             .getByIdWithResponseAsync(
                 id,
                 null,
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
+                context)
             .map(importJobResponse -> new SimpleResponse<>(
                 importJobResponse.getRequest(),
                 importJobResponse.getStatusCode(),
@@ -2749,7 +2749,7 @@ public final class DigitalTwinsAsyncClient {
             .getImportJobs()
             .listSinglePageAsync(
                 OptionsConverter.toProtocolLayerOptions(options),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
+                context)
             .map(pagedImportJobFunction);
     }
 
@@ -2766,7 +2766,7 @@ public final class DigitalTwinsAsyncClient {
             .listNextSinglePageAsync(
                 nextLink,
                 OptionsConverter.toProtocolLayerOptions(options),
-                context.addData(AZ_TRACING_NAMESPACE_KEY, DIGITAL_TWINS_TRACING_NAMESPACE_VALUE))
+                context)
             .map(pagedImportJobFunction);
     }
 
