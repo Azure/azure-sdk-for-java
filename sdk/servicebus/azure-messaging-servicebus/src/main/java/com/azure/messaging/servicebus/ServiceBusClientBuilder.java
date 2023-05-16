@@ -33,6 +33,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.AzureException;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationProperty;
+import com.azure.core.util.ConfigurationPropertyBuilder;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
@@ -881,45 +883,63 @@ public final class ServiceBusClientBuilder implements
 
     // Temporary type for Builders to work with the V2-Stack. Type will be removed once migration to new v2 stack is completed.
     private static final class V2StackSupport {
-        private static final String NON_SESSION_ASYNC_RECEIVE_CONFIG_KEY = "com.azure.messaging.servicebus.nonSession.asyncReceive.v2";
-        private static final String NON_SESSION_SYNC_RECEIVE_CONFIG_KEY = "com.azure.messaging.servicebus.nonSession.syncReceive.v2";
-        private static final String SEND_MANAGE_RULES_CONFIG_KEY = "com.azure.messaging.servicebus.sendAndManageRules.v2";
-        private final AtomicReference<Boolean> nonSessionAsyncReceiveApiFlag = new AtomicReference<>();
-        private final AtomicReference<Boolean> nonSessionSyncReceiveApiFlag = new AtomicReference<>();
-        private final AtomicReference<Boolean> nonReceiveApiFlag = new AtomicReference<>();
+        private static final String NON_SESSION_ASYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.nonSession.asyncReceive.v2";
+        private static final ConfigurationProperty<Boolean> NON_SESSION_ASYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(NON_SESSION_ASYNC_RECEIVE_KEY)
+            .environmentVariableName(NON_SESSION_ASYNC_RECEIVE_KEY)
+            .defaultValue(true) // Async[Reactor|Processor]Receiver Client is on the new v2 stack by default.
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> nonSessionAsyncReceiveFlag = new AtomicReference<>();
+
+        private static final String NON_SESSION_SYNC_RECEIVE_KEY = "com.azure.messaging.servicebus.nonSession.syncReceive.v2";
+        private static final ConfigurationProperty<Boolean> NON_SESSION_SYNC_RECEIVE_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(NON_SESSION_SYNC_RECEIVE_KEY)
+            .environmentVariableName(NON_SESSION_SYNC_RECEIVE_KEY)
+            .defaultValue(false) // Sync Receiver Client is not on the new v2 stack by default.
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> nonSessionSyncReceiveFlag = new AtomicReference<>();
+
+        private static final String SEND_MANAGE_RULES_KEY = "com.azure.messaging.servicebus.sendAndManageRules.v2";
+        private static final ConfigurationProperty<Boolean> SEND_MANAGE_RULES_PROPERTY = ConfigurationPropertyBuilder.ofBoolean(SEND_MANAGE_RULES_KEY)
+            .environmentVariableName(SEND_MANAGE_RULES_KEY)
+            .defaultValue(true) // Sender and RuleManager Client is on the new v2 stack by default.
+            .shared(true)
+            .build();
+        private final AtomicReference<Boolean> sendManageFlag = new AtomicReference<>();
 
         private final Object connectionLock = new Object();
         private ReactorConnectionCache<ServiceBusReactorAmqpConnection> sharedConnectionCache;
         private final AtomicInteger openClients = new AtomicInteger();
 
         /**
-         * Non-Session Async[Reactor|Processor]Client is on the new v2 stack by default, check if it is opted-out.
+         * Non-Session Async[Reactor|Processor]Client is on the new v2 stack by default, but the application
+         * may opt out.
          *
           * @param configuration the client configuration.
-         * @return true if the v2 stack is opted-out for Non-Session Async[Reactor|Processor] receiving.
+         * @return true if the Non-Session Async[Reactor|Processor] receive should use the v2 stack.
          */
-        boolean isNonSessionAsyncReceiveApiOptedOut(Configuration configuration) {
-            return checkApiOptedOut(configuration, NON_SESSION_ASYNC_RECEIVE_CONFIG_KEY, nonSessionAsyncReceiveApiFlag);
+        boolean isNonSessionAsyncReceiveEnabled(Configuration configuration) {
+            return !isOptedOut(configuration, NON_SESSION_ASYNC_RECEIVE_PROPERTY, nonSessionAsyncReceiveFlag);
         }
 
         /**
-         * Non-Session SyncClient is not on the v1 stack by default, check if it is opted-in to the new v2 stack.
+         * Non-Session SyncClient is not on the v2 stack by default, but the application may opt into the v2 stack.
          *
          * @param configuration the client configuration.
-         * @return true if the v2 stack is opted-in for Sync receiving.
+         * @return true if Sync receive should use the v2 stack.
          */
-        boolean isNonSessionSyncReceiveApiOptedIn(Configuration configuration) {
-            return checkApiOptedIn(configuration, NON_SESSION_SYNC_RECEIVE_CONFIG_KEY, nonSessionSyncReceiveApiFlag);
+        boolean isNonSessionSyncReceiveEnabled(Configuration configuration) {
+            return isOptedIn(configuration, NON_SESSION_SYNC_RECEIVE_PROPERTY, nonSessionSyncReceiveFlag);
         }
 
         /**
-         * Sender and RuleManager Client is on the new v2 stack by default, check if it is opted-out.
+         * Sender and RuleManager Client is on the new v2 stack by default, but the application may opt out.
          *
          * @param configuration the client configuration.
-         * @return true if the v2 stack is opted-out for Sender and RuleManager.
+         * @return true if the Sender and RuleManager Client should use the v2 stack.
          */
-        boolean isSenderAndManageRulesApiOptedOut(Configuration configuration) {
-            return checkApiOptedOut(configuration, SEND_MANAGE_RULES_CONFIG_KEY, nonReceiveApiFlag);
+        boolean isSenderAndManageRulesEnabled(Configuration configuration) {
+            return !isOptedOut(configuration, SEND_MANAGE_RULES_PROPERTY, sendManageFlag);
         }
 
         // Obtain the shared connection-cache based on the V2-Stack.
@@ -965,32 +985,32 @@ public final class ServiceBusClientBuilder implements
             }
         }
 
-        private boolean checkApiOptedOut(Configuration configuration, String apiConfigKey, AtomicReference<Boolean> apiFlag) {
-            if (apiFlag.get() != null) {
-                return apiFlag.get();
-            }
-            if (configuration == null) {
-                apiFlag.set(true);
-            } else if (apiFlag.compareAndSet(null, configuration.get(apiConfigKey, true))) {
-                if (!apiFlag.get()) {
-                    final String logMessage = "{}=false If your application fails to work without explicitly setting this configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
-                    ServiceBusClientBuilder.LOGGER.info(logMessage, apiConfigKey);
+        private boolean isOptedOut(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
+                                   AtomicReference<Boolean> choiceFlag) {
+            if (choiceFlag.get() == null) {
+                if (configuration == null) {
+                    choiceFlag.set(true);
+                } else if (choiceFlag.compareAndSet(null, configuration.get(configProperty))) {
+                    if (!choiceFlag.get()) {
+                        final String logMessage = "{}=false If your application fails to work without explicitly setting this configuration to 'false', please file an urgent issue at https://github.com/Azure/azure-sdk-for-java/issues/new/choose";
+                        ServiceBusClientBuilder.LOGGER.info(logMessage, configProperty.getName());
+                    }
                 }
             }
-            final boolean isOptedOut = !apiFlag.get();
+            final boolean isOptedOut = !choiceFlag.get();
             return isOptedOut;
         }
 
-        private boolean checkApiOptedIn(Configuration configuration, String apiConfigKey, AtomicReference<Boolean> apiFlag) {
-            if (apiFlag.get() != null) {
-                return apiFlag.get();
+        private boolean isOptedIn(Configuration configuration, ConfigurationProperty<Boolean> configProperty,
+                                  AtomicReference<Boolean> choiceFlag) {
+            if (choiceFlag.get() == null) {
+                if (configuration == null) {
+                    choiceFlag.set(false);
+                } else {
+                    choiceFlag.compareAndSet(null, configuration.get(configProperty));
+                }
             }
-            if (configuration == null) {
-                apiFlag.set(false);
-            } else {
-                apiFlag.compareAndSet(null, configuration.get(apiConfigKey, false));
-            }
-            final boolean isOptedIn = apiFlag.get();
+            final boolean isOptedIn = choiceFlag.get();
             return isOptedIn;
         }
 
@@ -1074,7 +1094,7 @@ public final class ServiceBusClientBuilder implements
         public ServiceBusSenderAsyncClient buildAsyncClient() {
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
-            final boolean isSenderOnV2 = !v2StackSupport.isSenderAndManageRulesApiOptedOut(configuration);
+            final boolean isSenderOnV2 = v2StackSupport.isSenderAndManageRulesEnabled(configuration);
             if (isSenderOnV2) {
                 // Sender Client (async|sync) on the V2-Stack.
                 connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
@@ -1979,7 +1999,7 @@ public final class ServiceBusClientBuilder implements
          *     callbacks are not set.
          */
         public ServiceBusProcessorClient buildProcessorClient() {
-            final boolean nonSessionProcessorV2 = !v2StackSupport.isNonSessionAsyncReceiveApiOptedOut(configuration);
+            final boolean nonSessionProcessorV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
             processorClientOptions.setNonSessionProcessorV2(nonSessionProcessorV2);
             // Build the Processor Client for Non-session receiving.
             return new ServiceBusProcessorClient(serviceBusReceiverClientBuilder,
@@ -2188,7 +2208,7 @@ public final class ServiceBusClientBuilder implements
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
             if (syncConsumer) {
-                final boolean syncReceiveOnV2 = v2StackSupport.isNonSessionSyncReceiveApiOptedIn(configuration);
+                final boolean syncReceiveOnV2 = v2StackSupport.isNonSessionSyncReceiveEnabled(configuration);
                 if (syncReceiveOnV2) {
                     // "Non-Session" Sync Receiver-Client on the V2-Stack.
                     connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
@@ -2198,7 +2218,7 @@ public final class ServiceBusClientBuilder implements
                     onClientClose = ServiceBusClientBuilder.this::onClientClose;
                 }
             } else {
-                final boolean asyncReceiveOnV2 = !v2StackSupport.isNonSessionAsyncReceiveApiOptedOut(configuration);
+                final boolean asyncReceiveOnV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
                 if (asyncReceiveOnV2) {
                     // "Non-Session" Async[Reactor|Processor] Receiver-Client on the V2-Stack.
                     connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
@@ -2282,7 +2302,7 @@ public final class ServiceBusClientBuilder implements
                 null);
             final ConnectionCacheWrapper connectionCacheWrapper;
             final Runnable onClientClose;
-            final boolean isManageRulesOnV2 = !v2StackSupport.isSenderAndManageRulesApiOptedOut(configuration);
+            final boolean isManageRulesOnV2 = v2StackSupport.isSenderAndManageRulesEnabled(configuration);
             if (isManageRulesOnV2) {
                 // RuleManager Client (async|sync) on the V2-Stack.
                 connectionCacheWrapper = new ConnectionCacheWrapper(getOrCreateConnectionCache(messageSerializer));
