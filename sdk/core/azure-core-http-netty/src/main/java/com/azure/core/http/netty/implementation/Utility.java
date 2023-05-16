@@ -64,11 +64,15 @@ public final class Utility {
             return 32768; // 32KB
         }
 
+        // The value returned here requires fine-tuning as these size could result in the memory being allocated inside
+        // or outside TLAB, where outside TLAB allocations are much slower. But this also needs to walk a fine middle
+        // ground on being large enough to reduce the number of file writing calls being made.
+        //
+        // For very large files it may be better to have outside TLAB allocations to reduce the number of overall writes
+        // required to fully write the file.
         if (bodySize > 1024 * 1024 * 1024) { // 1GB+
-            return 262144; // 256KB
-        } else if (bodySize > 100 * 1024 * 1024) { // 100MB+
             return 131072; // 128KB
-        } else if (bodySize > 10 * 1024 * 1024) { // 10MB+
+        } else if (bodySize > 100 * 1024 * 1024) { // 100MB+
             return 65536; // 64KB
         } else {
             return 32768; // 32KB
