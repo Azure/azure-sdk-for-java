@@ -317,8 +317,43 @@ public class CosmosItemTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = TIMEOUT)
-    public void readManyWithNonExistentIds() throws Exception {
+    @Test(groups = { "simple" })
+    public void readManyWithSingleNonExistentItemId() throws Exception {
+        String partitionKeyValue = UUID.randomUUID().toString();
+        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        ArrayList<CosmosItemIdentity> nonExistentCosmosItemIdentities = new ArrayList<>();
+        HashSet<String> idSet = new HashSet<String>();
+        int numDocuments = 5;
+        int numNonExistentDocuments = 5;
+
+        for (int i = 0; i < numNonExistentDocuments; i++) {
+            CosmosItemIdentity nonExistentItemIdentity = new CosmosItemIdentity(new PartitionKey(UUID.randomUUID().toString()), UUID.randomUUID().toString());
+            nonExistentCosmosItemIdentities.add(nonExistentItemIdentity);
+        }
+
+        for (int i = 0; i < numDocuments; i++) {
+            String documentId = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
+            container.createItem(document);
+
+            PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+
+            cosmosItemIdentities.add(cosmosItemIdentity);
+            idSet.add(documentId);
+        }
+
+        cosmosItemIdentities.addAll(nonExistentCosmosItemIdentities);
+
+        FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
+
+        assertThat(feedResponse).isNotNull();
+        assertThat(feedResponse.getResults()).isNotNull();
+        assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
+    }
+
+    @Test(groups = { "simple" })
+    public void readManyWithManyNonExistentItemIds() throws Exception {
         String partitionKeyValue = UUID.randomUUID().toString();
         ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         HashSet<String> idSet = new HashSet<String>();
@@ -346,6 +381,7 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults()).isNotNull();
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
     }
+
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyOptimizationRequestChargeComparisonForSingleTupleWithSmallSize() throws Exception {
