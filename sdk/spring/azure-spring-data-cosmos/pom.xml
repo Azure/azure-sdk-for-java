@@ -25,16 +25,26 @@
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       <!-- Azure Spring Data Cosmos tests need this -->
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos=ALL-UNNAMED,spring.core,com.fasterxml.jackson.databind
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.common=spring.core
-      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core=ALL-UNNAMED
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core=ALL-UNNAMED,spring.core
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.convert=com.fasterxml.jackson.databind
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.converter=ALL-UNNAMED
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.mapping=spring.core
-      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository=ALL-UNNAMED
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.core.mapping.event=spring.core,spring.beans
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository=ALL-UNNAMED,spring.core
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository.integration=ALL-UNNAMED,spring.core
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository.query=ALL-UNNAMED
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.repository.support=ALL-UNNAMED,spring.core
       --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain=com.fasterxml.jackson.databind,spring.core,spring.data.commons
+      --add-opens com.azure.spring.data.cosmos/com.azure.spring.data.cosmos.domain.inheritance=com.fasterxml.jackson.databind,spring.core,spring.data.commons
+      --add-opens com.fasterxml.jackson.databind/com.fasterxml.jackson.databind=spring.core
     </javaModulesSurefireArgLine>
+    <azure.test.resourcegroup>azure-spring-data-cosmos-test</azure.test.resourcegroup>
+    <azure.test.dbname>testdb-${maven.build.timestamp}</azure.test.dbname>
+    <skip.integration.tests>true</skip.integration.tests>
+    <test.on.azure>false</test.on.azure>
+    <test.on.emualator>false</test.on.emualator>
   </properties>
 
   <dependencies>
@@ -171,6 +181,18 @@
       <artifactId>slf4j-api</artifactId>
       <version>2.0.7</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
+    <dependency>
+      <groupId>org.junit.vintage</groupId>
+      <artifactId>junit-vintage-engine</artifactId>
+      <version>5.9.1</version> <!-- {x-version-update;org.junit.vintage:junit-vintage-engine;external_dependency} -->
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>org.hamcrest</groupId>
+          <artifactId>hamcrest-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
   </dependencies>
 
   <build>
@@ -219,6 +241,97 @@
           </additionalDependencies>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-failsafe-plugin</artifactId>
+        <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+        <configuration>
+          <systemPropertiesFile>src/test/resources/application.properties</systemPropertiesFile>
+          <skipITs>${skip.integration.tests}</skipITs>
+        </configuration>
+        <executions>
+          <execution>
+            <id>integration-test</id>
+            <goals>
+              <goal>integration-test</goal>
+              <goal>verify</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <!-- unit test -->
+      <id>unit</id>
+      <properties>
+        <env>default</env>
+        <test.groups>unit</test.groups>
+      </properties>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
+    <profile>
+      <id>integration-test-azure</id>
+      <properties>
+        <build.profile.id>integration-test-azure</build.profile.id>
+        <skip.integration.tests>false</skip.integration.tests>
+        <test.on.azure>true</test.on.azure>
+        <test.on.emulator>false</test.on.emulator>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <configuration>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>integration-test-emulator</id>
+      <properties>
+        <build.profile.id>integration-test-emulator</build.profile.id>
+        <skip.integration.tests>false</skip.integration.tests>
+        <test.on.azure>false</test.on.azure>
+        <test.on.emulator>true</test.on.emulator>
+      </properties>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <configuration>
+              <excludes>
+                <!--Excluding PageablePersonRepositoryIT test class, as it creates large documents which are not suitable for emulator-->
+                <exclude>**/PageablePersonRepositoryIT.java</exclude>
+                <!--Excluding PersonCrossPartitionIT test class, as it creates large containers which are not suitable for emulator-->
+                <exclude>**/PersonCrossPartitionIT.java</exclude>
+              </excludes>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

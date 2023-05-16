@@ -9,11 +9,12 @@ import com.azure.spring.data.cosmos.core.mapping.PartitionKey;
 import org.springframework.data.annotation.Version;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Container()
 @CosmosIndexingPolicy()
-public class Person implements IPerson {
+public class Person {
     private String id;
     private String firstName;
 
@@ -21,6 +22,8 @@ public class Person implements IPerson {
     private String lastName;
     private List<String> hobbies;
     private List<Address> shippingAddresses;
+    private Integer age;
+    private Map<String, String> passportIdsByCountry;
     @Version
     private String _etag;
 
@@ -30,6 +33,17 @@ public class Person implements IPerson {
         this.lastName = lastName;
         this.hobbies = hobbies;
         this.shippingAddresses = shippingAddresses;
+    }
+
+    public Person(String id, String firstName, String lastName, List<String> hobbies, List<Address> shippingAddresses,
+                  Integer age, Map<String, String> passportIDsByCountry) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.hobbies = hobbies;
+        this.shippingAddresses = shippingAddresses;
+        this.age = age;
+        this.passportIdsByCountry = passportIDsByCountry;
     }
 
     public Person() {
@@ -83,6 +97,22 @@ public class Person implements IPerson {
         this._etag = _etag;
     }
 
+    public Integer getAge() {
+        return this.age;
+    }
+
+    public void setAge(Integer age) {
+        this.age = age;
+    }
+
+    public Map<String, String> getPassportIdsByCountry() {
+        return passportIdsByCountry;
+    }
+
+    public void setPassportIdsByCountry(Map<String, String> passportIdsByCountry) {
+        this.passportIdsByCountry = passportIdsByCountry;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -96,12 +126,14 @@ public class Person implements IPerson {
             && Objects.equals(firstName, person.firstName)
             && Objects.equals(lastName, person.lastName)
             && Objects.equals(hobbies, person.hobbies)
-            && Objects.equals(shippingAddresses, person.shippingAddresses);
+            && Objects.equals(shippingAddresses, person.shippingAddresses)
+            && Objects.equals(age, person.age)
+            && Objects.equals(passportIdsByCountry, person.passportIdsByCountry);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, firstName, lastName, hobbies, shippingAddresses);
+        return Objects.hash(id, firstName, lastName, hobbies, shippingAddresses, age, passportIdsByCountry);
     }
 
     @Override
@@ -116,10 +148,14 @@ public class Person implements IPerson {
             + ", lastName='"
             + lastName
             + '\''
+            + ", age="
+            + age
             + ", hobbies="
             + hobbies
             + ", shippingAddresses="
             + shippingAddresses
+            + ", passportIdsByCountry="
+            + passportIdsByCountry
             + ", _etag='"
             + _etag
             + '\''
