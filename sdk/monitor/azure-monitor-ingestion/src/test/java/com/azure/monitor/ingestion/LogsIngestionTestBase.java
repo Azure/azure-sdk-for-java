@@ -3,7 +3,6 @@
 
 package com.azure.monitor.ingestion;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
@@ -16,12 +15,13 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
 import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JsonSerializerProviders;
 import com.azure.core.util.serializer.TypeReference;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -66,27 +67,20 @@ public abstract class LogsIngestionTestBase extends TestProxyTestBase {
                 }
             }));
         if (getTestMode() == TestMode.PLAYBACK) {
+            interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher()));
             clientBuilder
                 .credential(new MockTokenCredential())
                 .httpClient(interceptorManager.getPlaybackClient());
         } else if (getTestMode() == TestMode.RECORD) {
             clientBuilder
                 .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(getCredential());
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(getCredential());
+            clientBuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
         this.clientBuilder = clientBuilder
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .endpoint(dataCollectionEndpoint);
-    }
-
-    protected TokenCredential getCredential() {
-        return new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_ID))
-            .clientSecret(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_CLIENT_SECRET))
-            .tenantId(Configuration.getGlobalConfiguration().get(Configuration.PROPERTY_AZURE_TENANT_ID))
-            .build();
     }
 
     public class BatchCountPolicy implements HttpPipelinePolicy {
