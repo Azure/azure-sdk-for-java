@@ -39,14 +39,15 @@
     "accountName": "[toLower(parameters('baseName'))]",
     "newAccountName": "[toLower(concat(parameters('baseName'), '2'))]",
     "resourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('accountName'))]",
-    "newResourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('newAccountName'))]"
+    "newResourceId": "[resourceId('Microsoft.DocumentDB/databaseAccounts', variables('newAccountName'))]",
+    "location": "[resourceGroup().location]"
   },
   "resources": [
     {
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('accountName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('location')]",
       "kind": "GlobalDocumentDB",
       "properties": {
         "publicNetworkAccess": "Enabled",
@@ -80,7 +81,7 @@
       "type": "Microsoft.DocumentDB/databaseAccounts",
       "apiVersion": "[variables('apiVersion')]",
       "name": "[variables('newAccountName')]",
-      "location": "[resourceGroup().location]",
+      "location": "[variables('location')]",
       "kind": "GlobalDocumentDB",
       "properties": {
         "publicNetworkAccess": "Enabled",
@@ -98,7 +99,14 @@
           "maxIntervalInSeconds": 5,
           "maxStalenessPrefix": 100
         },
-        "locations": "[variables('locationsConfiguration')]",
+        "locations": [
+          {
+            "locationName": "[variables('location')]",
+            "provisioningState": "Succeeded",
+            "failoverPriority": 0,
+            "isZoneRedundant": false
+          }
+        ],
         "capabilities": [],
         "ipRules": []
       }

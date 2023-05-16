@@ -27,6 +27,9 @@ parameters:
 - name: UseEsrpRelease
   type: boolean
   default: true
+- name: MatrixFilters
+  type: object
+  default: []
 
 variables:
   - template: /eng/pipelines/templates/variables/globals.yml
@@ -54,6 +57,8 @@ stages:
             NonSparseParameters: Agent
             GenerateVMJobs: true
         MatrixFilters:
+          - ${{ each filter in parameters.MatrixFilters }}:
+            - ${{ filter }}
           - TestFromSource=^$|false
         MatrixReplace:
           - AZURE_TEST.*=.*/
