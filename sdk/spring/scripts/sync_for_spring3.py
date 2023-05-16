@@ -107,9 +107,14 @@ def three_way_merge(ver_local, ver_remote, ver_sb3_managed):
         local_missing_set.sort()
         len_ver, len_id = cal_len_for_logging_format(local_missing_set, ver_sb3_managed, ver_remote)
         for k in local_missing_set:
-            log.warn("Entry existing in remote but not local found for [{:<{}}], remote version is [{:<{}}], the sb3 managed version is [{:<{}}]"
-                     .format(k, len_id, ver_remote[k], len_ver, ver_sb3_managed.get(k, 'N/A'), len_ver))
-        log.warn("")
+            v_remote = ver_remote[k]
+            v_sb3 = ver_sb3_managed.get(k, 'N/A')
+            if v_sb3 != 'N/A' and v_remote == v_sb3:
+                resolve_dict[k] = v_remote
+            else:
+                log.warn("Entry existing in remote but not local found for [{:<{}}], remote version is [{:<{}}], the sb3 managed version is [{:<{}}]"
+                         .format(k, len_id, ver_remote[k], len_ver, ver_sb3_managed.get(k, 'N/A'), len_ver))
+                log.warn("")
     for k in remote_missing_set:
         remote_missing_set.sort()
         len_ver, len_id = cal_len_for_logging_format(remote_missing_set, ver_local, ver_remote)
