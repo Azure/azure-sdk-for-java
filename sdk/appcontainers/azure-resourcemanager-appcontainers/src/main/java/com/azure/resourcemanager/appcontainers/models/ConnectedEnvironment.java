@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -348,4 +349,34 @@ public interface ConnectedEnvironment {
      * @return the refreshed resource.
      */
     ConnectedEnvironment refresh(Context context);
+
+    /**
+     * Checks the resource connectedEnvironmentName availability.
+     *
+     * <p>Checks if resource connectedEnvironmentName is available.
+     *
+     * @param checkNameAvailabilityRequest The check connectedEnvironmentName availability request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result along with {@link Response}.
+     */
+    Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context);
+
+    /**
+     * Checks the resource connectedEnvironmentName availability.
+     *
+     * <p>Checks if resource connectedEnvironmentName is available.
+     *
+     * @param checkNameAvailabilityRequest The check connectedEnvironmentName availability request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result.
+     */
+    CheckNameAvailabilityResponse checkNameAvailability(CheckNameAvailabilityRequest checkNameAvailabilityRequest);
 }

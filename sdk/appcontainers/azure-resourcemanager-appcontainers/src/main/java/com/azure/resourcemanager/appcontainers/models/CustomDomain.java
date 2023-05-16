@@ -26,7 +26,7 @@ public final class CustomDomain {
     /*
      * Resource Id of the Certificate to be bound to this hostname. Must exist in the Managed Environment.
      */
-    @JsonProperty(value = "certificateId", required = true)
+    @JsonProperty(value = "certificateId")
     private String certificateId;
 
     /** Creates an instance of CustomDomain class. */
@@ -105,11 +105,6 @@ public final class CustomDomain {
             throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model CustomDomain"));
-        }
-        if (certificateId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property certificateId in model CustomDomain"));
         }
     }
 

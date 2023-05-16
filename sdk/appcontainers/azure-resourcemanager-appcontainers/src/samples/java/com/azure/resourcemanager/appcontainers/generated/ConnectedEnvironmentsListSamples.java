@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ConnectedEnvironments List. */
 public final class ConnectedEnvironmentsListSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ConnectedEnvironments_ListBySubscription.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironments_ListBySubscription.json
      */
     /**
      * Sample code: List connected environments by subscription.
@@ -18,6 +16,6 @@ public final class ConnectedEnvironmentsListSamples {
      */
     public static void listConnectedEnvironmentsBySubscription(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.connectedEnvironments().list(Context.NONE);
+        manager.connectedEnvironments().list(com.azure.core.util.Context.NONE);
     }
 }
