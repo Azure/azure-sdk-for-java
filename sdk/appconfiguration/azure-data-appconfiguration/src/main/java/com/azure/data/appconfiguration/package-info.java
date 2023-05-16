@@ -30,6 +30,7 @@
  * <p>The following code sample demonstrates the creation of a {@link com.azure.data.appconfiguration.ConfigurationAsyncClient},
  * using the {@link com.azure.data.appconfiguration.ConfigurationClientBuilder} to configure it with a connection
  * string.</p>
+ *
  * <!-- src_embed com.azure.data.applicationconfig.async.configurationclient.instantiation  -->
  * <pre>
  * ConfigurationAsyncClient configurationAsyncClient = new ConfigurationClientBuilder&#40;&#41;
@@ -43,6 +44,7 @@
  * <p>The following code sample demonstrates the creation of a {@link com.azure.data.appconfiguration.ConfigurationClient},
  * using the {@link com.azure.data.appconfiguration.ConfigurationClientBuilder} to configure it with a connection
  * string.</p>
+ *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.instantiation -->
  * <pre>
  * ConfigurationClient configurationClient = new ConfigurationClientBuilder&#40;&#41;
@@ -60,7 +62,10 @@
  *
  * <p><strong>Code Samples</strong></p>
  *
- * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
+ * <h2>Add Confiiguration Setting</h2>
+ *
+ * <p>The sample below shows how to add a setting with the key "prodDBConnection", label "westUS" and value "db_connection" using {@link com.azure.data.appconfiguration.ConfigurationClient}.</p>
+ *
  * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
  * <pre>
  * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;
@@ -69,7 +74,14 @@
  * </pre>
  * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
  *
- * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Update Confiiguration Setting</h2>
+ *
+ * <p> The sample below shows how to update setting's value "db_connection" to "updated_db_connection"</p>
+ *
  * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
  * <pre>
  * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;
@@ -83,7 +95,14 @@
  * </pre>
  * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
  *
- * <p>Retrieve the setting with the key "prodDBConnection".</p>
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get Confiiguration Setting</h2>
+ * 
+ * <p>The sample below shows how to retrieve the setting with the key "prodDBConnection".</p>
+ *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
  * <pre>
  * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;
@@ -92,7 +111,14 @@
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
  *
- * <p>Delete the setting with the key "prodDBConnection".</p>
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get Confiiguration Setting</h2>
+ *
+ * <p>The sample below shows how to delete the setting with the key "prodDBConnection".</p>
+ *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
  * <pre>
  * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;
@@ -101,25 +127,13 @@
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
  *
- * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
- * <pre>
- * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;;
- * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
+ * <br/>
  *
- * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
- * <pre>
- * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, false&#41;;
- * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
+ * <hr/>
  *
- * <p>Retrieve/List all settings that use the key "prodDBConnection".</p>
+ * <h2>List Confiiguration Settings</h2>
+ *
+ * <p>The sample below shows how to retrieve/List all settings that use the key "prodDBConnection".</p>
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
  * <pre>
  * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
@@ -128,20 +142,6 @@
  * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
- *
- * <p>Retrieve/List all revisions of the setting that has the key "prodDBConnection".</p>
- * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
- * <pre>
- * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
- * configurationClient.listRevisions&#40;settingSelector&#41;.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
- *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
- *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
- *     resp.getItems&#40;&#41;.forEach&#40;value -&gt; &#123;
- *         System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;;
- *     &#125;&#41;;
- * &#125;&#41;;
- * </pre>
- * <!-- end com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
  *
  * @see com.azure.data.appconfiguration.models.ConfigurationSetting
  * @see com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting
