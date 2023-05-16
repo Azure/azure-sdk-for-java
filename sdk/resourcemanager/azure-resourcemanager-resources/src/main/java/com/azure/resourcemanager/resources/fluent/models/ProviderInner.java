@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.resources.models.ProviderAuthorizationConsentState;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -41,6 +42,12 @@ public final class ProviderInner {
      */
     @JsonProperty(value = "resourceTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<ProviderResourceType> resourceTypes;
+
+    /*
+     * The provider authorization consent state.
+     */
+    @JsonProperty(value = "providerAuthorizationConsentState")
+    private ProviderAuthorizationConsentState providerAuthorizationConsentState;
 
     /** Creates an instance of ProviderInner class. */
     public ProviderInner() {
@@ -100,6 +107,27 @@ public final class ProviderInner {
      */
     public List<ProviderResourceType> resourceTypes() {
         return this.resourceTypes;
+    }
+
+    /**
+     * Get the providerAuthorizationConsentState property: The provider authorization consent state.
+     *
+     * @return the providerAuthorizationConsentState value.
+     */
+    public ProviderAuthorizationConsentState providerAuthorizationConsentState() {
+        return this.providerAuthorizationConsentState;
+    }
+
+    /**
+     * Set the providerAuthorizationConsentState property: The provider authorization consent state.
+     *
+     * @param providerAuthorizationConsentState the providerAuthorizationConsentState value to set.
+     * @return the ProviderInner object itself.
+     */
+    public ProviderInner withProviderAuthorizationConsentState(
+        ProviderAuthorizationConsentState providerAuthorizationConsentState) {
+        this.providerAuthorizationConsentState = providerAuthorizationConsentState;
+        return this;
     }
 
     /**

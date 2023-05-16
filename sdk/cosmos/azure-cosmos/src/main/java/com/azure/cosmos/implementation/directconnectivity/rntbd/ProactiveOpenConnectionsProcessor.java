@@ -26,6 +26,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +45,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final ReentrantReadWriteLock.WriteLock endpointsUnderMonitorMapWriteLock;
     private final ReentrantReadWriteLock.ReadLock endpointsUnderMonitorMapReadLock;
     private final Set<String> containersUnderOpenConnectionAndInitCaches;
+    private final Map<String, Set<String>> collectionRidsAndUrisUnderOpenConnectionAndInitCaches;
+    private final Set<String> addressUrisUnderOpenConnectionsAndInitCaches;
     private final Object containersUnderOpenConnectionAndInitCachesLock;
     private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
     private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
@@ -65,6 +68,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.endpointProvider = endpointProvider;
         this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
         this.containersUnderOpenConnectionAndInitCaches = ConcurrentHashMap.newKeySet();
+        this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches = new ConcurrentHashMap<>();
+        this.addressUrisUnderOpenConnectionsAndInitCaches = ConcurrentHashMap.newKeySet();
         this.containersUnderOpenConnectionAndInitCachesLock = new Object();
 
         concurrencySettings.put(
@@ -200,8 +205,31 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             }
         }
     }
+    
+    public void recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(String collectionRid, List<String> addressUrisAsString) {
+        this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.compute(collectionRid, (ignore, urisAsString) -> {
 
-    public Disposable getBackgroundOpenConnectionsPublisher() {
+            if (urisAsString == null) {
+                urisAsString = new HashSet<>(addressUrisAsString);
+            } else {
+                urisAsString.addAll(addressUrisAsString);
+            }
+
+            this.addressUrisUnderOpenConnectionsAndInitCaches.addAll(addressUrisAsString);
+
+            return urisAsString;
+        });
+    }
+
+    public boolean isAddressUriUnderOpenConnectionsFlow(String addressUriAsString) {
+        return this.addressUrisUnderOpenConnectionsAndInitCaches.contains(addressUriAsString);
+    }
+
+    public boolean isCollectionRidUnderOpenConnectionsFlow(String collectionRid) {
+        return this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.containsKey(collectionRid);
+    }
+
+    private Disposable getBackgroundOpenConnectionsPublisher() {
 
         ConcurrencyConfiguration concurrencyConfiguration = concurrencySettings.get(aggressivenessHint.get());
 

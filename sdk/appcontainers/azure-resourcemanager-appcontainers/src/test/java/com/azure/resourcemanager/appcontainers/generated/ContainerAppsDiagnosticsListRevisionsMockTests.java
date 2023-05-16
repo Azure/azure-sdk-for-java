@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Revision;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class ContainerAppsDiagnosticsListRevisionsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-09-23T09:27:28Z\",\"lastActiveTime\":\"2021-02-12T07:54:43Z\",\"fqdn\":\"pxiwf\",\"template\":{\"revisionSuffix\":\"jsa\",\"initContainers\":[],\"containers\":[],\"volumes\":[]},\"active\":true,\"replicas\":1850415836,\"trafficWeight\":337037006,\"provisioningError\":\"viirhgfgrws\",\"healthState\":\"Unhealthy\",\"provisioningState\":\"Provisioning\"},\"id\":\"zvzbglbyv\",\"name\":\"ctctbrxkjz\",\"type\":\"rgxffmshkw\"}]}";
+            "{\"value\":[{\"properties\":{\"createdTime\":\"2021-03-23T05:18:45Z\",\"lastActiveTime\":\"2021-11-13T01:29:14Z\",\"fqdn\":\"xwc\",\"template\":{\"revisionSuffix\":\"ikytwvczcswka\",\"initContainers\":[],\"containers\":[],\"volumes\":[]},\"active\":true,\"replicas\":1982138435,\"trafficWeight\":1835258535,\"provisioningError\":\"wrnfxtgdd\",\"healthState\":\"Healthy\",\"provisioningState\":\"Provisioning\"},\"id\":\"n\",\"name\":\"naoyank\",\"type\":\"oe\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +60,8 @@ public final class ContainerAppsDiagnosticsListRevisionsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Revision> response =
-            manager.containerAppsDiagnostics().listRevisions("xuckpggqoweyir", "hlisngw", "lqqmpiz", Context.NONE);
+            manager
+                .containerAppsDiagnostics()
+                .listRevisions("o", "gkkumuikjcj", "aztb", com.azure.core.util.Context.NONE);
     }
 }

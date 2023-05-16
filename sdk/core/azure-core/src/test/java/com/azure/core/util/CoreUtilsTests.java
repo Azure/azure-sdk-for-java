@@ -24,6 +24,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
@@ -55,7 +57,7 @@ public class CoreUtilsTests {
     @Test
     public void findFirstOfTypeWithOneOfType() {
         int expected = 1;
-        Object[] args = { "string", expected };
+        Object[] args = {"string", expected};
         Integer actual = CoreUtils.findFirstOfType(args, Integer.class);
         Assertions.assertEquals(expected, actual);
     }
@@ -63,14 +65,14 @@ public class CoreUtilsTests {
     @Test
     public void findFirstOfTypeWithMultipleOfType() {
         int expected = 1;
-        Object[] args = { "string", expected, 10 };
+        Object[] args = {"string", expected, 10};
         Integer actual = CoreUtils.findFirstOfType(args, Integer.class);
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
     public void findFirstOfTypeWithNoneOfType() {
-        Object[] args = { "string", "anotherString" };
+        Object[] args = {"string", "anotherString"};
         assertNull(CoreUtils.findFirstOfType(args, Integer.class));
     }
 
@@ -99,7 +101,7 @@ public class CoreUtilsTests {
         return Stream.of(
             Arguments.of(null, null),
             Arguments.of(new int[0], new int[0]),
-            Arguments.of(new int[] { 1, 2, 3}, new int[] { 1, 2, 3})
+            Arguments.of(new int[]{1, 2, 3}, new int[]{1, 2, 3})
         );
     }
 
@@ -113,7 +115,7 @@ public class CoreUtilsTests {
         return Stream.of(
             Arguments.of(null, null),
             Arguments.of(new String[0], new String[0]),
-            Arguments.of(new String[] { "1", "2", "3"}, new String[] { "1", "2", "3" })
+            Arguments.of(new String[]{"1", "2", "3"}, new String[]{"1", "2", "3"})
         );
     }
 
@@ -143,9 +145,9 @@ public class CoreUtilsTests {
         return Stream.of(
             Arguments.of(null, null, null),
             Arguments.of(new String[0], toStringFunction, null),
-            Arguments.of(new String[] { "" }, toStringFunction, ""),
-            Arguments.of(new String[] { "Hello world!" }, toStringFunction, "Hello world!"),
-            Arguments.of(new String[] { "1", "2", "3" }, toStringFunction, "1,2,3")
+            Arguments.of(new String[]{""}, toStringFunction, ""),
+            Arguments.of(new String[]{"Hello world!"}, toStringFunction, "Hello world!"),
+            Arguments.of(new String[]{"1", "2", "3"}, toStringFunction, "1,2,3")
         );
     }
 
@@ -400,7 +402,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "key=value", "?key=value" })
+    @ValueSource(strings = {"key=value", "?key=value"})
     public void parseSimpleQueryParameter(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -409,7 +411,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "key=", "?key=" })
+    @ValueSource(strings = {"key=", "?key="})
     public void parseSimpleEmptyValueQueryParameter(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -418,7 +420,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "key", "?key" })
+    @ValueSource(strings = {"key", "?key"})
     public void parseSimpleKeyOnlyQueryParameter(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -427,7 +429,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "key=value&key2=", "key=value&key2", "?key=value&key2=", "?key=value&key2" })
+    @ValueSource(strings = {"key=value&key2=", "key=value&key2", "?key=value&key2=", "?key=value&key2"})
     public void parseQueryParameterLastParameterEmpty(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -437,7 +439,7 @@ public class CoreUtilsTests {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = { "key=&key2=value2", "key&key2=value2", "?key=&key2=value2", "?key&key2=value2" })
+    @ValueSource(strings = {"key=&key2=value2", "key&key2=value2", "?key=&key2=value2", "?key&key2=value2"})
     public void parseQueryParameterFirstParameterEmpty(String queryParameters) {
         Iterator<Map.Entry<String, String>> iterator = CoreUtils.parseQueryParameters(queryParameters);
 
@@ -458,5 +460,40 @@ public class CoreUtilsTests {
         assertEquals(new AbstractMap.SimpleImmutableEntry<>("key2", ""), iterator.next());
         assertEquals(new AbstractMap.SimpleImmutableEntry<>("key3", "value3"), iterator.next());
         assertFalse(iterator.hasNext());
+    }
+
+    @Test
+    public void randomUuidIsCorrectlyType4() {
+        long msb = ThreadLocalRandom.current().nextLong();
+        long lsb = ThreadLocalRandom.current().nextLong();
+
+        byte[] bytes = new byte[16];
+
+        long msbToBytes = msb;
+        long lsbToBytes = lsb;
+        for (int i = 15; i >= 8; i--) {
+            bytes[i] = (byte) (lsbToBytes & 0xff);
+            lsbToBytes >>= 8;
+        }
+        for (int i = 7; i >= 0; i--) {
+            bytes[i] = (byte) (msbToBytes & 0xff);
+            msbToBytes >>= 8;
+        }
+
+        // Generate type 4 UUID using Java's built-in handling.
+        bytes[6] &= 0x0f;  /* clear version        */
+        bytes[6] |= 0x40;  /* set to version 4     */
+        bytes[8] &= 0x3f;  /* clear variant        */
+        bytes[8] |= 0x80;  /* set to IETF variant  */
+        long msbForJava = 0;
+        long lsbForJava = 0;
+        for (int i = 0; i < 8; i++) {
+            msbForJava = (msbForJava << 8) | (bytes[i] & 0xff);
+        }
+        for (int i = 8; i < 16; i++) {
+            lsbForJava = (lsbForJava << 8) | (bytes[i] & 0xff);
+        }
+
+        assertEquals(new UUID(msbForJava, lsbForJava), CoreUtils.randomUuid(msb, lsb));
     }
 }

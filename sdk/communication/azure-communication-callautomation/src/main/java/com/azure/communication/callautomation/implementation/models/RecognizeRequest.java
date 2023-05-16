@@ -23,7 +23,8 @@ public final class RecognizeRequest {
     private PlaySourceInternal playPrompt;
 
     /*
-     * If set recognize can barge into other existing queued-up/currently-processing requests.
+     * If set recognize can barge into other existing
+     * queued-up/currently-processing requests.
      */
     @JsonProperty(value = "interruptCallMediaOperation")
     private Boolean interruptCallMediaOperation;
@@ -39,9 +40,6 @@ public final class RecognizeRequest {
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
-
-    /** Creates an instance of RecognizeRequest class. */
-    public RecognizeRequest() {}
 
     /**
      * Get the recognizeInputType property: Determines the type of the recognition.

@@ -31,6 +31,7 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
@@ -206,6 +207,29 @@ public class ThroughputControlTests extends TestSuiteBase {
                 client.close();
             }
         }
+    }
+
+    @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)
+    public void throughputLocalControlPriorityLevel(OperationType operationType) {
+        ThroughputControlGroupConfig groupConfig =
+            new ThroughputControlGroupConfigBuilder()
+                .groupName("group-" + UUID.randomUUID())
+                .priorityLevel(PriorityLevel.LOW)
+                .build();
+
+        container.enableLocalThroughputControlGroup(groupConfig);
+
+        CosmosItemRequestOptions requestOptions = new CosmosItemRequestOptions();
+        requestOptions.setContentResponseOnWriteEnabled(true);
+        requestOptions.setThroughputControlGroupName(groupConfig.getGroupName());
+
+        CosmosItemResponse<TestItem> createItemResponse = container.createItem(getDocumentDefinition(), requestOptions).block();
+        TestItem createdItem = createItemResponse.getItem();
+
+        performDocumentOperation(container, operationType, createdItem, groupConfig.getGroupName());
+
+        assertThat(groupConfig.getTargetThroughput()).isEqualTo(Integer.MAX_VALUE);
+        assertThat(createItemResponse.getStatusCode()).isEqualTo(201);
     }
 
     @Test(groups = {"emulator"}, dataProvider = "operationTypeProvider", timeOut = TIMEOUT)

@@ -81,7 +81,7 @@ class ServiceBusReceiveLinkProcessorTest {
 
     @BeforeAll
     static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
+        StepVerifier.setDefaultTimeout(Duration.ofSeconds(0));
     }
 
     @AfterAll

@@ -13,6 +13,9 @@ import java.util.Map;
  */
 @Fluent
 public final class MediaJobOutputCancelingEventData extends MediaJobOutputStateChangeEventData {
+    /** Creates an instance of MediaJobOutputCancelingEventData class. */
+    public MediaJobOutputCancelingEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public MediaJobOutputCancelingEventData setOutput(MediaJobOutput output) {

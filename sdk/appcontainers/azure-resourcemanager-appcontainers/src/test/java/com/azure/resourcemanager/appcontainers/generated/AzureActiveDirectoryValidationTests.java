@@ -11,49 +11,47 @@ import com.azure.resourcemanager.appcontainers.models.DefaultAuthorizationPolicy
 import com.azure.resourcemanager.appcontainers.models.JwtClaimChecks;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureActiveDirectoryValidationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AzureActiveDirectoryValidation model =
             BinaryData
                 .fromString(
-                    "{\"jwtClaimChecks\":{\"allowedGroups\":[\"lyxwjkcprbnwbx\",\"jvtbvpyss\",\"dnrujqguhmuouqfp\",\"wzwbnguitn\"],\"allowedClientApplications\":[\"zga\",\"x\"]},\"allowedAudiences\":[\"zuckyfi\",\"rfidfvzwdz\",\"htymw\",\"sdkf\"],\"defaultAuthorizationPolicy\":{\"allowedPrincipals\":{\"groups\":[\"nteiwaopv\",\"mijcmmxdcufufs\"],\"identities\":[\"mzidnsezcxtb\",\"sgfyccsnew\"]},\"allowedApplications\":[\"z\",\"eiachboosflnr\"]}}")
+                    "{\"jwtClaimChecks\":{\"allowedGroups\":[\"nuvamiheogna\",\"xzxtheo\",\"usivye\"],\"allowedClientApplications\":[\"iqihn\",\"un\",\"bwjzr\"]},\"allowedAudiences\":[\"gxg\",\"spemvtzfk\",\"fublj\"],\"defaultAuthorizationPolicy\":{\"allowedPrincipals\":{\"groups\":[\"ofjaeqjhqjb\",\"s\",\"msmjqulngsntn\"],\"identities\":[\"kzgcwrwcl\",\"xwrljdouskcqvkoc\",\"cjdkwtnhxbnjbi\"]},\"allowedApplications\":[\"rglssainqpj\",\"nzl\",\"jfm\",\"pee\"]}}")
                 .toObject(AzureActiveDirectoryValidation.class);
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.jwtClaimChecks().allowedGroups().get(0));
-        Assertions.assertEquals("zga", model.jwtClaimChecks().allowedClientApplications().get(0));
-        Assertions.assertEquals("zuckyfi", model.allowedAudiences().get(0));
-        Assertions.assertEquals("nteiwaopv", model.defaultAuthorizationPolicy().allowedPrincipals().groups().get(0));
+        Assertions.assertEquals("nuvamiheogna", model.jwtClaimChecks().allowedGroups().get(0));
+        Assertions.assertEquals("iqihn", model.jwtClaimChecks().allowedClientApplications().get(0));
+        Assertions.assertEquals("gxg", model.allowedAudiences().get(0));
+        Assertions.assertEquals("ofjaeqjhqjb", model.defaultAuthorizationPolicy().allowedPrincipals().groups().get(0));
         Assertions
-            .assertEquals("mzidnsezcxtb", model.defaultAuthorizationPolicy().allowedPrincipals().identities().get(0));
-        Assertions.assertEquals("z", model.defaultAuthorizationPolicy().allowedApplications().get(0));
+            .assertEquals("kzgcwrwcl", model.defaultAuthorizationPolicy().allowedPrincipals().identities().get(0));
+        Assertions.assertEquals("rglssainqpj", model.defaultAuthorizationPolicy().allowedApplications().get(0));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AzureActiveDirectoryValidation model =
             new AzureActiveDirectoryValidation()
                 .withJwtClaimChecks(
                     new JwtClaimChecks()
-                        .withAllowedGroups(
-                            Arrays.asList("lyxwjkcprbnwbx", "jvtbvpyss", "dnrujqguhmuouqfp", "wzwbnguitn"))
-                        .withAllowedClientApplications(Arrays.asList("zga", "x")))
-                .withAllowedAudiences(Arrays.asList("zuckyfi", "rfidfvzwdz", "htymw", "sdkf"))
+                        .withAllowedGroups(Arrays.asList("nuvamiheogna", "xzxtheo", "usivye"))
+                        .withAllowedClientApplications(Arrays.asList("iqihn", "un", "bwjzr")))
+                .withAllowedAudiences(Arrays.asList("gxg", "spemvtzfk", "fublj"))
                 .withDefaultAuthorizationPolicy(
                     new DefaultAuthorizationPolicy()
                         .withAllowedPrincipals(
                             new AllowedPrincipals()
-                                .withGroups(Arrays.asList("nteiwaopv", "mijcmmxdcufufs"))
-                                .withIdentities(Arrays.asList("mzidnsezcxtb", "sgfyccsnew")))
-                        .withAllowedApplications(Arrays.asList("z", "eiachboosflnr")));
+                                .withGroups(Arrays.asList("ofjaeqjhqjb", "s", "msmjqulngsntn"))
+                                .withIdentities(Arrays.asList("kzgcwrwcl", "xwrljdouskcqvkoc", "cjdkwtnhxbnjbi")))
+                        .withAllowedApplications(Arrays.asList("rglssainqpj", "nzl", "jfm", "pee")));
         model = BinaryData.fromObject(model).toObject(AzureActiveDirectoryValidation.class);
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.jwtClaimChecks().allowedGroups().get(0));
-        Assertions.assertEquals("zga", model.jwtClaimChecks().allowedClientApplications().get(0));
-        Assertions.assertEquals("zuckyfi", model.allowedAudiences().get(0));
-        Assertions.assertEquals("nteiwaopv", model.defaultAuthorizationPolicy().allowedPrincipals().groups().get(0));
+        Assertions.assertEquals("nuvamiheogna", model.jwtClaimChecks().allowedGroups().get(0));
+        Assertions.assertEquals("iqihn", model.jwtClaimChecks().allowedClientApplications().get(0));
+        Assertions.assertEquals("gxg", model.allowedAudiences().get(0));
+        Assertions.assertEquals("ofjaeqjhqjb", model.defaultAuthorizationPolicy().allowedPrincipals().groups().get(0));
         Assertions
-            .assertEquals("mzidnsezcxtb", model.defaultAuthorizationPolicy().allowedPrincipals().identities().get(0));
-        Assertions.assertEquals("z", model.defaultAuthorizationPolicy().allowedApplications().get(0));
+            .assertEquals("kzgcwrwcl", model.defaultAuthorizationPolicy().allowedPrincipals().identities().get(0));
+        Assertions.assertEquals("rglssainqpj", model.defaultAuthorizationPolicy().allowedApplications().get(0));
     }
 }
