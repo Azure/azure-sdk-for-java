@@ -21,6 +21,14 @@ import java.util.function.Supplier;
  */
 public interface AmqpReceiveLink extends AmqpLink {
     /**
+     * Gets the unique identifier of the Amqp connection hosting the receive link.
+     *
+     * @return The connection identifier.
+     */
+    // Note: Ideally, we may expose connectionId in AmqpLink, but given it's a public contract, lets not do that until a use case needing it.
+    String getConnectionId();
+
+    /**
      * Initialises the link from the client to the message broker and begins to receive messages from the broker.
      *
      * @return A Flux of AMQP messages which completes when the client calls
