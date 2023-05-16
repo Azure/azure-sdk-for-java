@@ -149,8 +149,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
         Function<String, PagedResponse<T>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) ->
             continuationToken == null
-                ? Stream.of(firstPageRetriever.get())
-                : Stream.of(nextPageRetriever.apply(continuationToken)), true);
+                ? firstPageRetriever.get()
+                : nextPageRetriever.apply(continuationToken), true);
     }
 
     /**
@@ -174,8 +174,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
     public PagedIterable(Function<Integer, PagedResponse<T>> firstPageRetriever,
         BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
         this(() -> (continuationToken, pageSize) -> continuationToken == null
-             ? Stream.of(firstPageRetriever.apply(pageSize))
-             : Stream.of(nextPageRetriever.apply(continuationToken, pageSize)), true);
+             ? firstPageRetriever.apply(pageSize)
+             : nextPageRetriever.apply(continuationToken, pageSize), true);
     }
 
     /**
@@ -187,11 +187,19 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      */
     @SuppressWarnings("deprecation")
     public <S> PagedIterable<S> mapPage(Function<T, S> mapper) {
-        Supplier<PageRetrieverSync<String, PagedResponse<S>>> provider = () -> (continuationToken, pageSize) -> {
-            Stream<PagedResponse<T>> pagedResponseStream = (continuationToken == null)
-                ? PagedIterable.super.streamByPage()
-                : PagedIterable.super.streamByPage(continuationToken);
-            return pagedResponseStream.map(PagedIterable.this.mapPagedResponse(mapper));
+        Supplier<PageRetrieverSync<String, PagedResponse<S>>> provider = () -> new PageRetrieverSync<String, PagedResponse<S>>() {
+            @Override
+            public PagedResponse<S> getPage(String continuationToken, Integer pageSize) {
+                return null;
+            }
+
+            @Override
+            public Stream<PagedResponse<S>> getPageStream(String continuationToken, Integer pageSize) {
+                Stream<PagedResponse<T>> pagedResponseStream = (continuationToken == null)
+                    ? PagedIterable.super.streamByPage()
+                    : PagedIterable.super.streamByPage(continuationToken);
+                return pagedResponseStream.map(PagedIterable.this.mapPagedResponse(mapper));
+            }
         };
         return new PagedIterable<S>(provider, true);
     }
