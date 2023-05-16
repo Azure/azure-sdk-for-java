@@ -230,6 +230,11 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     }
 
     @Override
+    public String getConnectionId() {
+        return handler.getConnectionId();
+    }
+
+    @Override
     public Flux<Message> receive() {
         return messagesProcessor;
     }
