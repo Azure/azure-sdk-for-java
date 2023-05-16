@@ -30,7 +30,7 @@ final class RequestDrivenCreditAccountingStrategy extends CreditAccountingStrate
      * @param logger the logger.
      */
     RequestDrivenCreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
-        super(receiver, subscription, validateAndGet(prefetch), logger);
+        super(receiver, subscription, validateAndGet(prefetch, logger), logger);
     }
 
     /**
@@ -65,9 +65,9 @@ final class RequestDrivenCreditAccountingStrategy extends CreditAccountingStrate
         }
     }
 
-    private static int validateAndGet(int prefetch) {
+    private static int validateAndGet(int prefetch, ClientLogger logger) {
         if (prefetch < 0) {
-            throw new IllegalArgumentException("prefetch >= 0 required but it was " + prefetch);
+            throw logger.atInfo().log(new IllegalArgumentException("prefetch >= 0 required but it was " + prefetch));
         }
         return prefetch == Integer.MAX_VALUE ? MAX_INT_PREFETCH_BOUND : prefetch;
     }
