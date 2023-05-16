@@ -65,12 +65,10 @@ public final class Utility {
         }
 
         if (bodySize > 1024 * 1024 * 1024) { // 1GB+
-            return 524288; // 512KB
-        } else if (bodySize > 100 * 1024 * 1024) { // 100MB+
             return 262144; // 256KB
-        } else if (bodySize > 10 * 1024 * 1024) { // 10MB+
+        } else if (bodySize > 100 * 1024 * 1024) { // 100MB+
             return 131072; // 128KB
-        } else if (bodySize > 1024 * 1024) { // 1MB+
+        } else if (bodySize > 10 * 1024 * 1024) { // 10MB+
             return 65536; // 64KB
         } else {
             return 32768; // 32KB
