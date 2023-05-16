@@ -12,11 +12,9 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.ContainerAppsApiManager;
 import com.azure.resourcemanager.appcontainers.models.Applicability;
 import com.azure.resourcemanager.appcontainers.models.AvailableWorkloadProfile;
-import com.azure.resourcemanager.appcontainers.models.Category;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -35,7 +33,7 @@ public final class AvailableWorkloadProfilesGetMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"location\":\"idmhmwf\",\"properties\":{\"billingMeterCategory\":\"PremiumSkuComputeOptimized\",\"applicability\":\"LocationDefault\",\"cores\":411481219,\"memoryGiB\":323271862,\"displayName\":\"ccrrvweyoxoyyu\"},\"id\":\"haim\",\"name\":\"oir\",\"type\":\"qboshbra\"}]}";
+            "{\"value\":[{\"location\":\"qnmcjngzqdqx\",\"properties\":{\"category\":\"wgnyfusfzsvtui\",\"applicability\":\"Custom\",\"cores\":566108141,\"memoryGiB\":1502257649,\"displayName\":\"cfhmlrqryxyn\"},\"id\":\"zrdpsovwxznptgoe\",\"name\":\"ybbabpfhvfsl\",\"type\":\"vntjlrigjk\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,16 +62,13 @@ public final class AvailableWorkloadProfilesGetMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AvailableWorkloadProfile> response =
-            manager.availableWorkloadProfiles().get("wwgbdv", Context.NONE);
+            manager.availableWorkloadProfiles().get("waz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("idmhmwf", response.iterator().next().location());
-        Assertions
-            .assertEquals(
-                Category.PREMIUM_SKU_COMPUTE_OPTIMIZED, response.iterator().next().properties().billingMeterCategory());
-        Assertions
-            .assertEquals(Applicability.LOCATION_DEFAULT, response.iterator().next().properties().applicability());
-        Assertions.assertEquals(411481219, response.iterator().next().properties().cores());
-        Assertions.assertEquals(323271862, response.iterator().next().properties().memoryGiB());
-        Assertions.assertEquals("ccrrvweyoxoyyu", response.iterator().next().properties().displayName());
+        Assertions.assertEquals("qnmcjngzqdqx", response.iterator().next().location());
+        Assertions.assertEquals("wgnyfusfzsvtui", response.iterator().next().properties().category());
+        Assertions.assertEquals(Applicability.CUSTOM, response.iterator().next().properties().applicability());
+        Assertions.assertEquals(566108141, response.iterator().next().properties().cores());
+        Assertions.assertEquals(1502257649, response.iterator().next().properties().memoryGiB());
+        Assertions.assertEquals("cfhmlrqryxyn", response.iterator().next().properties().displayName());
     }
 }

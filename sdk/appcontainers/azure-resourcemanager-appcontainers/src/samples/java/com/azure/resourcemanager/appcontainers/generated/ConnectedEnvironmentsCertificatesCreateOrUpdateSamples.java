@@ -4,14 +4,12 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-import com.azure.resourcemanager.appcontainers.fluent.models.CertificateInner;
 import com.azure.resourcemanager.appcontainers.models.CertificateProperties;
 
 /** Samples for ConnectedEnvironmentsCertificates CreateOrUpdate. */
 public final class ConnectedEnvironmentsCertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ConnectedEnvironmentsCertificate_CreateOrUpdate.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ConnectedEnvironmentsCertificate_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Certificate.
@@ -22,16 +20,11 @@ public final class ConnectedEnvironmentsCertificatesCreateOrUpdateSamples {
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager
             .connectedEnvironmentsCertificates()
-            .createOrUpdateWithResponse(
-                "examplerg",
-                "testcontainerenv",
-                "certificate-firendly-name",
-                new CertificateInner()
-                    .withLocation("East US")
-                    .withProperties(
-                        new CertificateProperties()
-                            .withPassword("private key password")
-                            .withValue("PFX-or-PEM-blob".getBytes())),
-                Context.NONE);
+            .define("certificate-firendly-name")
+            .withRegion("East US")
+            .withExistingConnectedEnvironment("examplerg", "testcontainerenv")
+            .withProperties(
+                new CertificateProperties().withPassword("fakeTokenPlaceholder").withValue("Y2VydA==".getBytes()))
+            .create();
     }
 }
