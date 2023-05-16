@@ -10,6 +10,7 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE;
 
 /**
  * Azure App Configuration Feature Flag.
@@ -23,7 +24,7 @@ public final class Feature {
     @JsonProperty("enabled-for")
     private Map<Integer, FeatureFlagFilter> enabledFor;
 
-    @JsonProperty("requirement-type")
+    @JsonProperty(REQUIREMENT_TYPE)
     private String requirementType = "Any";
 
     /**

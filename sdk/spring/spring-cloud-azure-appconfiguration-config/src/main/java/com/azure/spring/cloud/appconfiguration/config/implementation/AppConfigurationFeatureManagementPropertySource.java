@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.AUDIENCE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE_CAPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
@@ -10,6 +11,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS_CAPS;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE_SERVICE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SELECT_ALL_FEATURE_FLAGS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TARGETING_FILTER;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USERS;
@@ -52,7 +54,6 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
 
     private final List<ConfigurationSetting> featureConfigurationSettings;
-
     AppConfigurationFeatureManagementPropertySource(String originEndpoint, AppConfigurationReplicaClient replicaClient,
         String keyFilter, String[] labelFilter) {
         super("FM_" + originEndpoint, replicaClient, keyFilter, labelFilter);
@@ -129,12 +130,12 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
     @SuppressWarnings("unchecked")
     private Object createFeature(FeatureFlagConfigurationSetting item) {
         String key = getFeatureSimpleName(item);
-        String requirementType = "Any";
+        String requirementType = DEFAULT_REQUIREMENT_TYPE;
         try {
             JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(item.getValue());
             JsonNode conditions = node.get("conditions");
-            if (conditions != null && conditions.get("requirement_type") != null) {
-                requirementType = conditions.get("requirement_type").asText();
+            if (conditions != null && conditions.get(REQUIREMENT_TYPE_SERVICE) != null) {
+                requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asText();
             }
         } catch (JsonProcessingException e) {
 
