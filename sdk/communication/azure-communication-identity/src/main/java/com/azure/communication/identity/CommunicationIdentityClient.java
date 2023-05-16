@@ -3,7 +3,9 @@
 
 package com.azure.communication.identity;
 
-import com.azure.communication.common.CommunicationUserIdentifier;
+import java.time.Duration;
+import java.util.Objects;
+
 import com.azure.communication.identity.implementation.CommunicationIdentitiesImpl;
 import com.azure.communication.identity.implementation.CommunicationIdentityClientImpl;
 import com.azure.communication.identity.implementation.models.CommunicationIdentityAccessToken;
@@ -13,6 +15,7 @@ import com.azure.communication.identity.implementation.models.CommunicationIdent
 import com.azure.communication.identity.models.CommunicationTokenScope;
 import com.azure.communication.identity.models.CommunicationUserIdentifierAndToken;
 import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -21,9 +24,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-
-import java.time.Duration;
-import java.util.Objects;
 
 /**
  * Synchronous client interface for Azure Communication Service Identity operations
@@ -78,7 +78,7 @@ public final class CommunicationIdentityClient {
     public Response<CommunicationUserIdentifier> createUserWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         Response<CommunicationIdentityAccessTokenResult> response =
-            client.createWithResponse(new CommunicationIdentityCreateRequest(), context);
+            client.createWithResponseAsync(new CommunicationIdentityCreateRequest(), context).block();
 
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
@@ -140,8 +140,8 @@ public final class CommunicationIdentityClient {
         CommunicationIdentityCreateRequest communicationIdentityCreateRequest =
             CommunicationIdentityClientUtils.createCommunicationIdentityCreateRequest(scopes, tokenExpiresIn, logger);
 
-        Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponse(
-            communicationIdentityCreateRequest, context);
+        Response<CommunicationIdentityAccessTokenResult> response = client.createWithResponseAsync(
+            communicationIdentityCreateRequest, context).block();
 
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
@@ -173,7 +173,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteUser(CommunicationUserIdentifier communicationUser) {
         Objects.requireNonNull(communicationUser);
-        client.delete(communicationUser.getId());
+        client.deleteAsync(communicationUser.getId()).block();
     }
 
     /**
@@ -188,7 +188,7 @@ public final class CommunicationIdentityClient {
     public Response<Void> deleteUserWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Objects.requireNonNull(communicationUser);
         context = context == null ? Context.NONE : context;
-        return client.deleteWithResponse(communicationUser.getId(), context);
+        return client.deleteWithResponseAsync(communicationUser.getId(), context).block();
     }
 
     /**
@@ -199,7 +199,7 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void revokeTokens(CommunicationUserIdentifier communicationUser) {
         Objects.requireNonNull(communicationUser);
-        client.revokeAccessTokens(communicationUser.getId());
+        client.revokeAccessTokensAsync(communicationUser.getId()).block();
     }
 
     /**
@@ -214,7 +214,7 @@ public final class CommunicationIdentityClient {
     public Response<Void> revokeTokensWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
         Objects.requireNonNull(communicationUser);
         context = context == null ? Context.NONE : context;
-        return client.revokeAccessTokensWithResponse(communicationUser.getId(), context);
+        return client.revokeAccessTokensWithResponseAsync(communicationUser.getId(), context).block();
     }
 
     /**
@@ -282,10 +282,11 @@ public final class CommunicationIdentityClient {
         CommunicationIdentityAccessTokenRequest tokenRequest =
             CommunicationIdentityClientUtils.createCommunicationIdentityAccessTokenRequest(scopes, tokenExpiresIn, logger);
 
-        Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponse(
+        Response<CommunicationIdentityAccessToken> response = client.issueAccessTokenWithResponseAsync(
                 communicationUser.getId(),
                 tokenRequest,
-                context);
+                context)
+            .block();
 
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
@@ -345,7 +346,8 @@ public final class CommunicationIdentityClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AccessToken> getTokenForTeamsUserWithResponse(GetTokenForTeamsUserOptions options, Context context) {
         context = context == null ? Context.NONE : context;
-        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponse(options, context);
+        Response<CommunicationIdentityAccessToken> response =  client.exchangeTeamsUserAccessTokenWithResponseAsync(options, context)
+            .block();
         if (response == null || response.getValue() == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Service failed to return a response or expected value."));
         }

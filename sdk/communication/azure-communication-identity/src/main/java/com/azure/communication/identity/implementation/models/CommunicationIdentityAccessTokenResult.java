@@ -22,9 +22,6 @@ public final class CommunicationIdentityAccessTokenResult {
     @JsonProperty(value = "accessToken")
     private CommunicationIdentityAccessToken accessToken;
 
-    /** Creates an instance of CommunicationIdentityAccessTokenResult class. */
-    public CommunicationIdentityAccessTokenResult() {}
-
     /**
      * Get the identity property: A communication identity.
      *

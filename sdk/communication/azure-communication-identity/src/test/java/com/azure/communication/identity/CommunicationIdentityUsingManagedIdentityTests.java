@@ -9,7 +9,6 @@ import com.azure.communication.identity.models.GetTokenForTeamsUserOptions;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -18,14 +17,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static com.azure.communication.identity.CteTestHelper.skipExchangeAadTeamsTokenTest;
 
-public class CommunicationIdentityManagedIdentityTests extends CommunicationIdentityClientTestBase {
+public class CommunicationIdentityUsingManagedIdentityTests extends CommunicationIdentityClientTestBase {
     private CommunicationIdentityClient client;
-
-    @BeforeEach
-    public void setup() {
-        super.setup();
-        httpClient = buildSyncAssertingClient(httpClient);
-    }
 
     @Test
     public void createIdentityClient() {
@@ -161,4 +154,5 @@ public class CommunicationIdentityManagedIdentityTests extends CommunicationIden
         assertEquals(200, response.getStatusCode(), "Expect status code to be 200");
         verifyTokenNotEmpty(response.getValue());
     }
+
 }
