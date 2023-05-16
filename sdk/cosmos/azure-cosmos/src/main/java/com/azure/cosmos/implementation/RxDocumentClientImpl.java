@@ -2642,20 +2642,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 }
                 return Mono.empty();
             })
-                .flatMap(resourceResponse -> {
-                    CosmosItemResponse<T> cosmosItemResponse =
-                            ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
-                    FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(
-                            Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
-                            cosmosItemResponse.getResponseHeaders());
+            .flatMap(resourceResponse -> {
+                CosmosItemResponse<T> cosmosItemResponse =
+                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
+                FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(
+                        Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
+                        cosmosItemResponse.getResponseHeaders());
 
-                    diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                            feedResponse.getCosmosDiagnostics(),
-                            Collections.singleton(
-                                    BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
+                diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                        feedResponse.getCosmosDiagnostics(),
+                        Collections.singleton(
+                                BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
 
-                    return Mono.just(feedResponse);
-                })
+                return Mono.just(feedResponse);
+            })
             .onErrorResume(throwable -> {
                 if (throwable instanceof CosmosException) {
                     int statusCode = ((CosmosException) throwable).getStatusCode();
