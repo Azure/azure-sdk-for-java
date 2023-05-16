@@ -77,7 +77,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
@@ -2644,15 +2643,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             })
             .flatMap(resourceResponse -> {
                 CosmosItemResponse<T> cosmosItemResponse =
-                        ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
+                    ModelBridgeInternal.createCosmosAsyncItemResponse(resourceResponse, klass, getItemDeserializer());
                 FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(
-                        Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
-                        cosmosItemResponse.getResponseHeaders());
+                    Arrays.asList(InternalObjectNode.fromObject(cosmosItemResponse.getItem())),
+                    cosmosItemResponse.getResponseHeaders());
 
                 diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                        feedResponse.getCosmosDiagnostics(),
-                        Collections.singleton(
-                                BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
+                    feedResponse.getCosmosDiagnostics(),
+                    Collections.singleton(
+                        BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
 
                 return Mono.just(feedResponse);
             })
