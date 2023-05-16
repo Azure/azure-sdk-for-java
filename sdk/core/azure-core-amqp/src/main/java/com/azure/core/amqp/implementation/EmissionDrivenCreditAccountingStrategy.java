@@ -29,7 +29,7 @@ final class EmissionDrivenCreditAccountingStrategy extends CreditAccountingStrat
      * @param logger the logger.
      */
     EmissionDrivenCreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
-        super(receiver, subscription, validateAndGet(prefetch), logger);
+        super(receiver, subscription, validateAndGet(prefetch, logger), logger);
         // Refill the buffer once 50% of the prefetch has emitted.
         this.limit = this.prefetch - (this.prefetch >> 1);
     }
@@ -58,9 +58,9 @@ final class EmissionDrivenCreditAccountingStrategy extends CreditAccountingStrat
         }
     }
 
-    private static int validateAndGet(int prefetch) {
+    private static int validateAndGet(int prefetch, ClientLogger logger) {
         if (prefetch <= 0) {
-            throw new IllegalArgumentException("prefetch >= 1 required but it was " + prefetch);
+            throw logger.atInfo().log(new IllegalArgumentException("prefetch >= 1 required but it was " + prefetch));
         }
         return prefetch == Integer.MAX_VALUE ? MAX_INT_PREFETCH_BOUND : prefetch;
     }
