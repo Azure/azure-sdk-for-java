@@ -12,6 +12,11 @@
 
 ### Other Changes
 
+## 12.22.1 (2023-05-15)
+
+### Bugs Fixed
+Fixed bug in `BlobBaseClient.downloadToFile()` and `BlobBaseClient.downloadToFileWithResponse()` where incorrect data could be written to the file in some circumstances if the SDK experienced a network error when using `azure-core-http-netty`'s `HttpClient` implementation.
+
 ## 12.22.0 (2023-04-13)
 
 ### Features Added
