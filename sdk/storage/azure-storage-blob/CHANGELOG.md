@@ -2,14 +2,8 @@
 
 ## 12.22.1 (2023-05-15)
 
-### Other Changes
-
-#### Dependency Updates
-
-- Upgraded `azure-storage-common` from `12.20.1` to version `12.21.0`.
-- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
-- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
-- Upgraded `azure-storage-internal-avro` from `12.6.1` to version `12.7.0`.
+### Bugs Fixed
+Fixed bug in `BlobBaseClient.downloadToFile()` where incorrect data could be written to the file in some circumstances if the SDK experienced a network error when using `azure-core-http-netty`'s `HttpClient` implementation.
 
 ## 12.22.0 (2023-04-13)
 
