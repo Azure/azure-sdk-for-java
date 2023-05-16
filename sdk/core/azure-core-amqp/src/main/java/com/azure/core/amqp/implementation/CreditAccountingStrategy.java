@@ -10,6 +10,10 @@ import java.io.UncheckedIOException;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.function.Supplier;
 
+import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
+
 /**
  * The type that tracks and sends credits for the receiver in message-flux.
  */
@@ -56,9 +60,17 @@ abstract class CreditAccountingStrategy {
         try {
             receiver.addCredit(creditSupplier);
         } catch (RejectedExecutionException e) {
-            logger.atInfo().log("Credit schedule encountered rejected-error (normal during link termination or transition).", e);
+            log("Scheduling credit flow encountered rejected-error (normal during link termination or transition).", e);
         } catch (UncheckedIOException e) {
-            logger.atInfo().log("Credit schedule encountered io-error (normal during link termination or transition).", e);
+            log("Scheduling credit flow encountered io-error (normal during link termination or transition).", e);
         }
+    }
+
+    private void log(String message, RuntimeException e) {
+        logger.atInfo()
+            .addKeyValue(CONNECTION_ID_KEY, receiver.getConnectionId())
+            .addKeyValue(LINK_NAME_KEY, receiver.getLinkName())
+            .addKeyValue(ENTITY_PATH_KEY, receiver.getEntityPath())
+            .log(message, e);
     }
 }

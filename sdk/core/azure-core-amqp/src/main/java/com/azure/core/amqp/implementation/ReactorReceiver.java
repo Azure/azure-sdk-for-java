@@ -271,9 +271,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
     public void addCredit(Supplier<Long> creditSupplier) {
         assert this.isV2;
         if (isDisposed()) {
-            throw new RejectedExecutionException(String.format(
-                "connectionId[%s] linkName[%s] Cannot schedule credit flow post the link closure.",
-                handler.getConnectionId(), getLinkName()));
+            throw new RejectedExecutionException("Cannot schedule credit flow when the link is disposed.");
         }
         try {
             dispatcher.invoke(() -> {
@@ -282,9 +280,7 @@ public class ReactorReceiver implements AmqpReceiveLink, AsyncCloseable, AutoClo
                 metricsProvider.recordAddCredits((int) credit);
             });
         } catch (IOException e) {
-            throw new UncheckedIOException(String.format(
-                "connectionId[%s] linkName[%s] Unable to schedule work to add more credits.",
-                handler.getConnectionId(), getLinkName()), e);
+            throw new UncheckedIOException("Unable to schedule credit flow.", e);
         }
     }
 

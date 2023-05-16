@@ -35,6 +35,7 @@ import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.BiFunction;
 
+import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.DELIVERY_STATE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
@@ -896,8 +897,10 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
         }
 
         private LoggingEventBuilder updateLogWithReceiverId(LoggingEventBuilder builder) {
-            return builder.addKeyValue(LINK_NAME_KEY, receiverName)
-                .addKeyValue(ENTITY_PATH_KEY, receiverEntityPath);
+            return builder
+                .addKeyValue(CONNECTION_ID_KEY, receiver.getConnectionId())
+                .addKeyValue(LINK_NAME_KEY, receiver.getLinkName())
+                .addKeyValue(ENTITY_PATH_KEY, receiver.getEntityPath());
         }
     }
 
@@ -959,10 +962,13 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
             return m != null ? m.receiver.getLinkName() : null;
         }
 
+        // annotate the log builder with the receiver identifiers (connectionId:linkName:entityPath)
+        // if the mediator has receiver set, else nop.
         LoggingEventBuilder updateLogWithReceiverId(LoggingEventBuilder builder) {
             final ReactorReceiverMediator m = mediator;
             if (m != null) {
-                return builder.addKeyValue(LINK_NAME_KEY, m.receiver.getLinkName())
+                return builder.addKeyValue(CONNECTION_ID_KEY, m.receiver.getConnectionId())
+                    .addKeyValue(LINK_NAME_KEY, m.receiver.getLinkName())
                     .addKeyValue(ENTITY_PATH_KEY, m.receiver.getEntityPath());
             }
             return builder;
