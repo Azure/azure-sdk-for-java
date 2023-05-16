@@ -67,6 +67,12 @@ public final class BastionHostPropertiesFormat {
     @JsonProperty(value = "enableTunneling")
     private Boolean enableTunneling;
 
+    /*
+     * Enable/Disable Kerberos feature of the Bastion Host resource.
+     */
+    @JsonProperty(value = "enableKerberos")
+    private Boolean enableKerberos;
+
     /** Creates an instance of BastionHostPropertiesFormat class. */
     public BastionHostPropertiesFormat() {
     }
@@ -237,6 +243,26 @@ public final class BastionHostPropertiesFormat {
      */
     public BastionHostPropertiesFormat withEnableTunneling(Boolean enableTunneling) {
         this.enableTunneling = enableTunneling;
+        return this;
+    }
+
+    /**
+     * Get the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
+     *
+     * @return the enableKerberos value.
+     */
+    public Boolean enableKerberos() {
+        return this.enableKerberos;
+    }
+
+    /**
+     * Set the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
+     *
+     * @param enableKerberos the enableKerberos value to set.
+     * @return the BastionHostPropertiesFormat object itself.
+     */
+    public BastionHostPropertiesFormat withEnableKerberos(Boolean enableKerberos) {
+        this.enableKerberos = enableKerberos;
         return this;
     }
 
