@@ -284,7 +284,6 @@ public final class OpenAIAsyncClient {
      *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios on
      *     successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Embeddings> getEmbeddings(String deploymentId, EmbeddingsOptions embeddingsOptions) {
         // Generated convenience method for getEmbeddingsWithResponse
@@ -313,7 +312,6 @@ public final class OpenAIAsyncClient {
      * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
      *     that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Completions> getCompletions(String deploymentId, CompletionsOptions completionsOptions) {
         // Generated convenience method for getCompletionsWithResponse
@@ -391,7 +389,6 @@ public final class OpenAIAsyncClient {
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      *     text that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatCompletions> getChatCompletions(
             String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
