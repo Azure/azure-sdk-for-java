@@ -76,6 +76,3 @@ extends:
         groupId: com.azure
         safeName: azurespringdatacosmos
         releaseInBatch: false
-    AdditionalModules:
-      - name: azure-spring-data-cosmos-test
-        groupId: com.azure

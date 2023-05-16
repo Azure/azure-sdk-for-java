@@ -551,8 +551,5 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazurestarterappconfigurationconfig
         releaseInBatch: ${{ parameters.release_springcloudazurestarterappconfigurationconfig }}
-    AdditionalModules:
-      - name: azure-spring-data-cosmos-test
-        groupId: com.azure
     MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*

@@ -13,7 +13,7 @@ stages:
           SubscriptionConfigurations:
             - $(sub-config-azure-cloud-test-resources)
             - $(sub-config-cosmos-azure-cloud-test-resources)
-      Clouds: 'Cosmos_Public'
+      Clouds: 'Cosmos_Public_Integration'
       MatrixConfigs:
         - Name: Cosmos_live_test
           Path: sdk/cosmos/platform-matrix.json
@@ -39,7 +39,7 @@ stages:
 
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
-      TestName: 'Integration'
+      TestName: 'Spring_Data_Cosmos_Integration'
       CloudConfig:
         Public:
           SubscriptionConfigurations:
@@ -52,9 +52,9 @@ stages:
           GenerateVMJobs: true
       ServiceDirectory: spring
       Artifacts:
-        - name: azure-spring-data-cosmos-test
+        - name: azure-spring-data-cosmos
           groupId: com.azure
-          safeName: azurespringdatacosmostest
+          safeName: azurespringdatacosmos
       TimeoutInMinutes: 90
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
