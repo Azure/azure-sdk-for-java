@@ -1424,7 +1424,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
                 deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionContext))
             .then(Mono.fromRunnable(() -> {
-                LOGGER.atInfo()
+                LOGGER.atVerbose()
                     .addKeyValue(LOCK_TOKEN_KEY, lockToken)
                     .addKeyValue(ENTITY_PATH_KEY, entityPath)
                     .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
