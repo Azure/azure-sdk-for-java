@@ -77,6 +77,9 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
+        MatrixFilters:
+          - ${{ each filter in parameters.MatrixFilters }}:
+            - ${{ filter }}    
         AdditionalParameters:
           BuildParallelization: 1
           DisableAzureResourceCreation: true
