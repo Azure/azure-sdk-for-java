@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link DocumentModelAdministrationClient FormRecognizerAdminClient}
- * and {@link DocumentModelAdministrationAsyncClient DocumentTrainingAsyncClient}, call {@link #buildClient()} buildClient} and
+ * This class provides a fluent builder API to help instantiation of {@link DocumentModelAdministrationClient DocumentModelAdministrationClient}
+ * and {@link DocumentModelAdministrationAsyncClient DocumentModelAdministrationAsyncClient}, call {@link #buildClient()} buildClient} and
  * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
  * <p>

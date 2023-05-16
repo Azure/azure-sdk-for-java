@@ -36,8 +36,8 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * This class provides a fluent builder API to help instantiation of {@link DocumentAnalysisClient DocumentAnalysisClients}
- * and {@link DocumentAnalysisAsyncClient DocumentAnalysisAsyncClients}, call {@link #buildClient()} buildClient} and
+ * This class provides a fluent builder API to help instantiation of {@link DocumentAnalysisClient DocumentAnalysisClient}
+ * and {@link DocumentAnalysisAsyncClient DocumentAnalysisAsyncClient}, call {@link #buildClient()} buildClient} and
  * {@link #buildAsyncClient() buildAsyncClient} respectively to construct an instance of the desired client.
  *
  * <p>
