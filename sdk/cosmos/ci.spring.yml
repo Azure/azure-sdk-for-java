@@ -76,3 +76,4 @@ extends:
         groupId: com.azure
         safeName: azurespringdatacosmos
         releaseInBatch: false
+
