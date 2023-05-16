@@ -318,7 +318,7 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" })
-    public void readManyWithSingleNonExistentItemId() throws Exception {
+    public void readManyWithManyNonExistentItemIds() throws Exception {
         String partitionKeyValue = UUID.randomUUID().toString();
         ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         ArrayList<CosmosItemIdentity> nonExistentCosmosItemIdentities = new ArrayList<>();
@@ -353,7 +353,7 @@ public class CosmosItemTest extends TestSuiteBase {
     }
 
     @Test(groups = { "simple" })
-    public void readManyWithManyNonExistentItemIds() throws Exception {
+    public void readManyWithSingleNonExistentItemId() throws Exception {
         String partitionKeyValue = UUID.randomUUID().toString();
         ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
         HashSet<String> idSet = new HashSet<String>();
