@@ -115,7 +115,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         TokenCredential credential = null;
         if (interceptorManager.isPlaybackMode()) {
             credential = new MockTokenCredential();
-        } else if (interceptorManager.isRecordMode()) {
+        } else {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
             credential = new ClientSecretCredentialBuilder()
@@ -1195,6 +1195,25 @@ public class TableAsyncClientTest extends TableClientTestBase {
                     assertEquals(expiryTime, accessPolicy.getExpiresOn());
                     assertEquals(permissions, accessPolicy.getPermissions());
                 }
+            })
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
+    public void allowListEntitiesWithEmptyPrimaryKey() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Empty row or partition keys are not supported on Cosmos endpoints.");
+        TableEntity entity = new TableEntity("", "");
+        String entityName = testResourceNamer.randomName("name", 10);
+        entity.addProperty("Name", entityName);
+        tableClient.createEntity(entity).block();
+        ListEntitiesOptions options = new ListEntitiesOptions();
+        options.setFilter("PartitionKey eq '' and RowKey eq ''");
+        StepVerifier.create(tableClient.listEntities(options))
+            .expectNextCount(1)
+            .assertNext(returnedEntity -> {
+                assertEquals(entityName, returnedEntity.getProperty("Name"));
             })
             .expectComplete()
             .verify();
