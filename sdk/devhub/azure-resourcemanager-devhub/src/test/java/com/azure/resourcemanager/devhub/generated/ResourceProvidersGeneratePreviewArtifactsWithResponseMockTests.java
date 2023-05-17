@@ -9,16 +9,18 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devhub.DevHubManager;
-import com.azure.resourcemanager.devhub.models.ManifestType;
-import com.azure.resourcemanager.devhub.models.Workflow;
+import com.azure.resourcemanager.devhub.fluent.models.ArtifactGenerationProperties;
+import com.azure.resourcemanager.devhub.models.DockerfileGenerationMode;
+import com.azure.resourcemanager.devhub.models.GenerationLanguage;
+import com.azure.resourcemanager.devhub.models.GenerationManifestType;
+import com.azure.resourcemanager.devhub.models.ManifestGenerationMode;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -26,15 +28,14 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class WorkflowsListByResourceGroupTests {
+public final class ResourceProvidersGeneratePreviewArtifactsWithResponseMockTests {
     @Test
-    public void testListByResourceGroup() throws Exception {
+    public void testGeneratePreviewArtifactsWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"dt\",\"repositoryName\":\"zrvqdr\",\"branchName\":\"hjybigehoqfbo\",\"dockerfile\":\"kanyktzlcuiywg\",\"dockerBuildContext\":\"wgndrvynhzgpp\",\"namespace\":\"gyncocpecfvmmc\",\"aksResourceId\":\"xlzevgbmqjqabcy\",\"prURL\":\"ivkwlzuvccfwnfnb\",\"pullNumber\":1187016173,\"prStatus\":\"merged\",\"authStatus\":\"kube\"}},\"location\":\"bxetqgtzxdpn\",\"tags\":{\"ubisnjampmng\":\"qwxrjfeallnw\"},\"id\":\"zscxaqwo\",\"name\":\"chcbonqvpkvlrxnj\",\"type\":\"ase\"}]}";
+        String responseStr = "{\"nysounqe\":\"daj\",\"oaeupfhyhltrpmo\":\"a\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,17 +63,28 @@ public final class WorkflowsListByResourceGroupTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Workflow> response = manager.workflows().listByResourceGroup("ln", "xlefgugnxkrx", Context.NONE);
+        Map<String, String> response =
+            manager
+                .resourceProviders()
+                .generatePreviewArtifactsWithResponse(
+                    "ofqweykhmenevfye",
+                    new ArtifactGenerationProperties()
+                        .withGenerationLanguage(GenerationLanguage.GRADLE)
+                        .withLanguageVersion("ybcibvyvdcsit")
+                        .withBuilderVersion("naamde")
+                        .withPort("eh")
+                        .withAppName("qsc")
+                        .withDockerfileOutputDirectory("ypvhezrkg")
+                        .withManifestOutputDirectory("c")
+                        .withDockerfileGenerationMode(DockerfileGenerationMode.ENABLED)
+                        .withManifestGenerationMode(ManifestGenerationMode.ENABLED)
+                        .withManifestType(GenerationManifestType.HELM)
+                        .withImageName("kqsleyyvxy")
+                        .withNamespace("pkc")
+                        .withImageTag("tpngjcrcczsqpjh"),
+                    com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("bxetqgtzxdpn", response.iterator().next().location());
-        Assertions.assertEquals("qwxrjfeallnw", response.iterator().next().tags().get("ubisnjampmng"));
-        Assertions.assertEquals("dt", response.iterator().next().repositoryOwner());
-        Assertions.assertEquals("zrvqdr", response.iterator().next().repositoryName());
-        Assertions.assertEquals("hjybigehoqfbo", response.iterator().next().branchName());
-        Assertions.assertEquals("kanyktzlcuiywg", response.iterator().next().dockerfile());
-        Assertions.assertEquals("wgndrvynhzgpp", response.iterator().next().dockerBuildContext());
-        Assertions.assertEquals("gyncocpecfvmmc", response.iterator().next().namespace());
-        Assertions.assertEquals("xlzevgbmqjqabcy", response.iterator().next().aksResourceId());
-        Assertions.assertEquals(ManifestType.KUBE, response.iterator().next().authStatus());
+        Assertions.assertEquals("daj", response.get("nysounqe"));
     }
 }

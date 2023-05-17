@@ -9,13 +9,10 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devhub.DevHubManager;
-import com.azure.resourcemanager.devhub.models.ManifestType;
-import com.azure.resourcemanager.devhub.models.Workflow;
+import com.azure.resourcemanager.devhub.models.DeleteWorkflowResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -26,15 +23,14 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class WorkflowsListTests {
+public final class WorkflowsDeleteByResourceGroupWithResponseMockTests {
     @Test
-    public void testList() throws Exception {
+    public void testDeleteWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"githubWorkflowProfile\":{\"repositoryOwner\":\"gddtocj\",\"repositoryName\":\"hvpmoue\",\"branchName\":\"dzxibqeojnxqbzvd\",\"dockerfile\":\"t\",\"dockerBuildContext\":\"deicbtwnpzao\",\"namespace\":\"hrhcffcyddglmjth\",\"aksResourceId\":\"pyeicxm\",\"prURL\":\"iwqvhkh\",\"pullNumber\":1316463743,\"prStatus\":\"merged\",\"authStatus\":\"helm\"}},\"location\":\"pbobjo\",\"tags\":{\"u\":\"e\"},\"id\":\"m\",\"name\":\"uhrzayvvt\",\"type\":\"gvdfgiotkftutq\"}]}";
+        String responseStr = "{\"status\":\"rqlfktsthsucocmn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,17 +58,12 @@ public final class WorkflowsListTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Workflow> response = manager.workflows().list(Context.NONE);
+        DeleteWorkflowResponse response =
+            manager
+                .workflows()
+                .deleteByResourceGroupWithResponse("yxczfclh", "axdbabph", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("pbobjo", response.iterator().next().location());
-        Assertions.assertEquals("e", response.iterator().next().tags().get("u"));
-        Assertions.assertEquals("gddtocj", response.iterator().next().repositoryOwner());
-        Assertions.assertEquals("hvpmoue", response.iterator().next().repositoryName());
-        Assertions.assertEquals("dzxibqeojnxqbzvd", response.iterator().next().branchName());
-        Assertions.assertEquals("t", response.iterator().next().dockerfile());
-        Assertions.assertEquals("deicbtwnpzao", response.iterator().next().dockerBuildContext());
-        Assertions.assertEquals("hrhcffcyddglmjth", response.iterator().next().namespace());
-        Assertions.assertEquals("pyeicxm", response.iterator().next().aksResourceId());
-        Assertions.assertEquals(ManifestType.HELM, response.iterator().next().authStatus());
+        Assertions.assertEquals("rqlfktsthsucocmn", response.status());
     }
 }
