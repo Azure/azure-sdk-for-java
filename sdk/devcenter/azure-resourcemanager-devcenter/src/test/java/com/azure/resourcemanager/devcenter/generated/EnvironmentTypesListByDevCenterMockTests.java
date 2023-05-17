@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.EnvironmentType;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class EnvironmentTypesListByDevCenterMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"NotSpecified\"},\"tags\":{\"nnrwrbiork\":\"wzsoldweyuqdunv\"},\"id\":\"lywjhh\",\"name\":\"dnhxmsi\",\"type\":\"fomiloxgg\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"tags\":{\"qqfkuv\":\"iopid\",\"rxkpmloazuruoc\":\"cxkdmligovi\"},\"id\":\"oorb\",\"name\":\"eoybfhjxakvvjgs\",\"type\":\"ordilmywwtkgkxny\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +61,10 @@ public final class EnvironmentTypesListByDevCenterMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<EnvironmentType> response =
-            manager.environmentTypes().listByDevCenter("daxconfozauorsuk", "kwbqplhlvnuu", 1643083529, Context.NONE);
+            manager
+                .environmentTypes()
+                .listByDevCenter("dzf", "azivjlfrqttbajl", 337338297, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wzsoldweyuqdunv", response.iterator().next().tags().get("nnrwrbiork"));
+        Assertions.assertEquals("iopid", response.iterator().next().tags().get("qqfkuv"));
     }
 }

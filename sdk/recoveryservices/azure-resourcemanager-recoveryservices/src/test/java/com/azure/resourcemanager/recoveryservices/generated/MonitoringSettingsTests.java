@@ -17,10 +17,10 @@ public final class MonitoringSettingsTests {
         MonitoringSettings model =
             BinaryData
                 .fromString(
-                    "{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"},\"classicAlertSettings\":{\"alertsForCriticalOperations\":\"Disabled\"}}")
+                    "{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Enabled\"},\"classicAlertSettings\":{\"alertsForCriticalOperations\":\"Enabled\"}}")
                 .toObject(MonitoringSettings.class);
-        Assertions.assertEquals(AlertsState.DISABLED, model.azureMonitorAlertSettings().alertsForAllJobFailures());
-        Assertions.assertEquals(AlertsState.DISABLED, model.classicAlertSettings().alertsForCriticalOperations());
+        Assertions.assertEquals(AlertsState.ENABLED, model.azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(AlertsState.ENABLED, model.classicAlertSettings().alertsForCriticalOperations());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,11 +28,11 @@ public final class MonitoringSettingsTests {
         MonitoringSettings model =
             new MonitoringSettings()
                 .withAzureMonitorAlertSettings(
-                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.DISABLED))
+                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED))
                 .withClassicAlertSettings(
-                    new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.DISABLED));
+                    new ClassicAlertSettings().withAlertsForCriticalOperations(AlertsState.ENABLED));
         model = BinaryData.fromObject(model).toObject(MonitoringSettings.class);
-        Assertions.assertEquals(AlertsState.DISABLED, model.azureMonitorAlertSettings().alertsForAllJobFailures());
-        Assertions.assertEquals(AlertsState.DISABLED, model.classicAlertSettings().alertsForCriticalOperations());
+        Assertions.assertEquals(AlertsState.ENABLED, model.azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(AlertsState.ENABLED, model.classicAlertSettings().alertsForCriticalOperations());
     }
 }

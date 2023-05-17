@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2023-05-17)
+
+- Azure Resource Manager RecoveryServices client library for Java. This package contains Microsoft Azure SDK for RecoveryServices Management SDK. Recovery Services Client. Package tag package-2023-02. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.CrossSubscriptionRestoreSettings` was added
+
+* `models.RestoreSettings` was added
+
+* `models.CrossSubscriptionRestoreState` was added
+
+#### `models.VaultProperties` was modified
+
+* `withRestoreSettings(models.RestoreSettings)` was added
+* `restoreSettings()` was added
 
 ## 1.0.0 (2023-02-27)
 

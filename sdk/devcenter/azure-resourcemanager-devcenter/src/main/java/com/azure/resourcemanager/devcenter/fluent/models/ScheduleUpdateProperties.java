@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,7 +41,7 @@ public class ScheduleUpdateProperties {
      * Indicates whether or not this scheduled task is enabled.
      */
     @JsonProperty(value = "state")
-    private EnableStatus state;
+    private ScheduleEnableStatus state;
 
     /** Creates an instance of ScheduleUpdateProperties class. */
     public ScheduleUpdateProperties() {
@@ -132,7 +132,7 @@ public class ScheduleUpdateProperties {
      *
      * @return the state value.
      */
-    public EnableStatus state() {
+    public ScheduleEnableStatus state() {
         return this.state;
     }
 
@@ -142,7 +142,7 @@ public class ScheduleUpdateProperties {
      * @param state the state value to set.
      * @return the ScheduleUpdateProperties object itself.
      */
-    public ScheduleUpdateProperties withState(EnableStatus state) {
+    public ScheduleUpdateProperties withState(ScheduleEnableStatus state) {
         this.state = state;
         return this;
     }

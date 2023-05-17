@@ -134,6 +134,7 @@ Use the `addOrUpdateParticipants` function to add or update participants in an e
 
 ```java readme-sample-addOrUpdateRoomParticipantsWithRoomId
 List<RoomParticipant> participantsToaddOrUpdate = new ArrayList<>();
+
 // New participant to add
 RoomParticipant participantToAdd = new RoomParticipant(new CommunicationUserIdentifier("<ACS User MRI identity 3>")).setRole(ParticipantRole.ATTENDEE);
 
