@@ -329,19 +329,29 @@ public class GatewayAddressCache implements IAddressCache {
 
                     if (forceRefreshPartitionAddressesModified) {
 
+                        // extract addresses not used by the physical partition anymore
                         if (addressUrisBeforeRefresh.removeAll(addressUrisAfterRefresh)) {
-                            for (Uri addressUriBeforeRefresh : addressUrisBeforeRefresh) {
-                                addressUriToPkrIdsMap.compute(addressUriBeforeRefresh, (ignore, pkrIdsForAddressUri) -> {
 
+                            for (Uri unusedAddressUri : addressUrisBeforeRefresh) {
+
+                                addressUriToPkrIdsMap.compute(unusedAddressUri, (ignore, pkrIdsForAddressUri) -> {
+
+                                    // remove addressUri -> physical partition mapping
                                     if (pkrIdsForAddressUri != null && !pkrIdsForAddressUri.isEmpty()) {
-                                        this.proactiveOpenConnectionsProcessor
-                                                .excludeAddressUriFromOpenConnectionsFlow(addressUriBeforeRefresh.getURIAsString());
-                                        this.proactiveOpenConnectionsProcessor
-                                                .removeAddressUriForCollectionRid(collectionRid, addressUriBeforeRefresh.getURIAsString());
                                         pkrIdsForAddressUri.remove(partitionKeyRangeIdentity.getPartitionKeyRangeId());
+                                    }
+
+                                    // if the address is not used by any physical partition, it can
+                                    // be excluded from the open connection flow
+                                    if (pkrIdsForAddressUri != null && pkrIdsForAddressUri.isEmpty()) {
+                                        this.proactiveOpenConnectionsProcessor
+                                                .excludeAddressUriFromOpenConnectionsFlow(unusedAddressUri.getURIAsString());
+                                        this.proactiveOpenConnectionsProcessor
+                                                .removeAddressUriForCollectionRid(collectionRid, unusedAddressUri.getURIAsString());
 
                                         return pkrIdsForAddressUri;
                                     }
+
                                     return pkrIdsForAddressUri;
                                 });
                             }
