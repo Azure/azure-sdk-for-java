@@ -10,14 +10,6 @@
 - Upgrade `azure-sdk-bom` to 1.2.12.
 - Upgrade `azure-resourcemanager` to 2.25.0.
 
-#### Features Added
-- Added the following artifacts into current bom file:
-    - spring-cloud-azure-starter-appconfiguration-config
-    - spring-cloud-azure-appconfiguration-config
-    - spring-cloud-azure-appconfiguration-config-web
-    - spring-cloud-azure-feature-management
-    - spring-cloud-azure-feature-management-web
-
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
@@ -54,7 +46,15 @@ This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-
 - Deprecated `CloudType.AZURE_GERMANY` and remove `AzureEnvironmentProperties.AZURE_GERMANY` [#34663](https://github.com/Azure/azure-sdk-for-java/pull/34663).
 
 ### Spring Cloud Azure Appconfiguration Config
-This section includes changes in `spring-cloud-azure-appconfiguration-config` and `spring-cloud-azure-appconfiguration-config-web` modules.
+This section includes changes in `spring-cloud-azure-starter-appconfiguration-config`, `spring-cloud-azure-appconfiguration-config*`, and `spring-cloud-azure-feature-management*` modules.
+
+#### Features Added
+First release of the Spring Cloud Azure Appconfiguration Config, to support Spring Boot 3. The modules are:
+  - spring-cloud-azure-starter-appconfiguration-config
+  - spring-cloud-azure-appconfiguration-config
+  - spring-cloud-azure-appconfiguration-config-web
+  - spring-cloud-azure-feature-management
+  - spring-cloud-azure-feature-management-web
 
 #### Bugs Fixed
 - Fixes issue where credential from Azure Spring global properties was being overridden [#34695](https://github.com/Azure/azure-sdk-for-java/pull/34695).
