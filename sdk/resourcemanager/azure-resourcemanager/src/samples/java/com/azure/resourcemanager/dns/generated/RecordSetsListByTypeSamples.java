@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.dns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dns.models.RecordType;
 
 /** Samples for RecordSets ListByType. */
@@ -23,7 +22,7 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("rg1", "zone1", RecordType.AAAA, null, null, Context.NONE);
+            .listByType("rg1", "zone1", RecordType.AAAA, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -40,7 +39,7 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("rg1", "zone1", RecordType.SRV, null, null, Context.NONE);
+            .listByType("rg1", "zone1", RecordType.SRV, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -57,7 +56,7 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("rg1", "0.0.127.in-addr.arpa", RecordType.PTR, null, null, Context.NONE);
+            .listByType("rg1", "0.0.127.in-addr.arpa", RecordType.PTR, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -74,7 +73,7 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("rg1", "zone1", RecordType.MX, null, null, Context.NONE);
+            .listByType("rg1", "zone1", RecordType.MX, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -91,7 +90,7 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("rg1", "zone1", RecordType.NS, null, null, Context.NONE);
+            .listByType("rg1", "zone1", RecordType.NS, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -108,7 +107,7 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("rg1", "zone1", RecordType.CNAME, null, null, Context.NONE);
+            .listByType("rg1", "zone1", RecordType.CNAME, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -125,7 +124,7 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("rg1", "zone1", RecordType.A, null, null, Context.NONE);
+            .listByType("rg1", "zone1", RecordType.A, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -142,7 +141,7 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("rg1", "zone1", RecordType.SOA, null, null, Context.NONE);
+            .listByType("rg1", "zone1", RecordType.SOA, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -159,7 +158,7 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("rg1", "zone1", RecordType.CAA, null, null, Context.NONE);
+            .listByType("rg1", "zone1", RecordType.CAA, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -176,6 +175,6 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("rg1", "zone1", RecordType.TXT, null, null, Context.NONE);
+            .listByType("rg1", "zone1", RecordType.TXT, null, null, com.azure.core.util.Context.NONE);
     }
 }
