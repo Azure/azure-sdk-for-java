@@ -255,7 +255,15 @@ public final class NonSessionProcessor {
                 this.concurrency = concurrency;
                 this.enableAutoDisposition = enableAutoDisposition;
                 this.enableAutoLockRenew = client.isAutoLockRenewRequested();
-                this.workerScheduler = Schedulers.boundedElastic();
+                if (concurrency > 1) {
+                    this.workerScheduler = Schedulers.boundedElastic();
+                } else {
+                    // For the max-concurrent-calls == 1 (the default) case, the message handler can be invoked in the same
+                    // BoundedElastic thread that the ServiceBusReactorReceiver::receive() API (backing the MessageFlux)
+                    // publishes the message. In this case, we use 'Schedulers.immediate' to avoid the thread switch that
+                    // is only needed for higher parallelism (max-concurrent-calls > 1) case.
+                    this.workerScheduler = Schedulers.immediate();
+                }
             }
 
             /**
@@ -267,10 +275,10 @@ public final class NonSessionProcessor {
              */
             Mono<Void> begin() {
                 final Mono<Void> terminatePumping = pollConnectionState();
-                final Mono<Void> pumpInParallel = client.nonSessionProcessorReceiveV2()
+                final Mono<Void> pumping = client.nonSessionProcessorReceiveV2()
                     .flatMap(new RunOnWorker(this::handleMessage, workerScheduler), concurrency, 1).then();
 
-                return Mono.firstWithSignal(pumpInParallel, terminatePumping)
+                return Mono.firstWithSignal(pumping, terminatePumping)
                     .onErrorMap(e -> new PumpTerminatedException(pumpId, fqdn, entityPath, e))
                     .then(Mono.error(PumpTerminatedException.forCompletion(pumpId, fqdn, entityPath)));
             }
