@@ -675,12 +675,15 @@ public class GatewayAddressCache implements IAddressCache {
                                                     pkrIdsForAddressUri.remove(pkRangeIdentity);
                                                 }
 
-                                                // if the address is not used by a physical partition from a container
-                                                // which also took part in connection warm up flow, it can be excluded
+                                                // if the address is not used by a physical partition for a container
+                                                // which is also under the connection warm up flow, it can be excluded
                                                 // from the open connection flow
-                                                if (pkrIdsForAddressUri != null && shouldExcludeAddressUriFromOpenConnectionsFlow(pkrIdsForAddressUri)) {
+                                                if (pkrIdsForAddressUri != null &&
+                                                        (pkrIdsForAddressUri.isEmpty() || shouldExcludeAddressUriFromOpenConnectionsFlow(pkrIdsForAddressUri))) {
                                                     this.proactiveOpenConnectionsProcessor
-                                                            .excludeAddressUriFromOpenConnectionsFlow(collectionRid, unusedAddressUri.getURIAsString());
+                                                            .excludeAddressUriFromOpenConnectionsFlow(
+                                                                    collectionRid,
+                                                                    unusedAddressUri.getURIAsString());
 
                                                     return pkrIdsForAddressUri;
                                                 }
