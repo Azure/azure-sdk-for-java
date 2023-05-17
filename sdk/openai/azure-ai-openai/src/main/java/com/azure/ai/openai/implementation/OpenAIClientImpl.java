@@ -170,6 +170,27 @@ public final class OpenAIClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/deployments/{deploymentId}/embeddings")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEmbeddingsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentId,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData embeddingsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/deployments/{deploymentId}/completions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -191,6 +212,27 @@ public final class OpenAIClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/deployments/{deploymentId}/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCompletionsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentId,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData completionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/deployments/{deploymentId}/chat/completions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -204,6 +246,27 @@ public final class OpenAIClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getChatCompletions(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("deploymentId") String deploymentId,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json") BinaryData chatCompletionsOptions,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/deployments/{deploymentId}/chat/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getChatCompletionsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("deploymentId") String deploymentId,
@@ -326,7 +389,15 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(
             String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
-        return getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions).block();
+        final String accept = "application/json";
+        return service.getEmbeddingsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                deploymentId,
+                accept,
+                embeddingsOptions,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -509,7 +580,15 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(
             String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
-        return getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions).block();
+        final String accept = "application/json";
+        return service.getCompletionsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                deploymentId,
+                accept,
+                completionsOptions,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -674,6 +753,14 @@ public final class OpenAIClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(
             String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
-        return getChatCompletionsWithResponseAsync(deploymentId, chatCompletionsOptions, requestOptions).block();
+        final String accept = "application/json";
+        return service.getChatCompletionsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                deploymentId,
+                accept,
+                chatCompletionsOptions,
+                requestOptions,
+                Context.NONE);
     }
 }

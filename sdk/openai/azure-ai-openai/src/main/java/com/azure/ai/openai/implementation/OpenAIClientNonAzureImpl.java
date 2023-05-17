@@ -100,6 +100,25 @@ public final class OpenAIClientNonAzureImpl {
             RequestOptions requestOptions,
             Context context);
 
+        @Post("/embeddings")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+            value = ClientAuthenticationException.class,
+            code = {401})
+        @UnexpectedResponseExceptionType(
+            value = ResourceNotFoundException.class,
+            code = {404})
+        @UnexpectedResponseExceptionType(
+            value = ResourceModifiedException.class,
+            code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getEmbeddingsSync(
+            @HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData embeddingsOptions,
+            RequestOptions requestOptions,
+            Context context);
+
         @Post("/completions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -119,6 +138,25 @@ public final class OpenAIClientNonAzureImpl {
             RequestOptions requestOptions,
             Context context);
 
+        @Post("/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+            value = ClientAuthenticationException.class,
+            code = {401})
+        @UnexpectedResponseExceptionType(
+            value = ResourceNotFoundException.class,
+            code = {404})
+        @UnexpectedResponseExceptionType(
+            value = ResourceModifiedException.class,
+            code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getCompletionsSync(
+            @HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData completionsOptions,
+            RequestOptions requestOptions,
+            Context context);
+
         @Post("/chat/completions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -132,6 +170,25 @@ public final class OpenAIClientNonAzureImpl {
             code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getChatCompletions(
+            @HostParam("endpoint") String endpoint,
+            @HeaderParam("accept") String accept,
+            @BodyParam("application/json") BinaryData chatCompletionsOptions,
+            RequestOptions requestOptions,
+            Context context);
+
+        @Post("/chat/completions")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+            value = ClientAuthenticationException.class,
+            code = {401})
+        @UnexpectedResponseExceptionType(
+            value = ResourceNotFoundException.class,
+            code = {404})
+        @UnexpectedResponseExceptionType(
+            value = ResourceModifiedException.class,
+            code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getChatCompletionsSync(
             @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData chatCompletionsOptions,
@@ -192,9 +249,10 @@ public final class OpenAIClientNonAzureImpl {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
-        EmbeddingsOptions embeddingsOptions2 = embeddingsOptions.toObject(EmbeddingsOptions.class);
-        embeddingsOptions2.setModel(deploymentId);
-        BinaryData embeddingsOptionsUpdated = BinaryData.fromObject(embeddingsOptions2);
+        BinaryData embeddingsOptionsUpdated = BinaryData.fromObject(
+            embeddingsOptions.toObject(EmbeddingsOptions.class)
+                .setModel(deploymentId)
+        );
 
         return FluxUtil.withContext(
             context ->
@@ -256,7 +314,20 @@ public final class OpenAIClientNonAzureImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(String deploymentId, BinaryData embeddingsOptions,
         RequestOptions requestOptions) {
-        return getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions).block();
+        final String accept = "application/json";
+
+        // OpenAI has model ID in request body
+        BinaryData embeddingsOptionsUpdated = BinaryData.fromObject(
+            embeddingsOptions.toObject(EmbeddingsOptions.class)
+                .setModel(deploymentId)
+        );
+
+        return service.getEmbeddingsSync(
+            OPEN_AI_ENDPOINT,
+            accept,
+            embeddingsOptionsUpdated,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -344,10 +415,12 @@ public final class OpenAIClientNonAzureImpl {
     public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(String deploymentId,
         BinaryData completionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
+
         // OpenAI has model ID in request body
-        CompletionsOptions completionsOptions1 = completionsOptions.toObject(CompletionsOptions.class);
-        completionsOptions1.setModel(deploymentId);
-        BinaryData completionsOptionsUpdated = BinaryData.fromObject(completionsOptions1);
+        BinaryData completionsOptionsUpdated = BinaryData.fromObject(
+            completionsOptions.toObject(CompletionsOptions.class)
+                .setModel(deploymentId)
+        );
 
         return FluxUtil.withContext(
             context ->
@@ -442,7 +515,19 @@ public final class OpenAIClientNonAzureImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(String deploymentId, BinaryData completionsOptions,
         RequestOptions requestOptions) {
-        return getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions).block();
+        final String accept = "application/json";
+
+        // OpenAI has model ID in request body
+        BinaryData completionsOptionsUpdated = BinaryData.fromObject(
+            completionsOptions.toObject(CompletionsOptions.class)
+                .setModel(deploymentId)
+        );
+        return service.getCompletionsSync(
+            OPEN_AI_ENDPOINT,
+            accept,
+            completionsOptionsUpdated,
+            requestOptions,
+            Context.NONE);
     }
 
     /**
@@ -523,9 +608,10 @@ public final class OpenAIClientNonAzureImpl {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
-        ChatCompletionsOptions chatCompletionsOptions2 = chatCompletionsOptions.toObject(ChatCompletionsOptions.class);
-        chatCompletionsOptions2.setModel(deploymentId);
-        BinaryData chatCompletionsOptionsUpdated = BinaryData.fromObject(chatCompletionsOptions2);
+        BinaryData chatCompletionsOptionsUpdated = BinaryData.fromObject(
+            chatCompletionsOptions.toObject(ChatCompletionsOptions.class)
+                .setModel(deploymentId)
+        );
 
         return FluxUtil.withContext(
             context ->
@@ -611,6 +697,19 @@ public final class OpenAIClientNonAzureImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(String deploymentId, BinaryData chatCompletionsOptions,
         RequestOptions requestOptions) {
-        return getChatCompletionsWithResponseAsync(deploymentId, chatCompletionsOptions, requestOptions).block();
+        final String accept = "application/json";
+
+        // OpenAI has model ID in request body
+        BinaryData chatCompletionsOptionsUpdated = BinaryData.fromObject(
+            chatCompletionsOptions.toObject(ChatCompletionsOptions.class)
+                .setModel(deploymentId)
+        );
+
+        return service.getChatCompletionsSync(
+            OPEN_AI_ENDPOINT,
+            accept,
+            chatCompletionsOptionsUpdated,
+            requestOptions,
+            Context.NONE);
     }
 }

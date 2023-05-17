@@ -6,7 +6,6 @@ package com.azure.ai.openai;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
-import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -15,7 +14,7 @@ import java.time.OffsetDateTime;
  * Token credential class for accepting non-Azure OpenAI credential string.
  */
 public class OpenAIApiKeyCredential implements TokenCredential {
-    private String keyCredential;
+    private final String keyCredential;
 
     /**
      * Create a non-Azure OpenAI credential token.

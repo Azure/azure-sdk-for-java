@@ -291,16 +291,16 @@ public final class OpenAIClientBuilder
         return httpPipeline;
     }
 
-    private OpenAIClientNonAzureImpl buildInnerClientOpenAI() {
+    private OpenAIClientNonAzureImpl buildInnerOpenAIClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineOpenAI();
-        OpenAIClientNonAzureImpl client = new OpenAIClientNonAzureImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter());
+        OpenAIClientNonAzureImpl client =
+                new OpenAIClientNonAzureImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter());
         return client;
     }
 
     private HttpPipeline createHttpPipelineOpenAI() {
         Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -316,28 +316,26 @@ public final class OpenAIClientBuilder
             policies.add(new AddHeadersPolicy(headers));
         }
         this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-            .forEach(p -> policies.add(p));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
-
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPES));
         }
-
         this.pipelinePolicies.stream()
-            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-            .forEach(p -> policies.add(p));
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline =
-            new HttpPipelineBuilder()
-                .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                .httpClient(httpClient)
-                .clientOptions(localClientOptions)
-                .build();
+                new HttpPipelineBuilder()
+                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                        .httpClient(httpClient)
+                        .clientOptions(localClientOptions)
+                        .build();
         return httpPipeline;
     }
 
@@ -348,7 +346,7 @@ public final class OpenAIClientBuilder
      */
     public OpenAIAsyncClient buildAsyncClient() {
         if (tokenCredential != null && tokenCredential instanceof OpenAIApiKeyCredential) {
-            return new OpenAIAsyncClient(buildInnerClientOpenAI());
+            return new OpenAIAsyncClient(buildInnerOpenAIClient());
         }
         return new OpenAIAsyncClient(buildInnerClient());
     }
@@ -360,8 +358,8 @@ public final class OpenAIClientBuilder
      */
     public OpenAIClient buildClient() {
         if (tokenCredential != null && tokenCredential instanceof OpenAIApiKeyCredential) {
-            return new OpenAIClient(new OpenAIAsyncClient(buildInnerClientOpenAI()));
+            return new OpenAIClient(buildInnerOpenAIClient());
         }
-        return new OpenAIClient(new OpenAIAsyncClient(buildInnerClient()));
+        return new OpenAIClient(buildInnerClient());
     }
 }
