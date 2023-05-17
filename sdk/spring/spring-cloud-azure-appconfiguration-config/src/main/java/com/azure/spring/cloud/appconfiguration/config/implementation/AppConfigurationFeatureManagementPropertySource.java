@@ -183,7 +183,7 @@ final class AppConfigurationFeatureManagementPropertySource extends AppConfigura
         return feature;
 
     }
-
+    
     /**
      * Looks at each filter used in a Feature Flag to check what types it is using.
      * 
