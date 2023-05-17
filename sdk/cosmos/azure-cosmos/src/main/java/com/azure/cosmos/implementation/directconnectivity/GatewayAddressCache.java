@@ -220,7 +220,6 @@ public class GatewayAddressCache implements IAddressCache {
             request, partitionKeyRangeIdentity, forceRefreshPartitionAddresses);
 
         Instant suboptimalServerPartitionTimestamp = this.suboptimalServerPartitionTimestamps.get(partitionKeyRangeIdentity);
-        String collectionRid = partitionKeyRangeIdentity.getCollectionRid();
 
         if (suboptimalServerPartitionTimestamp != null) {
             logger.debug("suboptimalServerPartitionTimestamp is {}", suboptimalServerPartitionTimestamp);
@@ -250,31 +249,11 @@ public class GatewayAddressCache implements IAddressCache {
 
         final boolean forceRefreshPartitionAddressesModified = forceRefreshPartitionAddresses;
 
-        Mono<AddressInformation[]> addressesBeforeRefreshAsObs = Mono.empty();
-
         if (forceRefreshPartitionAddressesModified) {
             this.suboptimalServerPartitionTimestamps.remove(partitionKeyRangeIdentity);
-            // if forceRefreshPartitionAddressesModified == true
-            // 1. try to get addresses for partition w/o refresh
-            // 2. this will eventually allow proactiveOpenConnectionsProcessor to know
-            // which addresses to exclude from the open connections flow
-            // 3. it can do so by diffing addresses fetched before and after a refresh, if
-            // there are addresses which are not fetched after a refresh, proactiveOpenConnectionsProcessor
-            // will exclude them if these addresses are also not used by any other partition
-            addressesBeforeRefreshAsObs = this.serverPartitionAddressCache
-                    .getAsync(
-                            partitionKeyRangeIdentity,
-                            cachedAddresses -> this.getAddressesForRangeId(
-                                    request,
-                                    partitionKeyRangeIdentity,
-                                    false,
-                                    cachedAddresses),
-                            cachedAddresses -> false);
         }
 
-        final Set<Uri> addressUrisBeforeRefresh = new HashSet<>();
-
-        Mono<Utils.ValueHolder<AddressInformation[]>> addressesAfterPossibleRefreshAsObs =
+        Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs =
                 this.serverPartitionAddressCache
                     .getAsync(
                         partitionKeyRangeIdentity,
@@ -291,15 +270,7 @@ public class GatewayAddressCache implements IAddressCache {
                         })
                     .map(Utils.ValueHolder::new);
 
-        return addressesBeforeRefreshAsObs
-                .flatMap(addressInfos -> {
-                    Arrays
-                            .stream(addressInfos)
-                            .map(AddressInformation::getPhysicalUri)
-                            .forEach(addressUrisBeforeRefresh::add);
-                    return Mono.empty();
-                })
-                .then(addressesAfterPossibleRefreshAsObs)
+        return addressesObs
                 .map(addressesValueHolder -> {
                     if (notAllReplicasAvailable(addressesValueHolder.v)) {
                         if (logger.isDebugEnabled()) {
@@ -320,55 +291,6 @@ public class GatewayAddressCache implements IAddressCache {
                         this.serverPartitionAddressCache.refresh(
                                 partitionKeyRangeIdentity,
                                 cachedAddresses -> this.getAddressesForRangeId(request, partitionKeyRangeIdentity, true, cachedAddresses));
-                    }
-
-                    Set<Uri> addressUrisAfterRefresh = Arrays
-                            .stream(addressesValueHolder.v)
-                            .map(AddressInformation::getPhysicalUri)
-                            .collect(Collectors.toSet());
-
-                    if (forceRefreshPartitionAddressesModified) {
-
-                        // extract addresses not used by the physical partition anymore
-                        if (addressUrisBeforeRefresh.removeAll(addressUrisAfterRefresh)) {
-
-                            for (Uri unusedAddressUri : addressUrisBeforeRefresh) {
-
-                                addressUriToPkrIdsMap.compute(unusedAddressUri, (ignore, pkrIdsForAddressUri) -> {
-
-                                    // remove addressUri -> physical partition mapping
-                                    if (pkrIdsForAddressUri != null && !pkrIdsForAddressUri.isEmpty()) {
-                                        pkrIdsForAddressUri.remove(partitionKeyRangeIdentity.getPartitionKeyRangeId());
-                                    }
-
-                                    // if the address is not used by any physical partition, it can
-                                    // be excluded from the open connection flow
-                                    if (pkrIdsForAddressUri != null && pkrIdsForAddressUri.isEmpty()) {
-                                        this.proactiveOpenConnectionsProcessor
-                                                .excludeAddressUriFromOpenConnectionsFlow(unusedAddressUri.getURIAsString());
-                                        this.proactiveOpenConnectionsProcessor
-                                                .removeAddressUriForCollectionRid(collectionRid, unusedAddressUri.getURIAsString());
-
-                                        return pkrIdsForAddressUri;
-                                    }
-
-                                    return pkrIdsForAddressUri;
-                                });
-                            }
-
-                            for (Uri addressUriAfterRefresh : addressUrisAfterRefresh) {
-                                addressUriToPkrIdsMap.compute(addressUriAfterRefresh, (ignore, pkrIdsForAddressUri) -> {
-
-                                    if (pkrIdsForAddressUri == null) {
-                                        pkrIdsForAddressUri = new HashSet<>(Collections.singleton(partitionKeyRangeIdentity.getPartitionKeyRangeId()));
-                                    } else {
-                                        pkrIdsForAddressUri.add(partitionKeyRangeIdentity.getPartitionKeyRangeId());
-                                    }
-
-                                    return pkrIdsForAddressUri;
-                                });
-                            }
-                        }
                     }
 
                     return addressesValueHolder;
@@ -718,15 +640,72 @@ public class GatewayAddressCache implements IAddressCache {
 
                                 // refresh / record new addresses in proactiveOpenConnectionsProcessor
                                 // when forceRefresh is true
+                                // if forceRefresh == true
+                                // 1. try to get addresses for partition w/o refresh
+                                // 2. this will eventually allow proactiveOpenConnectionsProcessor to know
+                                // which addresses to exclude from the open connections flow
+                                // 3. it can do so by diffing addresses fetched before and after a refresh, if
+                                // there are addresses which are not fetched after a refresh, proactiveOpenConnectionsProcessor
+                                // will exclude them if these addresses are also not used by any other partition
                                 if (forceRefresh) {
+
+                                    Set<Uri> addressUrisBeforeRefresh = Arrays
+                                            .stream(cachedAddresses)
+                                            .map(AddressInformation::getPhysicalUri)
+                                            .collect(Collectors.toSet());
+
+                                    Set<Uri> addressUrisAfterRefresh = Arrays.stream(pkrIdToAddressInfos.getRight())
+                                            .map(AddressInformation::getPhysicalUri)
+                                            .collect(Collectors.toSet());
+
                                     refreshCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(
-                                            collectionRid, pkrIdToAddressInfos.getRight());
+                                            collectionRid, addressUrisAfterRefresh);
+
+                                    // extract addresses not used by the physical partition anymore
+                                    if (addressUrisBeforeRefresh.removeAll(addressUrisAfterRefresh)) {
+
+                                        for (Uri unusedAddressUri : addressUrisBeforeRefresh) {
+
+                                            addressUriToPkrIdsMap.compute(unusedAddressUri, (ignore, pkrIdsForAddressUri) -> {
+
+                                                // remove addressUri -> physical partition mapping
+                                                if (pkrIdsForAddressUri != null && !pkrIdsForAddressUri.isEmpty()) {
+                                                    pkrIdsForAddressUri.remove(partitionKeyRangeId);
+                                                }
+
+                                                // if the address is not used by any physical partition, it can
+                                                // be excluded from the open connection flow
+                                                if (pkrIdsForAddressUri != null && pkrIdsForAddressUri.isEmpty()) {
+                                                    this.proactiveOpenConnectionsProcessor
+                                                            .excludeAddressUriFromOpenConnectionsFlow(unusedAddressUri.getURIAsString());
+                                                    this.proactiveOpenConnectionsProcessor
+                                                            .removeAddressUriForCollectionRid(collectionRid, unusedAddressUri.getURIAsString());
+
+                                                    return pkrIdsForAddressUri;
+                                                }
+
+                                                return pkrIdsForAddressUri;
+                                            });
+                                        }
+
+                                        for (Uri addressUriAfterRefresh : addressUrisAfterRefresh) {
+                                            addressUriToPkrIdsMap.compute(addressUriAfterRefresh, (ignore, pkrIdsForAddressUri) -> {
+
+                                                if (pkrIdsForAddressUri == null) {
+                                                    pkrIdsForAddressUri = new HashSet<>(Collections.singleton(partitionKeyRangeId));
+                                                } else {
+                                                    pkrIdsForAddressUri.add(partitionKeyRangeId);
+                                                }
+
+                                                return pkrIdsForAddressUri;
+                                            });
+                                        }
+                                    }
                                 }
 
                                 return pkrIdToAddressInfos;
                             })
-                            .collect(Collectors.toList())
-                            ;
+                            .collect(Collectors.toList());
                 });
 
         Mono<List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>>> result =
@@ -1163,12 +1142,12 @@ public class GatewayAddressCache implements IAddressCache {
         return addressInformations.length < ServiceConfig.SystemReplicationPolicy.MaxReplicaSetSize;
     }
 
-    private void refreshCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(String collectionRid, AddressInformation[] addressInfos) {
+    private void refreshCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(String collectionRid, Set<Uri> addressUris) {
         if (this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
 
-            List<String> addressUrisAsString = Arrays
-                    .stream(addressInfos)
-                    .map(addressInformation -> addressInformation.getPhysicalUri().getURIAsString())
+            List<String> addressUrisAsString = addressUris
+                    .stream()
+                    .map(Uri::getURIAsString)
                     .collect(Collectors.toList());
 
             this.proactiveOpenConnectionsProcessor
