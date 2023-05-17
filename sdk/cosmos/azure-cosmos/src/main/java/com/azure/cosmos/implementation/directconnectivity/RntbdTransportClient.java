@@ -370,7 +370,7 @@ public class RntbdTransportClient extends TransportClient {
             // In order to keep consistent behavior, we internally will always cancel the future.
             //
             // We should only record cancellation diagnostics if the signal is cancelled and the record is not done yet
-            if (!record.isDone()) {
+            if (record.isCancelled()) {
                 // Any of the reactor operators can terminate with a cancel signal instead of error signal
                 // For example collectList, Flux.merge, takeUntil
                 record.cancel(true);

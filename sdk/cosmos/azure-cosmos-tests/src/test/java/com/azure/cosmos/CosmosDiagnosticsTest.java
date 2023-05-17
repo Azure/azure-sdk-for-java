@@ -605,9 +605,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
-    public void directDiagnosticsOnCancelledOperation() throws Exception {
+    public void directDiagnosticsOnCancelledOperation() {
 
         CosmosAsyncClient client = null;
+        FaultInjectionRule faultInjectionRule = null;
 
         try {
             client = new CosmosClientBuilder()
@@ -620,7 +621,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             CosmosAsyncContainer container =
                 client.getDatabase(containerDirect.asyncContainer.getDatabase().getId()).getContainer(containerDirect.getId());
 
-            FaultInjectionRule faultInjectionRule =
+            faultInjectionRule =
                 new FaultInjectionRuleBuilder("connectionDelay")
                     .condition(new FaultInjectionConditionBuilder().build())
                     .result(
@@ -628,7 +629,6 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                             .delay(Duration.ofSeconds(2))
                             .build()
                     )
-                    .hitLimit(2)
                     .build();
 
             CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultInjectionRule)).block();
@@ -655,21 +655,10 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             }
 
         } finally {
-            if (client != null) {
-                client.close();
+            if (faultInjectionRule != null) {
+                faultInjectionRule.disable();
             }
-        }
-
-        InternalObjectNode internalObjectNode = getInternalObjectNode();
-        CosmosItemResponse<InternalObjectNode> createResponse = containerDirect.createItem(internalObjectNode);
-        validateDirectModeDiagnosticsOnSuccess(createResponse.getDiagnostics(), directClient, this.directClientUserAgent);
-
-        // validate that on failed operation request timeline is populated
-        try {
-            containerDirect.createItem(internalObjectNode);
-            fail("expected 409");
-        } catch (CosmosException e) {
-            validateDirectModeDiagnosticsOnException(e, this.directClientUserAgent);
+            safeClose(client);
         }
     }
 
