@@ -1,70 +1,71 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-03-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/rooms?api-version=2023-03-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "af08bd0c-6ab7-40ac-b2bf-ccf5f5c16a15",
-      "Content-Type" : "application/json"
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "3c41b9b1-bcab-4c4b-aca4-2006cc1148d5",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-azure-ref" : "20230428T201400Z-c0mfhvw3hp6crc3ebfzn6twhbs00000005ag00000000uzhs",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2022-02-01, 2023-03-31-preview",
       "Repeatability-Result" : "accepted",
-      "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Fri, 28 Apr 2023 20:14:01 GMT",
-      "MS-CV" : "CQ4NMNL9g0Oh1ZDPmyPVbg.0",
+      "Date" : "Mon, 15 May 2023 19:30:45 GMT",
+      "MS-CV" : "ZaKFIVRu6kWA9nY92hl3eA.0",
       "api-deprecated-versions" : "2021-04-07",
-      "Body" : "{\"id\":\"99440712786923486\",\"createdAt\":\"2023-04-28T20:14:00.8793873+00:00\",\"validFrom\":\"2023-04-28T20:13:19.4378387+00:00\",\"validUntil\":\"2023-05-28T20:13:19.4378387+00:00\"}",
+      "X-Azure-Ref" : "0ZYhiZAAAAAAhenEDTgFEQYbMP80mK1tjWVZSMzExMDAwMTE1MDIxADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "171",
+      "Body" : "{\"id\":\"99483147891460043\",\"createdAt\":\"2023-05-15T19:30:45.5841279+00:00\",\"validFrom\":\"2023-05-15T19:29:53.8190484+00:00\",\"validUntil\":\"2023-06-14T19:29:53.8190484+00:00\"}",
       "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "99440712786923486",
+      "Location" : "99483147891460043",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/99440712786923486?api-version=2023-03-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/rooms/99483147891460043?api-version=2023-03-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f88f9dde-8219-43e8-8767-2fe4150872e0",
-      "Content-Type" : "application/merge-patch+json"
+      "content-type" : "application/merge-patch+json",
+      "x-ms-client-request-id" : "ea65fc4e-ad2a-4250-8c21-54c01ccf526f",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
-      "x-azure-ref" : "20230428T201401Z-c0mfhvw3hp6crc3ebfzn6twhbs00000005ag00000000uzmq",
       "X-Cache" : "CONFIG_NOCACHE",
-      "Connection" : "keep-alive",
-      "MS-CV" : "Q5KJ1qOLw0iUisYQildnVg.0",
+      "MS-CV" : "3ned0aoZ4EeUlqr2sf+hPQ.0",
       "x-ms-error-code" : "BadRequest",
       "retry-after" : "0",
+      "X-Azure-Ref" : "0ZohiZAAAAABKCVddcsPURIaMz8er24DeWVZSMzExMDAwMTE1MDE3ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "241",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"BadRequest\",\"message\":\"The request could not be understood by the server due to malformed syntax.\",\"details\":[{\"code\":\"BadArgument\",\"message\":\"The time range is incorrect, or larger than 180 days.\",\"target\":\"ValidUntil\"}]}}",
-      "Date" : "Fri, 28 Apr 2023 20:14:01 GMT",
+      "Date" : "Mon, 15 May 2023 19:30:45 GMT",
       "Content-Type" : "application/json; charset=utf-8",
       "Request-Context" : "appId="
     },
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/99440712786923486?api-version=2023-03-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/rooms/99483147891460043?api-version=2023-03-31-preview",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "c124bf06-fda1-4c49-91a8-1c7d1b791d2d"
+      "x-ms-client-request-id" : "91df6989-4825-4914-b7cf-20c6bd2e929b",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)"
     },
     "Response" : {
-      "x-azure-ref" : "20230428T201401Z-c0mfhvw3hp6crc3ebfzn6twhbs00000005ag00000000uznd",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2022-02-01, 2023-03-31-preview",
-      "Connection" : "keep-alive",
-      "MS-CV" : "uix6htPUr0SOQIjCwx/SFA.0",
+      "MS-CV" : "BYXAWPdETECiSeJCvxuPlw.0",
       "api-deprecated-versions" : "2021-04-07",
       "retry-after" : "0",
+      "X-Azure-Ref" : "0ZohiZAAAAADFdmkMt4m6SLjUd326MhJIWVZSMzExMDAwMTE1MDIxADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Fri, 28 Apr 2023 20:14:01 GMT",
+      "Body" : "",
+      "Date" : "Mon, 15 May 2023 19:30:46 GMT",
       "Request-Context" : "appId="
     },
     "Exception" : null
