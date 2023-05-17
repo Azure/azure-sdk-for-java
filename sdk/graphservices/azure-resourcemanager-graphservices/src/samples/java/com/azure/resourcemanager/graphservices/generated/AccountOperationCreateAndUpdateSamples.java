@@ -22,7 +22,7 @@ public final class AccountOperationCreateAndUpdateSamples {
         manager
             .accountOperations()
             .define("11111111-aaaa-1111-bbbb-1111111111111")
-            .withRegion((String) null)
+            .withRegion("global")
             .withExistingResourceGroup("testResourceGroupGRAM")
             .withProperties(new AccountResourceProperties().withAppId("11111111-aaaa-1111-bbbb-111111111111"))
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
