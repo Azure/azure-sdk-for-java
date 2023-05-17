@@ -107,7 +107,7 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
                 receivePage(receivedPages, page);
             } else {
                 Stream<P> streamPage =
-                    pageRetrieverSync.getPageStream(continuationState.getLastContinuationToken(), defaultPageSize);
+                    ((PageRetrieverSync.InternalPageRetrieverSync<C, P>) pageRetrieverSync).getPageStream(continuationState.getLastContinuationToken(), defaultPageSize);
                 if (streamPage != null) {
                     streamPage.forEach(innerPage -> {
                         if (innerPage != null) {

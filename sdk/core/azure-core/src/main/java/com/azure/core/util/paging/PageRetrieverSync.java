@@ -26,16 +26,19 @@ public interface PageRetrieverSync<C, P> {
     P getPage(C continuationToken, Integer pageSize);
 
     /**
-     * Retrieves a stream of page starting from the page identified by the given continuation token.
-     *
-     * @param continuationToken Token identifying which page to retrieve, passing {@code null} indicates to retrieve
-     * the first page.
-     * @param pageSize The number of items to retrieve per page, passing {@code null} will use the source's default
-     * page size.
-     * @return A stream of page of elements type <P>.
+     * internal interface
      */
-    default Stream<P> getPageStream(C continuationToken, Integer pageSize) {
-        return null;
-    }
+    interface InternalPageRetrieverSync <C, P> extends PageRetrieverSync <C, P> {
 
+        /**
+         * Retrieves a stream of page starting from the page identified by the given continuation token.
+         *
+         * @param continuationToken Token identifying which page to retrieve, passing {@code null} indicates to retrieve
+         * the first page.
+         * @param pageSize The number of items to retrieve per page, passing {@code null} will use the source's default
+         * page size.
+         * @return A stream of page of elements type <P>.
+         */
+        Stream<P> getPageStream(C continuationToken, Integer pageSize);
+    }
 }

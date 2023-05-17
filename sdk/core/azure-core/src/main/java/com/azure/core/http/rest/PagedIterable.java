@@ -7,6 +7,8 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.PageRetrieverSync;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -187,7 +189,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      */
     @SuppressWarnings("deprecation")
     public <S> PagedIterable<S> mapPage(Function<T, S> mapper) {
-        Supplier<PageRetrieverSync<String, PagedResponse<S>>> provider = () -> new PageRetrieverSync<String, PagedResponse<S>>() {
+        Supplier<PageRetrieverSync<String, PagedResponse<S>>> provider = () -> new PageRetrieverSync.InternalPageRetrieverSync<String, PagedResponse<S>>() {
+
             @Override
             public PagedResponse<S> getPage(String continuationToken, Integer pageSize) {
                 return null;
@@ -195,9 +198,9 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
 
             @Override
             public Stream<PagedResponse<S>> getPageStream(String continuationToken, Integer pageSize) {
-                Stream<PagedResponse<T>> pagedResponseStream = (continuationToken == null)
+                Stream<PagedResponse<T>> pagedResponseStream = (pageSize == null)
                     ? PagedIterable.super.streamByPage()
-                    : PagedIterable.super.streamByPage(continuationToken);
+                    : PagedIterable.super.streamByPage(pageSize);
                 return pagedResponseStream.map(PagedIterable.this.mapPagedResponse(mapper));
             }
         };
@@ -205,12 +208,16 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
     }
 
     private <S> Function<PagedResponse<T>, PagedResponse<S>> mapPagedResponse(Function<T, S> mapper) {
-        return pagedResponse -> new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
-            pagedResponse.getStatusCode(),
-            pagedResponse.getHeaders(),
-            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
-            pagedResponse.getContinuationToken(),
-            null);
+        return pagedResponse -> {
+            ArrayList<S> pagedResponseList = new ArrayList<S>(pagedResponse.getValue().size());
+            pagedResponse.getValue().forEach(inner -> pagedResponseList.add(mapper.apply(inner)));
+            return new PagedResponseBase<HttpRequest, S>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(),
+                pagedResponse.getHeaders(),
+                pagedResponseList,
+                pagedResponse.getContinuationToken(),
+                null);
+        };
     }
 
     /**
