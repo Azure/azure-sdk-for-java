@@ -141,8 +141,7 @@ public class CallMediaUnitTests {
     @Test
     public void sendDtmfWithResponseTest() {
         Response<Void> response = callMedia.sendDtmfWithResponse(
-            new CommunicationUserIdentifier("id"),
-            Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()),
+            Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
             "ctx", Context.NONE
         );
         assertEquals(response.getStatusCode(), 202);

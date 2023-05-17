@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Usages ListByLocation. */
 public final class UsagesListByLocationSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Usages_ListByLocation.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Usages_ListByLocation.json
      */
     /**
      * Sample code: listUsages.
@@ -17,6 +15,6 @@ public final class UsagesListByLocationSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void listUsages(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.usages().listByLocation("westus", Context.NONE);
+        manager.usages().listByLocation("westus", com.azure.core.util.Context.NONE);
     }
 }

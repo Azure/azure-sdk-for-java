@@ -5,50 +5,46 @@
 package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
+import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
 import com.azure.resourcemanager.servicenetworking.models.AssociationUpdate;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssociationUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AssociationUpdate model =
             BinaryData
                 .fromString(
-                    "{\"tags\":{\"gbquxigj\":\"bhtqqrolfpfpsa\",\"lnerkujysvleju\":\"jgzjaoyfhrtx\",\"kcprbnw\":\"fqawrlyxw\",\"ysszdnrujqguh\":\"xgjvtbv\"},\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"f\"}}}")
+                    "{\"tags\":{\"hwxmnteiwa\":\"sdkf\",\"fsrpymzidnse\":\"pvkmijcmmxdcuf\",\"yc\":\"cxtbzsg\",\"mdwzjeiachboo\":\"sne\"},\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"sfqpteehz\"}}}")
                 .toObject(AssociationUpdate.class);
-        Assertions.assertEquals("bhtqqrolfpfpsa", model.tags().get("gbquxigj"));
-        Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
-        Assertions.assertEquals("f", model.properties().subnet().id());
+        Assertions.assertEquals("sdkf", model.tags().get("hwxmnteiwa"));
+        Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
+        Assertions.assertEquals("sfqpteehz", model.subnet().id());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AssociationUpdate model =
             new AssociationUpdate()
                 .withTags(
                     mapOf(
-                        "gbquxigj",
-                        "bhtqqrolfpfpsa",
-                        "lnerkujysvleju",
-                        "jgzjaoyfhrtx",
-                        "kcprbnw",
-                        "fqawrlyxw",
-                        "ysszdnrujqguh",
-                        "xgjvtbv"))
-                .withProperties(
-                    new AssociationUpdateProperties()
-                        .withAssociationType(AssociationType.SUBNETS)
-                        .withSubnet(new AssociationSubnet().withId("f")));
+                        "hwxmnteiwa",
+                        "sdkf",
+                        "fsrpymzidnse",
+                        "pvkmijcmmxdcuf",
+                        "yc",
+                        "cxtbzsg",
+                        "mdwzjeiachboo",
+                        "sne"))
+                .withAssociationType(AssociationType.SUBNETS)
+                .withSubnet(new AssociationSubnetUpdate().withId("sfqpteehz"));
         model = BinaryData.fromObject(model).toObject(AssociationUpdate.class);
-        Assertions.assertEquals("bhtqqrolfpfpsa", model.tags().get("gbquxigj"));
-        Assertions.assertEquals(AssociationType.SUBNETS, model.properties().associationType());
-        Assertions.assertEquals("f", model.properties().subnet().id());
+        Assertions.assertEquals("sdkf", model.tags().get("hwxmnteiwa"));
+        Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
+        Assertions.assertEquals("sfqpteehz", model.subnet().id());
     }
 
     @SuppressWarnings("unchecked")

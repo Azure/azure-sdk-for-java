@@ -13,7 +13,7 @@ public final class VaultPropertiesMoveDetailsTests {
         VaultPropertiesMoveDetails model =
             BinaryData
                 .fromString(
-                    "{\"operationId\":\"zj\",\"startTimeUtc\":\"2021-03-30T03:12:08Z\",\"completionTimeUtc\":\"2021-10-08T22:25:54Z\",\"sourceResourceId\":\"alhbx\",\"targetResourceId\":\"e\"}")
+                    "{\"operationId\":\"wlbjnpgacftade\",\"startTimeUtc\":\"2020-12-20T16:44:21Z\",\"completionTimeUtc\":\"2021-04-14T12:48:39Z\",\"sourceResourceId\":\"fsoppusuesnzw\",\"targetResourceId\":\"jbavorxzdm\"}")
                 .toObject(VaultPropertiesMoveDetails.class);
     }
 

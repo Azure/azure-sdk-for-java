@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devhub.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceProvider GitHubOAuthCallback. */
 public final class ResourceProviderGitHubOAuthCallbackSamples {
     /*
-     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-04-01-preview/examples/GitHubOAuthCallback.json
+     * x-ms-original-file: specification/developerhub/resource-manager/Microsoft.DevHub/preview/2022-10-11-preview/examples/GitHubOAuthCallback.json
      */
     /**
      * Sample code: GitHub OAuth Callback.
@@ -23,6 +21,6 @@ public final class ResourceProviderGitHubOAuthCallbackSamples {
                 "eastus2euap",
                 "3584d83530557fdd1f46af8289938c8ef79f9dc5",
                 "12345678-3456-7890-5678-012345678901",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

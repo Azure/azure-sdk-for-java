@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetworkConnections GetHealthDetails. */
 public final class NetworkConnectionsGetHealthDetailsSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/NetworkConnections_GetHealthDetails.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/NetworkConnections_GetHealthDetails.json
      */
     /**
      * Sample code: NetworkConnections_GetHealthDetails.
@@ -18,6 +16,8 @@ public final class NetworkConnectionsGetHealthDetailsSamples {
      */
     public static void networkConnectionsGetHealthDetails(
         com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.networkConnections().getHealthDetailsWithResponse("rg1", "eastusnetwork", Context.NONE);
+        manager
+            .networkConnections()
+            .getHealthDetailsWithResponse("rg1", "eastusnetwork", com.azure.core.util.Context.NONE);
     }
 }

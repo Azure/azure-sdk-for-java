@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Association;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
@@ -34,7 +33,7 @@ public final class AssociationsInterfacesListByTrafficControllerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"atkpnp\"},\"provisioningState\":\"Failed\"},\"location\":\"xbczwtruwiqz\",\"tags\":{\"pkwlhz\":\"vsovmyokac\"},\"id\":\"obpxjmflbvvn\",\"name\":\"hrk\",\"type\":\"ciwwzjuqkhr\"}]}";
+            "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"vjxxjnsp\"},\"provisioningState\":\"Accepted\"},\"location\":\"koen\",\"tags\":{\"dng\":\"knvudwtiukb\",\"g\":\"pocipazyxoegu\",\"mrbpizcdrqj\":\"npiucgygevqznty\"},\"id\":\"dpydn\",\"name\":\"yhxdeoejzicwi\",\"type\":\"sjttgzfbish\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,11 +62,13 @@ public final class AssociationsInterfacesListByTrafficControllerMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Association> response =
-            manager.associationsInterfaces().listByTrafficController("vkd", "jsllrmv", Context.NONE);
+            manager
+                .associationsInterfaces()
+                .listByTrafficController("zy", "shxmzsbbzoggigrx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xbczwtruwiqz", response.iterator().next().location());
-        Assertions.assertEquals("vsovmyokac", response.iterator().next().tags().get("pkwlhz"));
+        Assertions.assertEquals("koen", response.iterator().next().location());
+        Assertions.assertEquals("knvudwtiukb", response.iterator().next().tags().get("dng"));
         Assertions.assertEquals(AssociationType.SUBNETS, response.iterator().next().associationType());
-        Assertions.assertEquals("atkpnp", response.iterator().next().subnet().id());
+        Assertions.assertEquals("vjxxjnsp", response.iterator().next().subnet().id());
     }
 }

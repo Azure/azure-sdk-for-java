@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 
 /** Samples for RecordSets Delete. */
@@ -23,7 +22,13 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("resourceGroup1", "privatezone1.com", RecordType.TXT, "recordTXT", null, Context.NONE);
+            .deleteWithResponse(
+                "resourceGroup1",
+                "privatezone1.com",
+                RecordType.TXT,
+                "recordTXT",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -40,7 +45,13 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("resourceGroup1", "privatezone1.com", RecordType.MX, "recordMX", null, Context.NONE);
+            .deleteWithResponse(
+                "resourceGroup1",
+                "privatezone1.com",
+                RecordType.MX,
+                "recordMX",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -58,7 +69,12 @@ public final class RecordSetsDeleteSamples {
             .serviceClient()
             .getRecordSets()
             .deleteWithResponse(
-                "resourceGroup1", "privatezone1.com", RecordType.CNAME, "recordCNAME", null, Context.NONE);
+                "resourceGroup1",
+                "privatezone1.com",
+                RecordType.CNAME,
+                "recordCNAME",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -76,7 +92,12 @@ public final class RecordSetsDeleteSamples {
             .serviceClient()
             .getRecordSets()
             .deleteWithResponse(
-                "resourceGroup1", "privatezone1.com", RecordType.AAAA, "recordAAAA", null, Context.NONE);
+                "resourceGroup1",
+                "privatezone1.com",
+                RecordType.AAAA,
+                "recordAAAA",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -93,7 +114,13 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("resourceGroup1", "privatezone1.com", RecordType.SRV, "recordSRV", null, Context.NONE);
+            .deleteWithResponse(
+                "resourceGroup1",
+                "privatezone1.com",
+                RecordType.SRV,
+                "recordSRV",
+                null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -110,7 +137,8 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("resourceGroup1", "privatezone1.com", RecordType.A, "recordA", null, Context.NONE);
+            .deleteWithResponse(
+                "resourceGroup1", "privatezone1.com", RecordType.A, "recordA", null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -127,6 +155,7 @@ public final class RecordSetsDeleteSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteWithResponse("resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, "1", null, Context.NONE);
+            .deleteWithResponse(
+                "resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, "1", null, com.azure.core.util.Context.NONE);
     }
 }

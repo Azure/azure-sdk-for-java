@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.OperationListResult;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"qbuaceopzfqr\",\"isDataAction\":true,\"display\":{\"provider\":\"pppcqeqxo\",\"resource\":\"dahzxctobg\",\"operation\":\"dmoizpostmg\",\"description\":\"fbunrmfqjhhk\"},\"origin\":\"user\",\"actionType\":\"Internal\"},{\"name\":\"mjh\",\"isDataAction\":false,\"display\":{\"provider\":\"gudivkrtswbxqz\",\"resource\":\"zjf\",\"operation\":\"vjfdx\",\"description\":\"vetvt\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"oqmcbxvwvxyslq\",\"isDataAction\":false,\"display\":{\"provider\":\"obl\",\"resource\":\"k\",\"operation\":\"mpew\",\"description\":\"fbkrvrnsvs\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"crsbfovasr\"}")
+                    "{\"value\":[{\"name\":\"hxcr\",\"isDataAction\":false,\"display\":{\"provider\":\"asrru\",\"resource\":\"bhsqfsubcgjbirxb\",\"operation\":\"bsrfbj\",\"description\":\"twss\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"jzbexilzznfq\",\"isDataAction\":false,\"display\":{\"provider\":\"mqtaruoujmkcjh\",\"resource\":\"ytjrybnwjewgdr\",\"operation\":\"rvnaenqpeh\",\"description\":\"doy\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"nzdndslgna\"}")
                 .toObject(OperationListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationListResult model = new OperationListResult();
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
     }

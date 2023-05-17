@@ -9,6 +9,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.devhub.fluent.ResourceProvidersClient;
+import com.azure.resourcemanager.devhub.fluent.models.ArtifactGenerationProperties;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthInfoResponseInner;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthListResponseInner;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthResponseInner;
@@ -17,6 +18,8 @@ import com.azure.resourcemanager.devhub.models.GitHubOAuthInfoResponse;
 import com.azure.resourcemanager.devhub.models.GitHubOAuthListResponse;
 import com.azure.resourcemanager.devhub.models.GitHubOAuthResponse;
 import com.azure.resourcemanager.devhub.models.ResourceProviders;
+import java.util.Collections;
+import java.util.Map;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
     private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
@@ -29,15 +32,6 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         ResourceProvidersClient innerClient, com.azure.resourcemanager.devhub.DevHubManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public GitHubOAuthInfoResponse gitHubOAuth(String location) {
-        GitHubOAuthInfoResponseInner inner = this.serviceClient().gitHubOAuth(location);
-        if (inner != null) {
-            return new GitHubOAuthInfoResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<GitHubOAuthInfoResponse> gitHubOAuthWithResponse(
@@ -55,10 +49,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public GitHubOAuthResponse gitHubOAuthCallback(String location, String code, String state) {
-        GitHubOAuthResponseInner inner = this.serviceClient().gitHubOAuthCallback(location, code, state);
+    public GitHubOAuthInfoResponse gitHubOAuth(String location) {
+        GitHubOAuthInfoResponseInner inner = this.serviceClient().gitHubOAuth(location);
         if (inner != null) {
-            return new GitHubOAuthResponseImpl(inner, this.manager());
+            return new GitHubOAuthInfoResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -79,10 +73,10 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public GitHubOAuthListResponse listGitHubOAuth(String location) {
-        GitHubOAuthListResponseInner inner = this.serviceClient().listGitHubOAuth(location);
+    public GitHubOAuthResponse gitHubOAuthCallback(String location, String code, String state) {
+        GitHubOAuthResponseInner inner = this.serviceClient().gitHubOAuthCallback(location, code, state);
         if (inner != null) {
-            return new GitHubOAuthListResponseImpl(inner, this.manager());
+            return new GitHubOAuthResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -99,6 +93,29 @@ public final class ResourceProvidersImpl implements ResourceProviders {
                 new GitHubOAuthListResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
+        }
+    }
+
+    public GitHubOAuthListResponse listGitHubOAuth(String location) {
+        GitHubOAuthListResponseInner inner = this.serviceClient().listGitHubOAuth(location);
+        if (inner != null) {
+            return new GitHubOAuthListResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Map<String, String>> generatePreviewArtifactsWithResponse(
+        String location, ArtifactGenerationProperties parameters, Context context) {
+        return this.serviceClient().generatePreviewArtifactsWithResponse(location, parameters, context);
+    }
+
+    public Map<String, String> generatePreviewArtifacts(String location, ArtifactGenerationProperties parameters) {
+        Map<String, String> inner = this.serviceClient().generatePreviewArtifacts(location, parameters);
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
         }
     }
 
