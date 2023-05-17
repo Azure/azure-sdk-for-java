@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for AssociationsInterface ListByTrafficController. */
 public final class AssociationsInterfaceListByTrafficControllerSamples {
     /*
@@ -17,6 +15,6 @@ public final class AssociationsInterfaceListByTrafficControllerSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void getAssociations(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.associationsInterfaces().listByTrafficController("rg1", "TC1", Context.NONE);
+        manager.associationsInterfaces().listByTrafficController("rg1", "tc1", com.azure.core.util.Context.NONE);
     }
 }
