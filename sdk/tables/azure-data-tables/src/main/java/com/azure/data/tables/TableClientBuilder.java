@@ -71,7 +71,7 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * </pre>
  * <!-- end com.azure.data.tables.tableClientBuilder.connectionString#string -->
  * 
- * <2>Authentication via Shared Key</h2>
+ * <h2>Authentication via Shared Key</h2>
  * 
  * <p>To use shared key authentication, create an instance of {@link com.azure.core.credential.AzureNamedKeyCredential AzureNamedKeyCredential} and pass it to the builder's
  * {@link TableClientBuilder#credential(AzureNamedKeyCredential)} method. Pass the account URL to the builder's {@link TableClientBuilder#endpoint(String)} method.</p>

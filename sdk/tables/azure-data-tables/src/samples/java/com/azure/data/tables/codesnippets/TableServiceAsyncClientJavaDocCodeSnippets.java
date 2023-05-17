@@ -57,7 +57,7 @@ public class TableServiceAsyncClientJavaDocCodeSnippets {
     }
 
     /**
-     * Generates code samples for using {@link TableServiceAsyncClient#getTableClient(String)()}
+     * Generates code samples for using {@link TableServiceAsyncClient#getTableClient(String)}
      */
     public void getTableClient() {
         TableServiceAsyncClient tableServiceAsyncClient = createAsyncClient();
