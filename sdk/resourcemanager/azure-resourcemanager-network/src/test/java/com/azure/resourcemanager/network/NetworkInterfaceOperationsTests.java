@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.network;
 
 import com.azure.core.management.Region;
+import com.azure.resourcemanager.network.fluent.models.NatGatewayInner;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
@@ -459,5 +460,50 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         availableIps = subnet.listAvailablePrivateIPAddresses();
         Assertions.assertFalse(availableIps.contains(availableIp));
+    }
+
+    @Test
+    public void canAssociateNatGateway() {
+        String networkName = generateRandomResourceName("vnet", 10);
+        String subnetName = "subnet1";
+        String subnet2Name = "subnet2";
+
+        NatGatewayInner gateway1 = createNatGateway();
+
+        Network network = networkManager.networks()
+            .define(networkName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/24")
+            .defineSubnet(subnetName)
+                .withAddressPrefix("10.0.0.0/28")
+                .withExistingNatGateway(gateway1.id())
+                .attach()
+            .create();
+
+        Subnet subnet = network.subnets().get(subnetName);
+        Assertions.assertEquals(gateway1.id(), subnet.natGatewayId());
+
+        NatGatewayInner gateway2 = createNatGateway();
+
+        network.update()
+            .updateSubnet(subnetName)
+                .withExistingNatGateway(gateway2.id())
+                .parent()
+            .defineSubnet(subnet2Name)
+                .withAddressPrefix("10.0.1.0/28")
+                .withExistingNatGateway(gateway2.id())
+                .attach()
+            .apply();
+
+        subnet = network.subnets().get(subnetName);
+        Assertions.assertEquals(gateway2.id(), subnet.natGatewayId());
+
+        Subnet subnet2 = network.subnets().get(subnet2Name);
+        Assertions.assertEquals(gateway2.id(), subnet2.natGatewayId());
+    }
+
+    private NatGatewayInner createNatGateway() {
+        String natGatewayName = generateRandomResourceName("natgw", 10);
     }
 }
