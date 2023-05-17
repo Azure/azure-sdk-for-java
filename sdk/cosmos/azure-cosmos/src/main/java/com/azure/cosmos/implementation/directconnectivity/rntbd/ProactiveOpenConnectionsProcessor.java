@@ -26,6 +26,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +45,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final ReentrantReadWriteLock.WriteLock endpointsUnderMonitorMapWriteLock;
     private final ReentrantReadWriteLock.ReadLock endpointsUnderMonitorMapReadLock;
     private final Set<String> containersUnderOpenConnectionAndInitCaches;
+    private final Map<String, Set<String>> collectionRidsAndUrisUnderOpenConnectionAndInitCaches;
+    private final Set<String> addressUrisUnderOpenConnectionsAndInitCaches;
     private final Set<String> addressUrisAsStringToExcludeFromOpenConnection;
     private final Object containersUnderOpenConnectionAndInitCachesLock;
     private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
@@ -66,6 +69,8 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.endpointProvider = endpointProvider;
         this.serializedEmitFailureHandler = new SerializedEmitFailureHandler();
         this.containersUnderOpenConnectionAndInitCaches = ConcurrentHashMap.newKeySet();
+        this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches = new ConcurrentHashMap<>();
+        this.addressUrisUnderOpenConnectionsAndInitCaches = ConcurrentHashMap.newKeySet();
         this.addressUrisAsStringToExcludeFromOpenConnection = ConcurrentHashMap.newKeySet();
         this.containersUnderOpenConnectionAndInitCachesLock = new Object();
 
@@ -140,6 +145,16 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         getOrCreateEndpoint(openConnectionTask);
     }
 
+    // There are two major kind tasks will be submitted
+    // 1. Tasks from up caller -> in this case, before we enqueue a task we would want to check whether the endpoint has already in the map
+    // 2. Tasks from existing flow -> for each endpoint, each time we will only 1 connection, if the connection count < the mini connection requirements,then re-queue.
+    // for this case, then there is no need to validate whether the endpoint exists
+    //
+    // Using synchronized here to reduce the Sinks.EmitResult.FAIL_NON_SERIALIZED errors.
+    private synchronized void submitOpenConnectionWithinLoopInternal(OpenConnectionTask openConnectionTask) {
+        openConnectionsTaskSink.emitNext(openConnectionTask, serializedEmitFailureHandler);
+    }
+
     @Override
     public void close() throws IOException {
         if (isClosed.compareAndSet(false, true)) {
@@ -199,12 +214,27 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         }
     }
 
-    public void excludeAddressUriForOpenConnections(String addressUriAsString) {
-        this.addressUrisAsStringToExcludeFromOpenConnection.add(addressUriAsString);
+    public void recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(String collectionRid, List<String> addressUrisAsString) {
+        this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.compute(collectionRid, (ignore, urisAsString) -> {
+
+            if (urisAsString == null) {
+                urisAsString = new HashSet<>(addressUrisAsString);
+            } else {
+                urisAsString.addAll(addressUrisAsString);
+            }
+
+            this.addressUrisUnderOpenConnectionsAndInitCaches.addAll(addressUrisAsString);
+
+            return urisAsString;
+        });
     }
 
-    public void includeAddressUriForOpenConnections(String addressUriAsString) {
-        this.addressUrisAsStringToExcludeFromOpenConnection.remove(addressUriAsString);
+    public boolean isAddressUriUnderOpenConnectionsFlow(String addressUriAsString) {
+        return this.addressUrisUnderOpenConnectionsAndInitCaches.contains(addressUriAsString);
+    }
+
+    public boolean isCollectionRidUnderOpenConnectionsFlow(String collectionRid) {
+        return this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.containsKey(collectionRid);
     }
 
     private Disposable getBackgroundOpenConnectionsPublisher() {

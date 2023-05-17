@@ -28,6 +28,9 @@ public class AcsChatEventBaseProperties {
     @JsonProperty(value = "threadId")
     private String threadId;
 
+    /** Creates an instance of AcsChatEventBaseProperties class. */
+    public AcsChatEventBaseProperties() {}
+
     /**
      * Get the recipientCommunicationIdentifier property: The communication identifier of the target user.
      *

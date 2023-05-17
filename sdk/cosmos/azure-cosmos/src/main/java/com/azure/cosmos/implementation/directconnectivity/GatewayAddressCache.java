@@ -1019,6 +1019,7 @@ public class GatewayAddressCache implements IAddressCache {
 
         return Flux.concat(tasks)
                 .flatMap(list -> {
+                    List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> pkrIdToAddressInfosList =
                     List<Pair<PartitionKeyRangeIdentity, AddressInformation[]>> pkrToAddressInfosList =
                             list.stream()
                                     .filter(addressInfo -> this.protocolScheme.equals(addressInfo.getProtocolScheme()))
@@ -1027,6 +1028,22 @@ public class GatewayAddressCache implements IAddressCache {
                                     .stream().map(addresses -> toPartitionAddressAndRange(collection.getResourceId(), addresses))
                                     .collect(Collectors.toList());
 
+                    return Flux.fromIterable(pkrIdToAddressInfosList)
+                            .flatMap(pkrIdToAddressInfos -> {
+                                PartitionKeyRangeIdentity partitionKeyRangeIdentity = pkrIdToAddressInfos.getLeft();
+                                AddressInformation[] addressInfos = pkrIdToAddressInfos.getRight();
+
+                                this.serverPartitionAddressCache.set(partitionKeyRangeIdentity, addressInfos);
+
+                                List<String> addressUrisAsString = Arrays
+                                        .stream(addressInfos)
+                                        .map(addressInformation -> addressInformation.getPhysicalUri().getURIAsString())
+                                        .collect(Collectors.toList());
+
+                                this.proactiveOpenConnectionsProcessor
+                                        .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(collection.getResourceId(), addressUrisAsString);
+
+                                return Flux.fromArray(pkrIdToAddressInfos.getRight());
                     return Flux.fromIterable(pkrToAddressInfosList)
                             .flatMap(pkrToAddressInfos -> {
 

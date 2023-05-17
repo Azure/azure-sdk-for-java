@@ -17,6 +17,9 @@ public final class AcsChatMessageDeletedEventData extends AcsChatMessageEventBas
     @JsonProperty(value = "deleteTime")
     private OffsetDateTime deleteTime;
 
+    /** Creates an instance of AcsChatMessageDeletedEventData class. */
+    public AcsChatMessageDeletedEventData() {}
+
     /**
      * Get the deleteTime property: The time at which the message was deleted.
      *
