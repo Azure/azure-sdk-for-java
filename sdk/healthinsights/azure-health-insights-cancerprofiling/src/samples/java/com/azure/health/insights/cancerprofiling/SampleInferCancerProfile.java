@@ -3,7 +3,6 @@
 
 package com.azure.health.insights.cancerprofiling;
 
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
