@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query;
 
+import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.FeedResponse;
@@ -10,7 +11,9 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
@@ -29,13 +32,15 @@ abstract class Fetcher<T> {
     private final AtomicBoolean shouldFetchMore;
     private final AtomicInteger maxItemCount;
     private final AtomicInteger top;
+    private final List<CosmosDiagnostics> cancelledRequestCosmosDiagnosticsTracker;
 
     public Fetcher(
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
         boolean isChangeFeed,
         int top,
         int maxItemCount,
-        OperationContextAndListenerTuple operationContext) {
+        OperationContextAndListenerTuple operationContext,
+        List<CosmosDiagnostics> cancelledRequestCosmosDiagnosticsTracker) {
 
         checkNotNull(executeFunc, "Argument 'executeFunc' must not be null.");
 
@@ -58,6 +63,7 @@ abstract class Fetcher<T> {
             this.maxItemCount = new AtomicInteger(Math.min(maxItemCount, top));
         }
         this.shouldFetchMore = new AtomicBoolean(true);
+        this.cancelledRequestCosmosDiagnosticsTracker = cancelledRequestCosmosDiagnosticsTracker;
     }
 
     public final boolean shouldFetchMore() {
@@ -140,9 +146,18 @@ abstract class Fetcher<T> {
     protected abstract RxDocumentServiceRequest createRequest(int maxItemCount);
 
     private Mono<FeedResponse<T>> nextPage(RxDocumentServiceRequest request) {
-        return executeFunc.apply(request).map(rsp -> {
-            updateState(rsp, request);
-            return rsp;
-        });
+        return executeFunc
+            .apply(request)
+            .map(rsp -> {
+                updateState(rsp, request);
+                return rsp;
+            })
+            .doFinally(signalType -> {
+                if (signalType != SignalType.CANCEL || this.cancelledRequestCosmosDiagnosticsTracker == null) {
+                    return;
+                }
+
+                this.cancelledRequestCosmosDiagnosticsTracker.add(request.requestContext.cosmosDiagnostics);
+            });
     }
 }
