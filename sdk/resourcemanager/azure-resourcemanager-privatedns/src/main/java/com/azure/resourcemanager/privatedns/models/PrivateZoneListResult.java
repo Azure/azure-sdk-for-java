@@ -24,6 +24,10 @@ public final class PrivateZoneListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of PrivateZoneListResult class. */
+    public PrivateZoneListResult() {
+    }
+
     /**
      * Get the value property: Information about the Private DNS zones.
      *
