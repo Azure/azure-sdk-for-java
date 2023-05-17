@@ -1201,6 +1201,19 @@ public class TableAsyncClientTest extends TableClientTestBase {
     }
 
     @Test
+    public void allowsCreationOfEntityWithEmptyStringPrimaryKey() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Empty row or partition keys are not supported on Cosmos endpoints.");
+        String entityName = testResourceNamer.randomName("name", 10);
+        TableEntity entity = new TableEntity("", "");
+        entity.addProperty("Name", entityName);
+        StepVerifier.create(tableClient.createEntityWithResponse(entity))
+            .assertNext(response -> assertEquals(204, response.getStatusCode()))
+            .expectComplete()
+            .verify();
+    }
+
+    @Test
     public void allowListEntitiesWithEmptyPrimaryKey() {
         Assumptions.assumeFalse(IS_COSMOS_TEST,
             "Empty row or partition keys are not supported on Cosmos endpoints.");
@@ -1211,10 +1224,8 @@ public class TableAsyncClientTest extends TableClientTestBase {
         ListEntitiesOptions options = new ListEntitiesOptions();
         options.setFilter("PartitionKey eq '' and RowKey eq ''");
         StepVerifier.create(tableClient.listEntities(options))
-            .expectNextCount(1)
-            .assertNext(returnedEntity -> {
-                assertEquals(entityName, returnedEntity.getProperty("Name"));
-            })
+            .assertNext(en -> assertEquals(entityName, en.getProperties().get("Name")))
+            .expectNextCount(0)
             .expectComplete()
             .verify();
     }
