@@ -29,8 +29,6 @@ stages:
           groupId: com.azure
         - name: azure-cosmos-benchmark
           groupId: com.azure
-        - name: azure-cosmos-test
-          groupId: com.azure
       TimeoutInMinutes: 120
       MaxParallel: 8
       PreSteps:
