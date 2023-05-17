@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue where `408/20008` always be populated in CosmosDiagnostics when the `RNTBD` request failed - See [PR 34999](https://github.com/Azure/azure-sdk-for-java/pull/34999)
 
 #### Other Changes
 
