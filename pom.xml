@@ -46,6 +46,7 @@
     <module>sdk/connectedvmware</module>
     <module>sdk/consumption</module>
     <module>sdk/containerregistry</module>
+    <module>sdk/containerservicefleet</module>
     <module>sdk/core</module>
     <module>sdk/cosmos</module>
     <module>sdk/costmanagement</module>
