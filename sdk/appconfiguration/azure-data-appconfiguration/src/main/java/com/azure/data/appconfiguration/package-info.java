@@ -19,11 +19,11 @@
  * Client class. To make this possible you'll need the connection string of the configuration store. Alternatively,
  * you can use AAD authentication via
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a>
- * to connect to the service.
- *
- * (1) Connection string, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#connectionString(java.lang.String)}
- * (2) Azure Active Directory, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#credential(com.azure.core.credential.TokenCredential)}
- * </p>
+ * to connect to the service.</p>
+ * <ol>
+ *   <li>Connection string, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#connectionString(java.lang.String) connectionString}.</li>
+ *   <li>Azure Active Directory, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#credential(com.azure.core.credential.TokenCredential) credential}.</li>
+ * </ol>
  *
  * <p><strong>Sample: Construct Asynchronous Configuration Client with Connection String</strong></p>
  *
@@ -39,7 +39,7 @@
  * </pre>
  * <!-- end com.azure.data.applicationconfig.async.configurationclient.instantiation  -->
  *
- * <p><strong>Sample: Construct synchronous Configuration Client with Connection String</strong></p>
+ * <p><strong>Sample: Construct Synchronous Configuration Client with Connection String</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a {@link com.azure.data.appconfiguration.ConfigurationClient},
  * using the {@link com.azure.data.appconfiguration.ConfigurationClientBuilder} to configure it with a connection
@@ -60,9 +60,14 @@
  * {@link com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting} and
  * {@link com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting}.</p>
  *
- * <p><strong>Code Samples</strong></p>
+ * <br/>
  *
- * <h2>Add Confiiguration Setting</h2>
+ * <hr/>
+ *
+ * <h2>Add Configuration Setting</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to add a configuration setting in the
+ * Azure App Configuration.</p>
  *
  * <p>The sample below shows how to add a setting with the key "prodDBConnection", label "westUS" and value "db_connection" using {@link com.azure.data.appconfiguration.ConfigurationClient}.</p>
  *
@@ -74,13 +79,18 @@
  * </pre>
  * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
  *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
  * <br/>
  *
  * <hr/>
  *
- * <h2>Update Confiiguration Setting</h2>
+ * <h2>Update Configuration Setting</h2>
  *
- * <p> The sample below shows how to update setting's value "db_connection" to "updated_db_connection"</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to update a configuration setting in the
+ * Azure App Configuration.</p>
+ *
+ * <p>The sample below shows how to update setting's value "db_connection" to "updated_db_connection"</p>
  *
  * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
  * <pre>
@@ -95,12 +105,17 @@
  * </pre>
  * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
  *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
  * <br/>
  *
  * <hr/>
  *
- * <h2>Get Confiiguration Setting</h2>
- * 
+ * <h2>Get Configuration Setting</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to get a configuration setting in the
+ * Azure App Configuration.</p>
+ *
  * <p>The sample below shows how to retrieve the setting with the key "prodDBConnection".</p>
  *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
@@ -111,11 +126,16 @@
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
  *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
  * <br/>
  *
  * <hr/>
  *
- * <h2>Get Confiiguration Setting</h2>
+ * <h2>Delete Configuration Setting</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to delete a configuration setting in
+ * the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to delete the setting with the key "prodDBConnection".</p>
  *
@@ -127,11 +147,16 @@
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
  *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
  * <br/>
  *
  * <hr/>
  *
- * <h2>List Confiiguration Settings</h2>
+ * <h2>List Configuration Settings</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to list configuration settings in
+ * the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to retrieve/List all settings that use the key "prodDBConnection".</p>
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
@@ -142,6 +167,12 @@
  * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
  *
  * @see com.azure.data.appconfiguration.models.ConfigurationSetting
  * @see com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting

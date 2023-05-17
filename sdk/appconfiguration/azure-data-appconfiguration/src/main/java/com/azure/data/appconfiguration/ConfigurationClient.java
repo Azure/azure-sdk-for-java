@@ -40,14 +40,26 @@ import static com.azure.data.appconfiguration.implementation.Utility.toSettingFi
 import static com.azure.data.appconfiguration.implementation.Utility.validateSetting;
 
 /**
- * This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings},
+ * <p>This class provides a client that contains all the operations for {@link ConfigurationSetting ConfigurationSettings},
  * {@link FeatureFlagConfigurationSetting FeatureFlagConfigurationSetting} or
  * {@link SecretReferenceConfigurationSetting SecretReferenceConfigurationSetting} in Azure App Configuration Store.
  * Operations allowed by the client are adding, retrieving, deleting, set read-only status ConfigurationSettings, and
- * listing settings or revision of a setting based on a {@link SettingSelector filter}.
+ * listing settings or revision of a setting based on a {@link SettingSelector filter}.</p>
  *
- * Additionally, this class allows to add an external synchronization token to ensure service requests receive
- * up-to-date values. Use the {@link #updateSyncToken(String) updateSyncToken} method.
+ * <p>Additionally, this class allows to add an external synchronization token to ensure service requests receive
+ * up-to-date values. Use the {@link #updateSyncToken(String) updateSyncToken} method.</p>
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <p>In order to interact with the App Configuration service you'll need to create an instance of the Configuration
+ * Client class. To make this possible you'll need the connection string of the configuration store. Alternatively,
+ * you can use AAD authentication via
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a>
+ * to connect to the service.</p>
+ * <ol>
+ *   <li>Connection string, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#connectionString(java.lang.String) connectionString}.</li>
+ *   <li>Azure Active Directory, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#credential(com.azure.core.credential.TokenCredential) credential}.</li>
+ * </ol>
  *
  * <p><strong>Instantiating a synchronous Configuration Client</strong></p>
  *
@@ -68,9 +80,18 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * {@link com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting} and
  * {@link com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting}.</p>
  *
- * <p><strong>Code Samples</strong></p>
+ * <br/>
  *
- * <p>Add a setting with the key "prodDBConnection", label "westUS" and value "db_connection".</p>
+ * <hr/>
+ *
+ * <h2>Add Configuration Setting</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to add a configuration setting in the
+ * Azure App Configuration.</p>
+ *
+ * <p>The sample below shows how to add a setting with the key "prodDBConnection", label "westUS" and value
+ * "db_connection" using {@link com.azure.data.appconfiguration.ConfigurationClient}.</p>
+ *
  * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
  * <pre>
  * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;
@@ -79,7 +100,19 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * </pre>
  * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
  *
- * <p>Update setting's value "db_connection" to "updated_db_connection"</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Update Configuration Setting</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to update a configuration setting in the
+ * Azure App Configuration.</p>
+ *
+ * <p>The sample below shows how to update setting's value "db_connection" to "updated_db_connection"</p>
+ *
  * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
  * <pre>
  * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;
@@ -93,7 +126,19 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * </pre>
  * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
  *
- * <p>Retrieve the setting with the key "prodDBConnection".</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Get Configuration Setting</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to get a configuration setting in the
+ * Azure App Configuration.</p>
+ *
+ * <p>The sample below shows how to retrieve the setting with the key "prodDBConnection".</p>
+ *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
  * <pre>
  * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;
@@ -102,7 +147,19 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
  *
- * <p>Delete the setting with the key "prodDBConnection".</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Delete Configuration Setting</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to delete a configuration setting in
+ * the Azure App Configuration.</p>
+ *
+ * <p>The sample below shows how to delete the setting with the key "prodDBConnection".</p>
+ *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
  * <pre>
  * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;
@@ -111,7 +168,19 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
  *
- * <p>Set the setting to read-only with the key-label "prodDBConnection"-"westUS".</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Set the Configuration Setting to read-only</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to conditionally set a
+ * configuration setting to read-only in the Azure App Configuration.</p>
+ *
+ * <p>The sample below shows how to conditionally set the setting to read-only with the key "prodDBConnection".</p>
+ *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
  * <pre>
  * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
@@ -120,7 +189,19 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
  *
- * <p>Clear read-only of the setting with the key-label "prodDBConnection"-"westUS".</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>Clear read-only of the Configuration Setting</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to conditionally clear read-only
+ * of the setting in the Azure App Configuration.</p>
+ *
+ * <p>The sample below shows how to conditionally clear read-only of the setting with the key "prodDBConnection".</p>
+ *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
  * <pre>
  * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
@@ -129,7 +210,19 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
  *
- * <p>Retrieve/List all settings that use the key "prodDBConnection".</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>List Configuration Settings</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to list configuration settings in
+ * the Azure App Configuration.</p>
+ *
+ * <p>The sample below shows how to retrieve/List all settings that use the key "prodDBConnection".</p>
+ *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
  * <pre>
  * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
@@ -139,7 +232,18 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
  *
- * <p>Retrieve/List all revisions of the setting that has the key "prodDBConnection".</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
+ *
+ * <h2>List revisions of a Configuration Setting</h2>
+ *
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to list all revisions of a
+ * configuration setting in the Azure App Configuration.</p>
+ *
+ * <p>The sample below shows how to retrieve/List all revision of a setting that use the key "prodDBConnection".</p>
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
  * <pre>
  * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
@@ -152,6 +256,12 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * &#125;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
  *
  * @see ConfigurationClientBuilder
  * @see ConfigurationSetting
