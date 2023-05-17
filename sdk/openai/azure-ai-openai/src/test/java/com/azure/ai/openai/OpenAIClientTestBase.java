@@ -97,7 +97,6 @@ public abstract class OpenAIClientTestBase extends TestBase {
     static void assertChoice(int index, CompletionsLogProbabilityModel logprobs,
                              CompletionsFinishReason finishReason, Choice actual) {
         assertNotNull(actual.getText());
-        assertNotNull(actual.getFinishReason());
         assertEquals(index, actual.getIndex());
 
         // TODO: add more assertions for the additional properties

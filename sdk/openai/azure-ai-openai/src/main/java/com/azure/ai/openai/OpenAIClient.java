@@ -424,6 +424,7 @@ public final class OpenAIClient {
 
     @Generated private final OpenAIClientImpl serviceClient;
     private final OpenAIClientNonAzureImpl openAIServiceClient;
+
     /**
      * Initializes an instance of OpenAIClient class.
      *
@@ -443,6 +444,4 @@ public final class OpenAIClient {
         this.serviceClient = null;
         this.openAIServiceClient = serviceClient;
     }
-
-
 }
