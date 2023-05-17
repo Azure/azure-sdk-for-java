@@ -34,8 +34,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     private static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate(0);
 
     private final StreamResponse sourceResponse;
-//    private final BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume;
-//    private final DownloadRetryOptions retryOptions;
+    //private final BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume;
+    //private final DownloadRetryOptions retryOptions;
 
     /**
      * Constructs a {@link BlobDownloadAsyncResponse}.
@@ -50,8 +50,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         BlobDownloadHeaders deserializedHeaders) {
         super(request, statusCode, headers, value, deserializedHeaders);
         this.sourceResponse = null;
-//        this.onErrorResume = null;
-//        this.retryOptions = null;
+        //this.onErrorResume = null;
+        //this.retryOptions = null;
     }
 
     /**
@@ -66,8 +66,8 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
         super(sourceResponse.getRequest(), sourceResponse.getStatusCode(), sourceResponse.getHeaders(),
             createResponseFlux(sourceResponse, onErrorResume, retryOptions), extractHeaders(sourceResponse));
         this.sourceResponse = Objects.requireNonNull(sourceResponse, "'sourceResponse' must not be null");
-//        this.onErrorResume = Objects.requireNonNull(onErrorResume, "'onErrorResume' must not be null");
-//        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' must not be null");
+        //this.onErrorResume = Objects.requireNonNull(onErrorResume, "'onErrorResume' must not be null");
+        //this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' must not be null");
     }
 
     private static BlobDownloadHeaders extractHeaders(StreamResponse response) {
