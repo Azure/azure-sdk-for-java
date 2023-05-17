@@ -2667,7 +2667,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                     switch (statusCode) {
                         case HttpConstants.StatusCodes.NOTFOUND:
-                            FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), ((CosmosException) throwable).getResponseHeaders());
+                            FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), cosmosException.getResponseHeaders());
                             diagnosticsAccessor.addClientSideDiagnosticsToFeed(
                                     feedResponse.getCosmosDiagnostics(),
                                     Collections.singleton(
