@@ -11,7 +11,7 @@ import reactor.core.publisher.Operators;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
-import java.nio.channels.CompletionHandler;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link AsynchronousByteChannel}.
@@ -20,13 +20,6 @@ import java.nio.channels.CompletionHandler;
 public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<ByteBuffer> {
 
     private static final ClientLogger LOGGER = new ClientLogger(AsynchronousByteChannelWriteSubscriber.class);
-
-    // volatile ensures that writes to these fields by one thread will be immediately visible to other threads.
-    // An I/O pool thread will write to isWriting and read isCompleted,
-    // while another thread may read isWriting and write to isCompleted.
-    private volatile boolean isWriting = false;
-    private volatile boolean isCompleted = false;
-    private volatile Throwable error = null;
 
     private final AsynchronousByteChannel channel;
     private final MonoSink<Void> emitter;
@@ -51,75 +44,33 @@ public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<
 
     @Override
     public void onNext(ByteBuffer bytes) {
-        try {
-            if (isWriting) {
-                onError(new IllegalStateException("Received onNext while processing another write operation."));
-            } else {
-                write(bytes);
-            }
-        } catch (Exception ex) {
-            // If writing has an error, and it isn't caught, there is a possibility for it to deadlock the reactive
-            // stream. Catch the exception and propagate it manually so that doesn't happen.
-            onError(ex);
-        }
+        write(bytes);
     }
 
     private void write(ByteBuffer bytes) {
-        isWriting = true;
-
-        channel.write(bytes, bytes, new CompletionHandler<Integer, ByteBuffer>() {
-            @Override
-            public void completed(Integer result, ByteBuffer attachment) {
-
-                if (bytes.hasRemaining()) {
-                    // If the entire ByteBuffer hasn't been written send it to be written again until it completes.
-                    write(bytes);
-                } else {
-                    isWriting = false;
-                    Throwable error = AsynchronousByteChannelWriteSubscriber.this.error;
-                    if (error != null) {
-                        emitter.error(LOGGER.logThrowableAsError(error));
-                    } else if (isCompleted) {
-                        emitter.success();
-                    } else {
-                        subscription.request(1);
-                    }
-                }
+        try {
+            while (bytes.hasRemaining()) {
+                channel.write(bytes).get();
             }
 
-            @Override
-            public void failed(Throwable exc, ByteBuffer attachment) {
-                Throwable error = AsynchronousByteChannelWriteSubscriber.this.error;
-                if (error != null) {
-                    error.addSuppressed(exc);
-                    emitter.error(LOGGER.logThrowableAsError(error));
-                } else {
-                    isWriting = false;
-                    onError(exc);
-                }
+            subscription.request(1);
+        } catch (Exception ex) {
+            if (ex instanceof ExecutionException) {
+                onError(ex.getCause());
+            } else {
+                onError(ex);
             }
-        });
+        }
     }
 
     @Override
     public void onError(Throwable throwable) {
-        error = throwable;
         subscription.cancel();
-
-        // If writing is currently happening hold propagating the error until writing completes. This will ensure
-        // that what is being written is left in a consistent state rather than a possible race condition where
-        // the error is propagating then writing finishes before the error is fully propagating leaving a
-        // non-deterministic state.
-        if (!isWriting) {
-            emitter.error(LOGGER.logThrowableAsError(throwable));
-        }
+        emitter.error(LOGGER.logThrowableAsError(throwable));
     }
 
     @Override
     public void onComplete() {
-        isCompleted = true;
-        if (!isWriting) {
-            emitter.success();
-        }
+        emitter.success();
     }
 }
