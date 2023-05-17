@@ -69,9 +69,7 @@ public final class OpenAIClientNonAzureImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      */
-    public OpenAIClientNonAzureImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter) {
+    public OpenAIClientNonAzureImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.service = RestProxy.create(OpenAIClientNonAzureService.class, this.httpPipeline, this.getSerializerAdapter());
@@ -190,8 +188,7 @@ public final class OpenAIClientNonAzureImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(String deploymentId,
-                                                                     BinaryData embeddingsOptions,
-                                                                     RequestOptions requestOptions) {
+        BinaryData embeddingsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
@@ -258,7 +255,7 @@ public final class OpenAIClientNonAzureImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(String deploymentId, BinaryData embeddingsOptions,
-                                                          RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         return getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions).block();
     }
 
@@ -344,8 +341,8 @@ public final class OpenAIClientNonAzureImpl {
      *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(
-        String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(String deploymentId,
+        BinaryData completionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
         // OpenAI has model ID in request body
         CompletionsOptions completionsOptions1 = completionsOptions.toObject(CompletionsOptions.class);
@@ -443,8 +440,8 @@ public final class OpenAIClientNonAzureImpl {
      *     that continues from or "completes" provided prompt data along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCompletionsWithResponse(
-        String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> getCompletionsWithResponse(String deploymentId, BinaryData completionsOptions,
+        RequestOptions requestOptions) {
         return getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions).block();
     }
 
@@ -522,8 +519,7 @@ public final class OpenAIClientNonAzureImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getChatCompletionsWithResponseAsync(String deploymentId,
-                                                                          BinaryData chatCompletionsOptions,
-                                                                          RequestOptions requestOptions) {
+        BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
@@ -614,7 +610,7 @@ public final class OpenAIClientNonAzureImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(String deploymentId, BinaryData chatCompletionsOptions,
-                                                               RequestOptions requestOptions) {
+        RequestOptions requestOptions) {
         return getChatCompletionsWithResponseAsync(deploymentId, chatCompletionsOptions, requestOptions).block();
     }
 }

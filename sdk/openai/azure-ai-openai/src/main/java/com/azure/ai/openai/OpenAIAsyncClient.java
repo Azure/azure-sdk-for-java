@@ -34,18 +34,18 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
 
-    @Generated private final OpenAIClientImpl serviceClient;
+    private final OpenAIClientImpl serviceClient;
 
-    private OpenAIClientNonAzureImpl openAIServiceClient;
+    private final OpenAIClientNonAzureImpl openAIServiceClient;
 
     /**
      * Initializes an instance of OpenAIAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
-    @Generated
     OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+        this.openAIServiceClient = null;
     }
 
     OpenAIAsyncClient(OpenAIClientNonAzureImpl openAIServiceClient) {
@@ -100,12 +100,14 @@ public final class OpenAIAsyncClient {
      *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
      *     with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponse(
             String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
-//        return this.serviceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
-        return this.openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
+        if (this.openAIServiceClient != null) {
+            return this.openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions,
+                requestOptions);
+        }
+        return this.serviceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
     }
 
     /**
@@ -189,12 +191,14 @@ public final class OpenAIAsyncClient {
      *     that continues from or "completes" provided prompt data along with {@link Response} on successful completion
      *     of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCompletionsWithResponse(
             String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
-        return this.openAIServiceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
-//        return this.serviceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
+        if (this.openAIServiceClient != null) {
+            return this.openAIServiceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions,
+                requestOptions);
+        }
+        return this.serviceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
     }
 
     /**
@@ -269,14 +273,15 @@ public final class OpenAIAsyncClient {
      *     text that continues from or "completes" provided prompt data along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getChatCompletionsWithResponse(
             String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
-//        return this.serviceClient.getChatCompletionsWithResponseAsync(
-//                deploymentId, chatCompletionsOptions, requestOptions);
-        return this.openAIServiceClient.getChatCompletionsWithResponseAsync(deploymentId,
+        if (this.openAIServiceClient != null) {
+            return this.openAIServiceClient.getChatCompletionsWithResponseAsync(deploymentId,
                 chatCompletionsOptions, requestOptions);
+        }
+        return this.serviceClient.getChatCompletionsWithResponseAsync(
+                deploymentId, chatCompletionsOptions, requestOptions);
     }
 
     /**
