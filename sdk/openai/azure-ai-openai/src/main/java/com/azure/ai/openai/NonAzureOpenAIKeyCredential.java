@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 /**
  * Token credential class for accepting non-Azure OpenAI credential string.
  */
-public class OpenAIApiKeyCredential implements TokenCredential {
+public class NonAzureOpenAIKeyCredential implements TokenCredential {
     private final String keyCredential;
 
     /**
@@ -21,7 +21,7 @@ public class OpenAIApiKeyCredential implements TokenCredential {
      *
      * @param keyCredential non-Azure OpenAI credential.
      */
-    public OpenAIApiKeyCredential(String keyCredential) {
+    public NonAzureOpenAIKeyCredential(String keyCredential) {
         this.keyCredential = keyCredential;
     }
 

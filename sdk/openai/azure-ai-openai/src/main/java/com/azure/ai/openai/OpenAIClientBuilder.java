@@ -345,7 +345,7 @@ public final class OpenAIClientBuilder
      * @return an instance of OpenAIAsyncClient.
      */
     public OpenAIAsyncClient buildAsyncClient() {
-        if (tokenCredential != null && tokenCredential instanceof OpenAIApiKeyCredential) {
+        if (tokenCredential != null && tokenCredential instanceof NonAzureOpenAIKeyCredential) {
             return new OpenAIAsyncClient(buildInnerOpenAIClient());
         }
         return new OpenAIAsyncClient(buildInnerClient());
@@ -357,7 +357,7 @@ public final class OpenAIClientBuilder
      * @return an instance of OpenAIClient.
      */
     public OpenAIClient buildClient() {
-        if (tokenCredential != null && tokenCredential instanceof OpenAIApiKeyCredential) {
+        if (tokenCredential != null && tokenCredential instanceof NonAzureOpenAIKeyCredential) {
             return new OpenAIClient(buildInnerOpenAIClient());
         }
         return new OpenAIClient(buildInnerClient());
