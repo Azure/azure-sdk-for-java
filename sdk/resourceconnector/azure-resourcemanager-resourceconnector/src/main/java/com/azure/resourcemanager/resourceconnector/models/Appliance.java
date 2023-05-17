@@ -56,7 +56,7 @@ public interface Appliance {
     Identity identity();
 
     /**
-     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
      * @return the systemData value.
      */
@@ -85,7 +85,7 @@ public interface Appliance {
     String provisioningState();
 
     /**
-     * Gets the publicKey property: Certificates pair used to download MSI certificate from HIS.
+     * Gets the publicKey property: Certificates pair used to download MSI certificate from HIS. Can only be set once.
      *
      * @return the publicKey value.
      */
@@ -242,9 +242,10 @@ public interface Appliance {
         /** The stage of the Appliance definition allowing to specify publicKey. */
         interface WithPublicKey {
             /**
-             * Specifies the publicKey property: Certificates pair used to download MSI certificate from HIS.
+             * Specifies the publicKey property: Certificates pair used to download MSI certificate from HIS. Can only
+             * be set once..
              *
-             * @param publicKey Certificates pair used to download MSI certificate from HIS.
+             * @param publicKey Certificates pair used to download MSI certificate from HIS. Can only be set once.
              * @return the next definition stage.
              */
             WithCreate withPublicKey(String publicKey);
@@ -313,37 +314,9 @@ public interface Appliance {
     Appliance refresh(Context context);
 
     /**
-     * Returns the cluster customer user credentials for the dedicated appliance.
+     * Returns the cluster user credential.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Cluster Customer User Credential Results appliance.
-     */
-    ApplianceListClusterCustomerUserCredentialResults listClusterCustomerUserCredential();
-
-    /**
-     * Returns the cluster customer user credentials for the dedicated appliance.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Cluster Customer User Credential Results appliance along with {@link Response}.
-     */
-    Response<ApplianceListClusterCustomerUserCredentialResults> listClusterCustomerUserCredentialWithResponse(
-        Context context);
-
-    /**
-     * Returns the cluster user credentials for the dedicated appliance.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Cluster User Credential appliance.
-     */
-    ApplianceListCredentialResults listClusterUserCredential();
-
-    /**
-     * Returns the cluster user credentials for the dedicated appliance.
+     * <p>Returns the cluster user credentials for the dedicated appliance.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -352,4 +325,39 @@ public interface Appliance {
      * @return the List Cluster User Credential appliance along with {@link Response}.
      */
     Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(Context context);
+
+    /**
+     * Returns the cluster user credential.
+     *
+     * <p>Returns the cluster user credentials for the dedicated appliance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Cluster User Credential appliance.
+     */
+    ApplianceListCredentialResults listClusterUserCredential();
+
+    /**
+     * Gets the management config.
+     *
+     * <p>Returns the cluster customer credentials for the dedicated appliance.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Cluster Keys Results appliance along with {@link Response}.
+     */
+    Response<ApplianceListKeysResults> listKeysWithResponse(Context context);
+
+    /**
+     * Gets the management config.
+     *
+     * <p>Returns the cluster customer credentials for the dedicated appliance.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the List Cluster Keys Results appliance.
+     */
+    ApplianceListKeysResults listKeys();
 }

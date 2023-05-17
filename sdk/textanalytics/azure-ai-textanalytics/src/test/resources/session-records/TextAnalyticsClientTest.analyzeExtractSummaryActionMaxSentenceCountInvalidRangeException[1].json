@@ -1,48 +1,127 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "e216c39b-ab8c-4eee-a53b-3dd47a53f3e9",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "1837",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:30:53 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "43371cb6-f0b9-44f4-9ae3-0af27831e2bc"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI Cognitive Services, I have been working with a team of amazing scientists and engineers to turn this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z). At the intersection of all three, there\u2019s magic\u2014what we call XYZ-code as illustrated in Figure 1\u2014a joint representation to create more powerful AI that can speak, hear, see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks, much in the way humans do today. Over the past five years, we have achieved human performance on benchmarks in conversational speech recognition, machine translation, conversational question answering, machine reading comprehension, and image captioning. These five breakthroughs provided us with strong signals toward our more ambitious aspiration to produce a leap in AI capabilities, achieving multisensory and multilingual learning that is closer in line with how humans learn and understand. I believe the joint XYZ-code is a foundational component of this aspiration, if grounded with external knowledge sources in the downstream AI tasks.",
+              "language": "en"
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "ExtractiveSummarization",
+            "parameters": {
+              "loggingOptOut": false,
+              "sentenceCount": 0,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          }
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "40fe9199-42db-4192-bd8b-1eba9a7d3d73",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:30:52 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "7",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "details": [
+            {
+              "code": "InvalidRequest",
+              "message": "Job task: \u0027ExtractiveSummarization\u0027 failed with validation error: Job task parameter value \u00270\u0027 is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max)."
+            }
+          ],
+          "message": "Invalid Request.",
+          "innererror": {
+            "code": "InvalidParameterValue",
+            "message": "Job task: \u0027ExtractiveSummarization\u0027 failed with validation errors: [\u0027Invalid parameter in request\u0027]"
+          }
+        }
+      }
     },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "7",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "e54d15cd-9c96-4642-b6dc-94dcb0b98566",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"details\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task: 'ExtractiveSummarization' failed with validation error: Job task parameter value '0' is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max).\"}],\"message\":\"Invalid Request.\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task: 'ExtractiveSummarization' failed with validation errors: ['Invalid parameter in request']\"}}}",
-      "Date" : "Thu, 16 Feb 2023 23:17:43 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "fa2ad4a6-3f65-47bc-98eb-715572f77d20",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "7",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "0d0e74b5-f313-400b-9249-670c70745226",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"details\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task: 'ExtractiveSummarization' failed with validation error: Job task parameter value '21' is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max).\"}],\"message\":\"Invalid Request.\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task: 'ExtractiveSummarization' failed with validation errors: ['Invalid parameter in request']\"}}}",
-      "Date" : "Thu, 16 Feb 2023 23:17:43 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "1838",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:30:53 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "77110e37-11fd-46f9-9ea9-07e3df60507e"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "At Microsoft, we have been on a quest to advance AI beyond existing techniques, by taking a more holistic, human-centric approach to learning and understanding. As Chief Technology Officer of Azure AI Cognitive Services, I have been working with a team of amazing scientists and engineers to turn this quest into a reality. In my role, I enjoy a unique perspective in viewing the relationship among three attributes of human cognition: monolingual text (X), audio or visual sensory signals, (Y) and multilingual (Z). At the intersection of all three, there\u2019s magic\u2014what we call XYZ-code as illustrated in Figure 1\u2014a joint representation to create more powerful AI that can speak, hear, see, and understand humans better. We believe XYZ-code will enable us to fulfill our long-term vision: cross-domain transfer learning, spanning modalities and languages. The goal is to have pretrained models that can jointly learn representations to support a broad range of downstream AI tasks, much in the way humans do today. Over the past five years, we have achieved human performance on benchmarks in conversational speech recognition, machine translation, conversational question answering, machine reading comprehension, and image captioning. These five breakthroughs provided us with strong signals toward our more ambitious aspiration to produce a leap in AI capabilities, achieving multisensory and multilingual learning that is closer in line with how humans learn and understand. I believe the joint XYZ-code is a foundational component of this aspiration, if grounded with external knowledge sources in the downstream AI tasks.",
+              "language": "en"
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "ExtractiveSummarization",
+            "parameters": {
+              "loggingOptOut": false,
+              "sentenceCount": 21,
+              "stringIndexType": "Utf16CodeUnit"
+            }
+          }
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "fce400e8-2555-4605-b241-67064d67b2b5",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 18:30:52 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "8",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "details": [
+            {
+              "code": "InvalidRequest",
+              "message": "Job task: \u0027ExtractiveSummarization\u0027 failed with validation error: Job task parameter value \u002721\u0027 is not supported for sentenceCount parameter for job task type ExtractiveSummarization. Supported values 1 (min) to 20 (max)."
+            }
+          ],
+          "message": "Invalid Request.",
+          "innererror": {
+            "code": "InvalidParameterValue",
+            "message": "Job task: \u0027ExtractiveSummarization\u0027 failed with validation errors: [\u0027Invalid parameter in request\u0027]"
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

@@ -52,7 +52,7 @@ public final class CosmosDiagnosticsContext {
     private final Integer maxItemCount;
     private final CosmosDiagnosticsThresholds thresholds;
     private final String operationId;
-
+    private final String trackingId;
     private Throwable finalError;
     private Instant startTime = null;
     private Duration duration = null;
@@ -65,6 +65,8 @@ public final class CosmosDiagnosticsContext {
     private String cachedRequestDiagnostics = null;
     private final AtomicBoolean isCompleted = new AtomicBoolean(false);
 
+    private Double samplingRateSnapshot;
+
     CosmosDiagnosticsContext(
         String spanName,
         String accountName,
@@ -76,7 +78,8 @@ public final class CosmosDiagnosticsContext {
         String operationId,
         ConsistencyLevel consistencyLevel,
         Integer maxItemCount,
-        CosmosDiagnosticsThresholds thresholds) {
+        CosmosDiagnosticsThresholds thresholds,
+        String trackingId) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
@@ -100,6 +103,7 @@ public final class CosmosDiagnosticsContext {
         this.consistencyLevel = consistencyLevel;
         this.maxItemCount = maxItemCount;
         this.thresholds = thresholds;
+        this.trackingId = trackingId;
     }
 
     /**
@@ -146,6 +150,15 @@ public final class CosmosDiagnosticsContext {
      */
     public String getOperationType() {
         return this.operationTypeString;
+    }
+
+    /**
+     * The trackingId of a write operation. Will be null for read-/query- or feed operations or when non-idempotent
+     * writes are disabled for writes or only enabled without trackingId propagation.
+     * @return the trackingId of an operation
+     */
+    public String getTrackingId() {
+        return this.trackingId;
     }
 
     /**
@@ -240,6 +253,9 @@ public final class CosmosDiagnosticsContext {
     void addDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
         checkNotNull(cosmosDiagnostics, "Argument 'cosmosDiagnostics' must not be null.");
         synchronized (this.spanName) {
+            if (this.samplingRateSnapshot != null) {
+                diagAccessor.setSamplingRateSnapshot(cosmosDiagnostics, this.samplingRateSnapshot);
+            }
             this.addRequestSize(diagAccessor.getRequestPayloadSizeInBytes(cosmosDiagnostics));
             this.addResponseSize(diagAccessor.getTotalResponsePayloadSizeInBytes(cosmosDiagnostics));
             this.diagnostics.add(cosmosDiagnostics);
@@ -401,7 +417,7 @@ public final class CosmosDiagnosticsContext {
 
     /**
      * A flag indicating whether the operation should be considered failed or not based on the status code handling
-     * rules in {@link CosmosDiagnosticsThresholds#setIsFailureHandler(BiFunction)}
+     * rules in {@link CosmosDiagnosticsThresholds#setFailureHandler(java.util.function.BiPredicate)}
      * @return a flag indicating whether the operation should be considered failed or not
      */
     public boolean isFailure() {
@@ -449,6 +465,13 @@ public final class CosmosDiagnosticsContext {
         }
     }
 
+    synchronized void setSamplingRateSnapshot(double samplingRate) {
+        this.samplingRateSnapshot = samplingRate;
+        for (CosmosDiagnostics d : this.diagnostics) {
+            diagAccessor.setSamplingRateSnapshot(d, samplingRate);
+        }
+    }
+
     String getRequestDiagnostics() {
         ObjectNode ctxNode = mapper.createObjectNode();
 
@@ -462,6 +485,9 @@ public final class CosmosDiagnosticsContext {
         ctxNode.put("operation", this.operationType.toString());
         if (!this.operationId.isEmpty()) {
             ctxNode.put("operationId", this.operationId);
+        }
+        if (this.trackingId != null && !this.trackingId.isEmpty()) {
+            ctxNode.put("trackingId", this.trackingId);
         }
         ctxNode.put("consistency", this.consistencyLevel.toString());
         ctxNode.put("status", this.statusCode);
@@ -551,7 +577,7 @@ public final class CosmosDiagnosticsContext {
                                                            ResourceType resourceType, OperationType operationType,
                                                            String operationId,
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
-                                                           CosmosDiagnosticsThresholds thresholds) {
+                                                           CosmosDiagnosticsThresholds thresholds, String trackingId) {
 
                         return new CosmosDiagnosticsContext(
                             spanName,
@@ -564,7 +590,8 @@ public final class CosmosDiagnosticsContext {
                             operationId,
                             consistencyLevel,
                             maxItemCount,
-                            thresholds);
+                            thresholds,
+                            trackingId);
                     }
 
                     @Override
@@ -664,6 +691,12 @@ public final class CosmosDiagnosticsContext {
                     public String getSpanName(CosmosDiagnosticsContext ctx) {
                         checkNotNull(ctx, "Argument 'ctx' must not be null.");
                         return ctx.getSpanName();
+                    }
+
+                    @Override
+                    public void setSamplingRateSnapshot(CosmosDiagnosticsContext ctx, double samplingRate) {
+                        checkNotNull(ctx, "Argument 'ctx' must not be null.");
+                        ctx.setSamplingRateSnapshot(samplingRate);
                     }
                 });
     }

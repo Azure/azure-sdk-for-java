@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.keyvault.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Vaults GetByResourceGroup. */
 public final class VaultsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2021-10-01/examples/getVault.json
+     * x-ms-original-file: specification/keyvault/resource-manager/Microsoft.KeyVault/stable/2023-02-01/examples/getVault.json
      */
     /**
      * Sample code: Retrieve a vault.
@@ -22,6 +20,6 @@ public final class VaultsGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getVaults()
-            .getByResourceGroupWithResponse("sample-resource-group", "sample-vault", Context.NONE);
+            .getByResourceGroupWithResponse("sample-resource-group", "sample-vault", com.azure.core.util.Context.NONE);
     }
 }

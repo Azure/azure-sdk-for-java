@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -48,11 +48,11 @@ public class ByteBufferCollectorTests {
     @ParameterizedTest
     @MethodSource("combineBuffersSupplier")
     public void combineBuffers(List<ByteBuffer> buffers, byte[] expected) {
-        ByteBufferCollector collector = new ByteBufferCollector();
+        ByteBufferCollector collector = new ByteBufferCollector(expected.length);
 
         buffers.forEach(collector::write);
 
-        assertArrayEquals(expected, collector.toByteArray());
+        assertArraysEqual(expected, collector.toByteArray());
     }
 
     private static Stream<Arguments> combineBuffersSupplier() {

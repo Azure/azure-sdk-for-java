@@ -16,7 +16,14 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Reads a JSON encoded value as a stream of tokens.
+ * Reads a JSON value as a stream of tokens.
+ * <p>
+ * Instances of {@link JsonReader} are created using an instance of {@link JsonProvider} or using the utility methods
+ * in {@link JsonProviders}.
+ *
+ * @see com.azure.json
+ * @see JsonProvider
+ * @see JsonProviders
  */
 public abstract class JsonReader implements Closeable {
     private static final JsonStringEncoder ENCODER = JsonStringEncoder.getInstance();
@@ -585,7 +592,7 @@ public abstract class JsonReader implements Closeable {
 
     private Object readUntypedHelper(int depth) throws IOException {
         // Keep track of array and object nested depth to prevent a StackOverflowError from occurring.
-        if (depth >= 1000) {
+        if (depth >= 999) {
             throw new IllegalStateException("Untyped object exceeded allowed object nested depth of 1000.");
         }
 

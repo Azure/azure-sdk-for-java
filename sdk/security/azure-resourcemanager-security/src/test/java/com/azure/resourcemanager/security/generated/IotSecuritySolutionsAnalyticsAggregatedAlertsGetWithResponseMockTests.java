@@ -31,7 +31,7 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsGetWithResponseM
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"alertType\":\"zzwjcayerzrran\",\"alertDisplayName\":\"bylpolwzr\",\"vendorName\":\"rlein\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"jfncjwvuagfqw\",\"description\":\"tngvmreuptrklz\",\"count\":4332031100562693939,\"effectedResourceType\":\"wo\",\"systemSource\":\"fsvagh\",\"actionTaken\":\"ynwlslrcigtzjcv\",\"logAnalyticsQuery\":\"qlapsnsso\",\"topDevicesList\":[]},\"tags\":{\"wffcvvye\":\"vidnie\",\"pnptw\":\"slpuxgcbdsva\",\"bfe\":\"rkxgpazwugxyqvnj\",\"aewzgiudjp\":\"hldiuhzzgqlm\"},\"id\":\"pqht\",\"name\":\"qhnmhk\",\"type\":\"ezsdsuxheq\"}";
+            "{\"properties\":{\"alertType\":\"psimioy\",\"alertDisplayName\":\"glkmiqwnnr\",\"vendorName\":\"ibb\",\"reportedSeverity\":\"High\",\"remediationSteps\":\"pkl\",\"description\":\"ydgnha\",\"count\":3154276649040417156,\"effectedResourceType\":\"exzgpmnmabedd\",\"systemSource\":\"lwgdfpfqfpcvs\",\"actionTaken\":\"l\",\"logAnalyticsQuery\":\"rvwerfwxbsmtb\",\"topDevicesList\":[]},\"tags\":{\"kwdvbtb\":\"hci\"},\"id\":\"ekqhs\",\"name\":\"htfpwpqb\",\"type\":\"ejuwyqwdqigmghgi\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,9 +62,9 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertsGetWithResponseM
         IoTSecurityAggregatedAlert response =
             manager
                 .iotSecuritySolutionsAnalyticsAggregatedAlerts()
-                .getWithResponse("vr", "tnvgyshqrdgrt", "mewjzlpyk", com.azure.core.util.Context.NONE)
+                .getWithResponse("tdavuqmcbymsfobj", "quvjez", "j", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("vidnie", response.tags().get("wffcvvye"));
+        Assertions.assertEquals("hci", response.tags().get("kwdvbtb"));
     }
 }

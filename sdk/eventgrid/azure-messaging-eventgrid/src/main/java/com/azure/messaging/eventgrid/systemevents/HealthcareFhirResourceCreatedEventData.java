@@ -29,11 +29,13 @@ public final class HealthcareFhirResourceCreatedEventData {
     private String fhirResourceId;
 
     /*
-     * VersionId of HL7 FHIR resource. It changes when the resource is created,
-     * updated, or deleted(soft-deletion).
+     * VersionId of HL7 FHIR resource. It changes when the resource is created, updated, or deleted(soft-deletion).
      */
     @JsonProperty(value = "resourceVersionId")
     private Long fhirResourceVersionId;
+
+    /** Creates an instance of HealthcareFhirResourceCreatedEventData class. */
+    public HealthcareFhirResourceCreatedEventData() {}
 
     /**
      * Get the fhirResourceType property: Type of HL7 FHIR resource.

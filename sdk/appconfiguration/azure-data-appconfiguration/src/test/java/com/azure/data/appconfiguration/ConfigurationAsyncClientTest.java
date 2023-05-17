@@ -5,15 +5,14 @@ package com.azure.data.appconfiguration;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
@@ -31,8 +30,8 @@ import reactor.util.context.Context;
 import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 
 import static com.azure.data.appconfiguration.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -75,27 +74,35 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         return clientSetup(credentials -> {
             ConfigurationClientBuilder builder = new ConfigurationClientBuilder()
                 .connectionString(connectionString)
-                .httpClient(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
                 .serviceVersion(serviceVersion)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
-            if (getTestMode() != TestMode.PLAYBACK) {
+
+            setHttpClient(httpClient, builder);
+
+            if (interceptorManager.isRecordMode()) {
                 builder
                     .addPolicy(interceptorManager.getRecordPolicy())
                     .addPolicy(new RetryPolicy());
+            } else if (interceptorManager.isPlaybackMode()) {
+                interceptorManager.addMatchers(Arrays.asList(new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("Sync-Token"))));
             }
             return builder.buildAsyncClient();
         });
     }
 
-    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        //skip paging requests until #30031 resolved
-        BiFunction<HttpRequest, com.azure.core.util.Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return callerMethod.contains("list");
-        };
+    private ConfigurationClientBuilder setHttpClient(HttpClient httpClient, ConfigurationClientBuilder builder) {
+        if (interceptorManager.isRecordMode()) {
+            return builder
+                .httpClient(buildAsyncAssertingClient(httpClient));
+        } else if (interceptorManager.isPlaybackMode()) {
+            return builder
+                .httpClient(buildAsyncAssertingClient(interceptorManager.getPlaybackClient()));
+        }
+        return builder;
+    }
 
+    private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
             .assertAsync()
             .build();
     }

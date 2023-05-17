@@ -16,6 +16,10 @@ public final class RegenerateKeyParameters {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of RegenerateKeyParameters class. */
+    public RegenerateKeyParameters() {
+    }
+
     /**
      * Get the id property: The id of the key to regenerate.
      *

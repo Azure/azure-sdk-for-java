@@ -58,7 +58,6 @@ public final class AlertsUpdateSubscriptionLevelStateToInProgressWithResponseMoc
 
         manager
             .alerts()
-            .updateSubscriptionLevelStateToInProgressWithResponse(
-                "vhxccbmkakmkoo", "bputmgvmuyakml", com.azure.core.util.Context.NONE);
+            .updateSubscriptionLevelStateToInProgressWithResponse("gamk", "ilir", com.azure.core.util.Context.NONE);
     }
 }

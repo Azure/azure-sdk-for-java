@@ -3,6 +3,11 @@
 
 package com.azure.core.util;
 
+import com.azure.core.util.metrics.Meter;
+import com.azure.core.util.metrics.MeterProvider;
+
+import static com.azure.core.implementation.ImplUtils.getClassByName;
+
 /**
  * Metrics configuration options for clients.
  */
@@ -13,14 +18,42 @@ public class MetricsOptions {
         .defaultValue(false)
         .build();
 
+    private static final ConfigurationProperty<String> PROVIDER_NAME_PROPERTY = ConfigurationPropertyBuilder.ofString("metrics.provider.implementation")
+        .environmentVariableName(Configuration.PROPERTY_AZURE_METRICS_IMPLEMENTATION)
+        .shared(true)
+        .build();
+    private static final Configuration GLOBAL_CONFIG = Configuration.getGlobalConfiguration();
+    private final Class<? extends MeterProvider> meterProvider;
     private boolean isEnabled;
 
     /**
      * Creates new instance of {@link MetricsOptions}
      */
     public MetricsOptions() {
-        isEnabled = !Configuration.getGlobalConfiguration().get(IS_DISABLED_PROPERTY);
+        this(GLOBAL_CONFIG);
     }
+
+    /**
+     * Creates new instance of {@link MetricsOptions}
+     *
+     * @param meterProvider type of the {@link MeterProvider} implementation that should be used to construct an instance of
+     * {@link Meter}.
+     * If the value isn't set or is an empty string the first {@link MeterProvider} resolved by {@link java.util.ServiceLoader} will
+     * be used to create an instance of {@link Meter}. If the value is set and doesn't match any
+     * {@link MeterProvider} resolved by {@link java.util.ServiceLoader} an {@link IllegalStateException} will be thrown when
+     *  attempting to create an instance of {@link Meter}.
+     */
+    protected MetricsOptions(Class<? extends MeterProvider> meterProvider) {
+        this.isEnabled = !GLOBAL_CONFIG.get(IS_DISABLED_PROPERTY);
+        this.meterProvider = meterProvider;
+    }
+
+    private MetricsOptions(Configuration configuration) {
+        isEnabled = !configuration.get(IS_DISABLED_PROPERTY);
+        String className = configuration.get(PROVIDER_NAME_PROPERTY);
+        meterProvider = className != null ? getClassByName(className) : null;
+    }
+
     /**
      * Attempts to load metrics options from the configuration.
      * <p>
@@ -56,5 +89,15 @@ public class MetricsOptions {
     public MetricsOptions setEnabled(boolean enabled) {
         this.isEnabled = enabled;
         return this;
+    }
+
+    /**
+     * Gets configured {@link MeterProvider} implementation that should be used to construct an instance of
+     * {@link Meter}.
+     *
+     * @return The {@link MeterProvider} implementation used to create an instance of {@link Meter}.
+     */
+    public Class<? extends MeterProvider> getMeterProvider() {
+        return meterProvider;
     }
 }

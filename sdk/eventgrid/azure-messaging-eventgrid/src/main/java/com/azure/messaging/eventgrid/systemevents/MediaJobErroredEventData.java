@@ -20,6 +20,9 @@ public final class MediaJobErroredEventData extends MediaJobStateChangeEventData
     @JsonProperty(value = "outputs")
     private List<MediaJobOutput> outputs;
 
+    /** Creates an instance of MediaJobErroredEventData class. */
+    public MediaJobErroredEventData() {}
+
     /**
      * Get the outputs property: Gets the Job outputs.
      *

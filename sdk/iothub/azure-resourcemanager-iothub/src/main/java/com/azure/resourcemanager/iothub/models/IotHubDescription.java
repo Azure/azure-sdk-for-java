@@ -336,13 +336,14 @@ public interface IotHubDescription {
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
      *
      * @param exportDevicesParameters The parameters that specify the export devices operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object.
+     * @return the properties of the Job Response object along with {@link Response}.
      */
-    JobResponse exportDevices(ExportDevicesRequest exportDevicesParameters);
+    Response<JobResponse> exportDevicesWithResponse(ExportDevicesRequest exportDevicesParameters, Context context);
 
     /**
      * Exports all the device identities in the IoT hub identity registry to an Azure Storage blob container. For more
@@ -354,32 +355,13 @@ public interface IotHubDescription {
      * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
      *
      * @param exportDevicesParameters The parameters that specify the export devices operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the Job Response object along with {@link Response}.
-     */
-    Response<JobResponse> exportDevicesWithResponse(ExportDevicesRequest exportDevicesParameters, Context context);
-
-    /**
-     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
-     * see:
-     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities
-     *
-     * <p>Import, update, or delete device identities in the IoT hub identity registry from a blob. For more
-     * information, see:
-     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
-     *
-     * @param importDevicesParameters The parameters that specify the import devices operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
      *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the Job Response object.
      */
-    JobResponse importDevices(ImportDevicesRequest importDevicesParameters);
+    JobResponse exportDevices(ExportDevicesRequest exportDevicesParameters);
 
     /**
      * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
@@ -399,4 +381,22 @@ public interface IotHubDescription {
      * @return the properties of the Job Response object along with {@link Response}.
      */
     Response<JobResponse> importDevicesWithResponse(ImportDevicesRequest importDevicesParameters, Context context);
+
+    /**
+     * Import, update, or delete device identities in the IoT hub identity registry from a blob. For more information,
+     * see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities
+     *
+     * <p>Import, update, or delete device identities in the IoT hub identity registry from a blob. For more
+     * information, see:
+     * https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-identity-registry#import-and-export-device-identities.
+     *
+     * @param importDevicesParameters The parameters that specify the import devices operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the Job Response object.
+     */
+    JobResponse importDevices(ImportDevicesRequest importDevicesParameters);
 }

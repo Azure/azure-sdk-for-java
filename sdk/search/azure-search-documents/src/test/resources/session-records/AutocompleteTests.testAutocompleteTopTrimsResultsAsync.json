@@ -1,31 +1,53 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "bd62752f-c181-4fb0-9781-fcde4ef81266",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "bd62752f-c181-4fb0-9781-fcde4ef81266",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:21:12 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "bd62752f-c181-4fb0-9781-fcde4ef81266",
-      "elapsed-time" : "44",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "95",
-      "Body" : "{\"value\":[{\"text\":\"point\",\"queryPlusText\":\"point\"},{\"text\":\"police\",\"queryPlusText\":\"police\"}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "bd62752f-c181-4fb0-9781-fcde4ef81266",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azsearch-autocomplete-shared-instance\u0027)/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "73",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:53:20 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "12f6cf78-0387-4d84-895a-47152aca6530"
+      },
+      "RequestBody": {
+        "search": "po",
+        "suggesterName": "sg",
+        "autocompleteMode": "oneTerm",
+        "top": 2
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "12f6cf78-0387-4d84-895a-47152aca6530",
+        "Content-Length": "95",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:19 GMT",
+        "elapsed-time": "19",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "12f6cf78-0387-4d84-895a-47152aca6530",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "12f6cf78-0387-4d84-895a-47152aca6530"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "text": "point",
+            "queryPlusText": "point"
+          },
+          {
+            "text": "police",
+            "queryPlusText": "police"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

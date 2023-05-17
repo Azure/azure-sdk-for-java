@@ -5,28 +5,31 @@
 package com.azure.data.appconfiguration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /** Details of a long running operation. */
 @Fluent
-public final class OperationDetails {
+public final class OperationDetails implements JsonSerializable<OperationDetails> {
     /*
      * The unique id of the operation.
      */
-    @JsonProperty(value = "id", required = true)
-    private String id;
+    private final String id;
 
     /*
      * The current status of the operation
      */
-    @JsonProperty(value = "status", required = true)
-    private State status;
+    private final State status;
 
     /*
      * An error, available when the status is `Failed`, describing why the operation failed.
      */
-    @JsonProperty(value = "error")
     private ErrorDetail error;
 
     /**
@@ -35,10 +38,7 @@ public final class OperationDetails {
      * @param id the id value to set.
      * @param status the status value to set.
      */
-    @JsonCreator
-    public OperationDetails(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "status", required = true) State status) {
+    public OperationDetails(String id, State status) {
         this.id = id;
         this.status = status;
     }
@@ -79,5 +79,66 @@ public final class OperationDetails {
     public OperationDetails setError(ErrorDetail error) {
         this.error = error;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeJsonField("error", this.error);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationDetails from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationDetails if the JsonReader was pointing to an instance of it, or null if it was
+     *     pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the OperationDetails.
+     */
+    public static OperationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean idFound = false;
+                    String id = null;
+                    boolean statusFound = false;
+                    State status = null;
+                    ErrorDetail error = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("id".equals(fieldName)) {
+                            id = reader.getString();
+                            idFound = true;
+                        } else if ("status".equals(fieldName)) {
+                            status = State.fromString(reader.getString());
+                            statusFound = true;
+                        } else if ("error".equals(fieldName)) {
+                            error = ErrorDetail.fromJson(reader);
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (idFound && statusFound) {
+                        OperationDetails deserializedOperationDetails = new OperationDetails(id, status);
+                        deserializedOperationDetails.error = error;
+
+                        return deserializedOperationDetails;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!idFound) {
+                        missingProperties.add("id");
+                    }
+                    if (!statusFound) {
+                        missingProperties.add("status");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

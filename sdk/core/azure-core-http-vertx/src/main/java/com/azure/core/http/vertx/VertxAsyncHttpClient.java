@@ -4,6 +4,7 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
@@ -71,7 +72,7 @@ class VertxAsyncHttpClient implements HttpClient {
             request.getHeaders().stream()
                 .forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
 
-            if (request.getHeaders().get("Content-Length") == null) {
+            if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
                 vertxHttpRequest.setChunked(true);
             }
 
@@ -115,5 +116,10 @@ class VertxAsyncHttpClient implements HttpClient {
                         sink::error, vertxHttpRequest::end);
             }
         }));
+    }
+
+    @Override
+    public HttpResponse sendSync(HttpRequest request, Context context) {
+        return send(request, context).block();
     }
 }

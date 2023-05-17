@@ -72,4 +72,11 @@ public interface ContainerInstanceManagementClient {
      * @return the ContainersClient object.
      */
     ContainersClient getContainers();
+
+    /**
+     * Gets the SubnetServiceAssociationLinksClient object to access its operations.
+     *
+     * @return the SubnetServiceAssociationLinksClient object.
+     */
+    SubnetServiceAssociationLinksClient getSubnetServiceAssociationLinks();
 }

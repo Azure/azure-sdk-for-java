@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An MX record. */
 @Fluent
 public final class MxRecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MxRecord.class);
-
     /*
      * The preference value for this MX record.
      */
@@ -25,6 +21,10 @@ public final class MxRecord {
      */
     @JsonProperty(value = "exchange")
     private String exchange;
+
+    /** Creates an instance of MxRecord class. */
+    public MxRecord() {
+    }
 
     /**
      * Get the preference property: The preference value for this MX record.

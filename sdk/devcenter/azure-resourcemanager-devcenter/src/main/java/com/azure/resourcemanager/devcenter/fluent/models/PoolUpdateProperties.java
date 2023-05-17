@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a Pool. These properties can be updated after the resource has been created. */
@@ -36,6 +37,12 @@ public class PoolUpdateProperties {
      */
     @JsonProperty(value = "localAdministrator")
     private LocalAdminStatus localAdministrator;
+
+    /*
+     * Stop on disconnect configuration settings for Dev Boxes created in this pool.
+     */
+    @JsonProperty(value = "stopOnDisconnect")
+    private StopOnDisconnectConfiguration stopOnDisconnect;
 
     /** Creates an instance of PoolUpdateProperties class. */
     public PoolUpdateProperties() {
@@ -126,10 +133,33 @@ public class PoolUpdateProperties {
     }
 
     /**
+     * Get the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
+     *
+     * @return the stopOnDisconnect value.
+     */
+    public StopOnDisconnectConfiguration stopOnDisconnect() {
+        return this.stopOnDisconnect;
+    }
+
+    /**
+     * Set the stopOnDisconnect property: Stop on disconnect configuration settings for Dev Boxes created in this pool.
+     *
+     * @param stopOnDisconnect the stopOnDisconnect value to set.
+     * @return the PoolUpdateProperties object itself.
+     */
+    public PoolUpdateProperties withStopOnDisconnect(StopOnDisconnectConfiguration stopOnDisconnect) {
+        this.stopOnDisconnect = stopOnDisconnect;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (stopOnDisconnect() != null) {
+            stopOnDisconnect().validate();
+        }
     }
 }

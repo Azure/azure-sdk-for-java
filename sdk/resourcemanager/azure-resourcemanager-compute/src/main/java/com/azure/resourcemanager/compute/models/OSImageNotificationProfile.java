@@ -13,7 +13,7 @@ public final class OSImageNotificationProfile {
     /*
      * Length of time a Virtual Machine being reimaged or having its OS upgraded will have to potentially approve the
      * OS Image Scheduled Event before the event is auto approved (timed out). The configuration is specified in ISO
-     * 8601 format, with the value set to 15 minutes (PT15M)
+     * 8601 format, and the value must be 15 minutes (PT15M)
      */
     @JsonProperty(value = "notBeforeTimeout")
     private String notBeforeTimeout;
@@ -31,7 +31,7 @@ public final class OSImageNotificationProfile {
     /**
      * Get the notBeforeTimeout property: Length of time a Virtual Machine being reimaged or having its OS upgraded will
      * have to potentially approve the OS Image Scheduled Event before the event is auto approved (timed out). The
-     * configuration is specified in ISO 8601 format, with the value set to 15 minutes (PT15M).
+     * configuration is specified in ISO 8601 format, and the value must be 15 minutes (PT15M).
      *
      * @return the notBeforeTimeout value.
      */
@@ -42,7 +42,7 @@ public final class OSImageNotificationProfile {
     /**
      * Set the notBeforeTimeout property: Length of time a Virtual Machine being reimaged or having its OS upgraded will
      * have to potentially approve the OS Image Scheduled Event before the event is auto approved (timed out). The
-     * configuration is specified in ISO 8601 format, with the value set to 15 minutes (PT15M).
+     * configuration is specified in ISO 8601 format, and the value must be 15 minutes (PT15M).
      *
      * @param notBeforeTimeout the notBeforeTimeout value to set.
      * @return the OSImageNotificationProfile object itself.

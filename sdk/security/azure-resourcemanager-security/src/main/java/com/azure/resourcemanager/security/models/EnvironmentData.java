@@ -20,7 +20,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "AwsAccount", value = AwsEnvironmentData.class),
     @JsonSubTypes.Type(name = "GcpProject", value = GcpProjectEnvironmentData.class),
     @JsonSubTypes.Type(name = "GithubScope", value = GithubScopeEnvironmentData.class),
-    @JsonSubTypes.Type(name = "AzureDevOpsScope", value = AzureDevOpsScopeEnvironmentData.class)
+    @JsonSubTypes.Type(name = "AzureDevOpsScope", value = AzureDevOpsScopeEnvironmentData.class),
+    @JsonSubTypes.Type(name = "GitlabScope", value = GitlabScopeEnvironmentData.class)
 })
 @Immutable
 public class EnvironmentData {

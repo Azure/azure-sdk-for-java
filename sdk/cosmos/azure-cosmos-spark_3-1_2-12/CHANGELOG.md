@@ -1,15 +1,19 @@
 ## Release History
 
-### 4.18.0-beta.1 (Unreleased)
+### 4.18.2 (2023-05-16)
+
+#### Bugs Fixed
+* Fixed `IllegalArgumentException` when different throughput control group is defined on the same container - See [PR 34702](https://github.com/Azure/azure-sdk-for-java/pull/34702)
+
+### 4.18.1 (2023-04-10)
+
+#### Bugs Fixed
+* Fixed an issue where throughput control is not triggered properly when `spark.cosmos.throughputControl.targetThroughput` is being used - See [PR 34393](https://github.com/Azure/azure-sdk-for-java/pull/34393)   
+
+### 4.18.0 (2023-04-06)
 
 #### Features Added
 * Added throughput control support without using dedicated throughput control container - See [PR 34301](https://github.com/Azure/azure-sdk-for-java/pull/34301)
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
 
 ### 4.17.2 (2023-02-28)
 

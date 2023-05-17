@@ -119,7 +119,7 @@ class VaultImpl extends GroupableResourceImpl<Vault, VaultInner, VaultImpl, KeyV
     @Override
     public Keys keys() {
         if (keys == null) {
-            keys = new KeysImpl(keyClient, this);
+            keys = new KeysImpl(keyClient, vaultHttpPipeline);
         }
         return keys;
     }

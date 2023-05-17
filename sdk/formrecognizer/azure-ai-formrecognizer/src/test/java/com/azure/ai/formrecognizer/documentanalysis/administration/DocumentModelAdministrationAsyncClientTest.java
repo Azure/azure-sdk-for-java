@@ -75,7 +75,7 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
     private DocumentModelAdministrationAsyncClient getDocumentModelAdminAsyncClient(HttpClient httpClient,
                                                                                     DocumentAnalysisServiceVersion serviceVersion) {
         return getDocumentModelAdminClientBuilder(
-            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
+            buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
                 : httpClient),
             serviceVersion,
             false)
@@ -363,6 +363,22 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
         });
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.documentanalysis.TestUtils#getTestParameters")
+    public void beginBuildModelWithJsonLTrainingSet(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
+        client = getDocumentModelAdminAsyncClient(httpClient, serviceVersion);
+        selectionMarkTrainingRunner((trainingFilesUrl) -> {
+            SyncPoller<OperationResult, DocumentModelDetails> syncPoller1 =
+                client.beginBuildDocumentModel(trainingFilesUrl, DocumentModelBuildMode.TEMPLATE, "filelist.jsonl")
+                    .setPollInterval(durationTestMode).getSyncPoller();
+            syncPoller1.waitForCompletion();
+            DocumentModelDetails createdModel1 = syncPoller1.getFinalResult();
+
+            validateDocumentModelData(createdModel1);
+            client.deleteDocumentModel(createdModel1.getModelId()).block();
+        });
+    }
+
     /**
      * Verifies the result of the copy operation for valid parameters.
      */
@@ -551,8 +567,9 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             validateClassifierModelData(buildModelPoller.getFinalResult());
             assertNotNull(documentClassifierDetails.getDocTypes());
-            documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertTrue(classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl().contains("training-data-classifier")));
+            // TODO (savaity) https://github.com/Azure/azure-sdk-for-java/issues/34472 Test proxy redaction issue
+            // documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
+            //     -> assertTrue(classifierDocumentTypeDetails.getAzureBlobSource().getContainerUrl().contains("training-data-classifier")));
         });
     }
 
@@ -578,8 +595,9 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
                     .setPollInterval(durationTestMode).getSyncPoller();
             DocumentClassifierDetails documentClassifierDetails = buildModelPoller.getFinalResult();
             assertNotNull(documentClassifierDetails.getDocTypes());
-            documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
-                -> assertTrue(classifierDocumentTypeDetails.getAzureBlobFileListSource().getContainerUrl().contains("training-data-classifier")));
+            // TODO (savaity) https://github.com/Azure/azure-sdk-for-java/issues/34472 Test proxy redaction issue
+            // documentClassifierDetails.getDocTypes().forEach((s, classifierDocumentTypeDetails)
+            //     -> assertTrue(classifierDocumentTypeDetails.getAzureBlobFileListSource().getContainerUrl().contains("training-data-classifier")));
 
             validateClassifierModelData(buildModelPoller.getFinalResult());
         });

@@ -11,7 +11,7 @@ import java.security.Provider;
 import java.security.Signature;
 
 abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
-    private final ClientLogger logger = new ClientLogger(Ecdsa.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Ecdsa.class);
 
     protected Ecdsa() {
         super("NONEwithECDSA");
@@ -57,7 +57,7 @@ abstract class Ecdsa extends AsymmetricSignatureAlgorithm {
 
         private void checkDigestLength(byte[] digest) {
             if (digest.length != getDigestLength()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("Invalid digest length."));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Invalid digest length."));
             }
         }
 

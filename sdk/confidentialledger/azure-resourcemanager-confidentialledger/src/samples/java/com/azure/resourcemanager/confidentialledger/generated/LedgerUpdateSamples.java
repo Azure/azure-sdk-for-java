@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.confidentialledger.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.confidentialledger.models.AadBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.CertBasedSecurityPrincipal;
 import com.azure.resourcemanager.confidentialledger.models.ConfidentialLedger;
@@ -18,7 +17,7 @@ import java.util.Map;
 /** Samples for Ledger Update. */
 public final class LedgerUpdateSamples {
     /*
-     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/stable/2022-05-13/examples/ConfidentialLedger_Update.json
+     * x-ms-original-file: specification/confidentialledger/resource-manager/Microsoft.ConfidentialLedger/preview/2023-01-26-preview/examples/ConfidentialLedger_Update.json
      */
     /**
      * Sample code: ConfidentialLedgerUpdate.
@@ -30,7 +29,8 @@ public final class LedgerUpdateSamples {
         ConfidentialLedger resource =
             manager
                 .ledgers()
-                .getByResourceGroupWithResponse("DummyResourceGroupName", "DummyLedgerName", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "DummyResourceGroupName", "DummyLedgerName", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

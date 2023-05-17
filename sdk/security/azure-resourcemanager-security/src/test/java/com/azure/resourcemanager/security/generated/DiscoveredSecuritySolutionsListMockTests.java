@@ -33,7 +33,7 @@ public final class DiscoveredSecuritySolutionsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"securityFamily\":\"Va\",\"offer\":\"zqazvb\",\"publisher\":\"arkptgongruatsyi\",\"sku\":\"sjqhenigbeqngu\"},\"location\":\"byjdeayscse\",\"id\":\"d\",\"name\":\"jemexmnv\",\"type\":\"vmuw\"}]}";
+            "{\"value\":[{\"properties\":{\"securityFamily\":\"Waf\",\"offer\":\"qpzfzxsoxin\",\"publisher\":\"nj\",\"sku\":\"zkdrocqsxy\"},\"location\":\"qtcmiwdwisv\",\"id\":\"mey\",\"name\":\"ajamc\",\"type\":\"jyh\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,9 +64,9 @@ public final class DiscoveredSecuritySolutionsListMockTests {
         PagedIterable<DiscoveredSecuritySolution> response =
             manager.discoveredSecuritySolutions().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(SecurityFamily.VA, response.iterator().next().securityFamily());
-        Assertions.assertEquals("zqazvb", response.iterator().next().offer());
-        Assertions.assertEquals("arkptgongruatsyi", response.iterator().next().publisher());
-        Assertions.assertEquals("sjqhenigbeqngu", response.iterator().next().sku());
+        Assertions.assertEquals(SecurityFamily.WAF, response.iterator().next().securityFamily());
+        Assertions.assertEquals("qpzfzxsoxin", response.iterator().next().offer());
+        Assertions.assertEquals("nj", response.iterator().next().publisher());
+        Assertions.assertEquals("zkdrocqsxy", response.iterator().next().sku());
     }
 }

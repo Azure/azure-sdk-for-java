@@ -18,6 +18,7 @@ import com.azure.resourcemanager.security.models.PricingTier;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -33,7 +34,7 @@ public final class PricingsUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"ujdtvmclyymffh\",\"freeTrialRemainingTime\":\"PT187H36M35S\",\"deprecated\":true,\"replacedBy\":[\"xfzuvrzmzqmzj\"]},\"id\":\"rb\",\"name\":\"pv\",\"type\":\"mdyfoebojtj\"}";
+            "{\"properties\":{\"pricingTier\":\"Standard\",\"subPlan\":\"ojkpoyh\",\"freeTrialRemainingTime\":\"PT131H58M8S\",\"enablementTime\":\"2021-11-09T18:13:39Z\",\"deprecated\":true,\"replacedBy\":[\"dljzgdyrc\"],\"extensions\":[]},\"id\":\"bsgzl\",\"name\":\"qhbjnqogdxwbsfpy\",\"type\":\"x\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,12 +66,15 @@ public final class PricingsUpdateWithResponseMockTests {
             manager
                 .pricings()
                 .updateWithResponse(
-                    "dfjeceho",
-                    new PricingInner().withPricingTier(PricingTier.STANDARD).withSubPlan("qtwloes"),
+                    "bzrpejp",
+                    new PricingInner()
+                        .withPricingTier(PricingTier.FREE)
+                        .withSubPlan("nbtttkgsuxu")
+                        .withExtensions(Arrays.asList()),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(PricingTier.STANDARD, response.pricingTier());
-        Assertions.assertEquals("ujdtvmclyymffh", response.subPlan());
+        Assertions.assertEquals("ojkpoyh", response.subPlan());
     }
 }

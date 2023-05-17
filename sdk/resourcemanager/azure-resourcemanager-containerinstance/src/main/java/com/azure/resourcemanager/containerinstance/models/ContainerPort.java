@@ -22,6 +22,10 @@ public final class ContainerPort {
     @JsonProperty(value = "port", required = true)
     private int port;
 
+    /** Creates an instance of ContainerPort class. */
+    public ContainerPort() {
+    }
+
     /**
      * Get the protocol property: The protocol associated with the port.
      *

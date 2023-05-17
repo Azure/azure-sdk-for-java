@@ -1,187 +1,3531 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "ec5a9c70-dfd2-4379-8687-ca764c6fc639",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "3344",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:10:46 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "8e6214aa-40ee-48b2-8a4d-7fed3d0873f2"
+      },
+      "RequestBody": {
+        "name": "hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4",
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "key": true,
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true
+          },
+          {
+            "name": "Description",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "analyzer": "en.lucene"
+          },
+          {
+            "name": "DescriptionFr",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "analyzer": "fr.lucene"
+          },
+          {
+            "name": "Description_Custom",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "searchAnalyzer": "stop",
+            "indexAnalyzer": "stop"
+          },
+          {
+            "name": "Category",
+            "type": "Edm.String",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "facetable": true
+          },
+          {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+              {
+                "name": "StreetAddress",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true
+              },
+              {
+                "name": "City",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "StateProvince",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "Country",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              },
+              {
+                "name": "PostalCode",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true
+              }
+            ]
+          },
+          {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "retrievable": true,
+            "filterable": true,
+            "sortable": true
+          },
+          {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+              {
+                "name": "Description",
+                "type": "Edm.String",
+                "searchable": true,
+                "analyzer": "en.lucene"
+              },
+              {
+                "name": "DescriptionFr",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "analyzer": "fr.lucene"
+              },
+              {
+                "name": "Type",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "BaseRate",
+                "type": "Edm.Double",
+                "key": false,
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "BedOptions",
+                "type": "Edm.String",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "SleepsCount",
+                "type": "Edm.Int32",
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "SmokingAllowed",
+                "type": "Edm.Boolean",
+                "retrievable": true,
+                "filterable": true,
+                "facetable": true
+              },
+              {
+                "name": "Tags",
+                "type": "Collection(Edm.String)",
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "facetable": true
+              }
+            ]
+          },
+          {
+            "name": "TotalGuests",
+            "type": "Edm.Int64",
+            "filterable": true,
+            "sortable": true,
+            "facetable": true
+          },
+          {
+            "name": "ProfitMargin",
+            "type": "Edm.Double"
+          }
+        ],
+        "scoringProfiles": [],
+        "corsOptions": {
+          "allowedOrigins": [
+            "*"
+          ],
+          "maxAgeInSeconds": 60
+        },
+        "suggesters": [
+          {
+            "name": "FancySuggester",
+            "sourceFields": [
+              "HotelName"
+            ],
+            "searchMode": "analyzingInfixMatching"
+          }
+        ]
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "8e6214aa-40ee-48b2-8a4d-7fed3d0873f2",
+        "Content-Length": "7228",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:10:46 GMT",
+        "elapsed-time": "1173",
+        "ETag": "W/\u00220x8DB20DA5E9E4567\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/indexes(\u0027hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "8e6214aa-40ee-48b2-8a4d-7fed3d0873f2",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "8e6214aa-40ee-48b2-8a4d-7fed3d0873f2"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#indexes/$entity",
+        "@odata.etag": "\u00220x8DB20DA5E9E4567\u0022",
+        "name": "hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4",
+        "defaultScoringProfile": null,
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": true,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Description",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "en.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "DescriptionFr",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "fr.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Description_Custom",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": "stop",
+            "searchAnalyzer": "stop",
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Category",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+              {
+                "name": "StreetAddress",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "City",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "StateProvince",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Country",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "PostalCode",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": false,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+              {
+                "name": "Description",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": "en.lucene",
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "DescriptionFr",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": "fr.lucene",
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Type",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "BaseRate",
+                "type": "Edm.Double",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "BedOptions",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "SleepsCount",
+                "type": "Edm.Int32",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "SmokingAllowed",
+                "type": "Edm.Boolean",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Tags",
+                "type": "Collection(Edm.String)",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "TotalGuests",
+            "type": "Edm.Int64",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "ProfitMargin",
+            "type": "Edm.Double",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          }
+        ],
+        "scoringProfiles": [],
+        "corsOptions": {
+          "allowedOrigins": [
+            "*"
+          ],
+          "maxAgeInSeconds": 60
+        },
+        "suggesters": [
+          {
+            "name": "FancySuggester",
+            "searchMode": "analyzingInfixMatching",
+            "sourceFields": [
+              "HotelName"
+            ]
+          }
+        ],
+        "analyzers": [],
+        "normalizers": [],
+        "tokenizers": [],
+        "tokenFilters": [],
+        "charFilters": [],
+        "encryptionKey": null,
+        "similarity": {
+          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity",
+          "k1": null,
+          "b": null
+        },
+        "semantic": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "ec5a9c70-dfd2-4379-8687-ca764c6fc639",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:39:37 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "ec5a9c70-dfd2-4379-8687-ca764c6fc639",
-      "ETag" : "W/\"0x8DAF8CAF37F737B\"",
-      "elapsed-time" : "789",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "7216",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CAF37F737B\\\"\",\"name\":\"hotelscanupdateindexdefinitionasync42030307b91d8d6bb9\",\"defaultScoringProfile\":null,\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"DescriptionFr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description_Custom\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":\"stop\",\"searchAnalyzer\":\"stop\",\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Category\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"ParkingIncluded\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"LastRenovationDate\",\"type\":\"Edm.DateTimeOffset\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rating\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Address\",\"type\":\"Edm.ComplexType\",\"fields\":[{\"name\":\"StreetAddress\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"City\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"StateProvince\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Country\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"PostalCode\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]},{\"name\":\"Location\",\"type\":\"Edm.GeographyPoint\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rooms\",\"type\":\"Collection(Edm.ComplexType)\",\"fields\":[{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"DescriptionFr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Type\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BaseRate\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BedOptions\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SleepsCount\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]},{\"name\":\"TotalGuests\",\"type\":\"Edm.Int64\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"ProfitMargin\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[],\"corsOptions\":{\"allowedOrigins\":[\"*\"],\"maxAgeInSeconds\":60},\"suggesters\":[{\"name\":\"FancySuggester\",\"searchMode\":\"analyzingInfixMatching\",\"sourceFields\":[\"HotelName\"]}],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null},\"semantic\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "ec5a9c70-dfd2-4379-8687-ca764c6fc639",
-      "Location" : "https://alzimmer-basic.search.windows.net/indexes('hotelscanupdateindexdefinitionasync42030307b91d8d6bb9')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4\u0027)?allowIndexDowntime=false\u0026api-version=2021-04-30-Preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "6401",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:10:47 GMT",
+        "Prefer": "return=representation",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "40905eae-dfa2-4103-8e1c-016c5d409d27"
+      },
+      "RequestBody": {
+        "name": "hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4",
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "key": true,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "Description",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "analyzer": "en.lucene",
+            "synonymMaps": []
+          },
+          {
+            "name": "DescriptionFr",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "analyzer": "fr.lucene",
+            "synonymMaps": []
+          },
+          {
+            "name": "Description_Custom",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "searchAnalyzer": "stop",
+            "indexAnalyzer": "stop",
+            "synonymMaps": []
+          },
+          {
+            "name": "Category",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "key": false,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": false,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+              {
+                "name": "StreetAddress",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "City",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "StateProvince",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "Country",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "PostalCode",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": false,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+              {
+                "name": "Description",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "analyzer": "en.lucene",
+                "synonymMaps": []
+              },
+              {
+                "name": "DescriptionFr",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "analyzer": "fr.lucene",
+                "synonymMaps": []
+              },
+              {
+                "name": "Type",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "BaseRate",
+                "type": "Edm.Double",
+                "key": false,
+                "retrievable": true,
+                "searchable": false,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "BedOptions",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "SleepsCount",
+                "type": "Edm.Int32",
+                "key": false,
+                "retrievable": true,
+                "searchable": false,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "SmokingAllowed",
+                "type": "Edm.Boolean",
+                "key": false,
+                "retrievable": true,
+                "searchable": false,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "Tags",
+                "type": "Collection(Edm.String)",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "TotalGuests",
+            "type": "Edm.Int64",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "ProfitMargin",
+            "type": "Edm.Double",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          }
+        ],
+        "scoringProfiles": [
+          {
+            "name": "MyProfile",
+            "text": {
+              "weights": {
+                "Description": 1.5,
+                "Category": 2.0
+              }
+            },
+            "functions": [
+              {
+                "type": "magnitude",
+                "fieldName": "Rating",
+                "boost": 2.0,
+                "interpolation": "constant",
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 4.0,
+                  "constantBoostBeyondRange": true
+                }
+              },
+              {
+                "type": "distance",
+                "fieldName": "Location",
+                "boost": 1.5,
+                "interpolation": "linear",
+                "distance": {
+                  "referencePointParameter": "Loc",
+                  "boostingDistance": 5.0
+                }
+              },
+              {
+                "type": "freshness",
+                "fieldName": "LastRenovationDate",
+                "boost": 1.1,
+                "interpolation": "logarithmic",
+                "freshness": {
+                  "boostingDuration": "PT8760H"
+                }
+              }
+            ],
+            "functionAggregation": "average"
+          },
+          {
+            "name": "ProfileTwo",
+            "functions": [
+              {
+                "type": "tag",
+                "fieldName": "Tags",
+                "boost": 1.5,
+                "interpolation": "linear",
+                "tag": {
+                  "tagsParameter": "MyTags"
+                }
+              }
+            ],
+            "functionAggregation": "maximum"
+          },
+          {
+            "name": "ProfileThree",
+            "functions": [
+              {
+                "type": "magnitude",
+                "fieldName": "Rating",
+                "boost": 3.0,
+                "interpolation": "quadratic",
+                "magnitude": {
+                  "boostingRangeStart": 0.0,
+                  "boostingRangeEnd": 10.0,
+                  "constantBoostBeyondRange": false
+                }
+              }
+            ],
+            "functionAggregation": "minimum"
+          },
+          {
+            "name": "ProfileFour",
+            "functions": [
+              {
+                "type": "magnitude",
+                "fieldName": "Rating",
+                "boost": 3.25,
+                "interpolation": "constant",
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 5.0,
+                  "constantBoostBeyondRange": false
+                }
+              }
+            ],
+            "functionAggregation": "firstMatching"
+          }
+        ],
+        "defaultScoringProfile": "MyProfile",
+        "corsOptions": {
+          "allowedOrigins": [
+            "http://tempuri.org",
+            "http://localhost:80"
+          ],
+          "maxAgeInSeconds": 60
+        },
+        "suggesters": [
+          {
+            "name": "FancySuggester",
+            "sourceFields": [
+              "HotelName"
+            ],
+            "searchMode": "analyzingInfixMatching"
+          }
+        ],
+        "analyzers": [],
+        "tokenizers": [],
+        "tokenFilters": [],
+        "charFilters": [],
+        "normalizers": [],
+        "similarity": {
+          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity"
+        },
+        "@odata.etag": "\u00220x8DB20DA5E9E4567\u0022"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "40905eae-dfa2-4103-8e1c-016c5d409d27",
+        "Content-Length": "8833",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:10:46 GMT",
+        "elapsed-time": "161",
+        "ETag": "W/\u00220x8DB20DA5EC41756\u0022",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "40905eae-dfa2-4103-8e1c-016c5d409d27",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "40905eae-dfa2-4103-8e1c-016c5d409d27"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#indexes/$entity",
+        "@odata.etag": "\u00220x8DB20DA5EC41756\u0022",
+        "name": "hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4",
+        "defaultScoringProfile": "MyProfile",
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": true,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Description",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "en.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "DescriptionFr",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "fr.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Description_Custom",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": "stop",
+            "searchAnalyzer": "stop",
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Category",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+              {
+                "name": "StreetAddress",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "City",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "StateProvince",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Country",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "PostalCode",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": false,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+              {
+                "name": "Description",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": "en.lucene",
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "DescriptionFr",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": "fr.lucene",
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Type",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "BaseRate",
+                "type": "Edm.Double",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "BedOptions",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "SleepsCount",
+                "type": "Edm.Int32",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "SmokingAllowed",
+                "type": "Edm.Boolean",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Tags",
+                "type": "Collection(Edm.String)",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "TotalGuests",
+            "type": "Edm.Int64",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "ProfitMargin",
+            "type": "Edm.Double",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          }
+        ],
+        "scoringProfiles": [
+          {
+            "name": "MyProfile",
+            "functionAggregation": "average",
+            "text": {
+              "weights": {
+                "Description": 1.5,
+                "Category": 2.0
+              }
+            },
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "interpolation": "constant",
+                "type": "magnitude",
+                "boost": 2.0,
+                "freshness": null,
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 4.0,
+                  "constantBoostBeyondRange": true
+                },
+                "distance": null,
+                "tag": null
+              },
+              {
+                "fieldName": "Location",
+                "interpolation": "linear",
+                "type": "distance",
+                "boost": 1.5,
+                "freshness": null,
+                "magnitude": null,
+                "distance": {
+                  "referencePointParameter": "Loc",
+                  "boostingDistance": 5.0
+                },
+                "tag": null
+              },
+              {
+                "fieldName": "LastRenovationDate",
+                "interpolation": "logarithmic",
+                "type": "freshness",
+                "boost": 1.1,
+                "freshness": {
+                  "boostingDuration": "P365D"
+                },
+                "magnitude": null,
+                "distance": null,
+                "tag": null
+              }
+            ]
+          },
+          {
+            "name": "ProfileTwo",
+            "functionAggregation": "maximum",
+            "text": null,
+            "functions": [
+              {
+                "fieldName": "Tags",
+                "interpolation": "linear",
+                "type": "tag",
+                "boost": 1.5,
+                "freshness": null,
+                "magnitude": null,
+                "distance": null,
+                "tag": {
+                  "tagsParameter": "MyTags"
+                }
+              }
+            ]
+          },
+          {
+            "name": "ProfileThree",
+            "functionAggregation": "minimum",
+            "text": null,
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "interpolation": "quadratic",
+                "type": "magnitude",
+                "boost": 3.0,
+                "freshness": null,
+                "magnitude": {
+                  "boostingRangeStart": 0.0,
+                  "boostingRangeEnd": 10.0,
+                  "constantBoostBeyondRange": false
+                },
+                "distance": null,
+                "tag": null
+              }
+            ]
+          },
+          {
+            "name": "ProfileFour",
+            "functionAggregation": "firstMatching",
+            "text": null,
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "interpolation": "constant",
+                "type": "magnitude",
+                "boost": 3.25,
+                "freshness": null,
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 5.0,
+                  "constantBoostBeyondRange": false
+                },
+                "distance": null,
+                "tag": null
+              }
+            ]
+          }
+        ],
+        "corsOptions": {
+          "allowedOrigins": [
+            "http://tempuri.org",
+            "http://localhost:80"
+          ],
+          "maxAgeInSeconds": 60
+        },
+        "suggesters": [
+          {
+            "name": "FancySuggester",
+            "searchMode": "analyzingInfixMatching",
+            "sourceFields": [
+              "HotelName"
+            ]
+          }
+        ],
+        "analyzers": [],
+        "normalizers": [],
+        "tokenizers": [],
+        "tokenFilters": [],
+        "charFilters": [],
+        "encryptionKey": null,
+        "similarity": {
+          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity",
+          "k1": null,
+          "b": null
+        },
+        "semantic": null
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanupdateindexdefinitionasync42030307b91d8d6bb9')?allowIndexDowntime=false&api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "fd18c0c7-4cd2-49f6-9c19-ee25f3cb22f8",
-      "Content-Type" : "application/json"
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:10:47 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "ac8556ce-87e5-451f-bc1e-675ae8b0b4b3"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "ac8556ce-87e5-451f-bc1e-675ae8b0b4b3",
+        "Content-Length": "8833",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:10:46 GMT",
+        "elapsed-time": "25",
+        "ETag": "W/\u00220x8DB20DA5EC41756\u0022",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "ac8556ce-87e5-451f-bc1e-675ae8b0b4b3",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "ac8556ce-87e5-451f-bc1e-675ae8b0b4b3"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#indexes/$entity",
+        "@odata.etag": "\u00220x8DB20DA5EC41756\u0022",
+        "name": "hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4",
+        "defaultScoringProfile": "MyProfile",
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": true,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Description",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "en.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "DescriptionFr",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "fr.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Description_Custom",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": "stop",
+            "searchAnalyzer": "stop",
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Category",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+              {
+                "name": "StreetAddress",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "City",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "StateProvince",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Country",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "PostalCode",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": false,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+              {
+                "name": "Description",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": "en.lucene",
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "DescriptionFr",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": "fr.lucene",
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Type",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "BaseRate",
+                "type": "Edm.Double",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "BedOptions",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "SleepsCount",
+                "type": "Edm.Int32",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "SmokingAllowed",
+                "type": "Edm.Boolean",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Tags",
+                "type": "Collection(Edm.String)",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "TotalGuests",
+            "type": "Edm.Int64",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "ProfitMargin",
+            "type": "Edm.Double",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          }
+        ],
+        "scoringProfiles": [
+          {
+            "name": "MyProfile",
+            "functionAggregation": "average",
+            "text": {
+              "weights": {
+                "Description": 1.5,
+                "Category": 2.0
+              }
+            },
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "interpolation": "constant",
+                "type": "magnitude",
+                "boost": 2.0,
+                "freshness": null,
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 4.0,
+                  "constantBoostBeyondRange": true
+                },
+                "distance": null,
+                "tag": null
+              },
+              {
+                "fieldName": "Location",
+                "interpolation": "linear",
+                "type": "distance",
+                "boost": 1.5,
+                "freshness": null,
+                "magnitude": null,
+                "distance": {
+                  "referencePointParameter": "Loc",
+                  "boostingDistance": 5.0
+                },
+                "tag": null
+              },
+              {
+                "fieldName": "LastRenovationDate",
+                "interpolation": "logarithmic",
+                "type": "freshness",
+                "boost": 1.1,
+                "freshness": {
+                  "boostingDuration": "P365D"
+                },
+                "magnitude": null,
+                "distance": null,
+                "tag": null
+              }
+            ]
+          },
+          {
+            "name": "ProfileTwo",
+            "functionAggregation": "maximum",
+            "text": null,
+            "functions": [
+              {
+                "fieldName": "Tags",
+                "interpolation": "linear",
+                "type": "tag",
+                "boost": 1.5,
+                "freshness": null,
+                "magnitude": null,
+                "distance": null,
+                "tag": {
+                  "tagsParameter": "MyTags"
+                }
+              }
+            ]
+          },
+          {
+            "name": "ProfileThree",
+            "functionAggregation": "minimum",
+            "text": null,
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "interpolation": "quadratic",
+                "type": "magnitude",
+                "boost": 3.0,
+                "freshness": null,
+                "magnitude": {
+                  "boostingRangeStart": 0.0,
+                  "boostingRangeEnd": 10.0,
+                  "constantBoostBeyondRange": false
+                },
+                "distance": null,
+                "tag": null
+              }
+            ]
+          },
+          {
+            "name": "ProfileFour",
+            "functionAggregation": "firstMatching",
+            "text": null,
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "interpolation": "constant",
+                "type": "magnitude",
+                "boost": 3.25,
+                "freshness": null,
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 5.0,
+                  "constantBoostBeyondRange": false
+                },
+                "distance": null,
+                "tag": null
+              }
+            ]
+          }
+        ],
+        "corsOptions": {
+          "allowedOrigins": [
+            "http://tempuri.org",
+            "http://localhost:80"
+          ],
+          "maxAgeInSeconds": 60
+        },
+        "suggesters": [
+          {
+            "name": "FancySuggester",
+            "searchMode": "analyzingInfixMatching",
+            "sourceFields": [
+              "HotelName"
+            ]
+          }
+        ],
+        "analyzers": [],
+        "normalizers": [],
+        "tokenizers": [],
+        "tokenFilters": [],
+        "charFilters": [],
+        "encryptionKey": null,
+        "similarity": {
+          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity",
+          "k1": null,
+          "b": null
+        },
+        "semantic": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "fd18c0c7-4cd2-49f6-9c19-ee25f3cb22f8",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:39:38 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "fd18c0c7-4cd2-49f6-9c19-ee25f3cb22f8",
-      "ETag" : "W/\"0x8DAF8CAF3A322D4\"",
-      "elapsed-time" : "158",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "8821",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CAF3A322D4\\\"\",\"name\":\"hotelscanupdateindexdefinitionasync42030307b91d8d6bb9\",\"defaultScoringProfile\":\"MyProfile\",\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"DescriptionFr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description_Custom\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":\"stop\",\"searchAnalyzer\":\"stop\",\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Category\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"ParkingIncluded\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"LastRenovationDate\",\"type\":\"Edm.DateTimeOffset\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rating\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Address\",\"type\":\"Edm.ComplexType\",\"fields\":[{\"name\":\"StreetAddress\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"City\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"StateProvince\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Country\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"PostalCode\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]},{\"name\":\"Location\",\"type\":\"Edm.GeographyPoint\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rooms\",\"type\":\"Collection(Edm.ComplexType)\",\"fields\":[{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"DescriptionFr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Type\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BaseRate\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BedOptions\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SleepsCount\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]},{\"name\":\"TotalGuests\",\"type\":\"Edm.Int64\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"ProfitMargin\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[{\"name\":\"MyProfile\",\"functionAggregation\":\"average\",\"text\":{\"weights\":{\"Description\":1.5,\"Category\":2.0}},\"functions\":[{\"fieldName\":\"Rating\",\"interpolation\":\"constant\",\"type\":\"magnitude\",\"boost\":2.0,\"freshness\":null,\"magnitude\":{\"boostingRangeStart\":1.0,\"boostingRangeEnd\":4.0,\"constantBoostBeyondRange\":true},\"distance\":null,\"tag\":null},{\"fieldName\":\"Location\",\"interpolation\":\"linear\",\"type\":\"distance\",\"boost\":1.5,\"freshness\":null,\"magnitude\":null,\"distance\":{\"referencePointParameter\":\"Loc\",\"boostingDistance\":5.0},\"tag\":null},{\"fieldName\":\"LastRenovationDate\",\"interpolation\":\"logarithmic\",\"type\":\"freshness\",\"boost\":1.1,\"freshness\":{\"boostingDuration\":\"P365D\"},\"magnitude\":null,\"distance\":null,\"tag\":null}]},{\"name\":\"ProfileTwo\",\"functionAggregation\":\"maximum\",\"text\":null,\"functions\":[{\"fieldName\":\"Tags\",\"interpolation\":\"linear\",\"type\":\"tag\",\"boost\":1.5,\"freshness\":null,\"magnitude\":null,\"distance\":null,\"tag\":{\"tagsParameter\":\"MyTags\"}}]},{\"name\":\"ProfileThree\",\"functionAggregation\":\"minimum\",\"text\":null,\"functions\":[{\"fieldName\":\"Rating\",\"interpolation\":\"quadratic\",\"type\":\"magnitude\",\"boost\":3.0,\"freshness\":null,\"magnitude\":{\"boostingRangeStart\":0.0,\"boostingRangeEnd\":10.0,\"constantBoostBeyondRange\":false},\"distance\":null,\"tag\":null}]},{\"name\":\"ProfileFour\",\"functionAggregation\":\"firstMatching\",\"text\":null,\"functions\":[{\"fieldName\":\"Rating\",\"interpolation\":\"constant\",\"type\":\"magnitude\",\"boost\":3.25,\"freshness\":null,\"magnitude\":{\"boostingRangeStart\":1.0,\"boostingRangeEnd\":5.0,\"constantBoostBeyondRange\":false},\"distance\":null,\"tag\":null}]}],\"corsOptions\":{\"allowedOrigins\":[\"http://tempuri.org\",\"http://localhost:80\"],\"maxAgeInSeconds\":60},\"suggesters\":[{\"name\":\"FancySuggester\",\"searchMode\":\"analyzingInfixMatching\",\"sourceFields\":[\"HotelName\"]}],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null},\"semantic\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "fd18c0c7-4cd2-49f6-9c19-ee25f3cb22f8",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+    {
+      "RequestUri": "https://REDACTED/synonymmaps?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "73",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:10:47 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "fd4dd0b4-ec16-4a0b-9770-9f0e66c879eb"
+      },
+      "RequestBody": {
+        "name": "names271862c8225a0023",
+        "format": "solr",
+        "synonyms": "hotel,motel"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "fd4dd0b4-ec16-4a0b-9770-9f0e66c879eb",
+        "Content-Length": "235",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:10:46 GMT",
+        "elapsed-time": "32",
+        "ETag": "W/\u00220x8DB20DA5EE7C6B3\u0022",
+        "Expires": "-1",
+        "Location": "https://azs-java-alzimmertestproxy.search.windows.net/synonymmaps(\u0027names271862c8225a0023\u0027)?api-version=2021-04-30-Preview",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "fd4dd0b4-ec16-4a0b-9770-9f0e66c879eb",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "fd4dd0b4-ec16-4a0b-9770-9f0e66c879eb"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#synonymmaps/$entity",
+        "@odata.etag": "\u00220x8DB20DA5EE7C6B3\u0022",
+        "name": "names271862c8225a0023",
+        "format": "solr",
+        "synonyms": "hotel,motel",
+        "encryptionKey": null
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanupdateindexdefinitionasync42030307b91d8d6bb9')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "f3c98530-1df3-4066-97a0-bcda4c3a06a7"
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4\u0027)?allowIndexDowntime=true\u0026api-version=2021-04-30-Preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "6512",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 20:10:47 GMT",
+        "Prefer": "return=representation",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "9ee79ac9-18df-43a1-967d-d4bc31427db6"
+      },
+      "RequestBody": {
+        "name": "hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4",
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "key": true,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": false,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "Description",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "analyzer": "en.lucene",
+            "synonymMaps": []
+          },
+          {
+            "name": "DescriptionFr",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "analyzer": "fr.lucene",
+            "synonymMaps": []
+          },
+          {
+            "name": "Description_Custom",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": false,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "searchAnalyzer": "whitespace",
+            "indexAnalyzer": "stop",
+            "synonymMaps": [
+              "names271862c8225a0023"
+            ]
+          },
+          {
+            "name": "Category",
+            "type": "Edm.String",
+            "key": false,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "key": false,
+            "retrievable": true,
+            "searchable": true,
+            "filterable": true,
+            "sortable": false,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+              {
+                "name": "StreetAddress",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "City",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "StateProvince",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "Country",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "PostalCode",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": true,
+                "facetable": true,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": false,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+              {
+                "name": "Description",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "analyzer": "en.lucene",
+                "synonymMaps": []
+              },
+              {
+                "name": "DescriptionFr",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "analyzer": "fr.lucene",
+                "synonymMaps": []
+              },
+              {
+                "name": "Type",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "BaseRate",
+                "type": "Edm.Double",
+                "key": false,
+                "retrievable": true,
+                "searchable": false,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "BedOptions",
+                "type": "Edm.String",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "SleepsCount",
+                "type": "Edm.Int32",
+                "key": false,
+                "retrievable": true,
+                "searchable": false,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "SmokingAllowed",
+                "type": "Edm.Boolean",
+                "key": false,
+                "retrievable": true,
+                "searchable": false,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              },
+              {
+                "name": "Tags",
+                "type": "Collection(Edm.String)",
+                "key": false,
+                "retrievable": true,
+                "searchable": true,
+                "filterable": true,
+                "sortable": false,
+                "facetable": true,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "TotalGuests",
+            "type": "Edm.Int64",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "ProfitMargin",
+            "type": "Edm.Double",
+            "key": false,
+            "retrievable": true,
+            "searchable": false,
+            "filterable": true,
+            "sortable": true,
+            "facetable": true,
+            "synonymMaps": []
+          },
+          {
+            "name": "HotelWebsite",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true
+          }
+        ],
+        "scoringProfiles": [
+          {
+            "name": "MyProfile",
+            "text": {
+              "weights": {
+                "Description": 1.5,
+                "Category": 2.0
+              }
+            },
+            "functions": [
+              {
+                "type": "magnitude",
+                "fieldName": "Rating",
+                "boost": 2.0,
+                "interpolation": "constant",
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 4.0,
+                  "constantBoostBeyondRange": true
+                }
+              },
+              {
+                "type": "distance",
+                "fieldName": "Location",
+                "boost": 1.5,
+                "interpolation": "linear",
+                "distance": {
+                  "referencePointParameter": "Loc",
+                  "boostingDistance": 5.0
+                }
+              },
+              {
+                "type": "freshness",
+                "fieldName": "LastRenovationDate",
+                "boost": 1.1,
+                "interpolation": "logarithmic",
+                "freshness": {
+                  "boostingDuration": "PT8760H"
+                }
+              }
+            ],
+            "functionAggregation": "average"
+          },
+          {
+            "name": "ProfileTwo",
+            "functions": [
+              {
+                "type": "tag",
+                "fieldName": "Tags",
+                "boost": 1.5,
+                "interpolation": "linear",
+                "tag": {
+                  "tagsParameter": "MyTags"
+                }
+              }
+            ],
+            "functionAggregation": "maximum"
+          },
+          {
+            "name": "ProfileThree",
+            "functions": [
+              {
+                "type": "magnitude",
+                "fieldName": "Rating",
+                "boost": 3.0,
+                "interpolation": "quadratic",
+                "magnitude": {
+                  "boostingRangeStart": 0.0,
+                  "boostingRangeEnd": 10.0,
+                  "constantBoostBeyondRange": false
+                }
+              }
+            ],
+            "functionAggregation": "minimum"
+          },
+          {
+            "name": "ProfileFour",
+            "functions": [
+              {
+                "type": "magnitude",
+                "fieldName": "Rating",
+                "boost": 3.25,
+                "interpolation": "constant",
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 5.0,
+                  "constantBoostBeyondRange": false
+                }
+              }
+            ],
+            "functionAggregation": "firstMatching"
+          }
+        ],
+        "defaultScoringProfile": "MyProfile",
+        "corsOptions": {
+          "allowedOrigins": [
+            "http://tempuri.org",
+            "http://localhost:80"
+          ],
+          "maxAgeInSeconds": 60
+        },
+        "suggesters": [
+          {
+            "name": "FancySuggester",
+            "sourceFields": [
+              "HotelName"
+            ],
+            "searchMode": "analyzingInfixMatching"
+          }
+        ],
+        "analyzers": [],
+        "tokenizers": [],
+        "tokenFilters": [],
+        "charFilters": [],
+        "normalizers": [],
+        "similarity": {
+          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity"
+        },
+        "@odata.etag": "\u00220x8DB20DA5EC41756\u0022"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "9ee79ac9-18df-43a1-967d-d4bc31427db6",
+        "Content-Length": "9102",
+        "Content-Type": "application/json; odata.metadata=minimal",
+        "Date": "Thu, 09 Mar 2023 20:10:46 GMT",
+        "elapsed-time": "218",
+        "ETag": "W/\u00220x8DB20DA5F1279E6\u0022",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "9ee79ac9-18df-43a1-967d-d4bc31427db6",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "9ee79ac9-18df-43a1-967d-d4bc31427db6"
+      },
+      "ResponseBody": {
+        "@odata.context": "https://azs-java-alzimmertestproxy.search.windows.net/$metadata#indexes/$entity",
+        "@odata.etag": "\u00220x8DB20DA5F1279E6\u0022",
+        "name": "hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4",
+        "defaultScoringProfile": "MyProfile",
+        "fields": [
+          {
+            "name": "HotelId",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": true,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "HotelName",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": false,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Description",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "en.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "DescriptionFr",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": "fr.lucene",
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Description_Custom",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": false,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": "stop",
+            "searchAnalyzer": "whitespace",
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": [
+              "names271862c8225a0023"
+            ]
+          },
+          {
+            "name": "Category",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Tags",
+            "type": "Collection(Edm.String)",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": false,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "ParkingIncluded",
+            "type": "Edm.Boolean",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "SmokingAllowed",
+            "type": "Edm.Boolean",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "LastRenovationDate",
+            "type": "Edm.DateTimeOffset",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rating",
+            "type": "Edm.Int32",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Address",
+            "type": "Edm.ComplexType",
+            "fields": [
+              {
+                "name": "StreetAddress",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "City",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "StateProvince",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Country",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "PostalCode",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": true,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "Location",
+            "type": "Edm.GeographyPoint",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": false,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "Rooms",
+            "type": "Collection(Edm.ComplexType)",
+            "fields": [
+              {
+                "name": "Description",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": "en.lucene",
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "DescriptionFr",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": "fr.lucene",
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Type",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "BaseRate",
+                "type": "Edm.Double",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "BedOptions",
+                "type": "Edm.String",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "SleepsCount",
+                "type": "Edm.Int32",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "SmokingAllowed",
+                "type": "Edm.Boolean",
+                "searchable": false,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              },
+              {
+                "name": "Tags",
+                "type": "Collection(Edm.String)",
+                "searchable": true,
+                "filterable": true,
+                "retrievable": true,
+                "sortable": false,
+                "facetable": true,
+                "key": false,
+                "indexAnalyzer": null,
+                "searchAnalyzer": null,
+                "analyzer": null,
+                "normalizer": null,
+                "synonymMaps": []
+              }
+            ]
+          },
+          {
+            "name": "TotalGuests",
+            "type": "Edm.Int64",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "ProfitMargin",
+            "type": "Edm.Double",
+            "searchable": false,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          },
+          {
+            "name": "HotelWebsite",
+            "type": "Edm.String",
+            "searchable": true,
+            "filterable": true,
+            "retrievable": true,
+            "sortable": true,
+            "facetable": true,
+            "key": false,
+            "indexAnalyzer": null,
+            "searchAnalyzer": null,
+            "analyzer": null,
+            "normalizer": null,
+            "synonymMaps": []
+          }
+        ],
+        "scoringProfiles": [
+          {
+            "name": "MyProfile",
+            "functionAggregation": "average",
+            "text": {
+              "weights": {
+                "Description": 1.5,
+                "Category": 2.0
+              }
+            },
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "interpolation": "constant",
+                "type": "magnitude",
+                "boost": 2.0,
+                "freshness": null,
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 4.0,
+                  "constantBoostBeyondRange": true
+                },
+                "distance": null,
+                "tag": null
+              },
+              {
+                "fieldName": "Location",
+                "interpolation": "linear",
+                "type": "distance",
+                "boost": 1.5,
+                "freshness": null,
+                "magnitude": null,
+                "distance": {
+                  "referencePointParameter": "Loc",
+                  "boostingDistance": 5.0
+                },
+                "tag": null
+              },
+              {
+                "fieldName": "LastRenovationDate",
+                "interpolation": "logarithmic",
+                "type": "freshness",
+                "boost": 1.1,
+                "freshness": {
+                  "boostingDuration": "P365D"
+                },
+                "magnitude": null,
+                "distance": null,
+                "tag": null
+              }
+            ]
+          },
+          {
+            "name": "ProfileTwo",
+            "functionAggregation": "maximum",
+            "text": null,
+            "functions": [
+              {
+                "fieldName": "Tags",
+                "interpolation": "linear",
+                "type": "tag",
+                "boost": 1.5,
+                "freshness": null,
+                "magnitude": null,
+                "distance": null,
+                "tag": {
+                  "tagsParameter": "MyTags"
+                }
+              }
+            ]
+          },
+          {
+            "name": "ProfileThree",
+            "functionAggregation": "minimum",
+            "text": null,
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "interpolation": "quadratic",
+                "type": "magnitude",
+                "boost": 3.0,
+                "freshness": null,
+                "magnitude": {
+                  "boostingRangeStart": 0.0,
+                  "boostingRangeEnd": 10.0,
+                  "constantBoostBeyondRange": false
+                },
+                "distance": null,
+                "tag": null
+              }
+            ]
+          },
+          {
+            "name": "ProfileFour",
+            "functionAggregation": "firstMatching",
+            "text": null,
+            "functions": [
+              {
+                "fieldName": "Rating",
+                "interpolation": "constant",
+                "type": "magnitude",
+                "boost": 3.25,
+                "freshness": null,
+                "magnitude": {
+                  "boostingRangeStart": 1.0,
+                  "boostingRangeEnd": 5.0,
+                  "constantBoostBeyondRange": false
+                },
+                "distance": null,
+                "tag": null
+              }
+            ]
+          }
+        ],
+        "corsOptions": {
+          "allowedOrigins": [
+            "http://tempuri.org",
+            "http://localhost:80"
+          ],
+          "maxAgeInSeconds": 60
+        },
+        "suggesters": [
+          {
+            "name": "FancySuggester",
+            "searchMode": "analyzingInfixMatching",
+            "sourceFields": [
+              "HotelName"
+            ]
+          }
+        ],
+        "analyzers": [],
+        "normalizers": [],
+        "tokenizers": [],
+        "tokenFilters": [],
+        "charFilters": [],
+        "encryptionKey": null,
+        "similarity": {
+          "@odata.type": "#Microsoft.Azure.Search.BM25Similarity",
+          "k1": null,
+          "b": null
+        },
+        "semantic": null
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "f3c98530-1df3-4066-97a0-bcda4c3a06a7",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:39:38 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "f3c98530-1df3-4066-97a0-bcda4c3a06a7",
-      "ETag" : "W/\"0x8DAF8CAF3A322D4\"",
-      "elapsed-time" : "22",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "8821",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CAF3A322D4\\\"\",\"name\":\"hotelscanupdateindexdefinitionasync42030307b91d8d6bb9\",\"defaultScoringProfile\":\"MyProfile\",\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"DescriptionFr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description_Custom\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":\"stop\",\"searchAnalyzer\":\"stop\",\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Category\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"ParkingIncluded\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"LastRenovationDate\",\"type\":\"Edm.DateTimeOffset\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rating\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Address\",\"type\":\"Edm.ComplexType\",\"fields\":[{\"name\":\"StreetAddress\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"City\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"StateProvince\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Country\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"PostalCode\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]},{\"name\":\"Location\",\"type\":\"Edm.GeographyPoint\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rooms\",\"type\":\"Collection(Edm.ComplexType)\",\"fields\":[{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"DescriptionFr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Type\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BaseRate\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BedOptions\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SleepsCount\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]},{\"name\":\"TotalGuests\",\"type\":\"Edm.Int64\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"ProfitMargin\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[{\"name\":\"MyProfile\",\"functionAggregation\":\"average\",\"text\":{\"weights\":{\"Description\":1.5,\"Category\":2.0}},\"functions\":[{\"fieldName\":\"Rating\",\"interpolation\":\"constant\",\"type\":\"magnitude\",\"boost\":2.0,\"freshness\":null,\"magnitude\":{\"boostingRangeStart\":1.0,\"boostingRangeEnd\":4.0,\"constantBoostBeyondRange\":true},\"distance\":null,\"tag\":null},{\"fieldName\":\"Location\",\"interpolation\":\"linear\",\"type\":\"distance\",\"boost\":1.5,\"freshness\":null,\"magnitude\":null,\"distance\":{\"referencePointParameter\":\"Loc\",\"boostingDistance\":5.0},\"tag\":null},{\"fieldName\":\"LastRenovationDate\",\"interpolation\":\"logarithmic\",\"type\":\"freshness\",\"boost\":1.1,\"freshness\":{\"boostingDuration\":\"P365D\"},\"magnitude\":null,\"distance\":null,\"tag\":null}]},{\"name\":\"ProfileTwo\",\"functionAggregation\":\"maximum\",\"text\":null,\"functions\":[{\"fieldName\":\"Tags\",\"interpolation\":\"linear\",\"type\":\"tag\",\"boost\":1.5,\"freshness\":null,\"magnitude\":null,\"distance\":null,\"tag\":{\"tagsParameter\":\"MyTags\"}}]},{\"name\":\"ProfileThree\",\"functionAggregation\":\"minimum\",\"text\":null,\"functions\":[{\"fieldName\":\"Rating\",\"interpolation\":\"quadratic\",\"type\":\"magnitude\",\"boost\":3.0,\"freshness\":null,\"magnitude\":{\"boostingRangeStart\":0.0,\"boostingRangeEnd\":10.0,\"constantBoostBeyondRange\":false},\"distance\":null,\"tag\":null}]},{\"name\":\"ProfileFour\",\"functionAggregation\":\"firstMatching\",\"text\":null,\"functions\":[{\"fieldName\":\"Rating\",\"interpolation\":\"constant\",\"type\":\"magnitude\",\"boost\":3.25,\"freshness\":null,\"magnitude\":{\"boostingRangeStart\":1.0,\"boostingRangeEnd\":5.0,\"constantBoostBeyondRange\":false},\"distance\":null,\"tag\":null}]}],\"corsOptions\":{\"allowedOrigins\":[\"http://tempuri.org\",\"http://localhost:80\"],\"maxAgeInSeconds\":60},\"suggesters\":[{\"name\":\"FancySuggester\",\"searchMode\":\"analyzingInfixMatching\",\"sourceFields\":[\"HotelName\"]}],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null},\"semantic\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "f3c98530-1df3-4066-97a0-bcda4c3a06a7",
-      "Content-Type" : "application/json; odata.metadata=minimal"
+    {
+      "RequestUri": "https://REDACTED/synonymmaps(\u0027names271862c8225a0023\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:10:48 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "b6b7ef8a-866f-40ee-8971-561392b4c2f8"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "b6b7ef8a-866f-40ee-8971-561392b4c2f8",
+        "Date": "Thu, 09 Mar 2023 20:10:46 GMT",
+        "elapsed-time": "14",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "b6b7ef8a-866f-40ee-8971-561392b4c2f8",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "b6b7ef8a-866f-40ee-8971-561392b4c2f8"
+      },
+      "ResponseBody": null
     },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "b97f1cf9-b90d-483e-a016-19d6d794eb97",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "b97f1cf9-b90d-483e-a016-19d6d794eb97",
-      "StatusCode" : "201",
-      "Date" : "Tue, 17 Jan 2023 20:39:38 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "b97f1cf9-b90d-483e-a016-19d6d794eb97",
-      "ETag" : "W/\"0x8DAF8CAF3C572D4\"",
-      "elapsed-time" : "26",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "223",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#synonymmaps/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CAF3C572D4\\\"\",\"name\":\"names41637a0320c8abbc\",\"format\":\"solr\",\"synonyms\":\"hotel,motel\",\"encryptionKey\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "b97f1cf9-b90d-483e-a016-19d6d794eb97",
-      "Location" : "https://alzimmer-basic.search.windows.net/synonymmaps('names41637a0320c8abbc')?api-version=2021-04-30-Preview",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanupdateindexdefinitionasync42030307b91d8d6bb9')?allowIndexDowntime=true&api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "ddfd7124-ab3d-4313-9317-3ed664ca3af5",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "ddfd7124-ab3d-4313-9317-3ed664ca3af5",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:39:38 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "ddfd7124-ab3d-4313-9317-3ed664ca3af5",
-      "ETag" : "W/\"0x8DAF8CAF3E8860A\"",
-      "elapsed-time" : "175",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "9090",
-      "Body" : "{\"@odata.context\":\"https://alzimmer-basic.search.windows.net/$metadata#indexes/$entity\",\"@odata.etag\":\"\\\"0x8DAF8CAF3E8860A\\\"\",\"name\":\"hotelscanupdateindexdefinitionasync42030307b91d8d6bb9\",\"defaultScoringProfile\":\"MyProfile\",\"fields\":[{\"name\":\"HotelId\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":true,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"HotelName\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":false,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"DescriptionFr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Description_Custom\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":false,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":\"stop\",\"searchAnalyzer\":\"whitespace\",\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[\"names41637a0320c8abbc\"]},{\"name\":\"Category\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"ParkingIncluded\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"LastRenovationDate\",\"type\":\"Edm.DateTimeOffset\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rating\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Address\",\"type\":\"Edm.ComplexType\",\"fields\":[{\"name\":\"StreetAddress\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"City\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"StateProvince\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Country\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"PostalCode\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]},{\"name\":\"Location\",\"type\":\"Edm.GeographyPoint\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":false,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Rooms\",\"type\":\"Collection(Edm.ComplexType)\",\"fields\":[{\"name\":\"Description\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"en.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"DescriptionFr\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":\"fr.lucene\",\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Type\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BaseRate\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"BedOptions\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SleepsCount\",\"type\":\"Edm.Int32\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"SmokingAllowed\",\"type\":\"Edm.Boolean\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"Tags\",\"type\":\"Collection(Edm.String)\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":false,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}]},{\"name\":\"TotalGuests\",\"type\":\"Edm.Int64\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"ProfitMargin\",\"type\":\"Edm.Double\",\"searchable\":false,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]},{\"name\":\"HotelWebsite\",\"type\":\"Edm.String\",\"searchable\":true,\"filterable\":true,\"retrievable\":true,\"sortable\":true,\"facetable\":true,\"key\":false,\"indexAnalyzer\":null,\"searchAnalyzer\":null,\"analyzer\":null,\"normalizer\":null,\"synonymMaps\":[]}],\"scoringProfiles\":[{\"name\":\"MyProfile\",\"functionAggregation\":\"average\",\"text\":{\"weights\":{\"Description\":1.5,\"Category\":2.0}},\"functions\":[{\"fieldName\":\"Rating\",\"interpolation\":\"constant\",\"type\":\"magnitude\",\"boost\":2.0,\"freshness\":null,\"magnitude\":{\"boostingRangeStart\":1.0,\"boostingRangeEnd\":4.0,\"constantBoostBeyondRange\":true},\"distance\":null,\"tag\":null},{\"fieldName\":\"Location\",\"interpolation\":\"linear\",\"type\":\"distance\",\"boost\":1.5,\"freshness\":null,\"magnitude\":null,\"distance\":{\"referencePointParameter\":\"Loc\",\"boostingDistance\":5.0},\"tag\":null},{\"fieldName\":\"LastRenovationDate\",\"interpolation\":\"logarithmic\",\"type\":\"freshness\",\"boost\":1.1,\"freshness\":{\"boostingDuration\":\"P365D\"},\"magnitude\":null,\"distance\":null,\"tag\":null}]},{\"name\":\"ProfileTwo\",\"functionAggregation\":\"maximum\",\"text\":null,\"functions\":[{\"fieldName\":\"Tags\",\"interpolation\":\"linear\",\"type\":\"tag\",\"boost\":1.5,\"freshness\":null,\"magnitude\":null,\"distance\":null,\"tag\":{\"tagsParameter\":\"MyTags\"}}]},{\"name\":\"ProfileThree\",\"functionAggregation\":\"minimum\",\"text\":null,\"functions\":[{\"fieldName\":\"Rating\",\"interpolation\":\"quadratic\",\"type\":\"magnitude\",\"boost\":3.0,\"freshness\":null,\"magnitude\":{\"boostingRangeStart\":0.0,\"boostingRangeEnd\":10.0,\"constantBoostBeyondRange\":false},\"distance\":null,\"tag\":null}]},{\"name\":\"ProfileFour\",\"functionAggregation\":\"firstMatching\",\"text\":null,\"functions\":[{\"fieldName\":\"Rating\",\"interpolation\":\"constant\",\"type\":\"magnitude\",\"boost\":3.25,\"freshness\":null,\"magnitude\":{\"boostingRangeStart\":1.0,\"boostingRangeEnd\":5.0,\"constantBoostBeyondRange\":false},\"distance\":null,\"tag\":null}]}],\"corsOptions\":{\"allowedOrigins\":[\"http://tempuri.org\",\"http://localhost:80\"],\"maxAgeInSeconds\":60},\"suggesters\":[{\"name\":\"FancySuggester\",\"searchMode\":\"analyzingInfixMatching\",\"sourceFields\":[\"HotelName\"]}],\"analyzers\":[],\"normalizers\":[],\"tokenizers\":[],\"tokenFilters\":[],\"charFilters\":[],\"encryptionKey\":null,\"similarity\":{\"@odata.type\":\"#Microsoft.Azure.Search.BM25Similarity\",\"k1\":null,\"b\":null},\"semantic\":null}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "ddfd7124-ab3d-4313-9317-3ed664ca3af5",
-      "Content-Type" : "application/json; odata.metadata=minimal"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/synonymmaps('names41637a0320c8abbc')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "fa1d34f3-06c0-4b01-a38a-df39e08d4cde"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "fa1d34f3-06c0-4b01-a38a-df39e08d4cde",
-      "elapsed-time" : "12",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "fa1d34f3-06c0-4b01-a38a-df39e08d4cde",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:39:38 GMT",
-      "x-ms-client-request-id" : "fa1d34f3-06c0-4b01-a38a-df39e08d4cde"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('hotelscanupdateindexdefinitionasync42030307b91d8d6bb9')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "8ed8fad3-0ecf-4af0-aaef-47c89caf1ddf"
-    },
-    "Response" : {
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "8ed8fad3-0ecf-4af0-aaef-47c89caf1ddf",
-      "elapsed-time" : "243",
-      "Expires" : "-1",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "8ed8fad3-0ecf-4af0-aaef-47c89caf1ddf",
-      "StatusCode" : "204",
-      "Date" : "Tue, 17 Jan 2023 20:39:38 GMT",
-      "x-ms-client-request-id" : "8ed8fad3-0ecf-4af0-aaef-47c89caf1ddf"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "hotelscanupdateindexdefinitionasync42030307b91d8d6bb9", "names41637a0320c8abbc" ]
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=minimal",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 20:10:48 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "0a8da6c0-5e37-4802-98b8-99499533e416"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "0a8da6c0-5e37-4802-98b8-99499533e416",
+        "Date": "Thu, 09 Mar 2023 20:10:47 GMT",
+        "elapsed-time": "305",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "request-id": "0a8da6c0-5e37-4802-98b8-99499533e416",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "0a8da6c0-5e37-4802-98b8-99499533e416"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "hotelscanupdateindexdefinitionasyncc8b09303f8fa8138f4",
+    "1": "names271862c8225a0023"
+  }
 }

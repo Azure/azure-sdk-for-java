@@ -5,52 +5,51 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /** The ConfigurationSettingSnapshot model. */
 @Fluent
-public final class ConfigurationSettingSnapshot {
+public final class ConfigurationSettingSnapshot implements JsonSerializable<ConfigurationSettingSnapshot> {
     /*
      * The name of the snapshot.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The current status of the snapshot.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SnapshotStatus status;
 
     /*
      * A list of filters used to filter the key-values included in the snapshot.
      */
-    @JsonProperty(value = "filters", required = true)
-    private List<SnapshotSettingFilter> filters;
+    private final List<SnapshotSettingFilter> filters;
 
     /*
      * The composition type describes how the key-values within the snapshot are composed. The 'all' composition type
      * includes all key-values. The 'group_by_key' composition type ensures there are no two key-values containing the
      * same key.
      */
-    @JsonProperty(value = "composition_type")
     private CompositionType compositionType;
 
     /*
      * The time that the snapshot was created.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdAt;
 
     /*
      * The time that the snapshot will expire.
      */
-    @JsonProperty(value = "expires", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expiresAt;
 
     /*
@@ -58,31 +57,26 @@ public final class ConfigurationSettingSnapshot {
      * is only writable during the creation of a snapshot. If not specified, the default lifetime of key-value
      * revisions will be used.
      */
-    @JsonProperty(value = "retention_period")
     private Long retentionPeriod;
 
     /*
      * The size in bytes of the snapshot.
      */
-    @JsonProperty(value = "size", access = JsonProperty.Access.WRITE_ONLY)
     private Long size;
 
     /*
      * The amount of key-values in the snapshot.
      */
-    @JsonProperty(value = "items_count", access = JsonProperty.Access.WRITE_ONLY)
     private Long itemCount;
 
     /*
      * The tags of the snapshot.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
      * A value representing the current state of the snapshot.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /**
@@ -90,9 +84,7 @@ public final class ConfigurationSettingSnapshot {
      *
      * @param filters the filters value to set.
      */
-    @JsonCreator
-    public ConfigurationSettingSnapshot(
-            @JsonProperty(value = "filters", required = true) List<SnapshotSettingFilter> filters) {
+    public ConfigurationSettingSnapshot(List<SnapshotSettingFilter> filters) {
         this.filters = filters;
     }
 
@@ -237,5 +229,107 @@ public final class ConfigurationSettingSnapshot {
      */
     public String getEtag() {
         return this.etag;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
+        jsonWriter.writeStringField("composition_type", Objects.toString(this.compositionType, null));
+        jsonWriter.writeStringField("created", Objects.toString(this.createdAt, null));
+        jsonWriter.writeStringField("expires", Objects.toString(this.expiresAt, null));
+        jsonWriter.writeNumberField("retention_period", this.retentionPeriod);
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeNumberField("items_count", this.itemCount);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationSettingSnapshot from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationSettingSnapshot if the JsonReader was pointing to an instance of it, or null
+     *     if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConfigurationSettingSnapshot.
+     */
+    public static ConfigurationSettingSnapshot fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean filtersFound = false;
+                    List<SnapshotSettingFilter> filters = null;
+                    String name = null;
+                    SnapshotStatus status = null;
+                    CompositionType compositionType = null;
+                    OffsetDateTime createdAt = null;
+                    OffsetDateTime expiresAt = null;
+                    Long retentionPeriod = null;
+                    Long size = null;
+                    Long itemCount = null;
+                    Map<String, String> tags = null;
+                    String etag = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("filters".equals(fieldName)) {
+                            filters = reader.readArray(reader1 -> SnapshotSettingFilter.fromJson(reader1));
+                            filtersFound = true;
+                        } else if ("name".equals(fieldName)) {
+                            name = reader.getString();
+                        } else if ("status".equals(fieldName)) {
+                            status = SnapshotStatus.fromString(reader.getString());
+                        } else if ("composition_type".equals(fieldName)) {
+                            compositionType = CompositionType.fromString(reader.getString());
+                        } else if ("created".equals(fieldName)) {
+                            createdAt =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("expires".equals(fieldName)) {
+                            expiresAt =
+                                    reader.getNullable(
+                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                        } else if ("retention_period".equals(fieldName)) {
+                            retentionPeriod = reader.getNullable(JsonReader::getLong);
+                        } else if ("size".equals(fieldName)) {
+                            size = reader.getNullable(JsonReader::getLong);
+                        } else if ("items_count".equals(fieldName)) {
+                            itemCount = reader.getNullable(JsonReader::getLong);
+                        } else if ("tags".equals(fieldName)) {
+                            tags = reader.readMap(reader1 -> reader1.getString());
+                        } else if ("etag".equals(fieldName)) {
+                            etag = reader.getString();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (filtersFound) {
+                        ConfigurationSettingSnapshot deserializedConfigurationSettingSnapshot =
+                                new ConfigurationSettingSnapshot(filters);
+                        deserializedConfigurationSettingSnapshot.name = name;
+                        deserializedConfigurationSettingSnapshot.status = status;
+                        deserializedConfigurationSettingSnapshot.compositionType = compositionType;
+                        deserializedConfigurationSettingSnapshot.createdAt = createdAt;
+                        deserializedConfigurationSettingSnapshot.expiresAt = expiresAt;
+                        deserializedConfigurationSettingSnapshot.retentionPeriod = retentionPeriod;
+                        deserializedConfigurationSettingSnapshot.size = size;
+                        deserializedConfigurationSettingSnapshot.itemCount = itemCount;
+                        deserializedConfigurationSettingSnapshot.tags = tags;
+                        deserializedConfigurationSettingSnapshot.etag = etag;
+
+                        return deserializedConfigurationSettingSnapshot;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!filtersFound) {
+                        missingProperties.add("filters");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

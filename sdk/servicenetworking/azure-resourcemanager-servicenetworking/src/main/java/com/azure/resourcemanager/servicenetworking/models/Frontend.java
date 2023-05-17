@@ -55,28 +55,15 @@ public interface Frontend {
     SystemData systemData();
 
     /**
-     * Gets the mode property: Frontend Mode (Optional).
+     * Gets the fqdn property: The Fully Qualified Domain Name of the DNS record associated to a Traffic Controller
+     * frontend.
      *
-     * @return the mode value.
+     * @return the fqdn value.
      */
-    FrontendMode mode();
+    String fqdn();
 
     /**
-     * Gets the ipAddressVersion property: Frontend IP Address Version (Optional).
-     *
-     * @return the ipAddressVersion value.
-     */
-    FrontendIpAddressVersion ipAddressVersion();
-
-    /**
-     * Gets the publicIpAddress property: Frontend Public IP Address (Optional).
-     *
-     * @return the publicIpAddress value.
-     */
-    FrontendPropertiesIpAddress publicIpAddress();
-
-    /**
-     * Gets the provisioningState property: test doc.
+     * Gets the provisioningState property: Provisioning State of Traffic Controller Frontend Resource.
      *
      * @return the provisioningState value.
      */
@@ -155,11 +142,7 @@ public interface Frontend {
          * The stage of the Frontend definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithMode,
-                DefinitionStages.WithIpAddressVersion,
-                DefinitionStages.WithPublicIpAddress {
+        interface WithCreate extends DefinitionStages.WithTags {
             /**
              * Executes the create request.
              *
@@ -185,36 +168,6 @@ public interface Frontend {
              */
             WithCreate withTags(Map<String, String> tags);
         }
-        /** The stage of the Frontend definition allowing to specify mode. */
-        interface WithMode {
-            /**
-             * Specifies the mode property: Frontend Mode (Optional)..
-             *
-             * @param mode Frontend Mode (Optional).
-             * @return the next definition stage.
-             */
-            WithCreate withMode(FrontendMode mode);
-        }
-        /** The stage of the Frontend definition allowing to specify ipAddressVersion. */
-        interface WithIpAddressVersion {
-            /**
-             * Specifies the ipAddressVersion property: Frontend IP Address Version (Optional)..
-             *
-             * @param ipAddressVersion Frontend IP Address Version (Optional).
-             * @return the next definition stage.
-             */
-            WithCreate withIpAddressVersion(FrontendIpAddressVersion ipAddressVersion);
-        }
-        /** The stage of the Frontend definition allowing to specify publicIpAddress. */
-        interface WithPublicIpAddress {
-            /**
-             * Specifies the publicIpAddress property: Frontend Public IP Address (Optional)..
-             *
-             * @param publicIpAddress Frontend Public IP Address (Optional).
-             * @return the next definition stage.
-             */
-            WithCreate withPublicIpAddress(FrontendPropertiesIpAddress publicIpAddress);
-        }
     }
     /**
      * Begins update for the Frontend resource.
@@ -224,7 +177,7 @@ public interface Frontend {
     Frontend.Update update();
 
     /** The template for Frontend update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithProperties {
+    interface Update extends UpdateStages.WithTags {
         /**
          * Executes the update request.
          *
@@ -251,16 +204,6 @@ public interface Frontend {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
-        }
-        /** The stage of the Frontend update allowing to specify properties. */
-        interface WithProperties {
-            /**
-             * Specifies the properties property: The updatable properties of the Frontend..
-             *
-             * @param properties The updatable properties of the Frontend.
-             * @return the next definition stage.
-             */
-            Update withProperties(FrontendUpdateProperties properties);
         }
     }
     /**

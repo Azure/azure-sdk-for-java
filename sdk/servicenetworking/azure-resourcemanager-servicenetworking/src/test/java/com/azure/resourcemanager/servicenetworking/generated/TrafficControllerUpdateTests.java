@@ -9,25 +9,21 @@ import com.azure.resourcemanager.servicenetworking.models.TrafficControllerUpdat
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TrafficControllerUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TrafficControllerUpdate model =
             BinaryData
-                .fromString(
-                    "{\"tags\":{\"fxqeof\":\"fublj\",\"jqul\":\"aeqjhqjbasvms\"},\"properties\":\"datasntnbybkzgcw\"}")
+                .fromString("{\"tags\":{\"fxqeof\":\"fublj\",\"jqul\":\"aeqjhqjbasvms\"}}")
                 .toObject(TrafficControllerUpdate.class);
         Assertions.assertEquals("fublj", model.tags().get("fxqeof"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TrafficControllerUpdate model =
-            new TrafficControllerUpdate()
-                .withTags(mapOf("fxqeof", "fublj", "jqul", "aeqjhqjbasvms"))
-                .withProperties("datasntnbybkzgcw");
+            new TrafficControllerUpdate().withTags(mapOf("fxqeof", "fublj", "jqul", "aeqjhqjbasvms"));
         model = BinaryData.fromObject(model).toObject(TrafficControllerUpdate.class);
         Assertions.assertEquals("fublj", model.tags().get("fxqeof"));
     }

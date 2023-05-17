@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdate;
@@ -15,64 +15,40 @@ import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectEnvironmentTypeUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ProjectEnvironmentTypeUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"deploymentTargetId\":\"vljua\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{\"duala\":{\"roles\":{}},\"qpv\":{\"roles\":{}}}},\"tags\":{\"zlfmisgwbnbbeld\":\"mwsrcrgvxpvgo\",\"ali\":\"wkz\",\"hashsfwxosow\":\"urqhaka\",\"cjooxdjebwpucwwf\":\"xcug\"},\"identity\":{\"principalId\":\"6742d2e9-e100-46cf-a94b-c0f3df8495a8\",\"tenantId\":\"03252bf8-6bd4-4afc-815f-bcf2a7b948f2\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"civyhzceuo\":{\"principalId\":\"6daccd11-405d-4191-91c1-8afc0daefdf7\",\"clientId\":\"8c083203-ae8b-4d69-ad81-0c90465fc213\"},\"rw\":{\"principalId\":\"9909f97f-0739-47de-9c2d-421123b4dbba\",\"clientId\":\"21dba054-952a-4a4a-bc9d-db9471c8987f\"},\"iotwmcdytdxwit\":{\"principalId\":\"0cdb1901-ace9-4f71-97c4-5175c549cb7d\",\"clientId\":\"6cd3aac3-1b3c-4ed2-8c8b-4249a4b54c80\"},\"jawgqwg\":{\"principalId\":\"91e2baca-39cf-4691-9a85-a3ff81761540\",\"clientId\":\"457385ab-df81-439e-b88a-b897eef886b5\"}}}}")
+                    "{\"properties\":{\"deploymentTargetId\":\"tslhspkdeem\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{\"t\":{\"roles\":{}}}},\"tags\":{\"c\":\"mqkrhahvljuahaqu\",\"aex\":\"hmdua\",\"vxpvgomz\":\"pvfadmwsrcr\"},\"identity\":{\"principalId\":\"94ff05ed-0035-4ea1-a9ed-2d72aef7d467\",\"tenantId\":\"41258eea-c393-469c-ac67-2cf25941650b\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"b\":{\"principalId\":\"c2114230-151f-45b4-abc7-70150043340c\",\"clientId\":\"ac8cee49-2b3b-4322-9a02-93f02093c8a4\"}}}}")
                 .toObject(ProjectEnvironmentTypeUpdate.class);
-        Assertions.assertEquals("mwsrcrgvxpvgo", model.tags().get("zlfmisgwbnbbeld"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("vljua", model.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
+        Assertions.assertEquals("mqkrhahvljuahaqu", model.tags().get("c"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("tslhspkdeem", model.deploymentTargetId());
+        Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, model.status());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ProjectEnvironmentTypeUpdate model =
             new ProjectEnvironmentTypeUpdate()
-                .withTags(
-                    mapOf(
-                        "zlfmisgwbnbbeld",
-                        "mwsrcrgvxpvgo",
-                        "ali",
-                        "wkz",
-                        "hashsfwxosow",
-                        "urqhaka",
-                        "cjooxdjebwpucwwf",
-                        "xcug"))
+                .withTags(mapOf("c", "mqkrhahvljuahaqu", "aex", "hmdua", "vxpvgomz", "pvfadmwsrcr"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "civyhzceuo",
-                                new UserAssignedIdentity(),
-                                "rw",
-                                new UserAssignedIdentity(),
-                                "iotwmcdytdxwit",
-                                new UserAssignedIdentity(),
-                                "jawgqwg",
-                                new UserAssignedIdentity())))
-                .withDeploymentTargetId("vljua")
-                .withStatus(EnableStatus.DISABLED)
+                        .withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                        .withUserAssignedIdentities(mapOf("b", new UserAssignedIdentity())))
+                .withDeploymentTargetId("tslhspkdeem")
+                .withStatus(EnvironmentTypeEnableStatus.ENABLED)
                 .withCreatorRoleAssignment(
                     new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment().withRoles(mapOf()))
-                .withUserRoleAssignments(
-                    mapOf(
-                        "duala",
-                        new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "qpv",
-                        new UserRoleAssignmentValue().withRoles(mapOf())));
+                .withUserRoleAssignments(mapOf("t", new UserRoleAssignmentValue().withRoles(mapOf())));
         model = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdate.class);
-        Assertions.assertEquals("mwsrcrgvxpvgo", model.tags().get("zlfmisgwbnbbeld"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("vljua", model.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
+        Assertions.assertEquals("mqkrhahvljuahaqu", model.tags().get("c"));
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("tslhspkdeem", model.deploymentTargetId());
+        Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, model.status());
     }
 
     @SuppressWarnings("unchecked")
