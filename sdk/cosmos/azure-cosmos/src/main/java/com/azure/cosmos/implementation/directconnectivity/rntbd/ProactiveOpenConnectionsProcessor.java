@@ -47,7 +47,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
     private final Set<String> containersUnderOpenConnectionAndInitCaches;
     private final Map<String, Set<String>> collectionRidsAndUrisUnderOpenConnectionAndInitCaches;
     private final Set<String> addressUrisUnderOpenConnectionsAndInitCaches;
-    private final Set<String> addressUrisAsStringToExcludeFromOpenConnection;
     private final Object containersUnderOpenConnectionAndInitCachesLock;
     private final AtomicReference<ConnectionOpenFlowAggressivenessHint> aggressivenessHint;
     private final AtomicReference<Boolean> isClosed = new AtomicReference<>(false);
@@ -71,7 +70,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         this.containersUnderOpenConnectionAndInitCaches = ConcurrentHashMap.newKeySet();
         this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches = new ConcurrentHashMap<>();
         this.addressUrisUnderOpenConnectionsAndInitCaches = ConcurrentHashMap.newKeySet();
-        this.addressUrisAsStringToExcludeFromOpenConnection = ConcurrentHashMap.newKeySet();
         this.containersUnderOpenConnectionAndInitCachesLock = new Object();
 
         concurrencySettings.put(
@@ -112,12 +110,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
             return;
         }
 
-        if (addressUrisAsStringToExcludeFromOpenConnection.contains(addressUriAsString)) {
-            openConnectionTask.completeExceptionally(new TransportException(lenientFormat("Address: %s is not mapped to a physical partition",
-                    addressUriAsString), null));
-            return;
-        }
-
         this.endpointsUnderMonitorMapReadLock.lock();
         try {
             this.endpointsUnderMonitorMap.compute(addressUriAsString, (key, taskList) -> {
@@ -143,16 +135,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         // is taken when an endpoint is used by different containers
         // and each container has a different min connection required setting for the endpoint
         getOrCreateEndpoint(openConnectionTask);
-    }
-
-    // There are two major kind tasks will be submitted
-    // 1. Tasks from up caller -> in this case, before we enqueue a task we would want to check whether the endpoint has already in the map
-    // 2. Tasks from existing flow -> for each endpoint, each time we will only 1 connection, if the connection count < the mini connection requirements,then re-queue.
-    // for this case, then there is no need to validate whether the endpoint exists
-    //
-    // Using synchronized here to reduce the Sinks.EmitResult.FAIL_NON_SERIALIZED errors.
-    private synchronized void submitOpenConnectionWithinLoopInternal(OpenConnectionTask openConnectionTask) {
-        openConnectionsTaskSink.emitNext(openConnectionTask, serializedEmitFailureHandler);
     }
 
     @Override
@@ -235,6 +217,19 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
 
     public boolean isCollectionRidUnderOpenConnectionsFlow(String collectionRid) {
         return this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.containsKey(collectionRid);
+    }
+
+    public void removeAddressUriForCollectionRid(String collectionRid, String addressUriAsString) {
+        this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.compute(collectionRid, (ignore, addressUrisAsStringForCollectionRid) -> {
+           if (addressUrisAsStringForCollectionRid != null && !addressUrisAsStringForCollectionRid.isEmpty()) {
+               addressUrisAsStringForCollectionRid.remove(addressUriAsString);
+           }
+           return addressUrisAsStringForCollectionRid;
+        });
+    }
+
+    public void excludeAddressUriFromOpenConnectionsFlow(String addressUriAsString) {
+        this.addressUrisUnderOpenConnectionsAndInitCaches.remove(addressUriAsString);
     }
 
     private Disposable getBackgroundOpenConnectionsPublisher() {
