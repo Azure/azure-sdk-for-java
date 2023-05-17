@@ -59,8 +59,10 @@ OpenAIAsyncClient client = new OpenAIClientBuilder()
     .buildAsyncClient();
 ```
 
-### Create a Non-Azure OpenAI client with API keys
-Get Non-Azure OpenAI API keys from [Open AI authentication API keys][non_azure_openai_authentication].
+### Support for non-Azure OpenAI
+
+The SDK also supports operating against the public non-Azure OpenAI. The response models remain the same, only the setup of the `OpenAIClient` is slightly different. First, get Non-Azure OpenAI API key from [Open AI authentication API keys][non_azure_openai_authentication]. Then setup your `OpenAIClient` as follows: 
+
 
 ```java readme-sample-createNonAzureOpenAISyncClientApiKey
 OpenAIClient client = new OpenAIClientBuilder()
