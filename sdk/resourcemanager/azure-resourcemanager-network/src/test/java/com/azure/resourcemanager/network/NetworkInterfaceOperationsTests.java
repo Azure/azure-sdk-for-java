@@ -6,6 +6,8 @@ package com.azure.resourcemanager.network;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.network.fluent.models.NatGatewayInner;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.NatGatewaySku;
+import com.azure.resourcemanager.network.models.NatGatewaySkuName;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
@@ -468,15 +470,19 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
         String subnetName = "subnet1";
         String subnet2Name = "subnet2";
 
+        ResourceGroup resourceGroup = resourceManager.resourceGroups().define(rgName)
+            .withRegion(Region.US_EAST)
+            .create();
+
         NatGatewayInner gateway1 = createNatGateway();
 
         Network network = networkManager.networks()
             .define(networkName)
             .withRegion(Region.US_EAST)
-            .withNewResourceGroup(rgName)
-            .withAddressSpace("10.0.0.0/24")
+            .withExistingResourceGroup(resourceGroup)
+            .withAddressSpace("10.0.0.0/16")
             .defineSubnet(subnetName)
-                .withAddressPrefix("10.0.0.0/28")
+                .withAddressPrefix("10.0.0.0/24")
                 .withExistingNatGateway(gateway1.id())
                 .attach()
             .create();
@@ -491,7 +497,7 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
                 .withExistingNatGateway(gateway2.id())
                 .parent()
             .defineSubnet(subnet2Name)
-                .withAddressPrefix("10.0.1.0/28")
+                .withAddressPrefix("10.0.1.0/24")
                 .withExistingNatGateway(gateway2.id())
                 .attach()
             .apply();
@@ -505,5 +511,14 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
     private NatGatewayInner createNatGateway() {
         String natGatewayName = generateRandomResourceName("natgw", 10);
+        return networkManager.serviceClient()
+            .getNatGateways()
+            .createOrUpdate(
+                rgName,
+                natGatewayName,
+                new NatGatewayInner()
+                    .withLocation(Region.US_EAST.toString())
+                    .withSku(new NatGatewaySku().withName(NatGatewaySkuName.STANDARD))
+            );
     }
 }

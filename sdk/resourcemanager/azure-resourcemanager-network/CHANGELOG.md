@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `withNatGateway` in `Subnet`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
