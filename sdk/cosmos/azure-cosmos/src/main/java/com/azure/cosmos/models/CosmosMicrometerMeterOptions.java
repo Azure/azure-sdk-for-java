@@ -18,6 +18,8 @@ public final class CosmosMicrometerMeterOptions {
     private EnumSet<TagName> suppressedTagNames;
     private Boolean isEnabled;
 
+    private Boolean applyDiagnosticThresholds;
+
     /**
      * Instantiates new options for a specific Cosmos DB meter
      */
@@ -47,6 +49,20 @@ public final class CosmosMicrometerMeterOptions {
         }
 
         this.suppressedTagNames = newTagNames;
+
+        return this;
+    }
+
+    /**
+     * Sets a flag whether the diagnostic thresholds should be applied for this meter. If enabled
+     * a meter will only reflect operations violating diagnostic thresholds. This can be used to reduce
+     * the cardinality of dimensions (the number of time series a meter emits).
+     *
+     * @param isEnabled - a flag indicating whether the diagnostic thresholds should be applied for this meter
+     * @return current CosmosMeterOptions instance
+     */
+    public CosmosMicrometerMeterOptions applyDiagnosticThresholds(boolean isEnabled) {
+        this.applyDiagnosticThresholds = isEnabled;
 
         return this;
     }
@@ -100,6 +116,10 @@ public final class CosmosMicrometerMeterOptions {
 
     Boolean getIsEnabled() {
         return this.isEnabled;
+    }
+
+    Boolean getApplyDiagnosticThresholdsEnabled() {
+        return this.applyDiagnosticThresholds;
     }
 
     double[] getPercentiles() {
