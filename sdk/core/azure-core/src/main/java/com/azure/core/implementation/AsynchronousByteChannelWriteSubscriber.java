@@ -26,6 +26,7 @@ public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<
     // while another thread may read isWriting and write to isCompleted.
     private volatile boolean isWriting = false;
     private volatile boolean isCompleted = false;
+    private volatile Throwable error = null;
 
     private final AsynchronousByteChannel channel;
     private final MonoSink<Void> emitter;
@@ -75,7 +76,10 @@ public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<
                     write(bytes);
                 } else {
                     isWriting = false;
-                    if (isCompleted) {
+                    Throwable error = AsynchronousByteChannelWriteSubscriber.this.error;
+                    if (error != null) {
+                        emitter.error(LOGGER.logThrowableAsError(error));
+                    } else if (isCompleted) {
                         emitter.success();
                     } else {
                         subscription.request(1);
@@ -85,16 +89,30 @@ public final class AsynchronousByteChannelWriteSubscriber implements Subscriber<
 
             @Override
             public void failed(Throwable exc, ByteBuffer attachment) {
-                onError(exc);
+                Throwable error = AsynchronousByteChannelWriteSubscriber.this.error;
+                if (error != null) {
+                    error.addSuppressed(exc);
+                    emitter.error(LOGGER.logThrowableAsError(error));
+                } else {
+                    isWriting = false;
+                    onError(exc);
+                }
             }
         });
     }
 
     @Override
     public void onError(Throwable throwable) {
-        isWriting = false;
+        error = throwable;
         subscription.cancel();
-        emitter.error(LOGGER.logThrowableAsError(throwable));
+
+        // If writing is currently happening hold propagating the error until writing completes. This will ensure
+        // that what is being written is left in a consistent state rather than a possible race condition where
+        // the error is propagating then writing finishes before the error is fully propagating leaving a
+        // non-deterministic state.
+        if (!isWriting) {
+            emitter.error(LOGGER.logThrowableAsError(throwable));
+        }
     }
 
     @Override

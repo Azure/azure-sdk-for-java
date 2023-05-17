@@ -293,7 +293,7 @@ public class FluxUtilTest {
             }
         };
 
-        AsynchronousFileChannel ignoresRequestChannel = new MockAsynchronousFileChannel();
+        AsynchronousFileChannel ignoresRequestChannel = new MockAsynchronousFileChannel(new byte[4096 * 16]);
 
         // CompletionHandler that emits a writing error.
         AsynchronousFileChannel completionHandlerPropagatesError = new MockAsynchronousFileChannel() {
