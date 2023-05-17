@@ -1114,25 +1114,6 @@ public class GatewayAddressCache implements IAddressCache {
                                         .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(collection.getResourceId(), addressUrisAsString);
 
                                 return Flux.fromArray(pkrIdToAddressInfos.getRight());
-//                    return Flux.fromIterable(pkrToAddressInfosList)
-//                            .flatMap(pkrToAddressInfos -> {
-//
-//                                PartitionKeyRangeIdentity partitionKeyRangeIdentity = pkrToAddressInfos.getLeft();
-//                                AddressInformation[] addressInfos = pkrToAddressInfos.getRight();
-//
-//                                this.serverPartitionAddressCache.set(partitionKeyRangeIdentity, addressInfos);
-//
-//                                Arrays.stream(addressInfos).forEach(addressInfo -> {
-//                                    addressUriToPkrIdsMap.putIfAbsent(addressInfo.getPhysicalUri(), new HashSet<>());
-//                                    addressUriToPkrIdsMap.computeIfPresent(addressInfo.getPhysicalUri(), (uri, pkrIdsForAddressUri) -> {
-//                                        pkrIdsForAddressUri.add(partitionKeyRangeIdentity.getPartitionKeyRangeId());
-//                                        this.proactiveOpenConnectionsProcessor
-//                                                .includeAddressUriForOpenConnections(addressInfo.getPhysicalUri().getURIAsString());
-//                                        return pkrIdsForAddressUri;
-//                                    });
-//                                });
-//
-//                                return Flux.fromArray(pkrToAddressInfos.getRight());
                             }, Configs.getCPUCnt() * 10, Configs.getCPUCnt() * 3)
                             .flatMap(addressInformation -> Mono.just(new ImmutablePair<>(new ImmutablePair<>(containerLink, collection), addressInformation)));
                 });
