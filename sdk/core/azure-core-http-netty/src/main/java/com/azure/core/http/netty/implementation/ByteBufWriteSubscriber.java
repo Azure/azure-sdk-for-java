@@ -9,7 +9,6 @@ import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
 
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
 
@@ -18,13 +17,13 @@ import java.nio.channels.WritableByteChannel;
  */
 @SuppressWarnings("ReactiveStreamsSubscriberImplementation")
 public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
-    private final WritableByteChannel channel;
+    private final ExceptionThrowingConsumer<ByteBuffer> writer;
     private final MonoSink<Void> emitter;
 
     private Subscription subscription;
 
-    public ByteBufWriteSubscriber(WritableByteChannel channel, MonoSink<Void> emitter) {
-        this.channel = channel;
+    public ByteBufWriteSubscriber(ExceptionThrowingConsumer<ByteBuffer> writer, MonoSink<Void> emitter) {
+        this.writer = writer;
         this.emitter = emitter;
     }
 
@@ -47,11 +46,11 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
     private void write(ByteBuffer bytes) {
         try {
             while (bytes.hasRemaining()) {
-                channel.write(bytes);
+                writer.consume(bytes);
             }
 
             subscription.request(1);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             onError(ex);
         }
     }
