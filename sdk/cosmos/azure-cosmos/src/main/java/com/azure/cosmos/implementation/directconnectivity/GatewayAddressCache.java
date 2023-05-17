@@ -638,13 +638,12 @@ public class GatewayAddressCache implements IAddressCache {
                                 Pair<PartitionKeyRangeIdentity, AddressInformation[]> pkrIdToAddressInfos =
                                         toPartitionAddressAndRange(collectionRid, addresses);
 
-                                // refresh / record new addresses in proactiveOpenConnectionsProcessor
-                                // when forceRefresh is true
                                 // if forceRefresh == true
-                                // 1. try to get addresses for partition w/o refresh
-                                // 2. this will eventually allow proactiveOpenConnectionsProcessor to know
+                                // 1. refresh / record new addresses in proactiveOpenConnectionsProcessor
+                                // 2. try to get addresses for partition w/o refresh
+                                // 3. this will eventually allow proactiveOpenConnectionsProcessor to know
                                 // which addresses to exclude from the open connections flow
-                                // 3. it can do so by diffing addresses fetched before and after a refresh, if
+                                // 4. it can do so by diffing addresses fetched before and after a refresh, if
                                 // there are addresses which are not fetched after a refresh, proactiveOpenConnectionsProcessor
                                 // will exclude them if these addresses are also not used by any other partition
                                 if (forceRefresh) {
@@ -654,7 +653,10 @@ public class GatewayAddressCache implements IAddressCache {
                                             .map(AddressInformation::getPhysicalUri)
                                             .collect(Collectors.toSet());
 
-                                    Set<Uri> addressUrisAfterRefresh = Arrays.stream(pkrIdToAddressInfos.getRight())
+                                    AddressInformation[] addressInfosAfterRefresh = pkrIdToAddressInfos.getRight();
+
+                                    Set<Uri> addressUrisAfterRefresh = Arrays
+                                            .stream(addressInfosAfterRefresh)
                                             .map(AddressInformation::getPhysicalUri)
                                             .collect(Collectors.toSet());
 
