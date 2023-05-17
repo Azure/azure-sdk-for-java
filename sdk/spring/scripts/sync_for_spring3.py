@@ -11,20 +11,19 @@
 #  2. Make sure file(`.\sdk\spring\spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
 #    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
 #  3. Run command: `python .\sdk\spring\scripts\sync_for_spring3.py -b 3.0.5`.
-#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 2.7.0`.
+#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 3.0.5`.
 #  4. Then `eng/versioning/external_dependencies.txt` will be updated.
 #
 # Please refer to ./README.md to get more information about this script.
 ############################################################################################################################################
-import in_place
+
 import time
 import os
-import unittest
 import argparse
 import requests
-from itertools import takewhile
-from packaging.version import parse
 from log import log
+from sync_external_dependencies import version_bigger_than
+from replace_util import change_to_repo_root_dir
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
 SB3_EXTERNAL_DEPENDENCIES_FILE_URL = 'https://raw.githubusercontent.com/Azure/azure-sdk-for-java/feature/spring-boot-3/eng/versioning/external_dependencies.txt'
@@ -48,11 +47,6 @@ def get_args():
     args = parser.parse_args()
     log.set_log_level(args.log)
     return args
-
-
-def change_to_repo_root_dir():
-    os.chdir(os.path.dirname(os.path.realpath(__file__)))
-    os.chdir('../../..')
 
 
 def dump_versions_from_sb3_branch():
@@ -133,7 +127,6 @@ def three_way_merge(ver_local, ver_remote, ver_sb3_managed):
     for key, value in sorted(resolve_dict.items()):
         output_file.write('{};{}\n'.format(key, value))
     output_file.close()
-    return local_missing_set, conflicting_set, remote_missing_set
 
 
 def cal_len_for_logging_format(k_set, ver_local, ver_remote):
@@ -153,150 +146,9 @@ def main():
     ver_remote_external_deps = dump_versions_from_sb3_branch()
     ver_local_external_deps = dump_versions_from_local_external_deps()
     ver_local_sb3_managed_deps = dump_versions_from_sb3_managed_external_deps(args.spring_boot_dependencies_version)
-    local_missing_set, conflicting_set, remote_missing_set = three_way_merge(ver_local_external_deps, ver_remote_external_deps, ver_local_sb3_managed_deps)
+    three_way_merge(ver_local_external_deps, ver_remote_external_deps, ver_local_sb3_managed_deps)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
-
-
-def sync_external_dependencies(source_file, target_file):
-    # Read artifact version from source_file.
-    dependency_dict = {}
-    with open(source_file) as file:
-        for line in file:
-            line = line.strip()
-            if line.startswith('#') or not line:
-                file.write(line)
-            else:
-                key_value = line.split(';', 1)
-                key = key_value[0]
-                value = key_value[1]
-                dependency_dict[key] = value
-    # Write artifact versions into target file.
-    with in_place.InPlace(target_file) as file:
-        for line in file:
-            line = line.strip()
-            if line.startswith('#') or not line:
-                file.write(line)
-            else:
-                key_value = line.split(';', 1)
-                key = key_value[0]
-                value = key_value[1]
-                if key not in SKIP_IDS and key in dependency_dict:
-                    value_in_dict = dependency_dict[key]
-                    if version_bigger_than(value, value_in_dict):
-                        log.warn('Version update skipped. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
-                        file.write(line)
-                    elif version_bigger_than(value_in_dict, value):
-                        log.info('Version updated. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
-                        file.write('{};{}'.format(key, value_in_dict))
-                    else:
-                        file.write(line)
-                else:
-                    file.write(line)
-            file.write('\n')
-
-
-def version_bigger_than(source_version, target_version):
-    # Format version with jre ('11.2.3.jre17')
-    if source_version.find('.jre'):
-        source_version = source_version.partition('.jre')[0]
-    if target_version.find('.jre'):
-        target_version = target_version.partition('.jre')[0]
-    # Format version with Final ('4.1.89.Final')
-    if source_version.find('.Final'):
-        source_version = source_version.partition('.Final')[0]
-    if target_version.find('.Final'):
-        target_version = target_version.partition('.Final')[0]
-    # Format version with RELEASE ('6.2.0.RELEASE')
-    if source_version.find('.RELEASE'):
-        source_version = source_version.partition('.RELEASE')[0]
-    if target_version.find('.RELEASE'):
-        target_version = target_version.partition('.RELEASE')[0]
-    # Format version with v... ('9.4.50.v20221201')
-    if source_version.find('.v'):
-        source_version = source_version.partition('.v')[0]
-    if target_version.find('.v'):
-        target_version = target_version.partition('.v')[0]
-    sv = parse(source_version)
-    tv = parse(target_version)
-    if sv == tv:
-        return True
-    elif sv < tv:
-        # Spring milestone comparison ('3.0.0-M4', '3.0.0-M5')
-        if is_invalid_version(source_version) and is_invalid_version(target_version):
-            return False
-        # ('1.0-RELEASE','1.1') ('1.1-RELEASE','1') ('1.1-RELEASE','1.0')
-        if is_invalid_version(source_version) or is_invalid_version(target_version):
-            return special_version_bigger_than(source_version, target_version)
-    else:
-        # Spring RC version should be bigger than milestone version ('3.0.0-RC1', '3.0.0-M5')
-        if not is_invalid_version(source_version) and sv.is_prerelease and is_invalid_version(target_version):
-            return True
-        # ('1.1-RELEASE','1.0.1-RELEASE')
-        if is_invalid_version(source_version) and is_invalid_version(target_version):
-            return True
-        # ('2.7.4', '3.0.0-M5')
-        if is_invalid_version(source_version) or is_invalid_version(target_version):
-            return special_version_bigger_than(source_version, target_version)
-    if sv.major != tv.major:
-        return sv.major > tv.major
-    elif sv.major == tv.major and sv.minor != tv.minor:
-        return sv.minor > tv.minor
-    elif sv.major == tv.major and sv.minor == tv.minor and sv.micro != tv.micro:
-        return sv.micro >= tv.micro
-    return sv > tv
-
-
-def is_invalid_version(verify_version):
-    version_dict = vars(parse(verify_version))
-    return type(version_dict['_version']) == str
-
-
-def special_version_bigger_than(version1, version2):
-    v1 = version1.split('.')
-    v2 = version2.split('.')
-    len_1 = len(v1)
-    len_2 = len(v2)
-    max_len = max(len_1, len_2)
-    for i in range(max_len):
-        if i < len_1 and i < len_2:
-            int_1 = int('0' + ''.join(takewhile(str.isdigit, v1[i])))
-            int_2 = int('0' + ''.join(takewhile(str.isdigit, v2[i])))
-            if int_1 != int_2:
-                return int_1 > int_2
-        elif i < len_1:
-            return True
-        else:
-            return False
-    return False
-
-
-class Tests(unittest.TestCase):
-    def test_version_bigger_than(self):
-        self.assertEqual(version_bigger_than('1', '2'), False)
-        self.assertEqual(version_bigger_than('2', '1'), True)
-        self.assertEqual(version_bigger_than('1.0', '2'), False)
-        self.assertEqual(version_bigger_than('2.0', '1'), True)
-        self.assertEqual(version_bigger_than('1.1', '1'), True)
-        self.assertEqual(version_bigger_than('1', '1.1'), False)
-        self.assertEqual(version_bigger_than('1.0-RELEASE', '1.1'), False)
-        self.assertEqual(version_bigger_than('1.1-RELEASE', '1'), True)
-        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0'), True)
-        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0.1'), True)
-        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0.1-RELEASE'), True)
-        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.1.1-RELEASE'), False)
-        self.assertEqual(version_bigger_than('2.7.4', '3.0.0-M5'), False)
-        self.assertEqual(version_bigger_than('3.0.0-M5', '2.7.4'), True)
-        self.assertEqual(version_bigger_than('3.0.0-M4', '3.0.0-M5'), False)
-        self.assertEqual(version_bigger_than('3.0.0-M5', '3.0.0-M4'), True)
-        self.assertEqual(version_bigger_than('3.0.0-M5', '3.0.0-RC1'), False)
-        self.assertEqual(version_bigger_than('3.0.0-RC1', '3.0.0-M5'), True)
-        self.assertEqual(version_bigger_than('3.0.0-RC1', '3.0.0-RC2'), False)
-        self.assertEqual(version_bigger_than('3.0.0-RC2', '3.0.0-RC1'), True)
-        self.assertEqual(version_bigger_than('11.2.3.jre17', '10.2.3.jre8'), True)
-        self.assertEqual(version_bigger_than('4.1.89.Final', '4.1.87.Final'), True)
-        self.assertEqual(version_bigger_than('6.2.0.RELEASE', '6.2.2.RELEASE'), False)
-        self.assertEqual(version_bigger_than('9.4.50.v20221201', '11.0.13'), False)
 
 
 if __name__ == '__main__':
