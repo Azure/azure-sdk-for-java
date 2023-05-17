@@ -1156,6 +1156,8 @@ public class TableClientTest extends TableClientTestBase {
 
     @Test
     public void allowsCreationOfEntityWithEmptyStringPrimaryKey() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Empty row or partition keys are not supported on Cosmos endpoints.");
         Assertions.assertDoesNotThrow(() -> {
             TableEntity entity = new TableEntity("", "");
             tableClient.createEntity(entity);
