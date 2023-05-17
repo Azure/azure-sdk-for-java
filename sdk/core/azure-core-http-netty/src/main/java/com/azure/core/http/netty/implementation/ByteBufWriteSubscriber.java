@@ -13,7 +13,6 @@ import reactor.core.publisher.Operators;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 /**
  * Subscriber that writes a stream of {@link ByteBuf ByteBufs} to a {@link WritableByteChannel}.
@@ -22,31 +21,24 @@ import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
     private static final ClientLogger LOGGER = new ClientLogger(ByteBufWriteSubscriber.class);
 
-    // volatile ensures that writes to these fields by one thread will be immediately visible to other threads.
-    // An I/O pool thread will write to isWriting and read isCompleted,
-    // while another thread may read isWriting and write to isCompleted.
-    private volatile boolean isWriting = false;
-    private volatile boolean failed = false;
-    private volatile boolean isCompleted = false;
-    private static final AtomicIntegerFieldUpdater<ByteBufWriteSubscriber> WRITE_LOCATION
-        = AtomicIntegerFieldUpdater.newUpdater(ByteBufWriteSubscriber.class, "writeLocation");
-    private volatile int writeLocation = 0;
+    // Unlike the asynchronous counterpart these booleans don't need to be volatile as all operations will happen on the
+    // same thread.
+    private boolean isWriting = false;
+    private boolean failed = false;
+    private boolean isCompleted = false;
 
     private final WritableByteChannel channel;
     private final MonoSink<Void> emitter;
-    private final int bufferSize;
 
     private Subscription subscription;
-    private byte[] activeBuffer;
-    private byte[] nextBuffer;
+    private ByteBuf activeBuffer;
+    private ByteBuf nextBuffer;
 
-    public ByteBufWriteSubscriber(WritableByteChannel channel, MonoSink<Void> emitter, Long bodySize) {
+    public ByteBufWriteSubscriber(WritableByteChannel channel, MonoSink<Void> emitter, ByteBuf buf1, ByteBuf buf2) {
         this.channel = channel;
         this.emitter = emitter;
-        int initialBufferSize = Utility.getByteBufSubscriberBufferSize(bodySize);
-        this.bufferSize = (bodySize != null) ? (int) Math.min(initialBufferSize, bodySize) : initialBufferSize;
-        this.activeBuffer = new byte[bufferSize];
-        this.nextBuffer = new byte[bufferSize];
+        this.activeBuffer = buf1;
+        this.nextBuffer = buf2;
     }
 
     @Override
@@ -63,11 +55,9 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
     @Override
     public void onNext(ByteBuf bytes) {
         try {
-            int writeLocation = WRITE_LOCATION.get(this);
             int readableBytes = bytes.readableBytes();
-            if (writeLocation + readableBytes <= bufferSize) {
-                bytes.getBytes(0, activeBuffer, writeLocation, readableBytes);
-                WRITE_LOCATION.addAndGet(this, readableBytes);
+            if (readableBytes <= activeBuffer.writableBytes()) {
+                activeBuffer.writeBytes(bytes);
                 subscription.request(1);
                 return;
             }
@@ -75,13 +65,11 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
             if (isWriting) {
                 onError(new IllegalStateException("Received onNext while processing another write operation."));
             } else {
-                ByteBuffer buffer = ByteBuffer.wrap(activeBuffer, 0, writeLocation);
-                byte[] swap = activeBuffer;
+                ByteBuf writeBuf = activeBuffer;
                 activeBuffer = nextBuffer;
-                nextBuffer = swap;
-                bytes.getBytes(0, activeBuffer, 0, readableBytes);
-                this.writeLocation = readableBytes;
-                write(buffer);
+                nextBuffer = writeBuf;
+                activeBuffer.writeBytes(bytes);
+                write(writeBuf);
             }
         } catch (Exception ex) {
             // If writing has an error, and it isn't caught, there is a possibility for it to deadlock the reactive
@@ -90,22 +78,25 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
         }
     }
 
-    private void write(ByteBuffer bytes) {
+    private void write(ByteBuf bytes) {
         isWriting = true;
 
+        ByteBuffer byteBuffer = bytes.nioBuffer();
         try {
-            do {
-                channel.write(bytes);
-            } while (bytes.hasRemaining());
-
-            isWriting = false;
-            if (isCompleted) {
-                emitter.success();
-            } else {
-                subscription.request(1);
+            while (byteBuffer.hasRemaining()) {
+                channel.write(byteBuffer);
             }
         } catch (IOException ex) {
             onError(ex);
+            return;
+        }
+        bytes.clear();
+
+        isWriting = false;
+        if (isCompleted) {
+            emitter.success();
+        } else {
+            subscription.request(1);
         }
     }
 
@@ -125,8 +116,8 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
             return;
         }
 
-        if (writeLocation != 0) {
-            write(ByteBuffer.wrap(activeBuffer, 0, writeLocation));
+        if (activeBuffer.readableBytes() > 0) {
+            write(activeBuffer);
         } else if (!isWriting) {
             emitter.success();
         }

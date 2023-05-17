@@ -29,20 +29,17 @@ public final class ByteBufAsyncWriteSubscriber implements Subscriber<ByteBuf> {
 
     private final AsynchronousByteChannel channel;
     private final MonoSink<Void> emitter;
-    private final int bufferSize;
 
     private Subscription subscription;
-    private int writeLocation = 0;
-    private byte[] activeBuffer;
-    private byte[] nextBuffer;
+    private ByteBuf activeBuffer;
+    private ByteBuf nextBuffer;
 
-    public ByteBufAsyncWriteSubscriber(AsynchronousByteChannel channel, MonoSink<Void> emitter, Long bodySize) {
+    public ByteBufAsyncWriteSubscriber(AsynchronousByteChannel channel, MonoSink<Void> emitter, ByteBuf buf1,
+        ByteBuf buf2) {
         this.channel = channel;
         this.emitter = emitter;
-        int initialBufferSize = Utility.getByteBufSubscriberBufferSize(bodySize);
-        this.bufferSize = (bodySize != null) ? (int) Math.min(initialBufferSize, bodySize) : initialBufferSize;
-        this.activeBuffer = new byte[bufferSize];
-        this.nextBuffer = new byte[bufferSize];
+        this.activeBuffer = buf1;
+        this.nextBuffer = buf2;
     }
 
     @Override
@@ -60,9 +57,8 @@ public final class ByteBufAsyncWriteSubscriber implements Subscriber<ByteBuf> {
     public void onNext(ByteBuf bytes) {
         try {
             int readableBytes = bytes.readableBytes();
-            if (writeLocation + readableBytes <= bufferSize) {
-                bytes.getBytes(0, activeBuffer, writeLocation, readableBytes);
-                writeLocation += readableBytes;
+            if (readableBytes <= activeBuffer.writableBytes()) {
+                activeBuffer.writeBytes(bytes);
                 subscription.request(1);
                 return;
             }
@@ -70,13 +66,11 @@ public final class ByteBufAsyncWriteSubscriber implements Subscriber<ByteBuf> {
             if (isWriting) {
                 onError(new IllegalStateException("Received onNext while processing another write operation."));
             } else {
-                ByteBuffer buffer = ByteBuffer.wrap(activeBuffer, 0, writeLocation);
-                byte[] swap = activeBuffer;
+                ByteBuf writeBuf = activeBuffer;
                 activeBuffer = nextBuffer;
-                nextBuffer = swap;
-                bytes.getBytes(0, activeBuffer, 0, readableBytes);
-                writeLocation = readableBytes;
-                write(buffer);
+                nextBuffer = writeBuf;
+                activeBuffer.writeBytes(bytes);
+                write(writeBuf);
             }
         } catch (Exception ex) {
             // If writing has an error, and it isn't caught, there is a possibility for it to deadlock the reactive
@@ -85,17 +79,19 @@ public final class ByteBufAsyncWriteSubscriber implements Subscriber<ByteBuf> {
         }
     }
 
-    private void write(ByteBuffer bytes) {
+    private void write(ByteBuf bytes) {
         isWriting = true;
 
-        do {
-            try {
-                channel.write(bytes).get();
-            } catch (Exception ex) {
-                onError(ex);
-                return;
+        ByteBuffer byteBuffer = bytes.nioBuffer();
+        try {
+            while (byteBuffer.hasRemaining()) {
+                channel.write(byteBuffer).get();
             }
-        } while (bytes.hasRemaining());
+        } catch (Exception ex) {
+            onError(ex);
+            return;
+        }
+        bytes.clear();
 
         isWriting = false;
         if (isCompleted) {
@@ -121,8 +117,8 @@ public final class ByteBufAsyncWriteSubscriber implements Subscriber<ByteBuf> {
             return;
         }
 
-        if (writeLocation != 0) {
-            write(ByteBuffer.wrap(activeBuffer, 0, writeLocation));
+        if (activeBuffer.readableBytes() > 0) {
+            write(activeBuffer);
         } else if (!isWriting) {
             emitter.success();
         }

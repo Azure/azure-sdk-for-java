@@ -7,6 +7,8 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.CoreUtils;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -67,13 +69,25 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        return Mono.<Void>create(sink -> bodyIntern().subscribe(new ByteBufAsyncWriteSubscriber(channel, sink,
-                getBodySize(getHeaders()))))
-            .doFinally(ignored -> close());
+        int bufferSize = getBufferSize(getHeaders());
+        ByteBuf buf1 = PooledByteBufAllocator.DEFAULT.buffer(bufferSize);
+        ByteBuf buf2 = PooledByteBufAllocator.DEFAULT.buffer(bufferSize);
+
+        return Mono.<Void>create(
+            sink -> bodyIntern().subscribe(new ByteBufAsyncWriteSubscriber(channel, sink, buf1, buf2)))
+            .doFinally(ignored -> {
+                buf1.release();
+                buf2.release();
+                close();
+            });
     }
 
     @Override
     public void writeBodyTo(WritableByteChannel channel) {
+        int bufferSize = getBufferSize(getHeaders());
+        ByteBuf buf1 = PooledByteBufAllocator.DEFAULT.buffer(bufferSize);
+        ByteBuf buf2 = PooledByteBufAllocator.DEFAULT.buffer(bufferSize);
+
         // Since this uses a synchronous write this doesn't need to retain the ByteBuf as the async version does.
         // In fact, if retain is used here and there is a cancellation or exception during writing this will likely
         // leak ByteBufs as it doesn't have the asynchronous stream handling to properly close them when errors happen
@@ -89,11 +103,15 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // complete. This introduces a previously seen, but in a different flavor, race condition where the write
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        Mono.<Void>create(sink -> bodyIntern().subscribe(new ByteBufWriteSubscriber(channel, sink,
-                getBodySize(getHeaders()))))
-            .subscribeOn(Schedulers.boundedElastic())
-            .doFinally(ignored -> close())
-            .block();
+        try {
+            Mono.<Void>create(sink -> bodyIntern().subscribe(new ByteBufWriteSubscriber(channel, sink, buf1, buf2)))
+                .subscribeOn(Schedulers.boundedElastic())
+                .doFinally(ignored -> close())
+                .block();
+        } finally {
+            buf1.release();
+            buf2.release();
+        }
     }
 
     @Override
@@ -110,17 +128,21 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         return reactorNettyConnection;
     }
 
-    private static Long getBodySize(HttpHeaders headers) {
+    private static int getBufferSize(HttpHeaders headers) {
+        Long bodySize = null;
         String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
-        if (contentLength == null) {
-            return null;
+        if (contentLength != null) {
+            try {
+                bodySize = Long.parseLong(contentLength);
+            } catch (NumberFormatException ex) {
+                // Don't let NumberFormatException fail the response as this is only optional.
+            }
         }
 
-        try {
-            return Long.parseLong(contentLength);
-        } catch (NumberFormatException ex) {
-            // Don't let NumberFormatException fail the response as this is only optional.
-            return null;
-        }
+        int bufferSize = Utility.getByteBufSubscriberBufferSize(bodySize);
+
+        // Return either the buffer size or the minimum of buffer size and body size.
+        // This can reduce the buffer size to a smaller value resulting in fewer allocations.
+        return (bodySize != null) ? (int) Math.min(bufferSize, bodySize) : bufferSize;
     }
 }
