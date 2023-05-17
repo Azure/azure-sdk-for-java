@@ -84,7 +84,7 @@ public class RoomsClientTest extends RoomsTestBase {
         String roomId = createCommunicationRoom.getRoomId();
 
         // Test delete room without response
-        Void deleteResponse = roomsClient.deleteRoom(roomId);
+        roomsClient.deleteRoom(roomId);
     }
 
     @ParameterizedTest
