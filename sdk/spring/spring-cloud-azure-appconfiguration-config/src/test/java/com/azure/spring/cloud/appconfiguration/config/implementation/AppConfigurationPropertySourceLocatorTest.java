@@ -416,7 +416,7 @@ public class AppConfigurationPropertySourceLocatorTest {
             Feature alpha = (Feature) propertySources[0];
             assertEquals("All", alpha.getRequirementType());
             assertArrayEquals((Object[]) expectedSourceNames, sources.stream().map(PropertySource::getName).toArray());
-            
+
         }
     }
 
