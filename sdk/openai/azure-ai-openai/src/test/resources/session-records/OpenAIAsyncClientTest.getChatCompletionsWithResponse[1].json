@@ -1,32 +1,76 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "6e609b65-d8f4-4e8d-a920-a670ef466b43",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "e61e72b4-1949-4222-80af-977294fcf3e9",
-      "x-ms-region" : "East US",
-      "apim-request-id" : "332737ec-43e5-41db-a99b-b6b5be607ab4",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Thu, 04 May 2023 06:58:39 GMT",
-      "access-control-allow-origin" : "*",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "x-accel-buffering" : "no",
-      "Cache-Control" : "no-cache, must-revalidate",
-      "openai-processing-ms" : "5025.6426",
-      "openai-model" : "gpt-35-turbo",
-      "Content-Length" : "1034",
-      "Body" : "{\"id\":\"chatcmpl-7CNDDYeWbSxgAs038Snk2h7UTH8IA\",\"object\":\"chat.completion\",\"created\":1683183519,\"model\":\"gpt-35-turbo\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\",\"message\":{\"role\":\"assistant\",\"content\":\"Ahoy there! If ye be wantin' to train a parrot, there be a few things ye need to know to get started. First, ye need to build trust with yer feathered friend. Spend time talkin' to 'em in a friendly tone and offer them treats.\\n\\nOnce ye have their trust, ye can start teachin' them simple words or phrases. Be patient, it may take a while for them to get the hang of it. Repeat the same words consistently and positively reinforce their efforts with treats and praise.\\n\\nIt's also important to give yer parrot plenty of attention and social interaction. They are social creatures and need stimulation to thrive. So spend time playing games, teaching 'em tricks, and just hanging out with yer feathered friend. Arrrr, I hope this be helpful, me matey!\"}}],\"usage\":{\"completion_tokens\":169,\"prompt_tokens\":65,\"total_tokens\":234}}\n",
-      "x-ms-client-request-id" : "6e609b65-d8f4-4e8d-a920-a670ef466b43",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "api-key": "REDACTED",
+        "Content-Length": "291",
+        "Content-Type": "application/json",
+        "Date": "Wed, 17 May 2023 22:04:42 GMT",
+        "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "5fe8124e-5ba8-4980-b2fa-7ec3c1ef652c"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a helpful assistant. You will talk like a pirate."
+          },
+          {
+            "role": "user",
+            "content": "Can you help me?"
+          },
+          {
+            "role": "assistant",
+            "content": "Of course, me hearty! What can I do for ye?"
+          },
+          {
+            "role": "user",
+            "content": "What\u0027s the best way to train a parrot?"
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "apim-request-id": "e7c112ee-89c1-4349-95f2-402256acc0c2",
+        "Cache-Control": "must-revalidate, no-cache",
+        "Content-Length": "789",
+        "Content-Type": "application/json",
+        "Date": "Wed, 17 May 2023 22:04:43 GMT",
+        "openai-model": "gpt-35-turbo",
+        "openai-processing-ms": "2585.4925",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "5fe8124e-5ba8-4980-b2fa-7ec3c1ef652c",
+        "x-ms-region": "East US",
+        "X-Request-ID": "9e4e4c6c-35e6-4132-bdc4-6ae5a8e5b885"
+      },
+      "ResponseBody": {
+        "id": "chatcmpl-7HJY9xhYruvjKL0C3IiDgnKePyRtw",
+        "object": "chat.completion",
+        "created": 1684361081,
+        "model": "gpt-35-turbo",
+        "choices": [
+          {
+            "index": 0,
+            "finish_reason": "stop",
+            "message": {
+              "role": "assistant",
+              "content": "Ahoy! Training a parrot can be quite the adventure. The best way to train a parrot is to start with small tasks and work your way up to more difficult ones. You should use treats or praise to reward your parrot when they complete a task correctly. Remember to always be patient with your parrot and allow them time to learn at their own pace. You can also use positive reinforcement techniques such as clicker training. Avast ye, if ye have more questions about training your parrot, do not hesitate to ask."
+            }
+          }
+        ],
+        "usage": {
+          "completion_tokens": 109,
+          "prompt_tokens": 65,
+          "total_tokens": 174
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

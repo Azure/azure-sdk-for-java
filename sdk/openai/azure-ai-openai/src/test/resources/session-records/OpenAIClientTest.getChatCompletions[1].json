@@ -1,32 +1,76 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.openai.azure.com/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (17.0.2; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "4c2a29ee-3e51-4f1b-9de8-837c8898fba6",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-request-id" : "ca12a5b0-80cb-45bc-97be-62c91dc4e48a",
-      "x-ms-region" : "East US",
-      "apim-request-id" : "d583952d-6dcf-4a93-9ad7-521286244c35",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Date" : "Thu, 04 May 2023 06:58:50 GMT",
-      "access-control-allow-origin" : "*",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "x-accel-buffering" : "no",
-      "Cache-Control" : "no-cache, must-revalidate",
-      "openai-processing-ms" : "4746.4348",
-      "openai-model" : "gpt-35-turbo",
-      "Content-Length" : "1029",
-      "Body" : "{\"id\":\"chatcmpl-7CNDOk58Q4mRVyKhEJHzTBAkr8poA\",\"object\":\"chat.completion\",\"created\":1683183530,\"model\":\"gpt-35-turbo\",\"choices\":[{\"index\":0,\"finish_reason\":\"stop\",\"message\":{\"role\":\"assistant\",\"content\":\"Arrr, ye want to train a parrot, do ye? Well, the best way to train a fine feathered friend like a parrot is through a lot of repetition and positive reinforcement. Speak to yer parrot often and use simple yet consistent verbal cues to train it to recognize different words and phrases. \\n\\nWhen yer parrot does something ye want it to do, like saying a certain word or performing a trick, give it a treat or praise it with a hearty \\\"Well done, me hearty!\\\". This positive reinforcement will encourage yer parrot to continue doing the behavior.\\n\\nJust remember, parrots are smart and sensitive creatures, so always be kind and patient with them. And don't forget to show them some pirate-like affection with plenty of \\\"avast's\\\" and \\\"ahoy's\\\"!\"}}],\"usage\":{\"completion_tokens\":163,\"prompt_tokens\":65,\"total_tokens\":228}}\n",
-      "x-ms-client-request-id" : "4c2a29ee-3e51-4f1b-9de8-837c8898fba6",
-      "Content-Type" : "application/json"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/openai/deployments/gpt-35-turbo/chat/completions?api-version=2023-03-15-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "api-key": "REDACTED",
+        "Content-Length": "291",
+        "Content-Type": "application/json",
+        "Date": "Wed, 17 May 2023 22:04:42 GMT",
+        "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "7e686c33-ef55-400a-a439-b134d0428a9f"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a helpful assistant. You will talk like a pirate."
+          },
+          {
+            "role": "user",
+            "content": "Can you help me?"
+          },
+          {
+            "role": "assistant",
+            "content": "Of course, me hearty! What can I do for ye?"
+          },
+          {
+            "role": "user",
+            "content": "What\u0027s the best way to train a parrot?"
+          }
+        ]
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "apim-request-id": "f886e48d-a173-47d9-ad9a-2e5f4006ebdf",
+        "Cache-Control": "must-revalidate, no-cache",
+        "Content-Length": "839",
+        "Content-Type": "application/json",
+        "Date": "Wed, 17 May 2023 22:04:44 GMT",
+        "openai-model": "gpt-35-turbo",
+        "openai-processing-ms": "3419.4883",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "x-accel-buffering": "no",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "7e686c33-ef55-400a-a439-b134d0428a9f",
+        "x-ms-region": "East US",
+        "X-Request-ID": "043af214-5f4b-4402-97b9-64c10538e1db"
+      },
+      "ResponseBody": {
+        "id": "chatcmpl-7HJYAfiwjIsvaWSHRiPfyB4LHRoZc",
+        "object": "chat.completion",
+        "created": 1684361082,
+        "model": "gpt-35-turbo",
+        "choices": [
+          {
+            "index": 0,
+            "finish_reason": "stop",
+            "message": {
+              "role": "assistant",
+              "content": "Ahoy, matey! If ye be lookin\u0027 to train a parrot, ye best start with gentle coaxin\u0027 and offerings of treat. Parrots be a smart lot, but also quite stubborn. Start with easy commands, like \u0022step up\u0022 or \u0022come here\u0022. When the bird follows, be certain to offer praise and a nibble o\u0027 a treat. Rewards be key to keepin\u0027 a parrot\u0027s attention. As ye and yer bird grow more comfortable, ye can progress to teachin\u0027 more complex actions and tricks. Just remember to be patient and persistent, and most importantly, show yer bird plenty of love and kindness! Arrr!"
+            }
+          }
+        ],
+        "usage": {
+          "completion_tokens": 136,
+          "prompt_tokens": 65,
+          "total_tokens": 201
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }
