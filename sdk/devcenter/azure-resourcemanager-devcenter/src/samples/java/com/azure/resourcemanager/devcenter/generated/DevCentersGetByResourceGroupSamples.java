@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DevCenters GetByResourceGroup. */
 public final class DevCentersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevCenters_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevCenters_Get.json
      */
     /**
      * Sample code: DevCenters_Get.
@@ -17,6 +15,6 @@ public final class DevCentersGetByResourceGroupSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void devCentersGet(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.devCenters().getByResourceGroupWithResponse("rg1", "Contoso", Context.NONE);
+        manager.devCenters().getByResourceGroupWithResponse("rg1", "Contoso", com.azure.core.util.Context.NONE);
     }
 }
