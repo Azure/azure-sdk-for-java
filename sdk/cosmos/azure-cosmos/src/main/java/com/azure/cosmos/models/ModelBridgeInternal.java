@@ -621,6 +621,8 @@ public final class ModelBridgeInternal {
             ((UniqueKey) t).populatePropertyBag();
         } else if (t instanceof UniqueKeyPolicy) {
             ((UniqueKeyPolicy) t).populatePropertyBag();
+        } else if (t instanceof ComputedProperty) {
+            ((ComputedProperty) t).populatePropertyBag();
         } else {
             throw new IllegalArgumentException("populatePropertyBag method does not exists in class " + t.getClass());
         }
@@ -654,6 +656,8 @@ public final class ModelBridgeInternal {
             return ((UniqueKey) t).getJsonSerializable();
         } else if (t instanceof UniqueKeyPolicy) {
             return ((UniqueKeyPolicy) t).getJsonSerializable();
+        } else if (t instanceof ComputedProperty) {
+            return ((ComputedProperty) t).getJsonSerializable();
         } else {
             throw new IllegalArgumentException("getJsonSerializable method does not exists in class " + t.getClass());
         }

@@ -10,6 +10,7 @@ import com.azure.cosmos.util.Beta;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -175,6 +176,27 @@ public final class CosmosContainerProperties {
         warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosContainerProperties setChangeFeedPolicy(ChangeFeedPolicy value) {
         this.documentCollection.setChangeFeedPolicy(value);
+        return this;
+    }
+
+
+    /**
+     * Gets the computedProperties for this container in the Azure Cosmos DB service.
+     *
+     * @return the computedProperties.
+     */
+    public Collection<ComputedProperty> getComputedProperties() {
+        return this.documentCollection.getComputedProperties();
+    }
+
+    /**
+     * Sets the computedProperties for this container in the Azure Cosmos DB service.
+     *
+     * @param computedProperties the computedProperties.
+     * @return the CosmosContainerProperties.
+     */
+    public CosmosContainerProperties setComputedProperties(Collection<ComputedProperty> computedProperties) {
+        this.documentCollection.setComputedProperties(computedProperties);
         return this;
     }
 
