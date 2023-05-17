@@ -1,0 +1,1064 @@
+Running proxy version is Azure.Sdk.Tools.TestProxy 20230427.1
+git --version
+[08:35:17] Recorded: 0	Played Back: 0
+[08:35:18] Recorded: 0	Played Back: 0
+[08:35:19] info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/vsts/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[08:35:19] info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {72cfa584-d43f-4d6d-951d-80c4548ef8bd} with creation date 2023-05-17 08:35:19Z, activation date 2023-05-17 08:35:19Z, and expiration date 2023-08-15 08:35:19Z.
+[08:35:19] Recorded: 0	Played Back: 0
+[08:35:19] warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {72cfa584-d43f-4d6d-951d-80c4548ef8bd} may be persisted to storage in unencrypted form.
+[08:35:19] info: Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository[39]
+      Writing data to file '/home/vsts/.aspnet/DataProtection-Keys/key-72cfa584-d43f-4d6d-951d-80c4548ef8bd.xml'.
+[08:35:20] Recorded: 0	Played Back: 0
+[08:35:21] info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5000
+[08:35:21] info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: https://localhost:5001
+[08:35:21] info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[08:35:21] info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[08:35:21] info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/vsts/work/1/s
+[08:35:21] Recorded: 0	Played Back: 0
+[08:35:22] Recorded: 0	Played Back: 0
+[08:35:23] Recorded: 0	Played Back: 0
+[08:35:24] Recorded: 0	Played Back: 0
+[08:35:25] Recorded: 0	Played Back: 0
+[08:35:26] Recorded: 0	Played Back: 0
+[08:35:27] Recorded: 0	Played Back: 0
+[08:35:28] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/Admin/IsAlive - -
+[08:35:28] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.IsAlive (Azure.Sdk.Tools.TestProxy)'
+[08:35:28] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "IsAlive", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task IsAlive() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:35:28] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.IsAlive (Azure.Sdk.Tools.TestProxy) in 2.9544ms
+[08:35:28] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.IsAlive (Azure.Sdk.Tools.TestProxy)'
+[08:35:28] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/Admin/IsAlive - - - 200 0 - 96.4056ms
+[08:35:28] Recorded: 0	Played Back: 0
+[08:35:29] Recorded: 0	Played Back: 0
+[08:35:30] Recorded: 0	Played Back: 0
+[08:35:31] Recorded: 0	Played Back: 0
+[08:35:32] Recorded: 0	Played Back: 0
+[08:35:33] Recorded: 0	Played Back: 0
+[08:35:34] Recorded: 0	Played Back: 0
+[08:35:35] Recorded: 0	Played Back: 0
+[08:35:36] Recorded: 0	Played Back: 0
+[08:35:37] Recorded: 0	Played Back: 0
+[08:35:38] Recorded: 0	Played Back: 0
+[08:35:39] Recorded: 0	Played Back: 0
+[08:35:40] Recorded: 0	Played Back: 0
+[08:35:41] Recorded: 0	Played Back: 0
+[08:35:42] Recorded: 0	Played Back: 0
+[08:35:43] Recorded: 0	Played Back: 0
+[08:35:44] Recorded: 0	Played Back: 0
+[08:35:45] Recorded: 0	Played Back: 0
+[08:35:46] Recorded: 0	Played Back: 0
+[08:35:47] Recorded: 0	Played Back: 0
+[08:35:48] Recorded: 0	Played Back: 0
+[08:35:49] Recorded: 0	Played Back: 0
+[08:35:50] Recorded: 0	Played Back: 0
+[08:35:51] Recorded: 0	Played Back: 0
+[08:35:52] Recorded: 0	Played Back: 0
+[08:35:53] Recorded: 0	Played Back: 0
+[08:35:54] Recorded: 0	Played Back: 0
+[08:35:55] Recorded: 0	Played Back: 0
+[08:35:56] Recorded: 0	Played Back: 0
+[08:35:57] Recorded: 0	Played Back: 0
+[08:35:58] Recorded: 0	Played Back: 0
+[08:35:59] Recorded: 0	Played Back: 0
+[08:36:00] Recorded: 0	Played Back: 0
+[08:36:01] Recorded: 0	Played Back: 0
+[08:36:02] Recorded: 0	Played Back: 0
+[08:36:03] Recorded: 0	Played Back: 0
+[08:36:04] Recorded: 0	Played Back: 0
+[08:36:05] Recorded: 0	Played Back: 0
+[08:36:06] Recorded: 0	Played Back: 0
+[08:36:07] Recorded: 0	Played Back: 0
+[08:36:08] Recorded: 0	Played Back: 0
+[08:36:09] Recorded: 0	Played Back: 0
+[08:36:10] Recorded: 0	Played Back: 0
+[08:36:11] Recorded: 0	Played Back: 0
+[08:36:12] Recorded: 0	Played Back: 0
+[08:36:13] Recorded: 0	Played Back: 0
+[08:36:14] Recorded: 0	Played Back: 0
+[08:36:15] Recorded: 0	Played Back: 0
+[08:36:16] Recorded: 0	Played Back: 0
+[08:36:17] Recorded: 0	Played Back: 0
+[08:36:18] Recorded: 0	Played Back: 0
+[08:36:19] Recorded: 0	Played Back: 0
+[08:36:20] Recorded: 0	Played Back: 0
+[08:36:21] Recorded: 0	Played Back: 0
+[08:36:22] Recorded: 0	Played Back: 0
+[08:36:23] Recorded: 0	Played Back: 0
+[08:36:24] Recorded: 0	Played Back: 0
+[08:36:25] Recorded: 0	Played Back: 0
+[08:36:26] Recorded: 0	Played Back: 0
+[08:36:27] Recorded: 0	Played Back: 0
+[08:36:28] Recorded: 0	Played Back: 0
+[08:36:29] Recorded: 0	Played Back: 0
+[08:36:30] Recorded: 0	Played Back: 0
+[08:36:31] Recorded: 0	Played Back: 0
+[08:36:32] Recorded: 0	Played Back: 0
+[08:36:33] Recorded: 0	Played Back: 0
+[08:36:34] Recorded: 0	Played Back: 0
+[08:36:35] Recorded: 0	Played Back: 0
+[08:36:36] Recorded: 0	Played Back: 0
+[08:36:37] Recorded: 0	Played Back: 0
+[08:36:38] Recorded: 0	Played Back: 0
+[08:36:39] Recorded: 0	Played Back: 0
+[08:36:40] Recorded: 0	Played Back: 0
+[08:36:41] Recorded: 0	Played Back: 0
+[08:36:42] Recorded: 0	Played Back: 0
+[08:36:43] Recorded: 0	Played Back: 0
+[08:36:44] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/admin/isalive - -
+[08:36:44] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.IsAlive (Azure.Sdk.Tools.TestProxy)'
+[08:36:44] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "IsAlive", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task IsAlive() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:44] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.IsAlive (Azure.Sdk.Tools.TestProxy) in 0.2124ms
+[08:36:44] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.IsAlive (Azure.Sdk.Tools.TestProxy)'
+[08:36:44] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/admin/isalive - - - 200 0 - 3.5208ms
+[08:36:44] Recorded: 0	Played Back: 0
+[08:36:45] Recorded: 0	Played Back: 0
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/playback/start - 177
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.Start (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/playback/start - 177
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.Start (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "Start", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task Start() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "Start", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task Start() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.Start (Azure.Sdk.Tools.TestProxy) in 117.2556ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.Start (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/playback/start - 177 - 200 - application/json 122.3540ms
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.Start (Azure.Sdk.Tools.TestProxy) in 128.6999ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.Start (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/playback/start - 177 - 200 - application/json 133.4085ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 102
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 102
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 3.9154ms
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 5.3034ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 102 - 200 0 - 8.9278ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 102 - 200 0 - 13.4391ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 102
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 102
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.163ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 102 - 200 0 - 0.3220ms
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1513ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 102 - 200 0 - 1.0421ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 94
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1351ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 94 - 200 0 - 0.2948ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 89
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1436ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 89 - 200 0 - 0.3609ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 88
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1246ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 88 - 200 0 - 0.2431ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 94
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1319ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 94 - 200 0 - 0.2638ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 104
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.112ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 104 - 200 0 - 0.2253ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 89
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1171ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 89 - 200 0 - 0.2288ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 108
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1139ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 108 - 200 0 - 0.2422ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 87
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.3047ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 87 - 200 0 - 0.4338ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 88
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1105ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 88 - 200 0 - 0.2189ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 104
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1181ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 104 - 200 0 - 0.2612ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 108
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1119ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 108 - 200 0 - 0.2228ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 87
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1266ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 87 - 200 0 - 0.2317ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 87
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1201ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 87 - 200 0 - 0.2364ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 60
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.2388ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 60 - 200 0 - 0.3596ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 87
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.12ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 87 - 200 0 - 0.2287ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 60
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1153ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 60 - 200 0 - 0.2301ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 47
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1326ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 47 - 200 0 - 0.2518ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 47
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1118ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 47 - 200 0 - 0.2218ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 47
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1122ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 47 - 200 0 - 0.2242ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 48
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1084ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 48 - 200 0 - 0.2363ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 47
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1062ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 47 - 200 0 - 0.2218ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 48
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.2069ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 48 - 200 0 - 0.3464ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 50
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 48
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1319ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 48 - 200 0 - 0.3028ms
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.6869ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 50 - 200 0 - 1.3294ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 48
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1206ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 48 - 200 0 - 0.2358ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 43
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1101ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 43 - 200 0 - 0.2152ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 53
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1184ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 53 - 200 0 - 0.2356ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 50
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1078ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 50 - 200 0 - 0.3986ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 40
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1061ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 40 - 200 0 - 0.2035ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 41
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1066ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 41 - 200 0 - 0.2168ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 43
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1015ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 43 - 200 0 - 0.1945ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 53
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1079ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 53 - 200 0 - 0.2203ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 40
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1073ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 40 - 200 0 - 0.2174ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 41
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1062ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 41 - 200 0 - 0.2151ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 45
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1086ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 45 - 200 0 - 0.2213ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 45
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.11ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 45 - 200 0 - 0.2228ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 45
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1074ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 45 - 200 0 - 0.2191ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 45
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1076ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 45 - 200 0 - 0.2189ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 54
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1066ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 54 - 200 0 - 0.2157ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 54
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1144ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 54 - 200 0 - 0.2222ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 36
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1091ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 36 - 200 0 - 0.2193ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 36
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1014ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 36 - 200 0 - 0.1924ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 38
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1072ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 38 - 200 0 - 0.2159ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 38
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "AddSanitizer", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task AddSanitizer() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy) in 0.1144ms
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.AddSanitizer (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/Admin/AddSanitizer - 38 - 200 0 - 0.2519ms
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 PUT http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-create-test?api-version=2023-01-26-preview application/json 990
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:46] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 PUT http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview application/json 21
+[08:36:46] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:46] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:46] Recorded: 0	Played Back: 0
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 269.2105ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 PUT http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-create-test?api-version=2023-01-26-preview application/json 990 - 201 1782 application/json;+charset=utf-8 284.2841ms
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 279.2794ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 PUT http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview application/json 21 - 201 884 application/json;+charset=utf-8 280.4628ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.6143ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - - - 200 529 application/json;+charset=utf-8 0.9059ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2619ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - - - 200 528 application/json;+charset=utf-8 0.4508ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2668ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - - - 200 529 application/json;+charset=utf-8 0.4241ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2312ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - - - 200 528 application/json;+charset=utf-8 0.3603ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2276ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - - - 200 529 application/json;+charset=utf-8 0.3622ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2091ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - - - 200 528 application/json;+charset=utf-8 0.3198ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2576ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - - - 200 529 application/json;+charset=utf-8 0.3685ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2207ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - - - 200 528 application/json;+charset=utf-8 0.3361ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2449ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - - - 200 529 application/json;+charset=utf-8 0.3591ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2064ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - - - 200 1159 application/json;+charset=utf-8 0.3164ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.5025ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview - - - 200 767 application/json;+charset=utf-8 0.6141ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview application/json 0
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 1.1554ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview application/json 0 - 200 767 application/json;+charset=utf-8 1.2972ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2262ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/16eaf740-93a0-48bc-a1b3-36de995da509*F755B1CB797FF327948304A67BA8243DB044ABCA8D64C7C1830F09C0DA38B687?api-version=2023-01-26-preview - - - 200 2001 application/json;+charset=utf-8 0.3613ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-create-test?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2122ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-create-test?api-version=2023-01-26-preview - - - 200 1667 application/json;+charset=utf-8 0.3421ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 DELETE http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview application/json 0
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.458ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 DELETE http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview application/json 0 - 202 4 application/json;+charset=utf-8 0.5916ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-create-test?api-version=2023-01-26-preview application/json 0
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.3944ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-create-test?api-version=2023-01-26-preview application/json 0 - 200 1667 application/json;+charset=utf-8 0.5341ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/playback/stop - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.Stop (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "Stop", controller = "Playback"}. Executing controller action with signature Void Stop() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.Stop (Azure.Sdk.Tools.TestProxy) in 0.4697ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.Stop (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/playback/stop - - - 200 0 - 2.0050ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.217ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - - - 202 529 application/json;+charset=utf-8 0.3300ms
+[08:36:47] info: Microsoft.AspNetCore.Server.Kestrel[32]
+      Connection id "0HMQMM6LFLE0B", Request id "0HMQMM6LFLE0B:00000008": the application completed without reading the entire request body.
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2777ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - - - 202 529 application/json;+charset=utf-8 0.4330ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.2372ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - - - 200 1160 application/json;+charset=utf-8 0.3733ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.4349ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview - - - 200 1160 application/json;+charset=utf-8 0.5716ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview application/json 0
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "HandleRequest", controller = "Playback"}. Executing controller action with signature System.Threading.Tasks.Task HandleRequest() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy) in 0.3799ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.HandleRequest (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview application/json 0 - 404 248 application/json;+charset=utf-8 0.4975ms
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 POST http://localhost:5000/playback/stop - -
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Playback.Stop (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "Stop", controller = "Playback"}. Executing controller action with signature Void Stop() on controller Azure.Sdk.Tools.TestProxy.Playback (Azure.Sdk.Tools.TestProxy).
+[08:36:47] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Playback.Stop (Azure.Sdk.Tools.TestProxy) in 0.0491ms
+[08:36:47] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Playback.Stop (Azure.Sdk.Tools.TestProxy)'
+[08:36:47] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 POST http://localhost:5000/playback/stop - - - 200 0 - 0.1782ms
+[08:36:47] Recorded: 0	Played Back: 23
+[08:36:48] Recorded: 0	Played Back: 23
+[08:36:49] Recorded: 0	Played Back: 23
+[08:36:50] Recorded: 0	Played Back: 23
+[08:36:51] Recorded: 0	Played Back: 23
+[08:36:52] Recorded: 0	Played Back: 23
+[08:36:53] Recorded: 0	Played Back: 23
+[08:36:54] Recorded: 0	Played Back: 23
+[08:36:55] Recorded: 0	Played Back: 23
+[08:36:56] Recorded: 0	Played Back: 23
+[08:36:57] Recorded: 0	Played Back: 23
+[08:36:58] Recorded: 0	Played Back: 23
+[08:36:59] Recorded: 0	Played Back: 23
+[08:37:00] Recorded: 0	Played Back: 23
+[08:37:01] Recorded: 0	Played Back: 23
+[08:37:02] Recorded: 0	Played Back: 23
+[08:37:03] Recorded: 0	Played Back: 23
+[08:37:04] Recorded: 0	Played Back: 23
+[08:37:05] Recorded: 0	Played Back: 23
+[08:37:06] Recorded: 0	Played Back: 23
+[08:37:07] Recorded: 0	Played Back: 23
+[08:37:08] Recorded: 0	Played Back: 23
+[08:37:09] Recorded: 0	Played Back: 23
+[08:37:10] Recorded: 0	Played Back: 23
+[08:37:11] Recorded: 0	Played Back: 23
+[08:37:12] Recorded: 0	Played Back: 23
+[08:37:13] Recorded: 0	Played Back: 23
+[08:37:14] Recorded: 0	Played Back: 23

@@ -1,14 +1,8 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.4 (2023-05-17)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Azure Resource Manager ConfidentialLedger client library for Java. This package contains Microsoft Azure SDK for ConfidentialLedger Management SDK. Microsoft Azure Confidential Compute Ledger Control Plane REST API version 2020-12-01-preview. Package tag package-preview-2023-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## 1.0.0-beta.3 (2023-04-20)
 
