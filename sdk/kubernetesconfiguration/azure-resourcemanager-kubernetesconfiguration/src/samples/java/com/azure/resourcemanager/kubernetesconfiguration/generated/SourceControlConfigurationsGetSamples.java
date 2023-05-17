@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kubernetesconfiguration.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SourceControlConfigurations Get. */
 public final class SourceControlConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/GetSourceControlConfiguration.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/GetSourceControlConfiguration.json
      */
     /**
      * Sample code: Get Source Control Configuration.
@@ -21,6 +19,11 @@ public final class SourceControlConfigurationsGetSamples {
         manager
             .sourceControlConfigurations()
             .getWithResponse(
-                "rg1", "Microsoft.Kubernetes", "connectedClusters", "clusterName1", "SRS_GitHubConfig", Context.NONE);
+                "rg1",
+                "Microsoft.Kubernetes",
+                "connectedClusters",
+                "clusterName1",
+                "SRS_GitHubConfig",
+                com.azure.core.util.Context.NONE);
     }
 }
