@@ -283,16 +283,16 @@ public class RntbdTransportClient extends TransportClient {
         final boolean isAddressUriUnderOpenConnectionsFlow = this.proactiveOpenConnectionsProcessor
                 .isAddressUriUnderOpenConnectionsFlow(addressUri.getURIAsString());
 
-        final int minRequiredChannelsForEndpoint = (isAddressUriUnderOpenConnectionsFlow) ?
-                Configs.getMinConnectionPoolSizePerEndpoint() : 1;
-
         final RntbdEndpoint.Config config = this.endpointProvider.config();
+
+        final int minConnectionPoolSizePerEndpoint = (isAddressUriUnderOpenConnectionsFlow) ?
+                config.minConnectionPoolSizePerEndpoint() : 1;
 
         final RntbdEndpoint endpoint = this.endpointProvider.createIfAbsent(
                 request.requestContext.locationEndpointToRoute,
                 addressUri,
                 this.proactiveOpenConnectionsProcessor,
-                minRequiredChannelsForEndpoint);
+                minConnectionPoolSizePerEndpoint);
 
         final RntbdRequestRecord record = endpoint.request(requestArgs);
 
