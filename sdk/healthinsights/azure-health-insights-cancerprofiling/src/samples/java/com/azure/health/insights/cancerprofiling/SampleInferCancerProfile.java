@@ -145,7 +145,7 @@ public class SampleInferCancerProfile {
         // Set configuration to include evidence for the cancer staging inferences
         OncoPhenotypeModelConfiguration configuration = new OncoPhenotypeModelConfiguration();
         configuration.setIncludeEvidence(true);
-        configration.setCheckForCancerCase(true);
+        configuration.setCheckForCancerCase(true);
 
         // Construct the request with the patient and configration
         OncoPhenotypeData oncoPhenotypeData = new OncoPhenotypeData(Arrays.asList(patient1));
