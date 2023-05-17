@@ -31,6 +31,28 @@ import reactor.core.publisher.Flux;
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
+    @Generated private final OpenAIClientImpl serviceClient;
+    private final OpenAIClientNonAzureImpl openAIServiceClient;
+
+    /**
+     * Initializes an instance of OpenAIClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(OpenAIClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
+        this.openAIServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(OpenAIClientNonAzureImpl serviceClient) {
+        this.serviceClient = null;
+        this.openAIServiceClient = serviceClient;
+    }
 
     /**
      * Return the embeddings for a given prompt.
@@ -420,28 +442,5 @@ public final class OpenAIClient {
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return new IterableStream<ChatCompletions>(chatCompletionsStream.getEvents());
-    }
-
-    @Generated private final OpenAIClientImpl serviceClient;
-    private final OpenAIClientNonAzureImpl openAIServiceClient;
-
-    /**
-     * Initializes an instance of OpenAIClient class.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    OpenAIClient(OpenAIClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        this.openAIServiceClient = null;
-    }
-
-    /**
-     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
-     *
-     * @param serviceClient the service client implementation.
-     */
-    OpenAIClient(OpenAIClientNonAzureImpl serviceClient) {
-        this.serviceClient = null;
-        this.openAIServiceClient = serviceClient;
     }
 }

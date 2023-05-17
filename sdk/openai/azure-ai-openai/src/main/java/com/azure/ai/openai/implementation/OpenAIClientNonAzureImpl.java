@@ -61,6 +61,9 @@ public final class OpenAIClientNonAzureImpl {
         return this.serializerAdapter;
     }
 
+    /**
+     * This is the endpoint that non-azure OpenAI supports. Currently, it has only v1 version.
+     */
     public static final String OPEN_AI_ENDPOINT = "https://api.openai.com/v1";
 
     /**
@@ -230,28 +233,28 @@ public final class OpenAIClientNonAzureImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param modelId           id of the deployed model.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
-     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
-     *     scenarios.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     *                          relatedness of text strings and are commonly used for search, clustering,
+     *                          recommendations, and other similar scenarios.
+     * @param requestOptions    The options to configure the HTTP request before HTTP client sends it.
      * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
-     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
+     * with {@link Response} on successful completion of {@link Mono}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(String deploymentId,
+    public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(String modelId,
         BinaryData embeddingsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
         BinaryData embeddingsOptionsUpdated = BinaryData.fromObject(
             embeddingsOptions.toObject(EmbeddingsOptions.class)
-                .setModel(deploymentId)
+                .setModel(modelId)
         );
 
         return FluxUtil.withContext(
@@ -298,28 +301,28 @@ public final class OpenAIClientNonAzureImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param modelId           id of the deployed model.
      * @param embeddingsOptions The configuration information for an embeddings request. Embeddings measure the
-     *     relatedness of text strings and are commonly used for search, clustering, recommendations, and other similar
-     *     scenarios.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     *                          relatedness of text strings and are commonly used for search, clustering,
+     *                          recommendations, and other similar scenarios.
+     * @param requestOptions    The options to configure the HTTP request before HTTP client sends it.
      * @return representation of the response data from an embeddings request. Embeddings measure the relatedness of
-     *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
-     *     with {@link Response}.
+     * text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
+     * with {@link Response}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getEmbeddingsWithResponse(String deploymentId, BinaryData embeddingsOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getEmbeddingsWithResponse(String modelId, BinaryData embeddingsOptions,
+                                                          RequestOptions requestOptions) {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
         BinaryData embeddingsOptionsUpdated = BinaryData.fromObject(
             embeddingsOptions.toObject(EmbeddingsOptions.class)
-                .setModel(deploymentId)
+                .setModel(modelId)
         );
 
         return service.getEmbeddingsSync(
@@ -399,27 +402,28 @@ public final class OpenAIClientNonAzureImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param modelId            id of the deployed model.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
-     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     *                           variety of tasks and generate text that continues from or "completes" provided prompt
+     *                           data.
+     * @param requestOptions     The options to configure the HTTP request before HTTP client sends it.
      * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
-     *     that continues from or "completes" provided prompt data along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * that continues from or "completes" provided prompt data along with {@link Response} on successful completion
+     * of {@link Mono}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(String deploymentId,
+    public Mono<Response<BinaryData>> getCompletionsWithResponseAsync(String modelId,
         BinaryData completionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
         BinaryData completionsOptionsUpdated = BinaryData.fromObject(
             completionsOptions.toObject(CompletionsOptions.class)
-                .setModel(deploymentId)
+                .setModel(modelId)
         );
 
         return FluxUtil.withContext(
@@ -501,26 +505,26 @@ public final class OpenAIClientNonAzureImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param modelId            id of the deployed model.
      * @param completionsOptions The configuration information for a completions request. Completions support a wide
-     *     variety of tasks and generate text that continues from or "completes" provided prompt data.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     *                           variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param requestOptions     The options to configure the HTTP request before HTTP client sends it.
      * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
-     *     that continues from or "completes" provided prompt data along with {@link Response}.
+     * that continues from or "completes" provided prompt data along with {@link Response}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCompletionsWithResponse(String deploymentId, BinaryData completionsOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getCompletionsWithResponse(String modelId, BinaryData completionsOptions,
+                                                           RequestOptions requestOptions) {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
         BinaryData completionsOptionsUpdated = BinaryData.fromObject(
             completionsOptions.toObject(CompletionsOptions.class)
-                .setModel(deploymentId)
+                .setModel(modelId)
         );
         return service.getCompletionsSync(
             OPEN_AI_ENDPOINT,
@@ -590,27 +594,28 @@ public final class OpenAIClientNonAzureImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param modelId                id of the deployed model.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
-     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     *                               wide variety of tasks and generate text that continues from or "completes"
+     *                               provided prompt data.
+     * @param requestOptions         The options to configure the HTTP request before HTTP client sends it.
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
-     *     text that continues from or "completes" provided prompt data along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * text that continues from or "completes" provided prompt data along with {@link Response} on successful
+     * completion of {@link Mono}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getChatCompletionsWithResponseAsync(String deploymentId,
+    public Mono<Response<BinaryData>> getChatCompletionsWithResponseAsync(String modelId,
         BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
         BinaryData chatCompletionsOptionsUpdated = BinaryData.fromObject(
             chatCompletionsOptions.toObject(ChatCompletionsOptions.class)
-                .setModel(deploymentId)
+                .setModel(modelId)
         );
 
         return FluxUtil.withContext(
@@ -683,26 +688,27 @@ public final class OpenAIClientNonAzureImpl {
      * }
      * }</pre>
      *
-     * @param deploymentId deployment id of the deployed model.
+     * @param modelId                id of the deployed model.
      * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
-     *     wide variety of tasks and generate text that continues from or "completes" provided prompt data.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     *                               wide variety of tasks and generate text that continues from or "completes" provided
+     *                               prompt data.
+     * @param requestOptions         The options to configure the HTTP request before HTTP client sends it.
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
-     *     text that continues from or "completes" provided prompt data along with {@link Response}.
+     * text that continues from or "completes" provided prompt data along with {@link Response}.
+     * @throws HttpResponseException         thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException     thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException     thrown if the request is rejected by server on status code 409.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getChatCompletionsWithResponse(String deploymentId, BinaryData chatCompletionsOptions,
-        RequestOptions requestOptions) {
+    public Response<BinaryData> getChatCompletionsWithResponse(String modelId, BinaryData chatCompletionsOptions,
+                                                               RequestOptions requestOptions) {
         final String accept = "application/json";
 
         // OpenAI has model ID in request body
         BinaryData chatCompletionsOptionsUpdated = BinaryData.fromObject(
             chatCompletionsOptions.toObject(ChatCompletionsOptions.class)
-                .setModel(deploymentId)
+                .setModel(modelId)
         );
 
         return service.getChatCompletionsSync(
