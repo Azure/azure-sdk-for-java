@@ -366,20 +366,25 @@ public class RntbdTransportClient extends TransportClient {
             // Since reactor-core 3.4.23, if the Mono.fromCompletionStage is cancelled, then it will also cancel the internal future
             // But the stated behavior may change in later versions (https://github.com/reactor/reactor-core/issues/3235).
             // In order to keep consistent behavior, we internally will always cancel the future.
-            record.cancel(true);
 
-            // When the request got cancelled, in order to capture the details in the diagnostics, fake a OperationCancelledException
-            OperationCancelledException operationCancelledException =
-                new OperationCancelledException(record.toString(), record.args().physicalAddressUri().getURI());
+            if (!record.isDone()) {
+                // Only cancel if the record is not done
+                // For some operators (for example collectList),
+                // when an error happen, it will discard the elements which can cause a cancel signal being flowing through again.
+                record.cancel(true);
 
-            ImplementationBridgeHelpers
-                .CosmosExceptionHelper
-                .getCosmosExceptionAccessor()
-                .setRequestUri(operationCancelledException, addressUri);
-            this.populateExceptionWithRequestDetails(operationCancelledException, record);
+                // When the request got cancelled, in order to capture the details in the diagnostics, fake a OperationCancelledException
+                OperationCancelledException operationCancelledException =
+                    new OperationCancelledException(record.toString(), record.args().physicalAddressUri().getURI());
 
-            request.requestContext.rntbdCancelledRequestMap.put(String.valueOf(record.transportRequestId()), operationCancelledException);
+                ImplementationBridgeHelpers
+                    .CosmosExceptionHelper
+                    .getCosmosExceptionAccessor()
+                    .setRequestUri(operationCancelledException, addressUri);
+                this.populateExceptionWithRequestDetails(operationCancelledException, record);
 
+                request.requestContext.rntbdCancelledRequestMap.put(String.valueOf(record.transportRequestId()), operationCancelledException);
+            }
         }).contextWrite(reactorContext);
     }
 
