@@ -691,7 +691,7 @@ public final class MessageFlux extends FluxOperator<AmqpReceiveLink, Message> {
          * {@link RecoverableReactorReceiver#onMediatorReady(BiFunction)}.
          */
         void onParentReady() {
-            updateLogWithReceiverId(logger.atWarning()).log("Setting next mediator.");
+            updateLogWithReceiverId(logger.atWarning()).log("Setting next mediator and waiting for activation.");
 
             // 1. Subscribe for the messages on the Receiver (AmqpReceiveLink).
             receiver.receive().subscribe(this);
