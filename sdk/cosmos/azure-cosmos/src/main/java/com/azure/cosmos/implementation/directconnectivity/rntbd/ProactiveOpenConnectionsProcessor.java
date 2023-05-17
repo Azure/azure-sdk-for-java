@@ -228,8 +228,15 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         });
     }
 
-    public void excludeAddressUriFromOpenConnectionsFlow(String addressUriAsString) {
-        this.addressUrisUnderOpenConnectionsAndInitCaches.remove(addressUriAsString);
+    public void excludeAddressUriFromOpenConnectionsFlow(String collectionRid, String addressUriAsString) {
+        this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.compute(collectionRid, (ignore, addressUrisAsStringForCollectionRid) -> {
+            if (addressUrisAsStringForCollectionRid != null && !addressUrisAsStringForCollectionRid.isEmpty()) {
+                addressUrisAsStringForCollectionRid.remove(addressUriAsString);
+                addressUrisUnderOpenConnectionsAndInitCaches.remove(addressUriAsString);
+            }
+
+            return addressUrisAsStringForCollectionRid;
+        });
     }
 
     private Disposable getBackgroundOpenConnectionsPublisher() {

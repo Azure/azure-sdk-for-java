@@ -88,7 +88,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final URI serviceEndpoint;
 
     private final AsyncCacheNonBlocking<PartitionKeyRangeIdentity, AddressInformation[]> serverPartitionAddressCache;
-    private final ConcurrentHashMap<Uri, Set<String>> addressUriToPkrIdsMap;
+    private final ConcurrentHashMap<Uri, Set<PartitionKeyRangeIdentity>> addressUriToPkrIdsMap;
     private final ConcurrentHashMap<PartitionKeyRangeIdentity, Instant> suboptimalServerPartitionTimestamps;
     private final long suboptimalPartitionForceRefreshIntervalInSeconds;
 
@@ -670,16 +670,15 @@ public class GatewayAddressCache implements IAddressCache {
 
                                                 // remove addressUri -> physical partition mapping
                                                 if (pkrIdsForAddressUri != null && !pkrIdsForAddressUri.isEmpty()) {
-                                                    pkrIdsForAddressUri.remove(partitionKeyRangeId);
+                                                    pkrIdsForAddressUri.remove(pkRangeIdentity);
                                                 }
 
-                                                // if the address is not used by any physical partition, it can
-                                                // be excluded from the open connection flow
-                                                if (pkrIdsForAddressUri != null && pkrIdsForAddressUri.isEmpty()) {
+                                                // if the address is not used by a physical partition from a container
+                                                // which also took part in connection warm up flow, it can be excluded
+                                                // from the open connection flow
+                                                if (pkrIdsForAddressUri != null && shouldExcludeAddressUriFromOpenConnectionsFlow(pkrIdsForAddressUri)) {
                                                     this.proactiveOpenConnectionsProcessor
-                                                            .excludeAddressUriFromOpenConnectionsFlow(unusedAddressUri.getURIAsString());
-                                                    this.proactiveOpenConnectionsProcessor
-                                                            .removeAddressUriForCollectionRid(collectionRid, unusedAddressUri.getURIAsString());
+                                                            .excludeAddressUriFromOpenConnectionsFlow(collectionRid, unusedAddressUri.getURIAsString());
 
                                                     return pkrIdsForAddressUri;
                                                 }
@@ -692,9 +691,9 @@ public class GatewayAddressCache implements IAddressCache {
                                             addressUriToPkrIdsMap.compute(addressUriAfterRefresh, (ignore, pkrIdsForAddressUri) -> {
 
                                                 if (pkrIdsForAddressUri == null) {
-                                                    pkrIdsForAddressUri = new HashSet<>(Collections.singleton(partitionKeyRangeId));
+                                                    pkrIdsForAddressUri = new HashSet<>(Collections.singleton(pkRangeIdentity));
                                                 } else {
-                                                    pkrIdsForAddressUri.add(partitionKeyRangeId);
+                                                    pkrIdsForAddressUri.add(pkRangeIdentity);
                                                 }
 
                                                 return pkrIdsForAddressUri;
@@ -1153,6 +1152,25 @@ public class GatewayAddressCache implements IAddressCache {
             this.proactiveOpenConnectionsProcessor
                     .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(collectionRid, addressUrisAsString);
         }
+    }
+
+    private boolean shouldExcludeAddressUriFromOpenConnectionsFlow(Set<PartitionKeyRangeIdentity> partitionKeyRangeIdentities) {
+
+        boolean shouldExclude = true;
+
+        Set<String> collectionRids = partitionKeyRangeIdentities
+                .stream()
+                .map(partitionKeyRangeIdentity -> partitionKeyRangeIdentity.getCollectionRid())
+                .collect(Collectors.toSet());
+
+        for (String collectionRid : collectionRids) {
+            if (this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
+                shouldExclude = false;
+                break;
+            }
+        }
+
+        return shouldExclude;
     }
 
     private static String logAddressResolutionStart(
