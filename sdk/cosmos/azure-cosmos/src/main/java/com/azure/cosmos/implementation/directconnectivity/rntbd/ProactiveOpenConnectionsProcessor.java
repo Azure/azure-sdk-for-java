@@ -219,15 +219,6 @@ public final class ProactiveOpenConnectionsProcessor implements Closeable {
         return this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.containsKey(collectionRid);
     }
 
-    public void removeAddressUriForCollectionRid(String collectionRid, String addressUriAsString) {
-        this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.compute(collectionRid, (ignore, addressUrisAsStringForCollectionRid) -> {
-           if (addressUrisAsStringForCollectionRid != null && !addressUrisAsStringForCollectionRid.isEmpty()) {
-               addressUrisAsStringForCollectionRid.remove(addressUriAsString);
-           }
-           return addressUrisAsStringForCollectionRid;
-        });
-    }
-
     public void excludeAddressUriFromOpenConnectionsFlow(String collectionRid, String addressUriAsString) {
         this.collectionRidsAndUrisUnderOpenConnectionAndInitCaches.compute(collectionRid, (ignore, addressUrisAsStringForCollectionRid) -> {
             if (addressUrisAsStringForCollectionRid != null && !addressUrisAsStringForCollectionRid.isEmpty()) {
