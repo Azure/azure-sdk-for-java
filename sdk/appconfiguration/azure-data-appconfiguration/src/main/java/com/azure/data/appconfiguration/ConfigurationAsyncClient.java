@@ -53,14 +53,14 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <h2>Getting Started</h2>
  *
- * <p>In order to interact with the App Configuration service you'll need to create an instance of the Configuration
- * Client class. To make this possible you'll need the connection string of the configuration store. Alternatively,
- * you can use AAD authentication via
+ * <p>In order to interact with the App Configuration service you'll need to create an instance of the
+ * {@link com.azure.data.appconfiguration.ConfigurationAsyncClient} class. To make this possible you'll need the
+ * connection string of the configuration store. Alternatively, you can use AAD authentication via
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable"> Azure Identity</a>
  * to connect to the service.</p>
  * <ol>
  *   <li>Connection string, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#connectionString(java.lang.String) connectionString}.</li>
- *   <li>Azure Active Directory, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#credential(com.azure.core.credential.TokenCredential) credential}.</li>
+ *   <li>Azure Active Directory, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#credential(com.azure.core.credential.TokenCredential) TokenCredential}.</li>
  * </ol>
  *
  * <p><strong>Instantiating an asynchronous Configuration Client</strong></p>
@@ -88,8 +88,8 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <h2>Add Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationAsyncClient} can be used to add a configuration setting in the
- * Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationAsyncClient} can be used to add a configuration setting
+ * in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to add a setting with the key "prodDBConnection", label "westUS" and value
  * "db_connection" using {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>

@@ -22,7 +22,7 @@
  * to connect to the service.</p>
  * <ol>
  *   <li>Connection string, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#connectionString(java.lang.String) connectionString}.</li>
- *   <li>Azure Active Directory, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#credential(com.azure.core.credential.TokenCredential) credential}.</li>
+ *   <li>Azure Active Directory, see {@link com.azure.data.appconfiguration.ConfigurationClientBuilder#credential(com.azure.core.credential.TokenCredential) TokenCredential}.</li>
  * </ol>
  *
  * <p><strong>Sample: Construct Asynchronous Configuration Client with Connection String</strong></p>
