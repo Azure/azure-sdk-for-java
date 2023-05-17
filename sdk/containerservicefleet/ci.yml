@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerservicefleet/ci.yml
+      - sdk/containerservicefleet/azure-resourcemanager-containerservicefleet/
+    exclude:
+      - sdk/containerservicefleet/pom.xml
+      - sdk/containerservicefleet/azure-resourcemanager-containerservicefleet/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/containerservicefleet/ci.yml
+      - sdk/containerservicefleet/azure-resourcemanager-containerservicefleet/
+    exclude:
+      - sdk/containerservicefleet/pom.xml
+      - sdk/containerservicefleet/azure-resourcemanager-containerservicefleet/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercontainerservicefleet
+    displayName: azure-resourcemanager-containerservicefleet
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: containerservicefleet
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-containerservicefleet
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercontainerservicefleet
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercontainerservicefleet }}
