@@ -15,6 +15,8 @@ import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 import com.azure.resourcemanager.devcenter.models.Pool;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectEnableStatus;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -35,7 +37,7 @@ public final class PoolsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"devBoxDefinitionName\":\"bbjjidjksyxk\",\"networkConnectionName\":\"vxevblb\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Enabled\"},\"location\":\"lageuaulxun\",\"tags\":{\"ppxynenls\":\"bn\",\"klnsrmffey\":\"xeizzg\"},\"id\":\"xcktpiymerteeamm\",\"name\":\"qiekkkzddrt\",\"type\":\"g\"}";
+            "{\"properties\":{\"healthStatus\":\"Warning\",\"healthStatusDetails\":[],\"provisioningState\":\"Succeeded\",\"devBoxDefinitionName\":\"ytnrzvuljraae\",\"networkConnectionName\":\"nok\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\",\"stopOnDisconnect\":{\"status\":\"Disabled\",\"gracePeriodMinutes\":1534220522}},\"location\":\"oylaxxul\",\"tags\":{\"hryvy\":\"sdosfjbjsvgjr\",\"xgccknfnw\":\"ytdc\"},\"id\":\"btmvpdvjdhttza\",\"name\":\"fedxihchrphkm\",\"type\":\"rjdqnsdfzp\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,31 +68,28 @@ public final class PoolsCreateOrUpdateMockTests {
         Pool response =
             manager
                 .pools()
-                .define("vmm")
-                .withRegion("zyqdrfegcealzx")
-                .withExistingProject("yefrpmpdnqqska", "ao")
-                .withTags(
-                    mapOf(
-                        "yqhlwigdivbkbx",
-                        "ansym",
-                        "wasqvdaeyyg",
-                        "omfaj",
-                        "zkgimsid",
-                        "xakjsqzhzb",
-                        "ddyvvjskgfmo",
-                        "asi"))
-                .withDevBoxDefinitionName("rtql")
-                .withNetworkConnectionName("megni")
+                .define("wprtu")
+                .withRegion("tgsfja")
+                .withExistingProject("cuijpxt", "s")
+                .withTags(mapOf("ud", "lhhxudbxvodhtnsi", "mes", "z", "zrcxfailcfxwmdbo", "kdlpa"))
+                .withDevBoxDefinitionName("babxvitit")
+                .withNetworkConnectionName("zeexavoxtfgle")
                 .withLicenseType(LicenseType.WINDOWS_CLIENT)
                 .withLocalAdministrator(LocalAdminStatus.DISABLED)
+                .withStopOnDisconnect(
+                    new StopOnDisconnectConfiguration()
+                        .withStatus(StopOnDisconnectEnableStatus.DISABLED)
+                        .withGracePeriodMinutes(181668941))
                 .create();
 
-        Assertions.assertEquals("lageuaulxun", response.location());
-        Assertions.assertEquals("bn", response.tags().get("ppxynenls"));
-        Assertions.assertEquals("bbjjidjksyxk", response.devBoxDefinitionName());
-        Assertions.assertEquals("vxevblb", response.networkConnectionName());
+        Assertions.assertEquals("oylaxxul", response.location());
+        Assertions.assertEquals("sdosfjbjsvgjr", response.tags().get("hryvy"));
+        Assertions.assertEquals("ytnrzvuljraae", response.devBoxDefinitionName());
+        Assertions.assertEquals("nok", response.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, response.licenseType());
-        Assertions.assertEquals(LocalAdminStatus.ENABLED, response.localAdministrator());
+        Assertions.assertEquals(LocalAdminStatus.DISABLED, response.localAdministrator());
+        Assertions.assertEquals(StopOnDisconnectEnableStatus.DISABLED, response.stopOnDisconnect().status());
+        Assertions.assertEquals(1534220522, response.stopOnDisconnect().gracePeriodMinutes());
     }
 
     @SuppressWarnings("unchecked")

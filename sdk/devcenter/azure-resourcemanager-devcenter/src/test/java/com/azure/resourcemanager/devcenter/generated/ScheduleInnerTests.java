@@ -6,41 +6,40 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleInner;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScheduleInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ScheduleInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"Running\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jhdgqggebdunyga\",\"timeZone\":\"idb\",\"state\":\"Enabled\"},\"id\":\"pxllrx\",\"name\":\"yjmoadsu\",\"type\":\"arm\"}")
+                    "{\"properties\":{\"provisioningState\":\"Updating\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"vaytdwkqbrq\",\"timeZone\":\"paxh\",\"state\":\"Disabled\"},\"id\":\"livpdt\",\"name\":\"irqtdqoa\",\"type\":\"oruzfgsquyfxrxx\"}")
                 .toObject(ScheduleInner.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("jhdgqggebdunyga", model.time());
-        Assertions.assertEquals("idb", model.timeZone());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("vaytdwkqbrq", model.time());
+        Assertions.assertEquals("paxh", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, model.state());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ScheduleInner model =
             new ScheduleInner()
                 .withTypePropertiesType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("jhdgqggebdunyga")
-                .withTimeZone("idb")
-                .withState(EnableStatus.ENABLED);
+                .withTime("vaytdwkqbrq")
+                .withTimeZone("paxh")
+                .withState(ScheduleEnableStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleInner.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.typePropertiesType());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("jhdgqggebdunyga", model.time());
-        Assertions.assertEquals("idb", model.timeZone());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("vaytdwkqbrq", model.time());
+        Assertions.assertEquals("paxh", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, model.state());
     }
 }

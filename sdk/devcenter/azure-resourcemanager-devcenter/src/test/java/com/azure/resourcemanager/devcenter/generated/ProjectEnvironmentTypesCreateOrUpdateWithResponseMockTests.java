@@ -12,7 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentType;
@@ -37,7 +37,7 @@ public final class ProjectEnvironmentTypesCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Deleting\",\"deploymentTargetId\":\"mldgxobfirc\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"vkjlmxhom\":\"riykhyawfvjlbox\",\"nraauzz\":\"ynhdwdigum\"},\"identity\":{\"principalId\":\"12bbcb71-96ee-45df-bad7-7572f65a2e5d\",\"tenantId\":\"73eb696d-db2f-406a-b322-b7086208aa95\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"zhezwwvaiq\",\"id\":\"vv\",\"name\":\"onkp\",\"type\":\"hqyikvy\"}";
+            "{\"properties\":{\"provisioningState\":\"MovingResources\",\"deploymentTargetId\":\"qwogfnzjvus\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{}},\"tags\":{\"dp\":\"ylfsbtk\",\"wn\":\"s\"},\"identity\":{\"principalId\":\"a2b5c4cc-a0bb-4f8d-b03c-b4a0d7382186\",\"tenantId\":\"d307c1d5-a538-4a6c-be2e-58f2bd6c4aaf\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"jqctojcmisofie\",\"id\":\"efojyqdhcupl\",\"name\":\"plcwkhi\",\"type\":\"ihlhzdsqtzb\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -68,26 +68,28 @@ public final class ProjectEnvironmentTypesCreateOrUpdateWithResponseMockTests {
         ProjectEnvironmentType response =
             manager
                 .projectEnvironmentTypes()
-                .define("rqzz")
-                .withExistingProject("levufuztcktyhj", "qedcgzulwm")
-                .withRegion("dmovzvfva")
-                .withTags(mapOf("oepry", "ev"))
+                .define("spave")
+                .withExistingProject("khocxvdfffwaf", "roud")
+                .withRegion("avodg")
+                .withTags(
+                    mapOf(
+                        "mfdn", "dyuib", "jnaeois", "zydvfvf", "vwmzhwplefaxvxil", "vhmgorffukis", "nzeyqxtjj", "btgn"))
                 .withIdentity(
                     new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.NONE)
+                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
                         .withUserAssignedIdentities(mapOf()))
-                .withDeploymentTargetId("gl")
-                .withStatus(EnableStatus.ENABLED)
+                .withDeploymentTargetId("bunzozudh")
+                .withStatus(EnvironmentTypeEnableStatus.DISABLED)
                 .withCreatorRoleAssignment(
                     new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment().withRoles(mapOf()))
                 .withUserRoleAssignments(mapOf())
                 .create();
 
-        Assertions.assertEquals("riykhyawfvjlbox", response.tags().get("vkjlmxhom"));
+        Assertions.assertEquals("ylfsbtk", response.tags().get("dp"));
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.identity().type());
-        Assertions.assertEquals("zhezwwvaiq", response.location());
-        Assertions.assertEquals("mldgxobfirc", response.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.ENABLED, response.status());
+        Assertions.assertEquals("jqctojcmisofie", response.location());
+        Assertions.assertEquals("qwogfnzjvus", response.deploymentTargetId());
+        Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, response.status());
     }
 
     @SuppressWarnings("unchecked")
