@@ -914,8 +914,6 @@ public class GatewayAddressCache implements IAddressCache {
             // flow provided these addresses are used by a container in the connection warm up flow
             if (this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
 
-                minConnectionsRequiredForEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
-
                 this.proactiveOpenConnectionsProcessor
                         .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(
                                 collectionRid,
