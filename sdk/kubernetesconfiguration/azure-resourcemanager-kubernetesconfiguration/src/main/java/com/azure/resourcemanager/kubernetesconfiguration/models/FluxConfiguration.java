@@ -86,6 +86,13 @@ public interface FluxConfiguration {
     BucketDefinition bucket();
 
     /**
+     * Gets the azureBlob property: Parameters to reconcile to the AzureBlob source kind type.
+     *
+     * @return the azureBlob value.
+     */
+    AzureBlobDefinition azureBlob();
+
+    /**
      * Gets the kustomizations property: Array of kustomizations used to reconcile the artifact pulled by the source
      * type on the cluster.
      *
