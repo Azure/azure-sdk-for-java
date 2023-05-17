@@ -307,6 +307,6 @@ public final class OpenAIClientBuilder
      */
     @Generated
     public OpenAIClient buildClient() {
-        return new OpenAIClient(new OpenAIAsyncClient(buildInnerClient()));
+        return new OpenAIClient(buildInnerClient());
     }
 }
