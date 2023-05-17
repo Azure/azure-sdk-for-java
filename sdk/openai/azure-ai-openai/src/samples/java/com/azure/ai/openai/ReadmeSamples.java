@@ -56,6 +56,24 @@ public final class ReadmeSamples {
         // END: readme-sample-createAsyncClientKeyCredential
     }
 
+    public void createNonAzureSyncClientWithApiKey() {
+        // BEGIN: readme-sample-createNonAzureOpenAISyncClientApiKey
+        OpenAIClient client = new OpenAIClientBuilder()
+            .credential(new NonAzureOpenAIKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildClient();
+        // END: readme-sample-createNonAzureOpenAISyncClientApiKey
+    }
+
+    public void createNonAzureAsyncClientWithApiKey() {
+        // BEGIN: readme-sample-createNonAzureOpenAIAsyncClientApiKey
+        OpenAIAsyncClient client = new OpenAIClientBuilder()
+            .credential(new NonAzureOpenAIKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
+        // END: readme-sample-createNonAzureOpenAIAsyncClientApiKey
+    }
+
     public void createOpenAIClientWithAAD() {
         // BEGIN: readme-sample-createOpenAIClientWithAAD
         TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();

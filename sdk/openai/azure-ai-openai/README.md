@@ -59,6 +59,24 @@ OpenAIAsyncClient client = new OpenAIClientBuilder()
     .buildAsyncClient();
 ```
 
+### Create a Non-Azure OpenAI client with API keys
+Get Non-Azure OpenAI API keys from [Open AI authentication API keys][non_azure_openai_authentication].
+
+```java readme-sample-createNonAzureOpenAISyncClientApiKey
+OpenAIClient client = new OpenAIClientBuilder()
+    .credential(new NonAzureOpenAIKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildClient();
+```
+or 
+
+```java readme-sample-createNonAzureOpenAIAsyncClientApiKey
+OpenAIAsyncClient client = new OpenAIClientBuilder()
+    .credential(new NonAzureOpenAIKeyCredential("{key}"))
+    .endpoint("{endpoint}")
+    .buildAsyncClient();
+```
+
 #### Create an Azure OpenAI client with Azure Active Directory credential
 Azure SDK for Java supports an Azure Identity package, making it easy to get credentials from Microsoft identity
 platform.
@@ -264,6 +282,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [logLevels]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/ClientLogger.java
 [microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
 [microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
+[non_azure_openai_authentication]: https://platform.openai.com/docs/api-reference/authentication
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
 [quickstart]: https://learn.microsoft.com/azure/cognitive-services/openai/quickstart
