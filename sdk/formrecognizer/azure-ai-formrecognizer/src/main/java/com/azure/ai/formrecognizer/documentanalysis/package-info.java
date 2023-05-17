@@ -2,48 +2,60 @@
 // Licensed under the MIT License.
 
 /**
- * <p> <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">Azure Form Recognizer</a>
- * is a cloud-based service provided by Microsoft Azure that utilizes machine learning to extract information
- * from various types of documents. Form Recognizer applies machine-learning-based optical character recognition (OCR)
- * and document understanding technologies to classify documents, extract text, tables, structure, and key-value pairs from documents.
- * You can also label and train custom models to automate data extraction from structured, semi-structured, and unstructured documents.</p>
+ * <p><a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">
+ * Azure Form Recognizer</a> is a cloud-based service provided by Microsoft Azure that utilizes machine learning to
+ * extract information from various types of documents. Form Recognizer applies machine-learning-based optical
+ * character recognition (OCR)  * and document understanding technologies to classify documents, extract text, tables,
+ * structure, and key-value pairs from documents. You can also label and train custom models to automate data
+ * extraction from structured, semi-structured, and unstructured documents.</p>
  *
  * <p>The service uses advanced optical character recognition (OCR) technology to extract text and key-value
  * pairs from documents, enabling organizations to automate data entry tasks that would otherwise require
  * manual effort. It can recognize and extract information like dates, addresses, invoice numbers, line items,
  * and other relevant data points from documents. </p>
  *
- * <p> The Azure Form Recognizer client library allows Java developers to interact with the Azure Form
- *  Recognizer service.
+ * <p>The Azure Form Recognizer client library allows Java developers to interact with the Azure Form
+ * Recognizer service.
  * It provides a set of classes and methods that abstract the underlying RESTful API of Azure
  * Form Recognizer, making it easier to integrate the service into Java applications.</p>
  *
  * <p>The Azure Form Recognizer client library provides the following capabilities:</p>
  *
  * <ol>
- * <li>Document Analysis: It allows you to submit documents for analysis to detect and extract information like text, key-value pairs, tables, language, and fields. You can analyze both structured and unstructured documents.</li>
- * <li>Model Management: It enables you to build custom models by providing training data. You can also list and delete existing models and see information for your operations.</li>
- * <li>Analysis Results: It provides methods to retrieve and interpret analysis results, including extracted text and field values, confidence scores, and document layout information.</li>
- * <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ *   <li>Document Analysis: It allows you to submit documents for analysis to detect and extract information like
+ *   text, key-value pairs, tables, language, and fields. You can analyze both structured and unstructured
+ *    documents.</li>
+ *    <li>Model Management: It enables you to manage models created in your account by building, listing,
+ *    deleting, and see the limit of custom models your account.</li>
+ *    <li>Analysis Results: It provides methods to retrieve and interpret analysis results, including extracted
+ *    text and field values, confidence scores, and document layout information.</li>
+ *    <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *    operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
  * <h2>Getting Started</h2>
  *
- * <p>The Azure Form Recognizer library provides
- * analysis clients like {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}
- * and {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} to connect to the Form Recognizer Azure Cognitive Service
+ * <p>The Azure Form Recognizer library provides analysis clients like
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}
+ * and {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} to connect to the Form Recognizer
+ * Azure Cognitive Service
  * to analyze information from documents and extract it into structured data.
- * It also provides administration clients like {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient}
- * and {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} to build and manage models from custom documents.
+ * It also provides administration clients like
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient}
+ * and {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} to
+ * build and manage models from custom documents.</p>
  *
- * <p><strong>Note:</strong>This client only supports {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
- * To use an older service version, @see com.azure.ai.formrecognizer.FormRecognizerClient and @see com.azure.ai.formrecognizer.training.FormTrainingClient.</p>
+ * <p><strong>Note:</strong>This client only supports
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
+ * To use an older service version, @see com.azure.ai.formrecognizer.FormRecognizerClient and @see com.azure.ai
+ * .formrecognizer.training.FormTrainingClient.</p>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} is the synchronous service client and
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient} is the asynchronous service client.
- * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is appropriate
- * for most scenarios, including local development and production environments. Additionally, we recommend using
+ * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
  * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
  * for authentication in production environments.
  * You can find more information on different ways of authenticating and their corresponding credential types in the
@@ -52,8 +64,10 @@
  *
  * <p><strong>Sample: Construct a DocumentAnalysisClient with DefaultAzureCredential</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}, using
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}, using
  * the `DefaultAzureCredentialBuilder` to configure it.</p>
+ *
  * <!-- src_embed readme-sample-createDocumentAnalysisClientWithAAD -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -78,6 +92,8 @@
  *
  * <p>Let's take a look at the analysis client scenarios and their respective usage below.</p>
  *
+ * <br/>
+ *
  * <hr/>
  *
  * <h2>Analyzing documents with prebuilt models</h2>
@@ -85,11 +101,13 @@
  * <p><a href="https://learn.microsoft.com/en-us/azure/applied-ai-services/form-recognizer/concept-model-overview?view=form-recog-3.0.0#model-overview">Form Recognizer models</a>
  * and their associated output to help you choose the best model to address your document scenario needs.</p>
  *
- * <p>You can use a prebuilt document analysis or domain specific model or build a custom model tailored to your specific business needs and use cases.
+ * <p>You can use a prebuilt document analysis or domain specific model or build a custom model tailored to your
+ * specific business needs and use cases.
  *
  * <p><strong>Sample: Analyze with the prebuilt read model from url source</strong></p>
  *
- * <p>The following code sample demonstrates how to analyze textual elements, such as words, lines, styles, and text language information from documents using the prebuilt read model.</p>
+ * <p>The following code sample demonstrates how to analyze textual elements, such as words, lines, styles, and text
+ * language information from documents using the prebuilt read model.</p>
  *
  * <!-- src_embed readme-sample-prebuiltRead-url -->
  * <pre>
@@ -133,10 +151,13 @@
  * </pre>
  * <!-- end readme-sample-prebuiltRead-url -->
  *
- * <p>
- * You can also analyze a local file with prebuilt models using the {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient}.</p>
+ * <p>You can also analyze a local file with prebuilt models using the
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient}.</p>
+ *
  * <p><strong>Sample: Analyze local file with the prebuilt read model</strong></p>
+ *
  * <p>The following code sample demonstrates how to analyze a local file with "prebuilt-read" analysis model.</p>
+ *
  * <!-- src_embed readme-sample-prebuiltRead-file -->
  * <pre>
  * File document = new File&#40;&quot;&#123;local&#47;file_path&#47;fileName.jpg&#125;&quot;&#41;;
@@ -179,18 +200,26 @@
  * &#125;&#41;;
  * </pre>
  * <!-- end readme-sample-prebuiltRead-file -->
- *
+ * <p>
  * For more information on which supported model you should use refer to
  * <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/overview?view=form-recog-3.0.0#which-form-recognizer-model-should-i-use">models usage
  * documentation</a>.
+ *
  * <br/>
  *
  * <hr/>
+ *
  * <h2>Analyzing documents with custom models</h2>
- * Custom models are trained with your own data, so they're tailored to your documents.
- * For more information on how to build your own custom model, see <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildDocumentModel.java">build a model</a>.
+ *
+ * <p>Custom models are trained with your own data, so they're tailored to your documents.
+ * For more information on how to build your own custom model, see
+ * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/BuildDocumentModel.java">build a model</a>.</p>
+ *
  * <p><strong>Sample: Analyze documents using custom trained model</strong></p>
- * <p>This sample demonstrates how to analyze text, field values, selection marks, and table data from custom documents.</p>
+ *
+ * <p>This sample demonstrates how to analyze text, field values, selection marks, and table data from custom
+ * documents.</p>
+ *
  * <!-- src_embed readme-sample-build-analyze -->
  * <pre>
  * String blobContainerUrl = &quot;&#123;SAS_URL_of_your_container_in_blob_storage&#125;&quot;;
@@ -262,7 +291,9 @@
  * &#125;
  * </pre>
  * <!-- end readme-sample-build-analyze -->
- * <hr />
+ *
+ * <hr/>
+ *
  * @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient
  * @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient
  * @see com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult

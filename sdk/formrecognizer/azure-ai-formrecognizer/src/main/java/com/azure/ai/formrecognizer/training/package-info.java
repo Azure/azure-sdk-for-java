@@ -14,38 +14,61 @@
  * manual effort. It can recognize and extract information like dates, addresses, invoice numbers, line items,
  * and other relevant data points from forms. </p>
  *
- *<p> The Azure Form Recognizer client library allows Java developers to interact with the Azure Form
- Recognizer service.
+ * <p>The Azure Form Recognizer client library allows Java developers to interact with the Azure Form
+ * Recognizer service.
  * It provides a set of classes and methods that abstract the underlying RESTful API of Azure
  * Form Recognizer, making it easier to integrate the service into Java applications.</p>
  *
  * <p>The Azure Form Recognizer client library provides the following capabilities:</p>
-
+ *
  * <ol>
- * <li>Form recognizing: It allows you to submit forms to extract information like text, key-value pairs, tables, and form fields. You can analyze both structured and unstructured documents.</li>
- * <li>Model Management: It enables you to train custom models by providing labeled training data. You can also list and delete existing models.</li>
- * <li>Recognize Results: It provides methods to retrieve and interpret analysis results, including extracted text and field values, confidence scores, and form layout information.</li>
- * <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ *   <li>Form recognizing: It allows you to submit forms to extract information like text, key-value pairs, tables, and
+ *   form fields. You can analyze both structured and unstructured documents.</li>
+ *   <li>Model Management: It enables you to train custom models by providing labeled training data. You can also list
+ *   and delete existing models.</li>
+ *   <li>Recognize Results: It provides methods to retrieve and interpret analysis results, including extracted text
+ *   and field values, confidence scores, and form layout information.</li>
+ *   <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *   operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
  * <h2>Getting Started</h2>
+ *
  * <p>The Azure Form Recognizer library provides
  * analysis clients like {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient}
- * and {@link com.azure.ai.formrecognizer.FormRecognizerClient} to connect to the Form Recognizer Azure Cognitive Service
- * to analyze information from documents
- * and extract it into structured data.
+ * and {@link com.azure.ai.formrecognizer.FormRecognizerClient} to connect to the Form Recognizer Azure Cognitive
+ * Service to analyze information from documents and extract it into structured data.
  * It also provides training clients like {@link com.azure.ai.formrecognizer.training.FormTrainingClient}
- * and {@link com.azure.ai.formrecognizer.training.FormTrainingAsyncClient} to build and manage models from custom documents.
- * <p><strong>Note:</strong>This client only supports {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
- * Recommended to use a newer service version, @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient and @see com.azure.ai.formrecognizer.documentanalysis.administration.DocumentAdministrationClient.</p>
- * <p><strong>Refer to the <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md">Migration guide</a> to use API versions 2022-08-31 and up.</strong></p>
-
- * <h2>Getting Started</h2>
+ * and {@link com.azure.ai.formrecognizer.training.FormTrainingAsyncClient} to build and manage models from custom
+ * documents.</p>
+ *
+ * <p><strong>Note:</strong>This client only supports
+ * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
+ * Recommended to use a newer service version, @see com.azure.ai.formrecognizer.documentanalysis
+ * .DocumentAnalysisClient and @see com.azure.ai.formrecognizer.documentanalysis.administration
+ * .DocumentAdministrationClient.</p>
+ *
+ * <p><strong>Refer to the
+ * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md">Migration guide</a> to use API versions 2022-08-31 and up.</strong></p>
+ *
+ * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
+ * {@link com.azure.ai.formrecognizer.FormRecognizerClient} is the synchronous service client and
+ * {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient} is the asynchronous service client.  The examples
+ * shown in this document use a credential object named DefaultAzureCredential for authentication, which is appropriate
+ * for most scenarios, including local development and production environments. Additionally, we recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
  *
  * <p><strong>Sample: Construct a FormTrainingClient with DefaultAzureCredential</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.ai.formrecognizer.training.FormTrainingClient}, using
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingClient}, using
  * the `DefaultAzureCredentialBuilder` to configure it.</p>
+ *
  * <!-- src_embed readme-sample-createFormTrainingClientWithAAD -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -70,9 +93,12 @@
  *
  * <p>Let's take a look at the analysis client scenarios and their respective usage below.</p>
  *
+ * <br/>
+ *
  * <hr/>
  *
  * <h2>Train a model</h2>
+ *
  * <p>A trained model can output structured data that includes the relationships in the original form document.
  * For instructions on setting up forms for training in an Azure Blob Storage Container, see
  * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/build-training-data-set#upload-your-training-data"></a></p>
@@ -114,22 +140,30 @@
  * &#125;&#41;;
  * </pre>
  * <!-- end readme-sample-train-model -->
+ *
  * <p>
- * Please note that models can also be trained using a graphical user interface such as the <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/label-tool?tabs=v2-1">Form Recognizer Labeling Tool</a>.
+ * Please note that models can also be trained using a graphical user interface such as the
+ * <a href="https://docs.microsoft.com/azure/cognitive-services/form-recognizer/label-tool?tabs=v2-1">Form Recognizer Labeling Tool</a>.
  * </p>
+ *
  * <br/>
  *
  * <hr/>
+ *
  * <h2>Manage custom models</h2>
  * <p>Operations that can be executed are:</p>
  * <ol>
- *      <li> Check the number of models in the FormRecognizer resource account, and the maximum number of models that can be stored. </li>
+ *      <li> Check the number of models in the FormRecognizer resource account, and the maximum number of models that
+ *      can be stored. </li>
  *      <li>List the models currently stored in the resource account.</li>
  *      <li>Get a specific model using the model's Id.</li>
  *      <li>Delete a model from the resource account.</li>
  * </ol>
+ *
  * <p><strong>Sample: Manage custom models stored in your account.</strong></p>
+ *
  * <p>This sample demonstrates how to manage the custom models stored in your account.</p>
+ *
  * <!-- src_embed readme-sample-manage-models -->
  * <pre>
  * &#47;&#47; First, we see how many custom models we have, and what our limit is
@@ -163,8 +197,12 @@
  * formTrainingClient.deleteModel&#40;&quot;&#123;modelId&#125;&quot;&#41;;
  * </pre>
  * <!-- end readme-sample-manage-models -->
- * <p>For a suggested approach to extracting information from custom forms with known fields, see <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/v3/StronglyTypedRecognizedForm.java">strongly-typing a recognized form</a>.</p>
- * <hr />
+ *
+ * <p>For a suggested approach to extracting information from custom forms with known fields, see
+ * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/v3/StronglyTypedRecognizedForm.java">strongly-typing a recognized form</a>.</p>
+ *
+ * <hr/>
+ *
  * @see com.azure.ai.formrecognizer.FormRecognizerClient
  * @see com.azure.ai.formrecognizer.FormRecognizerAsyncClient
  */
