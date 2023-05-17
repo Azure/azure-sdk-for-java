@@ -66,9 +66,8 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
 
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
-        return Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic())
-                .subscribe(new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink)))
-            .subscribeOn(Schedulers.boundedElastic())
+        return Mono.<Void>create(sink -> bodyIntern().subscribe(
+            new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, getBodySize())))
             .doFinally(ignored -> close());
     }
 
@@ -89,8 +88,8 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // complete. This introduces a previously seen, but in a different flavor, race condition where the write
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
-        Mono.<Void>create(sink -> bodyIntern().subscribeOn(Schedulers.boundedElastic())
-                .subscribe(new ByteBufWriteSubscriber(channel::write, sink)))
+        Mono.<Void>create(sink -> bodyIntern().subscribe(
+            new ByteBufWriteSubscriber(channel::write, sink, getBodySize())))
             .subscribeOn(Schedulers.boundedElastic())
             .doFinally(ignored -> close())
             .block();
@@ -108,5 +107,19 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     // used for testing only
     public Connection internConnection() {
         return reactorNettyConnection;
+    }
+
+    private Long getBodySize() {
+        String contentLength = getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+        if (contentLength == null) {
+            return null;
+        }
+
+        try {
+            return Long.parseLong(contentLength);
+        } catch (NumberFormatException ex) {
+            // Don't let NumberFormatException fail reading the response as this is just a speculative check.
+            return null;
+        }
     }
 }

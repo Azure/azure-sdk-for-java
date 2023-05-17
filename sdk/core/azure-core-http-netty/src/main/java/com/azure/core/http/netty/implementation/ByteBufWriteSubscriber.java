@@ -4,6 +4,7 @@
 package com.azure.core.http.netty.implementation;
 
 import io.netty.buffer.ByteBuf;
+import io.netty.buffer.PooledByteBufAllocator;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;
@@ -19,12 +20,17 @@ import java.nio.channels.WritableByteChannel;
 public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
     private final ExceptionThrowingConsumer<ByteBuffer> writer;
     private final MonoSink<Void> emitter;
+    private final ByteBuf buffer;
 
     private Subscription subscription;
 
-    public ByteBufWriteSubscriber(ExceptionThrowingConsumer<ByteBuffer> writer, MonoSink<Void> emitter) {
+    public ByteBufWriteSubscriber(ExceptionThrowingConsumer<ByteBuffer> writer, MonoSink<Void> emitter, Long bodySize) {
         this.writer = writer;
         this.emitter = emitter;
+        // Create a buffer that is either 64KB or the minimum of the expected body size and 64KB.
+        // This is safe as the writer performs writes synchronously.
+        int bufferSize = (bodySize == null) ? 65536 : (int) Math.min(bodySize, 65536);
+        this.buffer = PooledByteBufAllocator.DEFAULT.buffer(bufferSize);
     }
 
     @Override
@@ -40,16 +46,24 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
 
     @Override
     public void onNext(ByteBuf bytes) {
-        write(bytes.nioBuffer());
+        if (buffer.writableBytes() >= bytes.readableBytes()) {
+            buffer.writeBytes(bytes);
+        } else {
+            write();
+            buffer.writeBytes(bytes);
+        }
+
+        subscription.request(1);
     }
 
-    private void write(ByteBuffer bytes) {
+    private void write() {
+        ByteBuffer byteBuffer = buffer.nioBuffer();
         try {
-            while (bytes.hasRemaining()) {
-                writer.consume(bytes);
+            while (byteBuffer.hasRemaining()) {
+                writer.consume(byteBuffer);
             }
 
-            subscription.request(1);
+            buffer.clear();
         } catch (Exception ex) {
             onError(ex);
         }
@@ -57,12 +71,17 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
 
     @Override
     public void onError(Throwable throwable) {
+        buffer.release();
         subscription.cancel();
         emitter.error(throwable);
     }
 
     @Override
     public void onComplete() {
+        if (buffer.readableBytes() > 0) {
+            write();
+        }
+        buffer.release();
         emitter.success();
     }
 }
