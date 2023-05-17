@@ -6,10 +6,11 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,11 @@ public class TargetingFilter implements FeatureFilter {
      * Audience in the filter
      */
     protected static final String AUDIENCE = "Audience";
+
+    /**
+     * Audience that always returns false
+     */
+    protected static final String EXCLUSION = "exclusion";
 
     /**
      * Error message for when the total Audience value is greater than 100 percent.
@@ -111,26 +117,45 @@ public class TargetingFilter implements FeatureFilter {
 
         Map<String, Object> parameters = context.getParameters();
 
-        if (parameters != null) {
-            Object audienceObject = parameters.get(AUDIENCE);
-            if (audienceObject != null) {
-                parameters = (Map<String, Object>) audienceObject;
-            }
-
-            updateValueFromMapToList(parameters, USERS);
-            updateValueFromMapToList(parameters, GROUPS);
-
-            settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
+        Object audienceObject = parameters.get(AUDIENCE);
+        if (audienceObject != null) {
+            parameters = (Map<String, Object>) audienceObject;
         }
+
+        updateValueFromMapToList(parameters, USERS);
+        updateValueFromMapToList(parameters, GROUPS);
+
+        Map<String, Map<String, Object>> exclusionMap = (Map<String, Map<String, Object>>) parameters
+            .get(EXCLUSION);
+        Map<String, Object> exclusionAsLists = new HashMap<>();
+        if (exclusionMap != null) {
+            exclusionAsLists.put(USERS, exclusionMap.getOrDefault(USERS, new HashMap<String, Object>()).values());
+            exclusionAsLists.put(GROUPS, exclusionMap.getOrDefault(GROUPS, new HashMap<String, Object>()).values());
+        }
+        parameters.put(EXCLUSION, exclusionAsLists);
+        settings.setAudience(OBJECT_MAPPER.convertValue(parameters, Audience.class));
 
         validateSettings(settings);
 
         Audience audience = settings.getAudience();
 
-        if (targetingContext.getUserId() != null
-            && audience.getUsers() != null
-            && audience.getUsers().stream()
-                .anyMatch(user -> equals(targetingContext.getUserId(), user))) {
+        // Need to Check denied first
+        if (targetUser(targetingContext.getUserId(), audience.getExclusion().getUsers())) {
+            return false;
+        }
+
+        if (targetingContext.getGroups() != null && audience.getExclusion().getGroups() != null) {
+            for (String group : targetingContext.getGroups()) {
+                Optional<String> groupRollout = audience.getExclusion().getGroups().stream()
+                    .filter(g -> equals(g, group)).findFirst();
+                if (groupRollout.isPresent()) {
+                    return false;
+                }
+            }
+        }
+
+        // Check if Allowed
+        if (targetUser(targetingContext.getUserId(), audience.getUsers())) {
             return true;
         }
 
@@ -152,6 +177,10 @@ public class TargetingFilter implements FeatureFilter {
         String defaultContextId = targetingContext.getUserId() + "\n" + context.getFeatureName();
 
         return isTargeted(defaultContextId, settings.getAudience().getDefaultRolloutPercentage());
+    }
+    
+    private boolean targetUser(String userId, List<String> users) {
+        return userId != null && users != null && users.stream().anyMatch(user -> equals(userId, user));
     }
 
     private boolean validateTargetingContext(TargetingFilterContext targetingContext) {
@@ -213,8 +242,7 @@ public class TargetingFilter implements FeatureFilter {
         }
 
         Audience audience = settings.getAudience();
-        if (audience.getDefaultRolloutPercentage() < 0
-            || audience.getDefaultRolloutPercentage() > 100) {
+        if (audience.getDefaultRolloutPercentage() < 0 || audience.getDefaultRolloutPercentage() > 100) {
             paramName = AUDIENCE + "." + audience.getDefaultRolloutPercentage();
             reason = OUT_OF_RANGE;
 
@@ -259,7 +287,7 @@ public class TargetingFilter implements FeatureFilter {
     private void updateValueFromMapToList(Map<String, Object> parameters, String key) {
         Object objectMap = parameters.get(key);
         if (objectMap instanceof Map) {
-            List<Object> toType = ((Map<String, Object>) objectMap).values().stream().collect(Collectors.toList());
+            Collection<Object> toType = ((Map<String, Object>) objectMap).values();
             parameters.put(key, toType);
         }
     }
