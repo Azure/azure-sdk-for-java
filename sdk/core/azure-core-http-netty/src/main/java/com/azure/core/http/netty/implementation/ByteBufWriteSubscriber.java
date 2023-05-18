@@ -9,6 +9,7 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 import reactor.core.publisher.MonoSink;
 import reactor.core.publisher.Operators;
+import reactor.util.context.Context;
 
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
@@ -23,14 +24,16 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
     private final int bufferSize;
     private final ByteBuf buffer;
 
+    // This subscriber is effectively synchronous so there is no need for these fields to be volatile.
     private Subscription subscription;
+    private boolean done = false;
 
     public ByteBufWriteSubscriber(ExceptionThrowingConsumer<ByteBuffer> writer, MonoSink<Void> emitter, Long bodySize) {
         this.writer = writer;
         this.emitter = emitter;
-        // Create a buffer that is either 64KB or the minimum of the expected body size and 64KB.
+        // Create a writing buffer that has a minimum bound of 8KB and a maximum bound of 64KB.
         // This is safe as the writer performs writes synchronously.
-        this.bufferSize = (bodySize == null) ? 65536 : (int) Math.min(bodySize, 65536);
+        this.bufferSize = (bodySize == null) ? 65536 : (int) Math.max(8192, Math.min(bodySize, 65536));
         this.buffer = PooledByteBufAllocator.DEFAULT.buffer(bufferSize);
     }
 
@@ -47,6 +50,18 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
 
     @Override
     public void onNext(ByteBuf bytes) {
+        if (done) {
+            // The subscription has indicated completion, don't allow erroneous onNext emissions to be processed.
+            Operators.onNextDropped(bytes, Context.of(emitter.contextView()));
+            return;
+        }
+
+        if (!bytes.isReadable()) {
+            // Nothing to process, request the next emission.
+            subscription.request(1);
+            return;
+        }
+
         if (bytes.readableBytes() > bufferSize) {
             // If the next ByteBuf is larger than the buffer write the buffer, if there is any data to write, then
             // write the passed ByteBuf without buffering.
@@ -67,7 +82,9 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
         }
 
         // Request the next ByteBuf.
-        subscription.request(1);
+        if (!done) {
+            subscription.request(1);
+        }
     }
 
     private void write(ByteBuf byteBuf) {
@@ -83,6 +100,12 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
 
     @Override
     public void onError(Throwable throwable) {
+        if (done) {
+            Operators.onErrorDropped(throwable, Context.of(emitter.contextView()));
+            return;
+        }
+
+        done = true;
         buffer.release();
         subscription.cancel();
         emitter.error(throwable);
@@ -90,10 +113,21 @@ public class ByteBufWriteSubscriber implements Subscriber<ByteBuf> {
 
     @Override
     public void onComplete() {
+        if (done) {
+            // Already completed, just return as there is no cleanup processing to do.
+            return;
+        }
+
         if (buffer.readableBytes() > 0) {
             // If there is still buffered data when the ByteBuf stream completes write it before emitting completion.
             write(buffer);
+            if (done) {
+                // In case the last write fails don't double release the buffer or emit success after emitting error.
+                return;
+            }
         }
+
+        done = true;
         buffer.release();
         emitter.success();
     }
