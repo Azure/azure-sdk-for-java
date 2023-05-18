@@ -42,7 +42,7 @@ public class NonAzureOpenAIKeyCredential {
     /**
      * Update the OpenAI API key value.
      *
-     * @param key The OpneAi API key value.
+     * @param key The OpeNAi API key value.
      * @return the object itself.
      */
     public NonAzureOpenAIKeyCredential update(String key) {

@@ -1,40 +1,72 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.openai.com/v1/completions",
-    "Headers" : {
-      "content-type" : "application/json",
-      "x-ms-client-request-id" : "f54ce7ba-49c2-466a-94d3-29e5d0af338e",
-      "user-agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Server" : "cloudflare",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ratelimit-reset-tokens" : "24ms",
-      "Content-Length" : "284",
-      "Body" : "{\"id\":\"cmpl-7Hb27AogTnGjVFRvJJsoI8sHIv6fU\",\"object\":\"text_completion\",\"created\":1684428287,\"model\":\"text-davinci-003\",\"choices\":[{\"text\":\"\\n\\nYes, this is a test.\",\"index\":0,\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":5,\"completion_tokens\":9,\"total_tokens\":14}}\n",
-      "Content-Type" : "application/json",
-      "x-request-id" : "ff4ef34ba90773d5fa6c1ecf005abbe2",
-      "x-ratelimit-limit-tokens" : "250000",
-      "openai-organization" : "user-pkku76b8pxthfoiq2pf1cnk2",
-      "CF-RAY" : "7c959119ad742849-SEA",
-      "x-ratelimit-reset-requests" : "20ms",
-      "Connection" : "keep-alive",
-      "x-ratelimit-remaining-tokens" : "249900",
-      "x-ratelimit-remaining-requests" : "2999",
-      "Date" : "Thu, 18 May 2023 16:44:48 GMT",
-      "strict-transport-security" : "max-age=15724800; includeSubDomains",
-      "access-control-allow-origin" : "*",
-      "CF-Cache-Status" : "DYNAMIC",
-      "Cache-Control" : "no-cache, must-revalidate",
-      "x-ratelimit-limit-requests" : "3000",
-      "openai-version" : "2020-10-01",
-      "openai-processing-ms" : "1548",
-      "openai-model" : "text-davinci-003",
-      "alt-svc" : "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/v1/completions",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "77",
+        "Content-Type": "application/json",
+        "Date": "Thu, 18 May 2023 18:09:52 GMT",
+        "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "79d878e5-fc61-4709-a8dc-d971d05d0a81"
+      },
+      "RequestBody": {
+        "prompt": [
+          "Say this is a test"
+        ],
+        "max_tokens": 100,
+        "model": "text-davinci-003"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Alt-Svc": [
+          "h3=\u0022:443\u0022",
+          "h3-29=\u0022:443\u0022"
+        ],
+        "Cache-Control": "must-revalidate, no-cache",
+        "CF-Cache-Status": "DYNAMIC",
+        "CF-RAY": "7c960dc2a90e2802-SEA",
+        "Connection": "keep-alive",
+        "Content-Length": "286",
+        "Content-Type": "application/json",
+        "Date": "Thu, 18 May 2023 18:09:54 GMT",
+        "openai-model": "text-davinci-003",
+        "openai-organization": "user-pkku76b8pxthfoiq2pf1cnk2",
+        "openai-processing-ms": "1255",
+        "openai-version": "2020-10-01",
+        "Server": "cloudflare",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ratelimit-limit-requests": "3000",
+        "x-ratelimit-limit-tokens": "250000",
+        "x-ratelimit-remaining-requests": "2998",
+        "x-ratelimit-remaining-tokens": "249885",
+        "x-ratelimit-reset-requests": "39ms",
+        "x-ratelimit-reset-tokens": "27ms",
+        "X-Request-ID": "6575f32a580039a782c8d1cf89d1b9c1"
+      },
+      "ResponseBody": {
+        "id": "cmpl-7HcMTRliZ1eOjGYYogx6hGLCt4uNB",
+        "object": "text_completion",
+        "created": 1684433393,
+        "model": "text-davinci-003",
+        "choices": [
+          {
+            "text": "\n\nThis is indeed a test.",
+            "index": 0,
+            "logprobs": null,
+            "finish_reason": "stop"
+          }
+        ],
+        "usage": {
+          "prompt_tokens": 5,
+          "completion_tokens": 8,
+          "total_tokens": 13
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

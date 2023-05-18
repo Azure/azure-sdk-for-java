@@ -1,40 +1,88 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.openai.com/v1/chat/completions",
-    "Headers" : {
-      "content-type" : "application/json",
-      "x-ms-client-request-id" : "494328a6-81ea-47c0-8c78-25fc5d0a6f25",
-      "user-agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Server" : "cloudflare",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ratelimit-reset-tokens" : "39ms",
-      "Content-Length" : "966",
-      "Body" : "{\"id\":\"chatcmpl-7Hap2013VESeLQfd6sCbYOuhGdMXp\",\"object\":\"chat.completion\",\"created\":1684427476,\"model\":\"gpt-3.5-turbo-0301\",\"usage\":{\"prompt_tokens\":65,\"completion_tokens\":160,\"total_tokens\":225},\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"Arrr, to train a parrot ye need plenty of patience and a few tricks up yer sleeve. Here be some tips for ye:\\n\\n1. Start with simple commands like \\\"step up\\\" or \\\"come here\\\" using treats as positive reinforcement.\\n2. Consistency is key. Use the same commands and rewards every time.\\n3. Keep training sessions short, around 10-15 minutes, to keep the parrot's attention.\\n4. Make training fun and engaging by incorporating toys and games.\\n5. Praise and reward your parrot for good behavior and progress, even if it's small.\\n6. Be gentle, friendly, and firm. Never hit or yell at your parrot.\\n\\nFollow these tips, and your parrot will be talking like Blackbeard in no time!\"},\"finish_reason\":\"stop\",\"index\":0}]}\n",
-      "Content-Type" : "application/json",
-      "x-request-id" : "03fa95864cd9785963766f914a486eb1",
-      "x-ratelimit-limit-tokens" : "90000",
-      "openai-organization" : "user-pkku76b8pxthfoiq2pf1cnk2",
-      "CF-RAY" : "7c957d4f8bcdc37e-SEA",
-      "x-ratelimit-reset-requests" : "17ms",
-      "Connection" : "keep-alive",
-      "x-ratelimit-remaining-tokens" : "89941",
-      "x-ratelimit-remaining-requests" : "3499",
-      "Date" : "Thu, 18 May 2023 16:31:33 GMT",
-      "strict-transport-security" : "max-age=15724800; includeSubDomains",
-      "access-control-allow-origin" : "*",
-      "CF-Cache-Status" : "DYNAMIC",
-      "Cache-Control" : "no-cache, must-revalidate",
-      "x-ratelimit-limit-requests" : "3500",
-      "openai-version" : "2020-10-01",
-      "openai-processing-ms" : "17327",
-      "openai-model" : "gpt-3.5-turbo-0301",
-      "alt-svc" : "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/v1/chat/completions",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "315",
+        "Content-Type": "application/json",
+        "Date": "Thu, 18 May 2023 18:08:48 GMT",
+        "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b1f6367d-866a-43db-a724-78ff3d193784"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a helpful assistant. You will talk like a pirate."
+          },
+          {
+            "role": "user",
+            "content": "Can you help me?"
+          },
+          {
+            "role": "assistant",
+            "content": "Of course, me hearty! What can I do for ye?"
+          },
+          {
+            "role": "user",
+            "content": "What\u0027s the best way to train a parrot?"
+          }
+        ],
+        "model": "gpt-3.5-turbo"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Alt-Svc": [
+          "h3=\u0022:443\u0022",
+          "h3-29=\u0022:443\u0022"
+        ],
+        "Cache-Control": "must-revalidate, no-cache",
+        "CF-Cache-Status": "DYNAMIC",
+        "CF-RAY": "7c960c304e602840-SEA",
+        "Connection": "keep-alive",
+        "Content-Length": "1342",
+        "Content-Type": "application/json",
+        "Date": "Thu, 18 May 2023 18:09:17 GMT",
+        "openai-model": "gpt-3.5-turbo-0301",
+        "openai-organization": "user-pkku76b8pxthfoiq2pf1cnk2",
+        "openai-processing-ms": "28572",
+        "openai-version": "2020-10-01",
+        "Server": "cloudflare",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ratelimit-limit-requests": "3500",
+        "x-ratelimit-limit-tokens": "90000",
+        "x-ratelimit-remaining-requests": "3498",
+        "x-ratelimit-remaining-tokens": "89882",
+        "x-ratelimit-reset-requests": "34ms",
+        "x-ratelimit-reset-tokens": "78ms",
+        "X-Request-ID": "61b945aad0f41601b101b80ef3c57b61"
+      },
+      "ResponseBody": {
+        "id": "chatcmpl-7HcLR9umcnmm36U8W5bNXy6nwc4JZ",
+        "object": "chat.completion",
+        "created": 1684433329,
+        "model": "gpt-3.5-turbo-0301",
+        "usage": {
+          "prompt_tokens": 65,
+          "completion_tokens": 256,
+          "total_tokens": 321
+        },
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Arrr, me heartie! Trainin\u0027 a parrot to talk is no easy task, but with patience and consistency, ye can do it. Here be some tips to get ye started:\n\n1. Start young: Parrots learn best when they\u0027re young, so start training\u0027 as soon as ye can.\n\n2. Be patient: Trainin\u0027 a parrot takes time, so ye need to be patient. Do not get frustrated and always remain calm.\n\n3. Use repetition: Parrots learn by repeating words and phrases, so be sure to repeat the words you want them to learn.\n\n4. Use positive reinforcement: When your parrot does something good, be sure to praise them, give them a treat, or provide some positive reinforement.\n\n5. Spend time with your parrot: Parrots love attention, so spend time with them. Trainin\u0027 is a good way of bonding with them.\n\n6. Build up slowly: Start by teaching a few words, and then build up the vocabulary over time.\n\n7. Make it fun: Keep the trainin\u0027 sessions short and fun. This will make it more enjoyable for you and your parrot.\n\nArrr! I hope these tips be helpin\u0027 you with your parrot trainin\u0027."
+            },
+            "finish_reason": "stop",
+            "index": 0
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

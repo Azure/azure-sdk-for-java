@@ -1,40 +1,88 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.openai.com/v1/chat/completions",
-    "Headers" : {
-      "content-type" : "application/json",
-      "x-ms-client-request-id" : "cc8781fd-551e-4153-bbc1-ba740187fbc0",
-      "user-agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)"
-    },
-    "Response" : {
-      "Server" : "cloudflare",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ratelimit-reset-tokens" : "39ms",
-      "Content-Length" : "1116",
-      "Body" : "{\"id\":\"chatcmpl-7HalABCWw0lyg8mAkST8OggnJRw3z\",\"object\":\"chat.completion\",\"created\":1684427236,\"model\":\"gpt-3.5-turbo-0301\",\"usage\":{\"prompt_tokens\":65,\"completion_tokens\":174,\"total_tokens\":239},\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"Arr, if ye want to train yer parrot, ye need to start patient and be consistent with yer training. First, ye need to establish a bond with your parrot. This can be done by spending quality time with them, talking to them, offering them treats, and providing them with toys and games to keep them engaged. Once ye have gained their trust, ye can start teaching them simple tricks like \\\"step up\\\" or \\\"wave\\\" by using positive reinforcement. Be sure to reward them with a treat or a compliment when they follow the command correctly. Over time, ye can increase the difficulty of the tasks and teach them more complex tricks, like flying through hoops. But remember, a parrot's attention span is limited, so keep your training sessions short and fun. And don't forget to always speak like a pirate to keep your parrot entertained!\"},\"finish_reason\":\"stop\",\"index\":0}]}\n",
-      "Content-Type" : "application/json",
-      "x-request-id" : "d4e02c66920ef2b0e143e301e349057a",
-      "x-ratelimit-limit-tokens" : "90000",
-      "openai-organization" : "user-pkku76b8pxthfoiq2pf1cnk2",
-      "CF-RAY" : "7c9577737dde6805-SEA",
-      "x-ratelimit-reset-requests" : "17ms",
-      "Connection" : "keep-alive",
-      "x-ratelimit-remaining-tokens" : "89941",
-      "x-ratelimit-remaining-requests" : "3499",
-      "Date" : "Thu, 18 May 2023 16:27:33 GMT",
-      "strict-transport-security" : "max-age=15724800; includeSubDomains",
-      "access-control-allow-origin" : "*",
-      "CF-Cache-Status" : "DYNAMIC",
-      "Cache-Control" : "no-cache, must-revalidate",
-      "x-ratelimit-limit-requests" : "3500",
-      "openai-version" : "2020-10-01",
-      "openai-processing-ms" : "17437",
-      "openai-model" : "gpt-3.5-turbo-0301",
-      "alt-svc" : "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/v1/chat/completions",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "315",
+        "Content-Type": "application/json",
+        "Date": "Thu, 18 May 2023 18:08:48 GMT",
+        "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "f6660f6b-2e2e-4130-b875-d5f98f9ef975"
+      },
+      "RequestBody": {
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a helpful assistant. You will talk like a pirate."
+          },
+          {
+            "role": "user",
+            "content": "Can you help me?"
+          },
+          {
+            "role": "assistant",
+            "content": "Of course, me hearty! What can I do for ye?"
+          },
+          {
+            "role": "user",
+            "content": "What\u0027s the best way to train a parrot?"
+          }
+        ],
+        "model": "gpt-3.5-turbo"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Alt-Svc": [
+          "h3=\u0022:443\u0022",
+          "h3-29=\u0022:443\u0022"
+        ],
+        "Cache-Control": "must-revalidate, no-cache",
+        "CF-Cache-Status": "DYNAMIC",
+        "CF-RAY": "7c960c304d0dc3cb-SEA",
+        "Connection": "keep-alive",
+        "Content-Length": "806",
+        "Content-Type": "application/json",
+        "Date": "Thu, 18 May 2023 18:09:01 GMT",
+        "openai-model": "gpt-3.5-turbo-0301",
+        "openai-organization": "user-pkku76b8pxthfoiq2pf1cnk2",
+        "openai-processing-ms": "12297",
+        "openai-version": "2020-10-01",
+        "Server": "cloudflare",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ratelimit-limit-requests": "3500",
+        "x-ratelimit-limit-tokens": "90000",
+        "x-ratelimit-remaining-requests": "3499",
+        "x-ratelimit-remaining-tokens": "89941",
+        "x-ratelimit-reset-requests": "17ms",
+        "x-ratelimit-reset-tokens": "39ms",
+        "X-Request-ID": "67420181c2cd3515316d4f95528981f3"
+      },
+      "ResponseBody": {
+        "id": "chatcmpl-7HcLReFSN1rbBsYcaA2sAHuMv2uG9",
+        "object": "chat.completion",
+        "created": 1684433329,
+        "model": "gpt-3.5-turbo-0301",
+        "usage": {
+          "prompt_tokens": 65,
+          "completion_tokens": 117,
+          "total_tokens": 182
+        },
+        "choices": [
+          {
+            "message": {
+              "role": "assistant",
+              "content": "Ahoy there, matey! If ye be lookin\u0027 to train a parrot, the best way is with patience, repetition, and rewards. Start by teaching simple commands like \u0022step up\u0022 or \u0022come here\u0022 and using a clicker or treats toreward them when they respond correctly. As ye and yer parrot build a bond, ye can continue to teach more complex behaviors like mimicking words or tricks like spinning in circles. Remember, it takes time and practice, but with a little perseverance, ye can have a well-trained and entertaining parrot! Arr!"
+            },
+            "finish_reason": "stop",
+            "index": 0
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }
