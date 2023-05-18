@@ -19,9 +19,9 @@ steps:
     condition: and(succeeded(), eq(variables['Agent.OS'],'Windows_NT'))
 
   - bash: |
-      if [ -d ${JAVA_HOME}\jre\lib\security]; then
+      if [ -d ${JAVA_HOME}\jre\lib\security ]; then
         cd ${JAVA_HOME}\jre\lib\security
-      elif [ -d ${JAVA_HOME}\lib\security]; then
+      elif [ -d ${JAVA_HOME}\lib\security ]; then
         cd ${JAVA_HOME}\lib\security
       else
         echo "JDK directory structure is unknown and unsupported. JAVA_HOME is '${JAVA_HOME}'"
