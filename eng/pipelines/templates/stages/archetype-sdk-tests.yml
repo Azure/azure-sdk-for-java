@@ -107,6 +107,9 @@ parameters:
 - name: LtsVersion
   type: string
   default: $(JavaTestVersion)
+- name: UseHttpFaultInjector
+  type: boolean
+  default: false
 
 stages:
 - ${{ each cloud in parameters.CloudConfig }}:

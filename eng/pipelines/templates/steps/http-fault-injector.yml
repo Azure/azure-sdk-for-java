@@ -1,0 +1,22 @@
+steps:
+  - powershell: |
+      dotnet tool install azure.sdk.tools.httpfaultinjector --global --prerelease --add-source https://pkgs.dev.azure.com/azure-sdk/public/_packaging/azure-sdk-for-net/nuget/v3/index.json
+    displayName: 'Install http-fault-injector'
+
+  - powershell: |
+      if (Test-Path $env:JAVA_HOME\jre\lib\security) {
+        cd $env:JAVA_HOME\jre\lib\security
+      } elseif (Test-Path $env:JAVA_HOME\lib\security) {
+        cd $env:JAVA_HOME\lib\security
+      } else {
+        Write-Error "JDK directory structure is unknown and unsupported. JAVA_HOME is '$env:JAVA_HOME'"
+        exit 1
+      }
+
+      dotnet dev-certs https --export-path http-fault-injector.pfx
+      keytool -keystore cacerts -importcert -noprompt -trustcacerts -alias HttpFaultInject -file http-fault-injector.pfx -storepass changeit
+    displayName: 'Trust http-fault-injector self-signed certificate'
+
+  - powershell: |
+      http-fault-injector
+    displayName: 'Start http-fault-injector'
