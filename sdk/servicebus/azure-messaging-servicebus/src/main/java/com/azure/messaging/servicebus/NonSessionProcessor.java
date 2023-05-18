@@ -97,7 +97,7 @@ public final class NonSessionProcessor {
         synchronized (lock) {
             p = rollingMessagePump;
         }
-        return p == null ? null : p.getIdentifier();
+        return p == null ? null : p.getClientIdentifier();
     }
 
     /**
@@ -148,19 +148,27 @@ public final class NonSessionProcessor {
                 throw logger.atInfo().log(new IllegalStateException("The streaming cannot begin more than once."));
             }
 
-            final Disposable d = Mono.defer(() -> {
-                final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
-                clientIdentifier.set(client.getIdentifier());
-                final MessagePump pump = new MessagePump(client, processMessage, processError, concurrency, enableAutoDisposition);
-                return pump.begin();
-            }).retryWhen(retrySpecForNextPump()).subscribe();
+            final Mono<Void> pumping = Mono.using(
+                () -> {
+                    return builder.buildAsyncClient();
+                },
+                client -> {
+                    clientIdentifier.set(client.getIdentifier());
+                    final MessagePump pump = new MessagePump(client, processMessage, processError, concurrency, enableAutoDisposition);
+                    return pump.begin();
+                },
+                client -> {
+                    client.close();
+                },
+                true);
 
+            final Disposable d = pumping.retryWhen(retrySpecForNextPump()).subscribe();
             if (!disposable.add(d)) {
                 throw logger.atInfo().log(new IllegalStateException("Cannot begin streaming after the disposal."));
             }
         }
 
-        String getIdentifier() {
+        String getClientIdentifier() {
             return clientIdentifier.get();
         }
 
