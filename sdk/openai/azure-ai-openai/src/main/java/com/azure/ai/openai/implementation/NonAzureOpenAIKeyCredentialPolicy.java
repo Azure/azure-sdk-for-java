@@ -4,16 +4,12 @@
 package com.azure.ai.openai.implementation;
 
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPipelineSyncPolicy;
 import com.azure.core.util.logging.ClientLogger;
