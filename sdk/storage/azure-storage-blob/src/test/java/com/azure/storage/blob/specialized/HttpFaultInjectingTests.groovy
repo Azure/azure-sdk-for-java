@@ -17,7 +17,6 @@ import reactor.core.publisher.Mono
 import java.nio.file.Files
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.atomic.AtomicInteger
-import java.util.stream.IntStream
 /**
  * Set of tests that use <a href="">HTTP fault injecting</a> to simulate scenarios where the network has random errors.
  */
@@ -53,17 +52,22 @@ class HttpFaultInjectingTests extends APISpec {
             .httpClient(new HttpFaultInjectingHttpClient(getHttpClient()))
             .buildClient()
 
-        when:
-        def successCount = new AtomicInteger()
-        IntStream.range(0, 500).parallel().forEach {
+        def files = new ArrayList<File>(500)
+        for (def i = 0; i < 500; i++) {
             def downloadFile = File.createTempFile(UUID.randomUUID().toString(), ".txt")
             downloadFile.deleteOnExit()
+            files.add(downloadFile)
+        }
 
-            downloadClient.downloadToFile(downloadFile.getAbsolutePath())
+        when:
+        def successCount = new AtomicInteger()
+        files.stream().parallel().forEach {
+            downloadClient.downloadToFile(it.getAbsolutePath())
 
-            def actualFileBytes = Files.readAllBytes(downloadFile.toPath())
+            def actualFileBytes = Files.readAllBytes(it.toPath())
             TestUtils.assertArraysEqual(realFileBytes, actualFileBytes)
             successCount.incrementAndGet()
+            Files.deleteIfExists(it.toPath())
         }
 
         then:
