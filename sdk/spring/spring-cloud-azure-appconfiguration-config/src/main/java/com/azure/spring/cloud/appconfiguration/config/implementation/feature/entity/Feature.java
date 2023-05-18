@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE;
 
 import java.util.HashMap;
@@ -24,9 +25,9 @@ public final class Feature {
 
     @JsonProperty("enabled-for")
     private Map<Integer, FeatureFlagFilter> enabledFor;
-    
+
     @JsonProperty(REQUIREMENT_TYPE)
-    private String requirementType = "Any";
+    private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
     /**
      * Feature Flag object.
@@ -79,7 +80,7 @@ public final class Feature {
     public void setEnabledFor(Map<Integer, FeatureFlagFilter> enabledFor) {
         this.enabledFor = enabledFor;
     }
-    
+
     /**
      * @return the requirementType
      */
