@@ -69,7 +69,7 @@ public final class AzureKeyCredentialPolicy implements HttpPipelinePolicy {
     AzureKeyCredentialPolicy(HttpHeaderName name, AzureKeyCredential credential, String prefix) {
         this.name = name;
         this.credential = credential;
-        this.prefix = prefix;
+        this.prefix = prefix != null ? prefix.trim() : null;
     }
 
     @Override

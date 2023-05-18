@@ -30,7 +30,7 @@ public class AzureKeyCredentialPolicyTests {
             Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION, credential, "SharedKeyCredential"),
                 "SharedKeyCredential asecret"),
             Arguments.of(new AzureKeyCredentialPolicy(HttpHeaderName.AUTHORIZATION, credential, "SharedKeyCredential "),
-                "SharedKeyCredential  asecret")
+                "SharedKeyCredential asecret")
         );
     }
 }
