@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -16,6 +17,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
+import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
@@ -312,8 +314,15 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.deleteWithResponse(context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        Supplier<Response<Void>> operation = () ->
+            this.azureQueueStorage.getQueues().deleteWithResponse(queueName, null, null, finalContext);
+
+        try {
+            return timeout != null ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+        } catch (RuntimeException | InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -369,8 +378,23 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> deleteIfExistsWithResponse(Duration timeout, Context context) {
-        Mono<Response<Boolean>> response = client.deleteIfExistsWithResponse(context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        try {
+            Supplier<Response<Void>> operation = () ->
+                this.azureQueueStorage.getQueues().deleteWithResponse(queueName, null, null, finalContext);
+            Response<Void> response = timeout != null ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(),
+                TimeUnit.MILLISECONDS) : operation.get();
+            return new SimpleResponse<>(response, true);
+        } catch (QueueStorageException e) {
+            if (e.getStatusCode() == 404) {
+                HttpResponse res = e.getResponse();
+                return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } catch (RuntimeException | InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -429,8 +453,19 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        Mono<Response<QueueProperties>> response = client.getPropertiesWithResponse(context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        Supplier<ResponseBase<QueuesGetPropertiesHeaders, Void>> operation = () -> this.azureQueueStorage.getQueues()
+            .getPropertiesWithResponse(queueName, null, null, finalContext);
+        try {
+            ResponseBase<QueuesGetPropertiesHeaders, Void> response = timeout != null ? THREAD_POOL.submit(operation::get)
+                .get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+            QueueProperties properties = new QueueProperties(
+                response.getDeserializedHeaders().getXMsMeta(),
+                response.getDeserializedHeaders().getXMsApproximateMessagesCount());
+            return new SimpleResponse<>(response, properties);
+        } catch (RuntimeException | InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
