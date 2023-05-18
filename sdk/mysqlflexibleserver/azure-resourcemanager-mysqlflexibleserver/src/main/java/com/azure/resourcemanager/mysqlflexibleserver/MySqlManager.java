@@ -25,6 +25,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.MySqlManagementClient;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.AzureADAdministratorsImpl;
+import com.azure.resourcemanager.mysqlflexibleserver.implementation.BackupAndExportsImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.BackupsImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.CheckNameAvailabilitiesImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.CheckNameAvailabilityWithoutLocationsImpl;
@@ -40,6 +41,7 @@ import com.azure.resourcemanager.mysqlflexibleserver.implementation.OperationsIm
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.ReplicasImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.implementation.ServersImpl;
 import com.azure.resourcemanager.mysqlflexibleserver.models.AzureADAdministrators;
+import com.azure.resourcemanager.mysqlflexibleserver.models.BackupAndExports;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Backups;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CheckNameAvailabilities;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CheckNameAvailabilityWithoutLocations;
@@ -66,7 +68,11 @@ import java.util.stream.Collectors;
  * configurations with new business model.
  */
 public final class MySqlManager {
+    private AzureADAdministrators azureADAdministrators;
+
     private Backups backups;
+
+    private BackupAndExports backupAndExports;
 
     private Configurations configurations;
 
@@ -91,8 +97,6 @@ public final class MySqlManager {
     private GetPrivateDnsZoneSuffixes getPrivateDnsZoneSuffixes;
 
     private Operations operations;
-
-    private AzureADAdministrators azureADAdministrators;
 
     private final MySqlManagementClient clientObject;
 
@@ -259,7 +263,7 @@ public final class MySqlManager {
                 .append("-")
                 .append("com.azure.resourcemanager.mysqlflexibleserver")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -317,6 +321,18 @@ public final class MySqlManager {
     }
 
     /**
+     * Gets the resource collection API of AzureADAdministrators. It manages AzureADAdministrator.
+     *
+     * @return Resource collection API of AzureADAdministrators.
+     */
+    public AzureADAdministrators azureADAdministrators() {
+        if (this.azureADAdministrators == null) {
+            this.azureADAdministrators = new AzureADAdministratorsImpl(clientObject.getAzureADAdministrators(), this);
+        }
+        return azureADAdministrators;
+    }
+
+    /**
      * Gets the resource collection API of Backups.
      *
      * @return Resource collection API of Backups.
@@ -329,7 +345,19 @@ public final class MySqlManager {
     }
 
     /**
-     * Gets the resource collection API of Configurations.
+     * Gets the resource collection API of BackupAndExports.
+     *
+     * @return Resource collection API of BackupAndExports.
+     */
+    public BackupAndExports backupAndExports() {
+        if (this.backupAndExports == null) {
+            this.backupAndExports = new BackupAndExportsImpl(clientObject.getBackupAndExports(), this);
+        }
+        return backupAndExports;
+    }
+
+    /**
+     * Gets the resource collection API of Configurations. It manages Configuration.
      *
      * @return Resource collection API of Configurations.
      */
@@ -476,18 +504,6 @@ public final class MySqlManager {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
         }
         return operations;
-    }
-
-    /**
-     * Gets the resource collection API of AzureADAdministrators. It manages AzureADAdministrator.
-     *
-     * @return Resource collection API of AzureADAdministrators.
-     */
-    public AzureADAdministrators azureADAdministrators() {
-        if (this.azureADAdministrators == null) {
-            this.azureADAdministrators = new AzureADAdministratorsImpl(clientObject.getAzureADAdministrators(), this);
-        }
-        return azureADAdministrators;
     }
 
     /**

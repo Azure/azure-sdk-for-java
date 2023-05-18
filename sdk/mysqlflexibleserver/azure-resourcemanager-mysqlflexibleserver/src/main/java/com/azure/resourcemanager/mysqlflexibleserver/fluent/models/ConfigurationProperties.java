@@ -21,10 +21,22 @@ public final class ConfigurationProperties {
     private String value;
 
     /*
+     * Current value of the configuration.
+     */
+    @JsonProperty(value = "currentValue")
+    private String currentValue;
+
+    /*
      * Description of the configuration.
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
+
+    /*
+     * The link used to get the document from community or Azure site.
+     */
+    @JsonProperty(value = "documentationLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String documentationLink;
 
     /*
      * Default value of the configuration.
@@ -93,12 +105,41 @@ public final class ConfigurationProperties {
     }
 
     /**
+     * Get the currentValue property: Current value of the configuration.
+     *
+     * @return the currentValue value.
+     */
+    public String currentValue() {
+        return this.currentValue;
+    }
+
+    /**
+     * Set the currentValue property: Current value of the configuration.
+     *
+     * @param currentValue the currentValue value to set.
+     * @return the ConfigurationProperties object itself.
+     */
+    public ConfigurationProperties withCurrentValue(String currentValue) {
+        this.currentValue = currentValue;
+        return this;
+    }
+
+    /**
      * Get the description property: Description of the configuration.
      *
      * @return the description value.
      */
     public String description() {
         return this.description;
+    }
+
+    /**
+     * Get the documentationLink property: The link used to get the document from community or Azure site.
+     *
+     * @return the documentationLink value.
+     */
+    public String documentationLink() {
+        return this.documentationLink;
     }
 
     /**
