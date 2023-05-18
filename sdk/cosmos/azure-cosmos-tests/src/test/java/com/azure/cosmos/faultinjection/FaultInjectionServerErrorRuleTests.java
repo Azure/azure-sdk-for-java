@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.test.faultinjection;
+package com.azure.cosmos.faultinjection;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
@@ -20,14 +20,22 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.test.TestItem;
-import com.azure.cosmos.test.TestSuiteBase;
+import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
@@ -288,6 +296,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             assertThat(writeRegionServerGoneErrorRule.getRegionEndpoints().size()).isEqualTo(this.writeRegionMap.size() + 1);
 
             CosmosDiagnostics cosmosDiagnostics = this.performDocumentOperation(container, operationType, createdItem);
+            System.out.println(cosmosDiagnostics.toString());
             if (operationType.isWriteOperation()) {
                 this.validateHitCount(writeRegionServerGoneErrorRule, 1, operationType, ResourceType.Document);
                 this.validateFaultInjectionRuleApplied(
@@ -412,10 +421,21 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
 
     @Test(groups = {"multi-region", "simple"}, timeOut = TIMEOUT)
     public void faultInjectionServerErrorRuleTests_Partition() throws JsonProcessingException {
-        TestItem createdItem = TestItem.createNewItem();
-        cosmosAsyncContainer.createItem(createdItem).block();
+        for (int i = 0; i < 10; i++) {
+            cosmosAsyncContainer.createItem(TestItem.createNewItem()).block();
+        }
 
+        // getting one item from each feedRange
         List<FeedRange> feedRanges = cosmosAsyncContainer.getFeedRanges().block();
+        assertThat(feedRanges.size()).isGreaterThan(1);
+
+        String query = "select * from c";
+        CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions.setFeedRange(feedRanges.get(0));
+        TestItem itemOnFeedRange0 = cosmosAsyncContainer.queryItems(query, cosmosQueryRequestOptions, TestItem.class).blockFirst();
+
+        cosmosQueryRequestOptions.setFeedRange(feedRanges.get(1));
+        TestItem itemOnFeedRange1 = cosmosAsyncContainer.queryItems(query, cosmosQueryRequestOptions, TestItem.class).blockFirst();
 
         // set rule by feed range
         String feedRangeRuleId = "ServerErrorRule-FeedRange-" + UUID.randomUUID();
@@ -424,12 +444,14 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             new FaultInjectionRuleBuilder(feedRangeRuleId)
                 .condition(
                     new FaultInjectionConditionBuilder()
-                        .endpoints(new FaultInjectionEndpointBuilder(feedRanges.get(0)).build()) // by default setting on all replicas
+                        .endpoints(
+                            new FaultInjectionEndpointBuilder(feedRanges.get(0))
+                                .build()) // by default setting on all replicas
                         .build()
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                        .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST) // using a server error which will be applied on the full replica path
                         .times(1)
                         .build()
                 )
@@ -443,30 +465,30 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         assertThat(serverErrorRuleByFeedRange.getAddresses().size()).isBetween(
             this.readRegionMap.size() * 3, this.readRegionMap.size() * 5);
 
-        // Issue a query to the feed range which configured fault injection rule and validate fault injection rule is applied
-        String query = "select * from c";
-        CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
-        queryRequestOptions.setFeedRange(feedRanges.get(0));
-
+        // Issue a read item for the same feed range as configured in the fault injection rule
         CosmosDiagnostics cosmosDiagnostics =
-            cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst().getCosmosDiagnostics();
+            cosmosAsyncContainer
+                .readItem(itemOnFeedRange0.getId(), new PartitionKey(itemOnFeedRange0.getId()), JsonNode.class)
+                .block()
+                .getDiagnostics();
 
-        this.validateHitCount(serverErrorRuleByFeedRange, 1, OperationType.Query, ResourceType.Document);
+        this.validateHitCount(serverErrorRuleByFeedRange, 1, OperationType.Read, ResourceType.Document);
         this.validateFaultInjectionRuleApplied(
             cosmosDiagnostics,
-            OperationType.Query,
-            HttpConstants.StatusCodes.GONE,
-            HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+            OperationType.Read,
+            HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
+            HttpConstants.SubStatusCodes.UNKNOWN,
             feedRangeRuleId,
             true
         );
 
-        // Issue a query to the feed range which is not configured fault injection rule and validate no fault injection is applied
-        queryRequestOptions.setFeedRange(feedRanges.get(1));
-
+        // Issue a read item to different feed range
         try {
-            cosmosDiagnostics = cosmosAsyncContainer.queryItems(query, queryRequestOptions, TestItem.class).byPage().blockFirst().getCosmosDiagnostics();
-            this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Query, FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS);
+            cosmosDiagnostics = cosmosAsyncContainer
+                .readItem(itemOnFeedRange1.getId(), new PartitionKey(itemOnFeedRange1.getId()), JsonNode.class)
+                .block()
+                .getDiagnostics();
+            this.validateNoFaultInjectionApplied(cosmosDiagnostics, OperationType.Read, FAULT_INJECTION_RULE_NON_APPLICABLE_ADDRESS);
         } finally {
             serverErrorRuleByFeedRange.disable();
         }
@@ -985,6 +1007,9 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
             assertThat(responseStatisticsList.isArray()).isTrue();
 
             if (canRetryOnFaultInjectedError) {
+                if (responseStatisticsList.size() != 2) {
+                    System.out.println("FaultInjectionResponseStatisticsList is wrong " + cosmosDiagnostics.toString());
+                }
                 assertThat(responseStatisticsList.size()).isEqualTo(2);
             } else {
                 assertThat(responseStatisticsList.size()).isOne();

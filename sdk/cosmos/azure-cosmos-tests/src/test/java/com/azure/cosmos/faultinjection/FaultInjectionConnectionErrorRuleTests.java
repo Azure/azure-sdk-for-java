@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.test.faultinjection;
+package com.azure.cosmos.faultinjection;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -13,14 +13,22 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.DatabaseAccountLocation;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
+import com.azure.cosmos.implementation.throughputControl.TestItem;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.test.ReflectionUtils;
-import com.azure.cosmos.test.TestItem;
-import com.azure.cosmos.test.TestSuiteBase;
+import com.azure.cosmos.rx.TestSuiteBase;
+import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionErrorType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionEndpointBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
+import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
+import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
@@ -49,7 +57,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
     @DataProvider(name = "connectionErrorTypeProvider")
     public static Object[][] connectionErrorTypeProvider() {
         return new Object[][]{
-                {FaultInjectionConnectionErrorType.CONNECTION_CLOSE},
+                { FaultInjectionConnectionErrorType.CONNECTION_CLOSE},
                 {FaultInjectionConnectionErrorType.CONNECTION_RESET}
         };
     }
