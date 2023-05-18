@@ -54,13 +54,20 @@ class HttpFaultInjectingTests extends APISpec {
 
         def files = new ArrayList<File>(500)
         for (def i = 0; i < 500; i++) {
-            files.add(File.createTempFile(UUID.randomUUID().toString() + i, ".txt"))
+            def file = File.createTempFile(UUID.randomUUID().toString() + i, ".txt")
+            file.deleteOnExit()
+            files.add(file)
         }
 
         when:
         def successCount = new AtomicInteger()
         files.stream().parallel().forEach {
-            downloadClient.downloadToFile(it.getAbsolutePath())
+            try {
+                downloadClient.downloadToFile(it.getAbsolutePath(), true)
+            } catch (Exception ignored) {
+                // Don't let network exceptions fail the download
+                return
+            }
 
             def actualFileBytes = Files.readAllBytes(it.toPath())
             TestUtils.assertArraysEqual(realFileBytes, actualFileBytes)
