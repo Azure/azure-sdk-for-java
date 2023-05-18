@@ -400,8 +400,8 @@ public class CosmosItemTest extends TestSuiteBase {
                     pkValItem1.set(results.get(0).getString("mypk"));
                 });
 
-        // extract 1 item id and partition key val from 2nd physical partition
-        AtomicReference<String> itemId2 = new AtomicReference<>("");
+        // extract 1 partition key val from 2nd physical partition
+        // to create non-existent CosmosItemIdentity instance
         AtomicReference<String> pkValItem2 = new AtomicReference<>("");
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions2 = new CosmosQueryRequestOptions();
@@ -417,7 +417,6 @@ public class CosmosItemTest extends TestSuiteBase {
                     assertThat(results).isNotEmpty();
                     assertThat(results.size()).isEqualTo(1);
 
-                    itemId2.set(results.get(0).getId());
                     pkValItem2.set(results.get(0).getString("mypk"));
                 });
 
