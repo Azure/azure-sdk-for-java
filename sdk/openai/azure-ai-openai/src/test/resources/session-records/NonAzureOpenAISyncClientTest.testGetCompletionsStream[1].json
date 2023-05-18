@@ -1,0 +1,40 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.com/v1/completions",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "47ee5c2b-1efc-42de-a0be-0c32a38ca7a4",
+      "user-agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Server" : "cloudflare",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ratelimit-reset-tokens" : "7ms",
+      "Body" : "data: {\"id\":\"cmpl-7Haz97JqWop8dnd507O9jv2jM4Qph\",\"object\":\"text_completion\",\"created\":1684428103,\"choices\":[{\"text\":\"\\n\",\"index\":0,\"logprobs\":null,\"finish_reason\":null}],\"model\":\"text-davinci-003\"}\n\ndata: {\"id\":\"cmpl-7Haz97JqWop8dnd507O9jv2jM4Qph\",\"object\":\"text_completion\",\"created\":1684428103,\"choices\":[{\"text\":\"\\n\",\"index\":0,\"logprobs\":null,\"finish_reason\":null}],\"model\":\"text-davinci-003\"}\n\ndata: {\"id\":\"cmpl-7Haz97JqWop8dnd507O9jv2jM4Qph\",\"object\":\"text_completion\",\"created\":1684428103,\"choices\":[{\"text\":\"Yes\",\"index\":0,\"logprobs\":null,\"finish_reason\":null}],\"model\":\"text-davinci-003\"}\n\ndata: {\"id\":\"cmpl-7Haz97JqWop8dnd507O9jv2jM4Qph\",\"object\":\"text_completion\",\"created\":1684428103,\"choices\":[{\"text\":\",\",\"index\":0,\"logprobs\":null,\"finish_reason\":null}],\"model\":\"text-davinci-003\"}\n\ndata: {\"id\":\"cmpl-7Haz97JqWop8dnd507O9jv2jM4Qph\",\"object\":\"text_completion\",\"created\":1684428103,\"choices\":[{\"text\":\" this\",\"index\":0,\"logprobs\":null,\"finish_reason\":null}],\"model\":\"text-davinci-003\"}\n\ndata: {\"id\":\"cmpl-7Haz97JqWop8dnd507O9jv2jM4Qph\",\"object\":\"text_completion\",\"created\":1684428103,\"choices\":[{\"text\":\" is\",\"index\":0,\"logprobs\":null,\"finish_reason\":null}],\"model\":\"text-davinci-003\"}\n\ndata: {\"id\":\"cmpl-7Haz97JqWop8dnd507O9jv2jM4Qph\",\"object\":\"text_completion\",\"created\":1684428103,\"choices\":[{\"text\":\" a\",\"index\":0,\"logprobs\":null,\"finish_reason\":null}],\"model\":\"text-davinci-003\"}\n\ndata: {\"id\":\"cmpl-7Haz97JqWop8dnd507O9jv2jM4Qph\",\"object\":\"text_completion\",\"created\":1684428103,\"choices\":[{\"text\":\" test\",\"index\":0,\"logprobs\":null,\"finish_reason\":null}],\"model\":\"text-davinci-003\"}\n\ndata: {\"id\":\"cmpl-7Haz97JqWop8dnd507O9jv2jM4Qph\",\"object\":\"text_completion\",\"created\":1684428103,\"choices\":[{\"text\":\".\",\"index\":0,\"logprobs\":null,\"finish_reason\":null}],\"model\":\"text-davinci-003\"}\n\ndata: {\"id\":\"cmpl-7Haz97JqWop8dnd507O9jv2jM4Qph\",\"object\":\"text_completion\",\"created\":1684428103,\"choices\":[{\"text\":\"\",\"index\":0,\"logprobs\":null,\"finish_reason\":\"stop\"}],\"model\":\"text-davinci-003\"}\n\ndata: [DONE]\n\n",
+      "Content-Type" : "text/event-stream",
+      "x-request-id" : "6dff5daafbb3829e9a4ecb36eea1178a",
+      "Transfer-Encoding" : "chunked",
+      "x-ratelimit-limit-tokens" : "250000",
+      "openai-organization" : "user-pkku76b8pxthfoiq2pf1cnk2",
+      "CF-RAY" : "7c958c99ff24c6fd-SEA",
+      "x-ratelimit-reset-requests" : "40ms",
+      "Connection" : "keep-alive",
+      "x-ratelimit-remaining-tokens" : "249967",
+      "x-ratelimit-remaining-requests" : "2997",
+      "Date" : "Thu, 18 May 2023 16:41:43 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "CF-Cache-Status" : "DYNAMIC",
+      "Cache-Control" : "no-cache, must-revalidate",
+      "x-ratelimit-limit-requests" : "3000",
+      "openai-version" : "2020-10-01",
+      "openai-processing-ms" : "549",
+      "openai-model" : "text-davinci-003",
+      "alt-svc" : "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

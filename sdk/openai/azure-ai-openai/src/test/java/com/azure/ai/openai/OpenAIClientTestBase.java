@@ -15,6 +15,7 @@ import com.azure.ai.openai.models.CompletionsLogProbabilityModel;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -58,6 +59,27 @@ public abstract class OpenAIClientTestBase extends TestBase {
         }
         return builder;
     }
+
+    OpenAIClientBuilder getNonAzureOpenAIClientBuilder(HttpClient httpClient) {
+        OpenAIClientBuilder builder = new OpenAIClientBuilder()
+            .httpClient(httpClient)
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder
+                .endpoint("https://localhost:8080")
+                .credential(new AzureKeyCredential(FAKE_API_KEY));
+        } else if (getTestMode() == TestMode.RECORD) {
+            builder
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new NonAzureOpenAIKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPEN_AI_KEY")));
+        } else {
+            builder
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPEN_AI_KEY")));
+        }
+        return builder;
+    }
+
 
     @Test
     public abstract void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
@@ -109,13 +131,20 @@ public abstract class OpenAIClientTestBase extends TestBase {
     public abstract void getChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     void getChatCompletionsRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
-        String deploymentId = "gpt-35-turbo";
+        testRunner.accept("gpt-35-turbo", getChatMessages());
+    }
+
+    void getChatCompletionsForNonAzureRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
+        testRunner.accept("gpt-3.5-turbo", getChatMessages());
+    }
+
+    private List<ChatMessage> getChatMessages() {
         List<ChatMessage> chatMessages = new ArrayList<>();
         chatMessages.add(new ChatMessage(ChatRole.SYSTEM).setContent("You are a helpful assistant. You will talk like a pirate."));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
         chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
-        testRunner.accept(deploymentId, chatMessages);
+        return chatMessages;
     }
 
     static void assertChatCompletions(int[] indexArray, ChatRole[] chatRoleArray, ChatCompletions actual) {
@@ -148,9 +177,11 @@ public abstract class OpenAIClientTestBase extends TestBase {
     public abstract void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        String deploymentId = "embedding";
-        EmbeddingsOptions embeddingsOptions = new EmbeddingsOptions(Arrays.asList("Your text string goes here"));
-        testRunner.accept(deploymentId, embeddingsOptions);
+        testRunner.accept("embedding", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
+    }
+
+    void getEmbeddingNonAzureRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
 
     static void assertEmbeddings(Embeddings actual) {

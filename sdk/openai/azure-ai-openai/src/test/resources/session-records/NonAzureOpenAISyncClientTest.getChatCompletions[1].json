@@ -1,0 +1,40 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.com/v1/chat/completions",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "6c54488a-8ebb-4220-99d5-7de68168f913",
+      "user-agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Server" : "cloudflare",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ratelimit-reset-tokens" : "66ms",
+      "Content-Length" : "861",
+      "Body" : "{\"id\":\"chatcmpl-7Hb27u3BhLXTSP4mgcQqHHYvgbaQi\",\"object\":\"chat.completion\",\"created\":1684428287,\"model\":\"gpt-3.5-turbo-0301\",\"usage\":{\"prompt_tokens\":65,\"completion_tokens\":123,\"total_tokens\":188},\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"Ahoy matey, if ye want to train a parrot, ye need to be patient. First, ye want to create a bond with yer parrot by spending time with it and talking to it often. Then, use positive reinforcement like treats or praise when it obeys a command, such as stepping onto yer hand or saying a certain phrase. Repeat these commands consistently and reward yer parrot every time it follows through. Remember to keep training sessions short and fun, as parrots have small attention spans. Lastly, practice makes perfect, so keep repeating commands until yer parrot learns them. Arrr!\"},\"finish_reason\":\"stop\",\"index\":0}]}\n",
+      "Content-Type" : "application/json",
+      "x-request-id" : "fcb787d0ea365a8e27dfb4898f176b1d",
+      "x-ratelimit-limit-tokens" : "90000",
+      "openai-organization" : "user-pkku76b8pxthfoiq2pf1cnk2",
+      "CF-RAY" : "7c959119ad31c3ac-SEA",
+      "x-ratelimit-reset-requests" : "22ms",
+      "Connection" : "keep-alive",
+      "x-ratelimit-remaining-tokens" : "89899",
+      "x-ratelimit-remaining-requests" : "3498",
+      "Date" : "Thu, 18 May 2023 16:45:00 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "CF-Cache-Status" : "DYNAMIC",
+      "Cache-Control" : "no-cache, must-revalidate",
+      "x-ratelimit-limit-requests" : "3500",
+      "openai-version" : "2020-10-01",
+      "openai-processing-ms" : "13681",
+      "openai-model" : "gpt-3.5-turbo-0301",
+      "alt-svc" : "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

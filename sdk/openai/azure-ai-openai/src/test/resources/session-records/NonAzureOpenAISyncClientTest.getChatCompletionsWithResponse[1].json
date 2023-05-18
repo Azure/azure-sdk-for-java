@@ -1,0 +1,40 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.com/v1/chat/completions",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "f6cd856a-5979-4322-95ed-eae9c2a22c96",
+      "user-agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Server" : "cloudflare",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ratelimit-reset-tokens" : "39ms",
+      "Content-Length" : "1256",
+      "Body" : "{\"id\":\"chatcmpl-7Hb27B63txCEJsI5GcyOCOzpcbqun\",\"object\":\"chat.completion\",\"created\":1684428287,\"model\":\"gpt-3.5-turbo-0301\",\"usage\":{\"prompt_tokens\":65,\"completion_tokens\":222,\"total_tokens\":287},\"choices\":[{\"message\":{\"role\":\"assistant\",\"content\":\"Shiver me timbers! Ye want to train a parrot, do ye? Well, here be some tips to train ye feathered friend like a proper pirate:\\n\\n1. Start with simple commands: Teach yer parrot simple commands like \\\"step up,\\\" \\\"step down\\\" and \\\"stay.\\\" Once it masters these commands, then ye can progress to more difficult ones.\\n\\n2. Consistency is key: Make sure to be consistent in yer training techniques. Use the same commands and rewards each time.\\n\\n3. Reward good behavior: Pirates love their treasure, and so does yer parrot. Reward good behavior with treats like nuts, fruit, or even a \\\"yarr!\\\" or \\\"avast!\\\" from yer own salty lips.\\n\\n4. Patience, patience: Parrots be smart, but it may take time before they learn new tricks. Don't get discouraged if they're slow to pick up a new command. Just be consistent and keep trying.\\n\\n5. Practice makes perfect: Practice with yer parrot for short periods each day. It should be fun for both ye and your feathered friend!\"},\"finish_reason\":\"stop\",\"index\":0}]}\n",
+      "Content-Type" : "application/json",
+      "x-request-id" : "39205292ca2704b1d94cf48c6ad5cb47",
+      "x-ratelimit-limit-tokens" : "90000",
+      "openai-organization" : "user-pkku76b8pxthfoiq2pf1cnk2",
+      "CF-RAY" : "7c959119af90c668-SEA",
+      "x-ratelimit-reset-requests" : "17ms",
+      "Connection" : "keep-alive",
+      "x-ratelimit-remaining-tokens" : "89941",
+      "x-ratelimit-remaining-requests" : "3499",
+      "Date" : "Thu, 18 May 2023 16:45:12 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "CF-Cache-Status" : "DYNAMIC",
+      "Cache-Control" : "no-cache, must-revalidate",
+      "x-ratelimit-limit-requests" : "3500",
+      "openai-version" : "2020-10-01",
+      "openai-processing-ms" : "25888",
+      "openai-model" : "gpt-3.5-turbo-0301",
+      "alt-svc" : "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

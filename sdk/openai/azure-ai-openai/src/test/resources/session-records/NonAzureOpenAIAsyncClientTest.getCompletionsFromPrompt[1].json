@@ -1,0 +1,40 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.openai.com/v1/completions",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "bb1ead66-c94d-4879-af38-fde68ebab6b3",
+      "user-agent" : "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)"
+    },
+    "Response" : {
+      "Server" : "cloudflare",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ratelimit-reset-tokens" : "24ms",
+      "Content-Length" : "286",
+      "Body" : "{\"id\":\"cmpl-7Hant7buF6x4puX4XSvdJtIZATgnh\",\"object\":\"text_completion\",\"created\":1684427405,\"model\":\"text-davinci-003\",\"choices\":[{\"text\":\",\\n\\nYes, this is a test.\",\"index\":0,\"logprobs\":null,\"finish_reason\":\"stop\"}],\"usage\":{\"prompt_tokens\":5,\"completion_tokens\":10,\"total_tokens\":15}}\n",
+      "Content-Type" : "application/json",
+      "x-request-id" : "93c99c9b0ff379963617c242173978f2",
+      "x-ratelimit-limit-tokens" : "250000",
+      "openai-organization" : "user-pkku76b8pxthfoiq2pf1cnk2",
+      "CF-RAY" : "7c957b923f59eb87-SEA",
+      "x-ratelimit-reset-requests" : "20ms",
+      "Connection" : "keep-alive",
+      "x-ratelimit-remaining-tokens" : "249900",
+      "x-ratelimit-remaining-requests" : "2999",
+      "Date" : "Thu, 18 May 2023 16:30:06 GMT",
+      "strict-transport-security" : "max-age=15724800; includeSubDomains",
+      "access-control-allow-origin" : "*",
+      "CF-Cache-Status" : "DYNAMIC",
+      "Cache-Control" : "no-cache, must-revalidate",
+      "x-ratelimit-limit-requests" : "3000",
+      "openai-version" : "2020-10-01",
+      "openai-processing-ms" : "1004",
+      "openai-model" : "text-davinci-003",
+      "alt-svc" : "h3=\":443\"; ma=86400, h3-29=\":443\"; ma=86400"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

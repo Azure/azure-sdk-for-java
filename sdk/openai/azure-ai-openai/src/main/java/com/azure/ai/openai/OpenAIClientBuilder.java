@@ -307,14 +307,14 @@ public final class OpenAIClientBuilder
         return httpPipeline;
     }
 
-    private OpenAIClientNonAzureImpl buildInnerOpenAIClient() {
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineOpenAI();
+    private OpenAIClientNonAzureImpl buildInnerNonAzureOpenAIClient() {
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineNonAzureOpenAI();
         OpenAIClientNonAzureImpl client =
                 new OpenAIClientNonAzureImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter());
         return client;
     }
 
-    private HttpPipeline createHttpPipelineOpenAI() {
+    private HttpPipeline createHttpPipelineNonAzureOpenAI() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
@@ -339,11 +339,7 @@ public final class OpenAIClientBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (nonAzureOpenAIKeyCredential != null) {
-            policies.add(new NonAzureOpenAIKeyCredentialPolicy(tokenCredential, DEFAULT_SCOPES));
-        }
-
-        if (azureKeyCredential != null) {
-            policies.add(new AzureKeyCredentialPolicy("api-key", azureKeyCredential));
+            policies.add(new NonAzureOpenAIKeyCredentialPolicy(nonAzureOpenAIKeyCredential));
         }
         this.pipelinePolicies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
@@ -365,8 +361,8 @@ public final class OpenAIClientBuilder
      * @return an instance of OpenAIAsyncClient.
      */
     public OpenAIAsyncClient buildAsyncClient() {
-        if (tokenCredential != null && tokenCredential instanceof NonAzureOpenAIKeyCredential) {
-            return new OpenAIAsyncClient(buildInnerOpenAIClient());
+        if (nonAzureOpenAIKeyCredential != null) {
+            return new OpenAIAsyncClient(buildInnerNonAzureOpenAIClient());
         }
         return new OpenAIAsyncClient(buildInnerClient());
     }
@@ -377,8 +373,8 @@ public final class OpenAIClientBuilder
      * @return an instance of OpenAIClient.
      */
     public OpenAIClient buildClient() {
-        if (tokenCredential != null && tokenCredential instanceof NonAzureOpenAIKeyCredential) {
-            return new OpenAIClient(buildInnerOpenAIClient());
+        if (nonAzureOpenAIKeyCredential != null) {
+            return new OpenAIClient(buildInnerNonAzureOpenAIClient());
         }
         return new OpenAIClient(buildInnerClient());
     }

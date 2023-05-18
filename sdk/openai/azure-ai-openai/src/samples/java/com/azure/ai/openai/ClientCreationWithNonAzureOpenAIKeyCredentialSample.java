@@ -8,6 +8,7 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
+import com.azure.core.util.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,8 +24,8 @@ public class ClientCreationWithNonAzureOpenAIKeyCredentialSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String apiKey = "{non-azure-open-ai-api-key}";
-        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        String apiKey = Configuration.getGlobalConfiguration().get("NON_AZURE_OPEN_AI_KEY");
+        String deploymentOrModelId = "text-davinci-003";
 
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
             .credential(new NonAzureOpenAIKeyCredential(apiKey));
