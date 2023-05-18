@@ -1,0 +1,179 @@
+Running proxy version is Azure.Sdk.Tools.TestProxy 20230427.1
+git --version
+[04:41:45] info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[62]
+      User profile is available. Using '/home/vsts/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+[04:41:46] info: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[58]
+      Creating key {e0cee4d8-b62b-464b-ae37-69b5a29a3786} with creation date 2023-05-18 04:41:46Z, activation date 2023-05-18 04:41:46Z, and expiration date 2023-08-16 04:41:46Z.
+[04:41:46] warn: Microsoft.AspNetCore.DataProtection.KeyManagement.XmlKeyManager[35]
+      No XML encryptor configured. Key {e0cee4d8-b62b-464b-ae37-69b5a29a3786} may be persisted to storage in unencrypted form.
+[04:41:46] info: Microsoft.AspNetCore.DataProtection.Repositories.FileSystemXmlRepository[39]
+      Writing data to file '/home/vsts/.aspnet/DataProtection-Keys/key-e0cee4d8-b62b-464b-ae37-69b5a29a3786.xml'.
+[04:41:46] Recorded: 0	Played Back: 0
+[04:41:46] info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: http://localhost:5000
+[04:41:46] info: Microsoft.Hosting.Lifetime[14]
+      Now listening on: https://localhost:5001
+[04:41:46] info: Microsoft.Hosting.Lifetime[0]
+      Application started. Press Ctrl+C to shut down.
+[04:41:46] info: Microsoft.Hosting.Lifetime[0]
+      Hosting environment: Production
+[04:41:46] info: Microsoft.Hosting.Lifetime[0]
+      Content root path: /home/vsts/work/1/s
+[04:41:47] Recorded: 0	Played Back: 0
+[04:41:48] Recorded: 0	Played Back: 0
+[04:41:49] Recorded: 0	Played Back: 0
+[04:41:50] Recorded: 0	Played Back: 0
+[04:41:51] Recorded: 0	Played Back: 0
+[04:41:52] Recorded: 0	Played Back: 0
+[04:41:53] Recorded: 0	Played Back: 0
+[04:41:54] Recorded: 0	Played Back: 0
+[04:41:55] Recorded: 0	Played Back: 0
+[04:41:56] Recorded: 0	Played Back: 0
+[04:41:57] Recorded: 0	Played Back: 0
+[04:41:58] Recorded: 0	Played Back: 0
+[04:41:59] Recorded: 0	Played Back: 0
+[04:42:00] Recorded: 0	Played Back: 0
+[04:42:01] Recorded: 0	Played Back: 0
+[04:42:01] info: Microsoft.AspNetCore.Hosting.Diagnostics[1]
+      Request starting HTTP/1.1 GET http://localhost:5000/Admin/IsAlive - -
+[04:42:01] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[0]
+      Executing endpoint 'Azure.Sdk.Tools.TestProxy.Admin.IsAlive (Azure.Sdk.Tools.TestProxy)'
+[04:42:01] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[3]
+      Route matched with {action = "IsAlive", controller = "Admin"}. Executing controller action with signature System.Threading.Tasks.Task IsAlive() on controller Azure.Sdk.Tools.TestProxy.Admin (Azure.Sdk.Tools.TestProxy).
+[04:42:01] info: Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker[2]
+      Executed action Azure.Sdk.Tools.TestProxy.Admin.IsAlive (Azure.Sdk.Tools.TestProxy) in 2.8453ms
+[04:42:01] info: Microsoft.AspNetCore.Routing.EndpointMiddleware[1]
+      Executed endpoint 'Azure.Sdk.Tools.TestProxy.Admin.IsAlive (Azure.Sdk.Tools.TestProxy)'
+[04:42:01] info: Microsoft.AspNetCore.Hosting.Diagnostics[2]
+      Request finished HTTP/1.1 GET http://localhost:5000/Admin/IsAlive - - - 200 0 - 65.7770ms
+[04:42:02] Recorded: 0	Played Back: 0
+[04:42:03] Recorded: 0	Played Back: 0
+[04:42:04] Recorded: 0	Played Back: 0
+[04:42:05] Recorded: 0	Played Back: 0
+[04:42:06] Recorded: 0	Played Back: 0
+[04:42:07] Recorded: 0	Played Back: 0
+[04:42:08] Recorded: 0	Played Back: 0
+[04:42:09] Recorded: 0	Played Back: 0
+[04:42:10] Recorded: 0	Played Back: 0
+[04:42:11] Recorded: 0	Played Back: 0
+[04:42:12] Recorded: 0	Played Back: 0
+[04:42:13] Recorded: 0	Played Back: 0
+[04:42:14] Recorded: 0	Played Back: 0
+[04:42:15] Recorded: 0	Played Back: 0
+[04:42:16] Recorded: 0	Played Back: 0
+[04:42:17] Recorded: 0	Played Back: 0
+[04:42:18] Recorded: 0	Played Back: 0
+[04:42:19] Recorded: 0	Played Back: 0
+[04:42:20] Recorded: 0	Played Back: 0
+[04:42:21] Recorded: 0	Played Back: 0
+[04:42:22] Recorded: 0	Played Back: 0
+[04:42:23] Recorded: 0	Played Back: 0
+[04:42:24] Recorded: 0	Played Back: 0
+[04:42:25] Recorded: 0	Played Back: 0
+[04:42:26] Recorded: 0	Played Back: 0
+[04:42:27] Recorded: 0	Played Back: 0
+[04:42:28] Recorded: 0	Played Back: 0
+[04:42:29] Recorded: 0	Played Back: 0
+[04:42:30] Recorded: 0	Played Back: 0
+[04:42:31] Recorded: 0	Played Back: 0
+[04:42:32] Recorded: 0	Played Back: 0
+[04:42:33] Recorded: 0	Played Back: 0
+[04:42:34] Recorded: 0	Played Back: 0
+[04:42:35] Recorded: 0	Played Back: 0
+[04:42:36] Recorded: 0	Played Back: 0
+[04:42:37] Recorded: 0	Played Back: 0
+[04:42:38] Recorded: 0	Played Back: 0
+[04:42:39] Recorded: 0	Played Back: 0
+[04:42:40] Recorded: 0	Played Back: 0
+[04:42:41] Recorded: 0	Played Back: 0
+[04:42:42] Recorded: 0	Played Back: 0
+[04:42:43] Recorded: 0	Played Back: 0
+[04:42:44] Recorded: 0	Played Back: 0
+[04:42:45] Recorded: 0	Played Back: 0
+[04:42:46] Recorded: 0	Played Back: 0
+[04:42:47] Recorded: 0	Played Back: 0
+[04:42:48] Recorded: 0	Played Back: 0
+[04:42:49] Recorded: 0	Played Back: 0
+[04:42:50] Recorded: 0	Played Back: 0
+[04:42:51] Recorded: 0	Played Back: 0
+[04:42:52] Recorded: 0	Played Back: 0
+[04:42:53] Recorded: 0	Played Back: 0
+[04:42:54] Recorded: 0	Played Back: 0
+[04:42:55] Recorded: 0	Played Back: 0
+[04:42:56] Recorded: 0	Played Back: 0
+[04:42:57] Recorded: 0	Played Back: 0
+[04:42:58] Recorded: 0	Played Back: 0
+[04:42:59] Recorded: 0	Played Back: 0
+[04:43:00] Recorded: 0	Played Back: 0
+[04:43:01] Recorded: 0	Played Back: 0
+[04:43:02] Recorded: 0	Played Back: 0
+[04:43:03] Recorded: 0	Played Back: 0
+[04:43:04] Recorded: 0	Played Back: 0
+[04:43:05] Recorded: 0	Played Back: 0
+[04:43:06] Recorded: 0	Played Back: 0
+[04:43:07] Recorded: 0	Played Back: 0
+[04:43:08] Recorded: 0	Played Back: 0
+[04:43:09] Recorded: 0	Played Back: 0
+[04:43:10] Recorded: 0	Played Back: 0
+[04:43:11] Recorded: 0	Played Back: 0
+[04:43:12] Recorded: 0	Played Back: 0
+[04:43:13] Recorded: 0	Played Back: 0
+[04:43:14] Recorded: 0	Played Back: 0
+[04:43:15] Recorded: 0	Played Back: 0
+[04:43:16] Recorded: 0	Played Back: 0
+[04:43:17] Recorded: 0	Played Back: 0
+[04:43:18] Recorded: 0	Played Back: 0
+[04:43:19] Recorded: 0	Played Back: 0
+[04:43:20] Recorded: 0	Played Back: 0
+[04:43:21] Recorded: 0	Played Back: 0
+[04:43:22] Recorded: 0	Played Back: 0
+[04:43:23] Recorded: 0	Played Back: 0
+[04:43:24] Recorded: 0	Played Back: 0
+[04:43:25] Recorded: 0	Played Back: 0
+[04:43:26] Recorded: 0	Played Back: 0
+[04:43:27] Recorded: 0	Played Back: 0
+[04:43:28] Recorded: 0	Played Back: 0
+[04:43:29] Recorded: 0	Played Back: 0
+[04:43:30] Recorded: 0	Played Back: 0
+[04:43:31] Recorded: 0	Played Back: 0
+[04:43:32] Recorded: 0	Played Back: 0
+[04:43:33] Recorded: 0	Played Back: 0
+[04:43:34] Recorded: 0	Played Back: 0
+[04:43:35] Recorded: 0	Played Back: 0
+[04:43:36] Recorded: 0	Played Back: 0
+[04:43:37] Recorded: 0	Played Back: 0
+[04:43:38] Recorded: 0	Played Back: 0
+[04:43:39] Recorded: 0	Played Back: 0
+[04:43:40] Recorded: 0	Played Back: 0
+[04:43:41] Recorded: 0	Played Back: 0
+[04:43:42] Recorded: 0	Played Back: 0
+[04:43:43] Recorded: 0	Played Back: 0
+[04:43:44] Recorded: 0	Played Back: 0
+[04:43:45] Recorded: 0	Played Back: 0
+[04:43:46] Recorded: 0	Played Back: 0
+[04:43:47] Recorded: 0	Played Back: 0
+[04:43:48] Recorded: 0	Played Back: 0
+[04:43:49] Recorded: 0	Played Back: 0
+[04:43:50] Recorded: 0	Played Back: 0
+[04:43:51] Recorded: 0	Played Back: 0
+[04:43:52] Recorded: 0	Played Back: 0
+[04:43:53] Recorded: 0	Played Back: 0
+[04:43:54] Recorded: 0	Played Back: 0
+[04:43:55] Recorded: 0	Played Back: 0
+[04:43:56] Recorded: 0	Played Back: 0
+[04:43:57] Recorded: 0	Played Back: 0
+[04:43:58] Recorded: 0	Played Back: 0
+[04:43:59] Recorded: 0	Played Back: 0
+[04:44:00] Recorded: 0	Played Back: 0
+[04:44:01] Recorded: 0	Played Back: 0
+[04:44:02] Recorded: 0	Played Back: 0
+[04:44:03] Recorded: 0	Played Back: 0
+[04:44:04] Recorded: 0	Played Back: 0
+[04:44:05] Recorded: 0	Played Back: 0
+[04:44:06] Recorded: 0	Played Back: 0
+[04:44:07] Recorded: 0	Played Back: 0
+[04:44:08] Recorded: 0	Played Back: 0
+[04:44:09] Recorded: 0	Played Back: 0
+[04:44:10] Recorded: 0	Played Back: 0
+[04:44:11] Recorded: 0	Played Back: 0
+[04:44:12] Recorded: 0	Played Back: 0
