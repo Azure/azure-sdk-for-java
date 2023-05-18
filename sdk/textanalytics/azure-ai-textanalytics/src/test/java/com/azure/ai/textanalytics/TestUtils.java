@@ -177,9 +177,6 @@ final class TestUtils {
     static final List<String> KEY_PHRASE_INPUTS = asList(
         "Hello world. This is some input text that I love.",
         "Bonjour tout le monde");
-
-    static final String TOO_LONG_INPUT = "Thisisaveryveryverylongtextwhichgoesonforalongtimeandwhichalmostdoesn'tseemtostopatanygivenpointintime.ThereasonforthistestistotryandseewhathappenswhenwesubmitaveryveryverylongtexttoLanguage.Thisshouldworkjustfinebutjustincaseitisalwaysgoodtohaveatestcase.ThisallowsustotestwhathappensifitisnotOK.Ofcourseitisgoingtobeokbutthenagainitisalsobettertobesure!";
-
     static final List<String> KEY_PHRASE_FRENCH_INPUTS = asList(
         "Bonjour tout le monde.",
         "Je m'appelle Mondly.");
@@ -233,13 +230,6 @@ final class TestUtils {
             new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
             new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0)),
             new TextDocumentInput("0", CATEGORIZED_ENTITY_INPUTS.get(0))
-        );
-    }
-
-    static List<TextDocumentInput> getWarningsTextDocumentInputs() {
-        return asList(
-            new TextDocumentInput("0", TOO_LONG_INPUT),
-            new TextDocumentInput("1", CATEGORIZED_ENTITY_INPUTS.get(1))
         );
     }
 

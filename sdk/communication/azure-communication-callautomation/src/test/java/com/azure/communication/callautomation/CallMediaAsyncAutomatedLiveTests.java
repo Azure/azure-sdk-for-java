@@ -8,7 +8,6 @@ import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -108,7 +107,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true)).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.

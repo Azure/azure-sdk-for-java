@@ -33,7 +33,7 @@ public final class ConfigurationsListByServerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"value\":\"jzuaejxdultskzbb\",\"description\":\"zumveekgpwo\",\"defaultValue\":\"hkfpbs\",\"dataType\":\"ofd\",\"allowedValues\":\"uusdttouwa\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"False\",\"isDynamicConfig\":\"True\"},\"id\":\"smv\",\"name\":\"xwyjsflhhc\",\"type\":\"aln\"}]}";
+            "{\"value\":[{\"properties\":{\"value\":\"nalaulppg\",\"currentValue\":\"tpnapnyiropuhpig\",\"description\":\"gylgqgitxmedjvcs\",\"documentationLink\":\"n\",\"defaultValue\":\"wncwzzhxgktrmg\",\"dataType\":\"napkteoellw\",\"allowedValues\":\"fdygpfqbuaceopz\",\"source\":\"user-override\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"pcqeqx\",\"name\":\"lzdahzxctobgbkdm\",\"type\":\"izpost\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,9 +65,16 @@ public final class ConfigurationsListByServerMockTests {
             manager
                 .configurations()
                 .listByServer(
-                    "ug", "hzovawjvzunlut", "nnprn", "i", 1099728143, 1381337865, com.azure.core.util.Context.NONE);
+                    "sxyawjoyaqcs",
+                    "yjpkiidzyexz",
+                    "eli",
+                    "hnrztfol",
+                    1201064167,
+                    315550434,
+                    com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jzuaejxdultskzbb", response.iterator().next().value());
-        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, response.iterator().next().source());
+        Assertions.assertEquals("nalaulppg", response.iterator().next().value());
+        Assertions.assertEquals("tpnapnyiropuhpig", response.iterator().next().currentValue());
+        Assertions.assertEquals(ConfigurationSource.USER_OVERRIDE, response.iterator().next().source());
     }
 }
