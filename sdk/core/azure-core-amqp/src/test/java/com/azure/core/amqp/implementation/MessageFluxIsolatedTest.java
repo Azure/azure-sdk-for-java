@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.Deque;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -645,17 +646,23 @@ public class MessageFluxIsolatedTest {
 
     @ParameterizedTest
     @CsvSource({
-        "EmissionDriven,1",
-        "RequestDriven,0"
+        "EmissionDriven,true,1",
+        "RequestDriven,true,0",
+        "EmissionDriven,false,1",
+        "RequestDriven,false,0"
     })
     @Execution(ExecutionMode.SAME_THREAD)
-    public void canCompleteDownstreamWithoutUpstreamTermination(CreditFlowMode creditFlowMode, int prefetch) {
+    public void canCompleteDownstreamWithoutUpstreamTermination(CreditFlowMode creditFlowMode, boolean takeUntilOtherOrFirstWithSignal, int prefetch) {
         // The test validates it is possible to complete the downstream (message subscriber) by applying
-        // 'takeUntilOther' operator on MessageFlux without needing MessageFlux's upstream to send
-        // a termination signal.
+        // 'takeUntilOther' and 'firstWithSignal' operator on MessageFlux without needing MessageFlux's upstream
+        // to send a termination signal.
         // There is use case that the consumer client's closure associated with MessageFlux requires
         // completing the downstream while other clients and their MessageFlux are still interested in
         // using the upstream.
+        //
+        // Test asserts that, using 'takeUntilOther' and 'firstWithSignal' -
+        // 1. the MessageFlux's downstream (message subscriber) can be completed.
+        // 2. the underlying ReactorReceiver (i.e. AmqpReceiveLink) backing the MessageFlux gets closed (via cancellation).
         //
         // Test also helps to catch any external regression e.g, https://github.com/reactor/reactor-core/issues/3268
         //
@@ -669,11 +676,27 @@ public class MessageFluxIsolatedTest {
         when(receiver.getEndpointStates()).thenReturn(Flux.just(AmqpEndpointState.ACTIVE).concatWith(Flux.never()));
         when(receiver.closeAsync()).thenReturn(Mono.empty());
 
-        try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
-            verifier.create(() -> messageFlux.takeUntilOther(completionSink.asMono()))
-                .then(() -> upstream.next(receiver))
-                .then(() -> completionSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST))
-                .verifyComplete();
+        final boolean useTakeUntilOther = takeUntilOtherOrFirstWithSignal;
+        if (useTakeUntilOther) {
+            final Supplier<Flux<Message>> scenario = () -> {
+                return messageFlux.takeUntilOther(completionSink.asMono());
+            };
+            try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+                verifier.create(scenario)
+                    .then(() -> upstream.next(receiver))
+                    .then(() -> completionSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST))
+                    .verifyComplete();
+            }
+        } else {
+            try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
+                final Supplier<Flux<Void>> scenario = () -> {
+                    return Mono.firstWithSignal(messageFlux.ignoreElements().then(), completionSink.asMono()).flux();
+                };
+                verifier.create(scenario)
+                    .then(() -> upstream.next(receiver))
+                    .then(() -> completionSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST))
+                    .verifyComplete();
+            }
         }
 
         verify(receiver).closeAsync();
