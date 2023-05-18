@@ -1,5 +1,5 @@
 ############################################################################################################################################
-# This script is used to sync 3rd party dependencies of branch feature/spring-boot-3 to `eng/versioning/external_dependencies.txt`.
+# This script is used to create a version file for `sdk/spring/scripts/resolve_version_conflict_for_sb3.py` to resolve conflict versions when sync 3rd party dependencies of branch feature/spring-boot-3.
 #
 # Some external dependencies could exist in branch feature/spring-boot-3's but not in local `eng/versioning/external_dependencies.txt`, this
 # script will add these dependencies in. And will try to use the version defined in
@@ -7,14 +7,12 @@
 #
 #
 # How to use this script.
-#  1. Get `SPRING_BOOT_VERSION` from https://github.com/spring-projects/spring-boot/tags.
-#  2. Make sure file(`.\sdk\spring\spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt`) exist. If it doesn't exist, please run
-#    `.\sdk\spring\scripts\get_spring_boot_managed_external_dependencies.py` to create that file.
-#  3. Run command: `python .\sdk\spring\scripts\sync_for_spring3.py -b 3.0.5`.
-#     Or `python .\sdk\spring\scripts\sync_external_dependencies.py --spring_boot_dependencies_version 3.0.5`.
-#  4. Then `eng/versioning/external_dependencies.txt` will be updated.
+#  1. Get `SPRING_BOOT_VERSION` from file(`.\sdk\spring\spring_boot_${SPRING_BOOT_VERSION}_managed_external_dependencies.txt`).
+#  2. Run command: `python .\sdk\spring\scripts\get_suitable_versions_for_sb3.py -b 3.0.5`.
+#     Or `python .\sdk\spring\scripts\get_suitable_versions_for_sb3.py --spring_boot_dependencies_version 3.0.5`.
+#  3. Then `sdk\spring\conflict_versions.txt` will be created and may have some logs.
+#  4. If there are logs, Judge whether to change or delete dependencies.
 #
-# Please refer to ./README.md to get more information about this script.
 ############################################################################################################################################
 
 import time
@@ -84,6 +82,7 @@ def three_way_merge(ver_local, ver_remote, ver_sb3_managed):
     local_missing_set = []
     remote_missing_set = []
     resolve_dict = {}
+    remove_list = []
     total_keys = ver_remote.keys() | ver_local.keys()
     for k in total_keys:
         if k not in ver_local:
@@ -102,9 +101,10 @@ def three_way_merge(ver_local, ver_remote, ver_sb3_managed):
             if v_sb3 != 'N/A' and v_remote == v_sb3 and version_bigger_than(v_remote, v_local):
                 resolve_dict[k] = v_remote
             else:
-                log.warn("Conflicting version found for [{:<{}}], local is [{:<{}}], but remote is [{:<{}}], the sb3 managed version is [{:<{}}]"
-                         .format(k, len_id, ver_local[k], len_ver, ver_remote[k], len_ver, ver_sb3_managed.get(k, 'N/A'), len_ver))
+                log.warn("Conflicting version found for [{:<{}}], local is [{:<{}}], but remote is [{:<{}}], the sb3 managed version is [{:<{}}], it will be set as remote version,"
+                         " change it in conflict_versions.txt if needed.".format(k, len_id, v_local, len_ver, v_remote, len_ver, v_sb3, len_ver))
                 log.warn("")
+                resolve_dict[k] = v_remote
     if local_missing_set:
         local_missing_set.sort()
         len_ver, len_id = cal_len_for_logging_format(local_missing_set, ver_sb3_managed, ver_remote)
@@ -114,19 +114,31 @@ def three_way_merge(ver_local, ver_remote, ver_sb3_managed):
             if v_sb3 != 'N/A' and v_remote == v_sb3:
                 resolve_dict[k] = v_remote
             else:
-                log.warn("Entry existing in remote but not local found for [{:<{}}], remote version is [{:<{}}], the sb3 managed version is [{:<{}}]"
-                         .format(k, len_id, ver_remote[k], len_ver, ver_sb3_managed.get(k, 'N/A'), len_ver))
+                log.warn("Entry existing in remote but not local found for [{:<{}}], remote version is [{:<{}}], the sb3 managed version is [{:<{}}], it will be set as remote version,"
+                         " change it in conflict_versions.txt if needed.".format(k, len_id, v_remote, len_ver, v_sb3, len_ver))
                 log.warn("")
-    for k in remote_missing_set:
+                resolve_dict[k] = v_remote
+    if remote_missing_set:
         remote_missing_set.sort()
         len_ver, len_id = cal_len_for_logging_format(remote_missing_set, ver_local, ver_remote)
         for k in remote_missing_set:
-            log.warn("Entry existing in local but not remote found for [{:<{}}]".format(k, len_id))
+            log.warn("Entry existing in local but not remote found for [{:<{}}], it will be removed, if want to keep, delete the line in conflict_versions.txt".format(k, len_id))
+            remove_list.append(k)
         log.warn("")
-    output_file = open(OUTPUT_FILE, 'w''')
-    for key, value in sorted(resolve_dict.items()):
-        output_file.write('{};{}\n'.format(key, value))
-    output_file.close()
+    return resolve_dict, remove_list
+
+
+def output_versions_file(resolve_dict, remove_list):
+    if resolve_dict or remove_list:
+        output_file = open(OUTPUT_FILE, 'w')
+        for key, value in sorted(resolve_dict.items()):
+            output_file.write('{};{}\n'.format(key, value))
+        for k in sorted(remove_list):
+            output_file.write("#remove;{}".format(k))
+        output_file.close()
+    else:
+        log.warn("Nothing conflict!")
+        return
 
 
 def cal_len_for_logging_format(k_set, ver_local, ver_remote):
@@ -143,10 +155,9 @@ def main():
     change_to_repo_root_dir()
     args = get_args()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    ver_remote_external_deps = dump_versions_from_sb3_branch()
-    ver_local_external_deps = dump_versions_from_local_external_deps()
-    ver_local_sb3_managed_deps = dump_versions_from_sb3_managed_external_deps(args.spring_boot_dependencies_version)
-    three_way_merge(ver_local_external_deps, ver_remote_external_deps, ver_local_sb3_managed_deps)
+    resolve_dict, remove_list = three_way_merge(dump_versions_from_local_external_deps(), dump_versions_from_sb3_branch(),
+                                                dump_versions_from_sb3_managed_external_deps(args.spring_boot_dependencies_version))
+    output_versions_file(resolve_dict, remove_list)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
