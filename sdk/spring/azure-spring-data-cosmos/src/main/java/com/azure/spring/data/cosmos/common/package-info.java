@@ -4,4 +4,4 @@
 /**
  * Azure Event Hubs service abstraction.
  */
-package com.azure.spring.cloud.service.eventhubs;
+package com.azure.spring.data.cosmos.common;

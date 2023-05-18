@@ -405,6 +405,12 @@ the main ServiceBusClientBuilder. -->
             files="com.azure.identity.extensions.jdbc.postgresql.AzurePostgresqlAuthenticationPlugin"/>
 
   <!-- ### begin: Spring related suppression -->
+  <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->
+  <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-data-cosmos[/\\]src[/\\]test[/\\]"/>
+  <suppress checks="MethodName|MemberName|ParameterName" files="src[/\\]test[/\\]java[/\\]com[/\\]azure[/\\]spring[/\\]data[/\\]cosmos[/\\]domain|repository.*.java"/>
+  <suppress checks="EnforceFinalFields" files="com.azure.spring.data.cosmos.core.query.CosmosPageRequest"/>
+  <suppress checks="MethodName" files="com.azure.spring.data.cosmos.config.CosmosConfig.java"/>
+  <suppress checks="MemberName" files="com.azure.spring.data.cosmos.MyItem.java"/>
 
   <!-- The constant name is public static. -->
   <suppress checks="ConstantName" files="com.azure.spring.cloud.config.properties.AppConfigurationProviderProperties"/>

@@ -4,4 +4,4 @@
 /**
  * Spring Cloud Azure's Service Bus JMS extension.
  */
-package com.azure.spring.jms;
+package com.azure.spring.data.cosmos;
