@@ -258,8 +258,6 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <br/>
  *
- * <hr/>
- *
  * @see ConfigurationClientBuilder
  * @see ConfigurationSetting
  * @see FeatureFlagConfigurationSetting

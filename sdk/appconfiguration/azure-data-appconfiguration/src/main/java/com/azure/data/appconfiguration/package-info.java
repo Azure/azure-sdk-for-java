@@ -172,8 +172,6 @@
  *
  * <br/>
  *
- * <hr/>
- *
  * @see com.azure.data.appconfiguration.models.ConfigurationSetting
  * @see com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting
  * @see com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting
