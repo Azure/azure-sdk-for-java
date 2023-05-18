@@ -26,6 +26,7 @@ public class Configs {
      * <pre>
      * 0 - No speculation
      * 1 - Threshold based speculation
+     * 2 - Thompson sampling based speculation
      * </pre>
      */
     public static final String SPECULATION_TYPE = "COSMOS_SPECULATION_TYPE";

@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.SpeculativeProcessor;
+import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.ThompsonSamplingBasedSpeculation;
 import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.ThresholdBasedSpeculation;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
@@ -93,10 +94,19 @@ public class ReplicatedResourceClient {
             useMultipleWriteLocations);
         this.enableReadRequestsFallback = enableReadRequestsFallback;
 
-        if (Configs.getSpeculationType() == SpeculativeProcessor.THRESHOLD_BASED) {
-            this.speculativeProcessor = new ThresholdBasedSpeculation();
-        } else {
-            this.speculativeProcessor = null;
+        switch (Configs.getSpeculationType()) {
+            case SpeculativeProcessor.THRESHOLD_BASED:
+                logger.debug("Using ThresholdBasedSpeculation");
+                this.speculativeProcessor = new ThresholdBasedSpeculation();
+                break;
+            case SpeculativeProcessor.THOMPSON_SAMPLING_BASED:
+                logger.debug("Using ThompsonSamplingBasedSpeculation");
+                this.speculativeProcessor = new ThompsonSamplingBasedSpeculation(this.transportClient
+                    .getGlobalEndpointManager()
+                    .getAvailableReadEndpoints());
+                break;
+            default:
+                this.speculativeProcessor = null;
         }
     }
 
@@ -161,13 +171,8 @@ public class ReplicatedResourceClient {
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
         List<RxDocumentServiceRequest> requests = new ArrayList<>();
 
-        if (speculativeProcessor.shouldIncludeOriginalRequestRegion()) {
-            monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
-            requests.add(request);
-        }
-
         for (URI endpoint : speculativeProcessor.getRegionsToSpeculate(config, this.transportClient
-            .getGlobalEndpointManager().getReadEndpoints())) {
+            .getGlobalEndpointManager().getReadEndpoints(), request.getPartitionKeyRangeIdentity())) {
             if (request.requestContext.locationEndpointToRoute != endpoint) {
                 RxDocumentServiceRequest newRequest = request.clone();
                 newRequest.requestContext.routeToLocation(endpoint);
@@ -177,6 +182,11 @@ public class ReplicatedResourceClient {
             }
         }
 
+        if (monoList.isEmpty() || speculativeProcessor.shouldIncludeOriginalRequestRegion()) {
+            monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
+            requests.add(request);
+        }
+
         return Mono.firstWithValue(monoList).map(storeResponse ->
             {
                 for (RxDocumentServiceRequest r : requests) {
@@ -184,7 +194,8 @@ public class ReplicatedResourceClient {
                     // for the successful request region, we will use the actual latency
                     if (r.getActivityId().toString().equals(storeResponse.getActivityId())) {
                         speculativeProcessor.onResponseReceived(r.requestContext.locationEndpointToRoute,
-                            diagnostics.getDuration());
+                            diagnostics.getDuration(), r.getPartitionKeyRangeIdentity());
+
                     }
                 }
                 return storeResponse;

@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.directconnectivity.speculativeprocessors;
 
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 
 import java.net.URI;
 import java.time.Duration;
@@ -14,7 +15,7 @@ public interface SpeculativeProcessor {
     int THOMPSON_SAMPLING_BASED = 2;
 
     List<URI> getRegionsForPureExploration();
-    List<URI> getRegionsToSpeculate(CosmosEndToEndOperationLatencyPolicyConfig config, List<URI> availableReadEndpoints);
+    List<URI> getRegionsToSpeculate(CosmosEndToEndOperationLatencyPolicyConfig config, List<URI> availableReadEndpoints, PartitionKeyRangeIdentity partitionKeyRangeId);
 
     Duration getThreshold(CosmosEndToEndOperationLatencyPolicyConfig config);
 
@@ -22,5 +23,5 @@ public interface SpeculativeProcessor {
 
     boolean shouldIncludeOriginalRequestRegion();
 
-    void onResponseReceived(URI region, Duration latency);
+    void onResponseReceived(URI region, Duration latency, PartitionKeyRangeIdentity partitionKeyRangeId);
 }
