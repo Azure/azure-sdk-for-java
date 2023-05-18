@@ -700,14 +700,6 @@ public final class ServiceBusClientBuilder implements
 
     // Connection-caching for the V1-Stack.
     private ServiceBusConnectionProcessor getOrCreateConnectionProcessor(MessageSerializer serializer) {
-        if (retryOptions == null) {
-            retryOptions = DEFAULT_RETRY;
-        }
-
-        if (scheduler == null) {
-            scheduler = Schedulers.boundedElastic();
-        }
-
         synchronized (connectionLock) {
             if (sharedConnection == null) {
                 final ConnectionOptions connectionOptions = getConnectionOptions();
@@ -741,6 +733,12 @@ public final class ServiceBusClientBuilder implements
 
     private ConnectionOptions getConnectionOptions() {
         configuration = configuration == null ? Configuration.getGlobalConfiguration().clone() : configuration;
+        if (retryOptions == null) {
+            retryOptions = DEFAULT_RETRY;
+        }
+        if (scheduler == null) {
+            scheduler = Schedulers.boundedElastic();
+        }
         if (credentials == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Credentials have not been set. "
                 + "They can be set using: connectionString(String), connectionString(String, String), "
@@ -785,12 +783,6 @@ public final class ServiceBusClientBuilder implements
 
     // Connection-caching for the V2-Stack.
     private ReactorConnectionCache<ServiceBusReactorAmqpConnection> getOrCreateConnectionCache(MessageSerializer serializer) {
-        if (retryOptions == null) {
-            retryOptions = DEFAULT_RETRY;
-        }
-        if (scheduler == null) {
-            scheduler = Schedulers.boundedElastic();
-        }
         return v2StackSupport.getOrCreateConnectionCache(getConnectionOptions(), serializer, crossEntityTransactions);
     }
 
@@ -1998,6 +1990,9 @@ public final class ServiceBusClientBuilder implements
          */
         public ServiceBusProcessorClient buildProcessorClient() {
             final boolean nonSessionProcessorV2 = v2StackSupport.isNonSessionAsyncReceiveEnabled(configuration);
+            if (nonSessionProcessorV2) {
+                validateReceiverClientBuilder();
+            }
             processorClientOptions.setNonSessionProcessorV2(nonSessionProcessorV2);
             // Build the Processor Client for Non-session receiving.
             return new ServiceBusProcessorClient(serviceBusReceiverClientBuilder,
@@ -2005,6 +2000,16 @@ public final class ServiceBusClientBuilder implements
                     serviceBusReceiverClientBuilder.subscriptionName,
                 Objects.requireNonNull(processMessage, "'processMessage' cannot be null"),
                 Objects.requireNonNull(processError, "'processError' cannot be null"), processorClientOptions);
+        }
+
+        // In V1, the Processor Constructor builds the ServiceBusReceiverAsyncClient eagerly. In V2 Processor, the client
+        // will be built lazily, i.e., when the application calls Processor::start() API. This is a helper method for
+        // V2 Processor build time input validations.
+        private void validateReceiverClientBuilder() {
+            final ServiceBusReceiverClientBuilder builder = serviceBusReceiverClientBuilder;
+            final MessagingEntityType entityType = validateEntityPaths(connectionStringEntityName, builder.topicName, builder.queueName);
+            getEntityPath(entityType, builder.queueName, builder.topicName, builder.subscriptionName, builder.subQueue);
+            getConnectionOptions();
         }
     }
 
