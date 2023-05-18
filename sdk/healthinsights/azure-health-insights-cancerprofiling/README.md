@@ -73,10 +73,6 @@ Infer key cancer attributes such as tumor site, histology, clinical stage TNM ca
 ```Java com.azure.health.insights.cancerprofiling.infercancerprofile
 // Construct Patient
 PatientRecord patient1 = new PatientRecord("patient_id");
-PatientInfo patientInfo = new PatientInfo();
-patientInfo.setBirthDate(LocalDate.parse("1965-12-26"));
-patientInfo.setSex(PatientInfoSex.FEMALE);
-patient1.setInfo(patientInfo);
 LinkedList<PatientDocument> patientDocuments = new LinkedList<>();
 patient1.setData(patientDocuments);
 
