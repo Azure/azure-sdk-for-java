@@ -3,7 +3,6 @@
 
 package com.azure.health.insights.cancerprofiling;
 
-import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -15,9 +14,7 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
-import com.azure.health.insights.cancerprofiling.models.PatientInfoSex;
 import com.azure.health.insights.cancerprofiling.models.ClinicalCodedElement;
-import com.azure.health.insights.cancerprofiling.models.PatientInfo;
 import com.azure.health.insights.cancerprofiling.models.PatientRecord;
 import com.azure.health.insights.cancerprofiling.models.PatientDocument;
 import com.azure.health.insights.cancerprofiling.models.ClinicalDocumentType;
@@ -47,10 +44,6 @@ public class SampleInferCancerProfile {
         // BEGIN: com.azure.health.insights.cancerprofiling.infercancerprofile
         // Construct Patient
         PatientRecord patient1 = new PatientRecord("patient_id");
-        PatientInfo patientInfo = new PatientInfo();
-        patientInfo.setBirthDate(LocalDate.parse("1965-12-26"));
-        patientInfo.setSex(PatientInfoSex.FEMALE);
-        patient1.setInfo(patientInfo);
         LinkedList<PatientDocument> patientDocuments = new LinkedList<>();
         patient1.setData(patientDocuments);
 
