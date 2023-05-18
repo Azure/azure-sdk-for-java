@@ -369,9 +369,7 @@ public class CosmosItemTest extends TestSuiteBase {
             container.createItem(document);
         }
 
-        CosmosQueryRequestOptions cosmosQueryRequestOptions1 = new CosmosQueryRequestOptions();
-        cosmosQueryRequestOptions1.setFeedRange(feedRanges.get(0));
-
+        // query 1 item
         SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -380,6 +378,9 @@ public class CosmosItemTest extends TestSuiteBase {
         stringBuilder.append(" LIMIT 1");
 
         sqlQuerySpec.setQueryText(stringBuilder.toString());
+
+        CosmosQueryRequestOptions cosmosQueryRequestOptions1 = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions1.setFeedRange(feedRanges.get(0));
 
         // extract 1 item id and partition key val from 1st physical partition
         AtomicReference<String> itemId1 = new AtomicReference<>("");
@@ -399,11 +400,9 @@ public class CosmosItemTest extends TestSuiteBase {
                     pkValItem1.set(results.get(0).getString("mypk"));
                 });
 
-
         // extract 1 item id and partition key val from 2nd physical partition
         AtomicReference<String> itemId2 = new AtomicReference<>("");
         AtomicReference<String> pkValItem2 = new AtomicReference<>("");
-
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions2 = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions2.setFeedRange(feedRanges.get(1));
