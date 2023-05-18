@@ -54,20 +54,13 @@ class HttpFaultInjectingTests extends APISpec {
 
         def files = new ArrayList<File>(500)
         for (def i = 0; i < 500; i++) {
-            def downloadFile = File.createTempFile(UUID.randomUUID().toString() + i, ".txt")
-            downloadFile.deleteOnExit()
-            files.add(downloadFile)
+            files.add(File.createTempFile(UUID.randomUUID().toString() + i, ".txt"))
         }
 
         when:
         def successCount = new AtomicInteger()
         files.stream().parallel().forEach {
-            try {
-                downloadClient.downloadToFile(it.getAbsolutePath())
-            } catch (Exception ignored) {
-                // Ignore exceptions thrown but stop processing this run.
-                return
-            }
+            downloadClient.downloadToFile(it.getAbsolutePath())
 
             def actualFileBytes = Files.readAllBytes(it.toPath())
             TestUtils.assertArraysEqual(realFileBytes, actualFileBytes)
@@ -77,6 +70,9 @@ class HttpFaultInjectingTests extends APISpec {
 
         then:
         successCount.get() >= 450
+
+        cleanup:
+        files.forEach {Files.deleteIfExists(it.toPath()) }
     }
 
     // For now a local implementation is here in azure-storage-blob until this is released in azure-core-test.
