@@ -2,6 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +13,6 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE;
 
 /**
  * Azure App Configuration Feature Flag.
@@ -25,7 +27,7 @@ public final class Feature {
     private Map<Integer, FeatureFlagFilter> enabledFor;
 
     @JsonProperty(REQUIREMENT_TYPE)
-    private String requirementType = "Any";
+    private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
     /**
      * Feature Flag object.

@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.implementation.models;
 
+import static com.azure.spring.cloud.feature.management.implementation.FeatureManagementConstants.DEFAULT_REQUIREMENT_TYPE;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,7 +24,7 @@ public class Feature {
     private Boolean evaluate = true;
 
     @JsonProperty("requirement-type")
-    private String requirementType = "Any";;
+    private String requirementType = DEFAULT_REQUIREMENT_TYPE;;
 
     @JsonProperty("enabled-for")
     private Map<Integer, FeatureFilterEvaluationContext> enabledFor;
