@@ -233,10 +233,11 @@ public class ThroughputControlTests extends TestSuiteBase {
         this.ensureContainer();
         String controlContainerId = "tcc" + UUID.randomUUID();
         CosmosAsyncContainer controlContainer = database.getContainer(controlContainerId);
-        database
-            .createContainerIfNotExists(
-                controlContainer.getId(), "/groupId", ThroughputProperties.createManualThroughput(10100))
-            .block();
+
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(controlContainerId, "/groupId");
+        containerProperties.setDefaultTimeToLiveInSeconds(-1);
+
+        database.createContainerIfNotExists(containerProperties, ThroughputProperties.createManualThroughput(10100)).block();
 
         try {
             // The create document in this test usually takes around 6.29RU, pick a RU here relatively close, so to test throttled scenario

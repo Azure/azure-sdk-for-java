@@ -280,6 +280,74 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         }
     }
 
+    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    public void connectionCloseError_NoEndpoint_NoWarmup() {
+        client = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .contentResponseOnWriteEnabled(true)
+            .buildAsyncClient();
+
+        try {
+            // using single partition here so that all write operations will be on the same physical partitions
+            CosmosAsyncContainer singlePartitionContainer = getSharedSinglePartitionCosmosContainer(client);
+
+            // validate one channel exists
+            TestItem createdItem = TestItem.createNewItem();
+            singlePartitionContainer.createItem(createdItem).block();
+
+            RntbdTransportClient rntbdTransportClient = (RntbdTransportClient) ReflectionUtils.getTransportClient(this.client);
+            RntbdEndpoint.Provider provider = ReflectionUtils.getRntbdEndpointProvider(rntbdTransportClient);
+            assertThat(provider.count()).isEqualTo(1);
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isEqualTo(1));
+
+            // now enable the connection error rule which expected to close the connections
+            String ruleId = "connectionErrorRule-close-" + UUID.randomUUID();
+            FaultInjectionRule connectionErrorRule =
+                new FaultInjectionRuleBuilder(ruleId)
+                    .condition(
+                        new FaultInjectionConditionBuilder()
+                            .operationType(FaultInjectionOperationType.CREATE_ITEM)
+                            .build()
+                    )
+                    .result(
+                        FaultInjectionResultBuilders
+                            .getResultBuilder(FaultInjectionConnectionErrorType.CONNECTION_CLOSE)
+                            .interval(Duration.ofSeconds(1))
+                            .threshold(1.0)
+                            .build()
+                    )
+                    .duration(Duration.ofSeconds(2))
+                    .build();
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(singlePartitionContainer, Arrays.asList(connectionErrorRule)).block();
+            Thread.sleep(Duration.ofSeconds(2).toMillis());
+            // validate that a connection is closed by fault injection
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().totalChannelsClosedMetric()).isEqualTo(1));
+            // validate that proactive connection management does not reopen connections
+            // this is because the openConnectionsAndInitCaches flow was not invoked for the client
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.durableEndpointMetrics().getEndpoint().channelsMetrics()).isEqualTo(0));
+            long ruleHitCount = connectionErrorRule.getHitCount();
+            assertThat(ruleHitCount).isGreaterThanOrEqualTo(1);
+            assertThat(connectionErrorRule.getHitCountDetails()).isNull();
+
+            // do another request to open a new connection
+            singlePartitionContainer.createItem(TestItem.createNewItem()).block();
+
+            Thread.sleep(Duration.ofSeconds(2).toMillis());
+            // the configured connection rule should have disabled after 2s, so the connection will remain open
+            // Due to the open connection flow,eventually we might get 1 or 2 channels.
+            provider.list().forEach(rntbdEndpoint -> assertThat(rntbdEndpoint.channelsMetrics()).isLessThanOrEqualTo(2));
+            assertThat(ruleHitCount).isEqualTo(ruleHitCount);
+
+            connectionErrorRule.disable();
+        } catch (InterruptedException ex) {
+            throw new RuntimeException(ex);
+        } finally {
+            safeClose(client);
+        }
+    }
+
     private Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
         Iterator<DatabaseAccountLocation> locationIterator =
                 writeOnly ? databaseAccount.getWritableLocations().iterator() : databaseAccount.getReadableLocations().iterator();
