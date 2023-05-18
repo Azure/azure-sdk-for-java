@@ -25,6 +25,7 @@ public class ThompsonSamplingBasedSpeculation implements SpeculativeProcessor {
     public static final float EXPLORE_PROBABILITY = 0.1f; // 10% of the time explore
     private static final int DEFAULT_WINDOW_SIZE = 10;
     private static final double LOCAL_BIAS = 0.7; // 70 % of the time explore local region
+    private static final boolean SHOULD_ALWAYS_GO_TO_PRIMARY_REGION = true;
     private final List<URI> endpoints;
 
     private final Map<PartitionKeyRangeIdentity, Map<URI, Double>> partitionAlphaMap;
@@ -157,7 +158,7 @@ public class ThompsonSamplingBasedSpeculation implements SpeculativeProcessor {
 
     @Override
     public boolean shouldIncludeOriginalRequestRegion() {
-        return true;
+        return SHOULD_ALWAYS_GO_TO_PRIMARY_REGION;
     }
 
     @Override
