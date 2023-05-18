@@ -2664,26 +2664,25 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
 
                 if (unwrappedThrowable instanceof CosmosException) {
+
                     CosmosException cosmosException = (CosmosException) unwrappedThrowable;
 
                     int statusCode = cosmosException.getStatusCode();
+                    int subStatusCode = cosmosException.getSubStatusCode();
 
                     CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
 
-                    if (statusCode == HttpConstants.StatusCodes.NOTFOUND) {
+                    if (statusCode == HttpConstants.StatusCodes.NOTFOUND && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
+                        FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), cosmosException.getResponseHeaders());
 
-                        if (cosmosException.getSubStatusCode() == HttpConstants.SubStatusCodes.UNKNOWN) {
-                            FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), cosmosException.getResponseHeaders());
+                        diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                                feedResponse.getCosmosDiagnostics(),
+                                Collections.singleton(
+                                        BridgeInternal.getClientSideRequestStatics(diagnostics)
+                                )
+                        );
 
-                            diagnosticsAccessor.addClientSideDiagnosticsToFeed(
-                                    feedResponse.getCosmosDiagnostics(),
-                                    Collections.singleton(
-                                            BridgeInternal.getClientSideRequestStatics(diagnostics)
-                                    )
-                            );
-
-                            return Mono.just(feedResponse);
-                        }
+                        return Mono.just(feedResponse);
                     }
                 }
                 return Mono.error(throwable);
