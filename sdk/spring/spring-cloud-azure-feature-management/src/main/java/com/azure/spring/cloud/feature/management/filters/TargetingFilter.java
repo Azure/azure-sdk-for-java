@@ -163,15 +163,8 @@ public class TargetingFilter implements FeatureFilter {
 
         if (targetingContext.getGroups() != null && audience.getGroups() != null) {
             for (String group : targetingContext.getGroups()) {
-                Optional<GroupRollout> groupRollout = audience.getGroups().stream()
-                    .filter(g -> equals(g.getName(), group)).findFirst();
-
-                if (groupRollout.isPresent()) {
-                    String audienceContextId = targetingContext.getUserId() + "\n" + context.getName() + "\n" + group;
-
-                    if (isTargeted(audienceContextId, groupRollout.get().getRolloutPercentage())) {
-                        return true;
-                    }
+                if (targetGroup(audience, targetingContext, context, group)) {
+                    return true;
                 }
             }
         }
@@ -183,6 +176,21 @@ public class TargetingFilter implements FeatureFilter {
 
     private boolean targetUser(String userId, List<String> users) {
         return userId != null && users != null && users.stream().anyMatch(user -> equals(userId, user));
+    }
+
+    private boolean targetGroup(Audience audience, TargetingFilterContext targetingContext,
+        FeatureFilterEvaluationContext context, String group) {
+        Optional<GroupRollout> groupRollout = audience.getGroups().stream()
+            .filter(g -> equals(g.getName(), group)).findFirst();
+
+        if (groupRollout.isPresent()) {
+            String audienceContextId = targetingContext.getUserId() + "\n" + context.getName() + "\n" + group;
+
+            if (isTargeted(audienceContextId, groupRollout.get().getRolloutPercentage())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean validateTargetingContext(TargetingFilterContext targetingContext) {
