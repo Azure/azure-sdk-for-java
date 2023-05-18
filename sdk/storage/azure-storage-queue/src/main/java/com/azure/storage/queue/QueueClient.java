@@ -6,10 +6,13 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
@@ -27,8 +30,12 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
+
+import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue in Azure Storage Queue.
@@ -54,25 +61,32 @@ import java.util.function.Function;
  */
 @ServiceClient(builder = QueueClientBuilder.class)
 public final class QueueClient {
+    private static final ClientLogger LOGGER = new ClientLogger(QueueClient.class);
     private final QueueAsyncClient client;
     private final AzureQueueStorageImpl azureQueueStorage;
     private final String queueName;
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
-//    private final QueueServiceVersion serviceVersion;
-//    private final QueueMessageEncoding messageEncoding;
 
-    QueueClient(AzureQueueStorageImpl client, String queueName, String accountName, QueueServiceVersion serviceVersion,
+    /**
+     * Creates a QueueClient.
+     * @param azureQueueStorage Client that interacts with the service interfaces.
+     * @param queueName Name of the queue.
+     * @param accountName Name of the account.
+     * @param serviceVersion the {@link QueueServiceVersion}.
+     * @param messageEncoding the {@link QueueMessageEncoding}.
+     * @param asyncClient the async QueueClient.
+     */
+    QueueClient(AzureQueueStorageImpl azureQueueStorage, String queueName, String accountName, QueueServiceVersion serviceVersion,
         QueueMessageEncoding messageEncoding, QueueAsyncClient asyncClient) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.client = asyncClient;
-        this.azureQueueStorage = client;
+        this.azureQueueStorage = azureQueueStorage;
         this.queueName = queueName;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
-
     }
 
     /**
@@ -97,7 +111,7 @@ public final class QueueClient {
      * @return the message encoding the client is using.
      */
     public QueueMessageEncoding getMessageEncoding() {
-        return client.getMessageEncoding();
+        return messageEncoding;
     }
 
     /**
@@ -163,8 +177,15 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> createWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.createWithResponse(metadata, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        Supplier<Response<Void>> operation = () ->
+            this.azureQueueStorage.getQueues().createWithResponse(queueName, null, metadata, null, finalContext);
+
+        try {
+            return timeout != null ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+        } catch (RuntimeException | InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -223,7 +244,22 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> createIfNotExistsWithResponse(Map<String, String> metadata, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(client.createIfNotExistsWithResponse(metadata, context), timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        try {
+            Supplier<Response<Void>> operation = () ->
+                this.azureQueueStorage.getQueues().createWithResponse(queueName, null, metadata, null, finalContext);
+            Response<Void> response = timeout != null ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+            return new SimpleResponse<>(response, true);
+        } catch (QueueStorageException e) {
+            if (e.getStatusCode() == 409) {
+                HttpResponse res = e.getResponse();
+                return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } catch (RuntimeException | InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**

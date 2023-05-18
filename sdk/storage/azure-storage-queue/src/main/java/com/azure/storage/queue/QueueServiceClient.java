@@ -73,7 +73,7 @@ public final class QueueServiceClient {
      * @return the URL of the storage queue
      */
     public String getQueueServiceUrl() {
-        return client.getQueueServiceUrl();
+        return this.azureQueueStorage.getUrl();
     }
 
     /**
