@@ -9,7 +9,7 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorName;
 /** Samples for AzureADAdministrators Get. */
 public final class AzureADAdministratorsGetSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/AzureADAdministratorGet.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/AAD/preview/2021-12-01-preview/examples/AzureADAdministratorGet.json
      */
     /**
      * Sample code: Get an azure ad administrator.

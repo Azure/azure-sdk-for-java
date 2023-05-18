@@ -12,9 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.mysqlflexibleserver.MySqlManager;
-import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ConfigurationInner;
-import com.azure.resourcemanager.mysqlflexibleserver.models.Configuration;
-import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
+import com.azure.resourcemanager.mysqlflexibleserver.models.ValidateBackupResponse;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -25,15 +23,14 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class ConfigurationsUpdateMockTests {
+public final class BackupAndExportsValidateBackupWithResponseMockTests {
     @Test
-    public void testUpdate() throws Exception {
+    public void testValidateBackupWithResponse() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"value\":\"bvmeuecivy\",\"description\":\"ce\",\"defaultValue\":\"jgjrwjueiotwm\",\"dataType\":\"ytdxwit\",\"allowedValues\":\"rjaw\",\"source\":\"system-default\",\"isReadOnly\":\"False\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"x\",\"name\":\"bkpyc\",\"type\":\"klwndnhjdauwhv\"}";
+        String responseStr = "{\"properties\":{\"numberOfContainers\":1242740761}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,17 +58,12 @@ public final class ConfigurationsUpdateMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Configuration response =
+        ValidateBackupResponse response =
             manager
-                .configurations()
-                .update(
-                    "ljuahaquhcdh",
-                    "duala",
-                    "xqpvfadmw",
-                    new ConfigurationInner().withValue("r").withSource(ConfigurationSource.SYSTEM_DEFAULT),
-                    com.azure.core.util.Context.NONE);
+                .backupAndExports()
+                .validateBackupWithResponse("wrtz", "uzgwyzmhtx", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("bvmeuecivy", response.value());
-        Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, response.source());
+        Assertions.assertEquals(1242740761, response.numberOfContainers());
     }
 }

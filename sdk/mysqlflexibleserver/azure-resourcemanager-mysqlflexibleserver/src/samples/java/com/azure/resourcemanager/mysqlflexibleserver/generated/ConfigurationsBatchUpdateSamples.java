@@ -12,7 +12,7 @@ import java.util.Arrays;
 /** Samples for Configurations BatchUpdate. */
 public final class ConfigurationsBatchUpdateSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/ConfigurationsBatchUpdate.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/Configurations/preview/2021-12-01-preview/examples/ConfigurationsBatchUpdate.json
      */
     /**
      * Sample code: ConfigurationList.
