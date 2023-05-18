@@ -39,7 +39,7 @@ public final class NonSessionProcessor {
     private final Consumer<ServiceBusErrorContext> processError;
     private final boolean enableAutoDisposition;
     private boolean isRunning;
-    private MessageStreaming streaming;
+    private RollingMessagePump rollingMessagePump;
 
     NonSessionProcessor(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
         Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
@@ -56,16 +56,16 @@ public final class NonSessionProcessor {
     }
 
     void start() {
-        final MessageStreaming s;
+        final RollingMessagePump p;
         synchronized (lock) {
             if (isRunning) {
                 return;
             }
             isRunning = true;
-            streaming = new MessageStreaming(builder, processMessage, processError, concurrency, enableAutoDisposition);
-            s = streaming;
+            rollingMessagePump = new RollingMessagePump(builder, processMessage, processError, concurrency, enableAutoDisposition);
+            p = rollingMessagePump;
         }
-        s.begin();
+        p.begin();
     }
 
     boolean isRunning() {
@@ -75,15 +75,15 @@ public final class NonSessionProcessor {
     }
 
     void close() {
-        final MessageStreaming s;
+        final RollingMessagePump p;
         synchronized (lock) {
             if (!isRunning) {
                 return;
             }
             isRunning = false;
-            s = streaming;
+            p = rollingMessagePump;
         }
-        s.dispose();
+        p.dispose();
     }
 
     void stop() {
@@ -92,20 +92,19 @@ public final class NonSessionProcessor {
     }
 
     String getIdentifier() {
-        final MessageStreaming s;
+        final RollingMessagePump p;
         synchronized (lock) {
-            s = streaming;
+            p = rollingMessagePump;
         }
-        return s == null ? null : s.getIdentifier();
+        return p == null ? null : p.getIdentifier();
     }
 
     /**
-     * The abstraction to stream messages using {@link ParallelPump}. {@link MessageStreaming} transparently switch
-     * to a new pump to continue streaming when the current pump terminates.
+     * The abstraction to stream messages using {@link MessagePump}. {@link RollingMessagePump} transparently switch
+     * to next {@link MessagePump} to continue streaming when the current pump terminates.
      */
-    private static final class MessageStreaming extends AtomicBoolean {
-        private static final String PUMP_ID_KEY = "pump-id";
-        private static final RuntimeException STREAMING_DISPOSED = new RuntimeException("The Processor closure disposed the streaming.");
+    private static final class RollingMessagePump extends AtomicBoolean {
+        private static final RuntimeException STREAMING_DISPOSED = new RuntimeException("The Processor closure disposed the RollingMessagePump.");
         private static final Duration NEXT_PUMP_BACKOFF = Duration.ofSeconds(5);
         private final ClientLogger logger;
         private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder;
@@ -117,7 +116,9 @@ public final class NonSessionProcessor {
         private final AtomicReference<String> clientIdentifier = new AtomicReference<>();
 
         /**
-         * Instantiate {@link MessageStreaming} to stream messages.
+         * Instantiate {@link RollingMessagePump} that stream messages using {@link MessagePump}.
+         * The {@link RollingMessagePump} rolls to the next {@link MessagePump} to continue streaming when the current
+         * {@link MessagePump} terminates.
          *
          * @param builder The builder to build the client for pulling messages from the broker.
          * @param processMessage The consumer to invoke for each message.
@@ -125,10 +126,10 @@ public final class NonSessionProcessor {
          * @param concurrency The parallelism, i.e., how many invocations of {@code processMessage} should happen in parallel.
          * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
          */
-        MessageStreaming(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
+        RollingMessagePump(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder,
             Consumer<ServiceBusReceivedMessageContext> processMessage, Consumer<ServiceBusErrorContext> processError,
             int concurrency, boolean enableAutoDisposition) {
-            this.logger = new ClientLogger(MessageStreaming.class);
+            this.logger = new ClientLogger(RollingMessagePump.class);
             this.builder = builder;
             this.concurrency = concurrency;
             this.processError = processError;
@@ -137,7 +138,7 @@ public final class NonSessionProcessor {
         }
 
         /**
-         * Begin streaming messages in parallel.
+         * Begin streaming messages.
          *
          * @throws IllegalStateException If the API is called more than once or after the disposal.
          */
@@ -149,7 +150,7 @@ public final class NonSessionProcessor {
             final Disposable d = Mono.defer(() -> {
                 final ServiceBusReceiverAsyncClient client = builder.buildAsyncClient();
                 clientIdentifier.set(client.getIdentifier());
-                final ParallelPump pump = new ParallelPump(client, processMessage, processError, concurrency, enableAutoDisposition);
+                final MessagePump pump = new MessagePump(client, processMessage, processError, concurrency, enableAutoDisposition);
                 return pump.begin();
             }).retryWhen(retrySpecForNextPump()).subscribe();
 
@@ -167,9 +168,9 @@ public final class NonSessionProcessor {
         }
 
         /**
-         * Spec to Retry for the next {@link ParallelPump} with a back-off. If the spec is asked for retry after
-         * the streaming is disposed of (due to {@link NonSessionProcessor} closure), then a {@link RuntimeException}
-         * indicating the disposal state will be emitted.
+         * Retry spec to roll to the next {@link MessagePump} with a back-off. If the spec is asked for retry after
+         * the {@link RollingMessagePump} is disposed of (due to {@link NonSessionProcessor} closure), then an exception
+         * {@link RollingMessagePump#STREAMING_DISPOSED} will be emitted.
          *
          * @return the retry spec.
          */
@@ -181,27 +182,27 @@ public final class NonSessionProcessor {
                     if (error == null) {
                         return monoError(logger, new IllegalStateException("RetrySignal::failure() not expected to be null."));
                     }
-                    if (!(error instanceof PumpTerminatedException)) {
+                    if (!(error instanceof MessagePump.TerminatedException)) {
                         return monoError(logger, new IllegalStateException("RetrySignal::failure() expected to be PumpTerminatedException.", error));
                     }
 
-                    final PumpTerminatedException e = (PumpTerminatedException) error;
+                    final MessagePump.TerminatedException e = (MessagePump.TerminatedException) error;
 
                     if (disposable.isDisposed()) {
-                        e.logWithCause(logger, "The Processor closure disposed the streaming, canceling retry for the next pump.");
+                        e.logWithCause(logger, "The Processor closure disposed the streaming, canceling retry for the next MessagePump.");
                         return Mono.error(STREAMING_DISPOSED);
                     }
 
-                    e.logWithCause(logger, "The current pump is terminated, scheduling retry for the next pump.");
+                    e.logWithCause(logger, "The current MessagePump is terminated, scheduling retry for the next pump.");
 
                     return Mono.delay(NEXT_PUMP_BACKOFF, Schedulers.boundedElastic())
                         .handle((v, sink) -> {
                             if (disposable.isDisposed()) {
                                 e.log(logger,
-                                    "During backoff, The Processor closure disposed the streaming, canceling retry for the next pump.");
+                                    "During backoff, The Processor closure disposed the streaming, canceling retry for the next MessagePump.");
                                 sink.error(STREAMING_DISPOSED);
                             } else {
-                                e.log(logger, "Retrying for the next pump.");
+                                e.log(logger, "Retrying for the next MessagePump.");
                                 sink.next(v);
                             }
                         });
@@ -209,10 +210,11 @@ public final class NonSessionProcessor {
         }
 
         /**
-         * Abstraction to pump messages from a 'ServiceBusReceiverAsyncClient' as long as the client is healthy.
+         * Abstraction to pump messages using a {@link ServiceBusReceiverAsyncClient} as long as the client is healthy.
          */
-        private static final class ParallelPump {
+        private static final class MessagePump {
             private static final AtomicLong COUNTER = new AtomicLong();
+            private static final String PUMP_ID_KEY = "pump-id";
             private static final Duration CONNECTION_STATE_POLL_INTERVAL = Duration.ofSeconds(20);
             private final long  pumpId;
             private final ServiceBusReceiverAsyncClient client;
@@ -227,16 +229,16 @@ public final class NonSessionProcessor {
             private final Scheduler workerScheduler;
 
             /**
-             * Instantiate {@link ParallelPump} that pumps messages emitted by the given {@code client}. The messages
+             * Instantiate {@link MessagePump} that pumps messages emitted by the given {@code client}. The messages
              * are pumped to the {@code processMessage} concurrently with the parallelism equal to {@code concurrency}.
              *
-             * @param client The client capable of emitting messages.
+             * @param client The underlying client to read messages from the broker.
              * @param processMessage The consumer that the pump should invoke for each message.
              * @param processError The consumer that the pump should report the errors.
              * @param concurrency The pumping concurrency, i.e., how many invocations of {@code processMessage} should happen in parallel.
              * @param enableAutoDisposition Indicate if auto-complete or abandon should be enabled.
              */
-            ParallelPump(ServiceBusReceiverAsyncClient client, Consumer<ServiceBusReceivedMessageContext> processMessage,
+            MessagePump(ServiceBusReceiverAsyncClient client, Consumer<ServiceBusReceivedMessageContext> processMessage,
                 Consumer<ServiceBusErrorContext> processError, int concurrency, boolean enableAutoDisposition) {
 
                 this.pumpId = COUNTER.incrementAndGet();
@@ -248,7 +250,7 @@ public final class NonSessionProcessor {
                 loggingContext.put(PUMP_ID_KEY, this.pumpId);
                 loggingContext.put(FULLY_QUALIFIED_NAMESPACE_KEY, this.fqdn);
                 loggingContext.put(ENTITY_PATH_KEY, this.entityPath);
-                this.logger = new ClientLogger(ParallelPump.class, loggingContext);
+                this.logger = new ClientLogger(MessagePump.class, loggingContext);
 
                 this.processMessage = processMessage;
                 this.processError = processError;
@@ -269,7 +271,7 @@ public final class NonSessionProcessor {
             /**
              * Begin pumping messages in parallel, with the parallelism equal to the configured {@code concurrency}.
              *
-             * @return a mono that emits {@link PumpTerminatedException} when the pumping terminates.
+             * @return a mono that emits {@link TerminatedException} when this {@link MessagePump} terminates.
              * The pumping terminates when the underlying client encounters a non-retriable error, the retries exhaust,
              * or rejection when scheduling concurrently.
              */
@@ -279,8 +281,8 @@ public final class NonSessionProcessor {
                     .flatMap(new RunOnWorker(this::handleMessage, workerScheduler), concurrency, 1).then();
 
                 return Mono.firstWithSignal(pumping, terminatePumping)
-                    .onErrorMap(e -> new PumpTerminatedException(pumpId, fqdn, entityPath, e))
-                    .then(Mono.error(PumpTerminatedException.forCompletion(pumpId, fqdn, entityPath)));
+                    .onErrorMap(e -> new TerminatedException(pumpId, fqdn, entityPath, e))
+                    .then(Mono.error(TerminatedException.forCompletion(pumpId, fqdn, entityPath)));
             }
 
             private Mono<Void> pollConnectionState() {
@@ -389,72 +391,72 @@ public final class NonSessionProcessor {
                     // The subscribeOn offloads message handling to a Worker from the Scheduler.
                 }
             }
-        }
-
-        /**
-         * Represents the exception emitted by the mono returned from the {@link ParallelPump#begin()}.
-         * The {@link PumpTerminatedException#getCause()}} indicates the cause for the termination of message pumping.
-         */
-        private static final class PumpTerminatedException extends RuntimeException {
-            static final RuntimeException TERMINAL_COMPLETION = new RuntimeException("The pump reached completion.");
-            private final long pumpId;
-            private final String fqdn;
-            private final String entityPath;
 
             /**
-             * Instantiate {@link PumpTerminatedException} representing termination of a {@link ParallelPump}.
-             *
-             * @param pumpId The unique identifier of the pump that terminated.
-             * @param fqdn The FQDN of the host from which the message was pumping.
-             * @param entityPath The path to the entity within the FQDN streaming message.
-             * @param terminationCause The reason for the termination of the pump.
+             * The exception emitted by the mono returned from the {@link MessagePump#begin()}.
+             * The {@link TerminatedException#getCause()}} indicates the cause for the termination of message pumping.
              */
-            PumpTerminatedException(long pumpId, String fqdn, String entityPath, Throwable terminationCause) {
-                super(terminationCause);
-                this.pumpId = pumpId;
-                this.fqdn = fqdn;
-                this.entityPath = entityPath;
-            }
+            private static final class TerminatedException extends RuntimeException {
+                static final RuntimeException TERMINAL_COMPLETION = new RuntimeException("The MessagePump reached completion.");
+                private final long pumpId;
+                private final String fqdn;
+                private final String entityPath;
 
-            /**
-             * Instantiate {@link PumpTerminatedException} that represents the case when the pump terminates by
-             * running into the completion.
-             *
-             * @param pumpId The unique identifier of the pump that terminated.
-             * @param fqdn The FQDN of the host from which the message was pumping.
-             * @param entityPath The path to the entity within the FQDN streaming message.
-             * @return the {@link PumpTerminatedException}.
-             */
-            static PumpTerminatedException forCompletion(long pumpId, String fqdn, String entityPath) {
-                return new PumpTerminatedException(pumpId, fqdn, entityPath, TERMINAL_COMPLETION);
-            }
+                /**
+                 * Instantiate {@link TerminatedException} representing termination of a {@link MessagePump}.
+                 *
+                 * @param pumpId The unique identifier of the {@link MessagePump} that terminated.
+                 * @param fqdn The FQDN of the host from which the message was pumping.
+                 * @param entityPath The path to the entity within the FQDN streaming message.
+                 * @param terminationCause The reason for the termination of the pump.
+                 */
+                TerminatedException(long pumpId, String fqdn, String entityPath, Throwable terminationCause) {
+                    super(terminationCause);
+                    this.pumpId = pumpId;
+                    this.fqdn = fqdn;
+                    this.entityPath = entityPath;
+                }
 
-            /**
-             * Logs the cause for termination and the given {@code message} along with pump identifier, FQDN and entity path.
-             *
-             * @param logger The logger.
-             * @param message The message to log.
-             */
-            void logWithCause(ClientLogger logger, String message) {
-                logger.atInfo()
-                    .addKeyValue(PUMP_ID_KEY, pumpId)
-                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .log(message, getCause());
-            }
+                /**
+                 * Instantiate {@link TerminatedException} that represents the case when the {@link MessagePump}
+                 * terminates by running into the completion.
+                 *
+                 * @param pumpId The unique identifier of the pump that terminated.
+                 * @param fqdn The FQDN of the host from which the message was pumping.
+                 * @param entityPath The path to the entity within the FQDN streaming message.
+                 * @return the {@link TerminatedException}.
+                 */
+                static TerminatedException forCompletion(long pumpId, String fqdn, String entityPath) {
+                    return new TerminatedException(pumpId, fqdn, entityPath, TERMINAL_COMPLETION);
+                }
 
-            /**
-             * Logs the given {@code message} along with pump identifier, FQDN and entity path.
-             *
-             * @param logger The logger.
-             * @param message The message to log.
-             */
-            void log(ClientLogger logger, String message) {
-                logger.atInfo()
-                    .addKeyValue(PUMP_ID_KEY, pumpId)
-                    .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
-                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
-                    .log(message);
+                /**
+                 * Logs the cause for termination and the given {@code message} along with pump identifier, FQDN and entity path.
+                 *
+                 * @param logger The logger.
+                 * @param message The message to log.
+                 */
+                void logWithCause(ClientLogger logger, String message) {
+                    logger.atInfo()
+                        .addKeyValue(PUMP_ID_KEY, pumpId)
+                        .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .log(message, getCause());
+                }
+
+                /**
+                 * Logs the given {@code message} along with pump identifier, FQDN and entity path.
+                 *
+                 * @param logger The logger.
+                 * @param message The message to log.
+                 */
+                void log(ClientLogger logger, String message) {
+                    logger.atInfo()
+                        .addKeyValue(PUMP_ID_KEY, pumpId)
+                        .addKeyValue(FULLY_QUALIFIED_NAMESPACE_KEY, fqdn)
+                        .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                        .log(message);
+                }
             }
         }
     }
