@@ -3,10 +3,9 @@
 
 package com.azure.core.implementation;
 
-import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
-import com.azure.core.http.policy.FixedDelay;
-import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.util.FluxUtil;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Flux;
@@ -27,7 +26,7 @@ public class RetriableDownloadFluxTests {
     @Test
     public void initialDownloadIsEmpty() {
         RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(Flux::empty,
-            (ignoredThrowable, ignoredOffset) -> Flux.empty(), createDefaultRetryStrategy(0), 0L);
+            (ignoredThrowable, ignoredOffset) -> Flux.empty(), createDefaultRetryOptions(0), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .assertNext(bytes -> assertEquals(0, bytes.length))
@@ -37,7 +36,7 @@ public class RetriableDownloadFluxTests {
     @Test
     public void initialDownloadIsAnErrorButRetries() {
         RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> Flux.error(new RuntimeException()),
-            (ignoredThrowable, ignoredOffset) -> Flux.empty(), createDefaultRetryStrategy(1), 0L);
+            (ignoredThrowable, ignoredOffset) -> Flux.empty(), createDefaultRetryOptions(1), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .assertNext(bytes -> assertEquals(0, bytes.length))
@@ -55,7 +54,7 @@ public class RetriableDownloadFluxTests {
                 } else {
                     return Flux.empty();
                 }
-            }, createDefaultRetryStrategy(2), 0L);
+            }, createDefaultRetryOptions(2), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .assertNext(bytes -> assertEquals(0, bytes.length))
@@ -65,7 +64,7 @@ public class RetriableDownloadFluxTests {
     @Test
     public void initialDownloadIsAnErrorAndNoRetriesAreAvailable() {
         RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> Flux.error(new RuntimeException()),
-            (ignoredThrowable, ignoredOffset) -> Flux.empty(), createDefaultRetryStrategy(0), 0L);
+            (ignoredThrowable, ignoredOffset) -> Flux.empty(), createDefaultRetryOptions(0), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .verifyError(RuntimeException.class);
@@ -80,7 +79,7 @@ public class RetriableDownloadFluxTests {
                 }
 
                 return Flux.empty();
-            }, createDefaultRetryStrategy(1), 0L);
+            }, createDefaultRetryOptions(1), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .verifyError(RuntimeException.class);
@@ -95,7 +94,7 @@ public class RetriableDownloadFluxTests {
                 }
 
                 return Flux.error(new RuntimeException());
-            }, createDefaultRetryStrategy(1), 0L);
+            }, createDefaultRetryOptions(1), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .verifyError(RuntimeException.class);
@@ -104,7 +103,8 @@ public class RetriableDownloadFluxTests {
     @Test
     public void allRetriesAreConsumed() {
         RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> Flux.error(new RuntimeException()),
-            (throwable, offset) -> Flux.error(new RuntimeException()), new FixedDelay(100, Duration.ofMillis(1)), 0L);
+            (throwable, offset) -> Flux.error(new RuntimeException()),
+            new RetryOptions(new FixedDelayOptions(100, Duration.ofMillis(1))), 0L);
 
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(retriableDownloadFlux))
             .verifyError(RuntimeException.class);
@@ -113,7 +113,7 @@ public class RetriableDownloadFluxTests {
     @Test
     public void multipleSubscriptionsWorkAppropriately() {
         RetriableDownloadFlux retriableDownloadFlux = new RetriableDownloadFlux(() -> generateFromOffset(0),
-            (throwable, offset) -> generateFromOffset(offset), createDefaultRetryStrategy(1), 0L);
+            (throwable, offset) -> generateFromOffset(offset), createDefaultRetryOptions(1), 0L);
 
         byte[] expected = new byte[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 
@@ -137,7 +137,7 @@ public class RetriableDownloadFluxTests {
                 }
 
                 return generateFromOffset(offset);
-            }), createDefaultRetryStrategy(1), 5L);
+            }), createDefaultRetryOptions(1), 5L);
 
         byte[] expected = new byte[]{0, 0, 0, 0, 0};
 
@@ -158,7 +158,7 @@ public class RetriableDownloadFluxTests {
         });
     }
 
-    private static RetryStrategy createDefaultRetryStrategy(int maxRetries) {
-        return new ExponentialBackoff(new ExponentialBackoffOptions().setMaxRetries(maxRetries));
+    private static RetryOptions createDefaultRetryOptions(int maxRetries) {
+        return new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(maxRetries));
     }
 }
