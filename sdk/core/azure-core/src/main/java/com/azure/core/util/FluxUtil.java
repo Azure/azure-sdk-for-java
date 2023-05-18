@@ -5,10 +5,8 @@ package com.azure.core.util;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.RetryOptions;
-import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber;
