@@ -1,6 +1,6 @@
 ############################################################################################################################################
 # This script is used to sync 3rd party dependencies from `.\sdk\spring\spring_boot_SPRING_BOOT_VERSION_managed_external_dependencies.txt`
-# to `eng/versioning/external_dependencies.txt`.
+# to `eng/versioning/external_dependencies.txt` and update comments at the beginning of `eng/versioning/external_dependencies.txt`.
 #
 # How to use this script.
 #  1. Get `SPRING_BOOT_VERSION` from https://github.com/spring-projects/spring-boot/tags.
@@ -54,7 +54,9 @@ def main():
     change_to_repo_root_dir()
     args = get_args()
     log.debug('Current working directory = {}.'.format(os.getcwd()))
-    sync_external_dependencies(get_spring_boot_managed_external_dependencies_file_name(args.spring_boot_dependencies_version), EXTERNAL_DEPENDENCIES_FILE)
+    file_name = get_spring_boot_managed_external_dependencies_file_name(args.spring_boot_dependencies_version)
+    sync_external_dependencies(file_name, EXTERNAL_DEPENDENCIES_FILE)
+    update_external_dependencies_comment(file_name, EXTERNAL_DEPENDENCIES_FILE)
     elapsed_time = time.time() - start_time
     log.info('elapsed_time = {}'.format(elapsed_time))
 
@@ -100,6 +102,15 @@ def sync_external_dependencies(source_file, target_file):
                 else:
                     file.write(line)
             file.write('\n')
+
+
+def update_external_dependencies_comment(source_name, target_file):
+    with open(target_file, 'r', encoding = 'utf-8') as file:
+        lines = file.readlines()
+        lines[1] = '# make sure the version is same to {}\n'.format(source_name)
+        lines[2] = '# If your version is different from {},\n'.format(source_name)
+    with open(target_file, 'w', encoding = 'utf-8') as file:
+        file.writelines(lines)
 
 
 def version_bigger_than(source_version, target_version):
