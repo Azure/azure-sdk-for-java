@@ -379,12 +379,12 @@ public class CosmosItemTest extends TestSuiteBase {
 
         sqlQuerySpec.setQueryText(stringBuilder.toString());
 
-        CosmosQueryRequestOptions cosmosQueryRequestOptions1 = new CosmosQueryRequestOptions();
-        cosmosQueryRequestOptions1.setFeedRange(feedRanges.get(0));
-
         // extract 1 item id and partition key val from 1st physical partition
         AtomicReference<String> itemId1 = new AtomicReference<>("");
         AtomicReference<String> pkValItem1 = new AtomicReference<>("");
+
+        CosmosQueryRequestOptions cosmosQueryRequestOptions1 = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions1.setFeedRange(feedRanges.get(0));
 
         container
                 .queryItems(sqlQuerySpec, cosmosQueryRequestOptions1, InternalObjectNode.class)
