@@ -201,8 +201,9 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // stop continuous dtmf
             callMediaAsync.stopContinuousDtmfRecognition(caller).block();
-            ContinuousDtmfRecognitionStopped continuousDtmfRecognitionStopped = waitForEvent
-                (ContinuousDtmfRecognitionStopped.class, callerConnectionId, Duration.ofSeconds(10));
+            ContinuousDtmfRecognitionStopped continuousDtmfRecognitionStopped = waitForEvent(
+                ContinuousDtmfRecognitionStopped.class, callerConnectionId, Duration.ofSeconds(10)
+            );
             assertNotNull(continuousDtmfRecognitionStopped);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
