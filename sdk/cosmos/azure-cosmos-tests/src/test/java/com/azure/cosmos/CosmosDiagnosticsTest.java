@@ -314,7 +314,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             containerDirect.createItem(internalObjectNode);
             fail("expected 409");
         } catch (CosmosException e) {
-            validateDirectModeDiagnosticsOnException(e.getDiagnostics(), this.directClientUserAgent);
+            validateDirectModeDiagnosticsOnException(e, this.directClientUserAgent);
         }
     }
 
@@ -618,7 +618,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
     public void directDiagnosticsOnCancelledOperation(OperationType operationType) {
 
         CosmosAsyncClient client = null;
-        FaultInjectionRule responseDelayRule = null;
+        FaultInjectionRule faultInjectionRule = null;
 
         try {
             client = new CosmosClientBuilder()
@@ -631,7 +631,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             CosmosAsyncContainer container =
                 client.getDatabase(containerDirect.asyncContainer.getDatabase().getId()).getContainer(containerDirect.getId());
 
-            responseDelayRule =
+            faultInjectionRule =
                 new FaultInjectionRuleBuilder("responseDelay")
                     .condition(new FaultInjectionConditionBuilder().build())
                     .result(
@@ -639,10 +639,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
                             .delay(Duration.ofSeconds(2))
                             .build()
                     )
-                    .hitLimit(10)
                     .build();
 
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(responseDelayRule)).block();
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(container, Arrays.asList(faultInjectionRule)).block();
 
             try {
                 switch(operationType) {
@@ -675,7 +674,9 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             }
 
         } finally {
-            responseDelayRule.disable();
+            if (faultInjectionRule != null) {
+                faultInjectionRule.disable();
+            }
             safeClose(client);
         }
     }
@@ -714,7 +715,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         isValidJSON(diagnostics);
     }
 
-    private void validateDirectModeDiagnosticsOnException(CosmosDiagnostics cosmosDiagnostics, String userAgent) {
+    private void validateDirectModeDiagnosticsOnException(CosmosException cosmosException, String userAgent) {
+        CosmosDiagnostics cosmosDiagnostics = cosmosException.getDiagnostics();
         String diagnosticsString = cosmosDiagnostics.toString();
         assertThat(diagnosticsString).contains("\"backendLatencyInMs\"");
         assertThat(diagnosticsString).contains("\"userAgent\":\"" + userAgent + "\"");
@@ -724,6 +726,11 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         assertThat(diagnosticsString).doesNotContain("\"exceptionResponseHeaders\": \"{}\"");
         validateTransportRequestTimelineDirect(diagnosticsString);
         validateChannelStatistics(cosmosDiagnostics);
+
+        if (!(cosmosException instanceof OperationCancelledException)) {
+            assertThat(diagnosticsString).doesNotContain("\"statusCode\":408");
+            assertThat(diagnosticsString).doesNotContain("\"subStatusCode\":20008");
+        }
     }
 
     private void validateDirectModeQueryDiagnostics(String diagnostics, String userAgent) {

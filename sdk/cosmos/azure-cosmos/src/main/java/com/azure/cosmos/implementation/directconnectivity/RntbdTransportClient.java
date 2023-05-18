@@ -359,6 +359,8 @@ public class RntbdTransportClient extends TransportClient {
 
             return cosmosException;
         }).doFinally(signalType -> {
+            // If the signal type is not cancel(which means success or error), we do not need to tracking the diagnostics here
+            // as the downstream will capture it
             if (signalType != SignalType.CANCEL) {
                 return;
             }
@@ -366,20 +368,25 @@ public class RntbdTransportClient extends TransportClient {
             // Since reactor-core 3.4.23, if the Mono.fromCompletionStage is cancelled, then it will also cancel the internal future
             // But the stated behavior may change in later versions (https://github.com/reactor/reactor-core/issues/3235).
             // In order to keep consistent behavior, we internally will always cancel the future.
-            record.cancel(true);
+            //
+            // Any of the reactor operators can terminate with a cancel signal instead of error signal
+            // For example collectList, Flux.merge, takeUntil
+            // We should only record cancellation diagnostics if the signal is cancelled and the record is cancelled
+            if (record.isCancelled()) {
+                record.cancel(true);
 
-            // When the request got cancelled, in order to capture the details in the diagnostics, fake a OperationCancelledException
-            OperationCancelledException operationCancelledException =
-                new OperationCancelledException(record.toString(), record.args().physicalAddressUri().getURI());
+                // When the request got cancelled, in order to capture the details in the diagnostics, fake a OperationCancelledException
+                OperationCancelledException operationCancelledException =
+                    new OperationCancelledException(record.toString(), record.args().physicalAddressUri().getURI());
 
-            ImplementationBridgeHelpers
-                .CosmosExceptionHelper
-                .getCosmosExceptionAccessor()
-                .setRequestUri(operationCancelledException, addressUri);
-            this.populateExceptionWithRequestDetails(operationCancelledException, record);
+                ImplementationBridgeHelpers
+                    .CosmosExceptionHelper
+                    .getCosmosExceptionAccessor()
+                    .setRequestUri(operationCancelledException, addressUri);
+                this.populateExceptionWithRequestDetails(operationCancelledException, record);
 
-            request.requestContext.rntbdCancelledRequestMap.put(String.valueOf(record.transportRequestId()), operationCancelledException);
-
+                request.requestContext.rntbdCancelledRequestMap.put(String.valueOf(record.transportRequestId()), operationCancelledException);
+            }
         }).contextWrite(reactorContext);
     }
 

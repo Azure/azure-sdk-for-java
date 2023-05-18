@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.TrafficController;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class TrafficControllerInterfacesGetByResourceGroupWithResponseMock
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"configurationEndpoints\":[\"wnfnbacf\",\"onlebxetqgtzxdpn\"],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Failed\"},\"location\":\"feallnwsu\",\"tags\":{\"gnzscxaqwo\":\"njampm\",\"ase\":\"chcbonqvpkvlrxnj\",\"enjbdlwtgrhp\":\"pheoflokeyy\"},\"id\":\"jp\",\"name\":\"umasxazjpq\",\"type\":\"e\"}";
+            "{\"properties\":{\"configurationEndpoints\":[\"yqjpkcatt\"],\"frontends\":[],\"associations\":[],\"provisioningState\":\"Failed\"},\"location\":\"zsqpjhvmdajvny\",\"tags\":{\"hy\":\"nqecanoaeup\",\"cma\":\"ltrpmopj\",\"kthfui\":\"u\"},\"id\":\"aodsfcpkv\",\"name\":\"odpuozmyzydag\",\"type\":\"uaxbezyiuokkt\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,10 +62,10 @@ public final class TrafficControllerInterfacesGetByResourceGroupWithResponseMock
         TrafficController response =
             manager
                 .trafficControllerInterfaces()
-                .getByResourceGroupWithResponse("c", "pmivkwlzu", Context.NONE)
+                .getByResourceGroupWithResponse("hcjrefovgmk", "sle", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("feallnwsu", response.location());
-        Assertions.assertEquals("njampm", response.tags().get("gnzscxaqwo"));
+        Assertions.assertEquals("zsqpjhvmdajvny", response.location());
+        Assertions.assertEquals("nqecanoaeup", response.tags().get("hy"));
     }
 }

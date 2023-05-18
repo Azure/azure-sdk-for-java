@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Operation;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"pmouexhdz\",\"isDataAction\":false,\"display\":{\"provider\":\"ojnxqbzvdd\",\"resource\":\"wndeicbtwnp\",\"operation\":\"oqvuhr\",\"description\":\"f\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
+            "{\"value\":[{\"name\":\"bcypmi\",\"isDataAction\":false,\"display\":{\"provider\":\"uvcc\",\"resource\":\"nfnbacfionlebxe\",\"operation\":\"gtzxdpn\",\"description\":\"qqwx\"},\"origin\":\"system\",\"actionType\":\"Internal\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +59,6 @@ public final class OperationsListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Operation> response = manager.operations().list(Context.NONE);
+        PagedIterable<Operation> response = manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
