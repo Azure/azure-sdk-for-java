@@ -105,11 +105,9 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(
             String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
-        if (this.openAIServiceClient != null) {
-            return this.openAIServiceClient.getEmbeddingsWithResponse(
-                deploymentId, embeddingsOptions, requestOptions);
-        }
-        return this.serviceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions);
+        return openAIServiceClient != null
+            ? openAIServiceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions)
+            : serviceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions);
     }
 
     /**
@@ -195,11 +193,9 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(
             String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
-        if (this.openAIServiceClient != null) {
-            return this.openAIServiceClient.getCompletionsWithResponse(
-                deploymentId, completionsOptions, requestOptions);
-        }
-        return this.serviceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions);
+        return openAIServiceClient != null
+            ? openAIServiceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions)
+            : serviceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions);
     }
 
     /**
@@ -277,11 +273,9 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(
             String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
-        if (this.openAIServiceClient != null) {
-            return this.openAIServiceClient.getChatCompletionsWithResponse(
-                deploymentId, chatCompletionsOptions, requestOptions);
-        }
-        return this.serviceClient.getChatCompletionsWithResponse(deploymentId, chatCompletionsOptions, requestOptions);
+        return openAIServiceClient != null
+            ? openAIServiceClient.getChatCompletionsWithResponse(deploymentId, chatCompletionsOptions, requestOptions)
+            : serviceClient.getChatCompletionsWithResponse(deploymentId, chatCompletionsOptions, requestOptions);
     }
 
     /**
