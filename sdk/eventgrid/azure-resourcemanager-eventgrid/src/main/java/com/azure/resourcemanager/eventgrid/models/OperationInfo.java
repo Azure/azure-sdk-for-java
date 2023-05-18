@@ -34,6 +34,10 @@ public final class OperationInfo {
     @JsonProperty(value = "description")
     private String description;
 
+    /** Creates an instance of OperationInfo class. */
+    public OperationInfo() {
+    }
+
     /**
      * Get the provider property: Name of the provider.
      *

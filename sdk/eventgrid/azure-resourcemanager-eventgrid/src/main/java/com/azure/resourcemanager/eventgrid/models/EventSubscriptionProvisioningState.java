@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventSubscriptionProvisioningState. */
+/** Provisioning state of the event subscription. */
 public final class EventSubscriptionProvisioningState extends ExpandableStringEnum<EventSubscriptionProvisioningState> {
     /** Static value Creating for EventSubscriptionProvisioningState. */
     public static final EventSubscriptionProvisioningState CREATING = fromString("Creating");
@@ -30,6 +30,15 @@ public final class EventSubscriptionProvisioningState extends ExpandableStringEn
 
     /** Static value AwaitingManualAction for EventSubscriptionProvisioningState. */
     public static final EventSubscriptionProvisioningState AWAITING_MANUAL_ACTION = fromString("AwaitingManualAction");
+
+    /**
+     * Creates a new instance of EventSubscriptionProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventSubscriptionProvisioningState() {
+    }
 
     /**
      * Creates or finds a EventSubscriptionProvisioningState from its string representation.
