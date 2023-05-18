@@ -5,6 +5,9 @@ package com.azure.core.util;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.policy.ExponentialBackoff;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.implementation.AsynchronousByteChannelWriteSubscriber;
@@ -198,7 +201,8 @@ public final class FluxUtil {
      */
     public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
         BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries) {
-        return createRetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, 0L);
+        return createRetriableDownloadFlux(downloadSupplier, onDownloadErrorResume,
+            createDefaultRetryStrategy(maxRetries), 0L);
     }
 
     /**
@@ -213,7 +217,29 @@ public final class FluxUtil {
      */
     public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
         BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, int maxRetries, long position) {
-        return new RetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, maxRetries, position);
+        return createRetriableDownloadFlux(downloadSupplier, onDownloadErrorResume,
+            createDefaultRetryStrategy(maxRetries), position);
+    }
+
+    private static RetryStrategy createDefaultRetryStrategy(int maxRetries) {
+        return new ExponentialBackoff(new ExponentialBackoffOptions().setMaxRetries(Math.max(0, maxRetries)));
+    }
+
+    /**
+     * Creates a {@link Flux} that is capable of resuming a download by applying retry logic when an error occurs.
+     *
+     * @param downloadSupplier Supplier of the initial download.
+     * @param onDownloadErrorResume {@link BiFunction} of {@link Throwable} and {@link Long} which is used to resume
+     * downloading when an error occurs.
+     * @param retryStrategy The options for retrying.
+     * @param position The initial offset for the download.
+     * @return A {@link Flux} that downloads reliably.
+     */
+    public static Flux<ByteBuffer> createRetriableDownloadFlux(Supplier<Flux<ByteBuffer>> downloadSupplier,
+        BiFunction<Throwable, Long, Flux<ByteBuffer>> onDownloadErrorResume, RetryStrategy retryStrategy,
+        long position) {
+        RetryStrategy strategy = retryStrategy == null ? new ExponentialBackoff() : retryStrategy;
+        return new RetriableDownloadFlux(downloadSupplier, onDownloadErrorResume, strategy, position);
     }
 
     /**
