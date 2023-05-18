@@ -44,7 +44,6 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 import java.time.Duration;
@@ -452,7 +451,7 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
                 )
                 .result(
                     FaultInjectionResultBuilders
-                        .getResultBuilder(FaultInjectionServerErrorType.GONE)
+                        .getResultBuilder(FaultInjectionServerErrorType.TOO_MANY_REQUEST) // using a server error which will be applied on the full replica path
                         .times(1)
                         .build()
                 )
@@ -477,8 +476,8 @@ public class FaultInjectionServerErrorRuleTests extends TestSuiteBase {
         this.validateFaultInjectionRuleApplied(
             cosmosDiagnostics,
             OperationType.Read,
-            HttpConstants.StatusCodes.GONE,
-            HttpConstants.SubStatusCodes.SERVER_GENERATED_410,
+            HttpConstants.StatusCodes.TOO_MANY_REQUESTS,
+            HttpConstants.SubStatusCodes.UNKNOWN,
             feedRangeRuleId,
             true
         );
