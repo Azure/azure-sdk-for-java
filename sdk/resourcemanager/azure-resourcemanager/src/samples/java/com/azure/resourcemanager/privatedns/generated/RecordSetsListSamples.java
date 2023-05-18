@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for RecordSets List. */
 public final class RecordSetsListSamples {
     /*
@@ -22,6 +20,6 @@ public final class RecordSetsListSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .list("resourceGroup1", "privatezone1.com", null, null, Context.NONE);
+            .list("resourceGroup1", "privatezone1.com", null, null, com.azure.core.util.Context.NONE);
     }
 }

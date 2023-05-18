@@ -22,6 +22,13 @@ public class ProjectUpdateProperties {
     @JsonProperty(value = "description")
     private String description;
 
+    /*
+     * When specified, limits the maximum number of Dev Boxes a single user can create across all pools in the project.
+     * This will have no effect on existing Dev Boxes when reduced.
+     */
+    @JsonProperty(value = "maxDevBoxesPerUser")
+    private Integer maxDevBoxesPerUser;
+
     /** Creates an instance of ProjectUpdateProperties class. */
     public ProjectUpdateProperties() {
     }
@@ -63,6 +70,28 @@ public class ProjectUpdateProperties {
      */
     public ProjectUpdateProperties withDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the maxDevBoxesPerUser property: When specified, limits the maximum number of Dev Boxes a single user can
+     * create across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
+     *
+     * @return the maxDevBoxesPerUser value.
+     */
+    public Integer maxDevBoxesPerUser() {
+        return this.maxDevBoxesPerUser;
+    }
+
+    /**
+     * Set the maxDevBoxesPerUser property: When specified, limits the maximum number of Dev Boxes a single user can
+     * create across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
+     *
+     * @param maxDevBoxesPerUser the maxDevBoxesPerUser value to set.
+     * @return the ProjectUpdateProperties object itself.
+     */
+    public ProjectUpdateProperties withMaxDevBoxesPerUser(Integer maxDevBoxesPerUser) {
+        this.maxDevBoxesPerUser = maxDevBoxesPerUser;
         return this;
     }
 

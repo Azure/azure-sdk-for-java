@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -84,7 +85,7 @@ public class RoomsClientTest extends RoomsTestBase {
         String roomId = createCommunicationRoom.getRoomId();
 
         // Test delete room without response
-        Void deleteResponse = roomsClient.deleteRoom(roomId);
+        roomsClient.deleteRoom(roomId);
     }
 
     @ParameterizedTest
@@ -114,6 +115,35 @@ public class RoomsClientTest extends RoomsTestBase {
         Response<CommunicationRoom> getRoomResponse = roomsClient.getRoomWithResponse(roomId, Context.NONE);
         assertHappyPath(getRoomResponse, 200);
 
+        Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
+        assertEquals(deleteResponse.getStatusCode(), 204);
+    }
+
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void listRoomTestFirstRoomIsNotNullThenDeleteRoomWithOutResponse(HttpClient httpClient) {
+        roomsClient = setupSyncClient(httpClient, "listRoomTestFirstRoomIsNotNullThenDeleteRoomWithOutResponse");
+        assertNotNull(roomsClient);
+
+        // Create empty room
+        CreateRoomOptions createRoomOptions = new CreateRoomOptions()
+                .setValidFrom(VALID_FROM)
+                .setValidUntil(VALID_UNTIL);
+
+        CommunicationRoom createCommunicationRoom = roomsClient.createRoom(createRoomOptions);
+        assertHappyPath(createCommunicationRoom);
+
+        String roomId = createCommunicationRoom.getRoomId();
+
+        // Check created room coun
+        PagedIterable<CommunicationRoom> listRoomResponse = roomsClient.listRooms();
+
+        List<CommunicationRoom> rooms = listRoomResponse.stream().collect(Collectors.toList());
+
+        assertHappyPath(rooms.get(0));
+
+        // Delete Room
         Response<Void> deleteResponse = roomsClient.deleteRoomWithResponse(roomId, Context.NONE);
         assertEquals(deleteResponse.getStatusCode(), 204);
     }

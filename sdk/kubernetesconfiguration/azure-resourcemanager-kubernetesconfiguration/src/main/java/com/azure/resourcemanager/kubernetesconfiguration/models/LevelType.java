@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LevelType. */
+/** Level of the status. */
 public final class LevelType extends ExpandableStringEnum<LevelType> {
     /** Static value Error for LevelType. */
     public static final LevelType ERROR = fromString("Error");
@@ -18,6 +18,15 @@ public final class LevelType extends ExpandableStringEnum<LevelType> {
 
     /** Static value Information for LevelType. */
     public static final LevelType INFORMATION = fromString("Information");
+
+    /**
+     * Creates a new instance of LevelType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LevelType() {
+    }
 
     /**
      * Creates or finds a LevelType from its string representation.
@@ -30,7 +39,11 @@ public final class LevelType extends ExpandableStringEnum<LevelType> {
         return fromString(name, LevelType.class);
     }
 
-    /** @return known LevelType values. */
+    /**
+     * Gets known LevelType values.
+     *
+     * @return known LevelType values.
+     */
     public static Collection<LevelType> values() {
         return values(LevelType.class);
     }

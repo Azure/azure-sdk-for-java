@@ -4,8 +4,8 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
 import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
+import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for ProjectEnvironmentTypes CreateOrUpdate. */
 public final class ProjectEnvironmentTypesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/ProjectEnvironmentTypes_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/ProjectEnvironmentTypes_Put.json
      */
     /**
      * Sample code: ProjectEnvironmentTypes_CreateOrUpdate.
@@ -39,7 +39,7 @@ public final class ProjectEnvironmentTypesCreateOrUpdateSamples {
                             "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/identityGroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testidentity1",
                             new UserAssignedIdentity())))
             .withDeploymentTargetId("/subscriptions/00000000-0000-0000-0000-000000000000")
-            .withStatus(EnableStatus.ENABLED)
+            .withStatus(EnvironmentTypeEnableStatus.ENABLED)
             .withCreatorRoleAssignment(
                 new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
                     .withRoles(mapOf("4cbf0b6c-e750-441c-98a7-10da8387e4d6", new EnvironmentRole())))
