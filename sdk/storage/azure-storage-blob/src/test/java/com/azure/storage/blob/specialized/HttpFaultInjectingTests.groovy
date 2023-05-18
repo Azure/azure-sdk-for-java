@@ -38,7 +38,7 @@ class HttpFaultInjectingTests extends APISpec {
      */
     def "download to file with fault injection"() {
         setup:
-        def realFileBytes = new byte[9 + Constants.MB - 1]
+        def realFileBytes = new byte[9 * Constants.MB - 1]
         ThreadLocalRandom.current().nextBytes(realFileBytes)
 
         def containerName = generateContainerName()
@@ -53,24 +53,21 @@ class HttpFaultInjectingTests extends APISpec {
             .httpClient(new HttpFaultInjectingHttpClient(getHttpClient()))
             .buildClient()
 
-        expect:
+        when:
         def successCount = new AtomicInteger()
         IntStream.range(0, 500).parallel().forEach {
             def downloadFile = File.createTempFile(UUID.randomUUID().toString(), ".txt")
             downloadFile.deleteOnExit()
 
-            try {
-                downloadClient.downloadToFile(downloadFile.getAbsolutePath())
-            } catch (Exception ignored) {
-                // Ignore the download error exception.
-            }
+            downloadClient.downloadToFile(downloadFile.getAbsolutePath())
 
             def actualFileBytes = Files.readAllBytes(downloadFile.toPath())
             TestUtils.assertArraysEqual(realFileBytes, actualFileBytes)
             successCount.incrementAndGet()
         }
 
-        assert successCount.get() >= 450
+        then:
+        successCount.get() >= 450
     }
 
     // For now a local implementation is here in azure-storage-blob until this is released in azure-core-test.
