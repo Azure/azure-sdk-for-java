@@ -67,7 +67,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
     @Override
     public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
         return Mono.<Void>create(sink -> bodyIntern().subscribe(
-            new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, getBodySize())))
+            new ByteBufWriteSubscriber(byteBuffer -> channel.write(byteBuffer).get(), sink, getContentLength())))
             .doFinally(ignored -> close());
     }
 
@@ -89,7 +89,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         // operation gets scheduled on one thread and the ByteBuf release happens on another, leaving the write
         // operation racing to complete before the release happens. With all that said, leave this as subscribeOn.
         Mono.<Void>create(sink -> bodyIntern().subscribe(
-            new ByteBufWriteSubscriber(channel::write, sink, getBodySize())))
+            new ByteBufWriteSubscriber(channel::write, sink, getContentLength())))
             .subscribeOn(Schedulers.boundedElastic())
             .doFinally(ignored -> close())
             .block();
@@ -109,7 +109,7 @@ public final class NettyAsyncHttpResponse extends NettyAsyncHttpResponseBase {
         return reactorNettyConnection;
     }
 
-    private Long getBodySize() {
+    private Long getContentLength() {
         String contentLength = getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
         if (contentLength == null) {
             return null;
