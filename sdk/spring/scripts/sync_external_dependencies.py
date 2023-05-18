@@ -24,6 +24,7 @@ from packaging.version import parse
 from log import log
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
+SPECIAL_VERSION_LIST = ['.jre', '.Final', '.RELEASE', '.v']
 SKIP_IDS = [
     'org.eclipse.jgit:org.eclipse.jgit'  # Refs: https://github.com/Azure/azure-sdk-for-java/pull/13956/files#r468368271
 ]
@@ -86,9 +87,7 @@ def sync_external_dependencies(source_file, target_file):
             if line.startswith('#') or not line:
                 file.write(line)
             else:
-                key_value = line.split(';', 1)
-                key = key_value[0]
-                value = key_value[1]
+                key, value = line.split(';', 1)
                 if key not in SKIP_IDS and key in dependency_dict:
                     value_in_dict = dependency_dict[key]
                     if version_bigger_than(value, value_in_dict):
@@ -114,30 +113,8 @@ def update_external_dependencies_comment(source_name, target_file):
 
 
 def version_bigger_than(source_version, target_version):
-    # Format version with jre ('11.2.3.jre17')
-    if source_version.find('.jre'):
-        source_version = source_version.partition('.jre')[0]
-    if target_version.find('.jre'):
-        target_version = target_version.partition('.jre')[0]
-
-    # Format version with Final ('4.1.89.Final')
-    if source_version.find('.Final'):
-        source_version = source_version.partition('.Final')[0]
-    if target_version.find('.Final'):
-        target_version = target_version.partition('.Final')[0]
-
-    # Format version with RELEASE ('6.2.0.RELEASE')
-    if source_version.find('.RELEASE'):
-        source_version = source_version.partition('.RELEASE')[0]
-    if target_version.find('.RELEASE'):
-        target_version = target_version.partition('.RELEASE')[0]
-
-    # Format version with v... ('9.4.50.v20221201')
-    if source_version.find('.v'):
-        source_version = source_version.partition('.v')[0]
-    if target_version.find('.v'):
-        target_version = target_version.partition('.v')[0]
-
+    source_version = format_version(source_version, SPECIAL_VERSION_LIST)
+    target_version = format_version(target_version, SPECIAL_VERSION_LIST)
     sv = parse(source_version)
     tv = parse(target_version)
 
@@ -171,6 +148,13 @@ def version_bigger_than(source_version, target_version):
     elif sv.major == tv.major and sv.minor == tv.minor and sv.micro != tv.micro:
         return sv.micro >= tv.micro
     return sv > tv
+
+
+def format_version(version, str_list):
+    for i in str_list:
+        if version.find(i):
+            version = version.partition(i)[0]
+    return version
 
 
 def is_invalid_version(verify_version):
