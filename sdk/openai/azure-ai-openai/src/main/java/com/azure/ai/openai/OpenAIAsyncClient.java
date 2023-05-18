@@ -32,21 +32,32 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
-
-    private final OpenAIClientImpl serviceClient;
-
+    // Azure OpenAI service client implementation class
+    @Generated private final OpenAIClientImpl serviceClient;
+    // Non-Azure OpenAI service client implementation class
     private final OpenAIClientNonAzureImpl openAIServiceClient;
 
     /**
-     * Initializes an instance of OpenAIAsyncClient class.
+     * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation.
+     * Azure OpenAI and Non-Azure OpenAI service implementations are mutually exclusive.
+     * Both service client implementation cannot coexist because `OpenAIClient` operates either way in a mutually
+     * exclusive way.
      *
-     * @param serviceClient the service client implementation.
+     * @param serviceClient the service client implementation for Azure OpenAI service client.
      */
     OpenAIAsyncClient(OpenAIClientImpl serviceClient) {
         this.serviceClient = serviceClient;
         this.openAIServiceClient = null;
     }
 
+    /**
+     * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation.
+     * Azure OpenAI and Non-Azure OpenAI service implementations are mutually exclusive.
+     * Both service client implementation cannot coexist because `OpenAIClient` operates either way in a mutually
+     * exclusive way.
+     *
+     * @param openAIServiceClient the service client implementation for Non-Azure OpenAI service client.
+     */
     OpenAIAsyncClient(OpenAIClientNonAzureImpl openAIServiceClient) {
         this.serviceClient = null;
         this.openAIServiceClient = openAIServiceClient;
