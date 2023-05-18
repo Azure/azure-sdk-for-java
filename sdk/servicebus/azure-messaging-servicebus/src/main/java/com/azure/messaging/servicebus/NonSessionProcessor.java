@@ -5,6 +5,8 @@ package com.azure.messaging.servicebus;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.reactivestreams.Publisher;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
@@ -26,7 +28,6 @@ import java.util.function.Function;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.FULLY_QUALIFIED_NAMESPACE_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
-import static com.azure.messaging.servicebus.FluxTrace.PROCESS_ERROR_KEY;
 
 /**
  *  Processor to stream messages from a session unaware entity.
@@ -227,6 +228,8 @@ public final class NonSessionProcessor {
             private final boolean enableAutoDisposition;
             private final boolean enableAutoLockRenew;
             private final Scheduler workerScheduler;
+            private final ServiceBusReceiverInstrumentation instrumentation;
+            private final ServiceBusTracer tracer;
 
             /**
              * Instantiate {@link MessagePump} that pumps messages emitted by the given {@code client}. The messages
@@ -266,6 +269,8 @@ public final class NonSessionProcessor {
                     // is only needed for higher parallelism (max-concurrent-calls > 1) case.
                     this.workerScheduler = Schedulers.immediate();
                 }
+                this.instrumentation = this.client.getInstrumentation();
+                this.tracer = this.instrumentation.getTracer();
             }
 
             /**
@@ -323,6 +328,10 @@ public final class NonSessionProcessor {
             }
 
             private boolean notifyMessage(ServiceBusMessageContext messageContext) {
+                final ServiceBusReceivedMessage message = messageContext.getMessage();
+                final Context span = instrumentation.instrumentProcess("ServiceBus.process", message, Context.NONE);
+                final AutoCloseable scope  = tracer.makeSpanCurrent(span);
+
                 Throwable error = null;
                 try {
                     processMessage.accept(new ServiceBusReceivedMessageContext(client, messageContext));
@@ -331,13 +340,13 @@ public final class NonSessionProcessor {
                 }
 
                 if (error != null) {
-                    final Context contextWithError = messageContext.getMessage().getContext()
-                        .addData(PROCESS_ERROR_KEY, error);
-                    messageContext.getMessage().setContext(contextWithError);
                     notifyError(new ServiceBusException(error, ServiceBusErrorSource.USER_CALLBACK));
+                    tracer.endSpan(error, message.getContext(), scope);
                     return false;
+                } else {
+                    tracer.endSpan(null, message.getContext(), scope);
+                    return true;
                 }
-                return true;
             }
 
             private void notifyError(Throwable throwable) {
