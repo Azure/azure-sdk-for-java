@@ -32,7 +32,7 @@ abstract class Fetcher<T> {
     private final AtomicBoolean shouldFetchMore;
     private final AtomicInteger maxItemCount;
     private final AtomicInteger top;
-    private final List<CosmosDiagnostics> cancelledRequestCosmosDiagnosticsTracker;
+    private final List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker;
 
     public Fetcher(
         Function<RxDocumentServiceRequest, Mono<FeedResponse<T>>> executeFunc,
@@ -40,7 +40,7 @@ abstract class Fetcher<T> {
         int top,
         int maxItemCount,
         OperationContextAndListenerTuple operationContext,
-        List<CosmosDiagnostics> cancelledRequestCosmosDiagnosticsTracker) {
+        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
         checkNotNull(executeFunc, "Argument 'executeFunc' must not be null.");
 
@@ -63,7 +63,7 @@ abstract class Fetcher<T> {
             this.maxItemCount = new AtomicInteger(Math.min(maxItemCount, top));
         }
         this.shouldFetchMore = new AtomicBoolean(true);
-        this.cancelledRequestCosmosDiagnosticsTracker = cancelledRequestCosmosDiagnosticsTracker;
+        this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
     }
 
     public final boolean shouldFetchMore() {
@@ -153,11 +153,11 @@ abstract class Fetcher<T> {
                 return rsp;
             })
             .doFinally(signalType -> {
-                if (signalType != SignalType.CANCEL || this.cancelledRequestCosmosDiagnosticsTracker == null) {
+                if (signalType != SignalType.CANCEL || this.cancelledRequestDiagnosticsTracker == null) {
                     return;
                 }
 
-                this.cancelledRequestCosmosDiagnosticsTracker.add(request.requestContext.cosmosDiagnostics);
+                this.cancelledRequestDiagnosticsTracker.add(request.requestContext.cosmosDiagnostics);
             });
     }
 }

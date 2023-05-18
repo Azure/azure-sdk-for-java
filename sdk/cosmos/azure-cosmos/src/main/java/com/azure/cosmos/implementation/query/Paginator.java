@@ -63,7 +63,7 @@ public class Paginator {
             int maxPageSize,
             int maxPreFetchCount,
             OperationContextAndListenerTuple operationContext,
-            List<CosmosDiagnostics> cancelledRequestCosmosDiagnosticsTracker) {
+            List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
         return getPaginatedQueryResultAsObservable(
             continuationToken,
@@ -74,7 +74,7 @@ public class Paginator {
             maxPreFetchCount,
             false,
             operationContext,
-            cancelledRequestCosmosDiagnosticsTracker);
+            cancelledRequestDiagnosticsTracker);
     }
 
     public static <T> Flux<FeedResponse<T>> getChangeFeedQueryResultAsObservable(
@@ -137,7 +137,7 @@ public class Paginator {
         int preFetchCount,
         boolean isChangeFeed,
         OperationContextAndListenerTuple operationContext,
-        List<CosmosDiagnostics> cancelledRequestCosmosDiagnosticsTracker) {
+        List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
 
         return getPaginatedQueryResultAsObservable(
             () -> new ServerSideOnlyContinuationFetcherImpl<>(
@@ -148,7 +148,7 @@ public class Paginator {
                 top,
                 maxPageSize,
                 operationContext,
-                cancelledRequestCosmosDiagnosticsTracker),
+                cancelledRequestDiagnosticsTracker),
                 preFetchCount);
     }
 

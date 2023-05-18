@@ -1012,7 +1012,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                         .getCosmosDiagnosticsAccessor()
                                         .getClientSideRequestStatisticsRaw(first);
 
-                                clientSideRequestStatistics.recordContributingPointOperation(toBeMergedClientSideRequestStatistics);
+                                clientSideRequestStatistics.mergeClientSideRequestStatistics(toBeMergedClientSideRequestStatistics);
                                 return first;
                             })
                             .get();
