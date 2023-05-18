@@ -618,6 +618,11 @@ public class RntbdTransportClient extends TransportClient {
         @JsonProperty()
         private final Duration timeoutDetectionOnWriteTimeLimit;
 
+        /**
+         * Used during the open connections flow to determine the
+         * minimum no. of connections to keep open to a particular
+         * endpoint.
+         * */
         @JsonProperty
         private final int minConnectionPoolSizePerEndpoint;
 
