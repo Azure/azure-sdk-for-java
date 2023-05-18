@@ -106,6 +106,7 @@ public class ServiceBusProcessorTest {
      *
      * @throws InterruptedException If the test is interrupted.
      */
+    @Test
     public void testReceivingMultiSessionMessagesWithProcessor() throws InterruptedException {
         int numberOfMessages = 10;
         Flux<ServiceBusMessageContext> messageFlux =
@@ -390,9 +391,13 @@ public class ServiceBusProcessorTest {
         verify(asyncClient, never()).abandon(any(ServiceBusReceivedMessage.class));
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
     @SuppressWarnings("unchecked")
-    public void testProcessorWithTracingEnabled() throws InterruptedException {
+    public void testProcessorWithTracingEnabled(boolean isV2) throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
         final int numberOfTimes = 5;
 
@@ -425,7 +430,7 @@ public class ServiceBusProcessorTest {
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, false, tracer);
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, tracer);
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
@@ -436,7 +441,7 @@ public class ServiceBusProcessorTest {
                 countDownLatch.countDown();
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setNonSessionProcessorV2(isV2));
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(numberOfTimes, TimeUnit.SECONDS);
@@ -451,9 +456,13 @@ public class ServiceBusProcessorTest {
         verify(tracer, atLeast(numberOfTimes - 1)).end(isNull(), isNull(), any());
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
     @SuppressWarnings("unchecked")
-    public void testProcessorWithTracingDisabled() throws InterruptedException {
+    public void testProcessorWithTracingDisabled(boolean isV2) throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
 
         when(tracer.isEnabled()).thenReturn(false);
@@ -465,14 +474,14 @@ public class ServiceBusProcessorTest {
                 emitter.next(serviceBusReceivedMessage);
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, false, tracer);
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, tracer);
 
         CountDownLatch countDownLatch = new CountDownLatch(1);
         ServiceBusProcessorClient serviceBusProcessorClient = new ServiceBusProcessorClient(receiverBuilder, ENTITY_NAME,
             null, null,
             messageContext -> countDownLatch.countDown(),
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setNonSessionProcessorV2(isV2));
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(1, TimeUnit.SECONDS);
@@ -484,8 +493,12 @@ public class ServiceBusProcessorTest {
         verify(tracer, never()).end(any(), any(), any());
     }
 
-    @Test
-    public void testProcessorWithTracingEnabledWithoutDiagnosticId() throws InterruptedException {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    public void testProcessorWithTracingEnabledWithoutDiagnosticId(boolean isV2) throws InterruptedException {
         final Tracer tracer = mock(Tracer.class);
         final int numberOfTimes = 5;
         when(tracer.isEnabled()).thenReturn(true);
@@ -508,7 +521,7 @@ public class ServiceBusProcessorTest {
                 }
             });
 
-        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, false, tracer);
+        ServiceBusClientBuilder.ServiceBusReceiverClientBuilder receiverBuilder = getBuilder(messageFlux, isV2, tracer);
 
         AtomicInteger messageId = new AtomicInteger();
         CountDownLatch countDownLatch = new CountDownLatch(numberOfTimes);
@@ -519,7 +532,7 @@ public class ServiceBusProcessorTest {
                 countDownLatch.countDown();
             },
             error -> Assertions.fail("Error occurred when receiving messages from the processor"),
-            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1));
+            new ServiceBusProcessorClientOptions().setMaxConcurrentCalls(1).setNonSessionProcessorV2(isV2));
 
         serviceBusProcessorClient.start();
         boolean success = countDownLatch.await(numberOfTimes, TimeUnit.SECONDS);
