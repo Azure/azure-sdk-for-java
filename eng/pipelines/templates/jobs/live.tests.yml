@@ -55,8 +55,8 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
 
-      - template: /eng/pipelines/templates/steps/http-fault-injector.yml
-        condition: and(succeeded(), ${{ parameters.UseHttpFaultInjector }})
+      - ${{ if parameters.UseHttpFaultInjector }}:
+        - template: /eng/pipelines/templates/steps/http-fault-injector.yml
 
       - template: ../steps/install-reporting-tools.yml
         parameters:
