@@ -33,7 +33,7 @@ import reactor.core.publisher.Mono;
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
     // Azure OpenAI service client implementation class
-    @Generated private final OpenAIClientImpl serviceClient;
+    private final OpenAIClientImpl serviceClient;
     // Non-Azure OpenAI service client implementation class
     private final OpenAIClientNonAzureImpl openAIServiceClient;
 

@@ -31,7 +31,7 @@ import reactor.core.publisher.Flux;
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
-    @Generated private final OpenAIClientImpl serviceClient;
+    private final OpenAIClientImpl serviceClient;
     private final OpenAIClientNonAzureImpl openAIServiceClient;
 
     /**
