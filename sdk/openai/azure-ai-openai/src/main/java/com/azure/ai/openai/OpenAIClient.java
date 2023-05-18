@@ -37,21 +37,21 @@ public final class OpenAIClient {
     /**
      * Initializes an instance of OpenAIClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param service the service client implementation.
      */
-    OpenAIClient(OpenAIClientImpl serviceClient) {
-        this.serviceClient = serviceClient;
-        this.openAIServiceClient = null;
+    OpenAIClient(OpenAIClientImpl service) {
+        serviceClient = service;
+        openAIServiceClient = null;
     }
 
     /**
      * Initializes an instance of OpenAIClient class for NonAzure Implementation.
      *
-     * @param serviceClient the service client implementation.
+     * @param service the service client implementation.
      */
-    OpenAIClient(OpenAIClientNonAzureImpl serviceClient) {
-        this.serviceClient = null;
-        this.openAIServiceClient = serviceClient;
+    OpenAIClient(OpenAIClientNonAzureImpl service) {
+        serviceClient = null;
+        openAIServiceClient = service;
     }
 
     /**
