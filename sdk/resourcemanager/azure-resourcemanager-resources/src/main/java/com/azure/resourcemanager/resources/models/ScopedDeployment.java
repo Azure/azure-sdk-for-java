@@ -32,6 +32,10 @@ public final class ScopedDeployment {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
+    /** Creates an instance of ScopedDeployment class. */
+    public ScopedDeployment() {
+    }
+
     /**
      * Get the location property: The location to store the deployment data.
      *

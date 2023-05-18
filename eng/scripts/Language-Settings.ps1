@@ -281,12 +281,17 @@ $PackageExclusions = @{
   "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-3_2-12" = "Javadoc dependency issue.";
+  "azure-cosmos-test" = "Don't want to include the test framework package.";
   "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
   "azure-aot-graalvm-support" = "No Javadocs for the package.";
   "azure-sdk-template" = "Depends on unreleased core.";
   "azure-sdk-template-two" = "Depends on unreleased core.";
   "azure-sdk-template-three" = "Depends on unreleased core.";
   "azure-ai-personalizer" = "No java docs in this package.";
+  "azure-sdk-build-tool" = "Do not release docs for this package.";
+  "azure-applicationinsights-query" = "Cannot find namespaces in javadoc package.";
+  "azure-resourcemanager-voiceservices" = "Doc build attempts to download a package that does not have published sources.";
+  "azure-resourcemanager-storagemover" = "Attempts to azure-sdk-build-tool and fails";
 }
 
 # Validates if the package will succeed in the CI build by validating the
@@ -437,7 +442,7 @@ function DockerValidation ($packageInfos, $DocValidationImageId, $workingDirecto
   Set-Content -Path $hostConfigurationPath -Value ($configuration | ConvertTo-Json) | Out-Null
 
   docker run -v "${workingDirectory}:${containerWorkingDirectory}" `
-    -e TARGET_CONFIGURATION_PATH=$containerConfigurationPath -t $DocValidationImageId 2>&1 `
+    -e TARGET_CONFIGURATION_PATH=$containerConfigurationPath $DocValidationImageId 2>&1 `
     | Where-Object { -not ($_ -match '^Progress .*B\s*$') } ` # Remove progress messages
     | Out-Host
 
@@ -628,6 +633,10 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
   if ($pkgName.Contains("-spark")) {
     return $null
   }
+  # skip azure-cosmos-test package because it needs to be releaesd
+  if ($pkgName.Contains("azure-cosmos-test")) {
+    return $null
+  }
 
   # Find all source jar files in given artifact directory
   # Filter for package in "com.azure*" groupid.
@@ -741,9 +750,9 @@ function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidatio
 }
 
 function Get-java-EmitterName() {
-  return "@azure-tools/cadl-java"
+  return "@azure-tools/typespec-java"
 }
 
 function Get-java-EmitterAdditionalOptions([string]$projectDirectory) {
-  return "--option @azure-tools/cadl-java.emitter-output-dir=$projectDirectory/"
+  return "--option @azure-tools/typespec-java.emitter-output-dir=$projectDirectory/"
 }

@@ -14,28 +14,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class RampUpRule {
     /*
-     * Hostname of a slot to which the traffic will be redirected if decided
-     * to. E.g. myapp-stage.azurewebsites.net.
+     * Hostname of a slot to which the traffic will be redirected if decided to. E.g. myapp-stage.azurewebsites.net.
      */
     @JsonProperty(value = "actionHostName")
     private String actionHostname;
 
     /*
-     * Percentage of the traffic which will be redirected to
-     * <code>ActionHostName</code>.
+     * Percentage of the traffic which will be redirected to <code>ActionHostName</code>.
      */
     @JsonProperty(value = "reroutePercentage")
     private Double reroutePercentage;
 
     /*
-     * In auto ramp up scenario this is the step to add/remove from
-     * <code>ReroutePercentage</code> until it reaches
+     * In auto ramp up scenario this is the step to add/remove from <code>ReroutePercentage</code> until it reaches
      * \n<code>MinReroutePercentage</code> or
-     * <code>MaxReroutePercentage</code>. Site metrics are checked every N
-     * minutes specified in <code>ChangeIntervalInMinutes</code>.\nCustom
-     * decision algorithm
-     * can be provided in TiPCallback site extension which URL can be specified
-     * in <code>ChangeDecisionCallbackUrl</code>.
+     * <code>MaxReroutePercentage</code>. Site metrics are checked every N minutes specified in
+     * <code>ChangeIntervalInMinutes</code>.\nCustom decision algorithm
+     * can be provided in TiPCallback site extension which URL can be specified in
+     * <code>ChangeDecisionCallbackUrl</code>.
      */
     @JsonProperty(value = "changeStep")
     private Double changeStep;
@@ -59,20 +55,23 @@ public final class RampUpRule {
     private Double maxReroutePercentage;
 
     /*
-     * Custom decision algorithm can be provided in TiPCallback site extension
-     * which URL can be specified. See TiPCallback site extension for the
-     * scaffold and contracts.
+     * Custom decision algorithm can be provided in TiPCallback site extension which URL can be specified. See
+     * TiPCallback site extension for the scaffold and contracts.
      * https://www.siteextensions.net/packages/TiPCallback/
      */
     @JsonProperty(value = "changeDecisionCallbackUrl")
     private String changeDecisionCallbackUrl;
 
     /*
-     * Name of the routing rule. The recommended name would be to point to the
-     * slot which will receive the traffic in the experiment.
+     * Name of the routing rule. The recommended name would be to point to the slot which will receive the traffic in
+     * the experiment.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of RampUpRule class. */
+    public RampUpRule() {
+    }
 
     /**
      * Get the actionHostname property: Hostname of a slot to which the traffic will be redirected if decided to. E.g.

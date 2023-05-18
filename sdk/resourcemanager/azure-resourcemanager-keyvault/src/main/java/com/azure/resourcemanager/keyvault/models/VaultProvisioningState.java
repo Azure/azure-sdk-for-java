@@ -17,6 +17,15 @@ public final class VaultProvisioningState extends ExpandableStringEnum<VaultProv
     public static final VaultProvisioningState REGISTERING_DNS = fromString("RegisteringDns");
 
     /**
+     * Creates a new instance of VaultProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VaultProvisioningState() {
+    }
+
+    /**
      * Creates or finds a VaultProvisioningState from its string representation.
      *
      * @param name a name to look for.

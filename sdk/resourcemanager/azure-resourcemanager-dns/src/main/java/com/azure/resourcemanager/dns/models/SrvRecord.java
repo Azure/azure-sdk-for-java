@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An SRV record. */
 @Fluent
 public final class SrvRecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SrvRecord.class);
-
     /*
      * The priority value for this SRV record.
      */
@@ -37,6 +33,10 @@ public final class SrvRecord {
      */
     @JsonProperty(value = "target")
     private String target;
+
+    /** Creates an instance of SrvRecord class. */
+    public SrvRecord() {
+    }
 
     /**
      * Get the priority property: The priority value for this SRV record.

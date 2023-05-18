@@ -20,15 +20,15 @@ public final class DpmJobExtendedInfoTests {
         DpmJobExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"tasksList\":[{\"taskId\":\"winhehfqpo\",\"startTime\":\"2021-02-06T22:44:11Z\",\"endTime\":\"2021-06-10T04:43:01Z\",\"duration\":\"PT171H51M19S\",\"status\":\"mbnkb\"},{\"taskId\":\"qvxkd\",\"startTime\":\"2020-12-21T03:34:37Z\",\"endTime\":\"2021-06-07T23:42:50Z\",\"duration\":\"PT11H18M6S\",\"status\":\"tswbzuwfmd\"},{\"taskId\":\"agegiz\",\"startTime\":\"2021-12-02T00:47:56Z\",\"endTime\":\"2021-08-27T01:37:11Z\",\"duration\":\"PT50H33M35S\",\"status\":\"djub\"},{\"taskId\":\"bqigkx\",\"startTime\":\"2021-04-08T18:01:03Z\",\"endTime\":\"2021-11-10T07:11:50Z\",\"duration\":\"PT65H22M58S\",\"status\":\"gacyrcmjdmspo\"}],\"propertyBag\":{\"frzgbzjed\":\"vuhrylni\"},\"dynamicErrorMessage\":\"tkvnlvxbcuiiznkt\"}")
+                    "{\"tasksList\":[{\"taskId\":\"mxyasflvgsgzw\",\"startTime\":\"2021-07-22T12:31:34Z\",\"endTime\":\"2021-10-21T09:55:08Z\",\"duration\":\"PT63H9M26S\",\"status\":\"nsmjbl\"},{\"taskId\":\"jhlnymzotqyryu\",\"startTime\":\"2021-05-02T20:27:28Z\",\"endTime\":\"2021-03-01T02:30:44Z\",\"duration\":\"PT89H30M\",\"status\":\"mv\"},{\"taskId\":\"gtayxonsupeujlz\",\"startTime\":\"2020-12-21T20:54:17Z\",\"endTime\":\"2021-04-21T22:02:58Z\",\"duration\":\"PT91H25M34S\",\"status\":\"tnzoibgsxgnxfy\"}],\"propertyBag\":{\"o\":\"mpqoxw\",\"iiqbi\":\"dbxiqx\",\"hfqpofv\":\"htmwwinh\"},\"dynamicErrorMessage\":\"cblembnkbwv\"}")
                 .toObject(DpmJobExtendedInfo.class);
-        Assertions.assertEquals("winhehfqpo", model.tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T22:44:11Z"), model.tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T04:43:01Z"), model.tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT171H51M19S"), model.tasksList().get(0).duration());
-        Assertions.assertEquals("mbnkb", model.tasksList().get(0).status());
-        Assertions.assertEquals("vuhrylni", model.propertyBag().get("frzgbzjed"));
-        Assertions.assertEquals("tkvnlvxbcuiiznkt", model.dynamicErrorMessage());
+        Assertions.assertEquals("mxyasflvgsgzw", model.tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T12:31:34Z"), model.tasksList().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T09:55:08Z"), model.tasksList().get(0).endTime());
+        Assertions.assertEquals(Duration.parse("PT63H9M26S"), model.tasksList().get(0).duration());
+        Assertions.assertEquals("nsmjbl", model.tasksList().get(0).status());
+        Assertions.assertEquals("mpqoxw", model.propertyBag().get("o"));
+        Assertions.assertEquals("cblembnkbwv", model.dynamicErrorMessage());
     }
 
     @org.junit.jupiter.api.Test
@@ -39,39 +39,33 @@ public final class DpmJobExtendedInfoTests {
                     Arrays
                         .asList(
                             new DpmJobTaskDetails()
-                                .withTaskId("winhehfqpo")
-                                .withStartTime(OffsetDateTime.parse("2021-02-06T22:44:11Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-06-10T04:43:01Z"))
-                                .withDuration(Duration.parse("PT171H51M19S"))
-                                .withStatus("mbnkb"),
+                                .withTaskId("mxyasflvgsgzw")
+                                .withStartTime(OffsetDateTime.parse("2021-07-22T12:31:34Z"))
+                                .withEndTime(OffsetDateTime.parse("2021-10-21T09:55:08Z"))
+                                .withDuration(Duration.parse("PT63H9M26S"))
+                                .withStatus("nsmjbl"),
                             new DpmJobTaskDetails()
-                                .withTaskId("qvxkd")
-                                .withStartTime(OffsetDateTime.parse("2020-12-21T03:34:37Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-06-07T23:42:50Z"))
-                                .withDuration(Duration.parse("PT11H18M6S"))
-                                .withStatus("tswbzuwfmd"),
+                                .withTaskId("jhlnymzotqyryu")
+                                .withStartTime(OffsetDateTime.parse("2021-05-02T20:27:28Z"))
+                                .withEndTime(OffsetDateTime.parse("2021-03-01T02:30:44Z"))
+                                .withDuration(Duration.parse("PT89H30M"))
+                                .withStatus("mv"),
                             new DpmJobTaskDetails()
-                                .withTaskId("agegiz")
-                                .withStartTime(OffsetDateTime.parse("2021-12-02T00:47:56Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-08-27T01:37:11Z"))
-                                .withDuration(Duration.parse("PT50H33M35S"))
-                                .withStatus("djub"),
-                            new DpmJobTaskDetails()
-                                .withTaskId("bqigkx")
-                                .withStartTime(OffsetDateTime.parse("2021-04-08T18:01:03Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-11-10T07:11:50Z"))
-                                .withDuration(Duration.parse("PT65H22M58S"))
-                                .withStatus("gacyrcmjdmspo")))
-                .withPropertyBag(mapOf("frzgbzjed", "vuhrylni"))
-                .withDynamicErrorMessage("tkvnlvxbcuiiznkt");
+                                .withTaskId("gtayxonsupeujlz")
+                                .withStartTime(OffsetDateTime.parse("2020-12-21T20:54:17Z"))
+                                .withEndTime(OffsetDateTime.parse("2021-04-21T22:02:58Z"))
+                                .withDuration(Duration.parse("PT91H25M34S"))
+                                .withStatus("tnzoibgsxgnxfy")))
+                .withPropertyBag(mapOf("o", "mpqoxw", "iiqbi", "dbxiqx", "hfqpofv", "htmwwinh"))
+                .withDynamicErrorMessage("cblembnkbwv");
         model = BinaryData.fromObject(model).toObject(DpmJobExtendedInfo.class);
-        Assertions.assertEquals("winhehfqpo", model.tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-06T22:44:11Z"), model.tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T04:43:01Z"), model.tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT171H51M19S"), model.tasksList().get(0).duration());
-        Assertions.assertEquals("mbnkb", model.tasksList().get(0).status());
-        Assertions.assertEquals("vuhrylni", model.propertyBag().get("frzgbzjed"));
-        Assertions.assertEquals("tkvnlvxbcuiiznkt", model.dynamicErrorMessage());
+        Assertions.assertEquals("mxyasflvgsgzw", model.tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T12:31:34Z"), model.tasksList().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-21T09:55:08Z"), model.tasksList().get(0).endTime());
+        Assertions.assertEquals(Duration.parse("PT63H9M26S"), model.tasksList().get(0).duration());
+        Assertions.assertEquals("nsmjbl", model.tasksList().get(0).status());
+        Assertions.assertEquals("mpqoxw", model.propertyBag().get("o"));
+        Assertions.assertEquals("cblembnkbwv", model.dynamicErrorMessage());
     }
 
     @SuppressWarnings("unchecked")

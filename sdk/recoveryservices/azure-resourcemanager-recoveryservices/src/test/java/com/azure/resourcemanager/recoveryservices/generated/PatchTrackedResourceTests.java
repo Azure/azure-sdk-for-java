@@ -16,33 +16,24 @@ public final class PatchTrackedResourceTests {
         PatchTrackedResource model =
             BinaryData
                 .fromString(
-                    "{\"location\":\"nlankxmyskpb\",\"tags\":{\"qidybyx\":\"btkcxywnytnrsyn\",\"aaxdbabphlwrq\":\"zfcl\",\"hsucoc\":\"fkts\",\"ckzywbiexzfeyue\":\"nyyazttbtwwrqpue\"},\"etag\":\"ibx\",\"id\":\"jwbhqwalmuz\",\"name\":\"oxaepd\",\"type\":\"zjancuxr\"}")
+                    "{\"location\":\"xczfcl\",\"tags\":{\"lfktsths\":\"xdbabphlwr\",\"twwrqp\":\"cocmnyyaztt\"},\"etag\":\"dckzywbiexz\",\"id\":\"eyueaxibxujwb\",\"name\":\"qwalmuzyoxaepd\",\"type\":\"zjancuxr\"}")
                 .toObject(PatchTrackedResource.class);
-        Assertions.assertEquals("nlankxmyskpb", model.location());
-        Assertions.assertEquals("btkcxywnytnrsyn", model.tags().get("qidybyx"));
-        Assertions.assertEquals("ibx", model.etag());
+        Assertions.assertEquals("xczfcl", model.location());
+        Assertions.assertEquals("xdbabphlwr", model.tags().get("lfktsths"));
+        Assertions.assertEquals("dckzywbiexz", model.etag());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PatchTrackedResource model =
             new PatchTrackedResource()
-                .withLocation("nlankxmyskpb")
-                .withTags(
-                    mapOf(
-                        "qidybyx",
-                        "btkcxywnytnrsyn",
-                        "aaxdbabphlwrq",
-                        "zfcl",
-                        "hsucoc",
-                        "fkts",
-                        "ckzywbiexzfeyue",
-                        "nyyazttbtwwrqpue"))
-                .withEtag("ibx");
+                .withLocation("xczfcl")
+                .withTags(mapOf("lfktsths", "xdbabphlwr", "twwrqp", "cocmnyyaztt"))
+                .withEtag("dckzywbiexz");
         model = BinaryData.fromObject(model).toObject(PatchTrackedResource.class);
-        Assertions.assertEquals("nlankxmyskpb", model.location());
-        Assertions.assertEquals("btkcxywnytnrsyn", model.tags().get("qidybyx"));
-        Assertions.assertEquals("ibx", model.etag());
+        Assertions.assertEquals("xczfcl", model.location());
+        Assertions.assertEquals("xdbabphlwr", model.tags().get("lfktsths"));
+        Assertions.assertEquals("dckzywbiexz", model.etag());
     }
 
     @SuppressWarnings("unchecked")

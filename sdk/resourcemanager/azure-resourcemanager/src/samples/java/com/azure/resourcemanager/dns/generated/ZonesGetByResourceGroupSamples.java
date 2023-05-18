@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.dns.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Zones GetByResourceGroup. */
 public final class ZonesGetByResourceGroupSamples {
     /*
@@ -22,6 +20,6 @@ public final class ZonesGetByResourceGroupSamples {
             .manager()
             .serviceClient()
             .getZones()
-            .getByResourceGroupWithResponse("rg1", "zone1", Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "zone1", com.azure.core.util.Context.NONE);
     }
 }

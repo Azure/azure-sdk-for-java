@@ -29,15 +29,6 @@ public final class EmailServicesImpl implements EmailServices {
         this.serviceManager = serviceManager;
     }
 
-    public EmailServiceResource getByResourceGroup(String resourceGroupName, String emailServiceName) {
-        EmailServiceResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, emailServiceName);
-        if (inner != null) {
-            return new EmailServiceResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<EmailServiceResource> getByResourceGroupWithResponse(
         String resourceGroupName, String emailServiceName, Context context) {
         Response<EmailServiceResourceInner> inner =
@@ -48,6 +39,15 @@ public final class EmailServicesImpl implements EmailServices {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new EmailServiceResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EmailServiceResource getByResourceGroup(String resourceGroupName, String emailServiceName) {
+        EmailServiceResourceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, emailServiceName);
+        if (inner != null) {
+            return new EmailServiceResourceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -82,6 +82,10 @@ public final class EmailServicesImpl implements EmailServices {
         return Utils.mapPage(inner, inner1 -> new EmailServiceResourceImpl(inner1, this.manager()));
     }
 
+    public Response<List<String>> listVerifiedExchangeOnlineDomainsWithResponse(Context context) {
+        return this.serviceClient().listVerifiedExchangeOnlineDomainsWithResponse(context);
+    }
+
     public List<String> listVerifiedExchangeOnlineDomains() {
         List<String> inner = this.serviceClient().listVerifiedExchangeOnlineDomains();
         if (inner != null) {
@@ -89,10 +93,6 @@ public final class EmailServicesImpl implements EmailServices {
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public Response<List<String>> listVerifiedExchangeOnlineDomainsWithResponse(Context context) {
-        return this.serviceClient().listVerifiedExchangeOnlineDomainsWithResponse(context);
     }
 
     public EmailServiceResource getById(String id) {

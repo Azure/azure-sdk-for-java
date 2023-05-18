@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetAppResource QueryRegionInfo. */
 public final class NetAppResourceQueryRegionInfoSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/RegionInfo.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/RegionInfo.json
      */
     /**
      * Sample code: RegionInfo_Query.
@@ -17,6 +15,6 @@ public final class NetAppResourceQueryRegionInfoSamples {
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void regionInfoQuery(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.netAppResources().queryRegionInfoWithResponse("eastus", Context.NONE);
+        manager.netAppResources().queryRegionInfoWithResponse("eastus", com.azure.core.util.Context.NONE);
     }
 }

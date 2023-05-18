@@ -15,6 +15,7 @@ import com.azure.resourcemanager.redisenterprise.fluent.models.AccessKeysInner;
 import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.redisenterprise.models.DatabaseUpdate;
 import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
+import com.azure.resourcemanager.redisenterprise.models.FlushParameters;
 import com.azure.resourcemanager.redisenterprise.models.ForceUnlinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.RegenerateKeyParameters;
@@ -184,20 +185,6 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the RedisEnterprise cluster.
      * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DatabaseInner get(String resourceGroupName, String clusterName, String databaseName);
-
-    /**
-     * Gets information about a database in a RedisEnterprise cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -207,6 +194,20 @@ public interface DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DatabaseInner> getWithResponse(
         String resourceGroupName, String clusterName, String databaseName, Context context);
+
+    /**
+     * Gets information about a database in a RedisEnterprise cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a database in a RedisEnterprise cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DatabaseInner get(String resourceGroupName, String clusterName, String databaseName);
 
     /**
      * Deletes a single database.
@@ -271,20 +272,6 @@ public interface DatabasesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the RedisEnterprise cluster.
      * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessKeysInner listKeys(String resourceGroupName, String clusterName, String databaseName);
-
-    /**
-     * Retrieves the access keys for the RedisEnterprise database.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -294,6 +281,20 @@ public interface DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AccessKeysInner> listKeysWithResponse(
         String resourceGroupName, String clusterName, String databaseName, Context context);
+
+    /**
+     * Retrieves the access keys for the RedisEnterprise database.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AccessKeysInner listKeys(String resourceGroupName, String clusterName, String databaseName);
 
     /**
      * Regenerates the RedisEnterprise database's access keys.
@@ -583,4 +584,67 @@ public interface DatabasesClient {
         String databaseName,
         ForceUnlinkParameters parameters,
         Context context);
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param databaseName The name of the database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginFlush(
+        String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters);
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param databaseName The name of the database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginFlush(
+        String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters, Context context);
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param databaseName The name of the database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void flush(String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters);
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param databaseName The name of the database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void flush(
+        String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters, Context context);
 }

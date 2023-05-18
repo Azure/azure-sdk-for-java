@@ -23,6 +23,10 @@ public final class VnetGatewayProperties {
     @JsonProperty(value = "vpnPackageUri", required = true)
     private String vpnPackageUri;
 
+    /** Creates an instance of VnetGatewayProperties class. */
+    public VnetGatewayProperties() {
+    }
+
     /**
      * Get the vnetName property: The Virtual Network name.
      *

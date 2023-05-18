@@ -10,14 +10,14 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSets PowerOff. */
 public final class VirtualMachineScaleSetsPowerOffSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PowerOff_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PowerOff_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_PowerOff_MinimumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_PowerOff_MinimumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsPowerOffMinimumSetGen(
+    public static void virtualMachineScaleSetPowerOffMinimumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()
@@ -28,14 +28,14 @@ public final class VirtualMachineScaleSetsPowerOffSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-11-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PowerOff_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-03-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSet_PowerOff_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_PowerOff_MaximumSet_Gen.
+     * Sample code: VirtualMachineScaleSet_PowerOff_MaximumSet_Gen.
      *
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsPowerOffMaximumSetGen(
+    public static void virtualMachineScaleSetPowerOffMaximumSetGen(
         com.azure.resourcemanager.AzureResourceManager azure) {
         azure
             .virtualMachines()

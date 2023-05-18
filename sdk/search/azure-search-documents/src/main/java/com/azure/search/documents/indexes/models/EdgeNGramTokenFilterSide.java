@@ -8,10 +8,10 @@ package com.azure.search.documents.indexes.models;
 
 /** Specifies which side of the input an n-gram should be generated from. */
 public enum EdgeNGramTokenFilterSide {
-    /** Enum value front. */
+    /** Specifies that the n-gram should be generated from the front of the input. */
     FRONT("front"),
 
-    /** Enum value back. */
+    /** Specifies that the n-gram should be generated from the back of the input. */
     BACK("back");
 
     /** The actual serialized value for a EdgeNGramTokenFilterSide instance. */

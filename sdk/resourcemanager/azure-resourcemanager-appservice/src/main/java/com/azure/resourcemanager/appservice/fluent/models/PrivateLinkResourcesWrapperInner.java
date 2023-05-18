@@ -19,6 +19,10 @@ public final class PrivateLinkResourcesWrapperInner {
     @JsonProperty(value = "value", required = true)
     private List<PrivateLinkResource> value;
 
+    /** Creates an instance of PrivateLinkResourcesWrapperInner class. */
+    public PrivateLinkResourcesWrapperInner() {
+    }
+
     /**
      * Get the value property: The value property.
      *

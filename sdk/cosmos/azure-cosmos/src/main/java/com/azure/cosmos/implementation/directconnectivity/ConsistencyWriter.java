@@ -29,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
 import reactor.core.scheduler.Schedulers;
 
 import java.net.URI;
@@ -247,6 +248,17 @@ public class ConsistencyWriter {
                         primaryURI.get(),
                         replicaStatusList.get());
                 return barrierForGlobalStrong(request, response);
+            })
+            .doFinally(signalType -> {
+                if (signalType != SignalType.CANCEL) {
+                    return;
+                }
+
+                storeReader.createAndRecordStoreResultForCancelledRequest(
+                    request,
+                    false,
+                    false,
+                    replicaStatusList.get());
             });
         } else {
 
@@ -256,7 +268,8 @@ public class ConsistencyWriter {
 
                     if (!v) {
                         logger.warn("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: {}", request.requestContext.globalCommittedSelectedLSN);
-                        return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet));
+                        return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet,
+                            HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET));
                     }
 
                     return Mono.just(request);
@@ -288,7 +301,8 @@ public class ConsistencyWriter {
                 if (lsn.v == -1 || globalCommittedLsn.v == -1) {
                     logger.error("ConsistencyWriter: lsn {} or GlobalCommittedLsn {} is not set for global strong request",
                         lsn, globalCommittedLsn);
-                    throw new GoneException(RMResources.Gone);
+                    // Service Generated because no lsn and glsn set by service
+                    throw new GoneException(RMResources.Gone, HttpConstants.SubStatusCodes.SERVER_GENERATED_410);
                 }
 
                 request.requestContext.globalStrongWriteResponse = response;
@@ -315,7 +329,8 @@ public class ConsistencyWriter {
                                 logger.error("ConsistencyWriter: Write barrier has not been met for global strong request. SelectedGlobalCommittedLsn: {}",
                                     request.requestContext.globalCommittedSelectedLSN);
                                 // RxJava1 doesn't allow throwing checked exception
-                                return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet));
+                                return Mono.error(new GoneException(RMResources.GlobalStrongWriteBarrierNotMet,
+                                    HttpConstants.SubStatusCodes.GLOBAL_STRONG_WRITE_BARRIER_NOT_MET));
                             }
 
                             return Mono.just(request.requestContext.globalStrongWriteResponse);

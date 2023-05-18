@@ -6,17 +6,16 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.EventListenerFilter;
-import org.junit.jupiter.api.Test;
 
 public final class EventListenerFilterTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EventListenerFilter model =
             BinaryData.fromString("{\"type\":\"EventListenerFilter\"}").toObject(EventListenerFilter.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EventListenerFilter model = new EventListenerFilter();
         model = BinaryData.fromObject(model).toObject(EventListenerFilter.class);
     }

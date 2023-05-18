@@ -24,6 +24,10 @@ public final class WorkflowRunActionRepetitionDefinitionCollection {
     @JsonProperty(value = "value")
     private List<WorkflowRunActionRepetitionDefinitionInner> value;
 
+    /** Creates an instance of WorkflowRunActionRepetitionDefinitionCollection class. */
+    public WorkflowRunActionRepetitionDefinitionCollection() {
+    }
+
     /**
      * Get the nextLink property: The link used to get the next page of recommendations.
      *

@@ -51,7 +51,7 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      */
     @Host("{$host}")
     @ServiceInterface(name = "IotHubClientResource")
-    private interface ResourceProviderCommonsService {
+    public interface ResourceProviderCommonsService {
         @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Devices/usages")
         @ExpectedResponses({200})
@@ -159,20 +159,6 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
      *
      * <p>Get the number of free and paid iot hubs in the subscription.
      *
-     * @throws ErrorDetailsException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of free and paid iot hubs in the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public UserSubscriptionQuotaListResultInner getSubscriptionQuota() {
-        return getSubscriptionQuotaAsync().block();
-    }
-
-    /**
-     * Get the number of iot hubs in the subscription
-     *
-     * <p>Get the number of free and paid iot hubs in the subscription.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDetailsException thrown if the request is rejected by server.
@@ -182,5 +168,19 @@ public final class ResourceProviderCommonsClientImpl implements ResourceProvider
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<UserSubscriptionQuotaListResultInner> getSubscriptionQuotaWithResponse(Context context) {
         return getSubscriptionQuotaWithResponseAsync(context).block();
+    }
+
+    /**
+     * Get the number of iot hubs in the subscription
+     *
+     * <p>Get the number of free and paid iot hubs in the subscription.
+     *
+     * @throws ErrorDetailsException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the number of free and paid iot hubs in the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public UserSubscriptionQuotaListResultInner getSubscriptionQuota() {
+        return getSubscriptionQuotaWithResponse(Context.NONE).getValue();
     }
 }

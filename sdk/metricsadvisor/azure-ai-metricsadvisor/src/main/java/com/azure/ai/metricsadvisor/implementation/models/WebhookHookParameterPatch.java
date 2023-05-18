@@ -12,8 +12,7 @@ import java.util.Map;
 @Fluent
 public final class WebhookHookParameterPatch {
     /*
-     * API address, will be called when alert is triggered, only support POST
-     * method via SSL
+     * API address, will be called when alert is triggered, only support POST method via SSL
      */
     @JsonProperty(value = "endpoint")
     private String endpoint;
@@ -47,6 +46,9 @@ public final class WebhookHookParameterPatch {
      */
     @JsonProperty(value = "certificatePassword")
     private String certificatePassword;
+
+    /** Creates an instance of WebhookHookParameterPatch class. */
+    public WebhookHookParameterPatch() {}
 
     /**
      * Get the endpoint property: API address, will be called when alert is triggered, only support POST method via SSL.

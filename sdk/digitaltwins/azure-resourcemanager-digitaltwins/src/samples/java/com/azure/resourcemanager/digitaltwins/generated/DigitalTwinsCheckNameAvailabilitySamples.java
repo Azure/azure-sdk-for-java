@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.digitaltwins.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameRequest;
 
 /** Samples for DigitalTwins CheckNameAvailability. */
 public final class DigitalTwinsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/DigitalTwinsCheckNameAvailability_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/DigitalTwinsCheckNameAvailability_example.json
      */
     /**
      * Sample code: Check name Availability.
@@ -21,6 +20,6 @@ public final class DigitalTwinsCheckNameAvailabilitySamples {
         manager
             .digitalTwins()
             .checkNameAvailabilityWithResponse(
-                "WestUS2", new CheckNameRequest().withName("myadtinstance"), Context.NONE);
+                "WestUS2", new CheckNameRequest().withName("myadtinstance"), com.azure.core.util.Context.NONE);
     }
 }

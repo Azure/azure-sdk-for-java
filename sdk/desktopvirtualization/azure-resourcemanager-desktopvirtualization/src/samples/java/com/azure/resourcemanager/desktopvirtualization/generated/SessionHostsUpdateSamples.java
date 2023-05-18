@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.models.SessionHostPatch;
 
 /** Samples for SessionHosts Update. */
 public final class SessionHostsUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/SessionHost_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/SessionHost_Update.json
      */
     /**
      * Sample code: SessionHost_Update.
@@ -26,7 +25,10 @@ public final class SessionHostsUpdateSamples {
                 "hostPool1",
                 "sessionHost1.microsoft.com",
                 true,
-                new SessionHostPatch().withAllowNewSession(true).withAssignedUser("user1@microsoft.com"),
-                Context.NONE);
+                new SessionHostPatch()
+                    .withAllowNewSession(true)
+                    .withAssignedUser("user1@microsoft.com")
+                    .withFriendlyName("friendly"),
+                com.azure.core.util.Context.NONE);
     }
 }

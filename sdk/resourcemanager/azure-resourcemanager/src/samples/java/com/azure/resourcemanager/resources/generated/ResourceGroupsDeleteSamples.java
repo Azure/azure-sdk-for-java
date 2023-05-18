@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ResourceGroups Delete. */
 public final class ResourceGroupsDeleteSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/ForceDeleteVMsInResourceGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/ForceDeleteVMsInResourceGroup.json
      */
     /**
      * Sample code: Force delete all the Virtual Machines in a resource group.
@@ -23,11 +21,11 @@ public final class ResourceGroupsDeleteSamples {
             .manager()
             .serviceClient()
             .getResourceGroups()
-            .delete("my-resource-group", "Microsoft.Compute/virtualMachines", Context.NONE);
+            .delete("my-resource-group", "Microsoft.Compute/virtualMachines", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2021-01-01/examples/ForceDeleteVMsAndVMSSInResourceGroup.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Resources/stable/2022-09-01/examples/ForceDeleteVMsAndVMSSInResourceGroup.json
      */
     /**
      * Sample code: Force delete all the Virtual Machines and Virtual Machine Scale Sets in a resource group.
@@ -44,6 +42,6 @@ public final class ResourceGroupsDeleteSamples {
             .delete(
                 "my-resource-group",
                 "Microsoft.Compute/virtualMachines,Microsoft.Compute/virtualMachineScaleSets",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -18,30 +18,30 @@ public final class AzureWorkloadSqlRecoveryPointExtendedInfoTests {
         AzureWorkloadSqlRecoveryPointExtendedInfo model =
             BinaryData
                 .fromString(
-                    "{\"dataDirectoryTimeInUTC\":\"2021-04-15T03:27:32Z\",\"dataDirectoryPaths\":[{\"type\":\"Invalid\",\"path\":\"fczbgom\",\"logicalName\":\"beglqg\"}]}")
+                    "{\"dataDirectoryTimeInUTC\":\"2021-11-04T18:23Z\",\"dataDirectoryPaths\":[{\"type\":\"Data\",\"path\":\"kyuizabsnmfpp\",\"logicalName\":\"jee\"}]}")
                 .toObject(AzureWorkloadSqlRecoveryPointExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T03:27:32Z"), model.dataDirectoryTimeInUtc());
-        Assertions.assertEquals(SqlDataDirectoryType.INVALID, model.dataDirectoryPaths().get(0).type());
-        Assertions.assertEquals("fczbgom", model.dataDirectoryPaths().get(0).path());
-        Assertions.assertEquals("beglqg", model.dataDirectoryPaths().get(0).logicalName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T18:23Z"), model.dataDirectoryTimeInUtc());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.dataDirectoryPaths().get(0).type());
+        Assertions.assertEquals("kyuizabsnmfpp", model.dataDirectoryPaths().get(0).path());
+        Assertions.assertEquals("jee", model.dataDirectoryPaths().get(0).logicalName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureWorkloadSqlRecoveryPointExtendedInfo model =
             new AzureWorkloadSqlRecoveryPointExtendedInfo()
-                .withDataDirectoryTimeInUtc(OffsetDateTime.parse("2021-04-15T03:27:32Z"))
+                .withDataDirectoryTimeInUtc(OffsetDateTime.parse("2021-11-04T18:23Z"))
                 .withDataDirectoryPaths(
                     Arrays
                         .asList(
                             new SqlDataDirectory()
-                                .withType(SqlDataDirectoryType.INVALID)
-                                .withPath("fczbgom")
-                                .withLogicalName("beglqg")));
+                                .withType(SqlDataDirectoryType.DATA)
+                                .withPath("kyuizabsnmfpp")
+                                .withLogicalName("jee")));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSqlRecoveryPointExtendedInfo.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-15T03:27:32Z"), model.dataDirectoryTimeInUtc());
-        Assertions.assertEquals(SqlDataDirectoryType.INVALID, model.dataDirectoryPaths().get(0).type());
-        Assertions.assertEquals("fczbgom", model.dataDirectoryPaths().get(0).path());
-        Assertions.assertEquals("beglqg", model.dataDirectoryPaths().get(0).logicalName());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-04T18:23Z"), model.dataDirectoryTimeInUtc());
+        Assertions.assertEquals(SqlDataDirectoryType.DATA, model.dataDirectoryPaths().get(0).type());
+        Assertions.assertEquals("kyuizabsnmfpp", model.dataDirectoryPaths().get(0).path());
+        Assertions.assertEquals("jee", model.dataDirectoryPaths().get(0).logicalName());
     }
 }

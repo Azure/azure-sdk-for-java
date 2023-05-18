@@ -11,52 +11,51 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ContainerAppsConfiguration {
     /*
-     * Azure Monitor instrumentation key used by Dapr to export Service to
-     * Service communication telemetry
+     * Azure Monitor instrumentation key used by Dapr to export Service to Service communication telemetry
      */
     @JsonProperty(value = "daprAIInstrumentationKey")
     private String daprAIInstrumentationKey;
 
     /*
-     * IP range in CIDR notation that can be reserved for environment
-     * infrastructure IP addresses. It must not overlap with any other Subnet
-     * IP ranges.
+     * IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. It must not overlap
+     * with any other Subnet IP ranges.
      */
     @JsonProperty(value = "platformReservedCidr")
     private String platformReservedCidr;
 
     /*
-     * An IP address from the IP range defined by platformReservedCidr that
-     * will be reserved for the internal DNS server
+     * An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS
+     * server
      */
     @JsonProperty(value = "platformReservedDnsIP")
     private String platformReservedDnsIp;
 
     /*
-     * Resource ID of a subnet for control plane infrastructure components.
-     * This subnet must be in the same VNET as the subnet defined in
-     * appSubnetResourceId. Must not overlap with the IP range defined in
-     * platformReservedCidr, if defined.
+     * Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the
+     * subnet defined in appSubnetResourceId. Must not overlap with the IP range defined in platformReservedCidr, if
+     * defined.
      */
     @JsonProperty(value = "controlPlaneSubnetResourceId")
     private String controlPlaneSubnetResourceId;
 
     /*
-     * Resource ID of a subnet for control plane infrastructure components.
-     * This subnet must be in the same VNET as the subnet defined in
-     * appSubnetResourceId. Must not overlap with the IP range defined in
-     * platformReservedCidr, if defined.
+     * Resource ID of a subnet for control plane infrastructure components. This subnet must be in the same VNET as the
+     * subnet defined in appSubnetResourceId. Must not overlap with the IP range defined in platformReservedCidr, if
+     * defined.
      */
     @JsonProperty(value = "appSubnetResourceId")
     private String appSubnetResourceId;
 
     /*
-     * CIDR notation IP range assigned to the Docker bridge network. It must
-     * not overlap with any Subnet IP ranges or the IP range defined in
-     * platformReservedCidr, if defined.
+     * CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or
+     * the IP range defined in platformReservedCidr, if defined.
      */
     @JsonProperty(value = "dockerBridgeCidr")
     private String dockerBridgeCidr;
+
+    /** Creates an instance of ContainerAppsConfiguration class. */
+    public ContainerAppsConfiguration() {
+    }
 
     /**
      * Get the daprAIInstrumentationKey property: Azure Monitor instrumentation key used by Dapr to export Service to

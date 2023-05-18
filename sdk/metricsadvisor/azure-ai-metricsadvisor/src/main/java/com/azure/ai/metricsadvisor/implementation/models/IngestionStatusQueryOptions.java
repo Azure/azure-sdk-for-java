@@ -23,6 +23,9 @@ public final class IngestionStatusQueryOptions {
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
 
+    /** Creates an instance of IngestionStatusQueryOptions class. */
+    public IngestionStatusQueryOptions() {}
+
     /**
      * Get the startTime property: the start point of time range to query data ingestion status.
      *

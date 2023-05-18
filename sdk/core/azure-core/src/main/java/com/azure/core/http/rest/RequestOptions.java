@@ -4,6 +4,7 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.annotation.QueryParam;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.implementation.http.rest.ErrorOptions;
 import com.azure.core.implementation.http.rest.UrlEscapers;
@@ -111,7 +112,7 @@ import java.util.function.Consumer;
  *         .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setHttpMethod&#40;HttpMethod.POST&#41;
  *         .setBody&#40;requestBodyStr&#41;
- *         .setHeader&#40;&quot;Content-Type&quot;, &quot;application&#47;json&quot;&#41;&#41;;
+ *         .setHeader&#40;HttpHeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.core.http.rest.requestoptions.postrequest -->
  */
@@ -170,8 +171,25 @@ public final class RequestOptions {
      * @param header the header key
      * @param value the header value
      * @return the modified RequestOptions object
+     * @deprecated Use {@link #addHeader(HttpHeaderName, String)} as it provides better performance.
      */
+    @Deprecated
     public RequestOptions addHeader(String header, String value) {
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
+        return this;
+    }
+
+    /**
+     * Adds a header to the HTTP request.
+     * <p>
+     * If a header with the given name exists the {@code value} is added to the existing header (comma-separated),
+     * otherwise a new header is created.
+     *
+     * @param header the header key
+     * @param value the header value
+     * @return the modified RequestOptions object
+     */
+    public RequestOptions addHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
         return this;
     }
@@ -184,8 +202,24 @@ public final class RequestOptions {
      * @param header the header key
      * @param value the header value
      * @return the modified RequestOptions object
+     * @deprecated Use {@link #setHeader(HttpHeaderName, String)} as it provides better performance.
      */
+    @Deprecated
     public RequestOptions setHeader(String header, String value) {
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
+        return this;
+    }
+
+    /**
+     * Sets a header on the HTTP request.
+     * <p>
+     * If a header with the given name exists it is overridden by the new {@code value}.
+     *
+     * @param header the header key
+     * @param value the header value
+     * @return the modified RequestOptions object
+     */
+    public RequestOptions setHeader(HttpHeaderName header, String value) {
         this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
         return this;
     }

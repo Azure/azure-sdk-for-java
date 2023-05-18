@@ -11,6 +11,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
@@ -64,6 +65,11 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
     }
 
     @Override
+    public Map<String, Long> getHitCountDetails() {
+        return null;
+    }
+
+    @Override
     public FaultInjectionConnectionType getConnectionType() {
         return this.connectionType;
     }
@@ -91,5 +97,9 @@ public class FaultInjectionConnectionErrorRule implements IFaultInjectionRuleInt
     public boolean isValid() {
         Instant now = Instant.now();
         return this.enabled && now.isAfter(this.startTime) && now.isBefore(this.expireTime);
+    }
+
+    public void applyRule() {
+        this.hitCount.incrementAndGet();
     }
 }

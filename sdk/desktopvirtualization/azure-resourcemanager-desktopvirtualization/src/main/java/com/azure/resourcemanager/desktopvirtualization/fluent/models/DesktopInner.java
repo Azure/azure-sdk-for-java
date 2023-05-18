@@ -24,6 +24,10 @@ public final class DesktopInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private DesktopProperties innerProperties;
 
+    /** Creates an instance of DesktopInner class. */
+    public DesktopInner() {
+    }
+
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
      *

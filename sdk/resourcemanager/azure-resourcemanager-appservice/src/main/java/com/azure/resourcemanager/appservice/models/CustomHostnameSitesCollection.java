@@ -25,6 +25,10 @@ public final class CustomHostnameSitesCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of CustomHostnameSitesCollection class. */
+    public CustomHostnameSitesCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

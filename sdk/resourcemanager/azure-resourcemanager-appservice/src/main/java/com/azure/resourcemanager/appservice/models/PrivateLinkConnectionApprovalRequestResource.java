@@ -17,6 +17,10 @@ public final class PrivateLinkConnectionApprovalRequestResource extends ProxyOnl
     @JsonProperty(value = "properties")
     private PrivateLinkConnectionApprovalRequest innerProperties;
 
+    /** Creates an instance of PrivateLinkConnectionApprovalRequestResource class. */
+    public PrivateLinkConnectionApprovalRequestResource() {
+    }
+
     /**
      * Get the innerProperties property: Core resource properties.
      *

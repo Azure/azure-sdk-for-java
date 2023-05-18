@@ -43,6 +43,7 @@ import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import com.azure.resourcemanager.test.utils.TestIdentifierProvider;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.junit.jupiter.api.Assertions;
 import reactor.core.publisher.Mono;
 import reactor.util.retry.Retry;
 
@@ -226,6 +227,25 @@ public class AppServiceTest extends ResourceManagerTestBase {
         } catch (Exception e) {
             LOGGER.logThrowableAsError(e);
             return null;
+        }
+    }
+
+    protected void assertAppRunning(String hostname) {
+        if (!isPlaybackMode()) {
+            final int retryMax = 10;
+            for (int retryCount = 0; retryCount <= retryMax; ++retryCount) {
+                // wait
+                ResourceManagerUtils.sleep(Duration.ofMinutes(1));
+                Response<String> response = curl("https://" + hostname);
+                Assertions.assertEquals(200, response.getStatusCode());
+                String body = response.getValue();
+                if (body != null && body.contains("Hello world from linux 4")) {
+                    break;
+                } else if (retryCount == retryMax) {
+                    Assertions.assertNotNull(body);
+                    Assertions.assertTrue(body.contains("Hello world from linux 4"));
+                }
+            }
         }
     }
 

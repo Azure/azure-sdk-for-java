@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationTypeEnum. */
+/** authentication type for corresponding data source. */
 public final class AuthenticationTypeEnum extends ExpandableStringEnum<AuthenticationTypeEnum> {
     /** Static value Basic for AuthenticationTypeEnum. */
     public static final AuthenticationTypeEnum BASIC = fromString("Basic");
@@ -29,6 +29,14 @@ public final class AuthenticationTypeEnum extends ExpandableStringEnum<Authentic
     public static final AuthenticationTypeEnum SERVICE_PRINCIPAL_IN_KV = fromString("ServicePrincipalInKV");
 
     /**
+     * Creates a new instance of AuthenticationTypeEnum value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationTypeEnum() {}
+
+    /**
      * Creates or finds a AuthenticationTypeEnum from its string representation.
      *
      * @param name a name to look for.
@@ -39,7 +47,11 @@ public final class AuthenticationTypeEnum extends ExpandableStringEnum<Authentic
         return fromString(name, AuthenticationTypeEnum.class);
     }
 
-    /** @return known AuthenticationTypeEnum values. */
+    /**
+     * Gets known AuthenticationTypeEnum values.
+     *
+     * @return known AuthenticationTypeEnum values.
+     */
     public static Collection<AuthenticationTypeEnum> values() {
         return values(AuthenticationTypeEnum.class);
     }

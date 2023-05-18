@@ -4,8 +4,8 @@
 package com.azure.ai.metricsadvisor;
 
 import com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient;
-import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
@@ -41,7 +41,7 @@ public final class DataFeedIngestionOperationAsyncTest extends DataFeedIngestion
     @Override
     public void listIngestionStatus(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         PagedFlux<DataFeedIngestionStatus> ingestionStatusFlux
             = client.listDataFeedIngestionStatus(ListIngestionStatusInput.INSTANCE.dataFeedId,
@@ -62,7 +62,7 @@ public final class DataFeedIngestionOperationAsyncTest extends DataFeedIngestion
     @Override
     public void getIngestionProgress(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         Mono<DataFeedIngestionProgress> ingestionProgressMono
             = client.getDataFeedIngestionProgress(GetIngestionProgressInput.INSTANCE.dataFeedId);
@@ -79,7 +79,7 @@ public final class DataFeedIngestionOperationAsyncTest extends DataFeedIngestion
     @Override
     public void refreshIngestion(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion) {
         MetricsAdvisorAdministrationAsyncClient client
-            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion).buildAsyncClient();
+            = getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false).buildAsyncClient();
 
         Mono<Response<Void>> refreshIngestionMono = client.refreshDataFeedIngestionWithResponse(
             RefreshIngestionInput.INSTANCE.dataFeedId,

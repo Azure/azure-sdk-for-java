@@ -9,20 +9,19 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmen
 import com.azure.resourcemanager.appcontainers.fluent.models.ConnectedEnvironmentStoragesCollectionInner;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentStorageProperties;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class ConnectedEnvironmentStoragesCollectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ConnectedEnvironmentStoragesCollectionInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{},\"id\":\"ldforobwj\",\"name\":\"vizbfhfo\",\"type\":\"vacqpbtuodxesz\"},{\"properties\":{},\"id\":\"l\",\"name\":\"wumuaslzk\",\"type\":\"rrwoycqucwyhahn\"},{\"properties\":{},\"id\":\"kywuhpsvfuu\",\"name\":\"utlwexxwla\",\"type\":\"niexzsrzpgepq\"}]}")
+                    "{\"value\":[{\"properties\":{},\"id\":\"jn\",\"name\":\"bckhsmtxpsi\",\"type\":\"btfhvpesaps\"},{\"properties\":{},\"id\":\"mhjjdhtldwkyzx\",\"name\":\"utknc\",\"type\":\"scwsv\"},{\"properties\":{},\"id\":\"ogtwrupqsxvnmi\",\"name\":\"ykvceoveil\",\"type\":\"vnotyfjfcnj\"}]}")
                 .toObject(ConnectedEnvironmentStoragesCollectionInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ConnectedEnvironmentStoragesCollectionInner model =
             new ConnectedEnvironmentStoragesCollectionInner()
                 .withValue(

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps GetInstanceInfoSlot. */
 public final class WebAppsGetInstanceInfoSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSiteInstanceInfo.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetSiteInstanceInfo.json
      */
     /**
      * Sample code: Get site instance info.
@@ -22,6 +20,7 @@ public final class WebAppsGetInstanceInfoSlotSamples {
             .manager()
             .serviceClient()
             .getWebApps()
-            .getInstanceInfoSlotWithResponse("testrg123", "tests346", "134987120", "staging", Context.NONE);
+            .getInstanceInfoSlotWithResponse(
+                "testrg123", "tests346", "134987120", "staging", com.azure.core.util.Context.NONE);
     }
 }

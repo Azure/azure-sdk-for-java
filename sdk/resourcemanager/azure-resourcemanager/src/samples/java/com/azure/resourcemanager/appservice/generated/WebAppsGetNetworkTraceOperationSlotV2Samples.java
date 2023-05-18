@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for WebApps GetNetworkTraceOperationSlotV2. */
 public final class WebAppsGetNetworkTraceOperationSlotV2Samples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetWebSiteNetworkTraceOperation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetWebSiteNetworkTraceOperation.json
      */
     /**
      * Sample code: Get the current status of a network trace operation for a site.
@@ -24,6 +22,10 @@ public final class WebAppsGetNetworkTraceOperationSlotV2Samples {
             .serviceClient()
             .getWebApps()
             .getNetworkTraceOperationSlotV2WithResponse(
-                "testrg123", "SampleApp", "c291433b-53ad-4c49-8cae-0a293eae1c6d", "Production", Context.NONE);
+                "testrg123",
+                "SampleApp",
+                "c291433b-53ad-4c49-8cae-0a293eae1c6d",
+                "Production",
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RedundancyMode. */
+/** Site redundancy mode. */
 public enum RedundancyMode {
     /** Enum value None. */
     NONE("None"),
@@ -39,6 +39,9 @@ public enum RedundancyMode {
      */
     @JsonCreator
     public static RedundancyMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RedundancyMode[] items = RedundancyMode.values();
         for (RedundancyMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum RedundancyMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -48,7 +48,7 @@ public interface StorageTarget {
     SystemData systemData();
 
     /**
-     * Gets the junctions property: List of Cache namespace junctions to target for namespace associations.
+     * Gets the junctions property: List of cache namespace junctions to target for namespace associations.
      *
      * @return the junctions value.
      */
@@ -153,8 +153,8 @@ public interface StorageTarget {
             /**
              * Specifies resourceGroupName, cacheName.
              *
-             * @param resourceGroupName Target resource group.
-             * @param cacheName Name of Cache. Length of name must not be greater than 80 and chars must be from the
+             * @param resourceGroupName The name of the resource group. The name is case insensitive.
+             * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
              *     [-0-9a-zA-Z_] char class.
              * @return the next definition stage.
              */
@@ -190,10 +190,10 @@ public interface StorageTarget {
         /** The stage of the StorageTarget definition allowing to specify junctions. */
         interface WithJunctions {
             /**
-             * Specifies the junctions property: List of Cache namespace junctions to target for namespace
+             * Specifies the junctions property: List of cache namespace junctions to target for namespace
              * associations..
              *
-             * @param junctions List of Cache namespace junctions to target for namespace associations.
+             * @param junctions List of cache namespace junctions to target for namespace associations.
              * @return the next definition stage.
              */
             WithCreate withJunctions(List<NamespaceJunction> junctions);
@@ -294,10 +294,10 @@ public interface StorageTarget {
         /** The stage of the StorageTarget update allowing to specify junctions. */
         interface WithJunctions {
             /**
-             * Specifies the junctions property: List of Cache namespace junctions to target for namespace
+             * Specifies the junctions property: List of cache namespace junctions to target for namespace
              * associations..
              *
-             * @param junctions List of Cache namespace junctions to target for namespace associations.
+             * @param junctions List of cache namespace junctions to target for namespace associations.
              * @return the next definition stage.
              */
             Update withJunctions(List<NamespaceJunction> junctions);

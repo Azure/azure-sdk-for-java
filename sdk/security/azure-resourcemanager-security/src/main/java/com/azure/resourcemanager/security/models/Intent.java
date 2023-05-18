@@ -62,6 +62,15 @@ public final class Intent extends ExpandableStringEnum<Intent> {
     public static final Intent EXPLOITATION = fromString("Exploitation");
 
     /**
+     * Creates a new instance of Intent value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Intent() {
+    }
+
+    /**
      * Creates or finds a Intent from its string representation.
      *
      * @param name a name to look for.

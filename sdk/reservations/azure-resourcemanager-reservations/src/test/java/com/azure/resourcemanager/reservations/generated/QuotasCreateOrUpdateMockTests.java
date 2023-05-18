@@ -34,7 +34,7 @@ public final class QuotasCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"limit\":6777629,\"currentValue\":222178389,\"unit\":\"omi\",\"name\":{\"value\":\"ggdufiqndieu\",\"localizedValue\":\"ofjchvcyyysf\"},\"resourceType\":\"serviceSpecific\",\"quotaPeriod\":\"cubiipuipw\",\"properties\":\"dataonmacjekniz\"},\"id\":\"hqvcimpevfgmblr\",\"name\":\"ilbywdxsm\",\"type\":\"ccwr\"}";
+            "{\"properties\":{\"limit\":800106977,\"currentValue\":457679085,\"unit\":\"y\",\"name\":{\"value\":\"yavluwmncstt\",\"localizedValue\":\"fybvpoek\"},\"resourceType\":\"lowPriority\",\"quotaPeriod\":\"gbdhuzqgnjdg\",\"properties\":\"datanscliqhzvhxnk\"},\"id\":\"mtk\",\"name\":\"bo\",\"type\":\"ppnvdxz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -65,20 +65,20 @@ public final class QuotasCreateOrUpdateMockTests {
         CurrentQuotaLimitBase response =
             manager
                 .quotas()
-                .define("ygdxpgpqchis")
-                .withExistingLocation("pjuohminyfl", "orwmduvwpklv", "w")
+                .define("irclnpk")
+                .withExistingLocation("gzuriglaecxndt", "cokpv", "mlqtmldgxob")
                 .withProperties(
                     new QuotaProperties()
-                        .withLimit(879673215)
-                        .withUnit("crxgibb")
-                        .withName(new ResourceName().withValue("confozauors"))
+                        .withLimit(1931804941)
+                        .withUnit("ykhyawfvjlboxqvk")
+                        .withName(new ResourceName().withValue("xhom"))
                         .withResourceType(ResourceType.DEDICATED)
-                        .withProperties("datahw"))
+                        .withProperties("dataa"))
                 .create();
 
-        Assertions.assertEquals(6777629, response.properties().limit());
-        Assertions.assertEquals("omi", response.properties().unit());
-        Assertions.assertEquals("ggdufiqndieu", response.properties().name().value());
-        Assertions.assertEquals(ResourceType.SERVICE_SPECIFIC, response.properties().resourceType());
+        Assertions.assertEquals(800106977, response.properties().limit());
+        Assertions.assertEquals("y", response.properties().unit());
+        Assertions.assertEquals("yavluwmncstt", response.properties().name().value());
+        Assertions.assertEquals(ResourceType.LOW_PRIORITY, response.properties().resourceType());
     }
 }

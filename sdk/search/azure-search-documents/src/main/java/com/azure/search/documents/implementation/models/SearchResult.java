@@ -176,13 +176,13 @@ public final class SearchResult implements JsonSerializable<SearchResult> {
                         }
                     }
                     if (scoreFound) {
-                        SearchResult deserializedValue = new SearchResult(score);
-                        deserializedValue.rerankerScore = rerankerScore;
-                        deserializedValue.highlights = highlights;
-                        deserializedValue.captions = captions;
-                        deserializedValue.additionalProperties = additionalProperties;
+                        SearchResult deserializedSearchResult = new SearchResult(score);
+                        deserializedSearchResult.rerankerScore = rerankerScore;
+                        deserializedSearchResult.highlights = highlights;
+                        deserializedSearchResult.captions = captions;
+                        deserializedSearchResult.additionalProperties = additionalProperties;
 
-                        return deserializedValue;
+                        return deserializedSearchResult;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!scoreFound) {

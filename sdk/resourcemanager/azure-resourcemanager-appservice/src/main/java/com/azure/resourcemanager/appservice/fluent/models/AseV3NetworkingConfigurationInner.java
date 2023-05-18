@@ -18,6 +18,10 @@ public final class AseV3NetworkingConfigurationInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private AseV3NetworkingConfigurationProperties innerProperties;
 
+    /** Creates an instance of AseV3NetworkingConfigurationInner class. */
+    public AseV3NetworkingConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: AseV3NetworkingConfiguration resource specific properties.
      *

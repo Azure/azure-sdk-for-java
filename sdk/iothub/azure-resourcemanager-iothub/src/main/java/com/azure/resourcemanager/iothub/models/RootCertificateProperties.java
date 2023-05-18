@@ -23,6 +23,10 @@ public final class RootCertificateProperties {
     @JsonProperty(value = "lastUpdatedTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastUpdatedTimeUtc;
 
+    /** Creates an instance of RootCertificateProperties class. */
+    public RootCertificateProperties() {
+    }
+
     /**
      * Get the enableRootCertificateV2 property: This property when set to true, hub will use G2 cert; while it's set to
      * false, hub uses Baltimore Cert.

@@ -17,18 +17,6 @@ public interface ResourceProvidersClient {
      * To check whether a resource name is available.
      *
      * @param nameAvailabilityRequest Name availability request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest nameAvailabilityRequest);
-
-    /**
-     * To check whether a resource name is available.
-     *
-     * @param nameAvailabilityRequest Name availability request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,4 +26,16 @@ public interface ResourceProvidersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CheckNameAvailabilityResponseInner> checkNameAvailabilityWithResponse(
         CheckNameAvailabilityRequest nameAvailabilityRequest, Context context);
+
+    /**
+     * To check whether a resource name is available.
+     *
+     * @param nameAvailabilityRequest Name availability request payload.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the check availability result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CheckNameAvailabilityResponseInner checkNameAvailability(CheckNameAvailabilityRequest nameAvailabilityRequest);
 }

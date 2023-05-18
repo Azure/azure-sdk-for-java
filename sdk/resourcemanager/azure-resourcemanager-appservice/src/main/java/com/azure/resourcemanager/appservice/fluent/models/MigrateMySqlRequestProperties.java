@@ -24,6 +24,10 @@ public final class MigrateMySqlRequestProperties {
     @JsonProperty(value = "migrationType", required = true)
     private MySqlMigrationType migrationType;
 
+    /** Creates an instance of MigrateMySqlRequestProperties class. */
+    public MigrateMySqlRequestProperties() {
+    }
+
     /**
      * Get the connectionString property: Connection string to the remote MySQL database.
      *

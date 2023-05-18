@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.HealthCheckStatusDetailsInner;
-import org.junit.jupiter.api.Test;
 
 public final class HealthCheckStatusDetailsInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         HealthCheckStatusDetailsInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"startDateTime\":\"2021-01-15T20:49Z\",\"endDateTime\":\"2021-04-16T00:49:55Z\",\"healthChecks\":[{\"status\":\"Passed\",\"displayName\":\"ujitcjedftww\",\"startDateTime\":\"2021-04-17T00:18:26Z\",\"endDateTime\":\"2021-01-22T13:54:08Z\",\"errorType\":\"v\",\"recommendedAction\":\"pzfoqoui\",\"additionalDetails\":\"bxarzgszufoxci\"},{\"status\":\"Passed\",\"displayName\":\"doamciodhkha\",\"startDateTime\":\"2021-06-05T04:56:19Z\",\"endDateTime\":\"2021-11-22T06:47:21Z\",\"errorType\":\"bon\",\"recommendedAction\":\"ntoe\",\"additionalDetails\":\"kdwbwhkszz\"}]},\"id\":\"rvexztvb\",\"name\":\"qgsfraoyzkoow\",\"type\":\"lmnguxaw\"}")
+                    "{\"properties\":{\"startDateTime\":\"2021-08-12T03:11:36Z\",\"endDateTime\":\"2021-01-12T10:38:40Z\",\"healthChecks\":[{\"status\":\"Unknown\",\"displayName\":\"nfd\",\"startDateTime\":\"2021-05-20T03:58:49Z\",\"endDateTime\":\"2021-09-02T09:18:32Z\",\"errorType\":\"tdlmkkzevd\",\"recommendedAction\":\"ewpusdsttwvogvb\",\"additionalDetails\":\"jdcngqqm\"},{\"status\":\"Warning\",\"displayName\":\"fgmjzrwrdgrt\",\"startDateTime\":\"2021-08-17T18:50:12Z\",\"endDateTime\":\"2021-01-31T20:09:39Z\",\"errorType\":\"zkopb\",\"recommendedAction\":\"nrfdw\",\"additionalDetails\":\"uhhziuiefozbhdm\"},{\"status\":\"Running\",\"displayName\":\"zqhof\",\"startDateTime\":\"2021-05-05T04:42:21Z\",\"endDateTime\":\"2021-11-16T17:43:34Z\",\"errorType\":\"u\",\"recommendedAction\":\"hxicslfaoqz\",\"additionalDetails\":\"yylhalnswhccsp\"},{\"status\":\"Running\",\"displayName\":\"vwitqscyw\",\"startDateTime\":\"2021-08-25T09:04:10Z\",\"endDateTime\":\"2021-02-13T16:07:26Z\",\"errorType\":\"uhczbwemh\",\"recommendedAction\":\"rsbrgzdwm\",\"additionalDetails\":\"eypqwdxggicccn\"}]},\"id\":\"huexmk\",\"name\":\"tlstvlzywem\",\"type\":\"zrncsdt\"}")
                 .toObject(HealthCheckStatusDetailsInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         HealthCheckStatusDetailsInner model = new HealthCheckStatusDetailsInner();
         model = BinaryData.fromObject(model).toObject(HealthCheckStatusDetailsInner.class);
     }

@@ -22,6 +22,10 @@ public final class KeyValuePairStringObject {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private Object value;
 
+    /** Creates an instance of KeyValuePairStringObject class. */
+    public KeyValuePairStringObject() {
+    }
+
     /**
      * Get the key property: The key property.
      *

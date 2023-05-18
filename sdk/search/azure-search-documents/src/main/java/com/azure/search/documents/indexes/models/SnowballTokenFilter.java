@@ -101,9 +101,9 @@ public final class SnowballTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound && languageFound) {
-                        SnowballTokenFilter deserializedValue = new SnowballTokenFilter(name, language);
+                        SnowballTokenFilter deserializedSnowballTokenFilter = new SnowballTokenFilter(name, language);
 
-                        return deserializedValue;
+                        return deserializedSnowballTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

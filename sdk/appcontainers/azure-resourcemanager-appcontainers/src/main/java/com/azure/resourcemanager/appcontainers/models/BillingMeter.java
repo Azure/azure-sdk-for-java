@@ -9,7 +9,7 @@ import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A premium billing meter. */
+/** Billing meter. */
 @Fluent
 public final class BillingMeter extends ProxyResource {
     /*

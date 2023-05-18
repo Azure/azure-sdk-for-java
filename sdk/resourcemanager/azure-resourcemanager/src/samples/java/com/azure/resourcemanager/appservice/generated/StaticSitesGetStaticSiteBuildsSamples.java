@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites GetStaticSiteBuilds. */
 public final class StaticSitesGetStaticSiteBuildsSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetStaticSiteBuilds.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetStaticSiteBuilds.json
      */
     /**
      * Sample code: Get all builds for a static site.
@@ -22,6 +20,6 @@ public final class StaticSitesGetStaticSiteBuildsSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .getStaticSiteBuilds("rg", "testStaticSite0", Context.NONE);
+            .getStaticSiteBuilds("rg", "testStaticSite0", com.azure.core.util.Context.NONE);
     }
 }

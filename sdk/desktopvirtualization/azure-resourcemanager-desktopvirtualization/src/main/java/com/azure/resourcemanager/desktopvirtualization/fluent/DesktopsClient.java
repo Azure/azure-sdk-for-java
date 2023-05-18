@@ -51,20 +51,6 @@ public interface DesktopsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a desktop.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DesktopInner get(String resourceGroupName, String applicationGroupName, String desktopName);
-
-    /**
-     * Get a desktop.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param desktopName The name of the desktop within the specified desktop group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -74,6 +60,20 @@ public interface DesktopsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DesktopInner> getWithResponse(
         String resourceGroupName, String applicationGroupName, String desktopName, Context context);
+
+    /**
+     * Get a desktop.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param desktopName The name of the desktop within the specified desktop group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a desktop.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DesktopInner get(String resourceGroupName, String applicationGroupName, String desktopName);
 
     /**
      * Update a desktop.
@@ -97,22 +97,6 @@ public interface DesktopsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param desktopName The name of the desktop within the specified desktop group.
-     * @param desktop Object containing Desktop definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Desktop properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DesktopInner> updateAsync(
-        String resourceGroupName, String applicationGroupName, String desktopName, DesktopPatch desktop);
-
-    /**
-     * Update a desktop.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param desktopName The name of the desktop within the specified desktop group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -120,20 +104,6 @@ public interface DesktopsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DesktopInner> updateAsync(String resourceGroupName, String applicationGroupName, String desktopName);
-
-    /**
-     * Update a desktop.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param desktopName The name of the desktop within the specified desktop group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Desktop properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DesktopInner update(String resourceGroupName, String applicationGroupName, String desktopName);
 
     /**
      * Update a desktop.
@@ -155,6 +125,41 @@ public interface DesktopsClient {
         String desktopName,
         DesktopPatch desktop,
         Context context);
+
+    /**
+     * Update a desktop.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param desktopName The name of the desktop within the specified desktop group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema for Desktop properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DesktopInner update(String resourceGroupName, String applicationGroupName, String desktopName);
+
+    /**
+     * List desktops.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return desktopList as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<DesktopInner> listAsync(
+        String resourceGroupName,
+        String applicationGroupName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip);
 
     /**
      * List desktops.
@@ -187,6 +192,9 @@ public interface DesktopsClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -194,5 +202,11 @@ public interface DesktopsClient {
      * @return desktopList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DesktopInner> list(String resourceGroupName, String applicationGroupName, Context context);
+    PagedIterable<DesktopInner> list(
+        String resourceGroupName,
+        String applicationGroupName,
+        Integer pageSize,
+        Boolean isDescending,
+        Integer initialSkip,
+        Context context);
 }

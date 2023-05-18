@@ -1,27 +1,68 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.ppe.cognitiveservices.azure.com/language/:analyze-text?api-version=2022-10-01-preview&showStats=false",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "f869e2c7-d00f-4a6b-b62e-975c4a739243",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "233",
-      "x-envoy-upstream-service-time" : "213",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "csp-billing-usage" : "CognitiveServices.TextAnalytics.BatchScoring=1,CognitiveServices.TextAnalytics.TextRecords=1",
-      "apim-request-id" : "c2682719-86bb-4e5b-86e8-25f1fb1ad51c",
-      "Set-Cookie" : ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "Body" : "{\"kind\":\"EntityRecognitionResults\",\"results\":{\"documents\":[{\"id\":\"0\",\"entities\":[{\"text\":\"Microsoft\",\"category\":\"Organization\",\"offset\":126,\"length\":9,\"confidenceScore\":0.98}],\"warnings\":[]}],\"errors\":[],\"modelVersion\":\"2021-06-01\"}}",
-      "Date" : "Tue, 11 Oct 2022 19:58:19 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/:analyze-text?api-version=2022-10-01-preview\u0026showStats=false",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "400",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 18:37:38 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "b578094b-684c-42de-bd1f-b3041af513d9"
+      },
+      "RequestBody": {
+        "kind": "EntityRecognition",
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "o\u0335\u0308\u0307\u0312\u0303\u034B\u0307\u0305\u035B\u030B\u035B\u030E\u0341\u0351\u0304\u0310\u0302\u030E\u031B\u0357\u035D\u0333\u0318\u0318\u0355\u0354\u0355\u0327\u032D\u0327\u031F\u0319\u034E\u0348\u031E\u0322\u0354m\u0335\u035D\u0315\u0304\u030F\u0360\u034C\u0302\u0311\u033D\u034D\u0349\u0317g\u0335\u030B\u0352\u0344\u0360\u0313\u0312\u0308\u030D\u030C\u0343\u0305\u0351\u0312\u0343\u0305\u0305\u0352\u033F\u030F\u0301\u0357\u0300\u0307\u035B\u030F\u0300\u031B\u0344\u0300\u030A\u033E\u0340\u035D\u0314\u0349\u0322\u031E\u0321\u032F\u0320\u0324\u0323\u0355\u0322\u031F\u032B\u032B\u033C\u0330\u0353\u0345\u0321\u0328\u0326\u0321\u0356\u035C\u0327\u0323\u0323\u034E I work at Microsoft."
+            }
+          ]
+        },
+        "parameters": {
+          "loggingOptOut": false,
+          "stringIndexType": "Utf16CodeUnit"
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "apim-request-id": "33802d30-2d5e-48ea-a126-92b1f0b1ceb8",
+        "Content-Length": "233",
+        "Content-Type": "application/json; charset=utf-8",
+        "csp-billing-usage": "CognitiveServices.TextAnalytics.Language.Text.NER=1,CognitiveServices.TextAnalytics.TextRecords=1",
+        "Date": "Wed, 05 Apr 2023 18:37:36 GMT",
+        "Set-Cookie": ".AspNetCore.Mvc.CookieTempDataProvider=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/; samesite=lax; httponly",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "60",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "kind": "EntityRecognitionResults",
+        "results": {
+          "documents": [
+            {
+              "id": "0",
+              "entities": [
+                {
+                  "text": "Microsoft",
+                  "category": "Organization",
+                  "offset": 126,
+                  "length": 9,
+                  "confidenceScore": 0.98
+                }
+              ],
+              "warnings": []
+            }
+          ],
+          "errors": [],
+          "modelVersion": "2021-06-01"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

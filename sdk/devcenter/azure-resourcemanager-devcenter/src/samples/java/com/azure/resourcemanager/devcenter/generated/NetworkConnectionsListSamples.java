@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for NetworkConnections List. */
 public final class NetworkConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/NetworkConnections_ListBySubscription.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/NetworkConnections_ListBySubscription.json
      */
     /**
      * Sample code: NetworkConnections_ListBySubscription.
@@ -18,6 +16,6 @@ public final class NetworkConnectionsListSamples {
      */
     public static void networkConnectionsListBySubscription(
         com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.networkConnections().list(null, Context.NONE);
+        manager.networkConnections().list(null, com.azure.core.util.Context.NONE);
     }
 }

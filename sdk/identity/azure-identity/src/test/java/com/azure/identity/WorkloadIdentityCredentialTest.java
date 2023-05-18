@@ -3,9 +3,12 @@
 
 package com.azure.identity;
 
+import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Test;
@@ -30,12 +33,12 @@ public class WorkloadIdentityCredentialTest {
         String token1 = "token1";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint);
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // mock
         try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithExchangeToken(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+            when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
         })) {
             // test
             WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder()
@@ -51,12 +54,41 @@ public class WorkloadIdentityCredentialTest {
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void testWorkloadIdentityFlowFailureNoTenantId() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+    @Test
+    public void testWorkloadIdentityFlowSync() {
         // setup
         String endpoint = "https://localhost";
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint);
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
+
+        // mock
+        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identityClient, context) -> {
+            when(identityClient.authenticateWithWorkloadIdentityConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessTokenSync(token1, expiresAt));
+        })) {
+            // test
+            WorkloadIdentityCredential credential = new WorkloadIdentityCredentialBuilder()
+                .tenantId("dummy-tenantid")
+                .clientId("dummy-clientid")
+                .tokenFilePath("dummy-path")
+                .configuration(configuration).clientId(CLIENT_ID).build();
+
+            AccessToken token = credential.getTokenSync(request1);
+
+            Assert.assertTrue(token1.equals(token.getToken()));
+            Assert.assertTrue(expiresAt.getSecond() == token.getExpiresAt().getSecond());
+            Assert.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testWorkloadIdentityFlowFailureNoTenantId() {
+        // setup
+        String endpoint = "https://localhost";
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // test
         new WorkloadIdentityCredentialBuilder().configuration(configuration)
@@ -65,10 +97,10 @@ public class WorkloadIdentityCredentialTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testWorkloadIdentityFlowFailureNoClientId() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
         // setup
         String endpoint = "https://localhost";
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint);
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // test
         new WorkloadIdentityCredentialBuilder().configuration(configuration)
@@ -77,10 +109,10 @@ public class WorkloadIdentityCredentialTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void testWorkloadIdentityFlowFailureNoTokenPath() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
         // setup
         String endpoint = "https://localhost";
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint);
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, endpoint));
 
         // test
         new WorkloadIdentityCredentialBuilder().configuration(configuration)

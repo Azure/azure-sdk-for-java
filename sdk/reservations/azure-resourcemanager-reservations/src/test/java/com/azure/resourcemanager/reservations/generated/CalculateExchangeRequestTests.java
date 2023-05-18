@@ -19,11 +19,11 @@ public final class CalculateExchangeRequestTests {
         CalculateExchangeRequest model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"reservationsToPurchase\":[{\"location\":\"bmehh\"}],\"savingsPlansToPurchase\":[{}],\"reservationsToExchange\":[{\"reservationId\":\"slhs\",\"quantity\":1559568264}]}}")
+                    "{\"properties\":{\"reservationsToPurchase\":[{\"location\":\"jgjrwjueiotwm\"},{\"location\":\"dxwitx\"},{\"location\":\"wgqwgxhn\"}],\"savingsPlansToPurchase\":[{}],\"reservationsToExchange\":[{\"reservationId\":\"cg\",\"quantity\":1567456771}]}}")
                 .toObject(CalculateExchangeRequest.class);
-        Assertions.assertEquals("bmehh", model.properties().reservationsToPurchase().get(0).location());
-        Assertions.assertEquals("slhs", model.properties().reservationsToExchange().get(0).reservationId());
-        Assertions.assertEquals(1559568264, model.properties().reservationsToExchange().get(0).quantity());
+        Assertions.assertEquals("jgjrwjueiotwm", model.properties().reservationsToPurchase().get(0).location());
+        Assertions.assertEquals("cg", model.properties().reservationsToExchange().get(0).reservationId());
+        Assertions.assertEquals(1567456771, model.properties().reservationsToExchange().get(0).quantity());
     }
 
     @org.junit.jupiter.api.Test
@@ -32,14 +32,18 @@ public final class CalculateExchangeRequestTests {
             new CalculateExchangeRequest()
                 .withProperties(
                     new CalculateExchangeRequestProperties()
-                        .withReservationsToPurchase(Arrays.asList(new PurchaseRequest().withLocation("bmehh")))
+                        .withReservationsToPurchase(
+                            Arrays
+                                .asList(
+                                    new PurchaseRequest().withLocation("jgjrwjueiotwm"),
+                                    new PurchaseRequest().withLocation("dxwitx"),
+                                    new PurchaseRequest().withLocation("wgqwgxhn")))
                         .withSavingsPlansToPurchase(Arrays.asList(new SavingsPlanPurchaseRequest()))
                         .withReservationsToExchange(
-                            Arrays
-                                .asList(new ReservationToReturn().withReservationId("slhs").withQuantity(1559568264))));
+                            Arrays.asList(new ReservationToReturn().withReservationId("cg").withQuantity(1567456771))));
         model = BinaryData.fromObject(model).toObject(CalculateExchangeRequest.class);
-        Assertions.assertEquals("bmehh", model.properties().reservationsToPurchase().get(0).location());
-        Assertions.assertEquals("slhs", model.properties().reservationsToExchange().get(0).reservationId());
-        Assertions.assertEquals(1559568264, model.properties().reservationsToExchange().get(0).quantity());
+        Assertions.assertEquals("jgjrwjueiotwm", model.properties().reservationsToPurchase().get(0).location());
+        Assertions.assertEquals("cg", model.properties().reservationsToExchange().get(0).reservationId());
+        Assertions.assertEquals(1567456771, model.properties().reservationsToExchange().get(0).quantity());
     }
 }

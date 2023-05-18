@@ -48,7 +48,9 @@ public interface AppServiceEnvironmentsClient
         InnerSupportsListing<AppServiceEnvironmentResourceInner>,
         InnerSupportsDelete<Void> {
     /**
-     * Description for Get all App Service Environments for a subscription.
+     * Get all App Service Environments for a subscription.
+     *
+     * <p>Description for Get all App Service Environments for a subscription.
      *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -59,7 +61,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<AppServiceEnvironmentResourceInner> listAsync();
 
     /**
-     * Description for Get all App Service Environments for a subscription.
+     * Get all App Service Environments for a subscription.
+     *
+     * <p>Description for Get all App Service Environments for a subscription.
      *
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -70,7 +74,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<AppServiceEnvironmentResourceInner> list();
 
     /**
-     * Description for Get all App Service Environments for a subscription.
+     * Get all App Service Environments for a subscription.
+     *
+     * <p>Description for Get all App Service Environments for a subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,7 +89,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<AppServiceEnvironmentResourceInner> list(Context context);
 
     /**
-     * Description for Get all App Service Environments in a resource group.
+     * Get all App Service Environments in a resource group.
+     *
+     * <p>Description for Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +104,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<AppServiceEnvironmentResourceInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Description for Get all App Service Environments in a resource group.
+     * Get all App Service Environments in a resource group.
+     *
+     * <p>Description for Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,7 +119,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<AppServiceEnvironmentResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Description for Get all App Service Environments in a resource group.
+     * Get all App Service Environments in a resource group.
+     *
+     * <p>Description for Get all App Service Environments in a resource group.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
@@ -123,7 +135,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<AppServiceEnvironmentResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Description for Get the properties of an App Service Environment.
+     * Get the properties of an App Service Environment.
+     *
+     * <p>Description for Get the properties of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -139,7 +153,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Get the properties of an App Service Environment.
+     * Get the properties of an App Service Environment.
+     *
+     * <p>Description for Get the properties of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -153,21 +169,9 @@ public interface AppServiceEnvironmentsClient
     Mono<AppServiceEnvironmentResourceInner> getByResourceGroupAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get the properties of an App Service Environment.
+     * Get the properties of an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AppServiceEnvironmentResourceInner getByResourceGroup(String resourceGroupName, String name);
-
-    /**
-     * Description for Get the properties of an App Service Environment.
+     * <p>Description for Get the properties of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -183,7 +187,25 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Get the properties of an App Service Environment.
+     *
+     * <p>Description for Get the properties of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AppServiceEnvironmentResourceInner getByResourceGroup(String resourceGroupName, String name);
+
+    /**
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -200,7 +222,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope);
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -217,7 +241,9 @@ public interface AppServiceEnvironmentsClient
             String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope);
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -233,7 +259,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope);
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -253,7 +281,9 @@ public interface AppServiceEnvironmentsClient
         Context context);
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -269,7 +299,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope);
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -285,7 +317,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, AppServiceEnvironmentResourceInner hostingEnvironmentEnvelope);
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -305,7 +339,9 @@ public interface AppServiceEnvironmentsClient
         Context context);
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -322,7 +358,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Boolean forceDelete);
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -338,12 +376,28 @@ public interface AppServiceEnvironmentsClient
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name, Boolean forceDelete);
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
-     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name);
+
+    /**
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      *     rejected by server.
@@ -351,10 +405,12 @@ public interface AppServiceEnvironmentsClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Boolean forceDelete);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name);
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -372,7 +428,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Boolean forceDelete, Context context);
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -388,7 +446,9 @@ public interface AppServiceEnvironmentsClient
     Mono<Void> deleteAsync(String resourceGroupName, String name, Boolean forceDelete);
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -402,22 +462,9 @@ public interface AppServiceEnvironmentsClient
     Mono<Void> deleteAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param forceDelete Specify &lt;code&gt;true&lt;/code&gt; to force the deletion even if the App Service
-     *     Environment contains resources. The default is &lt;code&gt;false&lt;/code&gt;.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String name, Boolean forceDelete);
-
-    /**
-     * Description for Delete an App Service Environment.
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -430,7 +477,9 @@ public interface AppServiceEnvironmentsClient
     void delete(String resourceGroupName, String name);
 
     /**
-     * Description for Delete an App Service Environment.
+     * Delete an App Service Environment.
+     *
+     * <p>Description for Delete an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -446,7 +495,9 @@ public interface AppServiceEnvironmentsClient
     void delete(String resourceGroupName, String name, Boolean forceDelete, Context context);
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -463,7 +514,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope);
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -479,23 +532,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope);
 
     /**
-     * Description for Create or update an App Service Environment.
+     * Create or update an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return app Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AppServiceEnvironmentResourceInner update(
-        String resourceGroupName, String name, AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope);
-
-    /**
-     * Description for Create or update an App Service Environment.
+     * <p>Description for Create or update an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -515,7 +554,27 @@ public interface AppServiceEnvironmentsClient
         Context context);
 
     /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
+     * Create or update an App Service Environment.
+     *
+     * <p>Description for Create or update an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param hostingEnvironmentEnvelope Configuration details of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return app Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AppServiceEnvironmentResourceInner update(
+        String resourceGroupName, String name, AppServiceEnvironmentPatchResourceInner hostingEnvironmentEnvelope);
+
+    /**
+     * Get the used, available, and total worker capacity an App Service Environment.
+     *
+     * <p>Description for Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -529,7 +588,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<StampCapacityInner> listCapacitiesAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
+     * Get the used, available, and total worker capacity an App Service Environment.
+     *
+     * <p>Description for Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -543,7 +604,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<StampCapacityInner> listCapacities(String resourceGroupName, String name);
 
     /**
-     * Description for Get the used, available, and total worker capacity an App Service Environment.
+     * Get the used, available, and total worker capacity an App Service Environment.
+     *
+     * <p>Description for Get the used, available, and total worker capacity an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -558,7 +621,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<StampCapacityInner> listCapacities(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get IP addresses assigned to an App Service Environment.
+     * Get IP addresses assigned to an App Service Environment.
+     *
+     * <p>Description for Get IP addresses assigned to an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -573,7 +638,9 @@ public interface AppServiceEnvironmentsClient
     Mono<Response<AddressResponseInner>> getVipInfoWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get IP addresses assigned to an App Service Environment.
+     * Get IP addresses assigned to an App Service Environment.
+     *
+     * <p>Description for Get IP addresses assigned to an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -587,21 +654,9 @@ public interface AppServiceEnvironmentsClient
     Mono<AddressResponseInner> getVipInfoAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get IP addresses assigned to an App Service Environment.
+     * Get IP addresses assigned to an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes main public IP address and any extra virtual IPs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AddressResponseInner getVipInfo(String resourceGroupName, String name);
-
-    /**
-     * Description for Get IP addresses assigned to an App Service Environment.
+     * <p>Description for Get IP addresses assigned to an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -616,7 +671,25 @@ public interface AppServiceEnvironmentsClient
     Response<AddressResponseInner> getVipInfoWithResponse(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Move an App Service Environment to a different VNET.
+     * Get IP addresses assigned to an App Service Environment.
+     *
+     * <p>Description for Get IP addresses assigned to an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes main public IP address and any extra virtual IPs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AddressResponseInner getVipInfo(String resourceGroupName, String name);
+
+    /**
+     * Move an App Service Environment to a different VNET.
+     *
+     * <p>Description for Move an App Service Environment to a different VNET.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -631,7 +704,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<SiteInner> changeVnetAsync(String resourceGroupName, String name, VirtualNetworkProfile vnetInfo);
 
     /**
-     * Description for Move an App Service Environment to a different VNET.
+     * Move an App Service Environment to a different VNET.
+     *
+     * <p>Description for Move an App Service Environment to a different VNET.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -646,7 +721,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<SiteInner> changeVnet(String resourceGroupName, String name, VirtualNetworkProfile vnetInfo);
 
     /**
-     * Description for Move an App Service Environment to a different VNET.
+     * Move an App Service Environment to a different VNET.
+     *
+     * <p>Description for Move an App Service Environment to a different VNET.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -698,20 +775,6 @@ public interface AppServiceEnvironmentsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom Dns Suffix configuration of an App Service Environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDnsSuffixConfigurationInner getAseCustomDnsSuffixConfiguration(String resourceGroupName, String name);
-
-    /**
-     * Get Custom Dns Suffix configuration of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -722,6 +785,20 @@ public interface AppServiceEnvironmentsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CustomDnsSuffixConfigurationInner> getAseCustomDnsSuffixConfigurationWithResponse(
         String resourceGroupName, String name, Context context);
+
+    /**
+     * Get Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return custom Dns Suffix configuration of an App Service Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDnsSuffixConfigurationInner getAseCustomDnsSuffixConfiguration(String resourceGroupName, String name);
 
     /**
      * Update Custom Dns Suffix configuration of an App Service Environment.
@@ -762,22 +839,6 @@ public interface AppServiceEnvironmentsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
      * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full view of the custom domain suffix configuration for ASEv3.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CustomDnsSuffixConfigurationInner updateAseCustomDnsSuffixConfiguration(
-        String resourceGroupName, String name, CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration);
-
-    /**
-     * Update Custom Dns Suffix configuration of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -791,6 +852,22 @@ public interface AppServiceEnvironmentsClient
         String name,
         CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration,
         Context context);
+
+    /**
+     * Update Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param customDnsSuffixConfiguration Full view of the custom domain suffix configuration for ASEv3.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full view of the custom domain suffix configuration for ASEv3.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomDnsSuffixConfigurationInner updateAseCustomDnsSuffixConfiguration(
+        String resourceGroupName, String name, CustomDnsSuffixConfigurationInner customDnsSuffixConfiguration);
 
     /**
      * Delete Custom Dns Suffix configuration of an App Service Environment.
@@ -826,20 +903,6 @@ public interface AppServiceEnvironmentsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Object deleteAseCustomDnsSuffixConfiguration(String resourceGroupName, String name);
-
-    /**
-     * Delete Custom Dns Suffix configuration of an App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -852,7 +915,23 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get networking configuration of an App Service Environment.
+     * Delete Custom Dns Suffix configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Object deleteAseCustomDnsSuffixConfiguration(String resourceGroupName, String name);
+
+    /**
+     * Get networking configuration of an App Service Environment
+     *
+     * <p>Description for Get networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -868,7 +947,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Get networking configuration of an App Service Environment.
+     * Get networking configuration of an App Service Environment
+     *
+     * <p>Description for Get networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -882,21 +963,9 @@ public interface AppServiceEnvironmentsClient
     Mono<AseV3NetworkingConfigurationInner> getAseV3NetworkingConfigurationAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get networking configuration of an App Service Environment.
+     * Get networking configuration of an App Service Environment
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full view of networking configuration for an ASE.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AseV3NetworkingConfigurationInner getAseV3NetworkingConfiguration(String resourceGroupName, String name);
-
-    /**
-     * Description for Get networking configuration of an App Service Environment.
+     * <p>Description for Get networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -912,7 +981,25 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Update networking configuration of an App Service Environment.
+     * Get networking configuration of an App Service Environment
+     *
+     * <p>Description for Get networking configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full view of networking configuration for an ASE.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AseV3NetworkingConfigurationInner getAseV3NetworkingConfiguration(String resourceGroupName, String name);
+
+    /**
+     * Update networking configuration of an App Service Environment
+     *
+     * <p>Description for Update networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -929,7 +1016,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, AseV3NetworkingConfigurationInner aseNetworkingConfiguration);
 
     /**
-     * Description for Update networking configuration of an App Service Environment.
+     * Update networking configuration of an App Service Environment
+     *
+     * <p>Description for Update networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -945,23 +1034,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, AseV3NetworkingConfigurationInner aseNetworkingConfiguration);
 
     /**
-     * Description for Update networking configuration of an App Service Environment.
+     * Update networking configuration of an App Service Environment
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full view of networking configuration for an ASE.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AseV3NetworkingConfigurationInner updateAseNetworkingConfiguration(
-        String resourceGroupName, String name, AseV3NetworkingConfigurationInner aseNetworkingConfiguration);
-
-    /**
-     * Description for Update networking configuration of an App Service Environment.
+     * <p>Description for Update networking configuration of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -981,7 +1056,27 @@ public interface AppServiceEnvironmentsClient
         Context context);
 
     /**
-     * Description for Get diagnostic information for an App Service Environment.
+     * Update networking configuration of an App Service Environment
+     *
+     * <p>Description for Update networking configuration of an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param aseNetworkingConfiguration Full view of networking configuration for an ASE.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return full view of networking configuration for an ASE.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AseV3NetworkingConfigurationInner updateAseNetworkingConfiguration(
+        String resourceGroupName, String name, AseV3NetworkingConfigurationInner aseNetworkingConfiguration);
+
+    /**
+     * Get diagnostic information for an App Service Environment.
+     *
+     * <p>Description for Get diagnostic information for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -997,7 +1092,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Get diagnostic information for an App Service Environment.
+     * Get diagnostic information for an App Service Environment.
+     *
+     * <p>Description for Get diagnostic information for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1011,21 +1108,9 @@ public interface AppServiceEnvironmentsClient
     Mono<List<HostingEnvironmentDiagnosticsInner>> listDiagnosticsAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get diagnostic information for an App Service Environment.
+     * Get diagnostic information for an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of HostingEnvironmentDiagnostics.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<HostingEnvironmentDiagnosticsInner> listDiagnostics(String resourceGroupName, String name);
-
-    /**
-     * Description for Get diagnostic information for an App Service Environment.
+     * <p>Description for Get diagnostic information for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1041,7 +1126,25 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get a diagnostics item for an App Service Environment.
+     * Get diagnostic information for an App Service Environment.
+     *
+     * <p>Description for Get diagnostic information for an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of HostingEnvironmentDiagnostics.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<HostingEnvironmentDiagnosticsInner> listDiagnostics(String resourceGroupName, String name);
+
+    /**
+     * Get a diagnostics item for an App Service Environment.
+     *
+     * <p>Description for Get a diagnostics item for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1058,7 +1161,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String diagnosticsName);
 
     /**
-     * Description for Get a diagnostics item for an App Service Environment.
+     * Get a diagnostics item for an App Service Environment.
+     *
+     * <p>Description for Get a diagnostics item for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1074,23 +1179,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String diagnosticsName);
 
     /**
-     * Description for Get a diagnostics item for an App Service Environment.
+     * Get a diagnostics item for an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param diagnosticsName Name of the diagnostics item.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return diagnostics for an App Service Environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    HostingEnvironmentDiagnosticsInner getDiagnosticsItem(
-        String resourceGroupName, String name, String diagnosticsName);
-
-    /**
-     * Description for Get a diagnostics item for an App Service Environment.
+     * <p>Description for Get a diagnostics item for an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1107,7 +1198,27 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String diagnosticsName, Context context);
 
     /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get a diagnostics item for an App Service Environment.
+     *
+     * <p>Description for Get a diagnostics item for an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param diagnosticsName Name of the diagnostics item.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return diagnostics for an App Service Environment.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    HostingEnvironmentDiagnosticsInner getDiagnosticsItem(
+        String resourceGroupName, String name, String diagnosticsName);
+
+    /**
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1122,7 +1233,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1137,7 +1250,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
+     * Get the network endpoints of all inbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all inbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1153,7 +1268,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get all multi-role pools.
+     * Get all multi-role pools.
+     *
+     * <p>Description for Get all multi-role pools.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1167,7 +1284,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<WorkerPoolResourceInner> listMultiRolePoolsAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get all multi-role pools.
+     * Get all multi-role pools.
+     *
+     * <p>Description for Get all multi-role pools.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1181,7 +1300,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<WorkerPoolResourceInner> listMultiRolePools(String resourceGroupName, String name);
 
     /**
-     * Description for Get all multi-role pools.
+     * Get all multi-role pools.
+     *
+     * <p>Description for Get all multi-role pools.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1196,7 +1317,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<WorkerPoolResourceInner> listMultiRolePools(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get properties of a multi-role pool.
+     * Get properties of a multi-role pool.
+     *
+     * <p>Description for Get properties of a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1211,7 +1334,9 @@ public interface AppServiceEnvironmentsClient
     Mono<Response<WorkerPoolResourceInner>> getMultiRolePoolWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get properties of a multi-role pool.
+     * Get properties of a multi-role pool.
+     *
+     * <p>Description for Get properties of a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1225,21 +1350,9 @@ public interface AppServiceEnvironmentsClient
     Mono<WorkerPoolResourceInner> getMultiRolePoolAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get properties of a multi-role pool.
+     * Get properties of a multi-role pool.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkerPoolResourceInner getMultiRolePool(String resourceGroupName, String name);
-
-    /**
-     * Description for Get properties of a multi-role pool.
+     * <p>Description for Get properties of a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1255,7 +1368,25 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Get properties of a multi-role pool.
+     *
+     * <p>Description for Get properties of a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkerPoolResourceInner getMultiRolePool(String resourceGroupName, String name);
+
+    /**
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1272,7 +1403,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1288,7 +1421,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1304,7 +1439,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1321,7 +1458,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context);
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1337,7 +1476,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1353,7 +1494,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1370,7 +1513,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context);
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1387,7 +1532,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1403,23 +1550,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
 
     /**
-     * Description for Create or update a multi-role pool.
+     * Create or update a multi-role pool.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param multiRolePoolEnvelope Properties of the multi-role pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkerPoolResourceInner updateMultiRolePool(
-        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
-
-    /**
-     * Description for Create or update a multi-role pool.
+     * <p>Description for Create or update a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1436,7 +1569,27 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope, Context context);
 
     /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
+     * Create or update a multi-role pool.
+     *
+     * <p>Description for Create or update a multi-role pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param multiRolePoolEnvelope Properties of the multi-role pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkerPoolResourceInner updateMultiRolePool(
+        String resourceGroupName, String name, WorkerPoolResourceInner multiRolePoolEnvelope);
+
+    /**
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1453,7 +1606,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String instance);
 
     /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1470,7 +1625,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String instance);
 
     /**
-     * Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
+     * Get metric definitions for a specific instance of a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a multi-role pool of an App Service
      * Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -1488,7 +1645,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String instance, Context context);
 
     /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1502,7 +1661,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitionsAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1516,7 +1677,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<ResourceMetricDefinitionInner> listMultiRoleMetricDefinitions(String resourceGroupName, String name);
 
     /**
-     * Description for Get metric definitions for a multi-role pool of an App Service Environment.
+     * Get metric definitions for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1532,7 +1695,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get available SKUs for scaling a multi-role pool.
+     * Get available SKUs for scaling a multi-role pool.
+     *
+     * <p>Description for Get available SKUs for scaling a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1546,7 +1711,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<SkuInfoInner> listMultiRolePoolSkusAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get available SKUs for scaling a multi-role pool.
+     * Get available SKUs for scaling a multi-role pool.
+     *
+     * <p>Description for Get available SKUs for scaling a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1560,7 +1727,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<SkuInfoInner> listMultiRolePoolSkus(String resourceGroupName, String name);
 
     /**
-     * Description for Get available SKUs for scaling a multi-role pool.
+     * Get available SKUs for scaling a multi-role pool.
+     *
+     * <p>Description for Get available SKUs for scaling a multi-role pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1607,19 +1776,6 @@ public interface AppServiceEnvironmentsClient
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void testUpgradeAvailableNotification(String resourceGroupName, String name);
-
-    /**
-     * Send a test notification that an upgrade is available for this App Service Environment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
@@ -1631,7 +1787,22 @@ public interface AppServiceEnvironmentsClient
     Response<Void> testUpgradeAvailableNotificationWithResponse(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Send a test notification that an upgrade is available for this App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void testUpgradeAvailableNotification(String resourceGroupName, String name);
+
+    /**
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1645,7 +1816,9 @@ public interface AppServiceEnvironmentsClient
     Mono<Response<Flux<ByteBuffer>>> upgradeWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1659,7 +1832,9 @@ public interface AppServiceEnvironmentsClient
     PollerFlux<PollResult<Void>, Void> beginUpgradeAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1673,7 +1848,9 @@ public interface AppServiceEnvironmentsClient
     SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String name);
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1688,7 +1865,9 @@ public interface AppServiceEnvironmentsClient
     SyncPoller<PollResult<Void>, Void> beginUpgrade(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1702,7 +1881,9 @@ public interface AppServiceEnvironmentsClient
     Mono<Void> upgradeAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1715,7 +1896,9 @@ public interface AppServiceEnvironmentsClient
     void upgrade(String resourceGroupName, String name);
 
     /**
-     * Description for Initiate an upgrade of an App Service Environment if one is available.
+     * Initiate an upgrade of an App Service Environment if one is available.
+     *
+     * <p>Description for Initiate an upgrade of an App Service Environment if one is available.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1729,7 +1912,9 @@ public interface AppServiceEnvironmentsClient
     void upgrade(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1743,7 +1928,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<UsageInner> listMultiRoleUsagesAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1757,7 +1944,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<UsageInner> listMultiRoleUsages(String resourceGroupName, String name);
 
     /**
-     * Description for Get usage metrics for a multi-role pool of an App Service Environment.
+     * Get usage metrics for a multi-role pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a multi-role pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1772,7 +1961,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<UsageInner> listMultiRoleUsages(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for List all currently running operations on the App Service Environment.
+     * List all currently running operations on the App Service Environment.
+     *
+     * <p>Description for List all currently running operations on the App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1786,7 +1977,9 @@ public interface AppServiceEnvironmentsClient
     Mono<Response<List<OperationInner>>> listOperationsWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for List all currently running operations on the App Service Environment.
+     * List all currently running operations on the App Service Environment.
+     *
+     * <p>Description for List all currently running operations on the App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1800,21 +1993,9 @@ public interface AppServiceEnvironmentsClient
     Mono<List<OperationInner>> listOperationsAsync(String resourceGroupName, String name);
 
     /**
-     * Description for List all currently running operations on the App Service Environment.
+     * List all currently running operations on the App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    List<OperationInner> listOperations(String resourceGroupName, String name);
-
-    /**
-     * Description for List all currently running operations on the App Service Environment.
+     * <p>Description for List all currently running operations on the App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1829,7 +2010,25 @@ public interface AppServiceEnvironmentsClient
     Response<List<OperationInner>> listOperationsWithResponse(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * List all currently running operations on the App Service Environment.
+     *
+     * <p>Description for List all currently running operations on the App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of Operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    List<OperationInner> listOperations(String resourceGroupName, String name);
+
+    /**
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1844,7 +2043,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1859,7 +2060,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
+     * Get the network endpoints of all outbound dependencies of an App Service Environment.
+     *
+     * <p>Description for Get the network endpoints of all outbound dependencies of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1875,7 +2078,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets the list of private endpoints associated with a hosting environment.
+     * Gets the list of private endpoints associated with a hosting environment
+     *
+     * <p>Description for Gets the list of private endpoints associated with a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1890,7 +2095,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the list of private endpoints associated with a hosting environment.
+     * Gets the list of private endpoints associated with a hosting environment
+     *
+     * <p>Description for Gets the list of private endpoints associated with a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1905,7 +2112,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the list of private endpoints associated with a hosting environment.
+     * Gets the list of private endpoints associated with a hosting environment
+     *
+     * <p>Description for Gets the list of private endpoints associated with a hosting environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1921,7 +2130,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Gets a private endpoint connection.
+     * Gets a private endpoint connection
+     *
+     * <p>Description for Gets a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1938,7 +2149,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Gets a private endpoint connection.
+     * Gets a private endpoint connection
+     *
+     * <p>Description for Gets a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1954,23 +2167,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Gets a private endpoint connection.
+     * Gets a private endpoint connection
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RemotePrivateEndpointConnectionArmResourceInner getPrivateEndpointConnection(
-        String resourceGroupName, String name, String privateEndpointConnectionName);
-
-    /**
-     * Description for Gets a private endpoint connection.
+     * <p>Description for Gets a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -1987,7 +2186,27 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Gets a private endpoint connection
+     *
+     * <p>Description for Gets a private endpoint connection.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param privateEndpointConnectionName Name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote Private Endpoint Connection ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RemotePrivateEndpointConnectionArmResourceInner getPrivateEndpointConnection(
+        String resourceGroupName, String name, String privateEndpointConnectionName);
+
+    /**
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2008,7 +2227,9 @@ public interface AppServiceEnvironmentsClient
         PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2031,7 +2252,9 @@ public interface AppServiceEnvironmentsClient
             PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2054,7 +2277,9 @@ public interface AppServiceEnvironmentsClient
             PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2079,7 +2304,9 @@ public interface AppServiceEnvironmentsClient
             Context context);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2099,7 +2326,9 @@ public interface AppServiceEnvironmentsClient
         PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2119,7 +2348,9 @@ public interface AppServiceEnvironmentsClient
         PrivateLinkConnectionApprovalRequestResource privateEndpointWrapper);
 
     /**
-     * Description for Approves or rejects a private endpoint connection.
+     * Approves or rejects a private endpoint connection
+     *
+     * <p>Description for Approves or rejects a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2141,7 +2372,9 @@ public interface AppServiceEnvironmentsClient
         Context context);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2157,7 +2390,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2173,7 +2408,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2189,7 +2426,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2206,7 +2445,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2222,7 +2463,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2237,7 +2480,9 @@ public interface AppServiceEnvironmentsClient
     Object deletePrivateEndpointConnection(String resourceGroupName, String name, String privateEndpointConnectionName);
 
     /**
-     * Description for Deletes a private endpoint connection.
+     * Deletes a private endpoint connection
+     *
+     * <p>Description for Deletes a private endpoint connection.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2254,7 +2499,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context);
 
     /**
-     * Description for Gets the private link resources.
+     * Gets the private link resources
+     *
+     * <p>Description for Gets the private link resources.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2270,7 +2517,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name);
 
     /**
-     * Description for Gets the private link resources.
+     * Gets the private link resources
+     *
+     * <p>Description for Gets the private link resources.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2284,21 +2533,9 @@ public interface AppServiceEnvironmentsClient
     Mono<PrivateLinkResourcesWrapperInner> getPrivateLinkResourcesAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Gets the private link resources.
+     * Gets the private link resources
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper for a collection of private link resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkResourcesWrapperInner getPrivateLinkResources(String resourceGroupName, String name);
-
-    /**
-     * Description for Gets the private link resources.
+     * <p>Description for Gets the private link resources.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2314,7 +2551,25 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Reboot all machines in an App Service Environment.
+     * Gets the private link resources
+     *
+     * <p>Description for Gets the private link resources.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return wrapper for a collection of private link resources.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkResourcesWrapperInner getPrivateLinkResources(String resourceGroupName, String name);
+
+    /**
+     * Reboot all machines in an App Service Environment.
+     *
+     * <p>Description for Reboot all machines in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2328,7 +2583,9 @@ public interface AppServiceEnvironmentsClient
     Mono<Response<Void>> rebootWithResponseAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Reboot all machines in an App Service Environment.
+     * Reboot all machines in an App Service Environment.
+     *
+     * <p>Description for Reboot all machines in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2342,20 +2599,9 @@ public interface AppServiceEnvironmentsClient
     Mono<Void> rebootAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Reboot all machines in an App Service Environment.
+     * Reboot all machines in an App Service Environment.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void reboot(String resourceGroupName, String name);
-
-    /**
-     * Description for Reboot all machines in an App Service Environment.
+     * <p>Description for Reboot all machines in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2370,7 +2616,24 @@ public interface AppServiceEnvironmentsClient
     Response<Void> rebootWithResponse(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Resume an App Service Environment.
+     * Reboot all machines in an App Service Environment.
+     *
+     * <p>Description for Reboot all machines in an App Service Environment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void reboot(String resourceGroupName, String name);
+
+    /**
+     * Resume an App Service Environment.
+     *
+     * <p>Description for Resume an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2384,7 +2647,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<SiteInner> resumeAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Resume an App Service Environment.
+     * Resume an App Service Environment.
+     *
+     * <p>Description for Resume an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2398,7 +2663,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<SiteInner> resume(String resourceGroupName, String name);
 
     /**
-     * Description for Resume an App Service Environment.
+     * Resume an App Service Environment.
+     *
+     * <p>Description for Resume an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2413,7 +2680,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<SiteInner> resume(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get all App Service plans in an App Service Environment.
+     * Get all App Service plans in an App Service Environment.
+     *
+     * <p>Description for Get all App Service plans in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2427,7 +2696,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<AppServicePlanInner> listAppServicePlansAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get all App Service plans in an App Service Environment.
+     * Get all App Service plans in an App Service Environment.
+     *
+     * <p>Description for Get all App Service plans in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2441,7 +2712,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<AppServicePlanInner> listAppServicePlans(String resourceGroupName, String name);
 
     /**
-     * Description for Get all App Service plans in an App Service Environment.
+     * Get all App Service plans in an App Service Environment.
+     *
+     * <p>Description for Get all App Service plans in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2456,7 +2729,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<AppServicePlanInner> listAppServicePlans(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2471,7 +2746,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<SiteInner> listWebAppsAsync(String resourceGroupName, String name, String propertiesToInclude);
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2485,7 +2762,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<SiteInner> listWebAppsAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2499,7 +2778,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<SiteInner> listWebApps(String resourceGroupName, String name);
 
     /**
-     * Description for Get all apps in an App Service Environment.
+     * Get all apps in an App Service Environment.
+     *
+     * <p>Description for Get all apps in an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2516,7 +2797,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String propertiesToInclude, Context context);
 
     /**
-     * Description for Suspend an App Service Environment.
+     * Suspend an App Service Environment.
+     *
+     * <p>Description for Suspend an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2530,7 +2813,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<SiteInner> suspendAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Suspend an App Service Environment.
+     * Suspend an App Service Environment.
+     *
+     * <p>Description for Suspend an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2544,7 +2829,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<SiteInner> suspend(String resourceGroupName, String name);
 
     /**
-     * Description for Suspend an App Service Environment.
+     * Suspend an App Service Environment.
+     *
+     * <p>Description for Suspend an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2559,7 +2846,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<SiteInner> suspend(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2576,7 +2865,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name, String filter);
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2590,7 +2881,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<CsmUsageQuotaInner> listUsagesAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2604,7 +2897,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name);
 
     /**
-     * Description for Get global usage metrics of an App Service Environment.
+     * Get global usage metrics of an App Service Environment.
+     *
+     * <p>Description for Get global usage metrics of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2622,7 +2917,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<CsmUsageQuotaInner> listUsages(String resourceGroupName, String name, String filter, Context context);
 
     /**
-     * Description for Get all worker pools of an App Service Environment.
+     * Get all worker pools of an App Service Environment.
+     *
+     * <p>Description for Get all worker pools of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2636,7 +2933,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<WorkerPoolResourceInner> listWorkerPoolsAsync(String resourceGroupName, String name);
 
     /**
-     * Description for Get all worker pools of an App Service Environment.
+     * Get all worker pools of an App Service Environment.
+     *
+     * <p>Description for Get all worker pools of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2650,7 +2949,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<WorkerPoolResourceInner> listWorkerPools(String resourceGroupName, String name);
 
     /**
-     * Description for Get all worker pools of an App Service Environment.
+     * Get all worker pools of an App Service Environment.
+     *
+     * <p>Description for Get all worker pools of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2665,7 +2966,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<WorkerPoolResourceInner> listWorkerPools(String resourceGroupName, String name, Context context);
 
     /**
-     * Description for Get properties of a worker pool.
+     * Get properties of a worker pool.
+     *
+     * <p>Description for Get properties of a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2682,7 +2985,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName);
 
     /**
-     * Description for Get properties of a worker pool.
+     * Get properties of a worker pool.
+     *
+     * <p>Description for Get properties of a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2697,22 +3002,9 @@ public interface AppServiceEnvironmentsClient
     Mono<WorkerPoolResourceInner> getWorkerPoolAsync(String resourceGroupName, String name, String workerPoolName);
 
     /**
-     * Description for Get properties of a worker pool.
+     * Get properties of a worker pool.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkerPoolResourceInner getWorkerPool(String resourceGroupName, String name, String workerPoolName);
-
-    /**
-     * Description for Get properties of a worker pool.
+     * <p>Description for Get properties of a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2729,7 +3021,26 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, Context context);
 
     /**
-     * Description for Create or update a worker pool.
+     * Get properties of a worker pool.
+     *
+     * <p>Description for Get properties of a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkerPoolResourceInner getWorkerPool(String resourceGroupName, String name, String workerPoolName);
+
+    /**
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2747,7 +3058,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2764,7 +3077,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2781,7 +3096,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2803,7 +3120,9 @@ public interface AppServiceEnvironmentsClient
         Context context);
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2820,7 +3139,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2837,7 +3158,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2859,7 +3182,9 @@ public interface AppServiceEnvironmentsClient
         Context context);
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2877,7 +3202,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2894,24 +3221,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
 
     /**
-     * Description for Create or update a worker pool.
+     * Create or update a worker pool.
      *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the App Service Environment.
-     * @param workerPoolName Name of the worker pool.
-     * @param workerPoolEnvelope Properties of the worker pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return worker pool of an App Service Environment ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkerPoolResourceInner updateWorkerPool(
-        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
-
-    /**
-     * Description for Create or update a worker pool.
+     * <p>Description for Create or update a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2933,7 +3245,28 @@ public interface AppServiceEnvironmentsClient
         Context context);
 
     /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * Create or update a worker pool.
+     *
+     * <p>Description for Create or update a worker pool.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the App Service Environment.
+     * @param workerPoolName Name of the worker pool.
+     * @param workerPoolEnvelope Properties of the worker pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     *     rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return worker pool of an App Service Environment ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkerPoolResourceInner updateWorkerPool(
+        String resourceGroupName, String name, String workerPoolName, WorkerPoolResourceInner workerPoolEnvelope);
+
+    /**
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2950,7 +3283,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, String instance);
 
     /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2967,7 +3302,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, String instance);
 
     /**
-     * Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     * Get metric definitions for a specific instance of a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a specific instance of a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -2985,7 +3322,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, String instance, Context context);
 
     /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
+     * Get metric definitions for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3001,7 +3340,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName);
 
     /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
+     * Get metric definitions for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3017,7 +3358,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName);
 
     /**
-     * Description for Get metric definitions for a worker pool of an App Service Environment.
+     * Get metric definitions for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get metric definitions for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3034,7 +3377,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, Context context);
 
     /**
-     * Description for Get available SKUs for scaling a worker pool.
+     * Get available SKUs for scaling a worker pool.
+     *
+     * <p>Description for Get available SKUs for scaling a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3049,7 +3394,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<SkuInfoInner> listWorkerPoolSkusAsync(String resourceGroupName, String name, String workerPoolName);
 
     /**
-     * Description for Get available SKUs for scaling a worker pool.
+     * Get available SKUs for scaling a worker pool.
+     *
+     * <p>Description for Get available SKUs for scaling a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3064,7 +3411,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<SkuInfoInner> listWorkerPoolSkus(String resourceGroupName, String name, String workerPoolName);
 
     /**
-     * Description for Get available SKUs for scaling a worker pool.
+     * Get available SKUs for scaling a worker pool.
+     *
+     * <p>Description for Get available SKUs for scaling a worker pool.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3081,7 +3430,9 @@ public interface AppServiceEnvironmentsClient
         String resourceGroupName, String name, String workerPoolName, Context context);
 
     /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
+     * Get usage metrics for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3096,7 +3447,9 @@ public interface AppServiceEnvironmentsClient
     PagedFlux<UsageInner> listWebWorkerUsagesAsync(String resourceGroupName, String name, String workerPoolName);
 
     /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
+     * Get usage metrics for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.
@@ -3111,7 +3464,9 @@ public interface AppServiceEnvironmentsClient
     PagedIterable<UsageInner> listWebWorkerUsages(String resourceGroupName, String name, String workerPoolName);
 
     /**
-     * Description for Get usage metrics for a worker pool of an App Service Environment.
+     * Get usage metrics for a worker pool of an App Service Environment.
+     *
+     * <p>Description for Get usage metrics for a worker pool of an App Service Environment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the App Service Environment.

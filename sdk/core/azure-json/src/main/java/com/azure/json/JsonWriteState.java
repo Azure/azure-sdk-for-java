@@ -7,6 +7,8 @@ package com.azure.json;
  * Writing context of the JSON stream.
  * <p>
  * Used by {@link JsonWriter} to maintain state and determine validity of a write operation.
+ *
+ * @see JsonWriter
  */
 public enum JsonWriteState {
     /**

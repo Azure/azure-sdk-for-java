@@ -19,8 +19,8 @@ public final class ProvisioningStateType extends ExpandableStringEnum<Provisioni
     /** Static value Failed for ProvisioningStateType. */
     public static final ProvisioningStateType FAILED = fromString("Failed");
 
-    /** Static value Cancelled for ProvisioningStateType. */
-    public static final ProvisioningStateType CANCELLED = fromString("Cancelled");
+    /** Static value Canceled for ProvisioningStateType. */
+    public static final ProvisioningStateType CANCELED = fromString("Canceled");
 
     /** Static value Creating for ProvisioningStateType. */
     public static final ProvisioningStateType CREATING = fromString("Creating");

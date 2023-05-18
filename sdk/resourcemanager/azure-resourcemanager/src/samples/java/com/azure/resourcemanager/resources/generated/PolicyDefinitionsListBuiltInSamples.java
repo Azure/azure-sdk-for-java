@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PolicyDefinitions ListBuiltIn. */
 public final class PolicyDefinitionsListBuiltInSamples {
     /*
@@ -17,6 +15,11 @@ public final class PolicyDefinitionsListBuiltInSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listBuiltInPolicyDefinitions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.genericResources().manager().policyClient().getPolicyDefinitions().listBuiltIn(null, null, Context.NONE);
+        azure
+            .genericResources()
+            .manager()
+            .policyClient()
+            .getPolicyDefinitions()
+            .listBuiltIn(null, null, com.azure.core.util.Context.NONE);
     }
 }

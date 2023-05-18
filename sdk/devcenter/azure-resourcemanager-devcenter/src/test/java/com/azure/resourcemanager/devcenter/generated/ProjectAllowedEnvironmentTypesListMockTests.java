@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.AllowedEnvironmentType;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class ProjectAllowedEnvironmentTypesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\"},\"id\":\"uewbc\",\"name\":\"hxuuwhcjyxccybvp\",\"type\":\"yakk\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"id\":\"wchpxlk\",\"name\":\"wk\",\"type\":\"ziycslevufuztck\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +60,8 @@ public final class ProjectAllowedEnvironmentTypesListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AllowedEnvironmentType> response =
-            manager.projectAllowedEnvironmentTypes().list("ordilmywwtkgkxny", "dabg", 1233839644, Context.NONE);
+            manager
+                .projectAllowedEnvironmentTypes()
+                .list("kdmflvestmjlx", "ril", 444057541, com.azure.core.util.Context.NONE);
     }
 }

@@ -36,15 +36,6 @@ public final class PoolsImpl implements Pools {
         return Utils.mapPage(inner, inner1 -> new CapacityPoolImpl(inner1, this.manager()));
     }
 
-    public CapacityPool get(String resourceGroupName, String accountName, String poolName) {
-        CapacityPoolInner inner = this.serviceClient().get(resourceGroupName, accountName, poolName);
-        if (inner != null) {
-            return new CapacityPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CapacityPool> getWithResponse(
         String resourceGroupName, String accountName, String poolName, Context context) {
         Response<CapacityPoolInner> inner =
@@ -55,6 +46,15 @@ public final class PoolsImpl implements Pools {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CapacityPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CapacityPool get(String resourceGroupName, String accountName, String poolName) {
+        CapacityPoolInner inner = this.serviceClient().get(resourceGroupName, accountName, poolName);
+        if (inner != null) {
+            return new CapacityPoolImpl(inner, this.manager());
         } else {
             return null;
         }

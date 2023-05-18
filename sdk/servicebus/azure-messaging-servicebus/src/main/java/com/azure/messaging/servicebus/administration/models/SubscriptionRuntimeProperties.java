@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.administration.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
-import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
@@ -47,7 +47,7 @@ public class SubscriptionRuntimeProperties {
         this.createdAt = subscriptionProperties.getCreatedAt();
         this.updatedAt = subscriptionProperties.getUpdatedAt();
 
-        final MessageCountDetails details = subscriptionProperties.getMessageCountDetails();
+        final MessageCountDetailsImpl details = subscriptionProperties.getMessageCountDetails();
         this.activeMessageCount = details != null ? details.getActiveMessageCount() : 0;
         this.deadLetterMessageCount = details != null ? details.getDeadLetterMessageCount() : 0;
         this.transferDeadLetterMessageCount = details != null ? details.getTransferDeadLetterMessageCount() : 0;

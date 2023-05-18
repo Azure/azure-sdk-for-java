@@ -11,28 +11,28 @@ import java.util.Collection;
 
 /** Defines the data type of a field in a search index. */
 public final class SearchFieldDataType extends ExpandableStringEnum<SearchFieldDataType> {
-    /** Static value Edm.String for SearchFieldDataType. */
+    /** Indicates that a field contains a string. */
     public static final SearchFieldDataType STRING = fromString("Edm.String");
 
-    /** Static value Edm.Int32 for SearchFieldDataType. */
+    /** Indicates that a field contains a 32-bit signed integer. */
     public static final SearchFieldDataType INT32 = fromString("Edm.Int32");
 
-    /** Static value Edm.Int64 for SearchFieldDataType. */
+    /** Indicates that a field contains a 64-bit signed integer. */
     public static final SearchFieldDataType INT64 = fromString("Edm.Int64");
 
-    /** Static value Edm.Double for SearchFieldDataType. */
+    /** Indicates that a field contains an IEEE double-precision floating point number. */
     public static final SearchFieldDataType DOUBLE = fromString("Edm.Double");
 
-    /** Static value Edm.Boolean for SearchFieldDataType. */
+    /** Indicates that a field contains a Boolean value (true or false). */
     public static final SearchFieldDataType BOOLEAN = fromString("Edm.Boolean");
 
-    /** Static value Edm.DateTimeOffset for SearchFieldDataType. */
+    /** Indicates that a field contains a date/time value, including timezone information. */
     public static final SearchFieldDataType DATE_TIME_OFFSET = fromString("Edm.DateTimeOffset");
 
-    /** Static value Edm.GeographyPoint for SearchFieldDataType. */
+    /** Indicates that a field contains a geo-location in terms of longitude and latitude. */
     public static final SearchFieldDataType GEOGRAPHY_POINT = fromString("Edm.GeographyPoint");
 
-    /** Static value Edm.ComplexType for SearchFieldDataType. */
+    /** Indicates that a field contains one or more complex objects that in turn have sub-fields of other types. */
     public static final SearchFieldDataType COMPLEX = fromString("Edm.ComplexType");
 
     /**

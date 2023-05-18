@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FrontendsInterface ListByTrafficController. */
 public final class FrontendsInterfaceListByTrafficControllerSamples {
     /*
@@ -17,6 +15,6 @@ public final class FrontendsInterfaceListByTrafficControllerSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void getFrontends(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.frontendsInterfaces().listByTrafficController("rg1", "TC1", Context.NONE);
+        manager.frontendsInterfaces().listByTrafficController("rg1", "tc1", com.azure.core.util.Context.NONE);
     }
 }

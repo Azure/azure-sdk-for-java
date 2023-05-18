@@ -25,22 +25,6 @@ public interface DomainsClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Domains resource and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainResourceInner get(String resourceGroupName, String emailServiceName, String domainName);
-
-    /**
-     * Get
-     *
-     * <p>Get the Domains resource and its properties.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param emailServiceName The name of the EmailService resource.
-     * @param domainName The name of the Domains resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -50,6 +34,22 @@ public interface DomainsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DomainResourceInner> getWithResponse(
         String resourceGroupName, String emailServiceName, String domainName, Context context);
+
+    /**
+     * Get
+     *
+     * <p>Get the Domains resource and its properties.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param emailServiceName The name of the EmailService resource.
+     * @param domainName The name of the Domains resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Domains resource and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DomainResourceInner get(String resourceGroupName, String emailServiceName, String domainName);
 
     /**
      * Create Or Update

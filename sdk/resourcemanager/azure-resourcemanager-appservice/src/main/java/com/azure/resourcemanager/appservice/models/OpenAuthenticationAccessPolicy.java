@@ -23,6 +23,10 @@ public final class OpenAuthenticationAccessPolicy {
     @JsonProperty(value = "claims")
     private List<OpenAuthenticationPolicyClaim> claims;
 
+    /** Creates an instance of OpenAuthenticationAccessPolicy class. */
+    public OpenAuthenticationAccessPolicy() {
+    }
+
     /**
      * Get the type property: Type of provider for OAuth.
      *

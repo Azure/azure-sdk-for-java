@@ -17,6 +17,10 @@ public final class StaticSiteZipDeploymentArmResource extends ProxyOnlyResource 
     @JsonProperty(value = "properties")
     private StaticSiteZipDeployment innerProperties;
 
+    /** Creates an instance of StaticSiteZipDeploymentArmResource class. */
+    public StaticSiteZipDeploymentArmResource() {
+    }
+
     /**
      * Get the innerProperties property: Core resource properties.
      *

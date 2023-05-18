@@ -17,6 +17,15 @@ public final class DomainJoinType extends ExpandableStringEnum<DomainJoinType> {
     public static final DomainJoinType AZURE_ADJOIN = fromString("AzureADJoin");
 
     /**
+     * Creates a new instance of DomainJoinType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DomainJoinType() {
+    }
+
+    /**
      * Creates or finds a DomainJoinType from its string representation.
      *
      * @param name a name to look for.

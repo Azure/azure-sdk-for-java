@@ -17,6 +17,10 @@ public final class StartMenuItemInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private StartMenuItemProperties innerProperties;
 
+    /** Creates an instance of StartMenuItemInner class. */
+    public StartMenuItemInner() {
+    }
+
     /**
      * Get the innerProperties property: Detailed properties for StartMenuItem.
      *

@@ -15,7 +15,7 @@ public interface BackupPolicies {
      *
      * <p>List backup policies for Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -29,7 +29,7 @@ public interface BackupPolicies {
      *
      * <p>List backup policies for Netapp Account.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,22 +44,7 @@ public interface BackupPolicies {
      *
      * <p>Get a particular backup Policy.
      *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy.
-     */
-    BackupPolicy get(String resourceGroupName, String accountName, String backupPolicyName);
-
-    /**
-     * Get a backup Policy
-     *
-     * <p>Get a particular backup Policy.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.
@@ -72,11 +57,26 @@ public interface BackupPolicies {
         String resourceGroupName, String accountName, String backupPolicyName, Context context);
 
     /**
+     * Get a backup Policy
+     *
+     * <p>Get a particular backup Policy.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a particular backup Policy.
+     */
+    BackupPolicy get(String resourceGroupName, String accountName, String backupPolicyName);
+
+    /**
      * Delete a backup policy
      *
      * <p>Delete backup policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +90,7 @@ public interface BackupPolicies {
      *
      * <p>Delete backup policy.
      *
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.

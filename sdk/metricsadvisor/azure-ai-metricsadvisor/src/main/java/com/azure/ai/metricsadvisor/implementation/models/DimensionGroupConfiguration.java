@@ -42,6 +42,9 @@ public final class DimensionGroupConfiguration {
     @JsonProperty(value = "changeThresholdCondition")
     private ChangeThresholdCondition changeThresholdCondition;
 
+    /** Creates an instance of DimensionGroupConfiguration class. */
+    public DimensionGroupConfiguration() {}
+
     /**
      * Get the group property: The group property.
      *

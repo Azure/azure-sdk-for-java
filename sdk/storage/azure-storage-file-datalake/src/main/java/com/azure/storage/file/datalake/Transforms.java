@@ -3,6 +3,8 @@
 
 package com.azure.storage.file.datalake;
 
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobAccessPolicy;
 import com.azure.storage.blob.models.BlobAnalyticsLogging;
 import com.azure.storage.blob.models.BlobContainerAccessPolicies;
@@ -41,6 +43,7 @@ import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.StaticWebsite;
 import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.options.UndeleteBlobContainerOptions;
 import com.azure.storage.file.datalake.implementation.models.BlobItemInternal;
 import com.azure.storage.file.datalake.implementation.models.BlobPrefix;
@@ -91,6 +94,7 @@ import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PublicAccessType;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
 import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
@@ -114,6 +118,11 @@ class Transforms {
         FileQueryParquetSerialization.class.getSimpleName());
 
     private static final long EPOCH_CONVERSION;
+
+    public static final HttpHeaderName X_MS_ENCRYPTION_CONTEXT = HttpHeaderName.fromString("x-ms-encryption-context");
+    public static final HttpHeaderName X_MS_OWNER = HttpHeaderName.fromString("x-ms-owner");
+    public static final HttpHeaderName X_MS_GROUP = HttpHeaderName.fromString("x-ms-group");
+    public static final HttpHeaderName X_MS_PERMISSIONS = HttpHeaderName.fromString("x-ms-permissions");
 
     static {
         // https://docs.oracle.com/javase/8/docs/api/java/util/Date.html#getTime--
@@ -299,11 +308,15 @@ class Transforms {
     }
 
     static PathProperties toPathProperties(BlobProperties properties) {
+        return toPathProperties(properties, null);
+    }
+
+    static PathProperties toPathProperties(BlobProperties properties, Response<?> r) {
         if (properties == null) {
             return null;
         } else {
-            PathProperties pathProperties = new PathProperties(properties.getCreationTime(), properties.getLastModified(), properties.getETag(),
-                properties.getBlobSize(), properties.getContentType(), properties.getContentMd5(),
+            PathProperties pathProperties = new PathProperties(properties.getCreationTime(), properties.getLastModified(),
+                properties.getETag(), properties.getBlobSize(), properties.getContentType(), properties.getContentMd5(),
                 properties.getContentEncoding(), properties.getContentDisposition(), properties.getContentLanguage(),
                 properties.getCacheControl(), Transforms.toDataLakeLeaseStatusType(properties.getLeaseStatus()),
                 Transforms.toDataLakeLeaseStateType(properties.getLeaseState()),
@@ -315,10 +328,19 @@ class Transforms {
                 Transforms.toDataLakeArchiveStatus(properties.getArchiveStatus()), properties.getEncryptionKeySha256(),
                 properties.getAccessTierChangeTime(), properties.getMetadata(), properties.getExpiresOn());
 
-            return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties, properties.getEncryptionScope());
+            if (r == null) {
+                return pathProperties;
+            } else {
+                String encryptionContext = r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT);
+                String owner = r.getHeaders().getValue(X_MS_OWNER);
+                String group = r.getHeaders().getValue(X_MS_GROUP);
+                String permissions = r.getHeaders().getValue(X_MS_PERMISSIONS);
+
+                return AccessorUtility.getPathPropertiesAccessor().setPathProperties(pathProperties,
+                    properties.getEncryptionScope(), encryptionContext, owner, group, permissions);
+            }
         }
     }
-
 
     static FileSystemItem toFileSystemItem(BlobContainerItem blobContainerItem) {
         if (blobContainerItem == null) {
@@ -361,7 +383,7 @@ class Transforms {
             path.getCreationTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getCreationTime())),
             path.getExpiryTime() == null ? null : fromWindowsFileTimeOrNull(Long.parseLong(path.getExpiryTime())));
 
-        return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope());
+        return AccessorUtility.getPathItemAccessor().setPathItemProperties(pathItem, path.getEncryptionScope(), path.getEncryptionContext());
     }
 
     private static OffsetDateTime parseDateOrNull(String date) {
@@ -405,10 +427,10 @@ class Transforms {
             return null;
         }
         return new FileReadAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(), r.getValue(),
-            Transforms.toPathReadHeaders(r.getDeserializedHeaders()));
+            Transforms.toPathReadHeaders(r.getDeserializedHeaders(), r.getHeaders().getValue(X_MS_ENCRYPTION_CONTEXT)));
     }
 
-    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h) {
+    private static FileReadHeaders toPathReadHeaders(BlobDownloadHeaders h, String encryptionContext) {
         if (h == null) {
             return null;
         }
@@ -443,7 +465,8 @@ class Transforms {
             .setFileContentMd5(h.getBlobContentMD5())
             .setContentCrc64(h.getContentCrc64())
             .setErrorCode(h.getErrorCode())
-            .setCreationTime(h.getCreationTime());
+            .setCreationTime(h.getCreationTime())
+            .setEncryptionContext(encryptionContext);
     }
 
     static List<BlobSignedIdentifier> toBlobIdentifierList(List<DataLakeSignedIdentifier> identifiers) {
@@ -867,5 +890,18 @@ class Transforms {
         return new BlobContainerEncryptionScope()
             .setDefaultEncryptionScope(fileSystemEncryptionScope.getDefaultEncryptionScope())
             .setEncryptionScopeOverridePrevented(fileSystemEncryptionScope.isEncryptionScopeOverridePrevented());
+    }
+
+    static BlockBlobOutputStreamOptions toBlockBlobOutputStreamOptions(DataLakeFileOutputStreamOptions options) {
+        if (options == null) {
+            return null;
+        }
+        return new BlockBlobOutputStreamOptions()
+            .setParallelTransferOptions(options.getParallelTransferOptions())
+            .setHeaders(toBlobHttpHeaders(options.getHeaders()))
+            .setMetadata(options.getMetadata())
+            .setTags(options.getTags())
+            .setTier(options.getTier())
+            .setRequestConditions(toBlobRequestConditions(options.getRequestConditions()));
     }
 }

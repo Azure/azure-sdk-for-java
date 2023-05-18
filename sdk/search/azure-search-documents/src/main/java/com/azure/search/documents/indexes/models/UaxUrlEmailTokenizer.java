@@ -108,10 +108,10 @@ public final class UaxUrlEmailTokenizer extends LexicalTokenizer {
                         }
                     }
                     if (nameFound) {
-                        UaxUrlEmailTokenizer deserializedValue = new UaxUrlEmailTokenizer(name);
-                        deserializedValue.maxTokenLength = maxTokenLength;
+                        UaxUrlEmailTokenizer deserializedUaxUrlEmailTokenizer = new UaxUrlEmailTokenizer(name);
+                        deserializedUaxUrlEmailTokenizer.maxTokenLength = maxTokenLength;
 
-                        return deserializedValue;
+                        return deserializedUaxUrlEmailTokenizer;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

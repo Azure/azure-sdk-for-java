@@ -24,6 +24,10 @@ public final class EmailServiceProperties {
     @JsonProperty(value = "dataLocation", required = true)
     private String dataLocation;
 
+    /** Creates an instance of EmailServiceProperties class. */
+    public EmailServiceProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the resource.
      *

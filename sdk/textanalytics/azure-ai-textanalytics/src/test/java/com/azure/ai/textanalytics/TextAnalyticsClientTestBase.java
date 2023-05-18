@@ -22,12 +22,10 @@ import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.BaseResolution;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ClassificationCategory;
-import com.azure.ai.textanalytics.models.ClassificationType;
 import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.DynamicClassifyOptions;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
@@ -77,7 +75,6 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
-import com.azure.ai.textanalytics.util.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
@@ -90,8 +87,8 @@ import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.InterceptorManager;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.polling.SyncPoller;
@@ -114,7 +111,6 @@ import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ENTITIES_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_MULTI_CLASSIFICATION;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_SINGLE_CLASSIFICATION;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.DYNAMIC_CLASSIFICATION;
 import static com.azure.ai.textanalytics.TestUtils.ENTITY_RESOLUTION_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_INPUTS;
@@ -123,9 +119,7 @@ import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SUMMARY_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.TOO_LONG_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInputs;
-import static com.azure.ai.textanalytics.TestUtils.getWarningsTextDocumentInputs;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -133,12 +127,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public abstract class TextAnalyticsClientTestBase extends TestBase {
+public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     static final String BATCH_ERROR_EXCEPTION_MESSAGE = "Error in accessing the property on document id: 2, when %s returned with an error: Document text is empty. ErrorCodeValue: {InvalidDocument}";
     static final String INVALID_DOCUMENT_BATCH_NPE_MESSAGE = "'documents' cannot be null.";
     static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
-    static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
     static final String REDACTED = "REDACTED";
 
     static final String AZURE_TEXT_ANALYTICS_ENDPOINT =
@@ -489,13 +482,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
-    abstract void extractKeyPhrasesWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void extractKeyPhrasesBatchWarning(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
     abstract void extractKeyPhrasesBatchTooManyDocuments(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
@@ -772,31 +758,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeExtractSummaryActionMaxSentenceCountInvalidRangeException(
         HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
-    // Dynamic Classification
-    @Test
-    abstract void dynamicClassificationDuplicateIdInput(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void dynamicClassificationEmptyIdInput(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void dynamicClassificationMaxOverload(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void dynamicClassificationStringInput(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void dynamicClassificationBatchWarning(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void dynamicClassificationBatchTooManyDocuments(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
     // Detect Language runner
     void detectLanguageShowStatisticsRunner(BiConsumer<List<DetectLanguageInput>,
         TextAnalyticsRequestOptions> testRunner) {
@@ -991,14 +952,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     void duplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(getDuplicateTextDocumentInputs());
-    }
-
-    void extractKeyPhrasesWarningRunner(Consumer<String> testRunner) {
-        testRunner.accept(TOO_LONG_INPUT);
-    }
-
-    void extractKeyPhrasesBatchWarningRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        testRunner.accept(getWarningsTextDocumentInputs());
     }
 
     // Sentiment Runner
@@ -1447,35 +1400,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             new AbstractSummaryOptions().setSentenceCount(sentenceCount));
     }
 
-    // Dynamic classification
-    void dynamicClassificationRunner(BiConsumer<List<TextDocumentInput>, DynamicClassifyOptions> testRunner) {
-        testRunner.accept(
-            asList(
-                new TextDocumentInput("0", DYNAMIC_CLASSIFICATION.get(0)),
-                new TextDocumentInput("1", DYNAMIC_CLASSIFICATION.get(1))),
-            new DynamicClassifyOptions()
-                .setClassificationType(ClassificationType.MULTI)
-                .setIncludeStatistics(true));
-    }
-
-    void dynamicClassificationStringInputRunner(BiConsumer<List<String>, DynamicClassifyOptions> testRunner) {
-        testRunner.accept(
-            DYNAMIC_CLASSIFICATION,
-            new DynamicClassifyOptions()
-                .setClassificationType(ClassificationType.MULTI)
-                .setIncludeStatistics(true));
-    }
-
-    void dynamicClassificationBatchWarningRunner(
-        BiConsumer<List<TextDocumentInput>, DynamicClassifyOptions> testRunner) {
-        testRunner.accept(
-            getWarningsTextDocumentInputs(),
-            new DynamicClassifyOptions()
-                .setClassificationType(ClassificationType.MULTI)
-                .setIncludeStatistics(true)
-        );
-    }
-
     String getEndpoint(boolean isStaticResource) {
         return interceptorManager.isPlaybackMode() ? "https://localhost:8080"
             : isStaticResource ? AZURE_TEXT_ANALYTICS_CUSTOM_TEXT_ENDPOINT : AZURE_TEXT_ANALYTICS_ENDPOINT;
@@ -1598,21 +1522,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validateExtractKeyPhrasesResultCollection(showStatistics, expected, response.getValue());
-    }
-
-    static void validateDynamicClassifyDocumentResultCollectionWithResponse(boolean showStatistics,
-        DynamicClassifyDocumentResultCollection expected, int expectedStatusCode,
-        Response<DynamicClassifyDocumentResultCollection> response) {
-        assertNotNull(response);
-        assertEquals(expectedStatusCode, response.getStatusCode());
-        validateDynamicClassifyDocumentResultCollection(showStatistics, expected, response.getValue());
-    }
-
-    static void validateDynamicClassifyDocumentResultCollection(boolean showStatistics,
-        DynamicClassifyDocumentResultCollection expected, DynamicClassifyDocumentResultCollection actual) {
-        validateTextAnalyticsResult(showStatistics, expected, actual, (expectedItem, actualItem) -> {
-            validateClassifyDocumentResult(expectedItem, actualItem);
-        });
     }
 
     static void validateClassifyDocumentResult(ClassifyDocumentResult expect, ClassifyDocumentResult actual) {
@@ -2220,9 +2129,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             } else if (expectedResults instanceof DetectLanguageResultCollection) {
                 validateBatchStatistics(((DetectLanguageResultCollection) expectedResults).getStatistics(),
                     ((DetectLanguageResultCollection) actualResults).getStatistics());
-            } else if (expectedResults instanceof DynamicClassifyDocumentResultCollection) {
-                validateBatchStatistics(((DynamicClassifyDocumentResultCollection) expectedResults).getStatistics(),
-                    ((DynamicClassifyDocumentResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof ExtractKeyPhrasesResultCollection) {
                 validateBatchStatistics(((ExtractKeyPhrasesResultCollection) expectedResults).getStatistics(),
                     ((ExtractKeyPhrasesResultCollection) actualResults).getStatistics());
@@ -2251,8 +2157,6 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 assertNull(((ClassifyDocumentResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof DetectLanguageResultCollection) {
                 assertNull(((DetectLanguageResultCollection) actualResults).getStatistics());
-            } else if (expectedResults instanceof DynamicClassifyDocumentResultCollection) {
-                assertNull(((DynamicClassifyDocumentResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof ExtractKeyPhrasesResultCollection) {
                 assertNull(((ExtractKeyPhrasesResultCollection) actualResults).getStatistics());
             } else if (expectedResults instanceof ExtractSummaryResultCollection) {

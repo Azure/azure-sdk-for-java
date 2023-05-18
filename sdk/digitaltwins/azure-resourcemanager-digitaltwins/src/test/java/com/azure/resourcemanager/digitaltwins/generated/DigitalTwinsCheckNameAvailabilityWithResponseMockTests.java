@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameRequest;
 import com.azure.resourcemanager.digitaltwins.models.CheckNameResult;
@@ -33,7 +32,7 @@ public final class DigitalTwinsCheckNameAvailabilityWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"nameAvailable\":false,\"message\":\"p\",\"reason\":\"Invalid\"}";
+        String responseStr = "{\"nameAvailable\":false,\"message\":\"sgwbnbbeld\",\"reason\":\"Invalid\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,11 +63,12 @@ public final class DigitalTwinsCheckNameAvailabilityWithResponseMockTests {
         CheckNameResult response =
             manager
                 .digitalTwins()
-                .checkNameAvailabilityWithResponse("rxsbkyvp", new CheckNameRequest().withName("ca"), Context.NONE)
+                .checkNameAvailabilityWithResponse(
+                    "rcrgvx", new CheckNameRequest().withName("vgomz"), com.azure.core.util.Context.NONE)
                 .getValue();
 
         Assertions.assertEquals(false, response.nameAvailable());
-        Assertions.assertEquals("p", response.message());
+        Assertions.assertEquals("sgwbnbbeld", response.message());
         Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites UnlinkBackend. */
 public final class StaticSitesUnlinkBackendSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/UnlinkBackendFromStaticSite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/UnlinkBackendFromStaticSite.json
      */
     /**
      * Sample code: Unlink a backend from a static site.
@@ -22,6 +20,6 @@ public final class StaticSitesUnlinkBackendSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .unlinkBackendWithResponse("rg", "testStaticSite0", "testBackend", null, Context.NONE);
+            .unlinkBackendWithResponse("rg", "testStaticSite0", "testBackend", null, com.azure.core.util.Context.NONE);
     }
 }

@@ -16,6 +16,18 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
     /** Static value EmptyDir for StorageType. */
     public static final StorageType EMPTY_DIR = fromString("EmptyDir");
 
+    /** Static value Secret for StorageType. */
+    public static final StorageType SECRET = fromString("Secret");
+
+    /**
+     * Creates a new instance of StorageType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageType() {
+    }
+
     /**
      * Creates or finds a StorageType from its string representation.
      *

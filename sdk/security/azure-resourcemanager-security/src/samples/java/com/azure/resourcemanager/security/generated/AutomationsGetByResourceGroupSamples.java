@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Automations GetByResourceGroup. */
 public final class AutomationsGetByResourceGroupSamples {
     /*
@@ -17,6 +15,9 @@ public final class AutomationsGetByResourceGroupSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void retrieveASecurityAutomation(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.automations().getByResourceGroupWithResponse("exampleResourceGroup", "exampleAutomation", Context.NONE);
+        manager
+            .automations()
+            .getByResourceGroupWithResponse(
+                "exampleResourceGroup", "exampleAutomation", com.azure.core.util.Context.NONE);
     }
 }

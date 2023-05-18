@@ -1,135 +1,303 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azs-java-shared-geography-point-index')/docs('1')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "88526c21-5489-4dfd-b401-9f0e85cbe8ca"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azs-java-shared-geography-point-index\u0027)/docs(\u00271\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 19:53:31 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "de91a398-7c4f-40df-a76c-489fcd62f1f7"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "de91a398-7c4f-40df-a76c-489fcd62f1f7",
+        "Content-Length": "172",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:30 GMT",
+        "elapsed-time": "17",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "de91a398-7c4f-40df-a76c-489fcd62f1f7",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "de91a398-7c4f-40df-a76c-489fcd62f1f7"
+      },
+      "ResponseBody": {
+        "id": "1",
+        "geography_point": {
+          "type": "Point",
+          "coordinates": [
+            -122.348616,
+            47.622151
+          ],
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          }
+        },
+        "description": "Tourist location"
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "88526c21-5489-4dfd-b401-9f0e85cbe8ca",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:21:19 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "88526c21-5489-4dfd-b401-9f0e85cbe8ca",
-      "elapsed-time" : "14",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "172",
-      "Body" : "{\"id\":\"1\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-122.348616,47.622151],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "88526c21-5489-4dfd-b401-9f0e85cbe8ca",
-      "Content-Type" : "application/json; odata.metadata=none"
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azs-java-shared-geography-point-index\u0027)/docs(\u00272\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 19:53:31 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "a43d9d31-7787-4e67-8c5e-dd0f650b8f9b"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "a43d9d31-7787-4e67-8c5e-dd0f650b8f9b",
+        "Content-Length": "172",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:30 GMT",
+        "elapsed-time": "15",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "a43d9d31-7787-4e67-8c5e-dd0f650b8f9b",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "a43d9d31-7787-4e67-8c5e-dd0f650b8f9b"
+      },
+      "ResponseBody": {
+        "id": "2",
+        "geography_point": {
+          "type": "Point",
+          "coordinates": [
+            -122.340529,
+            47.608564
+          ],
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          }
+        },
+        "description": "Tourist location"
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azs-java-shared-geography-point-index')/docs('2')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "05fc40df-5272-46ed-b9b0-085d58c50706"
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azs-java-shared-geography-point-index\u0027)/docs(\u00273\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 19:53:31 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d58d05ef-a854-420e-9ae8-5cd52fce8aab"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "d58d05ef-a854-420e-9ae8-5cd52fce8aab",
+        "Content-Length": "172",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:30 GMT",
+        "elapsed-time": "15",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "d58d05ef-a854-420e-9ae8-5cd52fce8aab",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "d58d05ef-a854-420e-9ae8-5cd52fce8aab"
+      },
+      "ResponseBody": {
+        "id": "3",
+        "geography_point": {
+          "type": "Point",
+          "coordinates": [
+            -121.736604,
+            46.786549
+          ],
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          }
+        },
+        "description": "Tourist location"
+      }
     },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "05fc40df-5272-46ed-b9b0-085d58c50706",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:21:19 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "05fc40df-5272-46ed-b9b0-085d58c50706",
-      "elapsed-time" : "14",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "172",
-      "Body" : "{\"id\":\"2\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-122.340529,47.608564],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "05fc40df-5272-46ed-b9b0-085d58c50706",
-      "Content-Type" : "application/json; odata.metadata=none"
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azs-java-shared-geography-point-index\u0027)/docs(\u00274\u0027)?api-version=2021-04-30-Preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "0",
+        "Date": "Thu, 09 Mar 2023 19:53:32 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "d4f5bbb0-52b0-4012-9814-076bca9c5e64"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "d4f5bbb0-52b0-4012-9814-076bca9c5e64",
+        "Content-Length": "171",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:30 GMT",
+        "elapsed-time": "14",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "d4f5bbb0-52b0-4012-9814-076bca9c5e64",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "d4f5bbb0-52b0-4012-9814-076bca9c5e64"
+      },
+      "ResponseBody": {
+        "id": "4",
+        "geography_point": {
+          "type": "Point",
+          "coordinates": [
+            -73.985707,
+            40.748521
+          ],
+          "crs": {
+            "type": "name",
+            "properties": {
+              "name": "EPSG:4326"
+            }
+          }
+        },
+        "description": "Tourist location"
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azs-java-shared-geography-point-index')/docs('3')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "ccab3fd7-9682-4e82-a6dd-2bd77c32bf92"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "ccab3fd7-9682-4e82-a6dd-2bd77c32bf92",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:21:20 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "ccab3fd7-9682-4e82-a6dd-2bd77c32bf92",
-      "elapsed-time" : "14",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "172",
-      "Body" : "{\"id\":\"3\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-121.736604,46.786549],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "ccab3fd7-9682-4e82-a6dd-2bd77c32bf92",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azs-java-shared-geography-point-index')/docs('4')?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "45d8bdd8-59ec-4fcf-97a4-e0ab0a83b679"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "45d8bdd8-59ec-4fcf-97a4-e0ab0a83b679",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:21:20 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "45d8bdd8-59ec-4fcf-97a4-e0ab0a83b679",
-      "elapsed-time" : "14",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "171",
-      "Body" : "{\"id\":\"4\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-73.985707,40.748521],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "45d8bdd8-59ec-4fcf-97a4-e0ab0a83b679",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azs-java-shared-geography-point-index')/docs/search.post.search?api-version=2021-04-30-Preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.6.0-beta.4 (17.0.5; Windows 11; 10.0)",
-      "x-ms-client-request-id" : "db450371-24fc-4913-88d6-d88086a038b4",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "request-id" : "db450371-24fc-4913-88d6-d88086a038b4",
-      "StatusCode" : "200",
-      "Date" : "Tue, 17 Jan 2023 20:21:20 GMT",
-      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "client-request-id" : "db450371-24fc-4913-88d6-d88086a038b4",
-      "elapsed-time" : "18",
-      "OData-Version" : "4.0",
-      "Expires" : "-1",
-      "Content-Length" : "810",
-      "Body" : "{\"value\":[{\"@search.score\":0.51623213,\"id\":\"1\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-122.348616,47.622151],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"},{\"@search.score\":0.32716757,\"id\":\"2\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-122.340529,47.608564],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"},{\"@search.score\":0.51623213,\"id\":\"3\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-121.736604,46.786549],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"},{\"@search.score\":0.32716757,\"id\":\"4\",\"geography_point\":{\"type\":\"Point\",\"coordinates\":[-73.985707,40.748521],\"crs\":{\"type\":\"name\",\"properties\":{\"name\":\"EPSG:4326\"}}},\"description\":\"Tourist location\"}]}",
-      "Preference-Applied" : "odata.include-annotations=\"*\"",
-      "x-ms-client-request-id" : "db450371-24fc-4913-88d6-d88086a038b4",
-      "Content-Type" : "application/json; odata.metadata=none"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/indexes(\u0027azs-java-shared-geography-point-index\u0027)/docs/search.post.search?api-version=2021-04-30-Preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json; odata.metadata=none",
+        "api-key": "REDACTED",
+        "Content-Length": "44",
+        "Content-Type": "application/json",
+        "Date": "Thu, 09 Mar 2023 19:53:32 GMT",
+        "return-client-request-id": "true",
+        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
+        "x-ms-client-request-id": "aa2f0493-0f75-42b1-ad31-b5203b0b71a3"
+      },
+      "RequestBody": {
+        "orderby": "id",
+        "search": "Tourist location"
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "client-request-id": "aa2f0493-0f75-42b1-ad31-b5203b0b71a3",
+        "Content-Length": "810",
+        "Content-Type": "application/json; odata.metadata=none",
+        "Date": "Thu, 09 Mar 2023 19:53:30 GMT",
+        "elapsed-time": "18",
+        "Expires": "-1",
+        "OData-Version": "4.0",
+        "Pragma": "no-cache",
+        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
+        "request-id": "aa2f0493-0f75-42b1-ad31-b5203b0b71a3",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "x-ms-client-request-id": "aa2f0493-0f75-42b1-ad31-b5203b0b71a3"
+      },
+      "ResponseBody": {
+        "value": [
+          {
+            "@search.score": 0.51623213,
+            "id": "1",
+            "geography_point": {
+              "type": "Point",
+              "coordinates": [
+                -122.348616,
+                47.622151
+              ],
+              "crs": {
+                "type": "name",
+                "properties": {
+                  "name": "EPSG:4326"
+                }
+              }
+            },
+            "description": "Tourist location"
+          },
+          {
+            "@search.score": 0.32716757,
+            "id": "2",
+            "geography_point": {
+              "type": "Point",
+              "coordinates": [
+                -122.340529,
+                47.608564
+              ],
+              "crs": {
+                "type": "name",
+                "properties": {
+                  "name": "EPSG:4326"
+                }
+              }
+            },
+            "description": "Tourist location"
+          },
+          {
+            "@search.score": 0.51623213,
+            "id": "3",
+            "geography_point": {
+              "type": "Point",
+              "coordinates": [
+                -121.736604,
+                46.786549
+              ],
+              "crs": {
+                "type": "name",
+                "properties": {
+                  "name": "EPSG:4326"
+                }
+              }
+            },
+            "description": "Tourist location"
+          },
+          {
+            "@search.score": 0.32716757,
+            "id": "4",
+            "geography_point": {
+              "type": "Point",
+              "coordinates": [
+                -73.985707,
+                40.748521
+              ],
+              "crs": {
+                "type": "name",
+                "properties": {
+                  "name": "EPSG:4326"
+                }
+              }
+            },
+            "description": "Tourist location"
+          }
+        ]
+      }
+    }
+  ],
+  "Variables": {}
 }

@@ -1,26 +1,72 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/language/analyze-text/jobs?api-version=2022-10-01-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-textanalytics/5.3.0-beta.2 (11.0.10; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "4fe8d100-ce56-451f-94d3-83f580df15d1",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "x-ms-region" : "West US 2",
-      "x-envoy-upstream-service-time" : "8",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
-      "x-content-type-options" : "nosniff",
-      "apim-request-id" : "42fb3087-a28c-4f92-9314-4945e2a46479",
-      "retry-after" : "0",
-      "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"details\":[{\"code\":\"InvalidRequest\",\"message\":\"Job task: 'AbstractiveSummarization' failed with validation error: Document abstractive summarization is not supported in the region West US 2. The supported regions are North Europe, East US, UK South.\"}],\"message\":\"Invalid Request.\",\"innererror\":{\"code\":\"InvalidParameterValue\",\"message\":\"Job task: 'AbstractiveSummarization' failed with validation errors: ['Invalid Request.']\"}}}",
-      "Date" : "Thu, 26 Jan 2023 18:23:09 GMT",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/language/analyze-text/jobs?api-version=2022-10-01-preview",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Content-Length": "345",
+        "Content-Type": "application/json",
+        "Date": "Wed, 05 Apr 2023 19:04:02 GMT",
+        "Ocp-Apim-Subscription-Key": "REDACTED",
+        "User-Agent": "azsdk-java-azure-ai-textanalytics/5.3.0-beta.3 (11.0.10; Windows 10; 10.0)",
+        "x-ms-client-request-id": "e39a1ef0-a63f-4525-bdcf-9ed6af304cc1"
+      },
+      "RequestBody": {
+        "analysisInput": {
+          "documents": [
+            {
+              "id": "0",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "0",
+              "text": "I had a wonderful trip to Seattle last week."
+            },
+            {
+              "id": "0",
+              "text": "I had a wonderful trip to Seattle last week."
+            }
+          ]
+        },
+        "tasks": [
+          {
+            "kind": "AbstractiveSummarization",
+            "parameters": {
+              "stringIndexType": "Utf16CodeUnit",
+              "loggingOptOut": false
+            }
+          }
+        ]
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "apim-request-id": "cfc28a97-7edb-4bdd-8939-e68f619c13c6",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 05 Apr 2023 19:04:01 GMT",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-envoy-upstream-service-time": "4",
+        "x-ms-region": "West US 2"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "InvalidRequest",
+          "details": [
+            {
+              "code": "InvalidRequest",
+              "message": "Job task: \u0027AbstractiveSummarization\u0027 failed with validation error: Document abstractive summarization is not supported in the region West US 2. The supported regions are North Europe, East US, UK South."
+            }
+          ],
+          "message": "Invalid Request.",
+          "innererror": {
+            "code": "InvalidParameterValue",
+            "message": "Job task: \u0027AbstractiveSummarization\u0027 failed with validation errors: [\u0027Invalid Request.\u0027]"
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

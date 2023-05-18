@@ -19,29 +19,27 @@ public final class WeeklyRetentionScheduleTests {
         WeeklyRetentionSchedule model =
             BinaryData
                 .fromString(
-                    "{\"daysOfTheWeek\":[\"Tuesday\",\"Friday\"],\"retentionTimes\":[\"2021-08-02T08:34:03Z\",\"2021-11-12T19:35:08Z\"],\"retentionDuration\":{\"count\":1038771362,\"durationType\":\"Months\"}}")
+                    "{\"daysOfTheWeek\":[\"Sunday\",\"Wednesday\",\"Monday\",\"Monday\"],\"retentionTimes\":[\"2021-09-27T15:40:52Z\"],\"retentionDuration\":{\"count\":731867794,\"durationType\":\"Years\"}}")
                 .toObject(WeeklyRetentionSchedule.class);
-        Assertions.assertEquals(DayOfWeek.TUESDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T08:34:03Z"), model.retentionTimes().get(0));
-        Assertions.assertEquals(1038771362, model.retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.MONTHS, model.retentionDuration().durationType());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T15:40:52Z"), model.retentionTimes().get(0));
+        Assertions.assertEquals(731867794, model.retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.retentionDuration().durationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WeeklyRetentionSchedule model =
             new WeeklyRetentionSchedule()
-                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.TUESDAY, DayOfWeek.FRIDAY))
-                .withRetentionTimes(
-                    Arrays
-                        .asList(
-                            OffsetDateTime.parse("2021-08-02T08:34:03Z"), OffsetDateTime.parse("2021-11-12T19:35:08Z")))
+                .withDaysOfTheWeek(
+                    Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.WEDNESDAY, DayOfWeek.MONDAY, DayOfWeek.MONDAY))
+                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-27T15:40:52Z")))
                 .withRetentionDuration(
-                    new RetentionDuration().withCount(1038771362).withDurationType(RetentionDurationType.MONTHS));
+                    new RetentionDuration().withCount(731867794).withDurationType(RetentionDurationType.YEARS));
         model = BinaryData.fromObject(model).toObject(WeeklyRetentionSchedule.class);
-        Assertions.assertEquals(DayOfWeek.TUESDAY, model.daysOfTheWeek().get(0));
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-02T08:34:03Z"), model.retentionTimes().get(0));
-        Assertions.assertEquals(1038771362, model.retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.MONTHS, model.retentionDuration().durationType());
+        Assertions.assertEquals(DayOfWeek.SUNDAY, model.daysOfTheWeek().get(0));
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-27T15:40:52Z"), model.retentionTimes().get(0));
+        Assertions.assertEquals(731867794, model.retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.YEARS, model.retentionDuration().durationType());
     }
 }

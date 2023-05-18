@@ -22,4 +22,4 @@ stages:
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
           Location: 'chinaeast2'
-      SupportedClouds: 'Public,UsGov,China'
+      SupportedClouds: 'Public,Canary,UsGov,China'

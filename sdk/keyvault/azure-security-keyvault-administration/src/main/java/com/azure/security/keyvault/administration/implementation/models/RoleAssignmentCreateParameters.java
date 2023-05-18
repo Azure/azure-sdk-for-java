@@ -4,20 +4,31 @@
 
 package com.azure.security.keyvault.administration.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /** Role assignment create parameters. */
-@Fluent
-public final class RoleAssignmentCreateParameters {
+@Immutable
+public final class RoleAssignmentCreateParameters implements JsonSerializable<RoleAssignmentCreateParameters> {
     /*
      * Role assignment properties.
      */
-    @JsonProperty(value = "properties", required = true)
-    private RoleAssignmentProperties properties;
+    private final RoleAssignmentProperties properties;
 
-    /** Creates an instance of RoleAssignmentCreateParameters class. */
-    public RoleAssignmentCreateParameters() {}
+    /**
+     * Creates an instance of RoleAssignmentCreateParameters class.
+     *
+     * @param properties the properties value to set.
+     */
+    public RoleAssignmentCreateParameters(RoleAssignmentProperties properties) {
+        this.properties = properties;
+    }
 
     /**
      * Get the properties property: Role assignment properties.
@@ -28,14 +39,51 @@ public final class RoleAssignmentCreateParameters {
         return this.properties;
     }
 
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
     /**
-     * Set the properties property: Role assignment properties.
+     * Reads an instance of RoleAssignmentCreateParameters from the JsonReader.
      *
-     * @param properties the properties value to set.
-     * @return the RoleAssignmentCreateParameters object itself.
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleAssignmentCreateParameters if the JsonReader was pointing to an instance of it, or
+     *     null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoleAssignmentCreateParameters.
      */
-    public RoleAssignmentCreateParameters setProperties(RoleAssignmentProperties properties) {
-        this.properties = properties;
-        return this;
+    public static RoleAssignmentCreateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(
+                reader -> {
+                    boolean propertiesFound = false;
+                    RoleAssignmentProperties properties = null;
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("properties".equals(fieldName)) {
+                            properties = RoleAssignmentProperties.fromJson(reader);
+                            propertiesFound = true;
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                    if (propertiesFound) {
+                        RoleAssignmentCreateParameters deserializedRoleAssignmentCreateParameters =
+                                new RoleAssignmentCreateParameters(properties);
+
+                        return deserializedRoleAssignmentCreateParameters;
+                    }
+                    List<String> missingProperties = new ArrayList<>();
+                    if (!propertiesFound) {
+                        missingProperties.add("properties");
+                    }
+
+                    throw new IllegalStateException(
+                            "Missing required property/properties: " + String.join(", ", missingProperties));
+                });
     }
 }

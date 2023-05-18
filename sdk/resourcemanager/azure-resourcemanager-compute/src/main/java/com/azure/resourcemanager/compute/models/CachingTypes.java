@@ -8,9 +8,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None**
- * &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite** &lt;br&gt;&lt;br&gt; Default: **None for
- * Standard storage. ReadOnly for Premium storage**.
+ * Specifies the caching requirements. Possible values are: **None,** **ReadOnly,** **ReadWrite.** The default values
+ * are: **None for Standard storage. ReadOnly for Premium storage**.
  */
 public enum CachingTypes {
     /** Enum value None. */

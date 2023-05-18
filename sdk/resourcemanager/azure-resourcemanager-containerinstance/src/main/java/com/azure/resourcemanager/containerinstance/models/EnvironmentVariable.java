@@ -29,6 +29,10 @@ public final class EnvironmentVariable {
     @JsonProperty(value = "secureValue")
     private String secureValue;
 
+    /** Creates an instance of EnvironmentVariable class. */
+    public EnvironmentVariable() {
+    }
+
     /**
      * Get the name property: The name of the environment variable.
      *

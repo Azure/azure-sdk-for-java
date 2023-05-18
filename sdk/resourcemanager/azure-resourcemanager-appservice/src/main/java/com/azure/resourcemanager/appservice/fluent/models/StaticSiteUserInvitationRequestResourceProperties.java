@@ -40,6 +40,10 @@ public final class StaticSiteUserInvitationRequestResourceProperties {
     @JsonProperty(value = "numHoursToExpiration")
     private Integer numHoursToExpiration;
 
+    /** Creates an instance of StaticSiteUserInvitationRequestResourceProperties class. */
+    public StaticSiteUserInvitationRequestResourceProperties() {
+    }
+
     /**
      * Get the domain property: The domain name for the static site custom domain.
      *

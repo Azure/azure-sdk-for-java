@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.models.VolumeRevert;
 
 /** Samples for Volumes Revert. */
 public final class VolumesRevertSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Volumes_Revert.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-09-01/examples/Volumes_Revert.json
      */
     /**
      * Sample code: Volumes_Revert.
@@ -28,6 +27,6 @@ public final class VolumesRevertSamples {
                 new VolumeRevert()
                     .withSnapshotId(
                         "/subscriptions/D633CC2E-722B-4AE1-B636-BBD9E4C60ED9/resourceGroups/myRG/providers/Microsoft.NetApp/netAppAccounts/account1/capacityPools/pool1/volumes/volume1/snapshots/snapshot1"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

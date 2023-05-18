@@ -57,7 +57,8 @@ public final class PatchModel {
 
     /**
      * Get the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
-     * AppliedScopeType is Shared.
+     * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
+     * Single AppliedScopeType.
      *
      * @return the appliedScopes value.
      */
@@ -67,7 +68,8 @@ public final class PatchModel {
 
     /**
      * Set the appliedScopes property: List of the subscriptions that the benefit will be applied. Do not specify if
-     * AppliedScopeType is Shared.
+     * AppliedScopeType is Shared. This property will be deprecated and replaced by appliedScopeProperties instead for
+     * Single AppliedScopeType.
      *
      * @param appliedScopes the appliedScopes value to set.
      * @return the PatchModel object itself.

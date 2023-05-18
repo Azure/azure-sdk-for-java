@@ -18,12 +18,6 @@
 
 package com.azure.cosmos.implementation.guava25.base;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-import static java.util.Arrays.asList;
-import static java.util.Collections.unmodifiableList;
-
-
-
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -33,6 +27,10 @@ import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
 
 
 /**
@@ -454,6 +452,7 @@ public final class Throwables {
    * AppEngine, and not present in non-Sun JDKs.
    */
 
+  @SuppressWarnings("removal")
   private static Object getJLA() {
     try {
       /*
@@ -507,6 +506,7 @@ public final class Throwables {
   }
 
 
+  @SuppressWarnings("removal")
   private static Method getJlaMethod(String name, Class<?>... parameterTypes) throws ThreadDeath {
     try {
       return Class.forName(JAVA_LANG_ACCESS_CLASSNAME, false, null).getMethod(name, parameterTypes);

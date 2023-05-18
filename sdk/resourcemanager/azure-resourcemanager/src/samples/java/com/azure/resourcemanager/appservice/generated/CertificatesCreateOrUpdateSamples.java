@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.CertificateInner;
 import java.util.Arrays;
 
 /** Samples for Certificates CreateOrUpdate. */
 public final class CertificatesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/CreateOrUpdateCertificate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/CreateOrUpdateCertificate.json
      */
     /**
      * Sample code: Create Or Update Certificate.
@@ -29,8 +28,8 @@ public final class CertificatesCreateOrUpdateSamples {
                 "testc6282",
                 new CertificateInner()
                     .withLocation("East US")
-                    .withPassword("<password>")
+                    .withPassword("fakeTokenPlaceholder")
                     .withHostNames(Arrays.asList("ServerCert")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

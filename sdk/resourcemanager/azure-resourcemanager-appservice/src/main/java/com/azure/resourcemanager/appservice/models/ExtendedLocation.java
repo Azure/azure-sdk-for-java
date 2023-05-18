@@ -22,6 +22,10 @@ public final class ExtendedLocation {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ExtendedLocation class. */
+    public ExtendedLocation() {
+    }
+
     /**
      * Get the name property: Name of extended location.
      *

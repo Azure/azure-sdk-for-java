@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/OperationsList.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/OperationsList.json
      */
     /**
      * Sample code: OperationsList.
@@ -17,6 +15,6 @@ public final class OperationsListSamples {
      * @param manager Entry point to RedisEnterpriseManager.
      */
     public static void operationsList(com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }

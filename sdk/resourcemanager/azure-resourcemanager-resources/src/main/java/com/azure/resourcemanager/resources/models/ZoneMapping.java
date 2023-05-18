@@ -23,6 +23,10 @@ public final class ZoneMapping {
     @JsonProperty(value = "zones")
     private List<String> zones;
 
+    /** Creates an instance of ZoneMapping class. */
+    public ZoneMapping() {
+    }
+
     /**
      * Get the location property: The location of the zone mapping.
      *

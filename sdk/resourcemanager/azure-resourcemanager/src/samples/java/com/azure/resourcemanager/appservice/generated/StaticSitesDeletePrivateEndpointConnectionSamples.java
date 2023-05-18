@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites DeletePrivateEndpointConnection. */
 public final class StaticSitesDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeleteSitePrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DeleteSitePrivateEndpointConnection.json
      */
     /**
      * Sample code: Delete a private endpoint connection for a site.
@@ -22,6 +20,6 @@ public final class StaticSitesDeletePrivateEndpointConnectionSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .deletePrivateEndpointConnection("rg", "testSite", "connection", Context.NONE);
+            .deletePrivateEndpointConnection("rg", "testSite", "connection", com.azure.core.util.Context.NONE);
     }
 }

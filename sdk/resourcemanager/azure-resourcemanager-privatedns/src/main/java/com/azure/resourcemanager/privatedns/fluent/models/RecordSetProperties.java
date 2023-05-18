@@ -94,6 +94,10 @@ public final class RecordSetProperties {
     @JsonProperty(value = "txtRecords")
     private List<TxtRecord> txtRecords;
 
+    /** Creates an instance of RecordSetProperties class. */
+    public RecordSetProperties() {
+    }
+
     /**
      * Get the metadata property: The metadata attached to the record set.
      *

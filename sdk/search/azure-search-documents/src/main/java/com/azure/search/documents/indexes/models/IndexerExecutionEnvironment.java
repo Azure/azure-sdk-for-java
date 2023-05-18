@@ -11,10 +11,17 @@ import java.util.Collection;
 
 /** Specifies the environment in which the indexer should execute. */
 public final class IndexerExecutionEnvironment extends ExpandableStringEnum<IndexerExecutionEnvironment> {
-    /** Static value standard for IndexerExecutionEnvironment. */
+    /**
+     * Indicates that Azure Cognitive Search can determine where the indexer should execute. This is the default
+     * environment when nothing is specified and is the recommended value.
+     */
     public static final IndexerExecutionEnvironment STANDARD = fromString("standard");
 
-    /** Static value private for IndexerExecutionEnvironment. */
+    /**
+     * Indicates that the indexer should run with the environment provisioned specifically for the search service. This
+     * should only be specified as the execution environment if the indexer needs to access resources securely over
+     * shared private link resources.
+     */
     public static final IndexerExecutionEnvironment PRIVATE = fromString("private");
 
     /**

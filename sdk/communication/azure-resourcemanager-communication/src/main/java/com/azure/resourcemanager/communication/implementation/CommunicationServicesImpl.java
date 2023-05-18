@@ -37,16 +37,6 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         this.serviceManager = serviceManager;
     }
 
-    public CheckNameAvailabilityResponse checkNameAvailability(NameAvailabilityParameters nameAvailabilityParameters) {
-        CheckNameAvailabilityResponseInner inner =
-            this.serviceClient().checkNameAvailability(nameAvailabilityParameters);
-        if (inner != null) {
-            return new CheckNameAvailabilityResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CheckNameAvailabilityResponse> checkNameAvailabilityWithResponse(
         NameAvailabilityParameters nameAvailabilityParameters, Context context) {
         Response<CheckNameAvailabilityResponseInner> inner =
@@ -62,11 +52,11 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
     }
 
-    public LinkedNotificationHub linkNotificationHub(String resourceGroupName, String communicationServiceName) {
-        LinkedNotificationHubInner inner =
-            this.serviceClient().linkNotificationHub(resourceGroupName, communicationServiceName);
+    public CheckNameAvailabilityResponse checkNameAvailability(NameAvailabilityParameters nameAvailabilityParameters) {
+        CheckNameAvailabilityResponseInner inner =
+            this.serviceClient().checkNameAvailability(nameAvailabilityParameters);
         if (inner != null) {
-            return new LinkedNotificationHubImpl(inner, this.manager());
+            return new CheckNameAvailabilityResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -88,6 +78,16 @@ public final class CommunicationServicesImpl implements CommunicationServices {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new LinkedNotificationHubImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LinkedNotificationHub linkNotificationHub(String resourceGroupName, String communicationServiceName) {
+        LinkedNotificationHubInner inner =
+            this.serviceClient().linkNotificationHub(resourceGroupName, communicationServiceName);
+        if (inner != null) {
+            return new LinkedNotificationHubImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -115,16 +115,6 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         return Utils.mapPage(inner, inner1 -> new CommunicationServiceResourceImpl(inner1, this.manager()));
     }
 
-    public CommunicationServiceResource getByResourceGroup(String resourceGroupName, String communicationServiceName) {
-        CommunicationServiceResourceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, communicationServiceName);
-        if (inner != null) {
-            return new CommunicationServiceResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<CommunicationServiceResource> getByResourceGroupWithResponse(
         String resourceGroupName, String communicationServiceName, Context context) {
         Response<CommunicationServiceResourceInner> inner =
@@ -140,22 +130,22 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
     }
 
+    public CommunicationServiceResource getByResourceGroup(String resourceGroupName, String communicationServiceName) {
+        CommunicationServiceResourceInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, communicationServiceName);
+        if (inner != null) {
+            return new CommunicationServiceResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public void deleteByResourceGroup(String resourceGroupName, String communicationServiceName) {
         this.serviceClient().delete(resourceGroupName, communicationServiceName);
     }
 
     public void delete(String resourceGroupName, String communicationServiceName, Context context) {
         this.serviceClient().delete(resourceGroupName, communicationServiceName, context);
-    }
-
-    public CommunicationServiceKeys listKeys(String resourceGroupName, String communicationServiceName) {
-        CommunicationServiceKeysInner inner =
-            this.serviceClient().listKeys(resourceGroupName, communicationServiceName);
-        if (inner != null) {
-            return new CommunicationServiceKeysImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<CommunicationServiceKeys> listKeysWithResponse(
@@ -173,10 +163,9 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
     }
 
-    public CommunicationServiceKeys regenerateKey(
-        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
+    public CommunicationServiceKeys listKeys(String resourceGroupName, String communicationServiceName) {
         CommunicationServiceKeysInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, communicationServiceName, parameters);
+            this.serviceClient().listKeys(resourceGroupName, communicationServiceName);
         if (inner != null) {
             return new CommunicationServiceKeysImpl(inner, this.manager());
         } else {
@@ -184,13 +173,30 @@ public final class CommunicationServicesImpl implements CommunicationServices {
         }
     }
 
-    public CommunicationServiceKeys regenerateKey(
+    public Response<CommunicationServiceKeys> regenerateKeyWithResponse(
         String resourceGroupName,
         String communicationServiceName,
         RegenerateKeyParameters parameters,
         Context context) {
+        Response<CommunicationServiceKeysInner> inner =
+            this
+                .serviceClient()
+                .regenerateKeyWithResponse(resourceGroupName, communicationServiceName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new CommunicationServiceKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CommunicationServiceKeys regenerateKey(
+        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters) {
         CommunicationServiceKeysInner inner =
-            this.serviceClient().regenerateKey(resourceGroupName, communicationServiceName, parameters, context);
+            this.serviceClient().regenerateKey(resourceGroupName, communicationServiceName, parameters);
         if (inner != null) {
             return new CommunicationServiceKeysImpl(inner, this.manager());
         } else {

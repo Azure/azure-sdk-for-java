@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ScheduleListResult;
-import org.junit.jupiter.api.Test;
 
 public final class ScheduleListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ScheduleListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"tkl\",\"timeZone\":\"xbjhwuaanozjosph\",\"state\":\"Enabled\"},\"id\":\"pjrvxagl\",\"name\":\"vimjwos\",\"type\":\"tx\"}],\"nextLink\":\"cskfcktqumiekk\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"jpxac\",\"timeZone\":\"udfnbyxba\",\"state\":\"Enabled\"},\"id\":\"yvayffimrzr\",\"name\":\"uzqogsexnevf\",\"type\":\"nwnwme\"}],\"nextLink\":\"syyceuzsoibjud\"}")
                 .toObject(ScheduleListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ScheduleListResult model = new ScheduleListResult();
         model = BinaryData.fromObject(model).toObject(ScheduleListResult.class);
     }

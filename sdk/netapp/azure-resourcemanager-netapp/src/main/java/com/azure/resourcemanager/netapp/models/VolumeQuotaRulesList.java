@@ -18,6 +18,10 @@ public final class VolumeQuotaRulesList {
     @JsonProperty(value = "value")
     private List<VolumeQuotaRuleInner> value;
 
+    /** Creates an instance of VolumeQuotaRulesList class. */
+    public VolumeQuotaRulesList() {
+    }
+
     /**
      * Get the value property: A list of Volume Quota Rules.
      *

@@ -96,13 +96,13 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
     public static IndexAction fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    IndexActionType actionType = null;
+                    IndexAction deserializedIndexAction = new IndexAction();
                     Map<String, Object> additionalProperties = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
                         if ("@search.action".equals(fieldName)) {
-                            actionType = IndexActionType.fromString(reader.getString());
+                            deserializedIndexAction.actionType = IndexActionType.fromString(reader.getString());
                         } else {
                             if (additionalProperties == null) {
                                 additionalProperties = new LinkedHashMap<>();
@@ -110,10 +110,8 @@ public final class IndexAction implements JsonSerializable<IndexAction> {
                             additionalProperties.put(fieldName, reader.readUntyped());
                         }
                     }
-                    IndexAction deserializedValue = new IndexAction();
-                    deserializedValue.actionType = actionType;
-                    deserializedValue.additionalProperties = additionalProperties;
-                    return deserializedValue;
+                    deserializedIndexAction.additionalProperties = additionalProperties;
+                    return deserializedIndexAction;
                 });
     }
 

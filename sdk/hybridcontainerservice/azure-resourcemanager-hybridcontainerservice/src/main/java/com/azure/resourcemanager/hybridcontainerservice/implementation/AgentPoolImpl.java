@@ -150,13 +150,13 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
 
     private String resourceGroupName;
 
-    private String provisionedClustersName;
+    private String resourceName;
 
     private String agentPoolName;
 
-    public AgentPoolImpl withExistingProvisionedCluster(String resourceGroupName, String provisionedClustersName) {
+    public AgentPoolImpl withExistingProvisionedCluster(String resourceGroupName, String resourceName) {
         this.resourceGroupName = resourceGroupName;
-        this.provisionedClustersName = provisionedClustersName;
+        this.resourceName = resourceName;
         return this;
     }
 
@@ -165,8 +165,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
             serviceManager
                 .serviceClient()
                 .getAgentPools()
-                .createOrUpdate(
-                    resourceGroupName, provisionedClustersName, agentPoolName, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, resourceName, agentPoolName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -175,7 +174,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
             serviceManager
                 .serviceClient()
                 .getAgentPools()
-                .createOrUpdate(resourceGroupName, provisionedClustersName, agentPoolName, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, resourceName, agentPoolName, this.innerModel(), context);
         return this;
     }
 
@@ -195,8 +194,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
             serviceManager
                 .serviceClient()
                 .getAgentPools()
-                .updateWithResponse(
-                    resourceGroupName, provisionedClustersName, agentPoolName, this.innerModel(), Context.NONE)
+                .updateWithResponse(resourceGroupName, resourceName, agentPoolName, this.innerModel(), Context.NONE)
                 .getValue();
         return this;
     }
@@ -206,8 +204,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
             serviceManager
                 .serviceClient()
                 .getAgentPools()
-                .updateWithResponse(
-                    resourceGroupName, provisionedClustersName, agentPoolName, this.innerModel(), context)
+                .updateWithResponse(resourceGroupName, resourceName, agentPoolName, this.innerModel(), context)
                 .getValue();
         return this;
     }
@@ -218,7 +215,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.provisionedClustersName = Utils.getValueFromIdByName(innerObject.id(), "provisionedClusters");
+        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "provisionedClusters");
         this.agentPoolName = Utils.getValueFromIdByName(innerObject.id(), "agentPools");
     }
 
@@ -227,7 +224,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
             serviceManager
                 .serviceClient()
                 .getAgentPools()
-                .getWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, Context.NONE)
+                .getWithResponse(resourceGroupName, resourceName, agentPoolName, Context.NONE)
                 .getValue();
         return this;
     }
@@ -237,7 +234,7 @@ public final class AgentPoolImpl implements AgentPool, AgentPool.Definition, Age
             serviceManager
                 .serviceClient()
                 .getAgentPools()
-                .getWithResponse(resourceGroupName, provisionedClustersName, agentPoolName, context)
+                .getWithResponse(resourceGroupName, resourceName, agentPoolName, context)
                 .getValue();
         return this;
     }

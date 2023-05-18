@@ -18,11 +18,11 @@ public final class QuotaRequestPropertiesTests {
         QuotaRequestProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Invalid\",\"message\":\"bw\",\"requestSubmitTime\":\"2021-01-14T23:54:10Z\",\"value\":[{\"limit\":1628734797,\"name\":{\"value\":\"vdkcrodtj\",\"localizedValue\":\"fw\"},\"resourceType\":\"fltkacjv\",\"unit\":\"kdlfoa\",\"provisioningState\":\"Failed\",\"message\":\"fpagaowpulp\",\"subRequestId\":\"lyls\"},{\"limit\":168865106,\"name\":{\"value\":\"nsj\",\"localizedValue\":\"vti\"},\"resourceType\":\"xsdszuempsb\",\"unit\":\"f\",\"provisioningState\":\"Succeeded\",\"message\":\"v\",\"subRequestId\":\"qi\"},{\"limit\":1110186498,\"name\":{\"value\":\"kjj\",\"localizedValue\":\"xrbuukzclew\"},\"resourceType\":\"mlwpazt\",\"unit\":\"ofncckwyfzqwhxxb\",\"provisioningState\":\"Failed\",\"message\":\"xzfe\",\"subRequestId\":\"tpp\"}]}")
+                    "{\"provisioningState\":\"Accepted\",\"message\":\"zwl\",\"requestSubmitTime\":\"2021-07-30T12:05:38Z\",\"value\":[{\"limit\":544110475,\"name\":{\"value\":\"dy\",\"localizedValue\":\"tdooaoj\"},\"resourceType\":\"iodkooebwnujhem\",\"unit\":\"bvdkcrodtjin\",\"provisioningState\":\"Failed\",\"message\":\"fltkacjv\",\"subRequestId\":\"kdlfoa\"},{\"limit\":1662630957,\"name\":{\"value\":\"pagao\",\"localizedValue\":\"ulpqblylsyxkqjn\"},\"resourceType\":\"ervtiagxs\",\"unit\":\"zuempsbzkf\",\"provisioningState\":\"Succeeded\",\"message\":\"v\",\"subRequestId\":\"qi\"}]}")
                 .toObject(QuotaRequestProperties.class);
-        Assertions.assertEquals(QuotaRequestState.INVALID, model.provisioningState());
-        Assertions.assertEquals("vdkcrodtj", model.value().get(0).name().value());
-        Assertions.assertEquals("kdlfoa", model.value().get(0).unit());
+        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.provisioningState());
+        Assertions.assertEquals("dy", model.value().get(0).name().value());
+        Assertions.assertEquals("bvdkcrodtjin", model.value().get(0).unit());
         Assertions.assertEquals(QuotaRequestState.FAILED, model.value().get(0).provisioningState());
     }
 
@@ -30,26 +30,22 @@ public final class QuotaRequestPropertiesTests {
     public void testSerialize() throws Exception {
         QuotaRequestProperties model =
             new QuotaRequestProperties()
-                .withProvisioningState(QuotaRequestState.INVALID)
+                .withProvisioningState(QuotaRequestState.ACCEPTED)
                 .withValue(
                     Arrays
                         .asList(
                             new SubRequest()
-                                .withName(new ResourceName().withValue("vdkcrodtj"))
-                                .withUnit("kdlfoa")
+                                .withName(new ResourceName().withValue("dy"))
+                                .withUnit("bvdkcrodtjin")
                                 .withProvisioningState(QuotaRequestState.FAILED),
                             new SubRequest()
-                                .withName(new ResourceName().withValue("nsj"))
-                                .withUnit("f")
-                                .withProvisioningState(QuotaRequestState.SUCCEEDED),
-                            new SubRequest()
-                                .withName(new ResourceName().withValue("kjj"))
-                                .withUnit("ofncckwyfzqwhxxb")
-                                .withProvisioningState(QuotaRequestState.FAILED)));
+                                .withName(new ResourceName().withValue("pagao"))
+                                .withUnit("zuempsbzkf")
+                                .withProvisioningState(QuotaRequestState.SUCCEEDED)));
         model = BinaryData.fromObject(model).toObject(QuotaRequestProperties.class);
-        Assertions.assertEquals(QuotaRequestState.INVALID, model.provisioningState());
-        Assertions.assertEquals("vdkcrodtj", model.value().get(0).name().value());
-        Assertions.assertEquals("kdlfoa", model.value().get(0).unit());
+        Assertions.assertEquals(QuotaRequestState.ACCEPTED, model.provisioningState());
+        Assertions.assertEquals("dy", model.value().get(0).name().value());
+        Assertions.assertEquals("bvdkcrodtjin", model.value().get(0).unit());
         Assertions.assertEquals(QuotaRequestState.FAILED, model.value().get(0).provisioningState());
     }
 }

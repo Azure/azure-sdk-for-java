@@ -14,20 +14,20 @@ public final class SqlDataDirectoryTests {
     public void testDeserialize() throws Exception {
         SqlDataDirectory model =
             BinaryData
-                .fromString("{\"type\":\"Log\",\"path\":\"i\",\"logicalName\":\"tnluankrr\"}")
+                .fromString("{\"type\":\"Log\",\"path\":\"hsgz\",\"logicalName\":\"zbgomfgbeg\"}")
                 .toObject(SqlDataDirectory.class);
         Assertions.assertEquals(SqlDataDirectoryType.LOG, model.type());
-        Assertions.assertEquals("i", model.path());
-        Assertions.assertEquals("tnluankrr", model.logicalName());
+        Assertions.assertEquals("hsgz", model.path());
+        Assertions.assertEquals("zbgomfgbeg", model.logicalName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SqlDataDirectory model =
-            new SqlDataDirectory().withType(SqlDataDirectoryType.LOG).withPath("i").withLogicalName("tnluankrr");
+            new SqlDataDirectory().withType(SqlDataDirectoryType.LOG).withPath("hsgz").withLogicalName("zbgomfgbeg");
         model = BinaryData.fromObject(model).toObject(SqlDataDirectory.class);
         Assertions.assertEquals(SqlDataDirectoryType.LOG, model.type());
-        Assertions.assertEquals("i", model.path());
-        Assertions.assertEquals("tnluankrr", model.logicalName());
+        Assertions.assertEquals("hsgz", model.path());
+        Assertions.assertEquals("zbgomfgbeg", model.logicalName());
     }
 }

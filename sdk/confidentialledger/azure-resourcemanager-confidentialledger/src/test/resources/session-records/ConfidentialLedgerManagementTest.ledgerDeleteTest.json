@@ -1,474 +1,622 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.azure.com/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "0968facd-7068-4bcf-bd36-d5a45095fbf6",
-      "Content-Type" : "application/json"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "21",
+        "Content-Type": "application/json",
+        "Date": "Fri, 21 Apr 2023 04:47:31 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "a773ee58-25a2-4e85-b695-6a0cdcbeb865"
+      },
+      "RequestBody": {
+        "location": "eastus"
+      },
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+        "Cache-Control": "no-cache",
+        "Content-Length": "884",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:47:40 GMT",
+        "ETag": "\u0022a900268a-0000-0100-0000-6442156a0000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-async-operation-timeout": "PT10M",
+        "x-ms-client-request-id": "a773ee58-25a2-4e85-b695-6a0cdcbeb865",
+        "x-ms-correlation-request-id": "c486732f-c6b5-4840-9915-bec98a9f6f58",
+        "x-ms-image-digest": "sha256:c49fca6061847e38b9a539de115d360c11680d90855afa5a6166ba75451148d9",
+        "x-ms-image-tag": "1.0.02285.93-4d15da82da9db0f3022c4e3312a9666af3088eeb",
+        "x-ms-machineName": "controlplane-84f74b749f-2jk6f",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-writes": "1199",
+        "x-ms-request-id": "2622cea3-73b4-4994-b5e3-c5aa0b67fbd8",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T044740Z:c486732f-c6b5-4840-9915-bec98a9f6f58"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test",
+        "name": "acl-java-sdk-delete-test",
+        "type": "microsoft.confidentialledger/ledgers",
+        "location": "eastus",
+        "systemData": {
+          "createdBy": "cbd21561-2da6-499b-b745-786faaff18b2",
+          "createdByType": "Application",
+          "createdAt": "2023-04-21T04:47:36.8169467Z",
+          "lastModifiedBy": "cbd21561-2da6-499b-b745-786faaff18b2",
+          "lastModifiedByType": "Application",
+          "lastModifiedAt": "2023-04-21T04:47:36.8169467Z"
+        },
+        "properties": {
+          "ledgerName": "acl-java-sdk-delete-test",
+          "ledgerType": "Unknown",
+          "aadBasedSecurityPrincipals": [
+            {
+              "principalId": "174bb102-95f3-4d79-8cce-f3a839e08a37",
+              "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+              "ledgerRoleName": "Administrator"
+            }
+          ],
+          "ledgerInternalNamespace": "98620822-ad03-44f9-8506-9441cc32c417",
+          "provisioningState": "Accepted"
+        }
+      }
     },
-    "Response" : {
-      "x-ms-providerhub-traffic" : "True",
-      "content-length" : "904",
-      "x-ms-async-operation-timeout" : "PT10M",
-      "X-Content-Type-Options" : "nosniff",
-      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
-      "Pragma" : "no-cache",
-      "x-ms-image-tag" : "1.0.02049.29-cb8535e39ba27833da973165c9003a442deb7d8d",
-      "retry-after" : "0",
-      "StatusCode" : "201",
-      "x-ms-correlation-request-id" : "f7326282-9756-4bf5-bdd1-aec662e02c7f",
-      "Date" : "Fri, 30 Sep 2022 15:22:58 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "x-ms-machineName" : "controlplane-549bdcc8cd-swqj6",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"3800b43f-0000-0100-0000-633709d20000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152258Z:f7326282-9756-4bf5-bdd1-aec662e02c7f",
-      "x-ms-image-digest" : "sha256:07f4244bdd4fa89539813bd1c743e57090add13dcd42a51e9d87dd441e56a734",
-      "Expires" : "-1",
-      "Azure-AsyncOperation" : "https://management.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-      "x-ms-request-id" : "a9d20f16-c5d7-4a13-b7f4-43918688352c",
-      "Body" : "{\"id\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"name\":\"acl-java-sdk-delete-test\",\"type\":\"microsoft.confidentialledger/ledgers\",\"location\":\"eastus\",\"systemData\":{\"createdBy\":\"8101de4a-1d3b-4894-8faa-8c754c6b7636\",\"createdByType\":\"Application\",\"createdAt\":\"2022-09-30T15:22:49.182873Z\",\"lastModifiedBy\":\"8101de4a-1d3b-4894-8faa-8c754c6b7636\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2022-09-30T15:22:49.182873Z\"},\"properties\":{\"ledgerName\":\"acl-java-sdk-delete-test\",\"ledgerType\":\"Unknown\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"a76f2615-4cac-4958-89d3-5d8266752eac\",\"tenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\",\"ledgerRoleName\":\"Administrator\"}],\"ledgerInternalNamespace\":\"cb803bdb-0670-44e8-89a2-af23dd8517d0\",\"ledgerSku\":\"Unknown\",\"provisioningState\":\"Accepted\"}}",
-      "x-ms-client-request-id" : "0968facd-7068-4bcf-bd36-d5a45095fbf6",
-      "Content-Type" : "application/json; charset=utf-8"
+    {
+      "RequestUri": "https://REDACTED/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Fri, 21 Apr 2023 04:48:11 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "a64e223b-96e4-4c77-ac9b-c78fd805c976"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "528",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:48:10 GMT",
+        "ETag": "\u002203001318-0000-0100-0000-6442156a0000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "0fccea22-991e-4cb6-8e2a-2089ec0f7325",
+        "x-ms-ratelimit-remaining-tenant-reads": "11999",
+        "x-ms-request-id": "049a530e-e914-4f95-a74d-71b26a8f96f3",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T044811Z:0fccea22-991e-4cb6-8e2a-2089ec0f7325"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "name": "2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "resourceId": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test",
+        "status": "Accepted",
+        "startTime": "2023-04-21T04:47:38.825765Z"
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "f3e65f05-b01a-48d2-a50e-4e8fce562b6e"
+    {
+      "RequestUri": "https://REDACTED/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Fri, 21 Apr 2023 04:48:42 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "e86b8699-0ef7-4c66-a755-3640258bb24c"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "528",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:48:41 GMT",
+        "ETag": "\u002203001318-0000-0100-0000-6442156a0000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "438c8ce2-e9c3-450e-90ca-8ba5f859bd6d",
+        "x-ms-ratelimit-remaining-tenant-reads": "11998",
+        "x-ms-request-id": "f11ee4e1-2889-4dec-923a-cfbb2745d2f4",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T044842Z:438c8ce2-e9c3-450e-90ca-8ba5f859bd6d"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "name": "2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "resourceId": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test",
+        "status": "Accepted",
+        "startTime": "2023-04-21T04:47:38.825765Z"
+      }
     },
-    "Response" : {
-      "content-length" : "529",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "a76b6b47-90d9-4b8b-b1d4-57b62c7669dd",
-      "Date" : "Fri, 30 Sep 2022 15:23:28 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11988",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"1200182b-0000-0100-0000-633709cb0000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152328Z:a76b6b47-90d9-4b8b-b1d4-57b62c7669dd",
-      "Expires" : "-1",
-      "x-ms-request-id" : "8eeb6d42-4214-43a0-b0dc-74d234bc7af8",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Accepted\",\"startTime\":\"2022-09-30T15:22:51.6793224Z\"}",
-      "Content-Type" : "application/json; charset=utf-8"
+    {
+      "RequestUri": "https://REDACTED/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Fri, 21 Apr 2023 04:49:12 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "f6c15482-98cd-491a-8c6a-03ed2eb59851"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "528",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:49:12 GMT",
+        "ETag": "\u002203001318-0000-0100-0000-6442156a0000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "7a66b731-363c-474c-9dd4-e16f6f624565",
+        "x-ms-ratelimit-remaining-tenant-reads": "11997",
+        "x-ms-request-id": "70973f07-f77f-4cb7-82ac-6aea2916c977",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T044912Z:7a66b731-363c-474c-9dd4-e16f6f624565"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "name": "2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "resourceId": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test",
+        "status": "Accepted",
+        "startTime": "2023-04-21T04:47:38.825765Z"
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "85175f82-4794-47b0-809c-722b25982292"
+    {
+      "RequestUri": "https://REDACTED/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Fri, 21 Apr 2023 04:49:42 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "5d65326f-0df4-4dac-9a91-8594fe8c1ce2"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "528",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:49:42 GMT",
+        "ETag": "\u002203001318-0000-0100-0000-6442156a0000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "625d4106-12bc-4d79-863f-fc6a78141a2a",
+        "x-ms-ratelimit-remaining-tenant-reads": "11996",
+        "x-ms-request-id": "d003fb85-3102-4443-a442-0dfe88d0aa19",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T044942Z:625d4106-12bc-4d79-863f-fc6a78141a2a"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "name": "2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "resourceId": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test",
+        "status": "Accepted",
+        "startTime": "2023-04-21T04:47:38.825765Z"
+      }
     },
-    "Response" : {
-      "content-length" : "529",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "22d7419e-ad44-4920-814e-6a8134925556",
-      "Date" : "Fri, 30 Sep 2022 15:23:58 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11999",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"1200182b-0000-0100-0000-633709cb0000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152358Z:22d7419e-ad44-4920-814e-6a8134925556",
-      "Expires" : "-1",
-      "x-ms-request-id" : "c7ec3758-918c-405b-8796-c3b7e72f39e2",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Accepted\",\"startTime\":\"2022-09-30T15:22:51.6793224Z\"}",
-      "Content-Type" : "application/json; charset=utf-8"
+    {
+      "RequestUri": "https://REDACTED/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Fri, 21 Apr 2023 04:50:13 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "260464b1-3bf9-417a-94be-c80b6ca6fee3"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1159",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:50:12 GMT",
+        "ETag": "\u002203002418-0000-0100-0000-644215f70000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "44ff152e-0fe3-4563-a845-bfc669eef958",
+        "x-ms-ratelimit-remaining-tenant-reads": "11995",
+        "x-ms-request-id": "072d3c80-019f-4159-aba1-46eb8dfaf863",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T045013Z:44ff152e-0fe3-4563-a845-bfc669eef958"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "name": "2622cea3-73b4-4994-b5e3-c5aa0b67fbd8*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "resourceId": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test",
+        "status": "Succeeded",
+        "startTime": "2023-04-21T04:47:38.825765Z",
+        "endTime": "2023-04-21T04:49:59.7900243Z",
+        "properties": {
+          "LedgerName": "acl-java-sdk-delete-test",
+          "LedgerUri": "https://acl-java-sdk-delete-test.confidential-ledger.azure.com",
+          "IdentityServiceUri": "https://identity.confidential-ledger.core.azure.com/ledgerIdentity/acl-java-sdk-delete-test",
+          "LedgerStorageAccount": null,
+          "LedgerType": "Unknown",
+          "AadBasedSecurityPrincipals": [
+            {
+              "principalId": "174bb102-95f3-4d79-8cce-f3a839e08a37",
+              "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+              "ledgerRoleName": "Administrator"
+            }
+          ],
+          "CertBasedSecurityPrincipals": null,
+          "LedgerInternalNamespace": "98620822-ad03-44f9-8506-9441cc32c417",
+          "LedgerSku": "Unknown"
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "8a04076f-3016-43f6-9cad-26bfc9cdb37d"
+    {
+      "RequestUri": "https://REDACTED/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Fri, 21 Apr 2023 04:50:13 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "42c7dae5-2915-4767-95b5-b590c9762cd1"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "767",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:50:14 GMT",
+        "ETag": "\u0022a9004394-0000-0100-0000-644215f70000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "42c7dae5-2915-4767-95b5-b590c9762cd1",
+        "x-ms-correlation-request-id": "431252ef-7739-4eb5-b184-c4b683c4d62b",
+        "x-ms-image-digest": "sha256:c49fca6061847e38b9a539de115d360c11680d90855afa5a6166ba75451148d9",
+        "x-ms-image-tag": "1.0.02285.93-4d15da82da9db0f3022c4e3312a9666af3088eeb",
+        "x-ms-machineName": "controlplane-84f74b749f-2jk6f",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-reads": "11999",
+        "x-ms-request-id": "dbe19108-59f0-4934-b3ba-9951c8400db8",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T045014Z:431252ef-7739-4eb5-b184-c4b683c4d62b"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/Ledgers/acl-java-sdk-delete-test",
+        "name": "acl-java-sdk-delete-test",
+        "type": "Microsoft.ConfidentialLedger/Ledgers",
+        "location": "eastus",
+        "properties": {
+          "ledgerName": "acl-java-sdk-delete-test",
+          "ledgerUri": "https://acl-java-sdk-delete-test.confidential-ledger.azure.com",
+          "identityServiceUri": "https://identity.confidential-ledger.core.azure.com/ledgerIdentity/acl-java-sdk-delete-test",
+          "ledgerType": "Unknown",
+          "aadBasedSecurityPrincipals": [
+            {
+              "principalId": "174bb102-95f3-4d79-8cce-f3a839e08a37",
+              "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+              "ledgerRoleName": "Administrator"
+            }
+          ],
+          "ledgerInternalNamespace": "98620822-ad03-44f9-8506-9441cc32c417"
+        }
+      }
     },
-    "Response" : {
-      "content-length" : "529",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "a16029b6-3104-4c4f-b2d1-3dd3efbfbc44",
-      "Date" : "Fri, 30 Sep 2022 15:24:28 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11987",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"1200182b-0000-0100-0000-633709cb0000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152429Z:a16029b6-3104-4c4f-b2d1-3dd3efbfbc44",
-      "Expires" : "-1",
-      "x-ms-request-id" : "636d32dd-8260-4427-85f6-a4219a216a77",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Accepted\",\"startTime\":\"2022-09-30T15:22:51.6793224Z\"}",
-      "Content-Type" : "application/json; charset=utf-8"
+    {
+      "RequestUri": "https://REDACTED/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Fri, 21 Apr 2023 04:50:15 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "75c0121f-759c-428c-a8dc-63a289890a49"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "767",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:50:15 GMT",
+        "ETag": "\u0022a9004394-0000-0100-0000-644215f70000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "75c0121f-759c-428c-a8dc-63a289890a49",
+        "x-ms-correlation-request-id": "1a68696a-c66c-4ee7-9560-10b16a17a0e5",
+        "x-ms-image-digest": "sha256:c49fca6061847e38b9a539de115d360c11680d90855afa5a6166ba75451148d9",
+        "x-ms-image-tag": "1.0.02285.93-4d15da82da9db0f3022c4e3312a9666af3088eeb",
+        "x-ms-machineName": "controlplane-84f74b749f-2jk6f",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-reads": "11998",
+        "x-ms-request-id": "2de62e27-b6f0-40de-86cd-66f9a41f2586",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T045015Z:1a68696a-c66c-4ee7-9560-10b16a17a0e5"
+      },
+      "ResponseBody": {
+        "id": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/Ledgers/acl-java-sdk-delete-test",
+        "name": "acl-java-sdk-delete-test",
+        "type": "Microsoft.ConfidentialLedger/Ledgers",
+        "location": "eastus",
+        "properties": {
+          "ledgerName": "acl-java-sdk-delete-test",
+          "ledgerUri": "https://acl-java-sdk-delete-test.confidential-ledger.azure.com",
+          "identityServiceUri": "https://identity.confidential-ledger.core.azure.com/ledgerIdentity/acl-java-sdk-delete-test",
+          "ledgerType": "Unknown",
+          "aadBasedSecurityPrincipals": [
+            {
+              "principalId": "174bb102-95f3-4d79-8cce-f3a839e08a37",
+              "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+              "ledgerRoleName": "Administrator"
+            }
+          ],
+          "ledgerInternalNamespace": "98620822-ad03-44f9-8506-9441cc32c417"
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "d65c51d7-ed68-47e6-a9c5-dcd7c2cf1b30"
+    {
+      "RequestUri": "https://REDACTED/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Fri, 21 Apr 2023 04:50:15 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "e9623be8-8a7a-4ae0-936f-ca6054f8c9c3"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Azure-AsyncOperation": "https://management.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+        "Cache-Control": "no-cache",
+        "Content-Length": "4",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:50:16 GMT",
+        "ETag": "\u0022a900f995-0000-0100-0000-644216080000\u0022",
+        "Expires": "-1",
+        "Location": "https://REDACTED/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-async-operation-timeout": "PT5M",
+        "x-ms-client-request-id": "e9623be8-8a7a-4ae0-936f-ca6054f8c9c3",
+        "x-ms-correlation-request-id": "890a0dda-5260-458b-b1f5-5816426b9a13",
+        "x-ms-image-digest": "sha256:c49fca6061847e38b9a539de115d360c11680d90855afa5a6166ba75451148d9",
+        "x-ms-image-tag": "1.0.02285.93-4d15da82da9db0f3022c4e3312a9666af3088eeb",
+        "x-ms-machineName": "controlplane-84f74b749f-2jk6f",
+        "x-ms-providerhub-traffic": "True",
+        "x-ms-ratelimit-remaining-subscription-deletes": "14999",
+        "x-ms-request-id": "0823c3c8-8999-495d-a12f-480d67811f49",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T045016Z:890a0dda-5260-458b-b1f5-5816426b9a13"
+      },
+      "ResponseBody": "null"
     },
-    "Response" : {
-      "content-length" : "529",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "8e67ada7-033b-4ccc-a7e7-8be76b4c26fe",
-      "Date" : "Fri, 30 Sep 2022 15:24:59 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11998",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"1200182b-0000-0100-0000-633709cb0000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152459Z:8e67ada7-033b-4ccc-a7e7-8be76b4c26fe",
-      "Expires" : "-1",
-      "x-ms-request-id" : "cd1358b9-41b1-4b98-beaa-95e499fbb3e4",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Accepted\",\"startTime\":\"2022-09-30T15:22:51.6793224Z\"}",
-      "Content-Type" : "application/json; charset=utf-8"
+    {
+      "RequestUri": "https://REDACTED/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Fri, 21 Apr 2023 04:50:47 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "dd59c799-f681-4ada-ba91-ffee096ad099"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "529",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:50:46 GMT",
+        "ETag": "\u002203002718-0000-0100-0000-644216080000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "5ec1fb44-f84a-41c1-9726-70f1b959b253",
+        "x-ms-ratelimit-remaining-tenant-reads": "11994",
+        "x-ms-request-id": "6268c5a6-ac85-4cb6-acba-c6614582781d",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T045047Z:5ec1fb44-f84a-41c1-9726-70f1b959b253"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "name": "0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "resourceId": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test",
+        "status": "Deleting",
+        "startTime": "2023-04-21T04:50:16.6976744Z"
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "9cd93f90-3ef2-464b-b1cb-cdfc63e5ad1e"
+    {
+      "RequestUri": "https://REDACTED/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Fri, 21 Apr 2023 04:51:17 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "90d2d2e2-20c9-432f-a01a-86cd3fb3958a"
+      },
+      "RequestBody": null,
+      "StatusCode": 202,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "529",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:51:17 GMT",
+        "ETag": "\u002203002718-0000-0100-0000-644216080000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "be1a73dd-1603-449b-99ef-ca58c20b2113",
+        "x-ms-ratelimit-remaining-tenant-reads": "11993",
+        "x-ms-request-id": "97b7e984-9d95-4a47-a6c8-dc553d41b88f",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T045117Z:be1a73dd-1603-449b-99ef-ca58c20b2113"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "name": "0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "resourceId": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test",
+        "status": "Deleting",
+        "startTime": "2023-04-21T04:50:16.6976744Z"
+      }
     },
-    "Response" : {
-      "content-length" : "529",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "ab41bb02-6bfb-490b-92e2-2e5fcefb3099",
-      "Date" : "Fri, 30 Sep 2022 15:25:29 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11986",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"1200182b-0000-0100-0000-633709cb0000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152529Z:ab41bb02-6bfb-490b-92e2-2e5fcefb3099",
-      "Expires" : "-1",
-      "x-ms-request-id" : "65d5262c-48ee-4836-b9c2-c0d58a978fa6",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Accepted\",\"startTime\":\"2022-09-30T15:22:51.6793224Z\"}",
-      "Content-Type" : "application/json; charset=utf-8"
+    {
+      "RequestUri": "https://REDACTED/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Fri, 21 Apr 2023 04:51:47 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "63c8c396-7708-4ced-b7aa-65767cfde365"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1160",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:51:47 GMT",
+        "ETag": "\u002203003518-0000-0100-0000-644216550000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "54281606-1bbc-4ddf-b258-6484fc3e7b89",
+        "x-ms-ratelimit-remaining-tenant-reads": "11992",
+        "x-ms-request-id": "5747d2c2-b491-42fa-b092-665f1a46219d",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T045147Z:54281606-1bbc-4ddf-b258-6484fc3e7b89"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "name": "0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "resourceId": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test",
+        "status": "Succeeded",
+        "startTime": "2023-04-21T04:50:16.6976744Z",
+        "endTime": "2023-04-21T04:51:33.3598692Z",
+        "properties": {
+          "LedgerName": "acl-java-sdk-delete-test",
+          "LedgerUri": "https://acl-java-sdk-delete-test.confidential-ledger.azure.com",
+          "IdentityServiceUri": "https://identity.confidential-ledger.core.azure.com/ledgerIdentity/acl-java-sdk-delete-test",
+          "LedgerStorageAccount": null,
+          "LedgerType": "Unknown",
+          "AadBasedSecurityPrincipals": [
+            {
+              "principalId": "174bb102-95f3-4d79-8cce-f3a839e08a37",
+              "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+              "ledgerRoleName": "Administrator"
+            }
+          ],
+          "CertBasedSecurityPrincipals": null,
+          "LedgerInternalNamespace": "98620822-ad03-44f9-8506-9441cc32c417",
+          "LedgerSku": "Unknown"
+        }
+      }
     },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "69ac9ff5-6e90-40b4-9657-041166c4f298"
+    {
+      "RequestUri": "https://REDACTED/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Date": "Fri, 21 Apr 2023 04:51:48 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "0f66a08b-8ba8-4e52-9941-52e9aed756f3"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "1160",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:51:48 GMT",
+        "ETag": "\u002203003518-0000-0100-0000-644216550000\u0022",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "18f79810-9aba-4ec9-a2da-ebc3a1ebe95f",
+        "x-ms-ratelimit-remaining-tenant-reads": "11991",
+        "x-ms-request-id": "0489b20b-14d4-4328-b52c-3fc339994356",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T045148Z:18f79810-9aba-4ec9-a2da-ebc3a1ebe95f"
+      },
+      "ResponseBody": {
+        "id": "/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "name": "0823c3c8-8999-495d-a12f-480d67811f49*B331CA5E772B683E25C3E4D647DA1E314CDC6B2D10C10F11031E0E88D64B83E3",
+        "resourceId": "/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test",
+        "status": "Succeeded",
+        "startTime": "2023-04-21T04:50:16.6976744Z",
+        "endTime": "2023-04-21T04:51:33.3598692Z",
+        "properties": {
+          "LedgerName": "acl-java-sdk-delete-test",
+          "LedgerUri": "https://acl-java-sdk-delete-test.confidential-ledger.azure.com",
+          "IdentityServiceUri": "https://identity.confidential-ledger.core.azure.com/ledgerIdentity/acl-java-sdk-delete-test",
+          "LedgerStorageAccount": null,
+          "LedgerType": "Unknown",
+          "AadBasedSecurityPrincipals": [
+            {
+              "principalId": "174bb102-95f3-4d79-8cce-f3a839e08a37",
+              "tenantId": "72f988bf-86f1-41af-91ab-2d7cd011db47",
+              "ledgerRoleName": "Administrator"
+            }
+          ],
+          "CertBasedSecurityPrincipals": null,
+          "LedgerInternalNamespace": "98620822-ad03-44f9-8506-9441cc32c417",
+          "LedgerSku": "Unknown"
+        }
+      }
     },
-    "Response" : {
-      "content-length" : "1160",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "be572e18-ac4f-4b73-8d77-2000fec9ebc2",
-      "Date" : "Fri, 30 Sep 2022 15:25:59 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11997",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"1200292e-0000-0100-0000-63370a6c0000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152600Z:be572e18-ac4f-4b73-8d77-2000fec9ebc2",
-      "Expires" : "-1",
-      "x-ms-request-id" : "a77961db-2456-4ece-8dc5-9ae60822e4bf",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"a9d20f16-c5d7-4a13-b7f4-43918688352c*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Succeeded\",\"startTime\":\"2022-09-30T15:22:51.6793224Z\",\"endTime\":\"2022-09-30T15:25:32.7290398Z\",\"properties\":{\"LedgerName\":\"acl-java-sdk-delete-test\",\"LedgerUri\":\"https://acl-java-sdk-delete-test.confidential-ledger.azure.com\",\"IdentityServiceUri\":\"https://identity.confidential-ledger.core.azure.com/ledgerIdentity/acl-java-sdk-delete-test\",\"LedgerStorageAccount\":null,\"LedgerType\":\"Unknown\",\"AadBasedSecurityPrincipals\":[{\"PrincipalId\":\"a76f2615-4cac-4958-89d3-5d8266752eac\",\"TenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\",\"LedgerRoleName\":\"Administrator\"}],\"CertBasedSecurityPrincipals\":null,\"LedgerInternalNamespace\":\"cb803bdb-0670-44e8-89a2-af23dd8517d0\",\"LedgerSku\":\"Unknown\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "9e6483be-e68b-4479-9db3-e014e65fe40d"
-    },
-    "Response" : {
-      "x-ms-providerhub-traffic" : "True",
-      "content-length" : "767",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "x-ms-image-tag" : "1.0.02049.29-cb8535e39ba27833da973165c9003a442deb7d8d",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "aec0289a-8346-4501-b918-57f721570b19",
-      "Date" : "Fri, 30 Sep 2022 15:25:59 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "x-ms-machineName" : "controlplane-549bdcc8cd-vxf2v",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"38007342-0000-0100-0000-63370a6c0000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152600Z:aec0289a-8346-4501-b918-57f721570b19",
-      "x-ms-image-digest" : "sha256:07f4244bdd4fa89539813bd1c743e57090add13dcd42a51e9d87dd441e56a734",
-      "Expires" : "-1",
-      "x-ms-request-id" : "cd04a543-c962-4e9a-b1a0-b40315ffde46",
-      "Body" : "{\"id\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/Ledgers/acl-java-sdk-delete-test\",\"name\":\"acl-java-sdk-delete-test\",\"type\":\"Microsoft.ConfidentialLedger/Ledgers\",\"location\":\"eastus\",\"properties\":{\"ledgerName\":\"acl-java-sdk-delete-test\",\"ledgerUri\":\"https://acl-java-sdk-delete-test.confidential-ledger.azure.com\",\"identityServiceUri\":\"https://identity.confidential-ledger.core.azure.com/ledgerIdentity/acl-java-sdk-delete-test\",\"ledgerType\":\"Unknown\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"a76f2615-4cac-4958-89d3-5d8266752eac\",\"tenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\",\"ledgerRoleName\":\"Administrator\"}],\"ledgerInternalNamespace\":\"cb803bdb-0670-44e8-89a2-af23dd8517d0\"}}",
-      "x-ms-client-request-id" : "9e6483be-e68b-4479-9db3-e014e65fe40d",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "7e587ef2-3ac9-4aa4-85c5-ee3d533401f9",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-ms-providerhub-traffic" : "True",
-      "content-length" : "767",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "x-ms-image-tag" : "1.0.02049.29-cb8535e39ba27833da973165c9003a442deb7d8d",
-      "retry-after" : "0",
-      "x-ms-ratelimit-remaining-subscription-reads" : "11998",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "ae9f54f4-0bdc-440b-a7e6-383f011cf6cc",
-      "Date" : "Fri, 30 Sep 2022 15:26:00 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "x-ms-machineName" : "controlplane-549bdcc8cd-vxf2v",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"38007342-0000-0100-0000-63370a6c0000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152601Z:ae9f54f4-0bdc-440b-a7e6-383f011cf6cc",
-      "x-ms-image-digest" : "sha256:07f4244bdd4fa89539813bd1c743e57090add13dcd42a51e9d87dd441e56a734",
-      "Expires" : "-1",
-      "x-ms-request-id" : "9251f399-b566-4f7f-9c17-425fa8c3aeb0",
-      "Body" : "{\"id\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/Ledgers/acl-java-sdk-delete-test\",\"name\":\"acl-java-sdk-delete-test\",\"type\":\"Microsoft.ConfidentialLedger/Ledgers\",\"location\":\"eastus\",\"properties\":{\"ledgerName\":\"acl-java-sdk-delete-test\",\"ledgerUri\":\"https://acl-java-sdk-delete-test.confidential-ledger.azure.com\",\"identityServiceUri\":\"https://identity.confidential-ledger.core.azure.com/ledgerIdentity/acl-java-sdk-delete-test\",\"ledgerType\":\"Unknown\",\"aadBasedSecurityPrincipals\":[{\"principalId\":\"a76f2615-4cac-4958-89d3-5d8266752eac\",\"tenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\",\"ledgerRoleName\":\"Administrator\"}],\"ledgerInternalNamespace\":\"cb803bdb-0670-44e8-89a2-af23dd8517d0\"}}",
-      "x-ms-client-request-id" : "7e587ef2-3ac9-4aa4-85c5-ee3d533401f9",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://REDACTED.azure.com/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "087615e4-b0e8-42bb-9229-f7c879bc46b9",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "x-ms-providerhub-traffic" : "True",
-      "content-length" : "4",
-      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
-      "x-ms-async-operation-timeout" : "PT5M",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "x-ms-image-tag" : "1.0.02049.29-cb8535e39ba27833da973165c9003a442deb7d8d",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "x-ms-correlation-request-id" : "ede920a1-e72e-41b3-bb61-13e9e71c99d5",
-      "Date" : "Fri, 30 Sep 2022 15:26:00 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "x-ms-machineName" : "controlplane-549bdcc8cd-vxf2v",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"38000243-0000-0100-0000-63370a890000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152601Z:ede920a1-e72e-41b3-bb61-13e9e71c99d5",
-      "x-ms-image-digest" : "sha256:07f4244bdd4fa89539813bd1c743e57090add13dcd42a51e9d87dd441e56a734",
-      "Expires" : "-1",
-      "Azure-AsyncOperation" : "https://management.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-      "x-ms-request-id" : "2053fc71-6e7a-40b9-96b4-4a9068bc93e7",
-      "Body" : "null",
-      "x-ms-client-request-id" : "087615e4-b0e8-42bb-9229-f7c879bc46b9",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "https://management.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "61b0e403-6d30-43d4-b4b0-b772152399ef"
-    },
-    "Response" : {
-      "content-length" : "529",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "x-ms-correlation-request-id" : "e97fa37c-c890-4bfd-91ae-b5d7c7a6b275",
-      "Date" : "Fri, 30 Sep 2022 15:26:30 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11996",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"1200f52e-0000-0100-0000-63370a890000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152631Z:e97fa37c-c890-4bfd-91ae-b5d7c7a6b275",
-      "Expires" : "-1",
-      "x-ms-request-id" : "58742e76-141a-4c5e-acf0-6025f38fbd0b",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Deleting\",\"startTime\":\"2022-09-30T15:26:01.4311928Z\"}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "1e4473ee-ac39-409f-9f89-18e9ba3360e9"
-    },
-    "Response" : {
-      "content-length" : "529",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "x-ms-correlation-request-id" : "23a1c911-c8fd-4a1c-a913-ebb60d076a85",
-      "Date" : "Fri, 30 Sep 2022 15:27:01 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11985",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"1200f52e-0000-0100-0000-63370a890000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152702Z:23a1c911-c8fd-4a1c-a913-ebb60d076a85",
-      "Expires" : "-1",
-      "x-ms-request-id" : "fa1a43a7-4880-4f39-bf4e-6b4578ebcfa7",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Deleting\",\"startTime\":\"2022-09-30T15:26:01.4311928Z\"}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "4b03d3fd-e4b2-46a1-94a6-62ce850320ca"
-    },
-    "Response" : {
-      "content-length" : "529",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "x-ms-correlation-request-id" : "cc0467b5-76fb-48fc-96de-68e93d66eb3e",
-      "Date" : "Fri, 30 Sep 2022 15:27:31 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11995",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"1200f52e-0000-0100-0000-63370a890000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152732Z:cc0467b5-76fb-48fc-96de-68e93d66eb3e",
-      "Expires" : "-1",
-      "x-ms-request-id" : "a7e1bb35-c49d-4d05-abc3-d7495a3c90b6",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Deleting\",\"startTime\":\"2022-09-30T15:26:01.4311928Z\"}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "f5f3d4e9-5ac5-4176-a8b9-290bffb30aea"
-    },
-    "Response" : {
-      "content-length" : "529",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "202",
-      "x-ms-correlation-request-id" : "b876ba5e-4b95-4f82-a558-24d1964441dd",
-      "Date" : "Fri, 30 Sep 2022 15:28:02 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11984",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"1200f52e-0000-0100-0000-63370a890000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152802Z:b876ba5e-4b95-4f82-a558-24d1964441dd",
-      "Expires" : "-1",
-      "x-ms-request-id" : "58710b5d-51c6-45c2-a682-728c74a144af",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Deleting\",\"startTime\":\"2022-09-30T15:26:01.4311928Z\"}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "fee231d1-66ce-402a-b70b-63e076e93cf0"
-    },
-    "Response" : {
-      "content-length" : "1160",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "490fa606-2a81-4d7d-8c5b-be0200ba125e",
-      "Date" : "Fri, 30 Sep 2022 15:28:32 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11994",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"12008030-0000-0100-0000-63370b090000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152832Z:490fa606-2a81-4d7d-8c5b-be0200ba125e",
-      "Expires" : "-1",
-      "x-ms-request-id" : "55c1c1e4-0d2b-46dc-85e3-04975af1006a",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Succeeded\",\"startTime\":\"2022-09-30T15:26:01.4311928Z\",\"endTime\":\"2022-09-30T15:28:09.5012344Z\",\"properties\":{\"LedgerName\":\"acl-java-sdk-delete-test\",\"LedgerUri\":\"https://acl-java-sdk-delete-test.confidential-ledger.azure.com\",\"IdentityServiceUri\":\"https://identity.confidential-ledger.core.azure.com/ledgerIdentity/acl-java-sdk-delete-test\",\"LedgerStorageAccount\":null,\"LedgerType\":\"Unknown\",\"AadBasedSecurityPrincipals\":[{\"PrincipalId\":\"a76f2615-4cac-4958-89d3-5d8266752eac\",\"TenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\",\"LedgerRoleName\":\"Administrator\"}],\"CertBasedSecurityPrincipals\":null,\"LedgerInternalNamespace\":\"cb803bdb-0670-44e8-89a2-af23dd8517d0\",\"LedgerSku\":\"Unknown\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "61707572-7291-421a-8a33-596ef57af656"
-    },
-    "Response" : {
-      "content-length" : "1160",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "x-ms-correlation-request-id" : "b65f1e3f-5e93-4c2a-a542-6f60f391fc25",
-      "Date" : "Fri, 30 Sep 2022 15:28:32 GMT",
-      "x-ms-ratelimit-remaining-tenant-reads" : "11983",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "ETag" : "\"12008030-0000-0100-0000-63370b090000\"",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152833Z:b65f1e3f-5e93-4c2a-a542-6f60f391fc25",
-      "Expires" : "-1",
-      "x-ms-request-id" : "d67ca303-633e-4d04-94dd-ac7bd87e01dd",
-      "Body" : "{\"id\":\"/providers/Microsoft.ConfidentialLedger/locations/EASTUS/operationStatuses/2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"name\":\"2053fc71-6e7a-40b9-96b4-4a9068bc93e7*7B840CFB3F6176DAA0B1287B495A81A2B3522D6233E4891EB2E2D7FA0869A928\",\"resourceId\":\"/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test\",\"status\":\"Succeeded\",\"startTime\":\"2022-09-30T15:26:01.4311928Z\",\"endTime\":\"2022-09-30T15:28:09.5012344Z\",\"properties\":{\"LedgerName\":\"acl-java-sdk-delete-test\",\"LedgerUri\":\"https://acl-java-sdk-delete-test.confidential-ledger.azure.com\",\"IdentityServiceUri\":\"https://identity.confidential-ledger.core.azure.com/ledgerIdentity/acl-java-sdk-delete-test\",\"LedgerStorageAccount\":null,\"LedgerType\":\"Unknown\",\"AadBasedSecurityPrincipals\":[{\"PrincipalId\":\"a76f2615-4cac-4958-89d3-5d8266752eac\",\"TenantId\":\"72f988bf-86f1-41af-91ab-2d7cd011db47\",\"LedgerRoleName\":\"Administrator\"}],\"CertBasedSecurityPrincipals\":null,\"LedgerInternalNamespace\":\"cb803bdb-0670-44e8-89a2-af23dd8517d0\",\"LedgerSku\":\"Unknown\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://REDACTED.azure.com/subscriptions/027da7f8-2fc6-46d4-9be9-560706b60fec/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2022-05-13",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.1 (18.0.2.1; Windows 11; 10.0; auto-generated)",
-      "x-ms-client-request-id" : "0199fe5d-5f57-4233-8348-af1d9788b378",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
-      "content-length" : "248",
-      "X-Content-Type-Options" : "nosniff",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "x-ms-correlation-request-id" : "0e9a1985-39b7-474c-93f1-c6bf71dc8d91",
-      "Date" : "Fri, 30 Sep 2022 15:28:33 GMT",
-      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-failure-cause" : "gateway",
-      "x-ms-routing-request-id" : "NORTHEUROPE:20220930T152833Z:0e9a1985-39b7-474c-93f1-c6bf71dc8d91",
-      "Expires" : "-1",
-      "x-ms-request-id" : "0e9a1985-39b7-474c-93f1-c6bf71dc8d91",
-      "Body" : "{\"error\":{\"code\":\"ResourceNotFound\",\"message\":\"The Resource 'Microsoft.ConfidentialLedger/Ledgers/acl-java-sdk-delete-test' under resource group 'acl-sdk-test-rg' was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix\"}}",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ ]
+    {
+      "RequestUri": "https://REDACTED/subscriptions/ec0aa5f7-9e78-40c9-85cd-535c6305b380/resourceGroups/acl-sdk-test-rg/providers/Microsoft.ConfidentialLedger/ledgers/acl-java-sdk-delete-test?api-version=2023-01-26-preview",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "Date": "Fri, 21 Apr 2023 04:51:48 GMT",
+        "User-Agent": "azsdk-java-com.azure.resourcemanager.confidentialledger/1.0.0-beta.3 (17.0.4.1; Windows 11; 10.0; auto-generated)",
+        "x-ms-client-request-id": "7b016dfc-59fb-4237-9463-498306f5ff8d"
+      },
+      "RequestBody": null,
+      "StatusCode": 404,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "248",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Fri, 21 Apr 2023 04:51:48 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-correlation-request-id": "0a00e611-0003-4c85-bf21-38e0dc28c20a",
+        "x-ms-failure-cause": "gateway",
+        "x-ms-request-id": "0a00e611-0003-4c85-bf21-38e0dc28c20a",
+        "x-ms-routing-request-id": "SOUTHEASTASIA:20230421T045148Z:0a00e611-0003-4c85-bf21-38e0dc28c20a"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "ResourceNotFound",
+          "message": "The Resource \u0027Microsoft.ConfidentialLedger/Ledgers/acl-java-sdk-delete-test\u0027 under resource group \u0027acl-sdk-test-rg\u0027 was not found. For more details please go to https://aka.ms/ARMResourceNotFoundFix"
+        }
+      }
+    }
+  ],
+  "Variables": {}
 }

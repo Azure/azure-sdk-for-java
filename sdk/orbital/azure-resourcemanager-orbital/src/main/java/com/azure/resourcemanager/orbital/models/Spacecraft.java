@@ -6,6 +6,7 @@ package com.azure.resourcemanager.orbital.models;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.fluent.models.SpacecraftInner;
 import java.util.List;
@@ -49,11 +50,11 @@ public interface Spacecraft {
     Map<String, String> tags();
 
     /**
-     * Gets the etag property: A unique read-only string that changes whenever the resource is updated.
+     * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      *
-     * @return the etag value.
+     * @return the systemData value.
      */
-    String etag();
+    SystemData systemData();
 
     /**
      * Gets the provisioningState property: The current state of the resource's creation, deletion, or modification.
@@ -130,6 +131,10 @@ public interface Spacecraft {
         extends DefinitionStages.Blank,
             DefinitionStages.WithLocation,
             DefinitionStages.WithResourceGroup,
+            DefinitionStages.WithTitleLine,
+            DefinitionStages.WithTleLine1,
+            DefinitionStages.WithTleLine2,
+            DefinitionStages.WithLinks,
             DefinitionStages.WithCreate {
     }
     /** The Spacecraft definition stages. */
@@ -163,20 +168,54 @@ public interface Spacecraft {
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @return the next definition stage.
              */
-            WithCreate withExistingResourceGroup(String resourceGroupName);
+            WithTitleLine withExistingResourceGroup(String resourceGroupName);
+        }
+        /** The stage of the Spacecraft definition allowing to specify titleLine. */
+        interface WithTitleLine {
+            /**
+             * Specifies the titleLine property: Title line of the two-line element set (TLE)..
+             *
+             * @param titleLine Title line of the two-line element set (TLE).
+             * @return the next definition stage.
+             */
+            WithTleLine1 withTitleLine(String titleLine);
+        }
+        /** The stage of the Spacecraft definition allowing to specify tleLine1. */
+        interface WithTleLine1 {
+            /**
+             * Specifies the tleLine1 property: Line 1 of the two-line element set (TLE)..
+             *
+             * @param tleLine1 Line 1 of the two-line element set (TLE).
+             * @return the next definition stage.
+             */
+            WithTleLine2 withTleLine1(String tleLine1);
+        }
+        /** The stage of the Spacecraft definition allowing to specify tleLine2. */
+        interface WithTleLine2 {
+            /**
+             * Specifies the tleLine2 property: Line 2 of the two-line element set (TLE)..
+             *
+             * @param tleLine2 Line 2 of the two-line element set (TLE).
+             * @return the next definition stage.
+             */
+            WithLinks withTleLine2(String tleLine2);
+        }
+        /** The stage of the Spacecraft definition allowing to specify links. */
+        interface WithLinks {
+            /**
+             * Specifies the links property: Immutable list of Spacecraft links..
+             *
+             * @param links Immutable list of Spacecraft links.
+             * @return the next definition stage.
+             */
+            WithCreate withLinks(List<SpacecraftLink> links);
         }
         /**
          * The stage of the Spacecraft definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags,
-                DefinitionStages.WithProvisioningState,
-                DefinitionStages.WithNoradId,
-                DefinitionStages.WithTitleLine,
-                DefinitionStages.WithTleLine1,
-                DefinitionStages.WithTleLine2,
-                DefinitionStages.WithLinks {
+            extends DefinitionStages.WithTags, DefinitionStages.WithProvisioningState, DefinitionStages.WithNoradId {
             /**
              * Executes the create request.
              *
@@ -222,46 +261,6 @@ public interface Spacecraft {
              * @return the next definition stage.
              */
             WithCreate withNoradId(String noradId);
-        }
-        /** The stage of the Spacecraft definition allowing to specify titleLine. */
-        interface WithTitleLine {
-            /**
-             * Specifies the titleLine property: Title line of the two-line element set (TLE)..
-             *
-             * @param titleLine Title line of the two-line element set (TLE).
-             * @return the next definition stage.
-             */
-            WithCreate withTitleLine(String titleLine);
-        }
-        /** The stage of the Spacecraft definition allowing to specify tleLine1. */
-        interface WithTleLine1 {
-            /**
-             * Specifies the tleLine1 property: Line 1 of the two-line element set (TLE)..
-             *
-             * @param tleLine1 Line 1 of the two-line element set (TLE).
-             * @return the next definition stage.
-             */
-            WithCreate withTleLine1(String tleLine1);
-        }
-        /** The stage of the Spacecraft definition allowing to specify tleLine2. */
-        interface WithTleLine2 {
-            /**
-             * Specifies the tleLine2 property: Line 2 of the two-line element set (TLE)..
-             *
-             * @param tleLine2 Line 2 of the two-line element set (TLE).
-             * @return the next definition stage.
-             */
-            WithCreate withTleLine2(String tleLine2);
-        }
-        /** The stage of the Spacecraft definition allowing to specify links. */
-        interface WithLinks {
-            /**
-             * Specifies the links property: Immutable list of Spacecraft links..
-             *
-             * @param links Immutable list of Spacecraft links.
-             * @return the next definition stage.
-             */
-            WithCreate withLinks(List<SpacecraftLink> links);
         }
     }
     /**

@@ -40,17 +40,6 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()));
     }
 
-    public PrivateEndpointConnection get(
-        String resourceGroupName, String clusterName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionInner inner =
-            this.serviceClient().get(resourceGroupName, clusterName, privateEndpointConnectionName);
-        if (inner != null) {
-            return new PrivateEndpointConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateEndpointConnection> getWithResponse(
         String resourceGroupName, String clusterName, String privateEndpointConnectionName, Context context) {
         Response<PrivateEndpointConnectionInner> inner =
@@ -68,8 +57,15 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         }
     }
 
-    public void delete(String resourceGroupName, String clusterName, String privateEndpointConnectionName) {
-        this.serviceClient().delete(resourceGroupName, clusterName, privateEndpointConnectionName);
+    public PrivateEndpointConnection get(
+        String resourceGroupName, String clusterName, String privateEndpointConnectionName) {
+        PrivateEndpointConnectionInner inner =
+            this.serviceClient().get(resourceGroupName, clusterName, privateEndpointConnectionName);
+        if (inner != null) {
+            return new PrivateEndpointConnectionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -77,6 +73,10 @@ public final class PrivateEndpointConnectionsImpl implements PrivateEndpointConn
         return this
             .serviceClient()
             .deleteWithResponse(resourceGroupName, clusterName, privateEndpointConnectionName, context);
+    }
+
+    public void delete(String resourceGroupName, String clusterName, String privateEndpointConnectionName) {
+        this.serviceClient().delete(resourceGroupName, clusterName, privateEndpointConnectionName);
     }
 
     public PrivateEndpointConnection getById(String id) {

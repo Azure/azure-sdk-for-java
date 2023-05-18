@@ -6,57 +6,40 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.file.share.models.FileLastWrittenMode;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
-import java.util.Objects;
-
 /**
  * Options for obtaining a {@link java.nio.channels.SeekableByteChannel} backed by an Azure Storage Share File.
  */
 public final class ShareFileSeekableByteChannelWriteOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ShareFileSeekableByteChannelWriteOptions.class);
 
-    /**
-     * Mode to open the channel for writing.
-     */
-    public enum WriteMode {
-        /**
-         * Opens channel to an existing file for writing.
-         */
-        WRITE,
-
-        /**
-         * Creates a new file for writing and opens the channel. If the file already exists, it will be overwritten.
-         * Requires a value be set with {@link ShareFileSeekableByteChannelWriteOptions#setFileSize(Long)}.
-         */
-        OVERWRITE
-    }
-
-    private final WriteMode channelMode;
+    private final boolean overwriteMode;
     private Long fileSize;
     private ShareRequestConditions requestConditions;
     private FileLastWrittenMode fileLastWrittenMode;
-    private Long chunkSize;
+    private Long chunkSizeInBytes;
 
     /**
      * Options constructor.
-     * @param mode What usage mode to open the channel in.
+     * @param overwriteMode If {@code true}, the channel will be opened in overwrite mode. Otherwise, the channel will
+     * be opened in write mode.
      */
-    public ShareFileSeekableByteChannelWriteOptions(WriteMode mode) {
-        channelMode = Objects.requireNonNull(mode, "'mode' cannot be null.");
+    public ShareFileSeekableByteChannelWriteOptions(boolean overwriteMode) {
+        this.overwriteMode = overwriteMode;
     }
 
     /**
-     * @return Usage mode to be used by the resulting channel.
+     * @return Whether the channel is in write mode.
      */
-    public WriteMode getChannelMode() {
-        return channelMode;
+    public boolean isOverwriteMode() {
+        return overwriteMode;
     }
 
 
     /**
-     * This parameter is required when this instance is configured to {@link WriteMode#OVERWRITE}.
+     * This parameter is required when opening the channel to write.
      * @return New size of the target file.
      */
-    public Long getFileSize() {
+    public Long getFileSizeInBytes() {
         return fileSize;
     }
 
@@ -66,7 +49,7 @@ public final class ShareFileSeekableByteChannelWriteOptions {
      * @throws UnsupportedOperationException When setting a file size on options that don't create a new file.
      */
     public ShareFileSeekableByteChannelWriteOptions setFileSize(Long fileSize) {
-        if (channelMode != WriteMode.OVERWRITE) {
+        if (!overwriteMode) {
             throw LOGGER.logExceptionAsError(
                 new UnsupportedOperationException("Cannot set 'fileSize' unless creating a new file."));
         }
@@ -82,16 +65,16 @@ public final class ShareFileSeekableByteChannelWriteOptions {
     /**
      * @return The size of individual writes to the service.
      */
-    public Long getChunkSize() {
-        return chunkSize;
+    public Long getChunkSizeInBytes() {
+        return chunkSizeInBytes;
     }
 
     /**
-     * @param chunkSize The size of individual writes to the service.
+     * @param chunkSizeInBytes The size of individual writes to the service.
      * @return The updated instance.
      */
-    public ShareFileSeekableByteChannelWriteOptions setChunkSize(Long chunkSize) {
-        this.chunkSize = chunkSize;
+    public ShareFileSeekableByteChannelWriteOptions setChunkSizeInBytes(Long chunkSizeInBytes) {
+        this.chunkSizeInBytes = chunkSizeInBytes;
         return this;
     }
 

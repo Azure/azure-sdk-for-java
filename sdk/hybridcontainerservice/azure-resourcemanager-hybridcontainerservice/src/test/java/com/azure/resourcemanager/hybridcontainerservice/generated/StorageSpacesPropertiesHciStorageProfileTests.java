@@ -7,31 +7,30 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpacesPropertiesHciStorageProfile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class StorageSpacesPropertiesHciStorageProfileTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         StorageSpacesPropertiesHciStorageProfile model =
             BinaryData
                 .fromString(
-                    "{\"mocGroup\":\"fsdjpvkvp\",\"mocLocation\":\"xbkzbzkdvncj\",\"mocStorageContainer\":\"udurgkakmokz\"}")
+                    "{\"mocGroup\":\"npcdpumnzgm\",\"mocLocation\":\"nmabik\",\"mocStorageContainer\":\"orgjhxbldt\"}")
                 .toObject(StorageSpacesPropertiesHciStorageProfile.class);
-        Assertions.assertEquals("fsdjpvkvp", model.mocGroup());
-        Assertions.assertEquals("xbkzbzkdvncj", model.mocLocation());
-        Assertions.assertEquals("udurgkakmokz", model.mocStorageContainer());
+        Assertions.assertEquals("npcdpumnzgm", model.mocGroup());
+        Assertions.assertEquals("nmabik", model.mocLocation());
+        Assertions.assertEquals("orgjhxbldt", model.mocStorageContainer());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         StorageSpacesPropertiesHciStorageProfile model =
             new StorageSpacesPropertiesHciStorageProfile()
-                .withMocGroup("fsdjpvkvp")
-                .withMocLocation("xbkzbzkdvncj")
-                .withMocStorageContainer("udurgkakmokz");
+                .withMocGroup("npcdpumnzgm")
+                .withMocLocation("nmabik")
+                .withMocStorageContainer("orgjhxbldt");
         model = BinaryData.fromObject(model).toObject(StorageSpacesPropertiesHciStorageProfile.class);
-        Assertions.assertEquals("fsdjpvkvp", model.mocGroup());
-        Assertions.assertEquals("xbkzbzkdvncj", model.mocLocation());
-        Assertions.assertEquals("udurgkakmokz", model.mocStorageContainer());
+        Assertions.assertEquals("npcdpumnzgm", model.mocGroup());
+        Assertions.assertEquals("nmabik", model.mocLocation());
+        Assertions.assertEquals("orgjhxbldt", model.mocStorageContainer());
     }
 }

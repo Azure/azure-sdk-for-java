@@ -12,14 +12,14 @@ public final class ExchangeRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ExchangeRequestProperties model =
-            BinaryData.fromString("{\"sessionId\":\"jbi\"}").toObject(ExchangeRequestProperties.class);
-        Assertions.assertEquals("jbi", model.sessionId());
+            BinaryData.fromString("{\"sessionId\":\"wyhzdx\"}").toObject(ExchangeRequestProperties.class);
+        Assertions.assertEquals("wyhzdx", model.sessionId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExchangeRequestProperties model = new ExchangeRequestProperties().withSessionId("jbi");
+        ExchangeRequestProperties model = new ExchangeRequestProperties().withSessionId("wyhzdx");
         model = BinaryData.fromObject(model).toObject(ExchangeRequestProperties.class);
-        Assertions.assertEquals("jbi", model.sessionId());
+        Assertions.assertEquals("wyhzdx", model.sessionId());
     }
 }

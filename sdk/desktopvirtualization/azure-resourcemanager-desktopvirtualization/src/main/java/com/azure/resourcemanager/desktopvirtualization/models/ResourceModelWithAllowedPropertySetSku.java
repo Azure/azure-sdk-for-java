@@ -9,6 +9,10 @@ import com.azure.core.annotation.Fluent;
 /** The ResourceModelWithAllowedPropertySetSku model. */
 @Fluent
 public final class ResourceModelWithAllowedPropertySetSku extends Sku {
+    /** Creates an instance of ResourceModelWithAllowedPropertySetSku class. */
+    public ResourceModelWithAllowedPropertySetSku() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public ResourceModelWithAllowedPropertySetSku withName(String name) {

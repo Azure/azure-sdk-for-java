@@ -34,6 +34,10 @@ public final class StatusCodesRangeBasedTrigger {
     @JsonProperty(value = "timeInterval")
     private String timeInterval;
 
+    /** Creates an instance of StatusCodesRangeBasedTrigger class. */
+    public StatusCodesRangeBasedTrigger() {
+    }
+
     /**
      * Get the statusCodes property: HTTP status code.
      *

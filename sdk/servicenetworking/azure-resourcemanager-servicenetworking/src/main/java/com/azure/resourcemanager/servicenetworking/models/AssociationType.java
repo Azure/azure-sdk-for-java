@@ -4,45 +4,41 @@
 
 package com.azure.resourcemanager.servicenetworking.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for AssociationType. */
-public enum AssociationType {
-    /** Enum value subnets. */
-    SUBNETS("subnets");
+public final class AssociationType extends ExpandableStringEnum<AssociationType> {
+    /** Static value subnets for AssociationType. */
+    public static final AssociationType SUBNETS = fromString("subnets");
 
-    /** The actual serialized value for a AssociationType instance. */
-    private final String value;
-
-    AssociationType(String value) {
-        this.value = value;
+    /**
+     * Creates a new instance of AssociationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AssociationType() {
     }
 
     /**
-     * Parses a serialized value to a AssociationType instance.
+     * Creates or finds a AssociationType from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed AssociationType object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding AssociationType.
      */
     @JsonCreator
-    public static AssociationType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        AssociationType[] items = AssociationType.values();
-        for (AssociationType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static AssociationType fromString(String name) {
+        return fromString(name, AssociationType.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known AssociationType values.
+     *
+     * @return known AssociationType values.
+     */
+    public static Collection<AssociationType> values() {
+        return values(AssociationType.class);
     }
 }

@@ -9,11 +9,10 @@ import com.azure.resourcemanager.webpubsub.fluent.models.PrivateLinkResourceInne
 import com.azure.resourcemanager.webpubsub.models.PrivateLinkResourceList;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourceListTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkResourceList model =
             BinaryData
                 .fromString(
@@ -23,8 +22,8 @@ public final class PrivateLinkResourceListTests {
         Assertions.assertEquals("wyhzdx", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkResourceList model =
             new PrivateLinkResourceList()
                 .withValue(

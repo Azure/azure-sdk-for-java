@@ -7,13 +7,16 @@ package com.azure.resourcemanager.containerinstance.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.containerinstance.models.ConfidentialComputeProperties;
 import com.azure.resourcemanager.containerinstance.models.Container;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupDiagnostics;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIdentity;
+import com.azure.resourcemanager.containerinstance.models.ContainerGroupPriority;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupPropertiesInstanceView;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupRestartPolicy;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupSku;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupSubnetId;
+import com.azure.resourcemanager.containerinstance.models.DeploymentExtensionSpec;
 import com.azure.resourcemanager.containerinstance.models.DnsConfiguration;
 import com.azure.resourcemanager.containerinstance.models.EncryptionProperties;
 import com.azure.resourcemanager.containerinstance.models.ImageRegistryCredential;
@@ -29,6 +32,12 @@ import java.util.Map;
 @Fluent
 public final class ContainerGroupInner extends Resource {
     /*
+     * The zones for the container group.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /*
      * The identity of the container group, if configured.
      */
     @JsonProperty(value = "identity")
@@ -40,11 +49,29 @@ public final class ContainerGroupInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private ContainerGroupProperties innerProperties = new ContainerGroupProperties();
 
-    /*
-     * The zones for the container group.
+    /** Creates an instance of ContainerGroupInner class. */
+    public ContainerGroupInner() {
+    }
+
+    /**
+     * Get the zones property: The zones for the container group.
+     *
+     * @return the zones value.
      */
-    @JsonProperty(value = "zones")
-    private List<String> zones;
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: The zones for the container group.
+     *
+     * @param zones the zones value to set.
+     * @return the ContainerGroupInner object itself.
+     */
+    public ContainerGroupInner withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
+    }
 
     /**
      * Get the identity property: The identity of the container group, if configured.
@@ -73,26 +100,6 @@ public final class ContainerGroupInner extends Resource {
      */
     private ContainerGroupProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the zones property: The zones for the container group.
-     *
-     * @return the zones value.
-     */
-    public List<String> zones() {
-        return this.zones;
-    }
-
-    /**
-     * Set the zones property: The zones for the container group.
-     *
-     * @param zones the zones value to set.
-     * @return the ContainerGroupInner object itself.
-     */
-    public ContainerGroupInner withZones(List<String> zones) {
-        this.zones = zones;
-        return this;
     }
 
     /** {@inheritDoc} */
@@ -405,6 +412,76 @@ public final class ContainerGroupInner extends Resource {
             this.innerProperties = new ContainerGroupProperties();
         }
         this.innerProperties().withInitContainers(initContainers);
+        return this;
+    }
+
+    /**
+     * Get the extensions property: extensions used by virtual kubelet.
+     *
+     * @return the extensions value.
+     */
+    public List<DeploymentExtensionSpec> extensions() {
+        return this.innerProperties() == null ? null : this.innerProperties().extensions();
+    }
+
+    /**
+     * Set the extensions property: extensions used by virtual kubelet.
+     *
+     * @param extensions the extensions value to set.
+     * @return the ContainerGroupInner object itself.
+     */
+    public ContainerGroupInner withExtensions(List<DeploymentExtensionSpec> extensions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerGroupProperties();
+        }
+        this.innerProperties().withExtensions(extensions);
+        return this;
+    }
+
+    /**
+     * Get the confidentialComputeProperties property: The properties for confidential container group.
+     *
+     * @return the confidentialComputeProperties value.
+     */
+    public ConfidentialComputeProperties confidentialComputeProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().confidentialComputeProperties();
+    }
+
+    /**
+     * Set the confidentialComputeProperties property: The properties for confidential container group.
+     *
+     * @param confidentialComputeProperties the confidentialComputeProperties value to set.
+     * @return the ContainerGroupInner object itself.
+     */
+    public ContainerGroupInner withConfidentialComputeProperties(
+        ConfidentialComputeProperties confidentialComputeProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerGroupProperties();
+        }
+        this.innerProperties().withConfidentialComputeProperties(confidentialComputeProperties);
+        return this;
+    }
+
+    /**
+     * Get the priority property: The priority of the container group.
+     *
+     * @return the priority value.
+     */
+    public ContainerGroupPriority priority() {
+        return this.innerProperties() == null ? null : this.innerProperties().priority();
+    }
+
+    /**
+     * Set the priority property: The priority of the container group.
+     *
+     * @param priority the priority value to set.
+     * @return the ContainerGroupInner object itself.
+     */
+    public ContainerGroupInner withPriority(ContainerGroupPriority priority) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ContainerGroupProperties();
+        }
+        this.innerProperties().withPriority(priority);
         return this;
     }
 

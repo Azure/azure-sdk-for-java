@@ -7,24 +7,23 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.Nonce;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NonceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Nonce model =
             BinaryData
-                .fromString("{\"validateNonce\":false,\"nonceExpirationInterval\":\"yfsoppu\"}")
+                .fromString("{\"validateNonce\":false,\"nonceExpirationInterval\":\"ljavbqid\"}")
                 .toObject(Nonce.class);
         Assertions.assertEquals(false, model.validateNonce());
-        Assertions.assertEquals("yfsoppu", model.nonceExpirationInterval());
+        Assertions.assertEquals("ljavbqid", model.nonceExpirationInterval());
     }
 
-    @Test
-    public void testSerialize() {
-        Nonce model = new Nonce().withValidateNonce(false).withNonceExpirationInterval("yfsoppu");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Nonce model = new Nonce().withValidateNonce(false).withNonceExpirationInterval("ljavbqid");
         model = BinaryData.fromObject(model).toObject(Nonce.class);
         Assertions.assertEquals(false, model.validateNonce());
-        Assertions.assertEquals("yfsoppu", model.nonceExpirationInterval());
+        Assertions.assertEquals("ljavbqid", model.nonceExpirationInterval());
     }
 }

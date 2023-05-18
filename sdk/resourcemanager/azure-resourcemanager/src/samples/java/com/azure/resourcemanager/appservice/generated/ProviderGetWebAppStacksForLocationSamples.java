@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Provider GetWebAppStacksForLocation. */
 public final class ProviderGetWebAppStacksForLocationSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetWebAppStacksForLocation.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetWebAppStacksForLocation.json
      */
     /**
      * Sample code: Get Locations Web App Stacks.
@@ -22,6 +20,6 @@ public final class ProviderGetWebAppStacksForLocationSamples {
             .manager()
             .serviceClient()
             .getProviders()
-            .getWebAppStacksForLocation("westus", null, Context.NONE);
+            .getWebAppStacksForLocation("westus", null, com.azure.core.util.Context.NONE);
     }
 }

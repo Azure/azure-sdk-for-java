@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for SecureScoreControlDefinitions ListBySubscription. */
 public final class SecureScoreControlDefinitionsListBySubscriptionSamples {
     /*
@@ -18,6 +16,6 @@ public final class SecureScoreControlDefinitionsListBySubscriptionSamples {
      */
     public static void listSecurityControlsDefinitionBySubscription(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.secureScoreControlDefinitions().listBySubscription(Context.NONE);
+        manager.secureScoreControlDefinitions().listBySubscription(com.azure.core.util.Context.NONE);
     }
 }

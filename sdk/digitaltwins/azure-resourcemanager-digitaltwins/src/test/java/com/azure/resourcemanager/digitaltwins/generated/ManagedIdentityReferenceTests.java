@@ -8,11 +8,10 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.digitaltwins.models.IdentityType;
 import com.azure.resourcemanager.digitaltwins.models.ManagedIdentityReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedIdentityReferenceTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ManagedIdentityReference model =
             BinaryData
                 .fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"hwxmnteiwa\"}")
@@ -21,8 +20,8 @@ public final class ManagedIdentityReferenceTests {
         Assertions.assertEquals("hwxmnteiwa", model.userAssignedIdentity());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ManagedIdentityReference model =
             new ManagedIdentityReference().withType(IdentityType.USER_ASSIGNED).withUserAssignedIdentity("hwxmnteiwa");
         model = BinaryData.fromObject(model).toObject(ManagedIdentityReference.class);

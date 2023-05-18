@@ -101,10 +101,11 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
                         }
                     }
                     if (keyFound) {
-                        CognitiveServicesAccountKey deserializedValue = new CognitiveServicesAccountKey(key);
-                        deserializedValue.setDescription(description);
+                        CognitiveServicesAccountKey deserializedCognitiveServicesAccountKey =
+                                new CognitiveServicesAccountKey(key);
+                        deserializedCognitiveServicesAccountKey.setDescription(description);
 
-                        return deserializedValue;
+                        return deserializedCognitiveServicesAccountKey;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!keyFound) {

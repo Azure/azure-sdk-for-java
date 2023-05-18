@@ -6,7 +6,6 @@ import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,35 +16,45 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.time.Duration;
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 /**
  * This class represents response diagnostic statistics associated with a request to Azure Cosmos DB
  */
 public final class CosmosDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
-    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String COSMOS_DIAGNOSTICS_KEY = "cosmosDiagnostics";
 
     private ClientSideRequestStatistics clientSideRequestStatistics;
     private FeedResponseDiagnostics feedResponseDiagnostics;
-    private final AtomicBoolean diagnosticsCapturedInPagedFlux;
 
-    static final String USER_AGENT = Utils.getUserAgent();
+    private CosmosDiagnosticsContext diagnosticsContext;
+
+    private double samplingRateSnapshot;
+    private final AtomicBoolean diagnosticsCapturedInPagedFlux;
     static final String USER_AGENT_KEY = "userAgent";
+    static final String SAMPLING_RATE_SNAPSHOT_KEY = "samplingRateSnapshot";
 
     CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext);
+        this.samplingRateSnapshot = 1;
     }
 
     CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
         this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(false);
         this.feedResponseDiagnostics = feedResponseDiagnostics;
+        this.samplingRateSnapshot = 1;
     }
 
     CosmosDiagnostics(CosmosDiagnostics toBeCloned) {
@@ -58,15 +67,11 @@ public final class CosmosDiagnostics {
         }
 
         this.diagnosticsCapturedInPagedFlux = new AtomicBoolean(toBeCloned.diagnosticsCapturedInPagedFlux.get());
+        this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
     }
 
     ClientSideRequestStatistics clientSideRequestStatistics() {
         return clientSideRequestStatistics;
-    }
-
-    CosmosDiagnostics clientSideRequestStatistics(ClientSideRequestStatistics clientSideRequestStatistics) {
-        this.clientSideRequestStatistics = clientSideRequestStatistics;
-        return this;
     }
 
     /**
@@ -82,6 +87,19 @@ public final class CosmosDiagnostics {
     }
 
     /**
+     * Returns the associated CosmosDiagnosticsContext or null if not associated with any context yet.
+     * @return the associated CosmosDiagnosticsContext or null if not associated with any context yet.
+     */
+    public CosmosDiagnosticsContext getDiagnosticsContext() {
+        return this.diagnosticsContext;
+    }
+
+    void setDiagnosticsContext(CosmosDiagnosticsContext ctx) {
+        checkNotNull("ctx", "Argument 'ctx' must not be null.");
+        this.diagnosticsContext = ctx;
+    }
+
+    /**
      * Retrieves duration related to the completion of the request.
      * This represents end to end duration of an operation including all the retries.
      * This is meant for point operation only, for query please use toString() to get full query diagnostics.
@@ -90,7 +108,36 @@ public final class CosmosDiagnostics {
      */
     public Duration getDuration() {
         if (this.feedResponseDiagnostics != null) {
-            return null;
+
+            Collection<ClientSideRequestStatistics> statistics =
+                this.feedResponseDiagnostics.getClientSideRequestStatistics();
+            if (statistics == null) {
+                return Duration.ZERO;
+            }
+
+            Instant min = Instant.MAX;
+            Instant max = Instant.MIN;
+            for (ClientSideRequestStatistics s: statistics) {
+                if (s.getRequestStartTimeUTC() != null &&
+                    s.getRequestStartTimeUTC().isBefore(min)) {
+                    min = s.getRequestStartTimeUTC();
+                }
+
+                if (s.getRequestEndTimeUTC() != null &&
+                    s.getRequestEndTimeUTC().isAfter(max)) {
+                    max = s.getRequestEndTimeUTC();
+                }
+            }
+
+            if (max.isBefore(min)) {
+                return null;
+            }
+
+            if (min == max) {
+                return Duration.ZERO;
+            }
+
+            return Duration.between(min, max);
         }
 
         return this.clientSideRequestStatistics.getDuration();
@@ -126,10 +173,10 @@ public final class CosmosDiagnostics {
                 }
             }
 
-            List<ClientSideRequestStatistics> clientStatisticList =
-                this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
-            if (clientStatisticList != null) {
-                for (ClientSideRequestStatistics clientStatistics : clientStatisticList) {
+            Collection<ClientSideRequestStatistics> clientStatisticCollection =
+                this.feedResponseDiagnostics.getClientSideRequestStatistics();
+            if (clientStatisticCollection != null) {
+                for (ClientSideRequestStatistics clientStatistics : clientStatisticCollection) {
                     Set<String> temp = clientStatistics.getContactedRegionNames();
                     if (temp != null && temp.size() > 0) {
                         aggregatedRegionsContacted.addAll(temp);
@@ -169,10 +216,10 @@ public final class CosmosDiagnostics {
         if (this.feedResponseDiagnostics != null) {
             int totalResponsePayloadSizeInBytes = 0;
 
-            List<ClientSideRequestStatistics> clientStatisticList =
-                this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
-            if (clientStatisticList != null) {
-                for (ClientSideRequestStatistics clientStatistics : clientStatisticList) {
+            Collection<ClientSideRequestStatistics> clientStatisticCollection =
+                this.feedResponseDiagnostics.getClientSideRequestStatistics();
+            if (clientStatisticCollection != null) {
+                for (ClientSideRequestStatistics clientStatistics : clientStatisticCollection) {
                     totalResponsePayloadSizeInBytes += clientStatistics.getMaxResponsePayloadSizeInBytes();
                 }
             }
@@ -183,26 +230,50 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics.getMaxResponsePayloadSizeInBytes();
     }
 
-    List<ClientSideRequestStatistics> getClientSideRequestStatistics() {
+    ClientSideRequestStatistics getClientSideRequestStatisticsRaw() {
+        return this.clientSideRequestStatistics;
+    }
+
+    Collection<ClientSideRequestStatistics> getClientSideRequestStatistics() {
         if (this.feedResponseDiagnostics != null) {
-            return this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
+            return this.feedResponseDiagnostics.getClientSideRequestStatistics();
         }
 
         return ImmutableList.of(this.clientSideRequestStatistics);
     }
 
+    Collection<ClientSideRequestStatistics> getClientSideRequestStatisticsForQueryPipelineAggregations() {
+        //Used only during aggregations like Aggregate/Orderby/Groupby which may contain clientSideStats in
+        //feedResponseDiagnostics. So we need to add from both the places
+        List<ClientSideRequestStatistics> combinedStatistics = new ArrayList<>();
+
+        combinedStatistics
+            .addAll(this.feedResponseDiagnostics.getClientSideRequestStatistics());
+        if (this.clientSideRequestStatistics != null) {
+            combinedStatistics.add(this.clientSideRequestStatistics);
+        }
+
+        return combinedStatistics;
+    }
+
+    double getSamplingRateSnapshot() {
+        return this.samplingRateSnapshot;
+    }
+
     void fillCosmosDiagnostics(ObjectNode parentNode, StringBuilder stringBuilder) {
         if (this.feedResponseDiagnostics != null) {
+            feedResponseDiagnostics.setSamplingRateSnapshot(this.samplingRateSnapshot);
             if (parentNode != null) {
-                parentNode.put(USER_AGENT_KEY, USER_AGENT);
+                parentNode.put(USER_AGENT_KEY, this.feedResponseDiagnostics.getUserAgent());
                 parentNode.putPOJO(COSMOS_DIAGNOSTICS_KEY, feedResponseDiagnostics);
             }
 
             if (stringBuilder != null) {
-                stringBuilder.append(USER_AGENT_KEY + "=").append(USER_AGENT).append(System.lineSeparator());
+                stringBuilder.append(USER_AGENT_KEY + "=").append(this.feedResponseDiagnostics.getUserAgent()).append(System.lineSeparator());
                 stringBuilder.append(feedResponseDiagnostics);
             }
         } else {
+            clientSideRequestStatistics.setSamplingRateSnapshot(this.samplingRateSnapshot);
             if (parentNode != null) {
                 parentNode.putPOJO(COSMOS_DIAGNOSTICS_KEY, clientSideRequestStatistics);
             }
@@ -223,6 +294,20 @@ public final class CosmosDiagnostics {
 
     private AtomicBoolean isDiagnosticsCapturedInPagedFlux(){
         return this.diagnosticsCapturedInPagedFlux;
+    }
+
+    void addClientSideDiagnosticsToFeed(Collection<ClientSideRequestStatistics> requestStatistics) {
+        if (this.feedResponseDiagnostics == null || requestStatistics == null || requestStatistics.isEmpty()) {
+            return;
+        }
+
+        this.feedResponseDiagnostics
+            .addClientSideRequestStatistics(requestStatistics);
+    }
+
+    CosmosDiagnostics setSamplingRateSnapshot(double samplingRate) {
+        this.samplingRateSnapshot = samplingRate;
+        return this;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -250,12 +335,30 @@ public final class CosmosDiagnostics {
                 }
 
                 @Override
-                public List<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics) {
+                public Collection<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics) {
                     if (cosmosDiagnostics == null) {
                         return null;
                     }
 
                     return cosmosDiagnostics.getClientSideRequestStatistics();
+                }
+
+                @Override
+                public Collection<ClientSideRequestStatistics> getClientSideRequestStatisticsForQueryPipelineAggregations(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return new ArrayList<>();
+                    }
+
+                    return cosmosDiagnostics.getClientSideRequestStatisticsForQueryPipelineAggregations();
+                }
+
+                @Override
+                public ClientSideRequestStatistics getClientSideRequestStatisticsRaw(CosmosDiagnostics cosmosDiagnostics) {
+                    if (cosmosDiagnostics == null) {
+                        return null;
+                    }
+
+                    return cosmosDiagnostics.getClientSideRequestStatisticsRaw();
                 }
 
                 @Override
@@ -274,6 +377,31 @@ public final class CosmosDiagnostics {
                     }
 
                     return cosmosDiagnostics.getRequestPayloadSizeInBytes();
+                }
+
+                @Override
+                public void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnostics,
+                                                           Collection<ClientSideRequestStatistics> requestStatistics) {
+                    if (cosmosDiagnostics == null) {
+                        return;
+                    }
+
+                    cosmosDiagnostics
+                        .addClientSideDiagnosticsToFeed(requestStatistics);
+                }
+
+                @Override
+                public void setSamplingRateSnapshot(CosmosDiagnostics cosmosDiagnostics, double samplingRate) {
+                    if (cosmosDiagnostics == null) {
+                        return;
+                    }
+
+                    cosmosDiagnostics.setSamplingRateSnapshot(samplingRate);
+                }
+
+                @Override
+                public CosmosDiagnostics create(DiagnosticsClientContext clientContext, double samplingRate) {
+                    return new CosmosDiagnostics(clientContext).setSamplingRateSnapshot(samplingRate);
                 }
             });
     }

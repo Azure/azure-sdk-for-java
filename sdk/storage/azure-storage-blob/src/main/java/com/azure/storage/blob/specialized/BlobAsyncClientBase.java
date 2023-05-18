@@ -105,6 +105,8 @@ import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -117,8 +119,6 @@ import java.util.function.BiFunction;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 
 /**
  * This class provides a client that contains all operations that apply to any blob type.
@@ -128,8 +128,10 @@ import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
 public class BlobAsyncClientBase {
-
     private static final ClientLogger LOGGER = new ClientLogger(BlobAsyncClientBase.class);
+
+    private static final Set<OpenOption> DEFAULT_OPEN_OPTIONS_SET = Collections.unmodifiableSet(new HashSet<>(
+        Arrays.asList(StandardOpenOption.CREATE_NEW, StandardOpenOption.READ, StandardOpenOption.WRITE)));
 
     /**
      * Backing REST client for the blob client.
@@ -1535,10 +1537,7 @@ public class BlobAsyncClientBase {
         // Default behavior is not to overwrite
         Set<OpenOption> openOptions = options.getOpenOptions();
         if (openOptions == null) {
-            openOptions = new HashSet<>();
-            openOptions.add(StandardOpenOption.CREATE_NEW);
-            openOptions.add(StandardOpenOption.WRITE);
-            openOptions.add(StandardOpenOption.READ);
+            openOptions = DEFAULT_OPEN_OPTIONS_SET;
         }
 
         AsynchronousFileChannel channel = downloadToFileResourceSupplier(options.getFilePath(), openOptions);
@@ -1589,8 +1588,8 @@ public class BlobAsyncClientBase {
                     .flatMap(chunkNum -> ChunkedDownloadUtils.downloadChunk(chunkNum, initialResponse,
                         finalRange, finalParallelTransferOptions, finalConditions, newCount, downloadFunc,
                         response -> writeBodyToFile(response, file, chunkNum, finalParallelTransferOptions,
-                            progressReporter == null ? null : progressReporter.createChild()
-                        ).flux()), finalParallelTransferOptions.getMaxConcurrency())
+                            progressReporter == null ? null : progressReporter.createChild()).flux()),
+                        finalParallelTransferOptions.getMaxConcurrency())
 
                     // Only the first download call returns a value.
                     .then(Mono.just(ModelHelper.buildBlobPropertiesResponse(initialResponse)));
@@ -1826,8 +1825,7 @@ public class BlobAsyncClientBase {
             containerName, blobName, snapshot, versionId, null, requestConditions.getLeaseId(),
             requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey, context)
             .map(rb -> new SimpleResponse<>(rb, BlobPropertiesConstructorProxy
                 .create(new BlobPropertiesInternalGetProperties(rb.getDeserializedHeaders()))));
     }
@@ -1970,7 +1968,7 @@ public class BlobAsyncClientBase {
             containerName, blobName, null, metadata, requestConditions.getLeaseId(), requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null, customerProvidedKey,
-            encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            encryptionScope, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -2716,8 +2714,7 @@ public class BlobAsyncClientBase {
 
         return this.azureBlobStorage.getBlobs().setImmutabilityPolicyWithResponseAsync(containerName, blobName, null,
             null, finalRequestConditions.getIfUnmodifiedSince(), finalImmutabilityPolicy.getExpiryTime(),
-            finalImmutabilityPolicy.getPolicyMode(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            finalImmutabilityPolicy.getPolicyMode(), context)
             .map(response -> {
                 BlobsSetImmutabilityPolicyHeaders headers = response.getDeserializedHeaders();
                 BlobImmutabilityPolicy responsePolicy = new BlobImmutabilityPolicy()
@@ -2776,7 +2773,7 @@ public class BlobAsyncClientBase {
     Mono<Response<Void>> deleteImmutabilityPolicyWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlobs().deleteImmutabilityPolicyWithResponseAsync(containerName, blobName,
-            null, null, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            null, null, context)
             .map(response -> new SimpleResponse<>(response, null));
     }
 
@@ -2831,8 +2828,7 @@ public class BlobAsyncClientBase {
     Mono<Response<BlobLegalHoldResult>> setLegalHoldWithResponse(boolean legalHold, Context context) {
         context = context == null ? Context.NONE : context;
         return this.azureBlobStorage.getBlobs().setLegalHoldWithResponseAsync(containerName, blobName,
-            legalHold, null, null,
-            context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+            legalHold, null, null, context)
             .map(response -> new SimpleResponse<>(response,
                 new InternalBlobLegalHoldResult(response.getDeserializedHeaders().isXMsLegalHold())));
     }

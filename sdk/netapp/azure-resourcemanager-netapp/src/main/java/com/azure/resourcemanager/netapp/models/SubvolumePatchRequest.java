@@ -17,6 +17,10 @@ public final class SubvolumePatchRequest {
     @JsonProperty(value = "properties")
     private SubvolumePatchParams innerProperties;
 
+    /** Creates an instance of SubvolumePatchRequest class. */
+    public SubvolumePatchRequest() {
+    }
+
     /**
      * Get the innerProperties property: Subvolume Properties.
      *

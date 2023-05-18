@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HealthCheckResult. */
+/** Represents the Health state of the health check we performed. */
 public final class HealthCheckResult extends ExpandableStringEnum<HealthCheckResult> {
     /** Static value Unknown for HealthCheckResult. */
     public static final HealthCheckResult UNKNOWN = fromString("Unknown");
@@ -21,6 +21,15 @@ public final class HealthCheckResult extends ExpandableStringEnum<HealthCheckRes
 
     /** Static value SessionHostShutdown for HealthCheckResult. */
     public static final HealthCheckResult SESSION_HOST_SHUTDOWN = fromString("SessionHostShutdown");
+
+    /**
+     * Creates a new instance of HealthCheckResult value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HealthCheckResult() {
+    }
 
     /**
      * Creates or finds a HealthCheckResult from its string representation.

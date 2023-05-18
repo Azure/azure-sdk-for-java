@@ -59,6 +59,10 @@ public final class ImportDevicesRequest {
     @JsonProperty(value = "configurationsBlobName")
     private String configurationsBlobName;
 
+    /** Creates an instance of ImportDevicesRequest class. */
+    public ImportDevicesRequest() {
+    }
+
     /**
      * Get the inputBlobContainerUri property: The input blob container URI.
      *
