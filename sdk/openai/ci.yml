@@ -10,9 +10,11 @@ trigger:
     include:
       - sdk/openai/ci.yml
       - sdk/openai/azure-ai-openai/
+      - sdk/openai/azure-ai-openai-models/
     exclude:
       - sdk/openai/pom.xml
       - sdk/openai/azure-ai-openai/pom.xml
+      - sdk/openai/azure-ai-openai-models/pom.xml
 
 pr:
   branches:
@@ -25,9 +27,11 @@ pr:
     include:
       - sdk/openai/ci.yml
       - sdk/openai/azure-ai-openai/
+      - sdk/openai/azure-ai-openai-models/
     exclude:
       - sdk/openai/pom.xml
       - sdk/openai/azure-ai-openai/pom.xml
+      - sdk/openai/azure-ai-openai-models/pom.xml
 
 parameters:
   - name: release_azureaiopenai
@@ -44,4 +48,8 @@ extends:
       - name: azure-ai-openai
         groupId: com.azure
         safeName: azureaiopenai
+        releaseInBatch: ${{ parameters.release_azureaiopenai }}
+      - name: azure-ai-openai-models
+        groupId: com.azure
+        safeName: azureaiopenaimodels
         releaseInBatch: ${{ parameters.release_azureaiopenai }}

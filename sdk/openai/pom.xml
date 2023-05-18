@@ -10,6 +10,7 @@
   <version>1.0.0</version>  <!-- Need not change for every release-->
 
   <modules>
+    <module>azure-ai-openai-models</module>
     <module>azure-ai-openai</module>
   </modules>
 </project>
