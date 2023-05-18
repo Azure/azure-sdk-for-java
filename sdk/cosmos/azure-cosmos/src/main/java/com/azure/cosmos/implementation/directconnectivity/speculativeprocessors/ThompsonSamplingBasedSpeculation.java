@@ -22,15 +22,15 @@ import java.util.Map;
 
 public class ThompsonSamplingBasedSpeculation implements SpeculativeProcessor {
 
-    public static final float EXPLORE_PROBABILITY = 0.1f;
+    public static final float EXPLORE_PROBABILITY = 0.1f; // 10% of the time explore
     private static final int DEFAULT_WINDOW_SIZE = 10;
-    private final Map<Integer, String> regionNameMap = new HashMap<>();
+    private static final double LOCAL_BIAS = 0.7; // 70 % of the time explore local region
     private final List<URI> endpoints;
 
-    private Map<PartitionKeyRangeIdentity, Map<URI, Double>> partitionAlphaMap;
-    private Map<PartitionKeyRangeIdentity, Map<URI, Double>> partitionBetaMap;
-    private Map<PartitionKeyRangeIdentity, Map<URI, Double>> partitionThetaMap;
-    private volatile Map<PartitionKeyRangeIdentity, Map<URI, Deque<Double>>> partitionRewardsMap;
+    private final Map<PartitionKeyRangeIdentity, Map<URI, Double>> partitionAlphaMap;
+    private final Map<PartitionKeyRangeIdentity, Map<URI, Double>> partitionBetaMap;
+    private final Map<PartitionKeyRangeIdentity, Map<URI, Double>> partitionThetaMap;
+    private final Map<PartitionKeyRangeIdentity, Map<URI, Deque<Double>>> partitionRewardsMap;
     private final URI primaryRegion;
     private final EnumeratedDistribution<URI> armExplorationDist;
     private final EnumeratedIntegerDistribution shouldExploreDist;
@@ -49,7 +49,7 @@ public class ThompsonSamplingBasedSpeculation implements SpeculativeProcessor {
         shouldExploreDist = new EnumeratedIntegerDistribution(new int[]{0, 1}, new double[]{1 - EXPLORE_PROBABILITY, EXPLORE_PROBABILITY});
     }
 
-    private void addNewPartition(PartitionKeyRangeIdentity partitionId, List<URI> endpoints, double v) {
+    private void addNewPartition(PartitionKeyRangeIdentity partitionId, List<URI> endpoints) {
         int numRegions = endpoints.size();
         Map<URI, Double> aMap = new HashMap<>(numRegions);
         Map<URI, Double> bMap = new HashMap<>(numRegions);
@@ -80,19 +80,19 @@ public class ThompsonSamplingBasedSpeculation implements SpeculativeProcessor {
         List<Pair<URI, Double>> pairs = new ArrayList<>();
         int numRegions = endpoints.size();
         // Bias the first arm(local region) to be explored more often
-        pairs.add(new Pair<>(primaryRegion, 0.7)); // 70% of the time
+        pairs.add(new Pair<>(primaryRegion, LOCAL_BIAS)); // local bias % of the time
         for (URI uri : endpoints) {
             if (uri.equals(primaryRegion)) {
                 continue;
             }
-            pairs.add(new Pair<>(uri, 0.3 / (numRegions - 1))); // 30% of the time
+            pairs.add(new Pair<>(uri, (1.0 - LOCAL_BIAS) / (numRegions - 1))); // remaining % of the time
         }
         return pairs;
     }
 
     public URI getSelection(PartitionKeyRangeIdentity partitionKeyRangeId) {
         if (!partitionRewardsMap.containsKey(partitionKeyRangeId)) {
-            addNewPartition(partitionKeyRangeId, endpoints, 1.0);
+            addNewPartition(partitionKeyRangeId, endpoints);
             return null;
         }
 

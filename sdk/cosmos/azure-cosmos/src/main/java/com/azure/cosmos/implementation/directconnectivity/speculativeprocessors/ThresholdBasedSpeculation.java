@@ -4,6 +4,7 @@ package com.azure.cosmos.implementation.directconnectivity.speculativeprocessors
 
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.Configs;
+import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 
 import java.net.URI;
@@ -38,6 +39,6 @@ public class ThresholdBasedSpeculation implements SpeculativeProcessor{
 
     @Override
     public void onResponseReceived(URI region, Duration latency, PartitionKeyRangeIdentity partitionKeyRangeId) {
-        // unused
+        throw new NotImplementedException("onResponseReceived is not required for ThresholdBasedSpeculation");
     }
 }

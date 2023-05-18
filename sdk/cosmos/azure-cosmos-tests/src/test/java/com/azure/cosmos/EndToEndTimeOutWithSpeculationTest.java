@@ -24,6 +24,7 @@ import com.azure.cosmos.test.implementation.faultinjection.FaultInjectorProvider
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 import org.testng.SkipException;
@@ -41,11 +42,11 @@ import java.util.Locale;
 import java.util.Random;
 import java.util.UUID;
 
-import static com.azure.cosmos.CosmosDiagnostics.OBJECT_MAPPER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class EndToEndTimeOutWithSpeculationTest extends TestSuiteBase {
     private static final int DEFAULT_NUM_DOCUMENTS = 100;
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final int DEFAULT_PAGE_SIZE = 100;
     private CosmosAsyncContainer createdContainer;
     private final Random random;

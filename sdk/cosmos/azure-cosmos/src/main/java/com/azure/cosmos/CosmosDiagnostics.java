@@ -32,7 +32,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public final class CosmosDiagnostics {
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosDiagnostics.class);
-    static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String COSMOS_DIAGNOSTICS_KEY = "cosmosDiagnostics";
 
     private ClientSideRequestStatistics clientSideRequestStatistics;

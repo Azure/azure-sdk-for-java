@@ -142,6 +142,9 @@ public class Configs {
     private static final String DEFENSIVE_WARMUP_CONCURRENCY = "COSMOS.DEFENSIVE_WARMUP_CONCURRENCY";
     private static final int DEFAULT_DEFENSIVE_WARMUP_CONCURRENCY = 1;
 
+    private static final int DEFAULT_SPECULATION_THRESHOLD_IN_MILLISECONDS = 500;
+    private static final int DEFAULT_SPECULATION_THRESHOLD_STEP_IN_MILLISECONDS = 100;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -317,11 +320,11 @@ public class Configs {
     }
 
     public static int speculationThreshold() {
-        return getJVMConfigAsInt(SPECULATION_THRESHOLD, 500);
+        return getJVMConfigAsInt(SPECULATION_THRESHOLD, DEFAULT_SPECULATION_THRESHOLD_IN_MILLISECONDS);
     }
 
     public static int speculationThresholdStep() {
-        return getJVMConfigAsInt(SPECULATION_THRESHOLD_STEP, 100);
+        return getJVMConfigAsInt(SPECULATION_THRESHOLD_STEP, DEFAULT_SPECULATION_THRESHOLD_STEP_IN_MILLISECONDS);
     }
 
     public static boolean shouldSwitchOffIOThreadForResponse() {
