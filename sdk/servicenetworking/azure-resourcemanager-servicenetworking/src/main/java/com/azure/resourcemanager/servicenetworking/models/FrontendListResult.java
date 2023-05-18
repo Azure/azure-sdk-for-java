@@ -10,7 +10,7 @@ import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a Traffic Controller Frontend list operation. */
+/** The response of a Frontend list operation. */
 @Fluent
 public final class FrontendListResult {
     /*

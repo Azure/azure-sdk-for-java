@@ -9,7 +9,6 @@ import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallConnectionState;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
-import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.RecordingChannel;
 import com.azure.communication.callautomation.models.RecordingContent;
 import com.azure.communication.callautomation.models.RecordingFormat;
@@ -198,7 +197,7 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
             // hangup
             if (!callConnectionId.isEmpty()) {
                 CallConnection callConnection = callerClient.getCallConnection(callConnectionId);
-                callConnection.hangUpWithResponse(new HangUpOptions(true), null);
+                callConnection.hangUpWithResponse(true, null);
                 CallDisconnected callDisconnected = waitForEvent(CallDisconnected.class, callConnectionId, Duration.ofSeconds(10));
                 assertNotNull(callDisconnected);
             }

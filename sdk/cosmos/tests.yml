@@ -51,6 +51,8 @@ stages:
           Selection: all
           GenerateVMJobs: true
       ServiceDirectory: spring
+      TestResourceDirectories:
+        - spring/spring-cloud-azure-integration-tests/test-resources/cosmos-spring
       Artifacts:
         - name: azure-spring-data-cosmos
           groupId: com.azure

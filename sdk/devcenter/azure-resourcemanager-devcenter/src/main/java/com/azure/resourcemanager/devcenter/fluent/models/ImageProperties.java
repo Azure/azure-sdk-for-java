@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.RecommendedMachineConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -47,6 +48,13 @@ public final class ImageProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /*
+     * Indicates whether this image has hibernate enabled. Not all images are capable of supporting hibernation. To
+     * find out more see https://aka.ms/devbox/hibernate
+     */
+    @JsonProperty(value = "hibernateSupport", access = JsonProperty.Access.WRITE_ONLY)
+    private HibernateSupport hibernateSupport;
 
     /** Creates an instance of ImageProperties class. */
     public ImageProperties() {
@@ -104,6 +112,16 @@ public final class ImageProperties {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the hibernateSupport property: Indicates whether this image has hibernate enabled. Not all images are capable
+     * of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate.
+     *
+     * @return the hibernateSupport value.
+     */
+    public HibernateSupport hibernateSupport() {
+        return this.hibernateSupport;
     }
 
     /**

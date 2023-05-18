@@ -117,7 +117,7 @@ public final class ProjectEnvironmentTypeUpdate {
      *
      * @return the status value.
      */
-    public EnableStatus status() {
+    public EnvironmentTypeEnableStatus status() {
         return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
@@ -127,7 +127,7 @@ public final class ProjectEnvironmentTypeUpdate {
      * @param status the status value to set.
      * @return the ProjectEnvironmentTypeUpdate object itself.
      */
-    public ProjectEnvironmentTypeUpdate withStatus(EnableStatus status) {
+    public ProjectEnvironmentTypeUpdate withStatus(EnvironmentTypeEnableStatus status) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ProjectEnvironmentTypeUpdateProperties();
         }

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A PTR record. */
 @Fluent
 public final class PtrRecord {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PtrRecord.class);
-
     /*
      * The PTR target domain name for this PTR record.
      */
     @JsonProperty(value = "ptrdname")
     private String ptrdname;
+
+    /** Creates an instance of PtrRecord class. */
+    public PtrRecord() {
+    }
 
     /**
      * Get the ptrdname property: The PTR target domain name for this PTR record.
