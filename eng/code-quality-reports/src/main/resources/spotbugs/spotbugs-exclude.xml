@@ -2679,12 +2679,12 @@
   <!-- Field is not initialized in Ctr but necessary safety measures are in place when accessing it -->
   <Match>
     <Class name="com.azure.messaging.servicebus.NonSessionProcessor"/>
-    <Field name="streaming"/>
+    <Field name="rollingMessagePump"/>
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR"/>
   </Match>
   <!-- False positives -->
   <Match>
-    <Class name="com.azure.messaging.servicebus.NonSessionProcessor$MessageStreaming"/>
+    <Class name="com.azure.messaging.servicebus.NonSessionProcessor$RollingMessagePump"/>
     <Or>
       <Field name="builder"/>
       <Field name="logger"/>
@@ -2692,10 +2692,10 @@
     </Or>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
-  <!-- The MessageStreaming doesn't need to be serializable -->
+  <!-- The RollingMessagePump doesn't need to be serializable -->
   <Match>
     <Class
-      name="~com\.azure\.messaging\.servicebus\.NonSessionProcessor\$MessageStreaming"/>
+      name="~com\.azure\.messaging\.servicebus\.NonSessionProcessor\$RollingMessagePump"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
 
