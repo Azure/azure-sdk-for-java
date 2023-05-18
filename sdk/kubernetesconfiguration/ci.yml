@@ -33,7 +33,8 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: kubernetesconfiguration
-    EnableBatchRelease: true
+    EnableBatchRelease: false
+    UseEsrpRelease: false
     Artifacts:
       - name: azure-resourcemanager-kubernetesconfiguration
         groupId: com.azure.resourcemanager
