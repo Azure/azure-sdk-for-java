@@ -1,11 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.implementation;
+package com.azure.core.http.netty.implementation;
 
-import com.azure.core.util.io.IOUtils;
-import com.azure.core.util.mocking.MockAsynchronousFileChannel;
-import com.azure.core.util.mocking.MockMonoSink;
+import com.azure.core.http.netty.mocking.MockMonoSink;
+import com.azure.core.http.netty.mocking.WriteCountTrackingChannel;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -20,11 +21,6 @@ import reactor.util.context.ContextView;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.CompletionHandler;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -32,36 +28,29 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
- * Tests {@link AsynchronousByteChannelWriteSubscriber}.
+ * Tests {@link ByteBufWriteSubscriber}.
  */
 @SuppressWarnings("resource")
-public class AsynchronousByteChannelWriteSubscriberTests {
+public class ByteBufWriterSubscriberTests {
+    /**
+     * Tests that when multiple subscriptions are made to the subscriber all subscriptions after the first are ignored
+     * and cancelled.
+     */
     @Test
-    public void multipleSubscriptionsCancelsLaterSubscriptions() {
-        AsynchronousFileChannel channel = new MockAsynchronousFileChannel() {
-            @Override
-            public <A> void write(ByteBuffer src, long position, A attachment,
-                CompletionHandler<Integer, ? super A> handler) {
-                int remaining = src.remaining();
-                src.position(src.position() + remaining);
-                handler.completed(remaining, attachment);
-            }
-        };
-
-        AsynchronousByteChannelWriteSubscriber fileWriteSubscriber = new AsynchronousByteChannelWriteSubscriber(
-            IOUtils.toAsynchronousByteChannel(channel, 0), null);
+    public void multipleSubscribersCancelsSubscriptionsAfterTheFirstOne() {
+        ByteBufWriteSubscriber byteBufWriteSubscriber = new ByteBufWriteSubscriber(null, null, null);
 
         CallTrackingSubscription subscription1 = new CallTrackingSubscription();
         CallTrackingSubscription subscription2 = new CallTrackingSubscription();
 
-        fileWriteSubscriber.onSubscribe(subscription1);
-        fileWriteSubscriber.onSubscribe(subscription2);
+        byteBufWriteSubscriber.onSubscribe(subscription1);
+        byteBufWriteSubscriber.onSubscribe(subscription2);
 
         assertEquals(1, subscription1.requestOneCalls.get());
         assertEquals(0, subscription1.cancelCalls.get());
@@ -71,22 +60,21 @@ public class AsynchronousByteChannelWriteSubscriberTests {
     }
 
     /**
-     * Tests that empty {@link ByteBuffer ByteBufs} are never written, or processed.
+     * Tests that empty {@link ByteBuf ByteBufs} are never written, or processed.
      */
     @Test
     public void emptyBuffersNeverWrite() {
-        Flux<ByteBuffer> data = Flux.create(sink -> {
-            sink.next(ByteBuffer.allocate(0));
+        Flux<ByteBuf> data = Flux.create(sink -> {
+            sink.next(Unpooled.EMPTY_BUFFER);
             sink.complete();
         });
 
-        WriteCountTrackingChannel channel = new WriteCountTrackingChannel(new byte[4096]);
-
-        StepVerifier.create(Mono.<Void>create(sink -> data.subscribe(
-            new AsynchronousByteChannelWriteSubscriber(IOUtils.toAsynchronousByteChannel(channel, 0), sink))))
+        WriteCountTrackingChannel channel = new WriteCountTrackingChannel();
+        StepVerifier.create(Mono.<Void>create(sink ->
+                data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, null))))
             .verifyComplete();
 
-        assertEquals(0, channel.writeCount);
+        assertEquals(0, channel.getWriteCount());
     }
 
     /**
@@ -94,19 +82,19 @@ public class AsynchronousByteChannelWriteSubscriberTests {
      */
     @Test
     public void allOnNextEmissionsAreHandledBeforeOnComplete() {
-        WriteCountTrackingChannel channel = new WriteCountTrackingChannel(new byte[8192 * 16]);
+        WriteCountTrackingChannel channel = new WriteCountTrackingChannel();
         byte[] dataChunk = new byte[8192];
         ThreadLocalRandom.current().nextBytes(dataChunk);
-        Flux<ByteBuffer> data = Flux.create(sink -> {
-            IntStream.range(0, 16).forEach(ignored -> sink.next(ByteBuffer.wrap(dataChunk)));
+        Flux<ByteBuf> data = Flux.create(sink -> {
+            IntStream.range(0, 16).forEach(ignored -> sink.next(Unpooled.wrappedBuffer(dataChunk)));
             sink.complete();
         });
 
-        StepVerifier.create(Mono.<Void>create(sink -> data.subscribe(
-            new AsynchronousByteChannelWriteSubscriber(IOUtils.toAsynchronousByteChannel(channel, 0), sink))))
+        StepVerifier.create(Mono.<Void>create(sink ->
+                data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, 8192L))))
             .verifyComplete();
 
-        assertEquals(16, channel.writeCount);
+        assertEquals(16, channel.getWriteCount());
     }
 
     /**
@@ -114,37 +102,37 @@ public class AsynchronousByteChannelWriteSubscriberTests {
      */
     @Test
     public void allOnNextEmissionsAreHandledBeforeOnError() {
-        WriteCountTrackingChannel channel = new WriteCountTrackingChannel(new byte[8192 * 16]);
+        WriteCountTrackingChannel channel = new WriteCountTrackingChannel();
         byte[] dataChunk = new byte[8192];
         ThreadLocalRandom.current().nextBytes(dataChunk);
-        Flux<ByteBuffer> data = Flux.create(sink -> {
-            IntStream.range(0, 16).forEach(ignored -> sink.next(ByteBuffer.wrap(dataChunk)));
+        Flux<ByteBuf> data = Flux.create(sink -> {
+            IntStream.range(0, 16).forEach(ignored -> sink.next(Unpooled.wrappedBuffer(dataChunk)));
             sink.error(new IOException());
         });
 
-        StepVerifier.create(Mono.<Void>create(sink -> data.subscribe(
-            new AsynchronousByteChannelWriteSubscriber(IOUtils.toAsynchronousByteChannel(channel, 0), sink))))
+        StepVerifier.create(Mono.<Void>create(sink ->
+                data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, 8192L))))
             .verifyError(IOException.class);
 
-        assertEquals(16, channel.writeCount);
+        // Last ByteBuf written isn't flushed as an error happened.
+        assertEquals(15, channel.getWriteCount());
     }
 
     /**
-     * Tests that a {@link ByteBuffer} are written correctly.
+     * Tests that a {@link ByteBuf} larger than the internal write buffer is written properly.
      */
     @ParameterizedTest
-    @MethodSource("writtenDataValidationSupplier")
-    public void writtenDataValidation(Flux<ByteBuffer> data, byte[] expectedData) {
-        byte[] actualData = new byte[expectedData.length];
-        WriteCountTrackingChannel channel = new WriteCountTrackingChannel(actualData);
-        StepVerifier.create(Mono.<Void>create(sink -> data.subscribe(
-            new AsynchronousByteChannelWriteSubscriber(IOUtils.toAsynchronousByteChannel(channel, 0), sink))))
+    @MethodSource("byteBufsLargerThanInternalBufferSupplier")
+    public void byteBufsLargerThanInternalBufferWriteWithoutBuffering(Flux<ByteBuf> data, byte[] expectedData) {
+        WriteCountTrackingChannel channel = new WriteCountTrackingChannel();
+        StepVerifier.create(Mono.<Void>create(sink ->
+                data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, null))))
             .verifyComplete();
 
-        assertArrayEquals(expectedData, actualData);
+        assertArraysEqual(expectedData, channel.getDataWritten());
     }
 
-    private static Stream<Arguments> writtenDataValidationSupplier() {
+    private static Stream<Arguments> byteBufsLargerThanInternalBufferSupplier() {
         byte[] smallChunk = new byte[4196];
         ThreadLocalRandom.current().nextBytes(smallChunk);
         byte[] mediumChunk = new byte[16392];
@@ -169,23 +157,23 @@ public class AsynchronousByteChannelWriteSubscriberTests {
 
         return Stream.of(
             Arguments.of(Flux.create(sink -> {
-                sink.next(ByteBuffer.wrap(smallChunk));
-                sink.next(ByteBuffer.wrap(mediumChunk));
-                sink.next(ByteBuffer.wrap(largeChunk));
+                sink.next(Unpooled.wrappedBuffer(smallChunk));
+                sink.next(Unpooled.wrappedBuffer(mediumChunk));
+                sink.next(Unpooled.wrappedBuffer(largeChunk));
                 sink.complete();
             }), expectedData1),
 
             Arguments.of(Flux.create(sink -> {
-                sink.next(ByteBuffer.wrap(largeChunk));
-                sink.next(ByteBuffer.wrap(mediumChunk));
-                sink.next(ByteBuffer.wrap(smallChunk));
+                sink.next(Unpooled.wrappedBuffer(largeChunk));
+                sink.next(Unpooled.wrappedBuffer(mediumChunk));
+                sink.next(Unpooled.wrappedBuffer(smallChunk));
                 sink.complete();
             }), expectedData2),
 
             Arguments.of(Flux.create(sink -> {
-                sink.next(ByteBuffer.wrap(smallChunk));
-                sink.next(ByteBuffer.wrap(largeChunk));
-                sink.next(ByteBuffer.wrap(mediumChunk));
+                sink.next(Unpooled.wrappedBuffer(smallChunk));
+                sink.next(Unpooled.wrappedBuffer(largeChunk));
+                sink.next(Unpooled.wrappedBuffer(mediumChunk));
                 sink.complete();
             }), expectedData3)
         );
@@ -208,10 +196,10 @@ public class AsynchronousByteChannelWriteSubscriberTests {
         };
 
         CallTrackingSubscription subscription = new CallTrackingSubscription();
-        AsynchronousByteChannelWriteSubscriber subscriber = new AsynchronousByteChannelWriteSubscriber(null, sink);
-        subscriber.onSubscribe(subscription);
-        subscriber.onError(new IOException());
-        subscriber.onError(new IllegalStateException());
+        ByteBufWriteSubscriber byteBufWriteSubscriber = new ByteBufWriteSubscriber(null, sink, null);
+        byteBufWriteSubscriber.onSubscribe(subscription);
+        byteBufWriteSubscriber.onError(new IOException());
+        byteBufWriteSubscriber.onError(new IllegalStateException());
 
         assertEquals(1, subscription.cancelCalls.get());
         assertEquals(1, onErrorDroppedCalledCount.get());
@@ -231,10 +219,9 @@ public class AsynchronousByteChannelWriteSubscriberTests {
             }
         };
 
-        AsynchronousByteChannelWriteSubscriber subscriber = new AsynchronousByteChannelWriteSubscriber(null,
-            successTrackingSink);
-        subscriber.onComplete();
-        subscriber.onComplete();
+        ByteBufWriteSubscriber byteBufWriteSubscriber = new ByteBufWriteSubscriber(null, successTrackingSink, null);
+        byteBufWriteSubscriber.onComplete();
+        byteBufWriteSubscriber.onComplete();
 
         assertEquals(1, successCallCount.get());
     }
@@ -245,24 +232,24 @@ public class AsynchronousByteChannelWriteSubscriberTests {
     @Test
     public void onNextAfterOnCompleteIsDropped() {
         AtomicInteger onNextDroppedCalledCount = new AtomicInteger();
-        AtomicReference<ByteBuffer> onNextDroppedByteBuffer = new AtomicReference<>();
-        Consumer<ByteBuffer> onNextDroppedConsumer = byteBuf -> {
+        AtomicReference<ByteBuf> onNextDroppedByteBuf = new AtomicReference<>();
+        Consumer<ByteBuf> onNextDroppedConsumer = byteBuf -> {
             onNextDroppedCalledCount.incrementAndGet();
-            onNextDroppedByteBuffer.set(byteBuf);
+            onNextDroppedByteBuf.set(byteBuf);
         };
 
-        ByteBuffer droppedByteBuffer = ByteBuffer.wrap(new byte[4096]);
-        Flux<ByteBuffer> onNextAfterTerminalState = Flux.<ByteBuffer>create(sink -> {
+        ByteBuf droppedByteBuf = Unpooled.wrappedBuffer(new byte[4096]);
+        Flux<ByteBuf> onNextAfterTerminalState = Flux.<ByteBuf>create(sink -> {
             sink.complete();
-            sink.next(droppedByteBuffer);
+            sink.next(droppedByteBuf);
         }).contextWrite(Context.of("reactor.onNextDropped.local", onNextDroppedConsumer));
 
         StepVerifier.create(Mono.<Void>create(sink ->
-                onNextAfterTerminalState.subscribe(new AsynchronousByteChannelWriteSubscriber(null, sink))))
+                onNextAfterTerminalState.subscribe(new ByteBufWriteSubscriber(null, sink, null))))
             .verifyComplete();
 
         assertEquals(1, onNextDroppedCalledCount.get());
-        assertSame(droppedByteBuffer, onNextDroppedByteBuffer.get());
+        assertSame(droppedByteBuf, onNextDroppedByteBuf.get());
     }
 
     /**
@@ -271,24 +258,24 @@ public class AsynchronousByteChannelWriteSubscriberTests {
     @Test
     public void onNextAfterOnErrorIsDropped() {
         AtomicInteger onNextDroppedCalledCount = new AtomicInteger();
-        AtomicReference<ByteBuffer> onNextDroppedByteBuffer = new AtomicReference<>();
-        Consumer<ByteBuffer> onNextDroppedConsumer = byteBuf -> {
+        AtomicReference<ByteBuf> onNextDroppedByteBuf = new AtomicReference<>();
+        Consumer<ByteBuf> onNextDroppedConsumer = byteBuf -> {
             onNextDroppedCalledCount.incrementAndGet();
-            onNextDroppedByteBuffer.set(byteBuf);
+            onNextDroppedByteBuf.set(byteBuf);
         };
 
-        ByteBuffer droppedByteBuffer = ByteBuffer.wrap(new byte[4096]);
-        Flux<ByteBuffer> onNextAfterTerminalState = Flux.<ByteBuffer>create(sink -> {
+        ByteBuf droppedByteBuf = Unpooled.wrappedBuffer(new byte[4096]);
+        Flux<ByteBuf> onNextAfterTerminalState = Flux.<ByteBuf>create(sink -> {
             sink.error(new IOException());
-            sink.next(droppedByteBuffer);
+            sink.next(droppedByteBuf);
         }).contextWrite(Context.of("reactor.onNextDropped.local", onNextDroppedConsumer));
 
         StepVerifier.create(Mono.<Void>create(sink ->
-                onNextAfterTerminalState.subscribe(new AsynchronousByteChannelWriteSubscriber(null, sink))))
+                onNextAfterTerminalState.subscribe(new ByteBufWriteSubscriber(null, sink, null))))
             .verifyError(IOException.class);
 
         assertEquals(1, onNextDroppedCalledCount.get());
-        assertSame(droppedByteBuffer, onNextDroppedByteBuffer.get());
+        assertSame(droppedByteBuf, onNextDroppedByteBuf.get());
     }
 
     /**
@@ -296,21 +283,10 @@ public class AsynchronousByteChannelWriteSubscriberTests {
      */
     @Test
     public void errorWritingDuringOnCompleteResultsInOnError() {
-        WriteCountTrackingChannel channel = new WriteCountTrackingChannel(new byte[4096]) {
+        WriteCountTrackingChannel channel = new WriteCountTrackingChannel() {
             @Override
-            public <A> void write(ByteBuffer src, long position, A attachment,
-                CompletionHandler<Integer, ? super A> handler) {
-                handler.failed(new IOException(), attachment);
-            }
-
-            @Override
-            public Future<Integer> write(ByteBuffer src, long position) {
-                return new CompletableFuture<Integer>() {
-                    @Override
-                    public Integer get() throws InterruptedException, ExecutionException {
-                        throw new ExecutionException(new IOException());
-                    }
-                };
+            public int write(ByteBuffer src) throws IOException {
+                throw new IOException();
             }
         };
 
@@ -328,11 +304,10 @@ public class AsynchronousByteChannelWriteSubscriberTests {
             }
         };
 
-        AsynchronousByteChannelWriteSubscriber subscriber = new AsynchronousByteChannelWriteSubscriber(
-            IOUtils.toAsynchronousByteChannel(channel, 0), sink);
-        subscriber.onSubscribe(new CallTrackingSubscription());
-        subscriber.onNext(ByteBuffer.wrap(new byte[4096]));
-        subscriber.onComplete();
+        ByteBufWriteSubscriber byteBufWriteSubscriber = new ByteBufWriteSubscriber(channel::write, sink, null);
+        byteBufWriteSubscriber.onSubscribe(new CallTrackingSubscription());
+        byteBufWriteSubscriber.onNext(Unpooled.wrappedBuffer(new byte[4096]));
+        byteBufWriteSubscriber.onComplete();
 
         assertEquals(1, errorCallCount.get());
         assertEquals(0, successCallCount.get());
@@ -352,26 +327,6 @@ public class AsynchronousByteChannelWriteSubscriberTests {
         @Override
         public void cancel() {
             cancelCalls.incrementAndGet();
-        }
-    }
-
-    private static class WriteCountTrackingChannel extends MockAsynchronousFileChannel {
-        private int writeCount = 0;
-        WriteCountTrackingChannel(byte[] writeToByteArray) {
-            super(writeToByteArray);
-        }
-
-        @Override
-        public <A> void write(ByteBuffer src, long position, A attachment,
-            CompletionHandler<Integer, ? super A> handler) {
-            writeCount++;
-            super.write(src, position, attachment, handler);
-        }
-
-        @Override
-        public Future<Integer> write(ByteBuffer src, long position) {
-            writeCount++;
-            return super.write(src, position);
         }
     }
 }
