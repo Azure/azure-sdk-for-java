@@ -8,9 +8,9 @@
         "Authorization": "Sanitized",
         "Content-Length": "77",
         "Content-Type": "application/json",
-        "Date": "Thu, 18 May 2023 18:08:48 GMT",
+        "Date": "Fri, 19 May 2023 05:09:20 GMT",
         "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
-        "x-ms-client-request-id": "ed1bc8f8-5549-4178-8c61-7deac484c4be"
+        "x-ms-client-request-id": "722b769f-abc3-43cf-920d-1e5099492cc3"
       },
       "RequestBody": {
         "prompt": [
@@ -28,14 +28,14 @@
         ],
         "Cache-Control": "must-revalidate, no-cache",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "7c960c304a9527e2-SEA",
+        "CF-RAY": "7c99d3c77965c82d-SEA",
         "Connection": "keep-alive",
         "Content-Length": "286",
         "Content-Type": "application/json",
-        "Date": "Thu, 18 May 2023 18:08:49 GMT",
+        "Date": "Fri, 19 May 2023 05:09:21 GMT",
         "openai-model": "text-davinci-003",
         "openai-organization": "user-pkku76b8pxthfoiq2pf1cnk2",
-        "openai-processing-ms": "1070",
+        "openai-processing-ms": "647",
         "openai-version": "2020-10-01",
         "Server": "cloudflare",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
@@ -45,12 +45,12 @@
         "x-ratelimit-remaining-tokens": "249900",
         "x-ratelimit-reset-requests": "20ms",
         "x-ratelimit-reset-tokens": "24ms",
-        "X-Request-ID": "313ef2cd952726f1c32dd1d89f05bf27"
+        "X-Request-ID": "9dc232dee48e9b2d05059bd946816b8d"
       },
       "ResponseBody": {
-        "id": "cmpl-7HcLQmSgpYK6grSk6tAVJxU9sm93f",
+        "id": "cmpl-7HmefJDqkFsu4GMBUdvubDjdMiRGx",
         "object": "text_completion",
-        "created": 1684433328,
+        "created": 1684472961,
         "model": "text-davinci-003",
         "choices": [
           {

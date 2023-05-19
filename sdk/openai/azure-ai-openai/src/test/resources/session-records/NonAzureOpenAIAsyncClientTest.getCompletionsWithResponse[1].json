@@ -8,9 +8,9 @@
         "Authorization": "Sanitized",
         "Content-Length": "60",
         "Content-Type": "application/json",
-        "Date": "Thu, 18 May 2023 18:08:48 GMT",
+        "Date": "Fri, 19 May 2023 05:09:20 GMT",
         "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
-        "x-ms-client-request-id": "515a5baa-7e49-4103-bfae-2a29f2f9bfa8"
+        "x-ms-client-request-id": "c5272aba-4373-4c2d-b762-b991bbb7c88b"
       },
       "RequestBody": {
         "prompt": [
@@ -27,29 +27,29 @@
         ],
         "Cache-Control": "must-revalidate, no-cache",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "7c960c305b40eb7f-SEA",
+        "CF-RAY": "7c99d3c778a7c388-SEA",
         "Connection": "keep-alive",
         "Content-Length": "284",
         "Content-Type": "application/json",
-        "Date": "Thu, 18 May 2023 18:08:50 GMT",
+        "Date": "Fri, 19 May 2023 05:09:22 GMT",
         "openai-model": "text-davinci-003",
         "openai-organization": "user-pkku76b8pxthfoiq2pf1cnk2",
-        "openai-processing-ms": "1498",
+        "openai-processing-ms": "1077",
         "openai-version": "2020-10-01",
         "Server": "cloudflare",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "x-ratelimit-limit-requests": "3000",
         "x-ratelimit-limit-tokens": "250000",
-        "x-ratelimit-remaining-requests": "2998",
-        "x-ratelimit-remaining-tokens": "249895",
-        "x-ratelimit-reset-requests": "37ms",
-        "x-ratelimit-reset-tokens": "25ms",
-        "X-Request-ID": "5a820da1716cdbee25406489e83d501f"
+        "x-ratelimit-remaining-requests": "2997",
+        "x-ratelimit-remaining-tokens": "249888",
+        "x-ratelimit-reset-requests": "55ms",
+        "x-ratelimit-reset-tokens": "26ms",
+        "X-Request-ID": "4cc73e82ad4bb256728374356b2a4872"
       },
       "ResponseBody": {
-        "id": "cmpl-7HcLQRhW3YkE1JyMIp1BoBCB9pDRl",
+        "id": "cmpl-7HmefEeyjUa8m6LMUJKl9aD167HUy",
         "object": "text_completion",
-        "created": 1684433328,
+        "created": 1684472961,
         "model": "text-davinci-003",
         "choices": [
           {

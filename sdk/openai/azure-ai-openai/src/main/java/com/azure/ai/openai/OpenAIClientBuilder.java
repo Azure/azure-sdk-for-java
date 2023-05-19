@@ -339,7 +339,7 @@ public final class OpenAIClientBuilder
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         if (nonAzureOpenAIKeyCredential != null) {
-            policies.add(new NonAzureOpenAIKeyCredentialPolicy(nonAzureOpenAIKeyCredential));
+            policies.add(new NonAzureOpenAIKeyCredentialPolicy("Authorization", nonAzureOpenAIKeyCredential, "Bearer"));
         }
         this.pipelinePolicies.stream()
                 .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)

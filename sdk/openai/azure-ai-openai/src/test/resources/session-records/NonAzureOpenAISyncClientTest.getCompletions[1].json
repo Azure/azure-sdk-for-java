@@ -8,9 +8,9 @@
         "Authorization": "Sanitized",
         "Content-Length": "60",
         "Content-Type": "application/json",
-        "Date": "Thu, 18 May 2023 18:09:52 GMT",
+        "Date": "Fri, 19 May 2023 05:11:35 GMT",
         "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
-        "x-ms-client-request-id": "382309f8-bdd5-47e3-a802-50973b3ee576"
+        "x-ms-client-request-id": "ed723e01-17a7-4f54-8d5b-4d5b6eb9944b"
       },
       "RequestBody": {
         "prompt": [
@@ -27,33 +27,33 @@
         ],
         "Cache-Control": "must-revalidate, no-cache",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "7c960dc2aad030a0-SEA",
+        "CF-RAY": "7c99d7129c41c4e1-SEA",
         "Connection": "keep-alive",
-        "Content-Length": "286",
+        "Content-Length": "284",
         "Content-Type": "application/json",
-        "Date": "Thu, 18 May 2023 18:09:54 GMT",
+        "Date": "Fri, 19 May 2023 05:11:38 GMT",
         "openai-model": "text-davinci-003",
         "openai-organization": "user-pkku76b8pxthfoiq2pf1cnk2",
-        "openai-processing-ms": "883",
+        "openai-processing-ms": "2048",
         "openai-version": "2020-10-01",
         "Server": "cloudflare",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "x-ratelimit-limit-requests": "3000",
         "x-ratelimit-limit-tokens": "250000",
-        "x-ratelimit-remaining-requests": "2999",
+        "x-ratelimit-remaining-requests": "2998",
         "x-ratelimit-remaining-tokens": "249983",
-        "x-ratelimit-reset-requests": "20ms",
+        "x-ratelimit-reset-requests": "25ms",
         "x-ratelimit-reset-tokens": "3ms",
-        "X-Request-ID": "056f3668b73ec71e476421ea92fe30a0"
+        "X-Request-ID": "dea497456f303ba1652e8fa39b3ce908"
       },
       "ResponseBody": {
-        "id": "cmpl-7HcMToDVAVUIIa0gEGVoRgESqqNal",
+        "id": "cmpl-7HmgqrF1nr9jT3x9mjCd06LNN7RFk",
         "object": "text_completion",
-        "created": 1684433393,
+        "created": 1684473096,
         "model": "text-davinci-003",
         "choices": [
           {
-            "text": "\n\nThis is indeed a test.",
+            "text": "\n\nYes, this is a test.",
             "index": 0,
             "logprobs": null,
             "finish_reason": "stop"
@@ -61,8 +61,8 @@
         ],
         "usage": {
           "prompt_tokens": 5,
-          "completion_tokens": 8,
-          "total_tokens": 13
+          "completion_tokens": 9,
+          "total_tokens": 14
         }
       }
     }

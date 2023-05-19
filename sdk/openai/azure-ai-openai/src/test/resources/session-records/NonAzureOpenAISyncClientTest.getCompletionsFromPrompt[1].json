@@ -8,9 +8,9 @@
         "Authorization": "Sanitized",
         "Content-Length": "77",
         "Content-Type": "application/json",
-        "Date": "Thu, 18 May 2023 18:09:52 GMT",
+        "Date": "Fri, 19 May 2023 05:11:35 GMT",
         "User-Agent": "azsdk-java-azure-ai-openai/1.0.0-beta.1 (11.0.6; Windows 10; 10.0)",
-        "x-ms-client-request-id": "79d878e5-fc61-4709-a8dc-d971d05d0a81"
+        "x-ms-client-request-id": "999c3358-0525-4807-869c-7030f8d80d7a"
       },
       "RequestBody": {
         "prompt": [
@@ -28,29 +28,29 @@
         ],
         "Cache-Control": "must-revalidate, no-cache",
         "CF-Cache-Status": "DYNAMIC",
-        "CF-RAY": "7c960dc2a90e2802-SEA",
+        "CF-RAY": "7c99d7129a44c531-SEA",
         "Connection": "keep-alive",
         "Content-Length": "286",
         "Content-Type": "application/json",
-        "Date": "Thu, 18 May 2023 18:09:54 GMT",
+        "Date": "Fri, 19 May 2023 05:11:37 GMT",
         "openai-model": "text-davinci-003",
         "openai-organization": "user-pkku76b8pxthfoiq2pf1cnk2",
-        "openai-processing-ms": "1255",
+        "openai-processing-ms": "857",
         "openai-version": "2020-10-01",
         "Server": "cloudflare",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
         "x-ratelimit-limit-requests": "3000",
         "x-ratelimit-limit-tokens": "250000",
-        "x-ratelimit-remaining-requests": "2998",
-        "x-ratelimit-remaining-tokens": "249885",
-        "x-ratelimit-reset-requests": "39ms",
+        "x-ratelimit-remaining-requests": "2997",
+        "x-ratelimit-remaining-tokens": "249883",
+        "x-ratelimit-reset-requests": "45ms",
         "x-ratelimit-reset-tokens": "27ms",
-        "X-Request-ID": "6575f32a580039a782c8d1cf89d1b9c1"
+        "X-Request-ID": "e7c03654ba6a86121c158268d7c5bd31"
       },
       "ResponseBody": {
-        "id": "cmpl-7HcMTRliZ1eOjGYYogx6hGLCt4uNB",
+        "id": "cmpl-7Hmgqf8LXmjaqhlqRM5QoBeHVsHJ9",
         "object": "text_completion",
-        "created": 1684433393,
+        "created": 1684473096,
         "model": "text-davinci-003",
         "choices": [
           {
