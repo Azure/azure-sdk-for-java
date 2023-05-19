@@ -30,6 +30,7 @@ import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import io.vertx.ext.reactivestreams.ReactiveReadStream;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.MonoSink;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
@@ -85,7 +86,7 @@ class VertxAsyncHttpClient implements HttpClient {
 
                 return vertxRequest;
             })
-            .flatMap(vertxRequest -> sendBody(request, progressReporter, vertxRequest))
+            .flatMap(vertxRequest -> sendBody(sink, request, progressReporter, vertxRequest))
             .flatMap(vertxResponse -> handleVertxResponse(request, vertxResponse))
             .onComplete(result -> {
                 if (result.failed()) {
@@ -101,8 +102,8 @@ class VertxAsyncHttpClient implements HttpClient {
         return send(request, context).block();
     }
 
-    private Future<HttpClientResponse> sendBody(HttpRequest azureRequest, ProgressReporter progressReporter,
-        HttpClientRequest vertxRequest) {
+    private Future<HttpClientResponse> sendBody(MonoSink<HttpResponse> sink, HttpRequest azureRequest,
+        ProgressReporter progressReporter, HttpClientRequest vertxRequest) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
         if (body != null) {
             BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
@@ -132,11 +133,19 @@ class VertxAsyncHttpClient implements HttpClient {
             } else {
                 // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
                 // Create a ReadStream<Buffer> implementation that sends the InputStream without the use of Reactor.
-                ReactiveReadStream<Buffer> reactiveSender = ReactiveReadStream.readStream(1);
+                ReactiveReadStream<Buffer> reactiveSender = ReactiveReadStream.<Buffer>readStream(1);
+
                 azureRequest.getBody().map(byteBuffer -> Buffer.buffer(Unpooled.wrappedBuffer(byteBuffer)))
                     .doOnNext(data -> reportProgress(data.length(), progressReporter))
+                    .doOnError(error -> {
+                        // If the read stream errors propagate the exception through Reactor and close the active HTTP
+                        // connection.
+                        vertxRequest.connection().close();
+                        sink.error(error);
+                    })
                     .subscribeOn(scheduler)
                     .subscribe(reactiveSender);
+
                 return vertxRequest.send(reactiveSender);
             }
         } else {
