@@ -686,6 +686,10 @@ public class CosmosQueryRequestOptions {
         return this.cancelledRequestDiagnosticsTracker;
     }
 
+    void setCancelledRequestDiagnosticsTracker(List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+        this.cancelledRequestDiagnosticsTracker = cancelledRequestDiagnosticsTracker;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -837,6 +841,13 @@ public class CosmosQueryRequestOptions {
                 @Override
                 public List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker(CosmosQueryRequestOptions options) {
                     return options.getCancelledRequestDiagnosticsTracker();
+                }
+
+                public void setCancelledRequestDiagnosticsTracker(
+                    CosmosQueryRequestOptions options,
+                    List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker) {
+
+                    options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
                 }
             });
     }

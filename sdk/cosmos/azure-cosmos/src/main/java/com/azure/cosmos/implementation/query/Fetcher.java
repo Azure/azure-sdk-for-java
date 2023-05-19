@@ -146,14 +146,26 @@ abstract class Fetcher<T> {
     protected abstract RxDocumentServiceRequest createRequest(int maxItemCount);
 
     private Mono<FeedResponse<T>> nextPage(RxDocumentServiceRequest request) {
+        AtomicBoolean completed = new AtomicBoolean(false);
+
         return executeFunc
             .apply(request)
             .map(rsp -> {
                 updateState(rsp, request);
                 return rsp;
             })
+            .doOnNext(response -> completed.set(true))
+            .doOnError(throwable -> completed.set(true))
             .doFinally(signalType -> {
-                if (signalType != SignalType.CANCEL || this.cancelledRequestDiagnosticsTracker == null) {
+                // If the signal type is not cancel(which means success or error), we do not need to tracking the diagnostics here
+                // as the downstream will capture it
+                //
+                // Any of the reactor operators can terminate with a cancel signal instead of error signal
+                // For example collectList, Flux.merge, takeUntil
+                // We should only record cancellation diagnostics if the signal is cancelled and the request is cancelled
+                if (signalType != SignalType.CANCEL
+                    || this.cancelledRequestDiagnosticsTracker == null
+                    || completed.get()) {
                     return;
                 }
 

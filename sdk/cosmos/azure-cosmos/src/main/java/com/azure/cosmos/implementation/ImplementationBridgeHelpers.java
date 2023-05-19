@@ -268,6 +268,9 @@ public class ImplementationBridgeHelpers {
             void applyMaxItemCount(CosmosQueryRequestOptions requestOptions, CosmosPagedFluxOptions fluxOptions);
             CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options);
             List<CosmosDiagnostics> getCancelledRequestDiagnosticsTracker(CosmosQueryRequestOptions options);
+            void setCancelledRequestDiagnosticsTracker(
+                CosmosQueryRequestOptions options,
+                List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker);
         }
     }
 
