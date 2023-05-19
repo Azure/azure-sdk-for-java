@@ -43,20 +43,20 @@ See [Next steps][SDK_README_NEXT_STEPS].
 This project welcomes contributions and suggestions. Find [more contributing][SDK_README_CONTRIBUTING] details here.
 
 <!-- LINKS -->
-[KEYS_SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/README.md
-[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/README.md#contributing
-[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/README.md#getting-started
-[SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/README.md#troubleshooting
-[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/README.md#key-concepts
-[SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/README.md#adding-the-package-to-your-product
-[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/README.md#next-steps
+[KEYS_SDK_README]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/README.md
+[SDK_README_CONTRIBUTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/README.md#contributing
+[SDK_README_GETTING_STARTED]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/README.md#getting-started
+[SDK_README_TROUBLESHOOTING]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/README.md#troubleshooting
+[SDK_README_KEY_CONCEPTS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/README.md#key-concepts
+[SDK_README_DEPENDENCY]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/README.md#adding-the-package-to-your-product
+[SDK_README_NEXT_STEPS]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/README.md#next-steps
 
-[async_sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetCompletionsAsync.java
-[async_sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetChatCompletionsAsync.java
-[async_sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetEmbeddingsAsync.java
+[async_sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetCompletionsAsync.java
+[async_sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetChatCompletionsAsync.java
+[async_sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetEmbeddingsAsync.java
 
-[sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetCompletions.java
-[sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetChatCompletions.java
-[sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/feature/open-ai/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetEmbeddings.java
+[sample_get_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetCompletions.java
+[sample_get_chat_completions]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetChatCompletions.java
+[sample_get_embedding]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/GetEmbeddings.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fopenai%2Fazure-ai-openai%2FREADME.png)
