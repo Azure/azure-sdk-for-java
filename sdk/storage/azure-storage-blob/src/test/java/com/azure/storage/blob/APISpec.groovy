@@ -98,10 +98,10 @@ class APISpec extends StorageSpec {
     def setup() {
         primaryBlobServiceClient = getServiceClient(environment.primaryAccount)
         primaryBlobServiceAsyncClient = getServiceAsyncClient(environment.primaryAccount)
-        alternateBlobServiceClient = getServiceClient(environment.secondaryAccount)
-        premiumBlobServiceClient = getServiceClient(environment.premiumAccount)
-        versionedBlobServiceClient = getServiceClient(environment.versionedAccount)
-        softDeleteServiceClient = getServiceClient(environment.softDeleteAccount)
+//        alternateBlobServiceClient = getServiceClient(environment.secondaryAccount)
+//        premiumBlobServiceClient = getServiceClient(environment.premiumAccount)
+//        versionedBlobServiceClient = getServiceClient(environment.versionedAccount)
+//        softDeleteServiceClient = getServiceClient(environment.softDeleteAccount)
 
         containerName = generateContainerName()
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName)

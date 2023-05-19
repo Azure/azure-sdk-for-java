@@ -8,6 +8,7 @@ import com.azure.core.test.utils.TestUtils
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
 import com.azure.core.util.UrlBuilder
+import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.common.implementation.Constants
@@ -17,11 +18,13 @@ import reactor.core.publisher.Mono
 import java.nio.file.Files
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.atomic.AtomicInteger
+
 /**
  * Set of tests that use <a href="">HTTP fault injecting</a> to simulate scenarios where the network has random errors.
  */
 @LiveOnly
 class HttpFaultInjectingTests extends APISpec {
+    private static final def LOGGER = new ClientLogger(HttpFaultInjectingTests.class)
     private static final def UPSTREAM_URI_HEADER = HttpHeaderName.fromString("X-Upstream-Base-Uri")
     private static final def HTTP_FAULT_INJECTOR_RESPONSE_HEADER
         = HttpHeaderName.fromString("x-ms-faultinjector-response-option")
@@ -40,14 +43,12 @@ class HttpFaultInjectingTests extends APISpec {
         def realFileBytes = new byte[9 * Constants.MB - 1]
         ThreadLocalRandom.current().nextBytes(realFileBytes)
 
-        def containerName = generateContainerName()
         def blobName = generateBlobName()
-        getServiceClient(environment.primaryAccount).createBlobContainer(containerName).getBlobClient(blobName)
-            .upload(BinaryData.fromBytes(realFileBytes), true)
+        cc.getBlobClient(blobName).upload(BinaryData.fromBytes(realFileBytes), true)
 
         def downloadClient = new BlobClientBuilder()
             .connectionString(environment.primaryAccount.connectionString)
-            .containerName(containerName)
+            .containerName(cc.getBlobContainerName())
             .blobName(blobName)
             .httpClient(new HttpFaultInjectingHttpClient(getHttpClient()))
             .buildClient()
@@ -58,20 +59,26 @@ class HttpFaultInjectingTests extends APISpec {
             file.deleteOnExit()
             files.add(file)
         }
+        def successCount = new AtomicInteger()
 
         when:
-        def successCount = new AtomicInteger()
         files.stream().parallel().forEach {
+            def validateFile = true
             try {
                 downloadClient.downloadToFile(it.getAbsolutePath(), true)
-            } catch (Exception ignored) {
+            } catch (Exception ex) {
                 // Don't let network exceptions fail the download
-                return
+                LOGGER.atWarning()
+                    .log(() -> "Failed to complete download, target download file: " + it.getAbsolutePath(), ex)
+                validateFile = false
             }
 
-            def actualFileBytes = Files.readAllBytes(it.toPath())
-            TestUtils.assertArraysEqual(realFileBytes, actualFileBytes)
-            successCount.incrementAndGet()
+            if (validateFile) {
+                def actualFileBytes = Files.readAllBytes(it.toPath())
+                TestUtils.assertArraysEqual(realFileBytes, actualFileBytes)
+                successCount.incrementAndGet()
+            }
+
             Files.deleteIfExists(it.toPath())
         }
 

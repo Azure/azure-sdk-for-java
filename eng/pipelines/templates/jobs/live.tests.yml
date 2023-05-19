@@ -105,6 +105,9 @@ jobs:
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 
+      - ${{ if eq(parameters.UseHttpFaultInjector, 'true') }}:
+        - template: /eng/pipeline/templates/steps/publish-http-fault-injector-logs.yml
+
       - ${{ parameters.PostSteps }}
 
       - ${{ if ne(parameters.DisableAzureResourceCreation, 'true') }}:
