@@ -973,9 +973,15 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getSubscriptionExistsWithResponse(String topicName, String subscriptionName,
                                                                Context context) {
-        final Response<SubscriptionProperties> subscriptionWithResponse =
-            getSubscriptionInternal(topicName, subscriptionName, context);
-        return getEntityExistsWithResponse(subscriptionWithResponse);
+        try {
+            final Response<SubscriptionProperties> subscriptionWithResponse =
+                getSubscriptionInternal(topicName, subscriptionName, context);
+            return getEntityExistsWithResponse(subscriptionWithResponse);
+        } catch (ServiceBusManagementErrorException | ResourceNotFoundException ex) {
+            HttpResponse response = ex.getResponse();
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), false);
+        }
     }
 
     /**
