@@ -105,9 +105,10 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
             P page = pageRetrieverSync.getPage(continuationState.getLastContinuationToken(), defaultPageSize);
             if (page != null) {
                 receivePage(receivedPages, page);
-            } else {
-                Stream<P> streamPage =
-                    ((PageRetrieverSync.InternalPageRetrieverSync<C, P>) pageRetrieverSync).getPageStream(continuationState.getLastContinuationToken(), defaultPageSize);
+            } else if (pageRetrieverSync instanceof PageRetrieverSync.InternalPageRetrieverSync) {
+                Stream<P> streamPage = ((PageRetrieverSync.InternalPageRetrieverSync<C, P>) pageRetrieverSync)
+                    .getPageStream(continuationState.getLastContinuationToken(),
+                    defaultPageSize);
                 if (streamPage != null) {
                     streamPage.forEach(innerPage -> {
                         if (innerPage != null) {
