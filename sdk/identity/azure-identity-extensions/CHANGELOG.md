@@ -10,6 +10,22 @@
 
 ### Other Changes
 
+## 1.1.3 (2023-04-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.8.1` to version `1.8.2`.
+
+## 1.1.2 (2023-03-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-identity` from `1.8.0` to version `1.8.1`.
+
 ## 1.1.1 (2023-02-13)
 
 ### Dependency Updates

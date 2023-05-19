@@ -15,12 +15,12 @@ public final class SqlDataDirectoryMappingTests {
         SqlDataDirectoryMapping model =
             BinaryData
                 .fromString(
-                    "{\"mappingType\":\"Log\",\"sourceLogicalName\":\"rsnm\",\"sourcePath\":\"ayzejnhlbkpbz\",\"targetPath\":\"piljhahzvech\"}")
+                    "{\"mappingType\":\"Log\",\"sourceLogicalName\":\"ndbnwieh\",\"sourcePath\":\"ewjwiuubw\",\"targetPath\":\"qsfapaqt\"}")
                 .toObject(SqlDataDirectoryMapping.class);
         Assertions.assertEquals(SqlDataDirectoryType.LOG, model.mappingType());
-        Assertions.assertEquals("rsnm", model.sourceLogicalName());
-        Assertions.assertEquals("ayzejnhlbkpbz", model.sourcePath());
-        Assertions.assertEquals("piljhahzvech", model.targetPath());
+        Assertions.assertEquals("ndbnwieh", model.sourceLogicalName());
+        Assertions.assertEquals("ewjwiuubw", model.sourcePath());
+        Assertions.assertEquals("qsfapaqt", model.targetPath());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,13 +28,13 @@ public final class SqlDataDirectoryMappingTests {
         SqlDataDirectoryMapping model =
             new SqlDataDirectoryMapping()
                 .withMappingType(SqlDataDirectoryType.LOG)
-                .withSourceLogicalName("rsnm")
-                .withSourcePath("ayzejnhlbkpbz")
-                .withTargetPath("piljhahzvech");
+                .withSourceLogicalName("ndbnwieh")
+                .withSourcePath("ewjwiuubw")
+                .withTargetPath("qsfapaqt");
         model = BinaryData.fromObject(model).toObject(SqlDataDirectoryMapping.class);
         Assertions.assertEquals(SqlDataDirectoryType.LOG, model.mappingType());
-        Assertions.assertEquals("rsnm", model.sourceLogicalName());
-        Assertions.assertEquals("ayzejnhlbkpbz", model.sourcePath());
-        Assertions.assertEquals("piljhahzvech", model.targetPath());
+        Assertions.assertEquals("ndbnwieh", model.sourceLogicalName());
+        Assertions.assertEquals("ewjwiuubw", model.sourcePath());
+        Assertions.assertEquals("qsfapaqt", model.targetPath());
     }
 }

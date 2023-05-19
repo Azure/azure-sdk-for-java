@@ -24,6 +24,10 @@ public final class PolicyAssignmentListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of PolicyAssignmentListResult class. */
+    public PolicyAssignmentListResult() {
+    }
+
     /**
      * Get the value property: An array of policy assignments.
      *

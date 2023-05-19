@@ -29,6 +29,10 @@ public final class ResourceNameAvailabilityRequest {
     @JsonProperty(value = "isFqdn")
     private Boolean isFqdn;
 
+    /** Creates an instance of ResourceNameAvailabilityRequest class. */
+    public ResourceNameAvailabilityRequest() {
+    }
+
     /**
      * Get the name property: Resource name to verify.
      *

@@ -1,0 +1,184 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/d2faf8b8d2faf8b88e670567cd485087a5c3419597?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "166fd0ad-1931-43ba-aebc-8fb1a94f533e"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2022-11-02",
+      "ETag" : "0x8DB04B432C48D4F",
+      "Last-Modified" : "Thu, 02 Feb 2023 00:26:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "c647e07b-a01a-0005-0d9d-36f0c9000000",
+      "Date" : "Thu, 02 Feb 2023 00:26:59 GMT",
+      "x-ms-client-request-id" : "166fd0ad-1931-43ba-aebc-8fb1a94f533e"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/d2faf8b8d2faf8b88e670567cd485087a5c3419597/d2faf8b80d2faf8b88e698022001e17ca361b48b8a6e.",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "e6ee76b0-20a6-4247-ab01-2c32d37d98c4"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-file-id" : "13835128424026341376",
+      "x-ms-file-permission-key" : "15656609847289850250*4283089269493653228",
+      "x-ms-version" : "2022-11-02",
+      "x-ms-file-creation-time" : "2023-02-02T00:26:59.8728482Z",
+      "Last-Modified" : "Thu, 02 Feb 2023 00:26:59 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 02 Feb 2023 00:26:59 GMT",
+      "ETag" : "0x8DB04B432F6FB22",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-parent-id" : "0",
+      "x-ms-file-change-time" : "2023-02-02T00:26:59.8728482Z",
+      "x-ms-request-id" : "c647e07e-a01a-0005-0e9d-36f0c9000000",
+      "x-ms-file-last-write-time" : "2023-02-02T00:26:59.8728482Z",
+      "x-ms-client-request-id" : "e6ee76b0-20a6-4247-ab01-2c32d37d98c4"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/d2faf8b8d2faf8b88e670567cd485087a5c3419597/d2faf8b80d2faf8b88e698022001e17ca361b48b8a6e.?comp=range",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "915c6294-e52e-46fb-a8a6-5f610548f856",
+      "Content-Type" : "application/octet-stream"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2022-11-02",
+      "ETag" : "0x8DB04B43356D023",
+      "Last-Modified" : "Thu, 02 Feb 2023 00:27:00 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "c647e080-a01a-0005-0f9d-36f0c9000000",
+      "Date" : "Thu, 02 Feb 2023 00:26:59 GMT",
+      "x-ms-file-last-write-time" : "2023-02-02T00:27:00.5008931Z",
+      "x-ms-client-request-id" : "915c6294-e52e-46fb-a8a6-5f610548f856",
+      "Content-MD5" : "ttgbNgpWctgMJ0MPORU+LA=="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/d2faf8b8d2faf8b88e670567cd485087a5c3419597/d2faf8b80d2faf8b88e698022001e17ca361b48b8a6e.",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "dabfa573-d4be-4ae8-8df1-a766a9f26a68"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-file-id" : "11529285414812647424",
+      "x-ms-file-permission-key" : "15656609847289850250*4283089269493653228",
+      "x-ms-version" : "2022-11-02",
+      "x-ms-file-creation-time" : "2023-02-02T00:27:00.6549071Z",
+      "Last-Modified" : "Thu, 02 Feb 2023 00:27:00 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "Date" : "Thu, 02 Feb 2023 00:27:00 GMT",
+      "ETag" : "0x8DB04B4336E504F",
+      "x-ms-file-attributes" : "Archive",
+      "x-ms-file-parent-id" : "0",
+      "x-ms-file-change-time" : "2023-02-02T00:27:00.6549071Z",
+      "x-ms-request-id" : "c647e081-a01a-0005-109d-36f0c9000000",
+      "x-ms-file-last-write-time" : "2023-02-02T00:27:00.6549071Z",
+      "x-ms-client-request-id" : "dabfa573-d4be-4ae8-8df1-a766a9f26a68"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/d2faf8b8d2faf8b88e670567cd485087a5c3419597/d2faf8b80d2faf8b88e698022001e17ca361b48b8a6e.",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "cabd55cc-b176-4ddd-8725-98fc51c54fac"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2022-11-02",
+      "x-ms-copy-id" : "1380aa40-ccdb-4f06-a05d-df316db93f39",
+      "ETag" : "0x8DB04B433970F02",
+      "Last-Modified" : "Thu, 02 Feb 2023 00:27:00 GMT",
+      "retry-after" : "0",
+      "x-ms-copy-status" : "success",
+      "StatusCode" : "202",
+      "x-ms-request-id" : "c647e082-a01a-0005-119d-36f0c9000000",
+      "Date" : "Thu, 02 Feb 2023 00:27:00 GMT",
+      "x-ms-client-request-id" : "cabd55cc-b176-4ddd-8725-98fc51c54fac"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "HEAD",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/d2faf8b8d2faf8b88e670567cd485087a5c3419597/d2faf8b80d2faf8b88e698022001e17ca361b48b8a6e.",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d3a47394-33e6-4c2f-9af8-67e925cfc2ca"
+    },
+    "Response" : {
+      "x-ms-file-id" : "11529285414812647424",
+      "x-ms-lease-status" : "unlocked",
+      "x-ms-file-creation-time" : "2023-02-02T00:27:00.9219330Z",
+      "x-ms-lease-state" : "available",
+      "Last-Modified" : "Thu, 02 Feb 2023 00:27:00 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-file-attributes" : "Archive",
+      "Content-Length" : "1048576",
+      "x-ms-request-id" : "c647e083-a01a-0005-129d-36f0c9000000",
+      "Content-Type" : "application/octet-stream",
+      "x-ms-file-permission-key" : "15656609847289850250*4283089269493653228",
+      "x-ms-version" : "2022-11-02",
+      "x-ms-copy-id" : "1380aa40-ccdb-4f06-a05d-df316db93f39",
+      "x-ms-copy-source" : "https://b2vxscnapby3pev24a.file.preprod.core.windows.net/d2faf8b8d2faf8b88e670567cd485087a5c3419597%2Fd2faf8b80d2faf8b88e698022001e17ca361b48b8a6e.",
+      "x-ms-copy-progress" : "1048576/1048576",
+      "Date" : "Thu, 02 Feb 2023 00:27:00 GMT",
+      "x-ms-copy-completion-time" : "Thu, 02 Feb 2023 00:27:00 GMT",
+      "x-ms-server-encrypted" : "true",
+      "x-ms-type" : "File",
+      "ETag" : "0x8DB04B433970F02",
+      "x-ms-file-parent-id" : "0",
+      "x-ms-file-change-time" : "2023-02-02T00:27:00.9219330Z",
+      "x-ms-copy-status" : "success",
+      "x-ms-file-last-write-time" : "2023-02-02T00:27:00.9219330Z",
+      "x-ms-client-request-id" : "d3a47394-33e6-4c2f-9af8-67e925cfc2ca"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.preprod.core.windows.net/d2faf8b8d2faf8b88e670567cd485087a5c3419597/d2faf8b80d2faf8b88e698022001e17ca361b48b8a6e.?comp=copy&copyid=1380aa40-ccdb-4f06-a05d-df316db93f39",
+    "Headers" : {
+      "x-ms-version" : "2022-11-02",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.17.0-beta.1 (11.0.16.1; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "0dde007e-3aeb-451a-b899-57a7a078eef7"
+    },
+    "Response" : {
+      "x-ms-version" : "2022-11-02",
+      "x-ms-error-code" : "NoPendingCopyOperation",
+      "retry-after" : "0",
+      "Content-Length" : "236",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "c647e085-a01a-0005-139d-36f0c9000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>NoPendingCopyOperation</Code><Message>There is currently no pending copy operation.\nRequestId:c647e085-a01a-0005-139d-36f0c9000000\nTime:2023-02-02T00:27:01.1044534Z</Message></Error>",
+      "Date" : "Thu, 02 Feb 2023 00:27:00 GMT",
+      "x-ms-client-request-id" : "0dde007e-3aeb-451a-b899-57a7a078eef7",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "d2faf8b8d2faf8b88e670567cd485087a5c3419597", "d2faf8b8d2faf8b88e6764180275100c0a47498ebc", "d2faf8b80d2faf8b88e698022001e17ca361b48b8a6e" ]
+}

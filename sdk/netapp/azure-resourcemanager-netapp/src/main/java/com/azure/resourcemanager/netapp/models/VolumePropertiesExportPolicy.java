@@ -21,6 +21,10 @@ public final class VolumePropertiesExportPolicy {
     @JsonProperty(value = "rules")
     private List<ExportPolicyRule> rules;
 
+    /** Creates an instance of VolumePropertiesExportPolicy class. */
+    public VolumePropertiesExportPolicy() {
+    }
+
     /**
      * Get the rules property: Export policy rule.
      *

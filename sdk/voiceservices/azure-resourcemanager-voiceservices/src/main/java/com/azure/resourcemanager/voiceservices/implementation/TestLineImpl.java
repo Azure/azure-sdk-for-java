@@ -18,7 +18,7 @@ import java.util.Map;
 public final class TestLineImpl implements TestLine, TestLine.Definition, TestLine.Update {
     private TestLineInner innerObject;
 
-    private final com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager;
+    private final com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -77,7 +77,7 @@ public final class TestLineImpl implements TestLine, TestLine.Definition, TestLi
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.voiceservices.VoiceservicesManager manager() {
+    private com.azure.resourcemanager.voiceservices.VoiceServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -114,7 +114,7 @@ public final class TestLineImpl implements TestLine, TestLine.Definition, TestLi
         return this;
     }
 
-    TestLineImpl(String name, com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager) {
+    TestLineImpl(String name, com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerObject = new TestLineInner();
         this.serviceManager = serviceManager;
         this.testLineName = name;
@@ -148,7 +148,7 @@ public final class TestLineImpl implements TestLine, TestLine.Definition, TestLi
     }
 
     TestLineImpl(
-        TestLineInner innerObject, com.azure.resourcemanager.voiceservices.VoiceservicesManager serviceManager) {
+        TestLineInner innerObject, com.azure.resourcemanager.voiceservices.VoiceServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");

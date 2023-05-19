@@ -16,6 +16,10 @@ public final class ReestablishReplicationRequest {
     @JsonProperty(value = "sourceVolumeId")
     private String sourceVolumeId;
 
+    /** Creates an instance of ReestablishReplicationRequest class. */
+    public ReestablishReplicationRequest() {
+    }
+
     /**
      * Get the sourceVolumeId property: Resource id of the source volume for the replication.
      *

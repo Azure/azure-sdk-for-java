@@ -47,6 +47,10 @@ public final class Event {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of Event class. */
+    public Event() {
+    }
+
     /**
      * Get the count property: The count of the event.
      *

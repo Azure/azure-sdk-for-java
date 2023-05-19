@@ -17,6 +17,15 @@ public final class ScanTriggerType extends ExpandableStringEnum<ScanTriggerType>
     public static final ScanTriggerType RECURRING = fromString("Recurring");
 
     /**
+     * Creates a new instance of ScanTriggerType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScanTriggerType() {
+    }
+
+    /**
      * Creates or finds a ScanTriggerType from its string representation.
      *
      * @param name a name to look for.

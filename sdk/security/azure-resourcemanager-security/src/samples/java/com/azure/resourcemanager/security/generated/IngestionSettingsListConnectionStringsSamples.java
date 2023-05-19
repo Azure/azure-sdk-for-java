@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IngestionSettings ListConnectionStrings. */
 public final class IngestionSettingsListConnectionStringsSamples {
     /*
@@ -18,6 +16,6 @@ public final class IngestionSettingsListConnectionStringsSamples {
      */
     public static void listConnectionStringsForIngestingSecurityDataAndLogs(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.ingestionSettings().listConnectionStringsWithResponse("default", Context.NONE);
+        manager.ingestionSettings().listConnectionStringsWithResponse("default", com.azure.core.util.Context.NONE);
     }
 }

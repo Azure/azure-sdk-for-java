@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TlsVersion. */
+/** The minimum TLS version for the cluster to support, e.g. '1.2'. */
 public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
     /** Static value 1.0 for TlsVersion. */
     public static final TlsVersion ONE_ZERO = fromString("1.0");
@@ -18,6 +18,15 @@ public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
 
     /** Static value 1.2 for TlsVersion. */
     public static final TlsVersion ONE_TWO = fromString("1.2");
+
+    /**
+     * Creates a new instance of TlsVersion value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TlsVersion() {
+    }
 
     /**
      * Creates or finds a TlsVersion from its string representation.
@@ -30,7 +39,11 @@ public final class TlsVersion extends ExpandableStringEnum<TlsVersion> {
         return fromString(name, TlsVersion.class);
     }
 
-    /** @return known TlsVersion values. */
+    /**
+     * Gets known TlsVersion values.
+     *
+     * @return known TlsVersion values.
+     */
     public static Collection<TlsVersion> values() {
         return values(TlsVersion.class);
     }

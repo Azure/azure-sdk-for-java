@@ -30,6 +30,10 @@ public final class CheckZonePeersResultInner {
     @JsonProperty(value = "availabilityZonePeers")
     private List<AvailabilityZonePeers> availabilityZonePeers;
 
+    /** Creates an instance of CheckZonePeersResultInner class. */
+    public CheckZonePeersResultInner() {
+    }
+
     /**
      * Get the subscriptionId property: The subscription ID.
      *

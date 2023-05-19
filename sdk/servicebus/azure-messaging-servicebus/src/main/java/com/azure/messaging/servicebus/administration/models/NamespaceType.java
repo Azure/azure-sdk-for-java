@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
-/** Defines values for NamespaceType. */
+/** The type of entities the namespace can contain. */
 public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
     /** Static value Messaging for NamespaceType. */
     public static final NamespaceType MESSAGING = fromString("Messaging");
@@ -27,6 +27,14 @@ public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
     public static final NamespaceType RELAY = fromString("Relay");
 
     /**
+     * Creates a new instance of NamespaceType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NamespaceType() {}
+
+    /**
      * Creates or finds a NamespaceType from its string representation.
      *
      * @param name a name to look for.
@@ -37,7 +45,11 @@ public final class NamespaceType extends ExpandableStringEnum<NamespaceType> {
         return fromString(name, NamespaceType.class);
     }
 
-    /** @return known NamespaceType values. */
+    /**
+     * Gets known NamespaceType values.
+     *
+     * @return known NamespaceType values.
+     */
     public static Collection<NamespaceType> values() {
         return values(NamespaceType.class);
     }

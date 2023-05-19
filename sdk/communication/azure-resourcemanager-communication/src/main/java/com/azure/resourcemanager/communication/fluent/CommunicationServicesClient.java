@@ -28,20 +28,6 @@ public interface CommunicationServicesClient {
      * <p>Checks that the CommunicationService name is valid and is not already in use.
      *
      * @param nameAvailabilityParameters Parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the check availability result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResponseInner checkNameAvailability(NameAvailabilityParameters nameAvailabilityParameters);
-
-    /**
-     * Check Name Availability
-     *
-     * <p>Checks that the CommunicationService name is valid and is not already in use.
-     *
-     * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -53,19 +39,18 @@ public interface CommunicationServicesClient {
         NameAvailabilityParameters nameAvailabilityParameters, Context context);
 
     /**
-     * Link Notification Hub
+     * Check Name Availability
      *
-     * <p>Links an Azure Notification Hub to this communication service.
+     * <p>Checks that the CommunicationService name is valid and is not already in use.
      *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
+     * @param nameAvailabilityParameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a notification hub that has been linked to the communication service.
+     * @return the check availability result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LinkedNotificationHubInner linkNotificationHub(String resourceGroupName, String communicationServiceName);
+    CheckNameAvailabilityResponseInner checkNameAvailability(NameAvailabilityParameters nameAvailabilityParameters);
 
     /**
      * Link Notification Hub
@@ -87,6 +72,21 @@ public interface CommunicationServicesClient {
         String communicationServiceName,
         LinkNotificationHubParameters linkNotificationHubParameters,
         Context context);
+
+    /**
+     * Link Notification Hub
+     *
+     * <p>Links an Azure Notification Hub to this communication service.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communicationServiceName The name of the CommunicationService resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a notification hub that has been linked to the communication service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LinkedNotificationHubInner linkNotificationHub(String resourceGroupName, String communicationServiceName);
 
     /**
      * List By Subscription
@@ -155,31 +155,14 @@ public interface CommunicationServicesClient {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
      * @param parameters Parameters for the update operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class representing a CommunicationService resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner> beginUpdate(
-        String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters);
-
-    /**
-     * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameters for the update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class representing a CommunicationService resource.
+     * @return a class representing a CommunicationService resource along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommunicationServiceResourceInner>, CommunicationServiceResourceInner> beginUpdate(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CommunicationServiceResourceInner> updateWithResponse(
         String resourceGroupName,
         String communicationServiceName,
         CommunicationServiceResourceUpdate parameters,
@@ -201,42 +184,6 @@ public interface CommunicationServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     CommunicationServiceResourceInner update(
         String resourceGroupName, String communicationServiceName, CommunicationServiceResourceUpdate parameters);
-
-    /**
-     * Update
-     *
-     * <p>Operation to update an existing CommunicationService.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameters for the update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing a CommunicationService resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationServiceResourceInner update(
-        String resourceGroupName,
-        String communicationServiceName,
-        CommunicationServiceResourceUpdate parameters,
-        Context context);
-
-    /**
-     * Get
-     *
-     * <p>Get the CommunicationService and its properties.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the CommunicationService and its properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationServiceResourceInner getByResourceGroup(String resourceGroupName, String communicationServiceName);
 
     /**
      * Get
@@ -254,6 +201,21 @@ public interface CommunicationServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CommunicationServiceResourceInner> getByResourceGroupWithResponse(
         String resourceGroupName, String communicationServiceName, Context context);
+
+    /**
+     * Get
+     *
+     * <p>Get the CommunicationService and its properties.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param communicationServiceName The name of the CommunicationService resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the CommunicationService and its properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommunicationServiceResourceInner getByResourceGroup(String resourceGroupName, String communicationServiceName);
 
     /**
      * Create Or Update
@@ -399,21 +361,6 @@ public interface CommunicationServicesClient {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys of the CommunicationService resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationServiceKeysInner listKeys(String resourceGroupName, String communicationServiceName);
-
-    /**
-     * List Keys
-     *
-     * <p>Get the access keys of the CommunicationService resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -425,22 +372,19 @@ public interface CommunicationServicesClient {
         String resourceGroupName, String communicationServiceName, Context context);
 
     /**
-     * Regenerate Key
+     * List Keys
      *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
+     * <p>Get the access keys of the CommunicationService resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class representing the access keys of a CommunicationService.
+     * @return the access keys of the CommunicationService resource.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommunicationServiceKeysInner>, CommunicationServiceKeysInner> beginRegenerateKey(
-        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CommunicationServiceKeysInner listKeys(String resourceGroupName, String communicationServiceName);
 
     /**
      * Regenerate Key
@@ -455,10 +399,10 @@ public interface CommunicationServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a class representing the access keys of a CommunicationService.
+     * @return a class representing the access keys of a CommunicationService along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CommunicationServiceKeysInner>, CommunicationServiceKeysInner> beginRegenerateKey(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CommunicationServiceKeysInner> regenerateKeyWithResponse(
         String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters, Context context);
 
     /**
@@ -478,23 +422,4 @@ public interface CommunicationServicesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     CommunicationServiceKeysInner regenerateKey(
         String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters);
-
-    /**
-     * Regenerate Key
-     *
-     * <p>Regenerate CommunicationService access key. PrimaryKey and SecondaryKey cannot be regenerated at the same
-     * time.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param communicationServiceName The name of the CommunicationService resource.
-     * @param parameters Parameter that describes the Regenerate Key Operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a class representing the access keys of a CommunicationService.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CommunicationServiceKeysInner regenerateKey(
-        String resourceGroupName, String communicationServiceName, RegenerateKeyParameters parameters, Context context);
 }

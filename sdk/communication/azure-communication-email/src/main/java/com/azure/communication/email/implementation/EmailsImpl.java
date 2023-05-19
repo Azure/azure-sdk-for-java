@@ -148,7 +148,8 @@ public final class EmailsImpl {
      * Queues an email message to be sent to one or more recipients.
      *
      * @param message Message payload for sending an email.
-     * @param operationId This is the ID used by the status monitor for this long running operation.
+     * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
+     *     not provided by the customer, the service will generate one.
      * @param clientRequestId Tracking ID sent with the request to help with debugging.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -175,7 +176,8 @@ public final class EmailsImpl {
      * Queues an email message to be sent to one or more recipients.
      *
      * @param message Message payload for sending an email.
-     * @param operationId This is the ID used by the status monitor for this long running operation.
+     * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
+     *     not provided by the customer, the service will generate one.
      * @param clientRequestId Tracking ID sent with the request to help with debugging.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,7 +203,8 @@ public final class EmailsImpl {
      * Queues an email message to be sent to one or more recipients.
      *
      * @param message Message payload for sending an email.
-     * @param operationId This is the ID used by the status monitor for this long running operation.
+     * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
+     *     not provided by the customer, the service will generate one.
      * @param clientRequestId Tracking ID sent with the request to help with debugging.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
@@ -227,7 +230,8 @@ public final class EmailsImpl {
      * Queues an email message to be sent to one or more recipients.
      *
      * @param message Message payload for sending an email.
-     * @param operationId This is the ID used by the status monitor for this long running operation.
+     * @param operationId This is the ID provided by the customer to identify the long running operation. If an ID is
+     *     not provided by the customer, the service will generate one.
      * @param clientRequestId Tracking ID sent with the request to help with debugging.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

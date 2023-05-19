@@ -24,6 +24,10 @@ public final class SnapshotRestoreFiles {
     @JsonProperty(value = "destinationPath")
     private String destinationPath;
 
+    /** Creates an instance of SnapshotRestoreFiles class. */
+    public SnapshotRestoreFiles() {
+    }
+
     /**
      * Get the filePaths property: List of files to be restored.
      *

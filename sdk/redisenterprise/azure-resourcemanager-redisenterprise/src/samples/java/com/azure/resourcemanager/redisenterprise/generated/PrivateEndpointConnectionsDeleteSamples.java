@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redisenterprise.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections Delete. */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/stable/2022-01-01/examples/RedisEnterpriseDeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2023-03-01-preview/examples/RedisEnterpriseDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisEnterpriseDeletePrivateEndpointConnection.
@@ -18,6 +16,8 @@ public final class PrivateEndpointConnectionsDeleteSamples {
      */
     public static void redisEnterpriseDeletePrivateEndpointConnection(
         com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager manager) {
-        manager.privateEndpointConnections().deleteWithResponse("rg1", "cache1", "pectest01", Context.NONE);
+        manager
+            .privateEndpointConnections()
+            .deleteWithResponse("rg1", "cache1", "pectest01", com.azure.core.util.Context.NONE);
     }
 }

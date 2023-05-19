@@ -55,6 +55,21 @@ public final class OfferingType extends ExpandableStringEnum<OfferingType> {
     /** Static value DefenderForDevOpsAzureDevOps for OfferingType. */
     public static final OfferingType DEFENDER_FOR_DEV_OPS_AZURE_DEV_OPS = fromString("DefenderForDevOpsAzureDevOps");
 
+    /** Static value CspmMonitorGitLab for OfferingType. */
+    public static final OfferingType CSPM_MONITOR_GIT_LAB = fromString("CspmMonitorGitLab");
+
+    /** Static value DefenderForDevOpsGitLab for OfferingType. */
+    public static final OfferingType DEFENDER_FOR_DEV_OPS_GIT_LAB = fromString("DefenderForDevOpsGitLab");
+
+    /**
+     * Creates a new instance of OfferingType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public OfferingType() {
+    }
+
     /**
      * Creates or finds a OfferingType from its string representation.
      *

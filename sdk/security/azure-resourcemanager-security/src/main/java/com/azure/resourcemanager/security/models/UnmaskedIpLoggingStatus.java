@@ -17,6 +17,15 @@ public final class UnmaskedIpLoggingStatus extends ExpandableStringEnum<Unmasked
     public static final UnmaskedIpLoggingStatus ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of UnmaskedIpLoggingStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public UnmaskedIpLoggingStatus() {
+    }
+
+    /**
      * Creates or finds a UnmaskedIpLoggingStatus from its string representation.
      *
      * @param name a name to look for.

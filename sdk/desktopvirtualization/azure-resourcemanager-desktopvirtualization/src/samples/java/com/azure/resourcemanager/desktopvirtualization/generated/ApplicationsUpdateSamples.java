@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.desktopvirtualization.models.Application;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationT
 /** Samples for Applications Update. */
 public final class ApplicationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/Application_Update.json
+     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2022-09-09/examples/Application_Update.json
      */
     /**
      * Sample code: Application_Update.
@@ -24,7 +23,8 @@ public final class ApplicationsUpdateSamples {
         Application resource =
             manager
                 .applications()
-                .getWithResponse("resourceGroup1", "applicationGroup1", "application1", Context.NONE)
+                .getWithResponse(
+                    "resourceGroup1", "applicationGroup1", "application1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()

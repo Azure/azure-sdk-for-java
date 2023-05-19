@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,155 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2023-05-17)
+
+- Azure Resource Manager DevCenter client library for Java. This package contains Microsoft Azure SDK for DevCenter Management SDK. DevCenter Management API. Package tag package-2023-04. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.EnableStatus` was removed
+
+#### `models.ProjectEnvironmentTypeUpdate` was modified
+
+* `models.EnableStatus status()` -> `models.EnvironmentTypeEnableStatus status()`
+* `withStatus(models.EnableStatus)` was removed
+
+#### `models.ImageReference` was modified
+
+* `withPublisher(java.lang.String)` was removed
+* `publisher()` was removed
+* `sku()` was removed
+* `withOffer(java.lang.String)` was removed
+* `offer()` was removed
+* `withSku(java.lang.String)` was removed
+
+#### `models.Schedule$Definition` was modified
+
+* `withState(models.EnableStatus)` was removed
+
+#### `models.Schedule` was modified
+
+* `models.EnableStatus state()` -> `models.ScheduleEnableStatus state()`
+
+#### `models.Schedule$Update` was modified
+
+* `withState(models.EnableStatus)` was removed
+
+#### `models.ScheduleUpdate` was modified
+
+* `withState(models.EnableStatus)` was removed
+* `models.EnableStatus state()` -> `models.ScheduleEnableStatus state()`
+
+#### `models.ProjectEnvironmentType$Update` was modified
+
+* `withStatus(models.EnableStatus)` was removed
+
+#### `models.ProjectEnvironmentType$Definition` was modified
+
+* `withStatus(models.EnableStatus)` was removed
+
+#### `models.ProjectEnvironmentType` was modified
+
+* `models.EnableStatus status()` -> `models.EnvironmentTypeEnableStatus status()`
+
+### Features Added
+
+* `models.EndpointDependency` was added
+
+* `models.StopOnDisconnectEnableStatus` was added
+
+* `models.HealthStatus` was added
+
+* `models.OutboundEnvironmentEndpointCollection` was added
+
+* `models.HealthStatusDetail` was added
+
+* `models.EnvironmentTypeEnableStatus` was added
+
+* `models.OutboundEnvironmentEndpoint` was added
+
+* `models.ScheduleEnableStatus` was added
+
+* `models.EndpointDetail` was added
+
+* `models.StopOnDisconnectConfiguration` was added
+
+#### `models.Pool$Definition` was modified
+
+* `withStopOnDisconnect(models.StopOnDisconnectConfiguration)` was added
+
+#### `models.Project$Definition` was modified
+
+* `withMaxDevBoxesPerUser(java.lang.Integer)` was added
+
+#### `models.ProjectEnvironmentTypeUpdate` was modified
+
+* `withStatus(models.EnvironmentTypeEnableStatus)` was added
+
+#### `models.Image` was modified
+
+* `hibernateSupport()` was added
+
+#### `models.Schedule$Definition` was modified
+
+* `withState(models.ScheduleEnableStatus)` was added
+
+#### `models.Schedule$Update` was modified
+
+* `withState(models.ScheduleEnableStatus)` was added
+
+#### `models.Project$Update` was modified
+
+* `withMaxDevBoxesPerUser(java.lang.Integer)` was added
+
+#### `models.ScheduleUpdate` was modified
+
+* `withState(models.ScheduleEnableStatus)` was added
+
+#### `models.Project` was modified
+
+* `maxDevBoxesPerUser()` was added
+
+#### `models.Pool$Update` was modified
+
+* `withStopOnDisconnect(models.StopOnDisconnectConfiguration)` was added
+
+#### `models.ProjectUpdate` was modified
+
+* `withMaxDevBoxesPerUser(java.lang.Integer)` was added
+* `maxDevBoxesPerUser()` was added
+
+#### `models.Pool` was modified
+
+* `runHealthChecks(com.azure.core.util.Context)` was added
+* `stopOnDisconnect()` was added
+* `healthStatus()` was added
+* `runHealthChecks()` was added
+* `healthStatusDetails()` was added
+
+#### `models.ProjectEnvironmentType$Update` was modified
+
+* `withStatus(models.EnvironmentTypeEnableStatus)` was added
+
+#### `models.Pools` was modified
+
+* `runHealthChecks(java.lang.String,java.lang.String,java.lang.String)` was added
+* `runHealthChecks(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ProjectEnvironmentType$Definition` was modified
+
+* `withStatus(models.EnvironmentTypeEnableStatus)` was added
+
+#### `models.PoolUpdate` was modified
+
+* `withStopOnDisconnect(models.StopOnDisconnectConfiguration)` was added
+* `stopOnDisconnect()` was added
+
+#### `models.NetworkConnections` was modified
+
+* `listOutboundNetworkDependenciesEndpoints(java.lang.String,java.lang.String)` was added
+* `listOutboundNetworkDependenciesEndpoints(java.lang.String,java.lang.String,java.lang.Integer,com.azure.core.util.Context)` was added
 
 ## 1.0.0-beta.4 (2022-11-24)
 

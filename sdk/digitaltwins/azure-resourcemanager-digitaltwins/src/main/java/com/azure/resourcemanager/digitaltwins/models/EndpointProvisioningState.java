@@ -47,6 +47,15 @@ public final class EndpointProvisioningState extends ExpandableStringEnum<Endpoi
     public static final EndpointProvisioningState DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of EndpointProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EndpointProvisioningState() {
+    }
+
+    /**
      * Creates or finds a EndpointProvisioningState from its string representation.
      *
      * @param name a name to look for.

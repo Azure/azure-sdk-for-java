@@ -6,20 +6,19 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.VMSkuListResultInner;
-import org.junit.jupiter.api.Test;
 
 public final class VMSkuListResultInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VMSkuListResultInner model =
             BinaryData
                 .fromString(
-                    "{\"vmSKUs\":[\"sjswsrms\",\"yzrpzbchckqqzq\"],\"id\":\"xiy\",\"name\":\"iizynkedyatrwyh\",\"type\":\"ibzyhwitsmyp\"}")
+                    "{\"vmSKUs\":[\"ljuti\",\"swacffgdkzz\",\"wkfvhqcrailvp\"],\"id\":\"pfuflrw\",\"name\":\"hdlxyjrxsagafcn\",\"type\":\"gwq\"}")
                 .toObject(VMSkuListResultInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VMSkuListResultInner model = new VMSkuListResultInner();
         model = BinaryData.fromObject(model).toObject(VMSkuListResultInner.class);
     }

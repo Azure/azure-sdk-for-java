@@ -28,6 +28,10 @@ public final class AliasPattern {
     @JsonProperty(value = "type")
     private AliasPatternType type;
 
+    /** Creates an instance of AliasPattern class. */
+    public AliasPattern() {
+    }
+
     /**
      * Get the phrase property: The alias pattern phrase.
      *

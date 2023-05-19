@@ -23,6 +23,10 @@ public final class AzureTableStorageApplicationLogsConfig {
     @JsonProperty(value = "sasUrl", required = true)
     private String sasUrl;
 
+    /** Creates an instance of AzureTableStorageApplicationLogsConfig class. */
+    public AzureTableStorageApplicationLogsConfig() {
+    }
+
     /**
      * Get the level property: Log level.
      *

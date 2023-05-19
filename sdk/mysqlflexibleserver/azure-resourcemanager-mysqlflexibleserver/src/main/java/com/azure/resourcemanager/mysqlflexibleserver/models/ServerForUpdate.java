@@ -296,6 +296,29 @@ public final class ServerForUpdate {
     }
 
     /**
+     * Get the network property: Network related properties of a server.
+     *
+     * @return the network value.
+     */
+    public Network network() {
+        return this.innerProperties() == null ? null : this.innerProperties().network();
+    }
+
+    /**
+     * Set the network property: Network related properties of a server.
+     *
+     * @param network the network value to set.
+     * @return the ServerForUpdate object itself.
+     */
+    public ServerForUpdate withNetwork(Network network) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerPropertiesForUpdate();
+        }
+        this.innerProperties().withNetwork(network);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

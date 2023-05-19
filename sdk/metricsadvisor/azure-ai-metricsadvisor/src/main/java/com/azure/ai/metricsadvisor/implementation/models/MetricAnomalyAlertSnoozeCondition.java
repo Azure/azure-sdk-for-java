@@ -4,7 +4,6 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
-import com.azure.ai.metricsadvisor.administration.models.SnoozeScope;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,6 +27,9 @@ public final class MetricAnomalyAlertSnoozeCondition {
      */
     @JsonProperty(value = "onlyForSuccessive", required = true)
     private boolean onlyForSuccessive;
+
+    /** Creates an instance of MetricAnomalyAlertSnoozeCondition class. */
+    public MetricAnomalyAlertSnoozeCondition() {}
 
     /**
      * Get the autoSnooze property: snooze point count, value range : [0, +∞).

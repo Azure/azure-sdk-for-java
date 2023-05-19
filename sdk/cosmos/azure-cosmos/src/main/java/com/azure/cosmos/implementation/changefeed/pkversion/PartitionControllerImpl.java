@@ -32,6 +32,7 @@ class PartitionControllerImpl implements PartitionController {
     private final LeaseManager leaseManager;
     private final PartitionSupervisorFactory partitionSupervisorFactory;
     private final PartitionSynchronizer synchronizer;
+    private final boolean shouldSkipDirectLeaseAssignment;
     private CancellationTokenSource shutdownCts;
 
     private final Scheduler scheduler;
@@ -41,13 +42,18 @@ class PartitionControllerImpl implements PartitionController {
             LeaseManager leaseManager,
             PartitionSupervisorFactory partitionSupervisorFactory,
             PartitionSynchronizer synchronizer,
-            Scheduler scheduler) {
+            Scheduler scheduler,
+            int maxScaleCount) {
 
         this.leaseContainer = leaseContainer;
         this.leaseManager = leaseManager;
         this.partitionSupervisorFactory = partitionSupervisorFactory;
         this.synchronizer = synchronizer;
         this.scheduler = scheduler;
+
+        // If maxScaleCount is configured, then all lease assignments should go through load balancer
+        // It will make sure the change feed processor instance always honor the maxScaleCount config
+        this.shouldSkipDirectLeaseAssignment = maxScaleCount > 0;
     }
 
     @Override
@@ -165,8 +171,12 @@ class PartitionControllerImpl implements PartitionController {
         lease.setContinuationToken(lastContinuationToken);
         return this.synchronizer.splitPartition(lease)
             .flatMap(l -> {
-                l.setProperties(lease.getProperties());
-                return this.addOrUpdateLease(l);
+                if (this.shouldSkipDirectLeaseAssignment) {
+                    return Mono.empty();
+                } else {
+                    l.setProperties(lease.getProperties());
+                    return this.addOrUpdateLease(l);
+                }
             }).then(this.leaseManager.delete(lease))
             .onErrorResume(throwable -> {
                 logger.warn("Partition {}: failed to split", lease.getLeaseToken(), throwable);

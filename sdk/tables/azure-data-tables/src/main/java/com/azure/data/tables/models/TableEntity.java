@@ -5,15 +5,13 @@ package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableEntityAccessHelper;
 import com.azure.data.tables.implementation.TablesConstants;
 
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-
-import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
  * An entity within a table.
@@ -33,7 +31,7 @@ public final class TableEntity {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        ModelHelper.setEntityCreator(TableEntity::new);
+        TableEntityAccessHelper.setTableEntityCreator(TableEntity::new);
     }
 
     /**
@@ -43,14 +41,14 @@ public final class TableEntity {
      * @param rowKey The row key of the entity.
      */
     public TableEntity(String partitionKey, String rowKey) {
-        if (isNullOrEmpty(partitionKey)) {
+        if (null == partitionKey) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(String.format("'%s' is an empty value.", TablesConstants.PARTITION_KEY)));
+                new IllegalArgumentException(String.format("'%s' is an null value.", TablesConstants.PARTITION_KEY)));
         }
 
-        if (isNullOrEmpty(rowKey)) {
+        if (null == rowKey) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(String.format("'%s' is an empty value.", TablesConstants.ROW_KEY)));
+                new IllegalArgumentException(String.format("'%s' is an null value.", TablesConstants.ROW_KEY)));
         }
 
         this.properties = new HashMap<>();
@@ -140,12 +138,6 @@ public final class TableEntity {
 
     private void validateProperty(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
-
-        if ((TablesConstants.PARTITION_KEY.equals(key) || TablesConstants.ROW_KEY.equals(key)) && value != null
-            && (!(value instanceof String) || ((String) value).isEmpty())) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' must be a non-empty String.", key)));
-        }
 
         if (TablesConstants.TIMESTAMP_KEY.equals(key) && value != null && !(value instanceof OffsetDateTime)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(

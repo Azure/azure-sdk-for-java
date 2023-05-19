@@ -31,6 +31,8 @@ object SampleStructuredStreamingE2EMain {
       .master("local")
       .getOrCreate()
 
+    LocalJavaFileSystem.applyToSparkSession(spark)
+
     spark.streams.addListener(new StreamingQueryListener() {
       override def onQueryStarted(queryStarted: QueryStartedEvent): Unit = {
         println("Query started: " + queryStarted.id)

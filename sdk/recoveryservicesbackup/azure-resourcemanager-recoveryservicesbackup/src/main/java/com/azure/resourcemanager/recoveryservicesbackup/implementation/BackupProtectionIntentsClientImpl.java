@@ -59,8 +59,7 @@ public final class BackupProtectionIntentsClientImpl implements BackupProtection
     public interface BackupProtectionIntentsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/backupProtectionIntents")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupProtectionIntents")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectionIntentResourceList>> list(

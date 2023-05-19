@@ -17,7 +17,7 @@ public final class IdentityTests {
         Identity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"uckyf\",\"tenantId\":\"rfidfvzwdz\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wxmnteiwao\":\"datawisdkft\",\"fsrpymzidnse\":\"datavkmijcmmxdcuf\",\"yc\":\"datacxtbzsg\",\"mdwzjeiachboo\":\"datasne\"}}")
+                    "{\"principalId\":\"icxm\",\"tenantId\":\"iwqvhkh\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"og\":\"datadtopbob\",\"w\":\"datam\",\"a\":\"dataa\"}}")
                 .toObject(Identity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }
@@ -27,16 +27,7 @@ public final class IdentityTests {
         Identity model =
             new Identity()
                 .withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "wxmnteiwao",
-                        "datawisdkft",
-                        "fsrpymzidnse",
-                        "datavkmijcmmxdcuf",
-                        "yc",
-                        "datacxtbzsg",
-                        "mdwzjeiachboo",
-                        "datasne"));
+                .withUserAssignedIdentities(mapOf("og", "datadtopbob", "w", "datam", "a", "dataa"));
         model = BinaryData.fromObject(model).toObject(Identity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for StaticSites DetachStaticSite. */
 public final class StaticSitesDetachStaticSiteSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DetachStaticSite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/DetachStaticSite.json
      */
     /**
      * Sample code: Detach a static site.
@@ -22,6 +20,6 @@ public final class StaticSitesDetachStaticSiteSamples {
             .manager()
             .serviceClient()
             .getStaticSites()
-            .detachStaticSite("rg", "testStaticSite0", Context.NONE);
+            .detachStaticSite("rg", "testStaticSite0", com.azure.core.util.Context.NONE);
     }
 }

@@ -146,11 +146,11 @@ public final class CjkBigramTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound) {
-                        CjkBigramTokenFilter deserializedValue = new CjkBigramTokenFilter(name);
-                        deserializedValue.ignoreScripts = ignoreScripts;
-                        deserializedValue.outputUnigrams = outputUnigrams;
+                        CjkBigramTokenFilter deserializedCjkBigramTokenFilter = new CjkBigramTokenFilter(name);
+                        deserializedCjkBigramTokenFilter.ignoreScripts = ignoreScripts;
+                        deserializedCjkBigramTokenFilter.outputUnigrams = outputUnigrams;
 
-                        return deserializedValue;
+                        return deserializedCjkBigramTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

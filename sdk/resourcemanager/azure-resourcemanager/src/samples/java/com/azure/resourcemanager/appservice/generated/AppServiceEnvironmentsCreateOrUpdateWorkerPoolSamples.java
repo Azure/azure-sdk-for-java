@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.WorkerPoolResourceInner;
 
 /** Samples for AppServiceEnvironments CreateOrUpdateWorkerPool. */
 public final class AppServiceEnvironmentsCreateOrUpdateWorkerPoolSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_CreateOrUpdateWorkerPool.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/AppServiceEnvironments_CreateOrUpdateWorkerPool.json
      */
     /**
      * Sample code: Get properties of a worker pool.
@@ -28,6 +27,6 @@ public final class AppServiceEnvironmentsCreateOrUpdateWorkerPoolSamples {
                 "test-ase",
                 "0",
                 new WorkerPoolResourceInner().withWorkerSize("Small").withWorkerCount(3),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

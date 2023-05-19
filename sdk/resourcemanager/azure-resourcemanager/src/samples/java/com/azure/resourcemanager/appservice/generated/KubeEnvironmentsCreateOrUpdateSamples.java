@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.KubeEnvironmentInner;
 
 /** Samples for KubeEnvironments CreateOrUpdate. */
 public final class KubeEnvironmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/KubeEnvironments_CreateOrUpdate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/KubeEnvironments_CreateOrUpdate.json
      */
     /**
      * Sample code: Create kube environments.
@@ -27,6 +26,6 @@ public final class KubeEnvironmentsCreateOrUpdateSamples {
                 "examplerg",
                 "testkubeenv",
                 new KubeEnvironmentInner().withLocation("East US").withStaticIp("1.2.3.4"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

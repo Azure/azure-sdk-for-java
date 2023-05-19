@@ -9,11 +9,11 @@ import com.azure.resourcemanager.storagecache.fluent.models.CacheInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Result of the request to list Caches. It contains a list of Caches and a URL link to get the next set of results. */
+/** Result of the request to list caches. It contains a list of caches and a URL link to get the next set of results. */
 @Fluent
 public final class CachesListResult {
     /*
-     * URL to get the next set of Cache list results, if there are any.
+     * URL to get the next set of cache list results, if there are any.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -29,7 +29,7 @@ public final class CachesListResult {
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of Cache list results, if there are any.
+     * Get the nextLink property: URL to get the next set of cache list results, if there are any.
      *
      * @return the nextLink value.
      */
@@ -38,7 +38,7 @@ public final class CachesListResult {
     }
 
     /**
-     * Set the nextLink property: URL to get the next set of Cache list results, if there are any.
+     * Set the nextLink property: URL to get the next set of cache list results, if there are any.
      *
      * @param nextLink the nextLink value to set.
      * @return the CachesListResult object itself.

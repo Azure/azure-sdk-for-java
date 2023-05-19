@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataSourceCredentialType. */
+/** Type of data source credential. */
 public final class DataSourceCredentialType extends ExpandableStringEnum<DataSourceCredentialType> {
     /** Static value AzureSQLConnectionString for DataSourceCredentialType. */
     public static final DataSourceCredentialType AZURE_SQLCONNECTION_STRING = fromString("AzureSQLConnectionString");
@@ -23,6 +23,14 @@ public final class DataSourceCredentialType extends ExpandableStringEnum<DataSou
     public static final DataSourceCredentialType SERVICE_PRINCIPAL_IN_KV = fromString("ServicePrincipalInKV");
 
     /**
+     * Creates a new instance of DataSourceCredentialType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DataSourceCredentialType() {}
+
+    /**
      * Creates or finds a DataSourceCredentialType from its string representation.
      *
      * @param name a name to look for.
@@ -33,7 +41,11 @@ public final class DataSourceCredentialType extends ExpandableStringEnum<DataSou
         return fromString(name, DataSourceCredentialType.class);
     }
 
-    /** @return known DataSourceCredentialType values. */
+    /**
+     * Gets known DataSourceCredentialType values.
+     *
+     * @return known DataSourceCredentialType values.
+     */
     public static Collection<DataSourceCredentialType> values() {
         return values(DataSourceCredentialType.class);
     }

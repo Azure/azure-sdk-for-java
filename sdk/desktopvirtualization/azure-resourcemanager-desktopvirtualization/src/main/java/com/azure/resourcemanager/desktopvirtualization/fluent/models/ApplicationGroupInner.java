@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySet;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetIdentity;
 import com.azure.resourcemanager.desktopvirtualization.models.ResourceModelWithAllowedPropertySetPlan;
@@ -30,6 +29,10 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
      */
     @JsonProperty(value = "properties", required = true)
     private ApplicationGroupProperties innerProperties = new ApplicationGroupProperties();
+
+    /** Creates an instance of ApplicationGroupInner class. */
+    public ApplicationGroupInner() {
+    }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
@@ -205,29 +208,6 @@ public final class ApplicationGroupInner extends ResourceModelWithAllowedPropert
             this.innerProperties = new ApplicationGroupProperties();
         }
         this.innerProperties().withApplicationGroupType(applicationGroupType);
-        return this;
-    }
-
-    /**
-     * Get the migrationRequest property: The registration info of HostPool.
-     *
-     * @return the migrationRequest value.
-     */
-    public MigrationRequestProperties migrationRequest() {
-        return this.innerProperties() == null ? null : this.innerProperties().migrationRequest();
-    }
-
-    /**
-     * Set the migrationRequest property: The registration info of HostPool.
-     *
-     * @param migrationRequest the migrationRequest value to set.
-     * @return the ApplicationGroupInner object itself.
-     */
-    public ApplicationGroupInner withMigrationRequest(MigrationRequestProperties migrationRequest) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ApplicationGroupProperties();
-        }
-        this.innerProperties().withMigrationRequest(migrationRequest);
         return this;
     }
 

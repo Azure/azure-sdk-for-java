@@ -55,7 +55,7 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
      */
     @Host("{$host}")
     @ServiceInterface(name = "PolicyClientDataPoli")
-    private interface DataPolicyManifestsService {
+    public interface DataPolicyManifestsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Authorization/dataPolicyManifests/{policyMode}")
         @ExpectedResponses({200})
@@ -90,7 +90,9 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves the data policy manifest with the given policy mode.
+     * Retrieves a data policy manifest.
+     *
+     * <p>This operation retrieves the data policy manifest with the given policy mode.
      *
      * @param policyMode The policy mode of the data policy manifest to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +120,9 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves the data policy manifest with the given policy mode.
+     * Retrieves a data policy manifest.
+     *
+     * <p>This operation retrieves the data policy manifest with the given policy mode.
      *
      * @param policyMode The policy mode of the data policy manifest to get.
      * @param context The context to associate with this operation.
@@ -146,7 +150,9 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves the data policy manifest with the given policy mode.
+     * Retrieves a data policy manifest.
+     *
+     * <p>This operation retrieves the data policy manifest with the given policy mode.
      *
      * @param policyMode The policy mode of the data policy manifest to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,21 +166,9 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves the data policy manifest with the given policy mode.
+     * Retrieves a data policy manifest.
      *
-     * @param policyMode The policy mode of the data policy manifest to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the data policy manifest.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataPolicyManifestInner getByPolicyMode(String policyMode) {
-        return getByPolicyModeAsync(policyMode).block();
-    }
-
-    /**
-     * This operation retrieves the data policy manifest with the given policy mode.
+     * <p>This operation retrieves the data policy manifest with the given policy mode.
      *
      * @param policyMode The policy mode of the data policy manifest to get.
      * @param context The context to associate with this operation.
@@ -189,7 +183,25 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
+     * Retrieves a data policy manifest.
+     *
+     * <p>This operation retrieves the data policy manifest with the given policy mode.
+     *
+     * @param policyMode The policy mode of the data policy manifest to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the data policy manifest.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DataPolicyManifestInner getByPolicyMode(String policyMode) {
+        return getByPolicyModeWithResponse(policyMode, Context.NONE).getValue();
+    }
+
+    /**
+     * Retrieves data policy manifests
+     *
+     * <p>This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
      * values for $filter are: "$filter=namespace eq '{0}'". If $filter is not provided, the unfiltered list includes
      * all data policy manifests for data resource types. If $filter=namespace is provided, the returned list only
      * includes all data policy manifests that have a namespace matching the provided value.
@@ -227,7 +239,9 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
+     * Retrieves data policy manifests
+     *
+     * <p>This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
      * values for $filter are: "$filter=namespace eq '{0}'". If $filter is not provided, the unfiltered list includes
      * all data policy manifests for data resource types. If $filter=namespace is provided, the returned list only
      * includes all data policy manifests that have a namespace matching the provided value.
@@ -266,7 +280,9 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
+     * Retrieves data policy manifests
+     *
+     * <p>This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
      * values for $filter are: "$filter=namespace eq '{0}'". If $filter is not provided, the unfiltered list includes
      * all data policy manifests for data resource types. If $filter=namespace is provided, the returned list only
      * includes all data policy manifests that have a namespace matching the provided value.
@@ -285,7 +301,9 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
+     * Retrieves data policy manifests
+     *
+     * <p>This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
      * values for $filter are: "$filter=namespace eq '{0}'". If $filter is not provided, the unfiltered list includes
      * all data policy manifests for data resource types. If $filter=namespace is provided, the returned list only
      * includes all data policy manifests that have a namespace matching the provided value.
@@ -301,7 +319,9 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
+     * Retrieves data policy manifests
+     *
+     * <p>This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
      * values for $filter are: "$filter=namespace eq '{0}'". If $filter is not provided, the unfiltered list includes
      * all data policy manifests for data resource types. If $filter=namespace is provided, the returned list only
      * includes all data policy manifests that have a namespace matching the provided value.
@@ -322,7 +342,9 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
+     * Retrieves data policy manifests
+     *
+     * <p>This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
      * values for $filter are: "$filter=namespace eq '{0}'". If $filter is not provided, the unfiltered list includes
      * all data policy manifests for data resource types. If $filter=namespace is provided, the returned list only
      * includes all data policy manifests that have a namespace matching the provided value.
@@ -338,7 +360,9 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     }
 
     /**
-     * This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
+     * Retrieves data policy manifests
+     *
+     * <p>This operation retrieves a list of all the data policy manifests that match the optional given $filter. Valid
      * values for $filter are: "$filter=namespace eq '{0}'". If $filter is not provided, the unfiltered list includes
      * all data policy manifests for data resource types. If $filter=namespace is provided, the returned list only
      * includes all data policy manifests that have a namespace matching the provided value.
@@ -360,7 +384,8 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -395,7 +420,8 @@ public final class DataPolicyManifestsClientImpl implements DataPolicyManifestsC
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

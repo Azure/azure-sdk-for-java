@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 /**
  * Manifest media type.
  */
-public class ManifestMediaType extends ExpandableStringEnum<ManifestMediaType> {
+public final class ManifestMediaType extends ExpandableStringEnum<ManifestMediaType> {
 
     /**
      * Docker v2 manifest content type.
@@ -18,10 +18,15 @@ public class ManifestMediaType extends ExpandableStringEnum<ManifestMediaType> {
     /**
      * OCI manifest content type.
      */
-    public static final ManifestMediaType OCI_MANIFEST = fromString("application/vnd.oci.image.manifest.v1+json");
+    public static final ManifestMediaType OCI_IMAGE_MANIFEST = fromString("application/vnd.oci.image.manifest.v1+json");
 
+    /**
+     * Constructs ManifestMediaType object.
+     *
+     * @deprecated use {@link ManifestMediaType#fromString(String)} instead.
+     */
     @Deprecated
-    ManifestMediaType() {
+    public ManifestMediaType() {
     }
 
     /**

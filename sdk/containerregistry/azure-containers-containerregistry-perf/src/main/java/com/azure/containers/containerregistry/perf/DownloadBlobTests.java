@@ -4,7 +4,8 @@
 package com.azure.containers.containerregistry.perf;
 
 import com.azure.containers.containerregistry.perf.core.ServiceTest;
-import com.azure.core.util.Context;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.perf.test.core.NullOutputStream;
 import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
@@ -28,21 +29,22 @@ public class DownloadBlobTests extends ServiceTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> setupAsync() {
-        return blobAsyncClient
-            .uploadBlob(generateAsyncStream(options.getSize()))
-            .doOnNext(result -> digest[0] = result.getDigest())
-            .then();
+        return
+            BinaryData.fromFlux(generateAsyncStream(options.getSize()))
+                .flatMap(content -> blobAsyncClient.uploadBlob(content))
+                .doOnNext(result -> digest[0] = result.getDigest())
+                .then();
     }
 
     @Override
     public void run() {
-        blobClient.downloadStream(digest[0], Channels.newChannel(output), Context.NONE);
+        blobClient.downloadStream(digest[0], Channels.newChannel(output));
     }
 
     @Override
     public Mono<Void> runAsync() {
         return blobAsyncClient.downloadStream(digest[0])
-            .flatMap(result -> result.writeValueTo(Channels.newChannel(output)))
+            .flatMap(result -> FluxUtil.writeToOutputStream(result.toFluxByteBuffer(), output))
             .then();
     }
 }

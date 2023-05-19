@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Tasks List. */
 public final class TasksListSamples {
     /*
@@ -17,6 +15,6 @@ public final class TasksListSamples {
      * @param manager Entry point to SecurityManager.
      */
     public static void getSecurityRecommendationsTasks(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.tasks().list(null, Context.NONE);
+        manager.tasks().list(null, com.azure.core.util.Context.NONE);
     }
 }

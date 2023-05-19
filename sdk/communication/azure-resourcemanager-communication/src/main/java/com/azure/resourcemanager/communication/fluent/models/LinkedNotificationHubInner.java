@@ -16,6 +16,10 @@ public final class LinkedNotificationHubInner {
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
+    /** Creates an instance of LinkedNotificationHubInner class. */
+    public LinkedNotificationHubInner() {
+    }
+
     /**
      * Get the resourceId property: The resource ID of the notification hub.
      *

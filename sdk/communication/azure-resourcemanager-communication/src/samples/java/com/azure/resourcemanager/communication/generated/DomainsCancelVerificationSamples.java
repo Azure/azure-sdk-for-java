@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.communication.models.VerificationParameter;
 import com.azure.resourcemanager.communication.models.VerificationType;
 
 /** Samples for Domains CancelVerification. */
 public final class DomainsCancelVerificationSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/domains/cancelVerification.json
+     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/stable/2023-03-31/examples/domains/cancelVerification.json
      */
     /**
      * Sample code: Cancel verification.
@@ -26,6 +25,6 @@ public final class DomainsCancelVerificationSamples {
                 "MyEmailServiceResource",
                 "mydomain.com",
                 new VerificationParameter().withVerificationType(VerificationType.SPF),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

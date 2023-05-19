@@ -9,13 +9,13 @@ import java.util.Collection;
 
 /** Sort options for ordering manifests in a collection. */
 public final class ArtifactManifestOrder extends ExpandableStringEnum<ArtifactManifestOrder> {
-    /** Static value none for ArtifactManifestOrder. */
+    /** Do not provide an orderby value in the request. */
     public static final ArtifactManifestOrder NONE = fromString("none");
 
-    /** Static value timedesc for ArtifactManifestOrder. */
+    /** Order manifests by LastUpdatedOn field, from most recently updated to least recently updated. */
     public static final ArtifactManifestOrder LAST_UPDATED_ON_DESCENDING = fromString("timedesc");
 
-    /** Static value timeasc for ArtifactManifestOrder. */
+    /** Order manifest by LastUpdatedOn field, from least recently updated to most recently updated. */
     public static final ArtifactManifestOrder LAST_UPDATED_ON_ASCENDING = fromString("timeasc");
 
     /**

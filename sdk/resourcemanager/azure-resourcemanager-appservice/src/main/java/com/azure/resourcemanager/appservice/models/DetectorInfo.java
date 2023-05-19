@@ -65,6 +65,10 @@ public final class DetectorInfo {
     @JsonProperty(value = "score", access = JsonProperty.Access.WRITE_ONLY)
     private Float score;
 
+    /** Creates an instance of DetectorInfo class. */
+    public DetectorInfo() {
+    }
+
     /**
      * Get the id property: Id of detector.
      *

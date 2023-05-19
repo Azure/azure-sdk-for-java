@@ -12,47 +12,40 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public class DeploymentProperties {
     /*
-     * The template content. You use this element when you want to pass the
-     * template syntax directly in the request rather than link to an existing
-     * template. It can be a JObject or well-formed JSON string. Use either the
+     * The template content. You use this element when you want to pass the template syntax directly in the request
+     * rather than link to an existing template. It can be a JObject or well-formed JSON string. Use either the
      * templateLink property or the template property, but not both.
      */
     @JsonProperty(value = "template")
     private Object template;
 
     /*
-     * The URI of the template. Use either the templateLink property or the
-     * template property, but not both.
+     * The URI of the template. Use either the templateLink property or the template property, but not both.
      */
     @JsonProperty(value = "templateLink")
     private TemplateLink templateLink;
 
     /*
-     * Name and value pairs that define the deployment parameters for the
-     * template. You use this element when you want to provide the parameter
-     * values directly in the request rather than link to an existing parameter
-     * file. Use either the parametersLink property or the parameters property,
-     * but not both. It can be a JObject or a well formed JSON string.
+     * Name and value pairs that define the deployment parameters for the template. You use this element when you want
+     * to provide the parameter values directly in the request rather than link to an existing parameter file. Use
+     * either the parametersLink property or the parameters property, but not both. It can be a JObject or a well
+     * formed JSON string.
      */
     @JsonProperty(value = "parameters")
     private Object parameters;
 
     /*
-     * The URI of parameters file. You use this element to link to an existing
-     * parameters file. Use either the parametersLink property or the
-     * parameters property, but not both.
+     * The URI of parameters file. You use this element to link to an existing parameters file. Use either the
+     * parametersLink property or the parameters property, but not both.
      */
     @JsonProperty(value = "parametersLink")
     private ParametersLink parametersLink;
 
     /*
-     * The mode that is used to deploy resources. This value can be either
-     * Incremental or Complete. In Incremental mode, resources are deployed
-     * without deleting existing resources that are not included in the
-     * template. In Complete mode, resources are deployed and existing
-     * resources in the resource group that are not included in the template
-     * are deleted. Be careful when using Complete mode as you may
-     * unintentionally delete resources.
+     * The mode that is used to deploy resources. This value can be either Incremental or Complete. In Incremental
+     * mode, resources are deployed without deleting existing resources that are not included in the template. In
+     * Complete mode, resources are deployed and existing resources in the resource group that are not included in the
+     * template are deleted. Be careful when using Complete mode as you may unintentionally delete resources.
      */
     @JsonProperty(value = "mode", required = true)
     private DeploymentMode mode;
@@ -70,12 +63,15 @@ public class DeploymentProperties {
     private OnErrorDeployment onErrorDeployment;
 
     /*
-     * Specifies whether template expressions are evaluated within the scope of
-     * the parent template or nested template. Only applicable to nested
-     * templates. If not specified, default value is outer.
+     * Specifies whether template expressions are evaluated within the scope of the parent template or nested template.
+     * Only applicable to nested templates. If not specified, default value is outer.
      */
     @JsonProperty(value = "expressionEvaluationOptions")
     private ExpressionEvaluationOptions expressionEvaluationOptions;
+
+    /** Creates an instance of DeploymentProperties class. */
+    public DeploymentProperties() {
+    }
 
     /**
      * Get the template property: The template content. You use this element when you want to pass the template syntax

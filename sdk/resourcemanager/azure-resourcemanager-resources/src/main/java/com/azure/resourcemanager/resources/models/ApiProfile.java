@@ -22,6 +22,10 @@ public final class ApiProfile {
     @JsonProperty(value = "apiVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String apiVersion;
 
+    /** Creates an instance of ApiProfile class. */
+    public ApiProfile() {
+    }
+
     /**
      * Get the profileVersion property: The profile version.
      *

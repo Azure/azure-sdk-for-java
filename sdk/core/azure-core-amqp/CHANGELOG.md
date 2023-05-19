@@ -10,6 +10,31 @@
 
 ### Other Changes
 
+## 2.8.5 (2023-05-04)
+
+### Bugs Fixed
+
+- Addressing the overhead of batch send allocating byte array equal to the max message size. ([34426](https://github.com/Azure/azure-sdk-for-java/issues/34426))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to `1.39.0`.
+
+## 2.8.4 (2023-04-07)
+
+### Bugs Fixed
+
+- Addressing IllegalStateException due to double free of Connection reference by the Transport.
+- Fixes bug where `Message.messageId` and `Message.groupId` are not set on the uber message when sending a collection of messages.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
+
 ## 2.8.3 (2023-03-02)
 
 ### Other Changes

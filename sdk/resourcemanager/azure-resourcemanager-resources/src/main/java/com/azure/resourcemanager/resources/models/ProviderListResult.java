@@ -24,6 +24,10 @@ public final class ProviderListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ProviderListResult class. */
+    public ProviderListResult() {
+    }
+
     /**
      * Get the value property: An array of resource providers.
      *

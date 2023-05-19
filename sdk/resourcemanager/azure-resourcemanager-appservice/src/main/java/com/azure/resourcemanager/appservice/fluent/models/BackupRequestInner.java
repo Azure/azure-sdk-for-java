@@ -20,6 +20,10 @@ public final class BackupRequestInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private BackupRequestProperties innerProperties;
 
+    /** Creates an instance of BackupRequestInner class. */
+    public BackupRequestInner() {
+    }
+
     /**
      * Get the innerProperties property: BackupRequest resource specific properties.
      *

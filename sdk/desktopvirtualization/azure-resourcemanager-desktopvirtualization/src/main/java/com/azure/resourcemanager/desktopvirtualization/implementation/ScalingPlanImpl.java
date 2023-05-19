@@ -242,6 +242,16 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
         return this;
     }
 
+    public ScalingPlanImpl withTimeZone(String timeZone) {
+        if (isInCreateMode()) {
+            this.innerModel().withTimeZone(timeZone);
+            return this;
+        } else {
+            this.updateScalingPlan.withTimeZone(timeZone);
+            return this;
+        }
+    }
+
     public ScalingPlanImpl withTags(Map<String, String> tags) {
         if (isInCreateMode()) {
             this.innerModel().withTags(tags);
@@ -293,16 +303,6 @@ public final class ScalingPlanImpl implements ScalingPlan, ScalingPlan.Definitio
             return this;
         } else {
             this.updateScalingPlan.withFriendlyName(friendlyName);
-            return this;
-        }
-    }
-
-    public ScalingPlanImpl withTimeZone(String timeZone) {
-        if (isInCreateMode()) {
-            this.innerModel().withTimeZone(timeZone);
-            return this;
-        } else {
-            this.updateScalingPlan.withTimeZone(timeZone);
             return this;
         }
     }

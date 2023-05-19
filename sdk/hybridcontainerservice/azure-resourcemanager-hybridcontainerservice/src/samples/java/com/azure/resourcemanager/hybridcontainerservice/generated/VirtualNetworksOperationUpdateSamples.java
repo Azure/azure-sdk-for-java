@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworks;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for VirtualNetworksOperation Update. */
 public final class VirtualNetworksOperationUpdateSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/UpdateVirtualNetwork.json
+     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-09-01-preview/examples/UpdateVirtualNetwork.json
      */
     /**
      * Sample code: UpdateVirtualNetwork.
@@ -24,7 +23,8 @@ public final class VirtualNetworksOperationUpdateSamples {
         VirtualNetworks resource =
             manager
                 .virtualNetworksOperations()
-                .getByResourceGroupWithResponse("test-arcappliance-resgrp", "test-vnet-static", Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "test-arcappliance-resgrp", "test-vnet-static", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("additionalProperties", "sample")).apply();
     }

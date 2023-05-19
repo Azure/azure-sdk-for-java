@@ -4,8 +4,9 @@
 
 package com.azure.ai.metricsadvisor.administration.models;
 
+import com.azure.ai.metricsadvisor.implementation.util.DataFeedIngestionStatusHelper;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.time.OffsetDateTime;
 
 /** The DataFeedIngestionStatus model. */
@@ -14,19 +15,16 @@ public final class DataFeedIngestionStatus {
     /*
      * data slice timestamp.
      */
-    @JsonProperty(value = "timestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timestamp;
 
     /*
      * latest ingestion task status for this data slice.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private IngestionStatusType status;
 
     /*
      * the trimmed message of last ingestion job.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /**
@@ -54,5 +52,36 @@ public final class DataFeedIngestionStatus {
      */
     public String getMessage() {
         return this.message;
+    }
+
+    static {
+        DataFeedIngestionStatusHelper
+            .setAccessor(new DataFeedIngestionStatusHelper.DataFeedIngestionStatusAccessor() {
+                @Override
+                public void setTimestamp(DataFeedIngestionStatus ingestionStatus, OffsetDateTime offsetDateTime) {
+                    ingestionStatus.setTimestamp(offsetDateTime);
+                }
+
+                @Override
+                public void setIngestionStatusType(DataFeedIngestionStatus ingestionStatus, IngestionStatusType statusType) {
+                    ingestionStatus.setStatus(statusType);
+                }
+
+                @Override
+                public void setMessage(DataFeedIngestionStatus ingestionStatus, String message) {
+                    ingestionStatus.setMessage(message);
+                }
+            });
+    }
+
+    void setTimestamp(OffsetDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    void setStatus(IngestionStatusType ingestionStatusType) {
+        this.status = ingestionStatusType;
+    }
+    void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -21,16 +21,14 @@ public final class PolicyDefinitionReference {
     private String policyDefinitionId;
 
     /*
-     * The parameter values for the referenced policy rule. The keys are the
-     * parameter names.
+     * The parameter values for the referenced policy rule. The keys are the parameter names.
      */
     @JsonProperty(value = "parameters")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterValuesValue> parameters;
 
     /*
-     * A unique id (within the policy set definition) for this policy
-     * definition reference.
+     * A unique id (within the policy set definition) for this policy definition reference.
      */
     @JsonProperty(value = "policyDefinitionReferenceId")
     private String policyDefinitionReferenceId;
@@ -40,6 +38,10 @@ public final class PolicyDefinitionReference {
      */
     @JsonProperty(value = "groupNames")
     private List<String> groupNames;
+
+    /** Creates an instance of PolicyDefinitionReference class. */
+    public PolicyDefinitionReference() {
+    }
 
     /**
      * Get the policyDefinitionId property: The ID of the policy definition or policy set definition.

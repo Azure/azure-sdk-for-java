@@ -177,11 +177,11 @@ public final class SynonymTokenFilter extends TokenFilter {
                         }
                     }
                     if (nameFound && synonymsFound) {
-                        SynonymTokenFilter deserializedValue = new SynonymTokenFilter(name, synonyms);
-                        deserializedValue.caseIgnored = caseIgnored;
-                        deserializedValue.expand = expand;
+                        SynonymTokenFilter deserializedSynonymTokenFilter = new SynonymTokenFilter(name, synonyms);
+                        deserializedSynonymTokenFilter.caseIgnored = caseIgnored;
+                        deserializedSynonymTokenFilter.expand = expand;
 
-                        return deserializedValue;
+                        return deserializedSynonymTokenFilter;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!nameFound) {

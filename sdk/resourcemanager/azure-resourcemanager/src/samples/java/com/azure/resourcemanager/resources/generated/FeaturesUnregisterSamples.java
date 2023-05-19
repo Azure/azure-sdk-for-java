@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Features Unregister. */
 public final class FeaturesUnregisterSamples {
     /*
@@ -22,6 +20,6 @@ public final class FeaturesUnregisterSamples {
             .manager()
             .featureClient()
             .getFeatures()
-            .unregisterWithResponse("Resource Provider Namespace", "feature", Context.NONE);
+            .unregisterWithResponse("Resource Provider Namespace", "feature", com.azure.core.util.Context.NONE);
     }
 }

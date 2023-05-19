@@ -18,20 +18,19 @@ public final class IdentityDataTests {
         IdentityData model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"ehzzvypyqrim\",\"tenantId\":\"npvswjdkirso\",\"type\":\"SystemAssigned,"
-                        + " UserAssigned\",\"userAssignedIdentities\":{\"znorcj\":{\"principalId\":\"crmnohjtckwhds\",\"clientId\":\"fiyipjxsqwpgrj\"}}}")
+                    "{\"principalId\":\"klj\",\"tenantId\":\"bqidtqaj\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"xzlocxscp\":{\"principalId\":\"kudjkrlkhb\",\"clientId\":\"fepgzgq\"}}}")
                 .toObject(IdentityData.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IdentityData model =
             new IdentityData()
-                .withType(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf("znorcj", new UserIdentity()));
+                .withType(ResourceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("xzlocxscp", new UserIdentity()));
         model = BinaryData.fromObject(model).toObject(IdentityData.class);
-        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.type());
     }
 
     @SuppressWarnings("unchecked")

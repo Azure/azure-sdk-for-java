@@ -17,6 +17,10 @@ public final class SitePhpErrorLogFlagInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SitePhpErrorLogFlagProperties innerProperties;
 
+    /** Creates an instance of SitePhpErrorLogFlagInner class. */
+    public SitePhpErrorLogFlagInner() {
+    }
+
     /**
      * Get the innerProperties property: SitePhpErrorLogFlag resource specific properties.
      *

@@ -53,6 +53,15 @@ public final class Tactics extends ExpandableStringEnum<Tactics> {
     public static final Tactics IMPACT = fromString("Impact");
 
     /**
+     * Creates a new instance of Tactics value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Tactics() {
+    }
+
+    /**
      * Creates or finds a Tactics from its string representation.
      *
      * @param name a name to look for.

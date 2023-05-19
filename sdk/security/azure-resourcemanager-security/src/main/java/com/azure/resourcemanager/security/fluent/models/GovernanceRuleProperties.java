@@ -7,23 +7,30 @@ package com.azure.resourcemanager.security.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.GovernanceRuleEmailNotification;
+import com.azure.resourcemanager.security.models.GovernanceRuleMetadata;
 import com.azure.resourcemanager.security.models.GovernanceRuleOwnerSource;
 import com.azure.resourcemanager.security.models.GovernanceRuleSourceResourceType;
 import com.azure.resourcemanager.security.models.GovernanceRuleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes properties of an governanceRule. */
+/** Describes properties of an governance rule. */
 @Fluent
 public final class GovernanceRuleProperties {
     /*
-     * display name of the governanceRule
+     * The tenantId (GUID)
+     */
+    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
+    private String tenantId;
+
+    /*
+     * Display name of the governance rule
      */
     @JsonProperty(value = "displayName", required = true)
     private String displayName;
 
     /*
-     * description of the governanceRule
+     * Description of the governance rule
      */
     @JsonProperty(value = "description")
     private String description;
@@ -42,8 +49,8 @@ public final class GovernanceRuleProperties {
     private Boolean isGracePeriod;
 
     /*
-     * The governance rule priority, priority to the lower number. Rules with the same priority on the same
-     * subscription will not be allowed
+     * The governance rule priority, priority to the lower number. Rules with the same priority on the same scope will
+     * not be allowed
      */
     @JsonProperty(value = "rulePriority", required = true)
     private int rulePriority;
@@ -67,13 +74,25 @@ public final class GovernanceRuleProperties {
     private GovernanceRuleSourceResourceType sourceResourceType;
 
     /*
+     * Excluded scopes, filter out the descendants of the scope (on management scopes)
+     */
+    @JsonProperty(value = "excludedScopes")
+    private List<String> excludedScopes;
+
+    /*
      * The governance rule conditionSets - see examples
      */
     @JsonProperty(value = "conditionSets", required = true)
     private List<Object> conditionSets;
 
     /*
-     * The Owner source for the governance rule - e.g. Manually by user@contoso.com - see example
+     * Defines whether the rule is management scope rule (master connector as a single scope or management scope)
+     */
+    @JsonProperty(value = "includeMemberScopes")
+    private Boolean includeMemberScopes;
+
+    /*
+     * The owner source for the governance rule - e.g. Manually by user@contoso.com - see example
      */
     @JsonProperty(value = "ownerSource", required = true)
     private GovernanceRuleOwnerSource ownerSource;
@@ -85,12 +104,27 @@ public final class GovernanceRuleProperties {
     @JsonProperty(value = "governanceEmailNotification")
     private GovernanceRuleEmailNotification governanceEmailNotification;
 
+    /*
+     * The governance rule metadata
+     */
+    @JsonProperty(value = "metadata")
+    private GovernanceRuleMetadata metadata;
+
     /** Creates an instance of GovernanceRuleProperties class. */
     public GovernanceRuleProperties() {
     }
 
     /**
-     * Get the displayName property: display name of the governanceRule.
+     * Get the tenantId property: The tenantId (GUID).
+     *
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.tenantId;
+    }
+
+    /**
+     * Get the displayName property: Display name of the governance rule.
      *
      * @return the displayName value.
      */
@@ -99,7 +133,7 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Set the displayName property: display name of the governanceRule.
+     * Set the displayName property: Display name of the governance rule.
      *
      * @param displayName the displayName value to set.
      * @return the GovernanceRuleProperties object itself.
@@ -110,7 +144,7 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Get the description property: description of the governanceRule.
+     * Get the description property: Description of the governance rule.
      *
      * @return the description value.
      */
@@ -119,7 +153,7 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Set the description property: description of the governanceRule.
+     * Set the description property: Description of the governance rule.
      *
      * @param description the description value to set.
      * @return the GovernanceRuleProperties object itself.
@@ -173,7 +207,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Get the rulePriority property: The governance rule priority, priority to the lower number. Rules with the same
-     * priority on the same subscription will not be allowed.
+     * priority on the same scope will not be allowed.
      *
      * @return the rulePriority value.
      */
@@ -183,7 +217,7 @@ public final class GovernanceRuleProperties {
 
     /**
      * Set the rulePriority property: The governance rule priority, priority to the lower number. Rules with the same
-     * priority on the same subscription will not be allowed.
+     * priority on the same scope will not be allowed.
      *
      * @param rulePriority the rulePriority value to set.
      * @return the GovernanceRuleProperties object itself.
@@ -254,6 +288,26 @@ public final class GovernanceRuleProperties {
     }
 
     /**
+     * Get the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management scopes).
+     *
+     * @return the excludedScopes value.
+     */
+    public List<String> excludedScopes() {
+        return this.excludedScopes;
+    }
+
+    /**
+     * Set the excludedScopes property: Excluded scopes, filter out the descendants of the scope (on management scopes).
+     *
+     * @param excludedScopes the excludedScopes value to set.
+     * @return the GovernanceRuleProperties object itself.
+     */
+    public GovernanceRuleProperties withExcludedScopes(List<String> excludedScopes) {
+        this.excludedScopes = excludedScopes;
+        return this;
+    }
+
+    /**
      * Get the conditionSets property: The governance rule conditionSets - see examples.
      *
      * @return the conditionSets value.
@@ -274,7 +328,29 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Get the ownerSource property: The Owner source for the governance rule - e.g. Manually by user@contoso.com - see
+     * Get the includeMemberScopes property: Defines whether the rule is management scope rule (master connector as a
+     * single scope or management scope).
+     *
+     * @return the includeMemberScopes value.
+     */
+    public Boolean includeMemberScopes() {
+        return this.includeMemberScopes;
+    }
+
+    /**
+     * Set the includeMemberScopes property: Defines whether the rule is management scope rule (master connector as a
+     * single scope or management scope).
+     *
+     * @param includeMemberScopes the includeMemberScopes value to set.
+     * @return the GovernanceRuleProperties object itself.
+     */
+    public GovernanceRuleProperties withIncludeMemberScopes(Boolean includeMemberScopes) {
+        this.includeMemberScopes = includeMemberScopes;
+        return this;
+    }
+
+    /**
+     * Get the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
      * example.
      *
      * @return the ownerSource value.
@@ -284,7 +360,7 @@ public final class GovernanceRuleProperties {
     }
 
     /**
-     * Set the ownerSource property: The Owner source for the governance rule - e.g. Manually by user@contoso.com - see
+     * Set the ownerSource property: The owner source for the governance rule - e.g. Manually by user@contoso.com - see
      * example.
      *
      * @param ownerSource the ownerSource value to set.
@@ -315,6 +391,26 @@ public final class GovernanceRuleProperties {
     public GovernanceRuleProperties withGovernanceEmailNotification(
         GovernanceRuleEmailNotification governanceEmailNotification) {
         this.governanceEmailNotification = governanceEmailNotification;
+        return this;
+    }
+
+    /**
+     * Get the metadata property: The governance rule metadata.
+     *
+     * @return the metadata value.
+     */
+    public GovernanceRuleMetadata metadata() {
+        return this.metadata;
+    }
+
+    /**
+     * Set the metadata property: The governance rule metadata.
+     *
+     * @param metadata the metadata value to set.
+     * @return the GovernanceRuleProperties object itself.
+     */
+    public GovernanceRuleProperties withMetadata(GovernanceRuleMetadata metadata) {
+        this.metadata = metadata;
         return this;
     }
 
@@ -358,6 +454,9 @@ public final class GovernanceRuleProperties {
         }
         if (governanceEmailNotification() != null) {
             governanceEmailNotification().validate();
+        }
+        if (metadata() != null) {
+            metadata().validate();
         }
     }
 

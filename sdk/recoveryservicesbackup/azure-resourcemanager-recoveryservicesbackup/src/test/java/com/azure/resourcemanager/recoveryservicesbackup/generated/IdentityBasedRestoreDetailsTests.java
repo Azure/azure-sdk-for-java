@@ -13,18 +13,18 @@ public final class IdentityBasedRestoreDetailsTests {
     public void testDeserialize() throws Exception {
         IdentityBasedRestoreDetails model =
             BinaryData
-                .fromString("{\"objectType\":\"agunbtgfebw\",\"targetStorageAccountId\":\"bmhyreeudz\"}")
+                .fromString("{\"objectType\":\"wtxxpkyjcx\",\"targetStorageAccountId\":\"xgrytfmp\"}")
                 .toObject(IdentityBasedRestoreDetails.class);
-        Assertions.assertEquals("agunbtgfebw", model.objectType());
-        Assertions.assertEquals("bmhyreeudz", model.targetStorageAccountId());
+        Assertions.assertEquals("wtxxpkyjcx", model.objectType());
+        Assertions.assertEquals("xgrytfmp", model.targetStorageAccountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         IdentityBasedRestoreDetails model =
-            new IdentityBasedRestoreDetails().withObjectType("agunbtgfebw").withTargetStorageAccountId("bmhyreeudz");
+            new IdentityBasedRestoreDetails().withObjectType("wtxxpkyjcx").withTargetStorageAccountId("xgrytfmp");
         model = BinaryData.fromObject(model).toObject(IdentityBasedRestoreDetails.class);
-        Assertions.assertEquals("agunbtgfebw", model.objectType());
-        Assertions.assertEquals("bmhyreeudz", model.targetStorageAccountId());
+        Assertions.assertEquals("wtxxpkyjcx", model.objectType());
+        Assertions.assertEquals("xgrytfmp", model.targetStorageAccountId());
     }
 }

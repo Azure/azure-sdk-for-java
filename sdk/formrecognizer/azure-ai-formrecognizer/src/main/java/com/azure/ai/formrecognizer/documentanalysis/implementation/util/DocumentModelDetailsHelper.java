@@ -32,6 +32,8 @@ public final class DocumentModelDetailsHelper {
         void setDocTypes(DocumentModelDetails documentModelDetails, Map<String, DocumentTypeDetails> docTypes);
 
         void setTags(DocumentModelDetails documentModelDetails, Map<String, String> tags);
+
+        void setExpiresOn(DocumentModelDetails documentModelDetails, OffsetDateTime expiresOn);
     }
 
     /**
@@ -61,5 +63,9 @@ public final class DocumentModelDetailsHelper {
 
     static void setTags(DocumentModelDetails documentModelDetails, Map<String, String> tags) {
         accessor.setTags(documentModelDetails, tags);
+    }
+
+    static void setExpiresOn(DocumentModelDetails documentModelDetails, OffsetDateTime expirationDateTime) {
+        accessor.setExpiresOn(documentModelDetails, expirationDateTime);
     }
 }

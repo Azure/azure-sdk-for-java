@@ -9,7 +9,11 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.Application
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ApplicationGroupList List of ApplicationGroup definitions. */
+/**
+ * ApplicationGroupList
+ *
+ * <p>List of ApplicationGroup definitions.
+ */
 @Fluent
 public final class ApplicationGroupList {
     /*
@@ -23,6 +27,10 @@ public final class ApplicationGroupList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ApplicationGroupList class. */
+    public ApplicationGroupList() {
+    }
 
     /**
      * Get the value property: List of ApplicationGroup definitions.

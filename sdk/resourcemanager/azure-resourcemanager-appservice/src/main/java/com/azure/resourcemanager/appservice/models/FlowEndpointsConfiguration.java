@@ -22,6 +22,10 @@ public final class FlowEndpointsConfiguration {
     @JsonProperty(value = "connector")
     private FlowEndpoints connector;
 
+    /** Creates an instance of FlowEndpointsConfiguration class. */
+    public FlowEndpointsConfiguration() {
+    }
+
     /**
      * Get the workflow property: The workflow endpoints.
      *

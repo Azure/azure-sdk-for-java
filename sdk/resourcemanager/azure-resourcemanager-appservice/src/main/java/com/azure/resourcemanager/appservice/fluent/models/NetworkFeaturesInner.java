@@ -18,6 +18,10 @@ public final class NetworkFeaturesInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private NetworkFeaturesProperties innerProperties;
 
+    /** Creates an instance of NetworkFeaturesInner class. */
+    public NetworkFeaturesInner() {
+    }
+
     /**
      * Get the innerProperties property: NetworkFeatures resource specific properties.
      *

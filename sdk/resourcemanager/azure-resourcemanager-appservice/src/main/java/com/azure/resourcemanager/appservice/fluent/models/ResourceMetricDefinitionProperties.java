@@ -27,8 +27,7 @@ public final class ResourceMetricDefinitionProperties {
     private String primaryAggregationType;
 
     /*
-     * List of time grains supported for the metric together with retention
-     * period.
+     * List of time grains supported for the metric together with retention period.
      */
     @JsonProperty(value = "metricAvailabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceMetricAvailability> metricAvailabilities;
@@ -45,6 +44,10 @@ public final class ResourceMetricDefinitionProperties {
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
+
+    /** Creates an instance of ResourceMetricDefinitionProperties class. */
+    public ResourceMetricDefinitionProperties() {
+    }
 
     /**
      * Get the unit property: Unit of the metric.

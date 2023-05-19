@@ -1,6 +1,6 @@
 # Release History
 
-## 4.6.0-beta.1 (Unreleased)
+## 4.7.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.6.1 (2023-04-20)
+
+### Other Changes
+
+- Test proxy server migration.
+- Made all logger instances static.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
+## 4.6.0 (2023-03-18)
+
+### Features Added
+- Added support for service version `7.4`.
+
+### Other Changes
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
 
 ## 4.5.4 (2023-02-16)
 

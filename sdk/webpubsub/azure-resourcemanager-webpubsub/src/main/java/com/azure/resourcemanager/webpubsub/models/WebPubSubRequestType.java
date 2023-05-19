@@ -23,6 +23,15 @@ public final class WebPubSubRequestType extends ExpandableStringEnum<WebPubSubRe
     public static final WebPubSubRequestType TRACE = fromString("Trace");
 
     /**
+     * Creates a new instance of WebPubSubRequestType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public WebPubSubRequestType() {
+    }
+
+    /**
      * Creates or finds a WebPubSubRequestType from its string representation.
      *
      * @param name a name to look for.

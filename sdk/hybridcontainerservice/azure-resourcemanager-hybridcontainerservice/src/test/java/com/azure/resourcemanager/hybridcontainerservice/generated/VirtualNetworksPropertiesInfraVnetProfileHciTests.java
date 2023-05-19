@@ -7,30 +7,30 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPropertiesInfraVnetProfileHci;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworksPropertiesInfraVnetProfileHciTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         VirtualNetworksPropertiesInfraVnetProfileHci model =
             BinaryData
-                .fromString("{\"mocGroup\":\"n\",\"mocLocation\":\"jcntuj\",\"mocVnetName\":\"c\"}")
+                .fromString(
+                    "{\"mocGroup\":\"qhoftrmaequiah\",\"mocLocation\":\"cslfaoqzpiyylha\",\"mocVnetName\":\"swhccsphk\"}")
                 .toObject(VirtualNetworksPropertiesInfraVnetProfileHci.class);
-        Assertions.assertEquals("n", model.mocGroup());
-        Assertions.assertEquals("jcntuj", model.mocLocation());
-        Assertions.assertEquals("c", model.mocVnetName());
+        Assertions.assertEquals("qhoftrmaequiah", model.mocGroup());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.mocLocation());
+        Assertions.assertEquals("swhccsphk", model.mocVnetName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         VirtualNetworksPropertiesInfraVnetProfileHci model =
             new VirtualNetworksPropertiesInfraVnetProfileHci()
-                .withMocGroup("n")
-                .withMocLocation("jcntuj")
-                .withMocVnetName("c");
+                .withMocGroup("qhoftrmaequiah")
+                .withMocLocation("cslfaoqzpiyylha")
+                .withMocVnetName("swhccsphk");
         model = BinaryData.fromObject(model).toObject(VirtualNetworksPropertiesInfraVnetProfileHci.class);
-        Assertions.assertEquals("n", model.mocGroup());
-        Assertions.assertEquals("jcntuj", model.mocLocation());
-        Assertions.assertEquals("c", model.mocVnetName());
+        Assertions.assertEquals("qhoftrmaequiah", model.mocGroup());
+        Assertions.assertEquals("cslfaoqzpiyylha", model.mocLocation());
+        Assertions.assertEquals("swhccsphk", model.mocVnetName());
     }
 }

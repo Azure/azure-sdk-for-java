@@ -17,6 +17,10 @@ public final class CommunicationServiceUpdateProperties {
     @JsonProperty(value = "linkedDomains")
     private List<String> linkedDomains;
 
+    /** Creates an instance of CommunicationServiceUpdateProperties class. */
+    public CommunicationServiceUpdateProperties() {
+    }
+
     /**
      * Get the linkedDomains property: List of email Domain resource Ids.
      *

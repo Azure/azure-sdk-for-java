@@ -24,25 +24,25 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
     }
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        asyncClient = getClientBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
-            : httpClient), forCleanup).buildAsyncClient();
+        asyncClient = getClientBuilder(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
+            .buildAsyncClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void listSettings(HttpClient httpClient) {
+    public void getSettings(HttpClient httpClient) {
         getClient(httpClient, false);
 
-        StepVerifier.create(asyncClient.listSettings())
-            .assertNext(listSettingsResult -> {
-                assertNotNull(listSettingsResult);
-                assertTrue(listSettingsResult.getValue().size() > 0);
+        StepVerifier.create(asyncClient.getSettings())
+            .assertNext(getSettingsResult -> {
+                assertNotNull(getSettingsResult);
+                assertTrue(getSettingsResult.getSettings().size() > 0);
 
-                for (KeyVaultSetting setting : listSettingsResult.getValue()) {
+                for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
                     assertNotNull(setting);
                     assertNotNull(setting.getName());
                     assertNotNull(setting.getType());
-                    assertNotNull(setting.asString());
                 }
             }).verifyComplete();
     }
@@ -59,7 +59,6 @@ public class KeyVaultSettingsAsyncClientTest extends KeyVaultSettingsClientTestB
                 assertNotNull(setting);
                 assertNotNull(setting.getName());
                 assertNotNull(setting.getType());
-                assertNotNull(setting.asString());
             }).verifyComplete();
     }
 

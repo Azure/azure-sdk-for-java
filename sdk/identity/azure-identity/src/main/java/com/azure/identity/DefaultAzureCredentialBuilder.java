@@ -11,16 +11,52 @@ import com.azure.identity.implementation.IdentityLogOptionsImpl;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.IdentityUtil;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ForkJoinPool;
 
-import static com.azure.identity.ManagedIdentityCredential.AZURE_FEDERATED_TOKEN_FILE;
-
 /**
- * Fluent credential builder for instantiating a {@link DefaultAzureCredential}.
+ * <p>Fluent credential builder for instantiating a {@link DefaultAzureCredential}.</p>
+ *
+ * <p>The {@link DefaultAzureCredential} is appropriate for most scenarios where the application is intended to
+ * ultimately be run in Azure. DefaultAzureCredential combines credentials that are commonly used to authenticate when
+ * deployed, with credentials that are used to authenticate in a development environment.
+ * The {@link DefaultAzureCredential} will attempt to authenticate via the following mechanisms in order.</p>
+ *
+ * <p><strong>Sample: Construct DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link DefaultAzureCredential}, using
+ * the DefaultAzureCredentialBuilder to configure it. Once this credential is created, it may be passed into the
+ * builder of many of the Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.defaultazurecredential.construct -->
+ * <pre>
+ * TokenCredential defaultAzureCredential = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.defaultazurecredential.construct -->
+ *
+ * <p><strong>Sample: Construct DefaultAzureCredential with User Assigned Managed Identity </strong></p>
+ *
+ * <p>User-Assigned Managed Identity (UAMI) in Azure is a feature that allows you to create an identity in
+ * <a href="https://learn.microsoft.com/en-us/azure/active-directory/fundamentals/">Azure Active Directory (Azure AD)
+ * </a> that is associated with one or more Azure resources. This identity can then be used to authenticate and
+ * authorize access to various Azure services and resources. The following code sample demonstrates the creation of
+ * a {@link DefaultAzureCredential} to target a user assigned managed identity, using the DefaultAzureCredentialBuilder
+ * to configure it. Once this credential is created, it may be passed into the builder of many of the
+ * Azure SDK for Java client builders as the 'credential' parameter.</p>
+ *
+ * <!-- src_embed com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
+ * <pre>
+ * TokenCredential dacWithUserAssignedManagedIdentity = new DefaultAzureCredentialBuilder&#40;&#41;
+ *     .managedIdentityClientId&#40;&quot;&lt;Managed-Identity-Client-Id&quot;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.defaultazurecredential.constructwithuserassignedmanagedidentity -->
  *
  * @see DefaultAzureCredential
  */
@@ -140,7 +176,7 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool()} will be used which is
+     * If this is not configured, the {@link ForkJoinPool#commonPool() common fork join pool} will be used which is
      * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
      * requests might starve and setting up this executor service should be considered.
      * </p>
@@ -183,6 +219,33 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     /**
+     * Specifies a {@link Duration} timeout for developer credentials (such as Azure CLI) that rely on separate process
+     * invocations.
+     * @param credentialProcessTimeout The {@link Duration} to wait.
+     * @return An updated instance of this builder with the timeout specified.
+     */
+    public DefaultAzureCredentialBuilder credentialProcessTimeout(Duration credentialProcessTimeout) {
+        Objects.requireNonNull(credentialProcessTimeout);
+        this.identityClientOptions.setCredentialProcessTimeout(credentialProcessTimeout);
+        return this;
+    }
+
+    /**
+     * Disables the setting which determines whether or not instance discovery is performed when attempting to
+     * authenticate. This will completely disable both instance discovery and authority validation.
+     * This functionality is intended for use in scenarios where the metadata endpoint cannot be reached, such as in
+     * private clouds or Azure Stack. The process of instance discovery entails retrieving authority metadata from
+     * https://login.microsoft.com/ to validate the authority. By utilizing this API, the validation of the authority
+     * is disabled. As a result, it is crucial to ensure that the configured authority host is valid and trustworthy.
+     *
+     * @return An updated instance of this builder with instance discovery disabled.
+     */
+    public DefaultAzureCredentialBuilder disableInstanceDiscovery() {
+        this.identityClientOptions.disableInstanceDiscovery();
+        return this;
+    }
+
+    /**
      * Creates new {@link DefaultAzureCredential} with the configured options set.
      *
      * @return a {@link DefaultAzureCredential} with the current configurations.
@@ -208,12 +271,9 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
     }
 
     private ArrayList<TokenCredential> getCredentialsChain() {
-        WorkloadIdentityCredential workloadIdentityCredential = getWorkloadIdentityCredentialIfAvailable();
-        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(workloadIdentityCredential != null ? 8 : 7);
+        ArrayList<TokenCredential> output = new ArrayList<TokenCredential>(8);
         output.add(new EnvironmentCredential(identityClientOptions.clone()));
-        if (workloadIdentityCredential != null) {
-            output.add(workloadIdentityCredential);
-        }
+        output.add(getWorkloadIdentityCredential());
         output.add(new ManagedIdentityCredential(managedIdentityClientId, managedIdentityResourceId, identityClientOptions.clone()));
         output.add(new AzureDeveloperCliCredential(tenantId, identityClientOptions.clone()));
         output.add(new SharedTokenCacheCredential(null, IdentityConstants.DEVELOPER_SINGLE_SIGN_ON_ID,
@@ -224,20 +284,18 @@ public class DefaultAzureCredentialBuilder extends CredentialBuilderBase<Default
         return output;
     }
 
-    private WorkloadIdentityCredential getWorkloadIdentityCredentialIfAvailable() {
+    private WorkloadIdentityCredential getWorkloadIdentityCredential() {
         Configuration configuration = identityClientOptions.getConfiguration() == null
             ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
 
-        String tenantId = configuration.get(Configuration.PROPERTY_AZURE_TENANT_ID);
-        String federatedTokenFilePath = configuration.get(AZURE_FEDERATED_TOKEN_FILE);
         String azureAuthorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST);
-        String clientId = CoreUtils.isNullOrEmpty(workloadIdentityClientId) ? managedIdentityClientId : workloadIdentityClientId;
-        if (!(CoreUtils.isNullOrEmpty(tenantId)
-            || CoreUtils.isNullOrEmpty(federatedTokenFilePath)
-            || CoreUtils.isNullOrEmpty(clientId)
-            || CoreUtils.isNullOrEmpty(azureAuthorityHost))) {
-            return new WorkloadIdentityCredential(tenantId, clientId, federatedTokenFilePath, identityClientOptions.setAuthorityHost(azureAuthorityHost).clone());
+        String clientId = CoreUtils.isNullOrEmpty(workloadIdentityClientId)
+            ? managedIdentityClientId : workloadIdentityClientId;
+
+        if (!CoreUtils.isNullOrEmpty(azureAuthorityHost)) {
+            identityClientOptions.setAuthorityHost(azureAuthorityHost);
         }
-        return null;
+        return new WorkloadIdentityCredential(null, clientId, null,
+                identityClientOptions.clone());
     }
 }

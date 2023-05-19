@@ -18,8 +18,7 @@ public final class Scale {
     private Integer minReplicas;
 
     /*
-     * Optional. Maximum number of container replicas. Defaults to 10 if not
-     * set.
+     * Optional. Maximum number of container replicas. Defaults to 10 if not set.
      */
     @JsonProperty(value = "maxReplicas")
     private Integer maxReplicas;
@@ -29,6 +28,10 @@ public final class Scale {
      */
     @JsonProperty(value = "rules")
     private List<ScaleRule> rules;
+
+    /** Creates an instance of Scale class. */
+    public Scale() {
+    }
 
     /**
      * Get the minReplicas property: Optional. Minimum number of container replicas.

@@ -12,18 +12,16 @@ public final class SkuPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuProperty model =
-            BinaryData
-                .fromString("{\"name\":\"hbcryffdfdosyge\",\"value\":\"aojakhmsbzjhcrz\"}")
-                .toObject(SkuProperty.class);
-        Assertions.assertEquals("hbcryffdfdosyge", model.name());
-        Assertions.assertEquals("aojakhmsbzjhcrz", model.value());
+            BinaryData.fromString("{\"name\":\"zyde\",\"value\":\"jwyahuxinpmqnja\"}").toObject(SkuProperty.class);
+        Assertions.assertEquals("zyde", model.name());
+        Assertions.assertEquals("jwyahuxinpmqnja", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SkuProperty model = new SkuProperty().withName("hbcryffdfdosyge").withValue("aojakhmsbzjhcrz");
+        SkuProperty model = new SkuProperty().withName("zyde").withValue("jwyahuxinpmqnja");
         model = BinaryData.fromObject(model).toObject(SkuProperty.class);
-        Assertions.assertEquals("hbcryffdfdosyge", model.name());
-        Assertions.assertEquals("aojakhmsbzjhcrz", model.value());
+        Assertions.assertEquals("zyde", model.name());
+        Assertions.assertEquals("jwyahuxinpmqnja", model.value());
     }
 }

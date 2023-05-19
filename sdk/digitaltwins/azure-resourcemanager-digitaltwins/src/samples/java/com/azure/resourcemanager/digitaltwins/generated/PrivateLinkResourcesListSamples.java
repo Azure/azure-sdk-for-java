@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.digitaltwins.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources List. */
 public final class PrivateLinkResourcesListSamples {
     /*
-     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2022-10-31/examples/PrivateLinkResourcesList_example.json
+     * x-ms-original-file: specification/digitaltwins/resource-manager/Microsoft.DigitalTwins/stable/2023-01-31/examples/PrivateLinkResourcesList_example.json
      */
     /**
      * Sample code: List private link resources for given Digital Twin.
@@ -18,6 +16,8 @@ public final class PrivateLinkResourcesListSamples {
      */
     public static void listPrivateLinkResourcesForGivenDigitalTwin(
         com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager manager) {
-        manager.privateLinkResources().listWithResponse("resRg", "myDigitalTwinsService", Context.NONE);
+        manager
+            .privateLinkResources()
+            .listWithResponse("resRg", "myDigitalTwinsService", com.azure.core.util.Context.NONE);
     }
 }

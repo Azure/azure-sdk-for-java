@@ -4,13 +4,12 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.fluent.models.AppServiceCertificateResourceInner;
 
 /** Samples for AppServiceCertificateOrders CreateOrUpdateCertificate. */
 public final class AppServiceCertificateOrdersCreateOrUpdateCertificateSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-03-01/examples/CreateAppServiceCertificate.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.CertificateRegistration/stable/2022-09-01/examples/CreateAppServiceCertificate.json
      */
     /**
      * Sample code: Create Certificate.
@@ -29,9 +28,8 @@ public final class AppServiceCertificateOrdersCreateOrUpdateCertificateSamples {
                 "SampleCertName1",
                 new AppServiceCertificateResourceInner()
                     .withLocation("Global")
-                    .withKeyVaultId(
-                        "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourcegroups/testrg123/providers/microsoft.keyvault/vaults/SamplevaultName")
-                    .withKeyVaultSecretName("SampleSecretName1"),
-                Context.NONE);
+                    .withKeyVaultId("fakeTokenPlaceholder")
+                    .withKeyVaultSecretName("fakeTokenPlaceholder"),
+                com.azure.core.util.Context.NONE);
     }
 }

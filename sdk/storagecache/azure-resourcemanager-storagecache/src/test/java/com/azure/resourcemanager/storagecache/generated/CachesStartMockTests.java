@@ -56,6 +56,6 @@ public final class CachesStartMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.caches().start("xozap", "helxprglya", com.azure.core.util.Context.NONE);
+        manager.caches().start("tiagx", "dszue", com.azure.core.util.Context.NONE);
     }
 }

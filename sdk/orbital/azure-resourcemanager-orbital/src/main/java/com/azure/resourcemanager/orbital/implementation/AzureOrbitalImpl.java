@@ -207,7 +207,7 @@ public final class AzureOrbitalImpl implements AzureOrbital {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-03-01";
+        this.apiVersion = "2022-11-01";
         this.operations = new OperationsClientImpl(this);
         this.spacecrafts = new SpacecraftsClientImpl(this);
         this.contacts = new ContactsClientImpl(this);

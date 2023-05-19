@@ -13,6 +13,12 @@ public class IndexDocumentsOptions {
     private boolean throwOnAnyError = true;
 
     /**
+     * Creates an instance of {@link IndexDocumentsOptions}.
+     */
+    public IndexDocumentsOptions() {
+    }
+
+    /**
      * Returns whether an exception will be thrown if any operation in the batch fails.
      * <p>
      * Default value is {@code true}.

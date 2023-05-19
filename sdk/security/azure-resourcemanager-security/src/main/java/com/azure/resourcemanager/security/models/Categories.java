@@ -26,6 +26,15 @@ public final class Categories extends ExpandableStringEnum<Categories> {
     public static final Categories IOT = fromString("IoT");
 
     /**
+     * Creates a new instance of Categories value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Categories() {
+    }
+
+    /**
      * Creates or finds a Categories from its string representation.
      *
      * @param name a name to look for.

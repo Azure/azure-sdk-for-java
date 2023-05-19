@@ -10,6 +10,26 @@
 
 ### Other Changes
 
+## 1.1.5 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-data-schemaregistry` from `1.3.4` to version `1.3.5`.
+
+## 1.1.4 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-data-schemaregistry` from `1.3.3` to version `1.3.4`.
+- Upgraded `jackson-core` from `2.13.4` to version `2.13.5`.
+- Upgraded `jackson-databind` from `2.13.4.2` to version `2.13.5`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
 ## 1.1.3 (2023-02-16)
 
 ### Other Changes

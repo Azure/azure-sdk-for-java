@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for IotSecuritySolutionsAnalyticsAggregatedAlert List. */
 public final class IotSecuritySolutionsAnalyticsAggregatedAlertListSamples {
     /*
@@ -18,6 +16,8 @@ public final class IotSecuritySolutionsAnalyticsAggregatedAlertListSamples {
      */
     public static void getTheAggregatedAlertListOfYoursIoTSecuritySolution(
         com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.iotSecuritySolutionsAnalyticsAggregatedAlerts().list("MyGroup", "default", null, Context.NONE);
+        manager
+            .iotSecuritySolutionsAnalyticsAggregatedAlerts()
+            .list("MyGroup", "default", null, com.azure.core.util.Context.NONE);
     }
 }

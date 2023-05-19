@@ -7,17 +7,16 @@ package com.azure.resourcemanager.hybridcontainerservice.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hybridcontainerservice.models.AgentPoolName;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgentPoolNameTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AgentPoolName model = BinaryData.fromString("{\"name\":\"qkwpyeicxmqc\"}").toObject(AgentPoolName.class);
         Assertions.assertEquals("qkwpyeicxmqc", model.name());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AgentPoolName model = new AgentPoolName().withName("qkwpyeicxmqc");
         model = BinaryData.fromObject(model).toObject(AgentPoolName.class);
         Assertions.assertEquals("qkwpyeicxmqc", model.name());

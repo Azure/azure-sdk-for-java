@@ -35,7 +35,7 @@ public final class CreateCallRequestInternal {
      * The identifier of the source of the call
      */
     @JsonProperty(value = "sourceIdentity")
-    private CommunicationIdentifierModel sourceIdentity;
+    private CommunicationUserIdentifierModel sourceIdentity;
 
     /*
      * A customer set value used to track the answering of a call.
@@ -60,6 +60,12 @@ public final class CreateCallRequestInternal {
      */
     @JsonProperty(value = "azureCognitiveServicesEndpointUrl")
     private String azureCognitiveServicesEndpointUrl;
+
+    /*
+     * Used by customer to send custom context to targets
+     */
+    @JsonProperty(value = "customContext")
+    private CustomContext customContext;
 
     /**
      * Get the targets property: The targets of the call.
@@ -128,7 +134,7 @@ public final class CreateCallRequestInternal {
      *
      * @return the sourceIdentity value.
      */
-    public CommunicationIdentifierModel getSourceIdentity() {
+    public CommunicationUserIdentifierModel getSourceIdentity() {
         return this.sourceIdentity;
     }
 
@@ -138,7 +144,7 @@ public final class CreateCallRequestInternal {
      * @param sourceIdentity the sourceIdentity value to set.
      * @return the CreateCallRequestInternal object itself.
      */
-    public CreateCallRequestInternal setSourceIdentity(CommunicationIdentifierModel sourceIdentity) {
+    public CreateCallRequestInternal setSourceIdentity(CommunicationUserIdentifierModel sourceIdentity) {
         this.sourceIdentity = sourceIdentity;
         return this;
     }
@@ -223,6 +229,26 @@ public final class CreateCallRequestInternal {
      */
     public CreateCallRequestInternal setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
         this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+        return this;
+    }
+
+    /**
+     * Get the customContext property: Used by customer to send custom context to targets.
+     *
+     * @return the customContext value.
+     */
+    public CustomContext getCustomContext() {
+        return this.customContext;
+    }
+
+    /**
+     * Set the customContext property: Used by customer to send custom context to targets.
+     *
+     * @param customContext the customContext value to set.
+     * @return the CreateCallRequestInternal object itself.
+     */
+    public CreateCallRequestInternal setCustomContext(CustomContext customContext) {
+        this.customContext = customContext;
         return this;
     }
 }

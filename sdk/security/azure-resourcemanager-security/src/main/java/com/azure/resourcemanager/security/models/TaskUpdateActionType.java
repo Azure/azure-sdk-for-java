@@ -26,6 +26,15 @@ public final class TaskUpdateActionType extends ExpandableStringEnum<TaskUpdateA
     public static final TaskUpdateActionType CLOSE = fromString("Close");
 
     /**
+     * Creates a new instance of TaskUpdateActionType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TaskUpdateActionType() {
+    }
+
+    /**
      * Creates or finds a TaskUpdateActionType from its string representation.
      *
      * @param name a name to look for.

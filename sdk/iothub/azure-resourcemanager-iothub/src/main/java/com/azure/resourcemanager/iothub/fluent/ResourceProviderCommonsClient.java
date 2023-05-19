@@ -17,19 +17,6 @@ public interface ResourceProviderCommonsClient {
      *
      * <p>Get the number of free and paid iot hubs in the subscription.
      *
-     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
-     *     server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of free and paid iot hubs in the subscription.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    UserSubscriptionQuotaListResultInner getSubscriptionQuota();
-
-    /**
-     * Get the number of iot hubs in the subscription
-     *
-     * <p>Get the number of free and paid iot hubs in the subscription.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
@@ -39,4 +26,17 @@ public interface ResourceProviderCommonsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<UserSubscriptionQuotaListResultInner> getSubscriptionQuotaWithResponse(Context context);
+
+    /**
+     * Get the number of iot hubs in the subscription
+     *
+     * <p>Get the number of free and paid iot hubs in the subscription.
+     *
+     * @throws com.azure.resourcemanager.iothub.models.ErrorDetailsException thrown if the request is rejected by
+     *     server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the number of free and paid iot hubs in the subscription.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    UserSubscriptionQuotaListResultInner getSubscriptionQuota();
 }

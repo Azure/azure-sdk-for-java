@@ -16,6 +16,10 @@ public final class FeatureProperties {
     @JsonProperty(value = "state")
     private String state;
 
+    /** Creates an instance of FeatureProperties class. */
+    public FeatureProperties() {
+    }
+
     /**
      * Get the state property: The registration state of the feature for the subscription.
      *

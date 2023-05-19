@@ -119,12 +119,12 @@ public final class ShaperSkill extends SearchIndexerSkill {
                         }
                     }
                     if (inputsFound && outputsFound) {
-                        ShaperSkill deserializedValue = new ShaperSkill(inputs, outputs);
-                        deserializedValue.setName(name);
-                        deserializedValue.setDescription(description);
-                        deserializedValue.setContext(context);
+                        ShaperSkill deserializedShaperSkill = new ShaperSkill(inputs, outputs);
+                        deserializedShaperSkill.setName(name);
+                        deserializedShaperSkill.setDescription(description);
+                        deserializedShaperSkill.setContext(context);
 
-                        return deserializedValue;
+                        return deserializedShaperSkill;
                     }
                     List<String> missingProperties = new ArrayList<>();
                     if (!inputsFound) {

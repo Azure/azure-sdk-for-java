@@ -132,22 +132,19 @@ public final class GovernanceAssignmentImpl
             Utils
                 .getValueFromIdByParameterName(
                     innerObject.id(),
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "scope");
         this.assessmentName =
             Utils
                 .getValueFromIdByParameterName(
                     innerObject.id(),
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "assessmentName");
         this.assignmentKey =
             Utils
                 .getValueFromIdByParameterName(
                     innerObject.id(),
-                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments"
-                        + "/{assignmentKey}",
+                    "/{scope}/providers/Microsoft.Security/assessments/{assessmentName}/governanceAssignments/{assignmentKey}",
                     "assignmentKey");
     }
 

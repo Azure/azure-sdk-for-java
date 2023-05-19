@@ -32,7 +32,7 @@ public final class ReservationOrdersChangeDirectoryWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"reservationOrder\":{\"id\":\"ih\",\"name\":\"qg\",\"isSucceeded\":true,\"error\":\"fqntcyp\"},\"reservations\":[{\"id\":\"foimwkslircizjxv\",\"name\":\"fceacvlhvygd\",\"isSucceeded\":false,\"error\":\"mrtwna\"}]}";
+            "{\"reservationOrder\":{\"id\":\"zshq\",\"name\":\"impevf\",\"isSucceeded\":false,\"error\":\"rrilbywdxsmic\"},\"reservations\":[{\"id\":\"fscjfnynszquji\",\"name\":\"voqyt\",\"isSucceeded\":false,\"error\":\"wb\"},{\"id\":\"gyavu\",\"name\":\"thjoxoism\",\"isSucceeded\":false,\"error\":\"pi\"},{\"id\":\"qolj\",\"name\":\"cgxxlxs\",\"isSucceeded\":true,\"error\":\"vizqzdwl\"},{\"id\":\"lyoupfgfbkju\",\"name\":\"yhgk\",\"isSucceeded\":false,\"error\":\"sgow\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,18 +64,18 @@ public final class ReservationOrdersChangeDirectoryWithResponseMockTests {
             manager
                 .reservationOrders()
                 .changeDirectoryWithResponse(
-                    "lw",
-                    new ChangeDirectoryRequest().withDestinationTenantId("esutrgjupauutpw"),
+                    "otcubi",
+                    new ChangeDirectoryRequest().withDestinationTenantId("uipwoqonmacje"),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("ih", response.reservationOrder().id());
-        Assertions.assertEquals("qg", response.reservationOrder().name());
-        Assertions.assertEquals(true, response.reservationOrder().isSucceeded());
-        Assertions.assertEquals("fqntcyp", response.reservationOrder().error());
-        Assertions.assertEquals("foimwkslircizjxv", response.reservations().get(0).id());
-        Assertions.assertEquals("fceacvlhvygd", response.reservations().get(0).name());
+        Assertions.assertEquals("zshq", response.reservationOrder().id());
+        Assertions.assertEquals("impevf", response.reservationOrder().name());
+        Assertions.assertEquals(false, response.reservationOrder().isSucceeded());
+        Assertions.assertEquals("rrilbywdxsmic", response.reservationOrder().error());
+        Assertions.assertEquals("fscjfnynszquji", response.reservations().get(0).id());
+        Assertions.assertEquals("voqyt", response.reservations().get(0).name());
         Assertions.assertEquals(false, response.reservations().get(0).isSucceeded());
-        Assertions.assertEquals("mrtwna", response.reservations().get(0).error());
+        Assertions.assertEquals("wb", response.reservations().get(0).error());
     }
 }

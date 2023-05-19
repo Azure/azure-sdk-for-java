@@ -28,6 +28,10 @@ public final class Response {
     @JsonProperty(value = "bodyLink")
     private ContentLink bodyLink;
 
+    /** Creates an instance of Response class. */
+    public Response() {
+    }
+
     /**
      * Get the headers property: A list of all the headers attached to the response.
      *

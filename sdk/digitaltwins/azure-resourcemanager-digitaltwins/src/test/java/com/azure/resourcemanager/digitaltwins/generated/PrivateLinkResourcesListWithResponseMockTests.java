@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.digitaltwins.AzureDigitalTwinsManager;
 import com.azure.resourcemanager.digitaltwins.models.GroupIdInformationResponse;
 import java.nio.ByteBuffer;
@@ -31,7 +30,8 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"id\":\"gktrmgucnapkte\",\"name\":\"llwptfdy\",\"type\":\"fqbuaceopzf\"}]}";
+        String responseStr =
+            "{\"value\":[{\"id\":\"lwptfdy\",\"name\":\"fqbuaceopzf\",\"type\":\"hhuao\"},{\"id\":\"pcqeqx\",\"name\":\"z\",\"type\":\"hzxct\"},{\"id\":\"gbkdmoizpos\",\"name\":\"grcfb\",\"type\":\"rmfqjhhkxbpvj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,8 +60,11 @@ public final class PrivateLinkResourcesListWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GroupIdInformationResponse response =
-            manager.privateLinkResources().listWithResponse("edjvcslynqw", "ncw", Context.NONE).getValue();
+            manager
+                .privateLinkResources()
+                .listWithResponse("rmgucnap", "t", com.azure.core.util.Context.NONE)
+                .getValue();
 
-        Assertions.assertEquals("gktrmgucnapkte", response.value().get(0).id());
+        Assertions.assertEquals("lwptfdy", response.value().get(0).id());
     }
 }

@@ -63,6 +63,15 @@ public final class RecommendationType extends ExpandableStringEnum<Recommendatio
     public static final RecommendationType IO_T_VULNERABLE_TLSCIPHER_SUITE = fromString("IoT_VulnerableTLSCipherSuite");
 
     /**
+     * Creates a new instance of RecommendationType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RecommendationType() {
+    }
+
+    /**
      * Creates or finds a RecommendationType from its string representation.
      *
      * @param name a name to look for.

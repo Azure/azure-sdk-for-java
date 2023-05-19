@@ -15,15 +15,13 @@ import java.util.Map;
 @Fluent
 public final class PolicyDefinitionProperties {
     /*
-     * The type of policy definition. Possible values are NotSpecified,
-     * BuiltIn, Custom, and Static.
+     * The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
      */
     @JsonProperty(value = "policyType")
     private PolicyType policyType;
 
     /*
-     * The policy definition mode. Some examples are All, Indexed,
-     * Microsoft.KeyVault.Data.
+     * The policy definition mode. Some examples are All, Indexed, Microsoft.KeyVault.Data.
      */
     @JsonProperty(value = "mode")
     private String mode;
@@ -47,19 +45,22 @@ public final class PolicyDefinitionProperties {
     private Object policyRule;
 
     /*
-     * The policy definition metadata.  Metadata is an open ended object and is
-     * typically a collection of key value pairs.
+     * The policy definition metadata.  Metadata is an open ended object and is typically a collection of key value
+     * pairs.
      */
     @JsonProperty(value = "metadata")
     private Object metadata;
 
     /*
-     * The parameter definitions for parameters used in the policy rule. The
-     * keys are the parameter names.
+     * The parameter definitions for parameters used in the policy rule. The keys are the parameter names.
      */
     @JsonProperty(value = "parameters")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterDefinitionsValue> parameters;
+
+    /** Creates an instance of PolicyDefinitionProperties class. */
+    public PolicyDefinitionProperties() {
+    }
 
     /**
      * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,

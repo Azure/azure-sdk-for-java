@@ -25,6 +25,10 @@ public final class ResourceGroupInner extends Resource {
     @JsonProperty(value = "managedBy")
     private String managedBy;
 
+    /** Creates an instance of ResourceGroupInner class. */
+    public ResourceGroupInner() {
+    }
+
     /**
      * Get the properties property: The resource group properties.
      *

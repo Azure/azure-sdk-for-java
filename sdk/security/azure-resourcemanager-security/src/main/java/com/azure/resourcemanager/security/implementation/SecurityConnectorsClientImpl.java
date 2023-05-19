@@ -73,8 +73,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/securityConnectors")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityConnectorsList>> listByResourceGroup(
@@ -87,8 +86,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/securityConnectors/{securityConnectorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityConnectorInner>> getByResourceGroup(
@@ -102,8 +100,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/securityConnectors/{securityConnectorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityConnectorInner>> createOrUpdate(
@@ -118,8 +115,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/securityConnectors/{securityConnectorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityConnectorInner>> update(
@@ -134,8 +130,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security"
-                + "/securityConnectors/{securityConnectorName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/securityConnectors/{securityConnectorName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
@@ -191,7 +186,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -235,7 +230,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -338,7 +333,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -395,7 +390,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -521,7 +516,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter securityConnectorName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -573,7 +568,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter securityConnectorName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -681,7 +676,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
         } else {
             securityConnector.validate();
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -745,7 +740,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
         } else {
             securityConnector.validate();
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -865,7 +860,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
         } else {
             securityConnector.validate();
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -928,7 +923,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
         } else {
             securityConnector.validate();
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1035,7 +1030,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter securityConnectorName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1087,7 +1082,7 @@ public final class SecurityConnectorsClientImpl implements SecurityConnectorsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter securityConnectorName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-01-preview";
+        final String apiVersion = "2023-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

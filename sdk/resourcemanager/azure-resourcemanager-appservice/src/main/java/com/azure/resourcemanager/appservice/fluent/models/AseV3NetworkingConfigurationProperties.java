@@ -36,8 +36,7 @@ public final class AseV3NetworkingConfigurationProperties {
     private List<String> internalInboundIpAddresses;
 
     /*
-     * Property to enable and disable new private endpoint connection creation
-     * on ASE
+     * Property to enable and disable new private endpoint connection creation on ASE
      */
     @JsonProperty(value = "allowNewPrivateEndpointConnections")
     private Boolean allowNewPrivateEndpointConnections;
@@ -59,6 +58,10 @@ public final class AseV3NetworkingConfigurationProperties {
      */
     @JsonProperty(value = "inboundIpAddressOverride")
     private String inboundIpAddressOverride;
+
+    /** Creates an instance of AseV3NetworkingConfigurationProperties class. */
+    public AseV3NetworkingConfigurationProperties() {
+    }
 
     /**
      * Get the windowsOutboundIpAddresses property: The windowsOutboundIpAddresses property.

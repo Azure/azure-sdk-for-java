@@ -7,7 +7,7 @@ package com.azure.resourcemanager.resources.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SubscriptionState. */
+/** The subscription state. Possible values are Enabled, Warned, PastDue, Disabled, and Deleted. */
 public enum SubscriptionState {
     /** Enum value Enabled. */
     ENABLED("Enabled"),
@@ -39,6 +39,9 @@ public enum SubscriptionState {
      */
     @JsonCreator
     public static SubscriptionState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SubscriptionState[] items = SubscriptionState.values();
         for (SubscriptionState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum SubscriptionState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

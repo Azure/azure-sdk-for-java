@@ -27,6 +27,10 @@ public final class PolicyDefinitionInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of PolicyDefinitionInner class. */
+    public PolicyDefinitionInner() {
+    }
+
     /**
      * Get the innerProperties property: The policy definition properties.
      *

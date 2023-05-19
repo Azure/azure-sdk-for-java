@@ -9,21 +9,22 @@ import com.azure.resourcemanager.hybridcontainerservice.models.StorageSpacesPatc
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class StorageSpacesPatchTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         StorageSpacesPatch model =
-            BinaryData.fromString("{\"tags\":{\"sibircgpi\":\"wyt\"}}").toObject(StorageSpacesPatch.class);
-        Assertions.assertEquals("wyt", model.tags().get("sibircgpi"));
+            BinaryData
+                .fromString("{\"tags\":{\"ayrhyrnx\":\"vc\",\"qqtch\":\"mueedndrdvstk\"}}")
+                .toObject(StorageSpacesPatch.class);
+        Assertions.assertEquals("vc", model.tags().get("ayrhyrnx"));
     }
 
-    @Test
-    public void testSerialize() {
-        StorageSpacesPatch model = new StorageSpacesPatch().withTags(mapOf("sibircgpi", "wyt"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        StorageSpacesPatch model = new StorageSpacesPatch().withTags(mapOf("ayrhyrnx", "vc", "qqtch", "mueedndrdvstk"));
         model = BinaryData.fromObject(model).toObject(StorageSpacesPatch.class);
-        Assertions.assertEquals("wyt", model.tags().get("sibircgpi"));
+        Assertions.assertEquals("vc", model.tags().get("ayrhyrnx"));
     }
 
     @SuppressWarnings("unchecked")

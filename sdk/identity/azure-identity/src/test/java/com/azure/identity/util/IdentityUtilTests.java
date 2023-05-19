@@ -5,6 +5,7 @@ package com.azure.identity.util;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.implementation.util.IdentityUtil;
@@ -16,7 +17,7 @@ import java.util.Arrays;
 public class IdentityUtilTests {
 
     @Test
-    public void testMultiTenantAuthenticationEnabled() throws Exception {
+    public void testMultiTenantAuthenticationEnabled() {
         String currentTenant = "tenant";
         String newTenant = "tenant-new";
         TokenRequestContext trc = new TokenRequestContext()
@@ -29,9 +30,8 @@ public class IdentityUtilTests {
     }
 
     @Test(expected = ClientAuthenticationException.class)
-    public void testMultiTenantAuthenticationDisabled() throws Exception {
+    public void testMultiTenantAuthenticationDisabled() {
         String currentTenant = "tenant";
-        String newTenant = "tenant-new";
         TokenRequestContext trc = new TokenRequestContext()
             .setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId("newTenant");
@@ -70,7 +70,7 @@ public class IdentityUtilTests {
     }
 
     @Test(expected = ClientAuthenticationException.class)
-    public void testAlienTenantWithAdditionallyAllowedTenants() throws Exception {
+    public void testAlienTenantWithAdditionallyAllowedTenants() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
         TokenRequestContext trc = new TokenRequestContext()
@@ -83,7 +83,7 @@ public class IdentityUtilTests {
     }
 
     @Test(expected = ClientAuthenticationException.class)
-    public void testAlienTenantWithAdditionallyAllowedNotConfigured() throws Exception {
+    public void testAlienTenantWithAdditionallyAllowedNotConfigured() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
         TokenRequestContext trc = new TokenRequestContext()
@@ -95,12 +95,13 @@ public class IdentityUtilTests {
     }
 
     @Test
-    public void testTenantWithAdditionalTenantsFromEnv() throws Exception {
+    public void testTenantWithAdditionalTenantsFromEnv() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
         String allowedTenants = "newTenant;oldTenant";
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        configuration.put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants);
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
+
         TokenRequestContext trc = new TokenRequestContext()
             .setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
@@ -114,12 +115,13 @@ public class IdentityUtilTests {
     }
 
     @Test
-    public void testTenantWithWildCardAdditionalTenantsFromEnv() throws Exception {
+    public void testTenantWithWildCardAdditionalTenantsFromEnv() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
         String allowedTenants = "*;randomTenant";
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        configuration.put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants);
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
+
         TokenRequestContext trc = new TokenRequestContext()
             .setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);
@@ -133,12 +135,12 @@ public class IdentityUtilTests {
     }
 
     @Test(expected = ClientAuthenticationException.class)
-    public void testAlienTenantWithAdditionalTenantsFromEnv() throws Exception {
+    public void testAlienTenantWithAdditionalTenantsFromEnv() {
         String currentTenant = "tenant";
         String newTenant = "newTenant";
         String allowedTenants = "randomTenant";
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-        configuration.put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants);
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource()
+            .put(IdentityUtil.AZURE_ADDITIONALLY_ALLOWED_TENANTS, allowedTenants));
         TokenRequestContext trc = new TokenRequestContext()
             .setScopes(Arrays.asList("http://vault.azure.net/.default"))
             .setTenantId(newTenant);

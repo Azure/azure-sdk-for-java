@@ -24,8 +24,7 @@ public final class VirtualApplication {
     private String physicalPath;
 
     /*
-     * <code>true</code> if preloading is enabled; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if preloading is enabled; otherwise, <code>false</code>.
      */
     @JsonProperty(value = "preloadEnabled")
     private Boolean preloadEnabled;
@@ -35,6 +34,10 @@ public final class VirtualApplication {
      */
     @JsonProperty(value = "virtualDirectories")
     private List<VirtualDirectory> virtualDirectories;
+
+    /** Creates an instance of VirtualApplication class. */
+    public VirtualApplication() {
+    }
 
     /**
      * Get the virtualPath property: Virtual path.

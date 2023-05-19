@@ -82,11 +82,13 @@
     <module>sdk/fluidrelay</module>
     <module>sdk/formrecognizer</module>
     <module>sdk/frontdoor</module>
+    <module>sdk/graphservices</module>
     <module>sdk/hanaonazure</module>
     <module>sdk/hardwaresecuritymodules</module>
     <module>sdk/hdinsight</module>
     <module>sdk/healthbot</module>
     <module>sdk/healthcareapis</module>
+    <module>sdk/healthinsights</module>
     <module>sdk/hybridcompute</module>
     <module>sdk/hybridcontainerservice</module>
     <module>sdk/hybridkubernetes</module>
@@ -119,12 +121,15 @@
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/netapp</module>
+    <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
+    <module>sdk/newrelicobservability</module>
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>
     <module>sdk/oep</module>
     <module>sdk/operationsmanagement</module>
     <module>sdk/orbital</module>
+    <module>sdk/paloaltonetworks</module>
     <module>sdk/parents</module>
     <module>sdk/peering</module>
     <module>sdk/personalizer</module>
@@ -135,6 +140,7 @@
     <module>sdk/providerhub</module>
     <module>sdk/purview</module>
     <module>sdk/quantum</module>
+    <module>sdk/qumulo</module>
     <module>sdk/quota</module>
     <module>sdk/recoveryservices</module>
     <module>sdk/recoveryservicesbackup</module>
@@ -154,6 +160,7 @@
     <module>sdk/security</module>
     <module>sdk/securitydevops</module>
     <module>sdk/securityinsights</module>
+    <module>sdk/selfhelp</module>
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>
     <module>sdk/servicelinker</module>

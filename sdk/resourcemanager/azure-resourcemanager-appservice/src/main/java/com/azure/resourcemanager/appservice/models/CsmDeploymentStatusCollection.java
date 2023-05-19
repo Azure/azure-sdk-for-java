@@ -24,6 +24,10 @@ public final class CsmDeploymentStatusCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of CsmDeploymentStatusCollection class. */
+    public CsmDeploymentStatusCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

@@ -10,11 +10,10 @@ import com.azure.resourcemanager.webpubsub.models.ShareablePrivateLinkResourcePr
 import com.azure.resourcemanager.webpubsub.models.ShareablePrivateLinkResourceType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourcePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PrivateLinkResourceProperties model =
             BinaryData
                 .fromString(
@@ -32,8 +31,8 @@ public final class PrivateLinkResourcePropertiesTests {
             .assertEquals("lauwzizxbmpgcjef", model.shareablePrivateLinkResourceTypes().get(0).properties().type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PrivateLinkResourceProperties model =
             new PrivateLinkResourceProperties()
                 .withGroupId("lcxog")

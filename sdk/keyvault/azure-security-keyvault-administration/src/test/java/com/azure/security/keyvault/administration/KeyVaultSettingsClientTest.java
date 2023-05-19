@@ -4,7 +4,7 @@ package com.azure.security.keyvault.administration;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
-import com.azure.security.keyvault.administration.models.KeyVaultListSettingsResult;
+import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -23,25 +23,25 @@ public class KeyVaultSettingsClientTest extends KeyVaultSettingsClientTestBase {
     }
 
     private void getClient(HttpClient httpClient, boolean forCleanup) {
-        client = getClientBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient()
-            : httpClient), forCleanup).buildClient();
+        client = getClientBuilder(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), forCleanup)
+            .buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME)
     @MethodSource("com.azure.security.keyvault.administration.KeyVaultAdministrationClientTestBase#createHttpClients")
-    public void listSettings(HttpClient httpClient) {
+    public void getSettings(HttpClient httpClient) {
         getClient(httpClient, false);
 
-        KeyVaultListSettingsResult listSettingsResult = client.listSettings();
+        KeyVaultGetSettingsResult getSettingsResult = client.getSettings();
 
-        assertNotNull(listSettingsResult);
-        assertTrue(listSettingsResult.getValue().size() > 0);
+        assertNotNull(getSettingsResult);
+        assertTrue(getSettingsResult.getSettings().size() > 0);
 
-        for (KeyVaultSetting setting : listSettingsResult.getValue()) {
+        for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
             assertNotNull(setting);
             assertNotNull(setting.getName());
             assertNotNull(setting.getType());
-            assertNotNull(setting.asString());
         }
     }
 
@@ -56,7 +56,6 @@ public class KeyVaultSettingsClientTest extends KeyVaultSettingsClientTestBase {
         assertNotNull(setting);
         assertNotNull(setting.getName());
         assertNotNull(setting.getType());
-        assertNotNull(setting.asString());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME)

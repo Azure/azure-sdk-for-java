@@ -25,6 +25,10 @@ public final class TldLegalAgreementCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of TldLegalAgreementCollection class. */
+    public TldLegalAgreementCollection() {
+    }
+
     /**
      * Get the value property: Collection of resources.
      *

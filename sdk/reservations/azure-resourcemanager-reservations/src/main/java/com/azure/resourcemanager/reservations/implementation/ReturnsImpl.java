@@ -7,9 +7,9 @@ package com.azure.resourcemanager.reservations.implementation;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.reservations.fluent.ReturnsClient;
-import com.azure.resourcemanager.reservations.fluent.models.RefundResponseInner;
+import com.azure.resourcemanager.reservations.fluent.models.ReservationOrderResponseInner;
 import com.azure.resourcemanager.reservations.models.RefundRequest;
-import com.azure.resourcemanager.reservations.models.RefundResponse;
+import com.azure.resourcemanager.reservations.models.ReservationOrderResponse;
 import com.azure.resourcemanager.reservations.models.Returns;
 
 public final class ReturnsImpl implements Returns {
@@ -25,19 +25,19 @@ public final class ReturnsImpl implements Returns {
         this.serviceManager = serviceManager;
     }
 
-    public RefundResponse post(String reservationOrderId, RefundRequest body) {
-        RefundResponseInner inner = this.serviceClient().post(reservationOrderId, body);
+    public ReservationOrderResponse post(String reservationOrderId, RefundRequest body) {
+        ReservationOrderResponseInner inner = this.serviceClient().post(reservationOrderId, body);
         if (inner != null) {
-            return new RefundResponseImpl(inner, this.manager());
+            return new ReservationOrderResponseImpl(inner, this.manager());
         } else {
             return null;
         }
     }
 
-    public RefundResponse post(String reservationOrderId, RefundRequest body, Context context) {
-        RefundResponseInner inner = this.serviceClient().post(reservationOrderId, body, context);
+    public ReservationOrderResponse post(String reservationOrderId, RefundRequest body, Context context) {
+        ReservationOrderResponseInner inner = this.serviceClient().post(reservationOrderId, body, context);
         if (inner != null) {
-            return new RefundResponseImpl(inner, this.manager());
+            return new ReservationOrderResponseImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -16,10 +16,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.Operators;
-import reactor.core.publisher.Signal;
 
 import static com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY;
 
@@ -32,12 +29,10 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String CLIENT_REQUEST_ID_ATTRIBUTE = "requestId";
     private static final String REACTOR_HTTP_TRACE_CONTEXT_KEY = "instrumentation-context-key";
     private static final HttpHeaderName SERVICE_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-request-id");
-    private static final HttpHeaderName CLIENT_REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-client-request-id");
     private static final String LEGACY_OTEL_POLICY_NAME = "io.opentelemetry.javaagent.instrumentation.azurecore.v1_19.shaded.com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy";
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
 
     private Tracer tracer;
-    private ScalarPropagatingMono propagatingMono;
     private static boolean foundLegacyOTelPolicy;
 
     static {
@@ -53,7 +48,6 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
     public void initialize(Tracer tracer) {
         this.tracer = tracer;
-        this.propagatingMono = new ScalarPropagatingMono(tracer);
     }
 
     @Override
@@ -65,10 +59,13 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         // OpenTelemetry reactor instrumentation needs a bit of help
         // to pick up Azure SDK context. While we're working on explicit
         // context propagation, ScalarPropagatingMono.INSTANCE is the workaround
-        return propagatingMono
-            .flatMap(ignored -> next.process())
-            .doOnEach(this::handleResponse)
-            .contextWrite(reactor.util.context.Context.of(REACTOR_HTTP_TRACE_CONTEXT_KEY, startSpan(context)));
+        return Mono.defer(() -> {
+            Context span = startSpan(context);
+            return next.process()
+                .doOnSuccess(response -> endSpan(response, span))
+                .doOnCancel(() -> tracer.end("cancel", null, span))
+                .doOnError(exception -> tracer.end(null, exception, span));
+        });
     }
 
     @SuppressWarnings("try")
@@ -79,22 +76,20 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         Context span = startSpan(context);
-        Throwable exception = null;
-        HttpResponse response = null;
         try (AutoCloseable scope = tracer.makeSpanCurrent(span)) {
-            response = next.processSync();
+            HttpResponse response = next.processSync();
+            endSpan(response, span);
             return response;
         } catch (RuntimeException ex) {
-            exception = ex;
+            tracer.end(null, ex, span);
             throw ex;
         } catch (Exception ex) {
-            exception = ex;
+            tracer.end(null, ex, span);
             throw LOGGER.logExceptionAsWarning(new RuntimeException(ex));
-        } finally {
-            endSpan(response, exception, span);
         }
     }
 
+    @SuppressWarnings("deprecation")
     private Context startSpan(HttpPipelineCallContext azContext) {
         HttpRequest request = azContext.getHttpRequest();
 
@@ -107,39 +102,24 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         addPostSamplingAttributes(span, request);
 
+        // TODO (alzimmer): Add injectContext(BiConsumer<HttpHeaderName, String>, Context)
         tracer.injectContext((k, v) -> request.getHeaders().set(k, v), span);
         return span;
     }
 
     private void addPostSamplingAttributes(Context span, HttpRequest request) {
-        String userAgent = request.getHeaders().getValue("User-Agent");
+        String userAgent = request.getHeaders().getValue(HttpHeaderName.USER_AGENT);
         if (!CoreUtils.isNullOrEmpty(userAgent)) {
             tracer.setAttribute(HTTP_USER_AGENT, userAgent, span);
         }
 
-        String requestId = request.getHeaders().getValue(CLIENT_REQUEST_ID_HEADER);
+        String requestId = request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         if (!CoreUtils.isNullOrEmpty(requestId)) {
             tracer.setAttribute(CLIENT_REQUEST_ID_ATTRIBUTE, requestId, span);
         }
     }
 
-    /**
-     * Handles retrieving the information from the service response and ending the span.
-     *
-     * @param signal Reactive Stream signal fired by Reactor.
-     */
-    private void handleResponse(Signal<? extends HttpResponse> signal) {
-        // Ignore the on complete and on subscribe events, they don't contain the information needed to end the span.
-        if (signal.isOnComplete() || signal.isOnSubscribe()) {
-            return;
-        }
-
-        // Get the context that was added to the mono, this will contain the information needed to end the span.
-        Context span = signal.getContextView().getOrDefault(REACTOR_HTTP_TRACE_CONTEXT_KEY, null);
-        endSpan(signal.get(), signal.getThrowable(), span);
-    }
-
-    private void endSpan(HttpResponse response, Throwable error, Context span) {
+    private void endSpan(HttpResponse response, Context span) {
         if (response != null) {
             int statusCode = response.getStatusCode();
             tracer.setAttribute(HTTP_STATUS_CODE, statusCode, span);
@@ -151,43 +131,11 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
             tracer.end((statusCode >= 400) ? "error" : null, null, span);
         }
 
-        tracer.end(null, error, span);
+        tracer.end("", null, span);
     }
 
     private boolean isTracingEnabled(HttpPipelineCallContext context) {
         return tracer != null && tracer.isEnabled() && !foundLegacyOTelPolicy
             && !((boolean) context.getData(DISABLE_TRACING_KEY).orElse(false));
-    }
-
-    /**
-     * Helper class allowing to run Mono subscription and any hot path
-     * in scope of trace context. This enables OpenTelemetry auto-collection
-     * to pick it up and correlate lower levels of instrumentation and logs
-     * to logical/HTTP spans.
-     *
-     * OpenTelemetry reactor auto-instrumentation will take care of the cold path.
-     */
-    static final class ScalarPropagatingMono extends Mono<Object> {
-        private final Object value = new Object();
-        private final Tracer tracer;
-
-        private ScalarPropagatingMono(Tracer tracer) {
-            this.tracer = tracer;
-        }
-
-        @Override
-        @SuppressWarnings("try")
-        public void subscribe(CoreSubscriber<? super Object> actual) {
-            Context traceContext = actual.currentContext().getOrDefault(REACTOR_HTTP_TRACE_CONTEXT_KEY, null);
-            if (tracer.isEnabled() && traceContext != null) {
-                try (AutoCloseable scope = tracer.makeSpanCurrent(traceContext)) {
-                    actual.onSubscribe(Operators.scalarSubscription(actual, value));
-                } catch (Exception e) {
-                    LOGGER.verbose("Error closing scope", e);
-                }
-            } else {
-                actual.onSubscribe(Operators.scalarSubscription(actual, value));
-            }
-        }
     }
 }

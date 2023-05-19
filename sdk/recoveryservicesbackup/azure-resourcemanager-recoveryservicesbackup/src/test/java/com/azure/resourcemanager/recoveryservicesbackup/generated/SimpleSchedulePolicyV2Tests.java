@@ -21,64 +21,63 @@ public final class SimpleSchedulePolicyV2Tests {
         SimpleSchedulePolicyV2 model =
             BinaryData
                 .fromString(
-                    "{\"schedulePolicyType\":\"SimpleSchedulePolicyV2\",\"scheduleRunFrequency\":\"Weekly\",\"hourlySchedule\":{\"interval\":1164479404,\"scheduleWindowStartTime\":\"2021-08-20T21:03:29Z\",\"scheduleWindowDuration\":619944622},\"dailySchedule\":{\"scheduleRunTimes\":[\"2021-08-28T02:41:28Z\",\"2021-01-28T12:45:33Z\",\"2021-02-27T10:59:18Z\"]},\"weeklySchedule\":{\"scheduleRunDays\":[\"Friday\",\"Saturday\"],\"scheduleRunTimes\":[\"2021-02-02T03:22:38Z\",\"2021-08-15T22:01:32Z\",\"2021-11-18T02:38:40Z\",\"2021-05-12T17:46:54Z\"]}}")
+                    "{\"schedulePolicyType\":\"SimpleSchedulePolicyV2\",\"scheduleRunFrequency\":\"Invalid\",\"hourlySchedule\":{\"interval\":593707947,\"scheduleWindowStartTime\":\"2021-06-23T19:26:24Z\",\"scheduleWindowDuration\":1408451637},\"dailySchedule\":{\"scheduleRunTimes\":[\"2021-10-14T21:01:05Z\",\"2021-03-20T12:18Z\"]},\"weeklySchedule\":{\"scheduleRunDays\":[\"Monday\"],\"scheduleRunTimes\":[\"2021-05-21T16:02:15Z\",\"2021-02-15T03:37:38Z\",\"2021-01-09T17:48:34Z\",\"2021-05-14T12:19:22Z\"]}}")
                 .toObject(SimpleSchedulePolicyV2.class);
-        Assertions.assertEquals(ScheduleRunType.WEEKLY, model.scheduleRunFrequency());
-        Assertions.assertEquals(1164479404, model.hourlySchedule().interval());
+        Assertions.assertEquals(ScheduleRunType.INVALID, model.scheduleRunFrequency());
+        Assertions.assertEquals(593707947, model.hourlySchedule().interval());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-08-20T21:03:29Z"), model.hourlySchedule().scheduleWindowStartTime());
-        Assertions.assertEquals(619944622, model.hourlySchedule().scheduleWindowDuration());
+                OffsetDateTime.parse("2021-06-23T19:26:24Z"), model.hourlySchedule().scheduleWindowStartTime());
+        Assertions.assertEquals(1408451637, model.hourlySchedule().scheduleWindowDuration());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-08-28T02:41:28Z"), model.dailySchedule().scheduleRunTimes().get(0));
-        Assertions.assertEquals(DayOfWeek.FRIDAY, model.weeklySchedule().scheduleRunDays().get(0));
+                OffsetDateTime.parse("2021-10-14T21:01:05Z"), model.dailySchedule().scheduleRunTimes().get(0));
+        Assertions.assertEquals(DayOfWeek.MONDAY, model.weeklySchedule().scheduleRunDays().get(0));
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-02-02T03:22:38Z"), model.weeklySchedule().scheduleRunTimes().get(0));
+                OffsetDateTime.parse("2021-05-21T16:02:15Z"), model.weeklySchedule().scheduleRunTimes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SimpleSchedulePolicyV2 model =
             new SimpleSchedulePolicyV2()
-                .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                .withScheduleRunFrequency(ScheduleRunType.INVALID)
                 .withHourlySchedule(
                     new HourlySchedule()
-                        .withInterval(1164479404)
-                        .withScheduleWindowStartTime(OffsetDateTime.parse("2021-08-20T21:03:29Z"))
-                        .withScheduleWindowDuration(619944622))
+                        .withInterval(593707947)
+                        .withScheduleWindowStartTime(OffsetDateTime.parse("2021-06-23T19:26:24Z"))
+                        .withScheduleWindowDuration(1408451637))
                 .withDailySchedule(
                     new DailySchedule()
                         .withScheduleRunTimes(
                             Arrays
                                 .asList(
-                                    OffsetDateTime.parse("2021-08-28T02:41:28Z"),
-                                    OffsetDateTime.parse("2021-01-28T12:45:33Z"),
-                                    OffsetDateTime.parse("2021-02-27T10:59:18Z"))))
+                                    OffsetDateTime.parse("2021-10-14T21:01:05Z"),
+                                    OffsetDateTime.parse("2021-03-20T12:18Z"))))
                 .withWeeklySchedule(
                     new WeeklySchedule()
-                        .withScheduleRunDays(Arrays.asList(DayOfWeek.FRIDAY, DayOfWeek.SATURDAY))
+                        .withScheduleRunDays(Arrays.asList(DayOfWeek.MONDAY))
                         .withScheduleRunTimes(
                             Arrays
                                 .asList(
-                                    OffsetDateTime.parse("2021-02-02T03:22:38Z"),
-                                    OffsetDateTime.parse("2021-08-15T22:01:32Z"),
-                                    OffsetDateTime.parse("2021-11-18T02:38:40Z"),
-                                    OffsetDateTime.parse("2021-05-12T17:46:54Z"))));
+                                    OffsetDateTime.parse("2021-05-21T16:02:15Z"),
+                                    OffsetDateTime.parse("2021-02-15T03:37:38Z"),
+                                    OffsetDateTime.parse("2021-01-09T17:48:34Z"),
+                                    OffsetDateTime.parse("2021-05-14T12:19:22Z"))));
         model = BinaryData.fromObject(model).toObject(SimpleSchedulePolicyV2.class);
-        Assertions.assertEquals(ScheduleRunType.WEEKLY, model.scheduleRunFrequency());
-        Assertions.assertEquals(1164479404, model.hourlySchedule().interval());
+        Assertions.assertEquals(ScheduleRunType.INVALID, model.scheduleRunFrequency());
+        Assertions.assertEquals(593707947, model.hourlySchedule().interval());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-08-20T21:03:29Z"), model.hourlySchedule().scheduleWindowStartTime());
-        Assertions.assertEquals(619944622, model.hourlySchedule().scheduleWindowDuration());
+                OffsetDateTime.parse("2021-06-23T19:26:24Z"), model.hourlySchedule().scheduleWindowStartTime());
+        Assertions.assertEquals(1408451637, model.hourlySchedule().scheduleWindowDuration());
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-08-28T02:41:28Z"), model.dailySchedule().scheduleRunTimes().get(0));
-        Assertions.assertEquals(DayOfWeek.FRIDAY, model.weeklySchedule().scheduleRunDays().get(0));
+                OffsetDateTime.parse("2021-10-14T21:01:05Z"), model.dailySchedule().scheduleRunTimes().get(0));
+        Assertions.assertEquals(DayOfWeek.MONDAY, model.weeklySchedule().scheduleRunDays().get(0));
         Assertions
             .assertEquals(
-                OffsetDateTime.parse("2021-02-02T03:22:38Z"), model.weeklySchedule().scheduleRunTimes().get(0));
+                OffsetDateTime.parse("2021-05-21T16:02:15Z"), model.weeklySchedule().scheduleRunTimes().get(0));
     }
 }
