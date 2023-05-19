@@ -88,6 +88,12 @@
       <version>4.4.2</version> <!-- {x-version-update;io.vertx:vertx-core;external_dependency} -->
     </dependency>
 
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-reactive-streams</artifactId>
+      <version>4.4.2</version> <!-- {x-version-update;io.vertx:vertx-reactive-streams;external_dependency} -->
+    </dependency>
+
     <!-- test dependencies on azure-core, because we want to run tests inherited from this module using Vert.x Web Client -->
     <dependency>
       <groupId>com.azure</groupId>
@@ -161,6 +167,7 @@
               <includes>
                 <include>io.vertx:vertx-codegen:[4.4.2]</include> <!-- {x-include-update;io.vertx:vertx-codegen;external_dependency} -->
                 <include>io.vertx:vertx-core:[4.4.2]</include> <!-- {x-include-update;io.vertx:vertx-core;external_dependency} -->
+                <include>io.vertx:vertx-reactive-streams:[4.4.2]</include> <!-- {x-include-update;io.vertx:vertx-reactive-streams;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
