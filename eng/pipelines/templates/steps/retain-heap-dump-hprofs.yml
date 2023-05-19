@@ -10,6 +10,7 @@ steps:
       } else {
         Write-Host "##vso[task.setvariable variable=HAS_OOM_PROFS]true"
       }
+    condition: always()
 
   - pwsh: |
       New-Item $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }} -ItemType directory

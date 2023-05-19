@@ -137,9 +137,9 @@ class HttpFaultInjectingTests extends APISpec {
         private static URL rewriteUrl(URL originalUrl) {
             try {
                 return UrlBuilder.parse(originalUrl)
-                    .setScheme("https")
+                    .setScheme("http")
                     .setHost("localhost")
-                    .setPort(7778)
+                    .setPort(7777)
                     .toUrl()
             } catch (MalformedURLException e) {
                 throw new RuntimeException(e)

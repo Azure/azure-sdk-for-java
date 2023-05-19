@@ -6,6 +6,7 @@ steps:
         Write-Host "##vso[task.setvariable variable=HAS_HTTP_FAULT_INJECTOR_LOGS]false"
       }
     displayName: 'Check if http-fault-injector log file exists'
+    condition: always()
 
   - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
     parameters:
