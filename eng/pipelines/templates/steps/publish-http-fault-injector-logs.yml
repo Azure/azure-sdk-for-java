@@ -6,19 +6,19 @@ steps:
         Write-Host "##vso[task.setvariable variable=HAS_HTTP_FAULT_INJECTOR_LOGS]false"
       }
     displayName: 'Check if http-fault-injector log file exists'
-    condition: always()
+    condition: failed()
 
   - pwsh: |
       Copy-Item -Path "$(Build.SourcesDirectory)/http-fault-injector.log" -Destination "$(Build.SourcesDirectory)/fault.log"
-    condition: eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true')
+    condition: and(failed(), eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true'))
 
   - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
     parameters:
       ArtifactName: "$(System.JobName)-http-fault-injector-logs"
       ArtifactPath: "$(Build.SourcesDirectory)/fault.log"
-      CustomCondition: eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true')
+      CustomCondition: and(failed(), eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true'))
 
   - pwsh: |
       Remove-Item -Force $(Build.SourcesDirectory)/fault.log
     displayName: 'Cleanup http-fault-injector log file'
-    condition: eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true')
+    condition: and(failed(), eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true'))

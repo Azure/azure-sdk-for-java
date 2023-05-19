@@ -1,21 +1,25 @@
 package com.azure.storage.blob.specialized
 
 import com.azure.core.http.HttpClient
+import com.azure.core.http.HttpClientProvider
 import com.azure.core.http.HttpHeaderName
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
 import com.azure.core.test.utils.TestUtils
 import com.azure.core.util.BinaryData
 import com.azure.core.util.Context
+import com.azure.core.util.HttpClientOptions
 import com.azure.core.util.UrlBuilder
 import com.azure.core.util.logging.ClientLogger
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobClientBuilder
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Mono
 
 import java.nio.file.Files
+import java.time.Duration
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -50,7 +54,7 @@ class HttpFaultInjectingTests extends APISpec {
             .connectionString(environment.primaryAccount.connectionString)
             .containerName(cc.getBlobContainerName())
             .blobName(blobName)
-            .httpClient(new HttpFaultInjectingHttpClient(getHttpClient()))
+            .httpClient(new HttpFaultInjectingHttpClient(getFaultInjectingWrappedHttpClient()))
             .buildClient()
 
         def files = new ArrayList<File>(500)
@@ -87,6 +91,25 @@ class HttpFaultInjectingTests extends APISpec {
 
         cleanup:
         files.forEach {Files.deleteIfExists(it.toPath()) }
+    }
+
+    def getFaultInjectingWrappedHttpClient() {
+        switch (environment.httpClientType) {
+            case TestHttpClientType.NETTY:
+                return HttpClient.createDefault(new HttpClientOptions()
+                    .readTimeout(Duration.ofSeconds(5))
+                    .responseTimeout(Duration.ofSeconds(5))
+                    .setHttpClientProvider(Class.forName("com.azure.core.http.netty.NettyAsyncHttpClientProvider") as Class<? extends HttpClientProvider>))
+
+            case TestHttpClientType.OK_HTTP:
+                return HttpClient.createDefault(new HttpClientOptions()
+                    .readTimeout(Duration.ofSeconds(5))
+                    .responseTimeout(Duration.ofSeconds(5))
+                    .setHttpClientProvider(Class.forName("com.azure.core.http.okhttp.OkHttpAsyncClientProvider") as Class<? extends HttpClientProvider>))
+
+            default:
+                throw new IllegalArgumentException("Unknown http client type: " + environment.httpClientType)
+        }
     }
 
     // For now a local implementation is here in azure-storage-blob until this is released in azure-core-test.
