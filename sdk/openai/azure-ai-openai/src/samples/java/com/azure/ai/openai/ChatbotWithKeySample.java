@@ -38,7 +38,7 @@ public class ChatbotWithKeySample {
             }
         }
 
-        // Genearl example of how to get usage info
+        // General example of how to get usage info
         CompletionsUsage usage = completions.getUsage();
         System.out.printf("Usage: number of prompt token is %d, "
                 + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
