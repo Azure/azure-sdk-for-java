@@ -112,8 +112,10 @@ class VertxAsyncHttpClient implements HttpClient {
 
                 FluxUtil.collectBytesFromNetworkResponse(requestBody, request.getHeaders())
                     .subscribeOn(scheduler)
-                    .subscribe(bytes -> vertxHttpRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bytes))),
-                        sink::error, vertxHttpRequest::end);
+                    .subscribe(bytes -> vertxHttpRequest.write(Buffer.buffer(Unpooled.wrappedBuffer(bytes))), error -> {
+                        vertxHttpRequest.connection().close();
+                        sink.error(error);
+                    }, vertxHttpRequest::end);
             }
         }));
     }
