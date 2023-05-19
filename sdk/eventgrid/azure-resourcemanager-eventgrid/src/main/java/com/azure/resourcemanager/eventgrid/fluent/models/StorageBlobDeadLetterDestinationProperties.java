@@ -11,18 +11,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class StorageBlobDeadLetterDestinationProperties {
     /*
-     * The Azure Resource ID of the storage account that is the destination of
-     * the deadletter events
+     * The Azure Resource ID of the storage account that is the destination of the deadletter events
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
-     * The name of the Storage blob container that is the destination of the
-     * deadletter events
+     * The name of the Storage blob container that is the destination of the deadletter events
      */
     @JsonProperty(value = "blobContainerName")
     private String blobContainerName;
+
+    /** Creates an instance of StorageBlobDeadLetterDestinationProperties class. */
+    public StorageBlobDeadLetterDestinationProperties() {
+    }
 
     /**
      * Get the resourceId property: The Azure Resource ID of the storage account that is the destination of the

@@ -22,6 +22,10 @@ public final class AzureFunctionEventSubscriptionDestination extends EventSubscr
     @JsonProperty(value = "properties")
     private AzureFunctionEventSubscriptionDestinationProperties innerProperties;
 
+    /** Creates an instance of AzureFunctionEventSubscriptionDestination class. */
+    public AzureFunctionEventSubscriptionDestination() {
+    }
+
     /**
      * Get the innerProperties property: Azure Function Properties of the event subscription destination.
      *

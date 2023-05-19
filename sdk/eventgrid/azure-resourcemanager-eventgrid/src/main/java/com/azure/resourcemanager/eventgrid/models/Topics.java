@@ -11,19 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Topics. */
 public interface Topics {
     /**
-     * Get properties of a topic.
+     * Get a topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a topic.
-     */
-    Topic getByResourceGroup(String resourceGroupName, String topicName);
-
-    /**
-     * Get properties of a topic.
+     * <p>Get properties of a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -36,7 +26,23 @@ public interface Topics {
     Response<Topic> getByResourceGroupWithResponse(String resourceGroupName, String topicName, Context context);
 
     /**
-     * Delete existing topic.
+     * Get a topic.
+     *
+     * <p>Get properties of a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a topic.
+     */
+    Topic getByResourceGroup(String resourceGroupName, String topicName);
+
+    /**
+     * Delete a topic.
+     *
+     * <p>Delete existing topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -47,7 +53,9 @@ public interface Topics {
     void deleteByResourceGroup(String resourceGroupName, String topicName);
 
     /**
-     * Delete existing topic.
+     * Delete a topic.
+     *
+     * <p>Delete existing topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -59,7 +67,9 @@ public interface Topics {
     void delete(String resourceGroupName, String topicName, Context context);
 
     /**
-     * List all the topics under an Azure subscription.
+     * List topics under an Azure subscription.
+     *
+     * <p>List all the topics under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,7 +78,9 @@ public interface Topics {
     PagedIterable<Topic> list();
 
     /**
-     * List all the topics under an Azure subscription.
+     * List topics under an Azure subscription.
+     *
+     * <p>List all the topics under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -87,7 +99,9 @@ public interface Topics {
     PagedIterable<Topic> list(String filter, Integer top, Context context);
 
     /**
-     * List all the topics under a resource group.
+     * List topics under a resource group.
+     *
+     * <p>List all the topics under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +112,9 @@ public interface Topics {
     PagedIterable<Topic> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the topics under a resource group.
+     * List topics under a resource group.
+     *
+     * <p>List all the topics under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -118,19 +134,9 @@ public interface Topics {
     PagedIterable<Topic> listByResourceGroup(String resourceGroupName, String filter, Integer top, Context context);
 
     /**
-     * List the two keys used to publish to a topic.
+     * List keys for a topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
-     */
-    TopicSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String topicName);
-
-    /**
-     * List the two keys used to publish to a topic.
+     * <p>List the two keys used to publish to a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -144,7 +150,23 @@ public interface Topics {
         String resourceGroupName, String topicName, Context context);
 
     /**
-     * Regenerate a shared access key for a topic.
+     * List keys for a topic.
+     *
+     * <p>List the two keys used to publish to a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    TopicSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String topicName);
+
+    /**
+     * Regenerate key for a topic.
+     *
+     * <p>Regenerate a shared access key for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -158,7 +180,9 @@ public interface Topics {
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest);
 
     /**
-     * Regenerate a shared access key for a topic.
+     * Regenerate key for a topic.
+     *
+     * <p>Regenerate a shared access key for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -173,7 +197,9 @@ public interface Topics {
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**
-     * List event types for a topic.
+     * List topic event types.
+     *
+     * <p>List event types for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -188,7 +214,9 @@ public interface Topics {
         String resourceGroupName, String providerNamespace, String resourceTypeName, String resourceName);
 
     /**
-     * List event types for a topic.
+     * List topic event types.
+     *
+     * <p>List event types for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -208,7 +236,9 @@ public interface Topics {
         Context context);
 
     /**
-     * Get properties of a topic.
+     * Get a topic.
+     *
+     * <p>Get properties of a topic.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,7 +249,9 @@ public interface Topics {
     Topic getById(String id);
 
     /**
-     * Get properties of a topic.
+     * Get a topic.
+     *
+     * <p>Get properties of a topic.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -231,7 +263,9 @@ public interface Topics {
     Response<Topic> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete existing topic.
+     * Delete a topic.
+     *
+     * <p>Delete existing topic.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +275,9 @@ public interface Topics {
     void deleteById(String id);
 
     /**
-     * Delete existing topic.
+     * Delete a topic.
+     *
+     * <p>Delete existing topic.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

@@ -119,9 +119,7 @@ import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.SUMMARY_INPUTS;
-import static com.azure.ai.textanalytics.TestUtils.TOO_LONG_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.getDuplicateTextDocumentInputs;
-import static com.azure.ai.textanalytics.TestUtils.getWarningsTextDocumentInputs;
 import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -134,7 +132,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
     static final String INVALID_DOCUMENT_BATCH_NPE_MESSAGE = "'documents' cannot be null.";
     static final String INVALID_DOCUMENT_EMPTY_LIST_EXCEPTION_MESSAGE = "'documents' cannot be empty.";
     static final String INVALID_DOCUMENT_NPE_MESSAGE = "'document' cannot be null.";
-    static final String WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE = "The document contains very long words (longer than 64 characters). These words will be truncated and may result in unreliable model predictions.";
     static final String REDACTED = "REDACTED";
 
     static final String AZURE_TEXT_ANALYTICS_ENDPOINT =
@@ -482,13 +479,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
 
     @Test
     abstract void extractKeyPhrasesForListStringWithOptions(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void extractKeyPhrasesWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
-
-    @Test
-    abstract void extractKeyPhrasesBatchWarning(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
     @Test
@@ -962,14 +952,6 @@ public abstract class TextAnalyticsClientTestBase extends TestProxyTestBase {
 
     void duplicateIdRunner(Consumer<List<TextDocumentInput>> testRunner) {
         testRunner.accept(getDuplicateTextDocumentInputs());
-    }
-
-    void extractKeyPhrasesWarningRunner(Consumer<String> testRunner) {
-        testRunner.accept(TOO_LONG_INPUT);
-    }
-
-    void extractKeyPhrasesBatchWarningRunner(Consumer<List<TextDocumentInput>> testRunner) {
-        testRunner.accept(getWarningsTextDocumentInputs());
     }
 
     // Sentiment Runner

@@ -66,8 +66,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
     public interface RouteMapsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}/routeMaps/{routeMapName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeMaps/{routeMapName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RouteMapInner>> get(
@@ -82,8 +81,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}/routeMaps/{routeMapName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeMaps/{routeMapName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -99,8 +97,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}/routeMaps/{routeMapName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeMaps/{routeMapName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -115,8 +112,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}/routeMaps")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/routeMaps")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListRouteMapsResult>> list(
@@ -176,7 +172,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -232,7 +228,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -342,7 +338,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         } else {
             routeMapParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -410,7 +406,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         } else {
             routeMapParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -651,7 +647,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -706,7 +702,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (routeMapName == null) {
             return Mono.error(new IllegalArgumentException("Parameter routeMapName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -902,7 +898,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -962,7 +958,7 @@ public final class RouteMapsClientImpl implements RouteMapsClient {
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

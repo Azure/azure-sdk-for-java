@@ -8,7 +8,6 @@ import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
@@ -75,15 +74,15 @@ public final class CallConnection {
     /**
      * Hangup a call.
      *
-     * @param hangUpOptions options to hang up
+     * @param isForEveryone determine if the call is handed up for all participants.
      * @param context A {@link Context} representing the request context.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> hangUpWithResponse(HangUpOptions hangUpOptions, Context context) {
-        return callConnectionAsync.hangUpWithResponseInternal(hangUpOptions, context).block();
+    public Response<Void> hangUpWithResponse(boolean isForEveryone, Context context) {
+        return callConnectionAsync.hangUpWithResponseInternal(isForEveryone, context).block();
     }
 
     /**

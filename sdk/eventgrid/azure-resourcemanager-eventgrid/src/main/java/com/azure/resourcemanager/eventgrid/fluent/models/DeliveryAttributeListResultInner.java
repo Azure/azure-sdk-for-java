@@ -18,6 +18,10 @@ public final class DeliveryAttributeListResultInner {
     @JsonProperty(value = "value")
     private List<DeliveryAttributeMapping> value;
 
+    /** Creates an instance of DeliveryAttributeListResultInner class. */
+    public DeliveryAttributeListResultInner() {
+    }
+
     /**
      * Get the value property: A collection of DeliveryAttributeMapping.
      *

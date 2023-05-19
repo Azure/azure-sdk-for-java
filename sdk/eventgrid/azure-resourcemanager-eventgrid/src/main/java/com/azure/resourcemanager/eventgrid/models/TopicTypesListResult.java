@@ -18,6 +18,10 @@ public final class TopicTypesListResult {
     @JsonProperty(value = "value")
     private List<TopicTypeInfoInner> value;
 
+    /** Creates an instance of TopicTypesListResult class. */
+    public TopicTypesListResult() {
+    }
+
     /**
      * Get the value property: A collection of topic types.
      *
