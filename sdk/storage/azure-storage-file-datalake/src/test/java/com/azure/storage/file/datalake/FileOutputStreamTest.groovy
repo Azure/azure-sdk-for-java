@@ -4,7 +4,7 @@ import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
-import com.azure.storage.file.datalake.models.DataLakeFileOutputStreamResult
+
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions
 import com.azure.storage.file.datalake.options.DataLakeFileOutputStreamOptions
@@ -25,8 +25,7 @@ class FileOutputStreamTest extends APISpec {
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
 
-        DataLakeFileOutputStreamResult streamResult = fc.getOutputStream()
-        OutputStream outStream = streamResult.getOutputStream()
+        OutputStream outStream = fc.getOutputStream()
         outStream.write(randomBytes, 1 * Constants.MB, 5 * Constants.MB)
         outStream.close()
 
@@ -54,8 +53,7 @@ class FileOutputStreamTest extends APISpec {
         int length = 6 * Constants.MB
         byte[] randomBytes = getRandomByteArray(length)
 
-        DataLakeFileOutputStreamResult streamResult = fc.getOutputStream()
-        OutputStream outStream = streamResult.getOutputStream()
+        OutputStream outStream = fc.getOutputStream()
         outStream.write(randomBytes, 0, 6 * Constants.MB)
         outStream.close()
 
@@ -98,8 +96,7 @@ class FileOutputStreamTest extends APISpec {
 
         when:
         // set option for allowing multiple close() calls
-        DataLakeFileOutputStreamResult streamResult = fc.getOutputStream()
-        OutputStream outputStream = streamResult.getOutputStream()
+        OutputStream outputStream = fc.getOutputStream()
 
         outputStream.write(data)
         outputStream.close()
@@ -125,8 +122,8 @@ class FileOutputStreamTest extends APISpec {
             .setRequestConditions(new DataLakeRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD))
 
         when:
-        def outputStream1 = fc.getOutputStream(options).getOutputStream()
-        def outputStream2 = fc.getOutputStream(options).getOutputStream()
+        def outputStream1 = fc.getOutputStream(options)
+        def outputStream2 = fc.getOutputStream(options)
         outputStream2.write(data)
         outputStream2.close()
 
@@ -149,7 +146,7 @@ class FileOutputStreamTest extends APISpec {
         def buffer = new byte[1024]
 
         when:
-        def outputStream = fc.getOutputStream().getOutputStream()
+        def outputStream = fc.getOutputStream()
         for (int i=0; i<10; i++) {
             inputStream.read(buffer)
             outputStream.write(buffer)

@@ -15,6 +15,7 @@ import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
@@ -315,6 +316,121 @@ public class CosmosItemTest extends TestSuiteBase {
             assertThat(feedResponse.getResults().size()).isEqualTo(1);
             assertThat(idSet.contains(feedResponse.getResults().get(0).getId())).isTrue();
         }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readManyWithManyNonExistentItemIds() throws Exception {
+        String partitionKeyValue = UUID.randomUUID().toString();
+        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        ArrayList<CosmosItemIdentity> nonExistentCosmosItemIdentities = new ArrayList<>();
+        HashSet<String> idSet = new HashSet<String>();
+        int numDocuments = 5;
+        int numNonExistentDocuments = 5;
+
+        for (int i = 0; i < numNonExistentDocuments; i++) {
+            CosmosItemIdentity nonExistentItemIdentity = new CosmosItemIdentity(new PartitionKey(UUID.randomUUID().toString()), UUID.randomUUID().toString());
+            nonExistentCosmosItemIdentities.add(nonExistentItemIdentity);
+        }
+
+        for (int i = 0; i < numDocuments; i++) {
+            String documentId = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
+            container.createItem(document);
+
+            PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+
+            cosmosItemIdentities.add(cosmosItemIdentity);
+            idSet.add(documentId);
+        }
+
+        cosmosItemIdentities.addAll(nonExistentCosmosItemIdentities);
+
+        FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
+
+        assertThat(feedResponse).isNotNull();
+        assertThat(feedResponse.getResults()).isNotNull();
+        assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readManyWithFaultyPointRead() throws JsonProcessingException {
+        int numDocuments = 25;
+
+        List<FeedRange> feedRanges = container.getFeedRanges();
+
+        // the container should have at least 2 physical partitions
+        assertThat(feedRanges.size()).isGreaterThanOrEqualTo(2);
+
+        for (int i = 0; i < numDocuments; i++) {
+            String partitionKeyValue = UUID.randomUUID().toString();
+            String documentId = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
+            container.createItem(document);
+        }
+
+        // query 1 item
+        SqlQuerySpec sqlQuerySpec = new SqlQuerySpec();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append("SELECT * from c");
+        stringBuilder.append(" OFFSET 0");
+        stringBuilder.append(" LIMIT 1");
+
+        sqlQuerySpec.setQueryText(stringBuilder.toString());
+
+        // extract 1 item id and partition key val from 1st physical partition
+        AtomicReference<String> itemId1 = new AtomicReference<>("");
+        AtomicReference<String> pkValItem1 = new AtomicReference<>("");
+
+        CosmosQueryRequestOptions cosmosQueryRequestOptions1 = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions1.setFeedRange(feedRanges.get(0));
+
+        container
+                .queryItems(sqlQuerySpec, cosmosQueryRequestOptions1, InternalObjectNode.class)
+                .iterableByPage()
+                .forEach(response -> {
+                    List<InternalObjectNode> results = response.getResults();
+
+                    assertThat(results).isNotNull();
+                    assertThat(results).isNotEmpty();
+                    assertThat(results.size()).isEqualTo(1);
+
+                    itemId1.set(results.get(0).getId());
+                    pkValItem1.set(results.get(0).getString("mypk"));
+                });
+
+        // extract 1 partition key val from 2nd physical partition
+        // to create non-existent CosmosItemIdentity instance
+        AtomicReference<String> pkValItem2 = new AtomicReference<>("");
+
+        CosmosQueryRequestOptions cosmosQueryRequestOptions2 = new CosmosQueryRequestOptions();
+        cosmosQueryRequestOptions2.setFeedRange(feedRanges.get(1));
+
+        container
+                .queryItems(sqlQuerySpec, cosmosQueryRequestOptions2, InternalObjectNode.class)
+                .iterableByPage()
+                .forEach(response -> {
+                    List<InternalObjectNode> results = response.getResults();
+
+                    assertThat(results).isNotNull();
+                    assertThat(results).isNotEmpty();
+                    assertThat(results.size()).isEqualTo(1);
+
+                    pkValItem2.set(results.get(0).getString("mypk"));
+                });
+
+        CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(pkValItem1.get()), itemId1.get());
+        CosmosItemIdentity nonExistentCosmosItemIdentity = new CosmosItemIdentity(new PartitionKey(pkValItem2.get()), UUID.randomUUID().toString());
+
+        List<CosmosItemIdentity> cosmosItemIdentities = Arrays.asList(cosmosItemIdentity, nonExistentCosmosItemIdentity);
+
+        FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
+
+        assertThat(feedResponse).isNotNull();
+        assertThat(feedResponse.getResults()).isNotNull();
+        // there could be a case where 0 items were created in physical partition 1
+        assertThat(feedResponse.getResults().size()).isLessThanOrEqualTo(1);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

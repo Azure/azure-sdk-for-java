@@ -17,6 +17,7 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
+import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.Span;
@@ -73,6 +74,7 @@ public class OpenTelemetryHttpPolicyTests {
     private static final int RESPONSE_STATUS_CODE = 201;
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
+    private OpenTelemetry openTelemetry;
     private Tracer tracer;
     private com.azure.core.util.tracing.Tracer azTracer;
     private static final String SPAN_NAME = "foo";
@@ -85,8 +87,9 @@ public class OpenTelemetryHttpPolicyTests {
         tracerProvider = SdkTracerProvider.builder()
             .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        azTracer = new OpenTelemetryTracer("test", null, null, new OpenTelemetryTracingOptions().setProvider(tracerProvider));
-        tracer = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build().getTracer(testInfo.getDisplayName());
+        openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+        azTracer = new OpenTelemetryTracer("test", null, null, new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
+        tracer = openTelemetry.getTracer(testInfo.getDisplayName());
     }
 
     @Test
@@ -160,7 +163,7 @@ public class OpenTelemetryHttpPolicyTests {
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, "https://httpbin.org/hello?there#otel");
         try (Scope scope = tracer.spanBuilder("test").startSpan().makeCurrent()) {
             createHttpPipeline(new OpenTelemetryTracer("test", null, null,
-                new OpenTelemetryTracingOptions().setProvider(providerWithSampler)))
+                new OpenTelemetryTracingOptions().setOpenTelemetry(OpenTelemetrySdk.builder().setTracerProvider(providerWithSampler).build())))
                 .send(request)
                 .block();
         }
@@ -200,7 +203,7 @@ public class OpenTelemetryHttpPolicyTests {
         AtomicReference<String> traceparentTry503 = new AtomicReference<>();
         AtomicReference<String> traceparentTry200 = new AtomicReference<>();
 
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
         com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
 
@@ -265,7 +268,7 @@ public class OpenTelemetryHttpPolicyTests {
     @MethodSource("getStatusCodes")
     public void endStatusDependingOnStatusCode(int statusCode, StatusCode status) {
 
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
         com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
 
@@ -292,7 +295,7 @@ public class OpenTelemetryHttpPolicyTests {
 
     @Test
     public void exceptionEventIsRecorded() {
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
         com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
 
@@ -326,7 +329,7 @@ public class OpenTelemetryHttpPolicyTests {
     @Test
     public void timeoutIsTraced() {
         AtomicInteger attemptCount = new AtomicInteger();
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
         com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
 
@@ -377,7 +380,7 @@ public class OpenTelemetryHttpPolicyTests {
 
     @Test
     public void cancelIsTraced() {
-        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setProvider(tracerProvider);
+        OpenTelemetryTracingOptions options = new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry);
 
         com.azure.core.util.tracing.Tracer azTracer = new OpenTelemetryTracer("test", null, null, options);
 
@@ -423,7 +426,7 @@ public class OpenTelemetryHttpPolicyTests {
             .build();
     }
 
-    private static Stream<Arguments> getStatusCodes() {
+    public static Stream<Arguments> getStatusCodes() {
         return Stream.of(
             Arguments.of(100, StatusCode.UNSET),
             Arguments.of(200, StatusCode.UNSET),

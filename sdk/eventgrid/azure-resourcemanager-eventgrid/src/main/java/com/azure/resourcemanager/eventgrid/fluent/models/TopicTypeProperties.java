@@ -62,6 +62,16 @@ public final class TopicTypeProperties {
     @JsonProperty(value = "supportedScopesForSource")
     private List<TopicTypeSourceScope> supportedScopesForSource;
 
+    /*
+     * Flag to indicate that a topic type can support both regional or global system topics
+     */
+    @JsonProperty(value = "areRegionalAndGlobalSourcesSupported")
+    private Boolean areRegionalAndGlobalSourcesSupported;
+
+    /** Creates an instance of TopicTypeProperties class. */
+    public TopicTypeProperties() {
+    }
+
     /**
      * Get the provider property: Namespace of the provider of the topic type.
      *
@@ -219,6 +229,28 @@ public final class TopicTypeProperties {
      */
     public TopicTypeProperties withSupportedScopesForSource(List<TopicTypeSourceScope> supportedScopesForSource) {
         this.supportedScopesForSource = supportedScopesForSource;
+        return this;
+    }
+
+    /**
+     * Get the areRegionalAndGlobalSourcesSupported property: Flag to indicate that a topic type can support both
+     * regional or global system topics.
+     *
+     * @return the areRegionalAndGlobalSourcesSupported value.
+     */
+    public Boolean areRegionalAndGlobalSourcesSupported() {
+        return this.areRegionalAndGlobalSourcesSupported;
+    }
+
+    /**
+     * Set the areRegionalAndGlobalSourcesSupported property: Flag to indicate that a topic type can support both
+     * regional or global system topics.
+     *
+     * @param areRegionalAndGlobalSourcesSupported the areRegionalAndGlobalSourcesSupported value to set.
+     * @return the TopicTypeProperties object itself.
+     */
+    public TopicTypeProperties withAreRegionalAndGlobalSourcesSupported(Boolean areRegionalAndGlobalSourcesSupported) {
+        this.areRegionalAndGlobalSourcesSupported = areRegionalAndGlobalSourcesSupported;
         return this;
     }
 

@@ -22,6 +22,10 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
     @JsonProperty(value = "properties")
     private HybridConnectionEventSubscriptionDestinationProperties innerProperties;
 
+    /** Creates an instance of HybridConnectionEventSubscriptionDestination class. */
+    public HybridConnectionEventSubscriptionDestination() {
+    }
+
     /**
      * Get the innerProperties property: Hybrid connection Properties of the event subscription destination.
      *

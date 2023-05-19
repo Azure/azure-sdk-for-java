@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerAppsDiagnostics GetRoot. */
 public final class ContainerAppsDiagnosticsGetRootSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ContainerApps_Get.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ContainerApps_Get.json
      */
     /**
      * Sample code: Get Container App.
@@ -17,6 +15,8 @@ public final class ContainerAppsDiagnosticsGetRootSamples {
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void getContainerApp(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerAppsDiagnostics().getRootWithResponse("rg", "testcontainerApp0", Context.NONE);
+        manager
+            .containerAppsDiagnostics()
+            .getRootWithResponse("rg", "testcontainerApp0", com.azure.core.util.Context.NONE);
     }
 }

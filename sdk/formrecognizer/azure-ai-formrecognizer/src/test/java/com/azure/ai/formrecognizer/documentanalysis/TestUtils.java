@@ -68,6 +68,9 @@ public final class TestUtils {
     static final String EXAMPLE_HTML = "example.html";
     static final String EXAMPLE_XLSX = "example.xlsx";
     static final String IRS_1040 = "IRS-1040_3.pdf";
+    static final String FORMULA_JPG = "formula4.jpg";
+    static final String ANNOTATION_JPG = "annotations.jpg";
+    static final String BARCODE_TIF = "barcode2.tif";
     static final String INVALID_URL = "htttttttps://localhost:8080";
 
     static final String EXPECTED_MERCHANT_NAME = "Contoso";

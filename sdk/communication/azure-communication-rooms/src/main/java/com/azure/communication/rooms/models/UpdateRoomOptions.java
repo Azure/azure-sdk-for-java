@@ -5,9 +5,12 @@ package com.azure.communication.rooms.models;
 
 import java.time.OffsetDateTime;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * The options for updating a room.
  */
+@Fluent
 public final class UpdateRoomOptions {
 
     /*

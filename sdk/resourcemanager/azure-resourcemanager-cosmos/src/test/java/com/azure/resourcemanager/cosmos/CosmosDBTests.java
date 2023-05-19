@@ -27,6 +27,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.test.ResourceManagerTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.temporal.ChronoUnit;
@@ -228,6 +229,7 @@ public class CosmosDBTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled("EnableCassandraConnector is not supported for the target subscription.")
     public void canUpdateCosmosDbCassandraConnector() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 

@@ -30,7 +30,7 @@
   <Match>
     <Or>
       <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
-	  <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryTracer$Getter"/>
+      <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryTracer$Getter"/>
     </Or>
     <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
   </Match>
@@ -899,6 +899,13 @@
     <Class name="com.azure.cosmos.implementation.TestConfigurations"/>
     <Method name="loadFromPathIfExists"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_OF_NONNULL_VALUE,REC_CATCH_EXCEPTION"/>
+  </Match>
+
+  <!-- Exception needs to be caught here.-->
+  <Match>
+    <Class name="~com\.azure\.identity\.implementation\.IdentitySyncClient"/>
+    <Method name="authenticateWithWorkloadIdentityConfidentialClient"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
   <!-- ClassLoader::getResourceAsStream can return null, ref: https://docs.oracle.com/javase/8/docs/technotes/guides/lang/resources.html -->
@@ -2336,7 +2343,13 @@
 
   <!-- The predictable randomness doesn't expose any crucial detail in this case. -->
   <Match>
-    <Class name="com.azure.core.http.policy.ExponentialBackoff"/>
+    <Or>
+      <Class name="com.azure.core.http.policy.ExponentialBackoff"/>
+      <And>
+        <Class name="com.azure.core.util.CoreUtils"/>
+        <Method name="randomUuid"/>
+      </And>
+    </Or>
     <Bug pattern="PREDICTABLE_RANDOM"/>
   </Match>
 
@@ -2382,12 +2395,12 @@
   <!-- The DispositionWork doesn't need to be serializable -->
   <Match>
     <Class
-        name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
+      name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
   <Match>
     <Class
-        name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
+      name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
     <Or>
       <Field name="desiredState"/>
       <Field name="mono"/>

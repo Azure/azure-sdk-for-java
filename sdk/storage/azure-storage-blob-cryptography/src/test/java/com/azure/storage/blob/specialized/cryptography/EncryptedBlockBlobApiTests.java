@@ -90,7 +90,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Stream;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
@@ -448,11 +447,11 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
     private static Stream<Arguments> encryptionComputeMd5Supplier() {
         return Stream.of(
             Arguments.of(Constants.KB, null, null, 1, EncryptionVersion.V1), // Simple case where uploadFull is called.
-            Arguments.of(Constants.KB, Constants.KB, 500 * Constants.KB, 1000, EncryptionVersion.V1), // uploadChunked 2 blocks staged
-            Arguments.of(Constants.KB, Constants.KB, 5 * Constants.KB, 1000, EncryptionVersion.V1), // uploadChunked 100 blocks staged
+            Arguments.of(Constants.KB, (long) Constants.KB, (long) 500 * Constants.KB, 1000, EncryptionVersion.V1), // uploadChunked 2 blocks staged
+            Arguments.of(Constants.KB, (long) Constants.KB, (long) 5 * Constants.KB, 1000, EncryptionVersion.V1), // uploadChunked 100 blocks staged
             Arguments.of(Constants.KB, null, null, 1, EncryptionVersion.V2), // Simple case where uploadFull is called.
-            Arguments.of(Constants.KB, Constants.KB, 500 * Constants.KB, 1000, EncryptionVersion.V2), // uploadChunked 2 blocks staged
-            Arguments.of(Constants.KB, Constants.KB, 5 * Constants.KB, 1000, EncryptionVersion.V2) // uploadChunked 100 blocks staged
+            Arguments.of(Constants.KB, (long) Constants.KB, (long) 500 * Constants.KB, 1000, EncryptionVersion.V2), // uploadChunked 2 blocks staged
+            Arguments.of(Constants.KB, (long) Constants.KB, (long) 5 * Constants.KB, 1000, EncryptionVersion.V2) // uploadChunked 100 blocks staged
         );
     }
 
@@ -1388,7 +1387,6 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
 
         ProgressReceiver mockReceiver = mock(ProgressReceiver.class);
         int numBlocks = fileSize / (4 * 1024 * 1024);
-        AtomicLong prevCount = new AtomicLong();
 
         ebc.downloadToFileWithResponse(outFile.toPath().toString(), null,
             new ParallelTransferOptions().setProgressReceiver(mockReceiver),
@@ -1397,6 +1395,9 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         // We should receive at least one notification reporting an intermediary value per block, but possibly more
         // notifications will be received depending on the implementation. We specify numBlocks - 1 because the last
         // block will be the total size as above. Finally, we assert that the number reported monotonically increases.
+        if (numBlocks == 0) {
+            numBlocks++;
+        }
         verify(mockReceiver, atLeast(numBlocks - 1)).handleProgress(longThat(it -> it != file.length()));
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be
@@ -1429,6 +1430,9 @@ public class EncryptedBlockBlobApiTests extends BlobCryptographyTestBase {
         // We should receive at least one notification reporting an intermediary value per block, but possibly more
         // notifications will be received depending on the implementation. We specify numBlocks - 1 because the last
         // block will be the total size as above. Finally, we assert that the number reported monotonically increases.
+        if (numBlocks == 0) {
+            numBlocks++;
+        }
         verify(mockListener, atLeast(numBlocks - 1)).handleProgress(longThat(it -> it != file.length()));
 
         // Should receive at least one notification indicating completed progress, multiple notifications may be

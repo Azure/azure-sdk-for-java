@@ -5,12 +5,22 @@
 ### Features Added
 - Added `DataLakeFileClient.getOutputStream()` which allows users to open an `OutputStream` on the file and write data 
 to it using `ParallelTransferOptions`.
-
+- Added support for 2023-01-03 service version.
+- Added owner, group, and permissions properties to `PathProperties`.
+- Added encryptionContext property to `FileParallelUploadOptions`.
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.15.1 (2023-05-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.22.0` to version `12.22.1`.
 
 ## 12.15.0 (2023-04-13)
 

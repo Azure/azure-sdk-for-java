@@ -13,18 +13,18 @@ public final class CmkKekIdentityTests {
     public void testDeserialize() throws Exception {
         CmkKekIdentity model =
             BinaryData
-                .fromString("{\"useSystemAssignedIdentity\":true,\"userAssignedIdentity\":\"tgrhpdjpjumas\"}")
+                .fromString("{\"useSystemAssignedIdentity\":true,\"userAssignedIdentity\":\"dslfhotwmcy\"}")
                 .toObject(CmkKekIdentity.class);
         Assertions.assertEquals(true, model.useSystemAssignedIdentity());
-        Assertions.assertEquals("tgrhpdjpjumas", model.userAssignedIdentity());
+        Assertions.assertEquals("dslfhotwmcy", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CmkKekIdentity model =
-            new CmkKekIdentity().withUseSystemAssignedIdentity(true).withUserAssignedIdentity("tgrhpdjpjumas");
+            new CmkKekIdentity().withUseSystemAssignedIdentity(true).withUserAssignedIdentity("dslfhotwmcy");
         model = BinaryData.fromObject(model).toObject(CmkKekIdentity.class);
         Assertions.assertEquals(true, model.useSystemAssignedIdentity());
-        Assertions.assertEquals("tgrhpdjpjumas", model.userAssignedIdentity());
+        Assertions.assertEquals("dslfhotwmcy", model.userAssignedIdentity());
     }
 }

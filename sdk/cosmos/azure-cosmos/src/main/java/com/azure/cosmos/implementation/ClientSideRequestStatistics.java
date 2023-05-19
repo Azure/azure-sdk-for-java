@@ -49,6 +49,9 @@ public class ClientSideRequestStatistics {
     private MetadataDiagnosticsContext metadataDiagnosticsContext;
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
     private int requestPayloadSizeInBytes = 0;
+    private final String userAgent;
+
+    private double samplingRateSnapshot = 1;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
         this.diagnosticsClientConfig = diagnosticsClientContext.getConfig();
@@ -65,6 +68,8 @@ public class ClientSideRequestStatistics {
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
         this.requestPayloadSizeInBytes = 0;
+        this.userAgent = diagnosticsClientContext.getUserAgent();
+        this.samplingRateSnapshot = 1;
     }
 
     public ClientSideRequestStatistics(ClientSideRequestStatistics toBeCloned) {
@@ -84,6 +89,8 @@ public class ClientSideRequestStatistics {
             new SerializationDiagnosticsContext(toBeCloned.serializationDiagnosticsContext);
         this.retryContext = new RetryContext(toBeCloned.retryContext);
         this.requestPayloadSizeInBytes = toBeCloned.requestPayloadSizeInBytes;
+        this.userAgent = toBeCloned.userAgent;
+        this.samplingRateSnapshot = toBeCloned.samplingRateSnapshot;
     }
 
     @JsonIgnore
@@ -458,6 +465,11 @@ public class ClientSideRequestStatistics {
         return responseStatisticsList;
     }
 
+    @JsonIgnore
+    public String getUserAgent() {
+        return this.userAgent;
+    }
+
     public int getMaxResponsePayloadSizeInBytes() {
         if (responseStatisticsList == null || responseStatisticsList.isEmpty()) {
             if (this.gatewayStatistics != null) {
@@ -493,6 +505,12 @@ public class ClientSideRequestStatistics {
 
     public GatewayStatistics getGatewayStatistics() {
         return gatewayStatistics;
+    }
+
+    public ClientSideRequestStatistics setSamplingRateSnapshot(double samplingRateSnapshot) {
+        this.samplingRateSnapshot = samplingRateSnapshot;
+
+        return this;
     }
 
     public static class StoreResponseStatistics {
@@ -588,7 +606,7 @@ public class ClientSideRequestStatistics {
             Duration duration = statistics
                 .getDuration();
             long requestLatency = duration != null ? duration.toMillis() : 0;
-            generator.writeStringField("userAgent", Utils.getUserAgent());
+            generator.writeStringField("userAgent", statistics.userAgent);
             generator.writeStringField("activityId", statistics.activityId);
             generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
@@ -601,6 +619,7 @@ public class ClientSideRequestStatistics {
             generator.writeObjectField("metadataDiagnosticsContext", statistics.getMetadataDiagnosticsContext());
             generator.writeObjectField("serializationDiagnosticsContext", statistics.getSerializationDiagnosticsContext());
             generator.writeObjectField("gatewayStatistics", statistics.gatewayStatistics);
+            generator.writeObjectField("samplingRateSnapshot", statistics.samplingRateSnapshot);
 
             try {
                 SystemInformation systemInformation = fetchSystemInformation();

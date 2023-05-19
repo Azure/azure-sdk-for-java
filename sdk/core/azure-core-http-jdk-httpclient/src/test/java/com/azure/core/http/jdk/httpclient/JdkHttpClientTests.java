@@ -309,7 +309,7 @@ public class JdkHttpClientTests {
         HttpClient client = new JdkHttpClientProvider().createInstance();
 
         InputStream requestBody = new ByteArrayInputStream(SHORT_BODY);
-        BinaryData body = BinaryData.fromStream(requestBody);
+        BinaryData body = BinaryData.fromStream(requestBody, (long) SHORT_BODY.length);
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(local, "/post"))
             .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(SHORT_BODY.length))
             .setBody(body);

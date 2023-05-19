@@ -36,6 +36,40 @@ cd <swagger-folder>
 autorest --tag=searchindex
 autorest --tag=searchservice
 ```
+
+## Manual Changes
+
+This section outlines all the checks that should be done to a newly generated Swagger as Azure Search Documents for Java
+contains manual translations of generated code to public API.
+
+### SearchPagedFlux, SearchPagedIterable, and SearchPagedResponse
+
+New properties added to `SearchPagedResponse` need to be exposed as getter properties on `SearchPagedFlux` and
+`SearchPagedIterable`. Only the first `SearchPagedResponse` properties are exposed on `SearchPagedFlux` and 
+`SearchPagedIterable`.
+
+### Converters
+
+There are a set of `*Converter` classes in the package `com.azure.search.documents.implementation.converters` that will
+need to be updated if any of the models that get converted have new properties added. The converted model types are
+`AnalyzeRequest`, `IndexAction`, `SearchResult`, and `SuggestResult`.
+
+### SearchOptions
+
+There is `SearchOptions` in both implementation and public API, any time new properties are added to the implementation
+`SearchOptions` they need to be included in the public API model. Additionally, `List`-based properties use varargs
+setters instead of `List` setters in the public API and `QueryAnswerType` and `QueryCaptionType` properties need special
+handling. `QueryAnswerType` and `QueryCaptionType` are defined as `ExpandableStringEnum`s but they have special 
+configurations based on the String value that Autorest cannot generate, `QueryAnswerType` has special configurations
+`answerCount` and `answerThreshold` and `QueryCaptionType` has special configuration `highlight` that need to be added 
+as additional properties on the public `SearchOptions`.
+
+### AutocompleteOptions and SuggestOptions
+
+`AutocompleteOptions` and `SuggestOptions` have converters that need to be updated with new properties are added so they
+match `AutocompleteRequest` or `SuggestRequest`. The options-based and request-based models are code generated but only
+the options-based models are generated into the public API.
+
 ## Configuration
 
 ### Basic Information 

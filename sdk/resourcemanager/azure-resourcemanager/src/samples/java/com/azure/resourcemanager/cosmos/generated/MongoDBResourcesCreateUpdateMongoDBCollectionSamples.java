@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for MongoDBResources CreateUpdateMongoDBCollection. */
 public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-03-15/examples/CosmosDBMongoDBCollectionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBMongoDBCollectionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBCollectionCreateUpdate.
@@ -41,7 +41,7 @@ public final class MongoDBResourcesCreateUpdateMongoDBCollectionSamples {
                     .withResource(
                         new MongoDBCollectionResource()
                             .withId("collectionName")
-                            .withShardKey(mapOf("testKey", "fakeTokenPlaceholder"))
+                            .withShardKey(mapOf("testKey", "Hash"))
                             .withIndexes(
                                 Arrays
                                     .asList(
