@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.ChangeFeedPolicy;
 import com.azure.cosmos.models.ClientEncryptionIncludedPath;
 import com.azure.cosmos.models.ClientEncryptionPolicy;
-import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.CosmosClientEncryptionKeyProperties;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
@@ -47,7 +46,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -511,33 +509,6 @@ public class CosmosContainerTest extends TestSuiteBase {
             partitionKeyPath, ThroughputProperties.createManualThroughput(throughput));
         this.createdContainer = createdDatabase.getContainer(collectionName);
         validateContainerResponse(new CosmosContainerProperties(collectionName, partitionKeyPath), containerResponse);
-    }
-
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void createContainer_withComputedProperties() throws Exception {
-        String collectionName = UUID.randomUUID().toString();
-        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
-        Collection<ComputedProperty> computedProperties = new ArrayList<>();
-        computedProperties.add(new ComputedProperty("test", "test"));
-        containerProperties.setComputedProperties(computedProperties);
-        CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-
-        CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
-        this.createdContainer = createdDatabase.getContainer(collectionName);
-        validateContainerResponse(containerProperties, containerResponse);
-//        assertThat(containerResponse.getProperties()).isNotNull();
-//        assertThat(containerResponse.getProperties().getComputedProperties()).isNotNull();
-
-//        CosmosContainerResponse replaceResponse =
-//            createdDatabase.getContainer(containerProperties.getId())
-//                .replace(containerResponse
-//                    .getProperties()
-//                    .setChangeFeedPolicy(
-//                        ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(6))));
-//        assertThat(containerResponse.getProperties()).isNotNull();
-//        assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
-//        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())
-//            .isEqualTo(Duration.ofMinutes(6));
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

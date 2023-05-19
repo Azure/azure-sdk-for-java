@@ -301,9 +301,8 @@ public final class DocumentCollection extends Resource {
      *
      * @return the computed properties.
      */
-    @SuppressWarnings("unchecked")
     public Collection<ComputedProperty> getComputedProperties() {
-        Collection<ComputedProperty> computedProperties = super.getObject(Constants.Properties.COMPUTED_PROPERTIES, Collection.class);
+        Collection<ComputedProperty> computedProperties = super.getList(Constants.Properties.COMPUTED_PROPERTIES, ComputedProperty.class);
 
         if (computedProperties == null) {
             return Collections.emptyList();
