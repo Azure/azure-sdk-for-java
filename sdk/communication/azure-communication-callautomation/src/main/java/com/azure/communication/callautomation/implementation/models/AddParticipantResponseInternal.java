@@ -22,9 +22,6 @@ public final class AddParticipantResponseInternal {
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
-    /** Creates an instance of AddParticipantResponseInternal class. */
-    public AddParticipantResponseInternal() {}
-
     /**
      * Get the participant property: List of current participants in the call.
      *

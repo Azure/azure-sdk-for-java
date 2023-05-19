@@ -122,27 +122,28 @@ public final class CallMedia {
         return callMediaAsync.cancelAllMediaOperationsWithResponseInternal(context).block();
     }
 
-
     /**
      * Sends Dtmf tones
-     * @param targetParticipant the target participant
+     *
      * @param tones tones to be sent
+     * @param targetParticipant the target participant
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void sendDtmf(CommunicationIdentifier targetParticipant, List<DtmfTone> tones) {
-        callMediaAsync.sendDtmf(targetParticipant, tones).block();
+    public void sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        callMediaAsync.sendDtmf(tones, targetParticipant).block();
     }
 
     /**
      * Sends Dtmf tones
-     * @param targetParticipant the target participant
+     *
      * @param tones tones to be sent
+     * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
      * @param context Context
      * @return Response for successful sendDtmf request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendDtmfWithResponse(CommunicationIdentifier targetParticipant, List<DtmfTone> tones,
+    public Response<Void> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant,
                                                String operationContext, Context context) {
         return callMediaAsync.sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context).block();
     }

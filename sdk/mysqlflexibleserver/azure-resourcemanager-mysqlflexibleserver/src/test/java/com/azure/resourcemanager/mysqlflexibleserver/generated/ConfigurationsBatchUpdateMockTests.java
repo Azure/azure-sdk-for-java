@@ -35,7 +35,7 @@ public final class ConfigurationsBatchUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"id\":\"ah\",\"name\":\"pjyzhpv\",\"type\":\"qzcjrvxdj\"}],\"nextLink\":\"mwlxk\"}";
+            "{\"value\":[{\"id\":\"luu\",\"name\":\"dttouwaboekqvkel\",\"type\":\"smv\"}],\"nextLink\":\"wyjsflhhcaalnjix\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -67,19 +67,17 @@ public final class ConfigurationsBatchUpdateMockTests {
             manager
                 .configurations()
                 .batchUpdate(
-                    "mtsavjcbpwxqp",
-                    "rknftguvriuhprwm",
+                    "pjzu",
+                    "e",
                     new ConfigurationListForBatchUpdate()
                         .withValue(
                             Arrays
                                 .asList(
-                                    new ConfigurationForBatchUpdate().withName("qtayri"),
-                                    new ConfigurationForBatchUpdate().withName("oyq"),
-                                    new ConfigurationForBatchUpdate().withName("rmcqiby"),
-                                    new ConfigurationForBatchUpdate().withName("jvkn")))
-                        .withResetAllToDefault(ResetAllToDefault.FALSE),
+                                    new ConfigurationForBatchUpdate().withName("ltskzbbtd"),
+                                    new ConfigurationForBatchUpdate().withName("veekgpwozuhkfp")))
+                        .withResetAllToDefault(ResetAllToDefault.TRUE),
                     com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("mwlxk", response.nextLink());
+        Assertions.assertEquals("wyjsflhhcaalnjix", response.nextLink());
     }
 }

@@ -8,6 +8,8 @@ import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.metrics.SdkMeterProvider;
 import io.opentelemetry.sdk.testing.exporter.InMemoryMetricReader;
 import org.openjdk.jmh.Main;
@@ -45,13 +47,14 @@ public class OpenTelemetryMetricsBenchmark {
         .registerMetricReader(SDK_METER_READER)
         .build();
 
+    private static final OpenTelemetry OPEN_TELEMETRY = OpenTelemetrySdk.builder().setMeterProvider(SDK_METER_PROVIDER).build();
     private static final TelemetryAttributes COMMON_ATTRIBUTES = new OpenTelemetryAttributes(new HashMap<String, Object>() {{
             put("az.messaging.destination", "fqdn");
             put("az.messaging.entity", "entityName");
         }});
 
     private static final Meter METER = AZURE_METER_PROVIDER
-        .createMeter("bench", null, new OpenTelemetryMetricsOptions().setProvider(SDK_METER_PROVIDER));
+        .createMeter("bench", null, new OpenTelemetryMetricsOptions().setOpenTelemetry(OPEN_TELEMETRY));
 
     private static final DynamicAttributeCache DYNAMIC_ATTRIBUTE_CACHE = new DynamicAttributeCache(AZURE_METER_PROVIDER, "fqdn", "entityName");
 
@@ -59,11 +62,11 @@ public class OpenTelemetryMetricsBenchmark {
         .createDoubleHistogram("test", "description", "unit");
 
     private static final DoubleHistogram NOOP_HISTOGRAM = AZURE_METER_PROVIDER
-        .createMeter("bench", null, new OpenTelemetryMetricsOptions().setProvider(io.opentelemetry.api.metrics.MeterProvider.noop()))
+        .createMeter("bench", null, new OpenTelemetryMetricsOptions().setOpenTelemetry(OpenTelemetry.noop()))
         .createDoubleHistogram("test", "description", "unit");
 
     private static final Meter DISABLED_METER = AZURE_METER_PROVIDER
-        .createMeter("bench", null, new OpenTelemetryMetricsOptions().setProvider(SDK_METER_PROVIDER).setEnabled(false));
+        .createMeter("bench", null, new OpenTelemetryMetricsOptions().setOpenTelemetry(OpenTelemetry.noop()));
 
     private static final DoubleHistogram DISABLED_METRICS_HISTOGRAM = DISABLED_METER
         .createDoubleHistogram("test", "description", "unit");

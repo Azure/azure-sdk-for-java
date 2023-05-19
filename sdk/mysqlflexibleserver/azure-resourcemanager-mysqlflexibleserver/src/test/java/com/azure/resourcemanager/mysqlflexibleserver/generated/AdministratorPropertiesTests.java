@@ -15,13 +15,13 @@ public final class AdministratorPropertiesTests {
         AdministratorProperties model =
             BinaryData
                 .fromString(
-                    "{\"administratorType\":\"ActiveDirectory\",\"login\":\"bhqwalmuzyoxa\",\"sid\":\"dkzjancuxrh\",\"tenantId\":\"bavxbniwdjswzt\",\"identityResourceId\":\"bpg\"}")
+                    "{\"administratorType\":\"ActiveDirectory\",\"login\":\"muf\",\"sid\":\"wnoi\",\"tenantId\":\"wlrxyb\",\"identityResourceId\":\"oqijgkdmbpaz\"}")
                 .toObject(AdministratorProperties.class);
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, model.administratorType());
-        Assertions.assertEquals("bhqwalmuzyoxa", model.login());
-        Assertions.assertEquals("dkzjancuxrh", model.sid());
-        Assertions.assertEquals("bavxbniwdjswzt", model.tenantId());
-        Assertions.assertEquals("bpg", model.identityResourceId());
+        Assertions.assertEquals("muf", model.login());
+        Assertions.assertEquals("wnoi", model.sid());
+        Assertions.assertEquals("wlrxyb", model.tenantId());
+        Assertions.assertEquals("oqijgkdmbpaz", model.identityResourceId());
     }
 
     @org.junit.jupiter.api.Test
@@ -29,15 +29,15 @@ public final class AdministratorPropertiesTests {
         AdministratorProperties model =
             new AdministratorProperties()
                 .withAdministratorType(AdministratorType.ACTIVE_DIRECTORY)
-                .withLogin("bhqwalmuzyoxa")
-                .withSid("dkzjancuxrh")
-                .withTenantId("bavxbniwdjswzt")
-                .withIdentityResourceId("bpg");
+                .withLogin("muf")
+                .withSid("wnoi")
+                .withTenantId("wlrxyb")
+                .withIdentityResourceId("oqijgkdmbpaz");
         model = BinaryData.fromObject(model).toObject(AdministratorProperties.class);
         Assertions.assertEquals(AdministratorType.ACTIVE_DIRECTORY, model.administratorType());
-        Assertions.assertEquals("bhqwalmuzyoxa", model.login());
-        Assertions.assertEquals("dkzjancuxrh", model.sid());
-        Assertions.assertEquals("bavxbniwdjswzt", model.tenantId());
-        Assertions.assertEquals("bpg", model.identityResourceId());
+        Assertions.assertEquals("muf", model.login());
+        Assertions.assertEquals("wnoi", model.sid());
+        Assertions.assertEquals("wlrxyb", model.tenantId());
+        Assertions.assertEquals("oqijgkdmbpaz", model.identityResourceId());
     }
 }

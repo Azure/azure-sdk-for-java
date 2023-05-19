@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AvailableWorkloadProfileProperties {
     /*
-     * Used to map workload profile types to billing meter.
+     * Used to categorize workload profiles.
      */
-    @JsonProperty(value = "billingMeterCategory")
-    private Category billingMeterCategory;
+    @JsonProperty(value = "category")
+    private String category;
 
     /*
      * indicates whether the profile is default for the location.
@@ -45,22 +45,22 @@ public final class AvailableWorkloadProfileProperties {
     }
 
     /**
-     * Get the billingMeterCategory property: Used to map workload profile types to billing meter.
+     * Get the category property: Used to categorize workload profiles.
      *
-     * @return the billingMeterCategory value.
+     * @return the category value.
      */
-    public Category billingMeterCategory() {
-        return this.billingMeterCategory;
+    public String category() {
+        return this.category;
     }
 
     /**
-     * Set the billingMeterCategory property: Used to map workload profile types to billing meter.
+     * Set the category property: Used to categorize workload profiles.
      *
-     * @param billingMeterCategory the billingMeterCategory value to set.
+     * @param category the category value to set.
      * @return the AvailableWorkloadProfileProperties object itself.
      */
-    public AvailableWorkloadProfileProperties withBillingMeterCategory(Category billingMeterCategory) {
-        this.billingMeterCategory = billingMeterCategory;
+    public AvailableWorkloadProfileProperties withCategory(String category) {
+        this.category = category;
         return this;
     }
 

@@ -39,6 +39,15 @@ public final class ConnectedEnvironmentProvisioningState
     public static final ConnectedEnvironmentProvisioningState SCHEDULED_FOR_DELETE = fromString("ScheduledForDelete");
 
     /**
+     * Creates a new instance of ConnectedEnvironmentProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConnectedEnvironmentProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ConnectedEnvironmentProvisioningState from its string representation.
      *
      * @param name a name to look for.

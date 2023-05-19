@@ -41,9 +41,6 @@ public final class CommunicationError {
     @JsonProperty(value = "innererror")
     private CommunicationError innererror;
 
-    /** Creates an instance of CommunicationError class. */
-    public CommunicationError() {}
-
     /**
      * Get the code property: The code property.
      *

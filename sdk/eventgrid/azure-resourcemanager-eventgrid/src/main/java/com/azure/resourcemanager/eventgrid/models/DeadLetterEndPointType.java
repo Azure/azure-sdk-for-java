@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeadLetterEndPointType. */
+/** Type of the endpoint for the dead letter destination. */
 public final class DeadLetterEndPointType extends ExpandableStringEnum<DeadLetterEndPointType> {
     /** Static value StorageBlob for DeadLetterEndPointType. */
     public static final DeadLetterEndPointType STORAGE_BLOB = fromString("StorageBlob");
+
+    /**
+     * Creates a new instance of DeadLetterEndPointType value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeadLetterEndPointType() {
+    }
 
     /**
      * Creates or finds a DeadLetterEndPointType from its string representation.

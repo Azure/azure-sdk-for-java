@@ -24,6 +24,10 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
     @JsonProperty(value = "properties")
     private JsonInputSchemaMappingProperties innerProperties;
 
+    /** Creates an instance of JsonInputSchemaMapping class. */
+    public JsonInputSchemaMapping() {
+    }
+
     /**
      * Get the innerProperties property: JSON Properties of the input schema mapping.
      *

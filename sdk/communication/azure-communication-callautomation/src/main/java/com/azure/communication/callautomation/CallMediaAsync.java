@@ -456,22 +456,24 @@ public final class CallMediaAsync {
 
     /**
      * Send DTMF tones
-     * @param targetParticipant the target participant
+     *
      * @param tones tones to be sent
+     * @param targetParticipant the target participant
      * @return Response for successful sendDtmf request.
      */
-    public Mono<Void> sendDtmf(CommunicationIdentifier targetParticipant, List<DtmfTone> tones) {
-        return sendDtmfWithResponse(targetParticipant, tones, null).then();
+    public Mono<Void> sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        return sendDtmfWithResponse(tones, targetParticipant, null).then();
     }
 
     /**
      * Send DTMF tones
-     * @param targetParticipant the target participant
+     *
      * @param tones tones to be sent
+     * @param targetParticipant the target participant
      * @param operationContext operationContext (pass null if not applicable)
      * @return Response for successful sendDtmf request.
      */
-    public Mono<Response<Void>> sendDtmfWithResponse(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext) {
+    public Mono<Response<Void>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext) {
         return withContext(context -> sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context));
     }
 

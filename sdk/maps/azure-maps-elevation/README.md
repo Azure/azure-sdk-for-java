@@ -8,7 +8,7 @@ This package contains the Azure Maps SDK Elevation client library which contains
 
 ## Important
 
-Please note, this package has been deprecated and will no longer be maintained after 5 May 2023. We encourage you to upgrade to the latest version to continue receiving updates. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this retirement. Refer to the migration guide [Elevation Services Retirement] for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
+Please note, this package has been deprecated and will no longer be in service or maintained after 5 May 2023. All other Azure Maps APIs, Services and TilesetIDs are unaffected by this retirement. Refer to the migration guide [Elevation Services Retirement] for guidance on upgrading. Refer to our deprecation policy (https://aka.ms/azsdk/support-policies) for more details.
 
 ## Documentation
 
@@ -30,7 +30,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-maps-elevation</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

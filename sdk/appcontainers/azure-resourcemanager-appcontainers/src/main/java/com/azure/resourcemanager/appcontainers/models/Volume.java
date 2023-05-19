@@ -6,6 +6,7 @@ package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Volume definitions for the Container App. */
 @Fluent
@@ -23,10 +24,17 @@ public final class Volume {
     private StorageType storageType;
 
     /*
-     * Name of storage resource. No need to provide for EmptyDir.
+     * Name of storage resource. No need to provide for EmptyDir and Secret.
      */
     @JsonProperty(value = "storageName")
     private String storageName;
+
+    /*
+     * List of secrets to be added in volume. If no secrets are provided, all secrets in collection will be added to
+     * volume.
+     */
+    @JsonProperty(value = "secrets")
+    private List<SecretVolumeItem> secrets;
 
     /** Creates an instance of Volume class. */
     public Volume() {
@@ -73,7 +81,7 @@ public final class Volume {
     }
 
     /**
-     * Get the storageName property: Name of storage resource. No need to provide for EmptyDir.
+     * Get the storageName property: Name of storage resource. No need to provide for EmptyDir and Secret.
      *
      * @return the storageName value.
      */
@@ -82,7 +90,7 @@ public final class Volume {
     }
 
     /**
-     * Set the storageName property: Name of storage resource. No need to provide for EmptyDir.
+     * Set the storageName property: Name of storage resource. No need to provide for EmptyDir and Secret.
      *
      * @param storageName the storageName value to set.
      * @return the Volume object itself.
@@ -93,10 +101,35 @@ public final class Volume {
     }
 
     /**
+     * Get the secrets property: List of secrets to be added in volume. If no secrets are provided, all secrets in
+     * collection will be added to volume.
+     *
+     * @return the secrets value.
+     */
+    public List<SecretVolumeItem> secrets() {
+        return this.secrets;
+    }
+
+    /**
+     * Set the secrets property: List of secrets to be added in volume. If no secrets are provided, all secrets in
+     * collection will be added to volume.
+     *
+     * @param secrets the secrets value to set.
+     * @return the Volume object itself.
+     */
+    public Volume withSecrets(List<SecretVolumeItem> secrets) {
+        this.secrets = secrets;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (secrets() != null) {
+            secrets().forEach(e -> e.validate());
+        }
     }
 }

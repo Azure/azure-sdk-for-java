@@ -103,8 +103,8 @@ public final class SecurityRulePropertiesFormat {
      * The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each
      * rule in the collection. The lower the priority number, the higher the priority of the rule.
      */
-    @JsonProperty(value = "priority")
-    private Integer priority;
+    @JsonProperty(value = "priority", required = true)
+    private int priority;
 
     /*
      * The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic.
@@ -403,7 +403,7 @@ public final class SecurityRulePropertiesFormat {
      *
      * @return the priority value.
      */
-    public Integer priority() {
+    public int priority() {
         return this.priority;
     }
 
@@ -415,7 +415,7 @@ public final class SecurityRulePropertiesFormat {
      * @param priority the priority value to set.
      * @return the SecurityRulePropertiesFormat object itself.
      */
-    public SecurityRulePropertiesFormat withPriority(Integer priority) {
+    public SecurityRulePropertiesFormat withPriority(int priority) {
         this.priority = priority;
         return this;
     }

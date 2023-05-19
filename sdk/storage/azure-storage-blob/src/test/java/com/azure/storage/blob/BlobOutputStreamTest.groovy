@@ -13,6 +13,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.StorageSharedKeyCredential
 import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.extensions.LiveOnly
+import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import reactor.core.publisher.Mono
 import spock.lang.Unroll
 
@@ -215,6 +216,24 @@ class BlobOutputStreamTest extends APISpec {
 
         then:
         appendBlobClient.getProperties().getBlobSize() == data.length
+        convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2022_11_02")
+    @LiveOnly
+    def "AppendBlob output stream high throughput"() {
+        setup:
+        // using data greater than 4MB and service versions above 2022_11_02 to test uploading up to 100MB per block
+        def data = getRandomByteArray(2 * FOUR_MB)
+        def appendBlobClient = cc.getBlobClient(generateBlobName()).getAppendBlobClient()
+        appendBlobClient.create()
+
+        when:
+        def outputStream = appendBlobClient.getBlobOutputStream()
+        outputStream.write(data)
+        outputStream.close()
+
+        then:
         convertInputStreamToByteArray(appendBlobClient.openInputStream()) == data
     }
 

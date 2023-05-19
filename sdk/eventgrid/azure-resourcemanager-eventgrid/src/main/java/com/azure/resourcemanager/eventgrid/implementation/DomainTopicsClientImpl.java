@@ -62,11 +62,10 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface DomainTopicsService {
+    public interface DomainTopicsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{domainTopicName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainTopicInner>> get(
@@ -81,8 +80,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{domainTopicName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -97,8 +95,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics/{domainTopicName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics/{domainTopicName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -112,8 +109,7 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains"
-                + "/{domainName}/topics")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/domains/{domainName}/topics")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DomainTopicsListResult>> listByDomain(
@@ -139,7 +135,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Get properties of a domain topic.
+     * Get a domain topic.
+     *
+     * <p>Get properties of a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -193,7 +191,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Get properties of a domain topic.
+     * Get a domain topic.
+     *
+     * <p>Get properties of a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -245,7 +245,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Get properties of a domain topic.
+     * Get a domain topic.
+     *
+     * <p>Get properties of a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -262,23 +264,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Get properties of a domain topic.
+     * Get a domain topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param domainName Name of the domain.
-     * @param domainTopicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a domain topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DomainTopicInner get(String resourceGroupName, String domainName, String domainTopicName) {
-        return getAsync(resourceGroupName, domainName, domainTopicName).block();
-    }
-
-    /**
-     * Get properties of a domain topic.
+     * <p>Get properties of a domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -296,7 +284,27 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Get a domain topic.
+     *
+     * <p>Get properties of a domain topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param domainName Name of the domain.
+     * @param domainTopicName Name of the topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a domain topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DomainTopicInner get(String resourceGroupName, String domainName, String domainTopicName) {
+        return getWithResponse(resourceGroupName, domainName, domainTopicName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -350,7 +358,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -402,7 +412,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -428,7 +440,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -452,7 +466,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -465,11 +481,13 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(
         String resourceGroupName, String domainName, String domainTopicName) {
-        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName).getSyncPoller();
     }
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -483,11 +501,13 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(
         String resourceGroupName, String domainName, String domainTopicName, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, domainName, domainTopicName, context).getSyncPoller();
     }
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -506,7 +526,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -526,7 +548,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -542,7 +566,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * Create or update a domain topic.
+     *
+     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -560,7 +586,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -612,7 +640,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -662,7 +692,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -683,7 +715,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -706,7 +740,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -719,11 +755,13 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String domainName, String domainTopicName) {
-        return beginDeleteAsync(resourceGroupName, domainName, domainTopicName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, domainName, domainTopicName).getSyncPoller();
     }
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -737,11 +775,13 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String domainName, String domainTopicName, Context context) {
-        return beginDeleteAsync(resourceGroupName, domainName, domainTopicName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, domainName, domainTopicName, context).getSyncPoller();
     }
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -759,7 +799,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -779,7 +821,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -794,7 +838,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * Delete existing domain topic.
+     * Delete a domain topic.
+     *
+     * <p>Delete existing domain topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
@@ -810,7 +856,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * List all the topics in a domain.
+     * List domain topics.
+     *
+     * <p>List all the topics in a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
@@ -878,7 +926,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * List all the topics in a domain.
+     * List domain topics.
+     *
+     * <p>List all the topics in a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
@@ -944,7 +994,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * List all the topics in a domain.
+     * List domain topics.
+     *
+     * <p>List all the topics in a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
@@ -970,7 +1022,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * List all the topics in a domain.
+     * List domain topics.
+     *
+     * <p>List all the topics in a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
@@ -989,7 +1043,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * List all the topics in a domain.
+     * List domain topics.
+     *
+     * <p>List all the topics in a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
@@ -1016,7 +1072,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * List all the topics in a domain.
+     * List domain topics.
+     *
+     * <p>List all the topics in a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
@@ -1033,7 +1091,9 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     }
 
     /**
-     * List all the topics in a domain.
+     * List domain topics.
+     *
+     * <p>List all the topics in a domain.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
@@ -1060,7 +1120,8 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1096,7 +1157,8 @@ public final class DomainTopicsClientImpl implements DomainTopicsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

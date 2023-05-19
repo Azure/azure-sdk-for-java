@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionFilter;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptionUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.WebhookEventSubscriptionDestination;
@@ -13,7 +12,7 @@ import java.util.Arrays;
 /** Samples for SystemTopicEventSubscriptions Update. */
 public final class SystemTopicEventSubscriptionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/SystemTopicEventSubscriptions_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/SystemTopicEventSubscriptions_Update.json
      */
     /**
      * Sample code: SystemTopicEventSubscriptions_Update.
@@ -37,6 +36,6 @@ public final class SystemTopicEventSubscriptionsUpdateSamples {
                             .withSubjectEndsWith("newSuffix")
                             .withIsSubjectCaseSensitive(true))
                     .withLabels(Arrays.asList("label1", "label2")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

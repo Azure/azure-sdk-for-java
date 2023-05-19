@@ -15,18 +15,23 @@ public final class ConfigurationInnerTests {
         ConfigurationInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"value\":\"ouajpsqucmpoyf\",\"description\":\"fogknygjofjdde\",\"defaultValue\":\"rd\",\"dataType\":\"pewnw\",\"allowedValues\":\"itjz\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"True\"},\"id\":\"fcqhsmyurkd\",\"name\":\"mlxhekuksjtxukcd\",\"type\":\"parcry\"}")
+                    "{\"properties\":{\"value\":\"qtrgqjbpfzfsinzg\",\"currentValue\":\"cjrwzoxxjtfellu\",\"description\":\"zitonpeqfpjkjl\",\"documentationLink\":\"fpdvhpfxxypi\",\"defaultValue\":\"nmayhuybb\",\"dataType\":\"odepoogin\",\"allowedValues\":\"amiheognarxz\",\"source\":\"system-default\",\"isReadOnly\":\"True\",\"isConfigPendingRestart\":\"True\",\"isDynamicConfig\":\"False\"},\"id\":\"yevc\",\"name\":\"iqihn\",\"type\":\"un\"}")
                 .toObject(ConfigurationInner.class);
-        Assertions.assertEquals("ouajpsqucmpoyf", model.value());
+        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.value());
+        Assertions.assertEquals("cjrwzoxxjtfellu", model.currentValue());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ConfigurationInner model =
-            new ConfigurationInner().withValue("ouajpsqucmpoyf").withSource(ConfigurationSource.SYSTEM_DEFAULT);
+            new ConfigurationInner()
+                .withValue("qtrgqjbpfzfsinzg")
+                .withCurrentValue("cjrwzoxxjtfellu")
+                .withSource(ConfigurationSource.SYSTEM_DEFAULT);
         model = BinaryData.fromObject(model).toObject(ConfigurationInner.class);
-        Assertions.assertEquals("ouajpsqucmpoyf", model.value());
+        Assertions.assertEquals("qtrgqjbpfzfsinzg", model.value());
+        Assertions.assertEquals("cjrwzoxxjtfellu", model.currentValue());
         Assertions.assertEquals(ConfigurationSource.SYSTEM_DEFAULT, model.source());
     }
 }

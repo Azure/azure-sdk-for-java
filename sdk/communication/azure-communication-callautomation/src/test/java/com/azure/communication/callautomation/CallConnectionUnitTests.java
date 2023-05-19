@@ -12,7 +12,6 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
@@ -87,7 +86,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        Response<Void> hangUpResponse = callConnection.hangUpWithResponse(new HangUpOptions(false), Context.NONE);
+        Response<Void> hangUpResponse = callConnection.hangUpWithResponse(false, Context.NONE);
 
         assertNotNull(hangUpResponse);
         assertEquals(204, hangUpResponse.getStatusCode());
@@ -101,7 +100,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnection(CALL_CONNECTION_ID);
 
-        Response<Void> hangUpResponse = callConnection.hangUpWithResponse(new HangUpOptions(true), Context.NONE);
+        Response<Void> hangUpResponse = callConnection.hangUpWithResponse(true, Context.NONE);
 
         assertNotNull(hangUpResponse);
         assertEquals(204, hangUpResponse.getStatusCode());
