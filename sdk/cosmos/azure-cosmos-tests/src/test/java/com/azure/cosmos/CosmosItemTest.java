@@ -429,7 +429,8 @@ public class CosmosItemTest extends TestSuiteBase {
 
         assertThat(feedResponse).isNotNull();
         assertThat(feedResponse.getResults()).isNotNull();
-        assertThat(feedResponse.getResults().size()).isEqualTo(1);
+        // there could be a case where 0 items were created in physical partition 1
+        assertThat(feedResponse.getResults().size()).isLessThanOrEqualTo(1);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

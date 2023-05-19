@@ -2685,7 +2685,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return Mono.just(feedResponse);
                     }
                 }
-                return Mono.error(throwable);
+
+                return Mono.error(unwrappedThrowable);
             });
     }
 
