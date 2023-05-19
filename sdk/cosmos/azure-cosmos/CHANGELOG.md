@@ -3,6 +3,7 @@
 ### 4.46.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for computed properties - See [PR 35046](https://github.com/Azure/azure-sdk-for-java/pull/35046)
 
 #### Breaking Changes
 
