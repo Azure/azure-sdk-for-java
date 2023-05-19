@@ -117,9 +117,10 @@ class VertxAsyncHttpClient implements HttpClient {
             }
         }));
     }
+//   TODO: https://github.com/Azure/azure-sdk-for-js/issues/25925
 
-    @Override
-    public HttpResponse sendSync(HttpRequest request, Context context) {
-        return send(request, context).block();
-    }
+//    @Override
+//    public HttpResponse sendSync(HttpRequest request, Context context) {
+//        return send(request, context).block();
+//    }
 }
