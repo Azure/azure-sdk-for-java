@@ -104,7 +104,7 @@ public final class NonSessionProcessor {
      * The abstraction to stream messages using {@link MessagePump}. {@link RollingMessagePump} transparently switch
      * to next {@link MessagePump} to continue streaming when the current pump terminates.
      */
-    private static final class RollingMessagePump extends AtomicBoolean {
+    static final class RollingMessagePump extends AtomicBoolean {
         private static final RuntimeException STREAMING_DISPOSED = new RuntimeException("The Processor closure disposed the RollingMessagePump.");
         private static final Duration NEXT_PUMP_BACKOFF = Duration.ofSeconds(5);
         private final ClientLogger logger;
@@ -139,7 +139,7 @@ public final class NonSessionProcessor {
         }
 
         /**
-         * Begin streaming messages.
+         * Begin streaming messages. To terminate the streaming, dispose the pump by invoking {@link MessagePump#dispose()}.
          *
          * @throws IllegalStateException If the API is called more than once or after the disposal.
          */
@@ -147,7 +147,15 @@ public final class NonSessionProcessor {
             if (getAndSet(true)) {
                 throw logger.atInfo().log(new IllegalStateException("The streaming cannot begin more than once."));
             }
+            final Disposable d = beginIntern().subscribe();
+            if (!disposable.add(d)) {
+                throw logger.atInfo().log(new IllegalStateException("Cannot begin streaming after the disposal."));
+            }
+        }
 
+        // Internal API to begin streaming messages once subscribed to the mono it returns, this method is supposed
+        // to be called only from 'MessagePump#begin'. The package internal scope is to support testing.
+        Mono<Void> beginIntern() {
             final Mono<Void> pumping = Mono.using(
                 () -> {
                     return builder.buildAsyncClient();
@@ -161,11 +169,7 @@ public final class NonSessionProcessor {
                     client.close();
                 },
                 true);
-
-            final Disposable d = pumping.retryWhen(retrySpecForNextPump()).subscribe();
-            if (!disposable.add(d)) {
-                throw logger.atInfo().log(new IllegalStateException("Cannot begin streaming after the disposal."));
-            }
+            return pumping.retryWhen(retrySpecForNextPump());
         }
 
         String getClientIdentifier() {
