@@ -8,26 +8,22 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
- * Sample demonstrating the minimal usage where, aside from providing authentication
- * details, we only need to pass a prompt and the deploymentId
+ * A sample demonstrating the minimal usage with default credentials 
+ * where we only need to pass a prompt and the deploymentId
  */
-public class GetCompletionsFromPrompt {
-
+public class ChatbotSample {
     /**
-     * The sample will return the text choices that are generated based on the prompt provided by the user
-     *
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String azureOpenAIKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
-        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
-
+        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
-            .credential(new AzureKeyCredential(azureOpenAIKey))
+            .credential(defaultCredential)
             .buildClient();
 
+        String deploymentOrModelId = "text-davinci-003";
         String prompt = "Tell me 3 jokes about trains";
 
         Completions completions = client.getCompletions(deploymentOrModelId, prompt);

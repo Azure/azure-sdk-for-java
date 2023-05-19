@@ -16,15 +16,10 @@ import com.azure.core.util.IterableStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Sample demonstrates how to get chat completions for the provided chat messages.
- * Completions support a wide variety of tasks and generate text that continues from or "completes" provided
- * prompt data.
- */
-public class GetChatCompletionsStreamSample {
+public class StreamingChatSample {
 
     /**
-     * Runs the sample algorithm and demonstrates how to get chat completions for the provided chat messages.
+     * Demonstrates how to get chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes" provided
      * prompt data.
      *
@@ -57,13 +52,6 @@ public class GetChatCompletionsStreamSample {
                     System.out.println("Message:");
                     System.out.println(message.getContent());
                 }
-            }
-
-            CompletionsUsage usage = chatCompletions.getUsage();
-            if (usage != null) {
-                System.out.printf("Usage: number of prompt token is %d, "
-                        + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
-                    usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
             }
         });
     }
