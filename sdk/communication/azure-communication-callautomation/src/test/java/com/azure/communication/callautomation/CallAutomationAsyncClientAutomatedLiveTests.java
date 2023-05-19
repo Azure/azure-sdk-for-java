@@ -7,11 +7,10 @@ import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
-import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
-import com.azure.communication.callautomation.models.events.CallConnectedEventData;
-import com.azure.communication.callautomation.models.events.CallDisconnectedEventData;
-import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEventData;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.CallDisconnected;
+import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -98,32 +97,32 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // check events to caller side
-            CallConnectedEventData callerCallConnectedEventData = waitForEvent(CallConnectedEventData.class, callerConnectionId, Duration.ofSeconds(10));
-            ParticipantsUpdatedEventData callerParticipantUpdatedEvent = waitForEvent(ParticipantsUpdatedEventData.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(callerCallConnectedEventData);
+            CallConnected callerCallConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            ParticipantsUpdated callerParticipantUpdatedEvent = waitForEvent(ParticipantsUpdated.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callerCallConnected);
             assertNotNull(callerParticipantUpdatedEvent);
 
             // check events to receiver side
-            CallConnectedEventData receiverCallConnectedEventData = waitForEvent(CallConnectedEventData.class, receiverConnectionId, Duration.ofSeconds(10));
-            ParticipantsUpdatedEventData receiverParticipantUpdatedEvent = waitForEvent(ParticipantsUpdatedEventData.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(receiverCallConnectedEventData);
+            CallConnected receiverCallConnected = waitForEvent(CallConnected.class, receiverConnectionId, Duration.ofSeconds(10));
+            ParticipantsUpdated receiverParticipantUpdatedEvent = waitForEvent(ParticipantsUpdated.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(receiverCallConnected);
             assertNotNull(receiverParticipantUpdatedEvent);
 
             // hang up the call.
             answerCallResult.getCallConnectionAsync().hangUp(true).block();
 
             // check if both parties had the call terminated.
-            CallDisconnectedEventData callerCallDisconnectedEventData = waitForEvent(CallDisconnectedEventData.class, receiverConnectionId, Duration.ofSeconds(10));
-            CallDisconnectedEventData receiverCallDisconnectedEventData = waitForEvent(CallDisconnectedEventData.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(callerCallDisconnectedEventData);
-            assertNotNull(receiverCallDisconnectedEventData);
+            CallDisconnected callerCallDisconnected = waitForEvent(CallDisconnected.class, receiverConnectionId, Duration.ofSeconds(10));
+            CallDisconnected receiverCallDisconnected = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callerCallDisconnected);
+            assertNotNull(receiverCallDisconnected);
 
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true)).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.
@@ -188,8 +187,8 @@ public class CallAutomationAsyncClientAutomatedLiveTests extends CallAutomationA
             receiverAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
 
             // check events
-            CallDisconnectedEventData callDisconnectedEventData = waitForEvent(CallDisconnectedEventData.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(callDisconnectedEventData);
+            CallDisconnected callDisconnected = waitForEvent(CallDisconnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callDisconnected);
             assertThrows(RuntimeException.class, () -> createCallResult.getCallConnection().getCallProperties());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);

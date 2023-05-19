@@ -10,7 +10,7 @@ import com.azure.resourcemanager.appcontainers.models.BillingMeter;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of premium workload billing meters. */
+/** Collection of billing meters. */
 @Fluent
 public final class BillingMeterCollectionInner {
     /*

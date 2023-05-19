@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Catalogs ListByDevCenter. */
 public final class CatalogsListByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Catalogs_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Catalogs_List.json
      */
     /**
      * Sample code: Catalogs_ListByDevCenter.
@@ -17,6 +15,6 @@ public final class CatalogsListByDevCenterSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void catalogsListByDevCenter(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.catalogs().listByDevCenter("rg1", "Contoso", null, Context.NONE);
+        manager.catalogs().listByDevCenter("rg1", "Contoso", null, com.azure.core.util.Context.NONE);
     }
 }

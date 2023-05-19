@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.RecommendedMachineConfiguration;
-import org.junit.jupiter.api.Test;
 
 public final class RecommendedMachineConfigurationTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RecommendedMachineConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"memory\":{\"min\":1063088657,\"max\":973371108},\"vCPUs\":{\"min\":1664958649,\"max\":38935170}}")
+                    "{\"memory\":{\"min\":1015475658,\"max\":1187016173},\"vCPUs\":{\"min\":1088023513,\"max\":1059289451}}")
                 .toObject(RecommendedMachineConfiguration.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RecommendedMachineConfiguration model = new RecommendedMachineConfiguration();
         model = BinaryData.fromObject(model).toObject(RecommendedMachineConfiguration.class);
     }

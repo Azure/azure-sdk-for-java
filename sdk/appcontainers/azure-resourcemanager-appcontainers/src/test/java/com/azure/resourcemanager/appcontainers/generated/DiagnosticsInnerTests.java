@@ -13,24 +13,23 @@ import com.azure.resourcemanager.appcontainers.models.DiagnosticsProperties;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticsStatus;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticsInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DiagnosticsInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"metadata\":{\"id\":\"fmviklby\",\"name\":\"khbejdznxc\",\"description\":\"srhnjivo\",\"author\":\"tnovqfzgemjdftul\",\"category\":\"tduceamt\",\"supportTopicList\":[],\"analysisTypes\":[\"m\"],\"type\":\"wcw\",\"score\":57.057808},\"dataset\":[{},{},{}],\"status\":{\"message\":\"sv\",\"statusId\":750225964},\"dataProviderMetadata\":{\"providerName\":\"vk\",\"propertyBag\":[]}},\"id\":\"ql\",\"name\":\"yxgtczh\",\"type\":\"ydbsd\"}")
+                    "{\"properties\":{\"metadata\":{\"id\":\"btgkbugrjqctoj\",\"name\":\"isofieypefojyqd\",\"description\":\"u\",\"author\":\"cp\",\"category\":\"wkhihihlhzdsqt\",\"supportTopicList\":[],\"analysisTypes\":[\"nowc\",\"hfgmvecactxm\",\"oteyowc\",\"uqovekqvgqouwif\"],\"type\":\"pjwyiv\",\"score\":50.420834},\"dataset\":[{},{}],\"status\":{\"message\":\"phuagrttikteusq\",\"statusId\":1626546819},\"dataProviderMetadata\":{\"providerName\":\"klxubyja\",\"propertyBag\":[]}},\"id\":\"fblcq\",\"name\":\"u\",\"type\":\"bgq\"}")
                 .toObject(DiagnosticsInner.class);
-        Assertions.assertEquals("m", model.properties().metadata().analysisTypes().get(0));
-        Assertions.assertEquals("sv", model.properties().status().message());
-        Assertions.assertEquals(750225964, model.properties().status().statusId());
-        Assertions.assertEquals("vk", model.properties().dataProviderMetadata().providerName());
+        Assertions.assertEquals("nowc", model.properties().metadata().analysisTypes().get(0));
+        Assertions.assertEquals("phuagrttikteusq", model.properties().status().message());
+        Assertions.assertEquals(1626546819, model.properties().status().statusId());
+        Assertions.assertEquals("klxubyja", model.properties().dataProviderMetadata().providerName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DiagnosticsInner model =
             new DiagnosticsInner()
                 .withProperties(
@@ -38,22 +37,17 @@ public final class DiagnosticsInnerTests {
                         .withMetadata(
                             new DiagnosticsDefinition()
                                 .withSupportTopicList(Arrays.asList())
-                                .withAnalysisTypes(Arrays.asList("m")))
-                        .withDataset(
-                            Arrays
-                                .asList(
-                                    new DiagnosticsDataApiResponse(),
-                                    new DiagnosticsDataApiResponse(),
-                                    new DiagnosticsDataApiResponse()))
-                        .withStatus(new DiagnosticsStatus().withMessage("sv").withStatusId(750225964))
+                                .withAnalysisTypes(Arrays.asList("nowc", "hfgmvecactxm", "oteyowc", "uqovekqvgqouwif")))
+                        .withDataset(Arrays.asList(new DiagnosticsDataApiResponse(), new DiagnosticsDataApiResponse()))
+                        .withStatus(new DiagnosticsStatus().withMessage("phuagrttikteusq").withStatusId(1626546819))
                         .withDataProviderMetadata(
                             new DiagnosticDataProviderMetadata()
-                                .withProviderName("vk")
+                                .withProviderName("klxubyja")
                                 .withPropertyBag(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(DiagnosticsInner.class);
-        Assertions.assertEquals("m", model.properties().metadata().analysisTypes().get(0));
-        Assertions.assertEquals("sv", model.properties().status().message());
-        Assertions.assertEquals(750225964, model.properties().status().statusId());
-        Assertions.assertEquals("vk", model.properties().dataProviderMetadata().providerName());
+        Assertions.assertEquals("nowc", model.properties().metadata().analysisTypes().get(0));
+        Assertions.assertEquals("phuagrttikteusq", model.properties().status().message());
+        Assertions.assertEquals(1626546819, model.properties().status().statusId());
+        Assertions.assertEquals("klxubyja", model.properties().dataProviderMetadata().providerName());
     }
 }

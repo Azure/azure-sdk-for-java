@@ -6,35 +6,21 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.fluent.models.DaprSecretsCollectionInner;
-import com.azure.resourcemanager.appcontainers.models.Secret;
+import com.azure.resourcemanager.appcontainers.models.DaprSecret;
 import java.util.Arrays;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DaprSecretsCollectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         DaprSecretsCollectionInner model =
             BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"fqntcyp\",\"value\":\"jv\"},{\"name\":\"imwkslircizj\",\"value\":\"ydfce\"},{\"name\":\"vlhv\",\"value\":\"dyftumrtwna\"}]}")
+                .fromString("{\"value\":[{\"name\":\"sxnkjzkdeslpvlo\",\"value\":\"i\"}]}")
                 .toObject(DaprSecretsCollectionInner.class);
-        Assertions.assertEquals("fqntcyp", model.value().get(0).name());
-        Assertions.assertEquals("jv", model.value().get(0).value());
     }
 
-    @Test
-    public void testSerialize() {
-        DaprSecretsCollectionInner model =
-            new DaprSecretsCollectionInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new Secret().withName("fqntcyp").withValue("jv"),
-                            new Secret().withName("imwkslircizj").withValue("ydfce"),
-                            new Secret().withName("vlhv").withValue("dyftumrtwna")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DaprSecretsCollectionInner model = new DaprSecretsCollectionInner().withValue(Arrays.asList(new DaprSecret()));
         model = BinaryData.fromObject(model).toObject(DaprSecretsCollectionInner.class);
-        Assertions.assertEquals("fqntcyp", model.value().get(0).name());
-        Assertions.assertEquals("jv", model.value().get(0).value());
     }
 }

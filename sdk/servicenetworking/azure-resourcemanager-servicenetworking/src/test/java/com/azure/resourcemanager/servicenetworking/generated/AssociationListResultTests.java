@@ -12,54 +12,66 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssociationListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AssociationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"provisioningState\":\"Failed\"},\"location\":\"ljdousk\",\"tags\":{\"njbiksqrglssain\":\"kocrcjdkwtnhx\",\"wnzlljfmppeeb\":\"p\",\"yqduujit\":\"mgxsab\"},\"id\":\"jczdzevndh\",\"name\":\"rwpdappdsbdkvwrw\",\"type\":\"feusnhut\"},{\"properties\":{\"associationType\":\"subnets\",\"provisioningState\":\"Deleting\"},\"location\":\"dhugjzzdatqxhocd\",\"tags\":{\"vkaozwyiftyhxhur\":\"blgphuticn\",\"tyxolniwpwc\":\"k\",\"awxklr\":\"kjfkg\",\"ypnddhsgcb\":\"plwckbas\"},\"id\":\"cph\",\"name\":\"jkot\",\"type\":\"nqgoulzndli\"}],\"nextLink\":\"yqkgfg\"}")
+                    "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"provisioningState\":\"Succeeded\"},\"location\":\"bkzgcwrwclx\",\"tags\":{\"qvkoc\":\"ljdousk\",\"sqrglssainq\":\"cjdkwtnhxbnjbi\",\"eebvmgxsab\":\"jwnzlljfmp\"},\"id\":\"yqduujit\",\"name\":\"jczdzevndh\",\"type\":\"rwpdappdsbdkvwrw\"},{\"properties\":{\"associationType\":\"subnets\",\"provisioningState\":\"Accepted\"},\"location\":\"utjeltmrldhugj\",\"tags\":{\"dgeablgphu\":\"atqxho\",\"xhurok\":\"icndvkaozwyifty\",\"kjfkg\":\"tyxolniwpwc\",\"plwckbas\":\"awxklr\"},\"id\":\"ypnddhsgcb\",\"name\":\"cph\",\"type\":\"jkot\"},{\"properties\":{\"associationType\":\"subnets\",\"provisioningState\":\"Updating\"},\"location\":\"zndlikwy\",\"tags\":{\"rxybz\":\"fgibmadgakeq\",\"mnkzsmod\":\"qedqytbciqfoufl\"},\"id\":\"glougpbk\",\"name\":\"tmut\",\"type\":\"uqktap\"},{\"properties\":{\"associationType\":\"subnets\",\"provisioningState\":\"Canceled\"},\"location\":\"rtumkdosvq\",\"tags\":{\"mbmbexppbh\":\"mdgbbjfdd\"},\"id\":\"q\",\"name\":\"rolfpfp\",\"type\":\"algbquxigjyjg\"}],\"nextLink\":\"aoyfhrtxilnerkuj\"}")
                 .toObject(AssociationListResult.class);
-        Assertions.assertEquals("ljdousk", model.value().get(0).location());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.value().get(0).tags().get("njbiksqrglssain"));
+        Assertions.assertEquals("bkzgcwrwclx", model.value().get(0).location());
+        Assertions.assertEquals("ljdousk", model.value().get(0).tags().get("qvkoc"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.value().get(0).associationType());
-        Assertions.assertEquals("yqkgfg", model.nextLink());
+        Assertions.assertEquals("aoyfhrtxilnerkuj", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AssociationListResult model =
             new AssociationListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new AssociationInner()
-                                .withLocation("ljdousk")
+                                .withLocation("bkzgcwrwclx")
                                 .withTags(
                                     mapOf(
-                                        "njbiksqrglssain", "kocrcjdkwtnhx", "wnzlljfmppeeb", "p", "yqduujit", "mgxsab"))
+                                        "qvkoc",
+                                        "ljdousk",
+                                        "sqrglssainq",
+                                        "cjdkwtnhxbnjbi",
+                                        "eebvmgxsab",
+                                        "jwnzlljfmp"))
                                 .withAssociationType(AssociationType.SUBNETS),
                             new AssociationInner()
-                                .withLocation("dhugjzzdatqxhocd")
+                                .withLocation("utjeltmrldhugj")
                                 .withTags(
                                     mapOf(
-                                        "vkaozwyiftyhxhur",
-                                        "blgphuticn",
-                                        "tyxolniwpwc",
-                                        "k",
-                                        "awxklr",
+                                        "dgeablgphu",
+                                        "atqxho",
+                                        "xhurok",
+                                        "icndvkaozwyifty",
                                         "kjfkg",
-                                        "ypnddhsgcb",
-                                        "plwckbas"))
+                                        "tyxolniwpwc",
+                                        "plwckbas",
+                                        "awxklr"))
+                                .withAssociationType(AssociationType.SUBNETS),
+                            new AssociationInner()
+                                .withLocation("zndlikwy")
+                                .withTags(mapOf("rxybz", "fgibmadgakeq", "mnkzsmod", "qedqytbciqfoufl"))
+                                .withAssociationType(AssociationType.SUBNETS),
+                            new AssociationInner()
+                                .withLocation("rtumkdosvq")
+                                .withTags(mapOf("mbmbexppbh", "mdgbbjfdd"))
                                 .withAssociationType(AssociationType.SUBNETS)))
-                .withNextLink("yqkgfg");
+                .withNextLink("aoyfhrtxilnerkuj");
         model = BinaryData.fromObject(model).toObject(AssociationListResult.class);
-        Assertions.assertEquals("ljdousk", model.value().get(0).location());
-        Assertions.assertEquals("kocrcjdkwtnhx", model.value().get(0).tags().get("njbiksqrglssain"));
+        Assertions.assertEquals("bkzgcwrwclx", model.value().get(0).location());
+        Assertions.assertEquals("ljdousk", model.value().get(0).tags().get("qvkoc"));
         Assertions.assertEquals(AssociationType.SUBNETS, model.value().get(0).associationType());
-        Assertions.assertEquals("yqkgfg", model.nextLink());
+        Assertions.assertEquals("aoyfhrtxilnerkuj", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

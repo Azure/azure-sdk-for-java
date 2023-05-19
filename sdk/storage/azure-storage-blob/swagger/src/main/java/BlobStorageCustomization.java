@@ -97,11 +97,6 @@ public class BlobStorageCustomization extends Customization {
             .getJavadoc()
             .setDeprecated("Use {@link #setSizeLong(long)}");
 
-        ClassCustomization listBlobsIncludeItem = models.getClass("ListBlobsIncludeItem");
-        listBlobsIncludeItem.renameEnumMember("IMMUTABILITYPOLICY", "IMMUTABILITY_POLICY")
-            .renameEnumMember("LEGALHOLD", "LEGAL_HOLD")
-            .renameEnumMember("DELETEDWITHVERSIONS", "DELETED_WITH_VERSIONS");
-
         // BlobErrorCode
         // Fix typo
         String blobErrorCodeFile = "src/main/java/com/azure/storage/blob/models/BlobErrorCode.java";

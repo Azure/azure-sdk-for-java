@@ -29,6 +29,12 @@ public final class Storage {
     private EnableStatusEnum autoGrow;
 
     /*
+     * Enable Log On Disk or not.
+     */
+    @JsonProperty(value = "logOnDisk")
+    private EnableStatusEnum logOnDisk;
+
+    /*
      * The sku name of the server storage.
      */
     @JsonProperty(value = "storageSku", access = JsonProperty.Access.WRITE_ONLY)
@@ -101,6 +107,26 @@ public final class Storage {
      */
     public Storage withAutoGrow(EnableStatusEnum autoGrow) {
         this.autoGrow = autoGrow;
+        return this;
+    }
+
+    /**
+     * Get the logOnDisk property: Enable Log On Disk or not.
+     *
+     * @return the logOnDisk value.
+     */
+    public EnableStatusEnum logOnDisk() {
+        return this.logOnDisk;
+    }
+
+    /**
+     * Set the logOnDisk property: Enable Log On Disk or not.
+     *
+     * @param logOnDisk the logOnDisk value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withLogOnDisk(EnableStatusEnum logOnDisk) {
+        this.logOnDisk = logOnDisk;
         return this;
     }
 

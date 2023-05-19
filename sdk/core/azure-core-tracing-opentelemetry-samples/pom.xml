@@ -14,7 +14,7 @@
   <artifactId>azure-core-tracing-opentelemetry-samples</artifactId>
   <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-tracing-opentelemetry-samples;current} -->
 
-  <name>Microsoft Azure OpenTelemetry tracing plugin</name>
+  <name>Microsoft Azure OpenTelemetry tracing plugin samples</name>
   <description>This package contains samples for the OpenTelemetry tracing plugin for Azure client libraries.</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
@@ -72,7 +72,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.8.3</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.9.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

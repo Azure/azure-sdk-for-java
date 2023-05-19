@@ -23,6 +23,15 @@ public final class TopicTypeSourceScope extends ExpandableStringEnum<TopicTypeSo
     public static final TopicTypeSourceScope MANAGEMENT_GROUP = fromString("ManagementGroup");
 
     /**
+     * Creates a new instance of TopicTypeSourceScope value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TopicTypeSourceScope() {
+    }
+
+    /**
      * Creates or finds a TopicTypeSourceScope from its string representation.
      *
      * @param name a name to look for.

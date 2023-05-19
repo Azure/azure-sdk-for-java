@@ -15,65 +15,67 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScaleTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         Scale model =
             BinaryData
                 .fromString(
-                    "{\"minReplicas\":277220596,\"maxReplicas\":1475802306,\"rules\":[{\"name\":\"pxllrx\",\"azureQueue\":{\"queueName\":\"moadsuvarmy\",\"queueLength\":1450729079,\"auth\":[]},\"custom\":{\"type\":\"q\",\"metadata\":{},\"auth\":[]},\"http\":{\"metadata\":{},\"auth\":[]},\"tcp\":{\"metadata\":{},\"auth\":[]}},{\"name\":\"yc\",\"azureQueue\":{\"queueName\":\"hp\",\"queueLength\":1622537719,\"auth\":[]},\"custom\":{\"type\":\"areqna\",\"metadata\":{},\"auth\":[]},\"http\":{\"metadata\":{},\"auth\":[]},\"tcp\":{\"metadata\":{},\"auth\":[]}}]}")
+                    "{\"minReplicas\":1591182394,\"maxReplicas\":235845887,\"rules\":[{\"name\":\"utncorm\",\"azureQueue\":{\"queueName\":\"qtvcofudflvkgj\",\"queueLength\":1622767746,\"auth\":[]},\"custom\":{\"type\":\"nqvsaznqnto\",\"metadata\":{},\"auth\":[]},\"http\":{\"metadata\":{},\"auth\":[]},\"tcp\":{\"metadata\":{},\"auth\":[]}},{\"name\":\"yc\",\"azureQueue\":{\"queueName\":\"uwjuetaeburuvdmo\",\"queueLength\":293180976,\"auth\":[]},\"custom\":{\"type\":\"wabm\",\"metadata\":{},\"auth\":[]},\"http\":{\"metadata\":{},\"auth\":[]},\"tcp\":{\"metadata\":{},\"auth\":[]}}]}")
                 .toObject(Scale.class);
-        Assertions.assertEquals(277220596, model.minReplicas());
-        Assertions.assertEquals(1475802306, model.maxReplicas());
-        Assertions.assertEquals("pxllrx", model.rules().get(0).name());
-        Assertions.assertEquals("moadsuvarmy", model.rules().get(0).azureQueue().queueName());
-        Assertions.assertEquals(1450729079, model.rules().get(0).azureQueue().queueLength());
-        Assertions.assertEquals("q", model.rules().get(0).custom().type());
+        Assertions.assertEquals(1591182394, model.minReplicas());
+        Assertions.assertEquals(235845887, model.maxReplicas());
+        Assertions.assertEquals("utncorm", model.rules().get(0).name());
+        Assertions.assertEquals("qtvcofudflvkgj", model.rules().get(0).azureQueue().queueName());
+        Assertions.assertEquals(1622767746, model.rules().get(0).azureQueue().queueLength());
+        Assertions.assertEquals("nqvsaznqnto", model.rules().get(0).custom().type());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Scale model =
             new Scale()
-                .withMinReplicas(277220596)
-                .withMaxReplicas(1475802306)
+                .withMinReplicas(1591182394)
+                .withMaxReplicas(235845887)
                 .withRules(
                     Arrays
                         .asList(
                             new ScaleRule()
-                                .withName("pxllrx")
+                                .withName("utncorm")
                                 .withAzureQueue(
                                     new QueueScaleRule()
-                                        .withQueueName("moadsuvarmy")
-                                        .withQueueLength(1450729079)
+                                        .withQueueName("qtvcofudflvkgj")
+                                        .withQueueLength(1622767746)
                                         .withAuth(Arrays.asList()))
                                 .withCustom(
-                                    new CustomScaleRule().withType("q").withMetadata(mapOf()).withAuth(Arrays.asList()))
+                                    new CustomScaleRule()
+                                        .withType("nqvsaznqnto")
+                                        .withMetadata(mapOf())
+                                        .withAuth(Arrays.asList()))
                                 .withHttp(new HttpScaleRule().withMetadata(mapOf()).withAuth(Arrays.asList()))
                                 .withTcp(new TcpScaleRule().withMetadata(mapOf()).withAuth(Arrays.asList())),
                             new ScaleRule()
                                 .withName("yc")
                                 .withAzureQueue(
                                     new QueueScaleRule()
-                                        .withQueueName("hp")
-                                        .withQueueLength(1622537719)
+                                        .withQueueName("uwjuetaeburuvdmo")
+                                        .withQueueLength(293180976)
                                         .withAuth(Arrays.asList()))
                                 .withCustom(
                                     new CustomScaleRule()
-                                        .withType("areqna")
+                                        .withType("wabm")
                                         .withMetadata(mapOf())
                                         .withAuth(Arrays.asList()))
                                 .withHttp(new HttpScaleRule().withMetadata(mapOf()).withAuth(Arrays.asList()))
                                 .withTcp(new TcpScaleRule().withMetadata(mapOf()).withAuth(Arrays.asList()))));
         model = BinaryData.fromObject(model).toObject(Scale.class);
-        Assertions.assertEquals(277220596, model.minReplicas());
-        Assertions.assertEquals(1475802306, model.maxReplicas());
-        Assertions.assertEquals("pxllrx", model.rules().get(0).name());
-        Assertions.assertEquals("moadsuvarmy", model.rules().get(0).azureQueue().queueName());
-        Assertions.assertEquals(1450729079, model.rules().get(0).azureQueue().queueLength());
-        Assertions.assertEquals("q", model.rules().get(0).custom().type());
+        Assertions.assertEquals(1591182394, model.minReplicas());
+        Assertions.assertEquals(235845887, model.maxReplicas());
+        Assertions.assertEquals("utncorm", model.rules().get(0).name());
+        Assertions.assertEquals("qtvcofudflvkgj", model.rules().get(0).azureQueue().queueName());
+        Assertions.assertEquals(1622767746, model.rules().get(0).azureQueue().queueLength());
+        Assertions.assertEquals("nqvsaznqnto", model.rules().get(0).custom().type());
     }
 
     @SuppressWarnings("unchecked")

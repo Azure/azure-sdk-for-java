@@ -87,7 +87,7 @@ public final class UtilsImpl {
     public static final HttpHeaderName DOCKER_DIGEST_HEADER_NAME = HttpHeaderName.fromString("docker-content-digest");
 
     public static final String SUPPORTED_MANIFEST_TYPES = "*/*"
-        + "," + ManifestMediaType.OCI_MANIFEST
+        + "," + ManifestMediaType.OCI_IMAGE_MANIFEST
         + "," + ManifestMediaType.DOCKER_MANIFEST
         + ",application/vnd.oci.image.index.v1+json"
         + ",application/vnd.docker.distribution.manifest.list.v2+json"

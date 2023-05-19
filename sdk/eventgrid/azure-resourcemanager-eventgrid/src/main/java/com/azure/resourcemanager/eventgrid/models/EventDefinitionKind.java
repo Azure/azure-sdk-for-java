@@ -8,10 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EventDefinitionKind. */
+/** The kind of event type used. */
 public final class EventDefinitionKind extends ExpandableStringEnum<EventDefinitionKind> {
     /** Static value Inline for EventDefinitionKind. */
     public static final EventDefinitionKind INLINE = fromString("Inline");
+
+    /**
+     * Creates a new instance of EventDefinitionKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EventDefinitionKind() {
+    }
 
     /**
      * Creates or finds a EventDefinitionKind from its string representation.

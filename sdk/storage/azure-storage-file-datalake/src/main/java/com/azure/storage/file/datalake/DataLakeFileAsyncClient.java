@@ -50,6 +50,7 @@ import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
 import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
@@ -613,8 +614,15 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
             data = UploadUtils.extractByteBuffer(data, options.getOptionalLength(),
                 validatedParallelTransferOptions.getBlockSizeLong(), options.getDataStream());
 
-            return createWithResponse(options.getPermissions(), options.getUmask(), options.getHeaders(),
-                options.getMetadata(), validatedRequestConditions)
+            DataLakePathCreateOptions createOptions = new DataLakePathCreateOptions()
+                .setPermissions(options.getPermissions())
+                .setUmask(options.getUmask())
+                .setPathHttpHeaders(options.getHeaders())
+                .setMetadata(options.getMetadata())
+                .setRequestConditions(validatedRequestConditions)
+                .setEncryptionContext(options.getEncryptionContext());
+
+            return createWithResponse(createOptions)
                 .then(UploadUtils.uploadFullOrChunked(data, validatedParallelTransferOptions,
                     uploadInChunksFunction, uploadFullMethod));
         } catch (RuntimeException ex) {
@@ -1534,7 +1542,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         .setRequestConditions(Transforms.toBlobRequestConditions(requestConditions))
         .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions))
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
-            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), Transforms.getEncryptionContext(response))));
+            .map(response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response)));
     }
 
     /**
