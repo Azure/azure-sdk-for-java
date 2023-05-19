@@ -7,7 +7,7 @@ steps:
       }
     displayName: 'Check if http-fault-injector log file exists'
 
-  - template: ../pipelines/templates/steps/publish-artifact.yml
+  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
     parameters:
       ArtifactName: "$(System.JobName)-http-fault-injector-logs"
       ArtifactPath: "$(Build.SourcesDirectory)/http-fault-injector.log"
