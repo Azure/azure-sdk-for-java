@@ -22,6 +22,10 @@ public final class GitHubWorkflowProfileOidcCredentials {
     @JsonProperty(value = "azureTenantId")
     private String azureTenantId;
 
+    /** Creates an instance of GitHubWorkflowProfileOidcCredentials class. */
+    public GitHubWorkflowProfileOidcCredentials() {
+    }
+
     /**
      * Get the azureClientId property: Azure Application Client ID.
      *

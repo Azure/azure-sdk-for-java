@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added `TracingOptions` configurations allowing to pick a specific `TracerProvider` implementation if several are resolved by `ServiceLoader`. 
+- Added `MetricsOptions` configurations allowing to pick a specific `MeterProvider` implementation if several are resolved by `ServiceLoader`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.dns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.dns.models.RecordType;
 
 /** Samples for RecordSets Get. */
@@ -23,7 +22,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.NS, Context.NONE);
+            .getWithResponse("rg1", "zone1", "record1", RecordType.NS, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -40,7 +39,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.AAAA, Context.NONE);
+            .getWithResponse("rg1", "zone1", "record1", RecordType.AAAA, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -57,7 +56,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.SRV, Context.NONE);
+            .getWithResponse("rg1", "zone1", "record1", RecordType.SRV, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -74,7 +73,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.CAA, Context.NONE);
+            .getWithResponse("rg1", "zone1", "record1", RecordType.CAA, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -91,7 +90,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.CNAME, Context.NONE);
+            .getWithResponse("rg1", "zone1", "record1", RecordType.CNAME, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -108,7 +107,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "0.0.127.in-addr.arpa", "1", RecordType.PTR, Context.NONE);
+            .getWithResponse("rg1", "0.0.127.in-addr.arpa", "1", RecordType.PTR, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -125,7 +124,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.TXT, Context.NONE);
+            .getWithResponse("rg1", "zone1", "record1", RecordType.TXT, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -142,7 +141,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.A, Context.NONE);
+            .getWithResponse("rg1", "zone1", "record1", RecordType.A, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -159,7 +158,7 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "zone1", "record1", RecordType.MX, Context.NONE);
+            .getWithResponse("rg1", "zone1", "record1", RecordType.MX, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -176,6 +175,6 @@ public final class RecordSetsGetSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .getWithResponse("rg1", "zone1", "@", RecordType.SOA, Context.NONE);
+            .getWithResponse("rg1", "zone1", "@", RecordType.SOA, com.azure.core.util.Context.NONE);
     }
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 
 /** Properties to configure Identity for Bring your Own Keys. */
 @Fluent
-public class Identity {
+public final class Identity {
     /*
      * ObjectId from the KeyVault
      */

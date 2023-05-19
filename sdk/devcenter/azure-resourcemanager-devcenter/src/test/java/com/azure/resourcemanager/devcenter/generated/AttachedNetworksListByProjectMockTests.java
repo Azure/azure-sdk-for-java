@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.AttachedNetworkConnection;
 import java.nio.ByteBuffer;
@@ -33,7 +32,7 @@ public final class AttachedNetworksListByProjectMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"networkConnectionId\":\"otxhojujby\",\"networkConnectionLocation\":\"lmcuvhixb\",\"healthCheckStatus\":\"Unknown\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"yl\",\"name\":\"coolsttpkiwkkb\",\"type\":\"ujrywvtyl\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"networkConnectionId\":\"ye\",\"networkConnectionLocation\":\"ymsgaojfmwnc\",\"healthCheckStatus\":\"Passed\",\"domainJoinType\":\"HybridAzureADJoin\"},\"id\":\"irctymoxoftpipiw\",\"name\":\"czuhxacpqjlihh\",\"type\":\"usps\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +61,10 @@ public final class AttachedNetworksListByProjectMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<AttachedNetworkConnection> response =
-            manager.attachedNetworks().listByProject("qncygupkvi", "mdscwxqupev", 1875273166, Context.NONE);
+            manager
+                .attachedNetworks()
+                .listByProject("zbomvzzbtdcqvpni", "ujviylwdshfs", 224040944, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("otxhojujby", response.iterator().next().networkConnectionId());
+        Assertions.assertEquals("ye", response.iterator().next().networkConnectionId());
     }
 }

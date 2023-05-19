@@ -26,7 +26,6 @@ import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
@@ -45,13 +44,16 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 import com.azure.core.exception.HttpResponseException;
 
 import java.net.URISyntaxException;
+import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -127,28 +129,31 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangUp(boolean isForEveryone) {
-        HangUpOptions hangUpOptions = new HangUpOptions(isForEveryone);
-        return hangUpWithResponse(hangUpOptions).flatMap(FluxUtil::toMono);
+        return hangUpWithResponse(isForEveryone).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Hangup a call.
      *
-     * @param hangUpOptions options to hang up
+     * @param isForEveryone determine if the call is handed up for all participants.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> hangUpWithResponse(HangUpOptions hangUpOptions) {
-        return withContext(context -> hangUpWithResponseInternal(hangUpOptions, context));
+    public Mono<Response<Void>> hangUpWithResponse(boolean isForEveryone) {
+        return withContext(context -> hangUpWithResponseInternal(isForEveryone, context));
     }
 
-    Mono<Response<Void>> hangUpWithResponseInternal(HangUpOptions hangUpOptions, Context context) {
+    Mono<Response<Void>> hangUpWithResponseInternal(boolean isForEveryone, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(callConnectionId, context)
+            return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(
+                    callConnectionId,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -241,7 +246,7 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TransferCallResult> transferCallToParticipant(CommunicationIdentifier targetParticipant) {
-        
+
         if (targetParticipant instanceof CommunicationUserIdentifier) {
             return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((CommunicationUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
         } else if (targetParticipant instanceof PhoneNumberIdentifier) {
@@ -282,9 +287,12 @@ public final class CallConnectionAsync {
                             .setVoipHeaders(transferCallToParticipantOptions.getVoipHeaders()));
             }
 
-            return callConnectionInternal.transferToParticipantWithResponseAsync(callConnectionId, request,
-            context).map(response ->
-                    new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
+            return callConnectionInternal.transferToParticipantWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    context).map(response -> new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -338,8 +346,13 @@ public final class CallConnectionAsync {
                 request.setCustomContext(customContext);
             }
 
-            return callConnectionInternal.addParticipantWithResponseAsync(callConnectionId, request,
-            context).map(response -> new SimpleResponse<>(response, AddParticipantResponseConstructorProxy.create(response.getValue())));
+            return callConnectionInternal.addParticipantWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    context
+            ).map(response -> new SimpleResponse<>(response, AddParticipantResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -379,8 +392,12 @@ public final class CallConnectionAsync {
                 .setParticipantToRemove(CommunicationIdentifierConverter.convert(removeParticipantOptions.getParticipant()))
                 .setOperationContext(removeParticipantOptions.getOperationContext());
 
-            return callConnectionInternal.removeParticipantWithResponseAsync(callConnectionId, request,
-            context).map(response -> new SimpleResponse<>(response, RemoveParticipantResponseConstructorProxy.create(response.getValue())));
+            return callConnectionInternal.removeParticipantWithResponseAsync(
+                    callConnectionId,
+                    request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    context).map(response -> new SimpleResponse<>(response, RemoveParticipantResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -421,6 +438,8 @@ public final class CallConnectionAsync {
             return callConnectionInternal.muteWithResponseAsync(
                     callConnectionId,
                     request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
                     context).map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -462,6 +481,8 @@ public final class CallConnectionAsync {
             return callConnectionInternal.unmuteWithResponseAsync(
                     callConnectionId,
                     request,
+                    UUID.randomUUID(),
+                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
                     context).map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

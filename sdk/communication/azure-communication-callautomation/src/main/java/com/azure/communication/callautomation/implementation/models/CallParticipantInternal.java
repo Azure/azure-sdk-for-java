@@ -22,9 +22,6 @@ public final class CallParticipantInternal {
     @JsonProperty(value = "isMuted")
     private Boolean isMuted;
 
-    /** Creates an instance of CallParticipantInternal class. */
-    public CallParticipantInternal() {}
-
     /**
      * Get the identifier property: Communication identifier of the participant.
      *

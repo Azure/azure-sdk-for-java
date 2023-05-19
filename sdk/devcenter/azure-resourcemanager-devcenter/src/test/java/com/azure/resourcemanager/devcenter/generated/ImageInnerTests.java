@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ImageInner;
-import org.junit.jupiter.api.Test;
 
 public final class ImageInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"description\":\"fsxlzevgbmqjqa\",\"publisher\":\"y\",\"offer\":\"ivkwlzuvccfwnfnb\",\"sku\":\"fionl\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"Creating\"},\"id\":\"tzxdpnqbqqwx\",\"name\":\"jfeallnwsub\",\"type\":\"snjampmng\"}")
+                    "{\"properties\":{\"description\":\"m\",\"publisher\":\"hrzayvvtpgvdf\",\"offer\":\"otkftutqxlngx\",\"sku\":\"fgugnxkrxdqmid\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"Created\",\"hibernateSupport\":\"Enabled\"},\"id\":\"abhjybi\",\"name\":\"ehoqfbowskan\",\"type\":\"ktzlcuiywg\"}")
                 .toObject(ImageInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageInner model = new ImageInner();
         model = BinaryData.fromObject(model).toObject(ImageInner.class);
     }

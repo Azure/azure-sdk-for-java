@@ -51,8 +51,25 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 
 /**
- * The Async client for create, update, get, delete room of Azure Communication
- * Room Service.
+ * The Async client for Rooms of Azure Communication Room Service
+ *
+ * <p>
+ * <strong>Instantiating an asynchronous Room Client</strong>
+ * </p>
+ *
+ * <!-- src_embed readme-sample-createRoomsAsyncClientUsingAzureKeyCredential
+ * -->
+ *
+ * <pre>
+ * RoomsAsyncClient roomsClient = new RoomsClientBuilder()
+ *      .endpoint&#40;endpoint&#41;
+ *      .credential&#40;azureKeyCredential&#41;
+ *      .buildAsyncClient&#40;&#41;;
+ * </pre>
+ *
+ * <!-- end readme-sample-createRoomsAsyncClientUsingAzureKeyCredential -->
+ *
+ * @see RoomsClientBuilder
  */
 @ServiceClient(builder = RoomsClientBuilder.class, isAsync = true)
 public final class RoomsAsyncClient {

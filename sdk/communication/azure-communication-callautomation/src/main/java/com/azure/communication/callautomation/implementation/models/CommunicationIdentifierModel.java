@@ -40,9 +40,6 @@ public final class CommunicationIdentifierModel {
     @JsonProperty(value = "microsoftTeamsUser")
     private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
 
-    /** Creates an instance of CommunicationIdentifierModel class. */
-    public CommunicationIdentifierModel() {}
-
     /**
      * Get the rawId property: Full ID of the identifier.
      *

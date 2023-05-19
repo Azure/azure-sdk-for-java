@@ -4,8 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateZones Delete. */
 public final class PrivateZonesDeleteSamples {
     /*
@@ -22,6 +20,6 @@ public final class PrivateZonesDeleteSamples {
             .manager()
             .serviceClient()
             .getPrivateZones()
-            .delete("resourceGroup1", "privatezone1.com", null, Context.NONE);
+            .delete("resourceGroup1", "privatezone1.com", null, com.azure.core.util.Context.NONE);
     }
 }
