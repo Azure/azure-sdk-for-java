@@ -86,16 +86,18 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <h2>Add Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to add a configuration setting in the
- * Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#addConfigurationSetting(ConfigurationSetting)}
+ * can be used to add a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to add a setting with the key "prodDBConnection", label "westUS" and value
  * "db_connection" using {@link com.azure.data.appconfiguration.ConfigurationClient}.</p>
  *
  * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
  * <pre>
- * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;;
+ * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;
+ *     .setValue&#40;&quot;db_connection&quot;&#41;&#41;;
  * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
@@ -108,20 +110,24 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <h2>Update Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to update a configuration setting in the
- * Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setConfigurationSetting(ConfigurationSetting)}
+ * can be used to update a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to update setting's value "db_connection" to "updated_db_connection"</p>
  *
  * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
  * <pre>
- * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;;
+ * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;
+ *     .setValue&#40;&quot;db_connection&quot;&#41;&#41;;
  * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  *
  * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
- * setting = configurationClient.setConfigurationSetting&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;;
+ * setting = configurationClient.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;
+ *     .setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;;
  * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
@@ -134,15 +140,16 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <h2>Get Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to get a configuration setting in the
- * Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#getConfigurationSetting(ConfigurationSetting)}
+ * can be used to get a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to retrieve the setting with the key "prodDBConnection".</p>
  *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
  * <pre>
- * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;;
+ * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;&#41;;
  * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
@@ -155,15 +162,16 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <h2>Delete Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to delete a configuration setting in
- * the Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#deleteConfigurationSetting(ConfigurationSetting)}
+ * can be used to delete a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to delete the setting with the key "prodDBConnection".</p>
  *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
  * <pre>
- * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;;
+ * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;&#41;;
  * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
@@ -176,15 +184,17 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <h2>Set the Configuration Setting to read-only</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to conditionally set a
- * configuration setting to read-only in the Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setReadOnly(ConfigurationSetting, boolean)}
+ * can be used to conditionally set a configuration setting to read-only in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to conditionally set the setting to read-only with the key "prodDBConnection".</p>
  *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
  * <pre>
- * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;;
+ * ConfigurationSetting setting = configurationClient.setReadOnly&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;,
+ *     true&#41;;
  * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
@@ -197,15 +207,17 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <h2>Clear read-only of the Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to conditionally clear read-only
- * of the setting in the Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setReadOnly(ConfigurationSetting, boolean)}
+ * can be used to conditionally clear read-only of the setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to conditionally clear read-only of the setting with the key "prodDBConnection".</p>
  *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
  * <pre>
- * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, false&#41;;
+ * ConfigurationSetting setting = configurationClient.setReadOnly&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;,
+ *     false&#41;;
  * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
@@ -218,10 +230,10 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <h2>List Configuration Settings</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to list configuration settings in
- * the Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#listConfigurationSettings(SettingSelector)}
+ * can be used to list configuration settings in the Azure App Configuration.</p>
  *
- * <p>The sample below shows how to retrieve/List all settings that use the key "prodDBConnection".</p>
+ * <p>The sample below shows how to list all settings that use the key "prodDBConnection".</p>
  *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
  * <pre>
@@ -240,10 +252,10 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <h2>List revisions of a Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to list all revisions of a
- * configuration setting in the Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#listRevisions(SettingSelector)}
+ * can be used to list all revisions of a configuration setting in the Azure App Configuration.</p>
  *
- * <p>The sample below shows how to retrieve/List all revision of a setting that use the key "prodDBConnection".</p>
+ * <p>The sample below shows how to list all revision of a setting that use the key "prodDBConnection".</p>
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
  * <pre>
  * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
@@ -259,12 +271,8 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  *
  * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
  *
- * <br/>
- *
  * @see ConfigurationClientBuilder
  * @see ConfigurationSetting
- * @see FeatureFlagConfigurationSetting
- * @see SecretReferenceConfigurationSetting
  */
 @ServiceClient(builder = ConfigurationClientBuilder.class,
     serviceInterfaces = AzureAppConfigurationImpl.AzureAppConfigurationService.class)
@@ -338,8 +346,10 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;;
+     * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *     .setLabel&#40;&quot;westUS&quot;&#41;
+     *     .setValue&#40;&quot;db_connection&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
@@ -373,11 +383,12 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSettingWithResponse#ConfigurationSetting-Context -->
      * <pre>
      * Response&lt;ConfigurationSetting&gt; responseResultSetting = configurationClient
-     *     .addConfigurationSettingWithResponse&#40;
-     *         new ConfigurationSetting&#40;&#41;
-     *             .setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;,
+     *     .addConfigurationSettingWithResponse&#40;new ConfigurationSetting&#40;&#41;
+     *             .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *             .setLabel&#40;&quot;westUS&quot;&#41;
+     *             .setValue&#40;&quot;db_connection&quot;&#41;,
      *         new Context&#40;key1, value1&#41;&#41;;
-     * final ConfigurationSetting resultSetting = responseResultSetting.getValue&#40;&#41;;
+     * ConfigurationSetting resultSetting = responseResultSetting.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, resultSetting.getKey&#40;&#41;, resultSetting.getLabel&#40;&#41;,
      *     resultSetting.getValue&#40;&#41;&#41;;
      * </pre>
@@ -421,8 +432,7 @@ public final class ConfigurationClient {
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
      *
      * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
-     * result = configurationClient.setConfigurationSetting&#40;
-     *     &quot;prodDBConnection&quot;, &quot;westUS&quot;, &quot;updated_db_connection&quot;&#41;;
+     * result = configurationClient.setConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;, &quot;updated_db_connection&quot;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, result.getKey&#40;&#41;, result.getLabel&#40;&#41;, result.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#String-String-String -->
@@ -456,13 +466,17 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;;
+     * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *     .setLabel&#40;&quot;westUS&quot;&#41;
+     *     .setValue&#40;&quot;db_connection&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      *
      * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
-     * setting = configurationClient.setConfigurationSetting&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;;
+     * setting = configurationClient.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *     .setLabel&#40;&quot;westUS&quot;&#41;
+     *     .setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
@@ -504,18 +518,23 @@ public final class ConfigurationClient {
      * <pre>
      * &#47;&#47; Add a setting with the key &quot;prodDBConnection&quot;, label &quot;westUS&quot;, and value &quot;db_connection&quot;
      * Response&lt;ConfigurationSetting&gt; responseSetting = configurationClient.setConfigurationSettingWithResponse&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;,
+     *     new ConfigurationSetting&#40;&#41;
+     *         .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *         .setLabel&#40;&quot;westUS&quot;&#41;
+     *         .setValue&#40;&quot;db_connection&quot;&#41;,
      *     false,
      *     new Context&#40;key2, value2&#41;&#41;;
-     * final ConfigurationSetting initSetting = responseSetting.getValue&#40;&#41;;
+     * ConfigurationSetting initSetting = responseSetting.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, initSetting.getKey&#40;&#41;, initSetting.getValue&#40;&#41;&#41;;
      *
      * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
-     * responseSetting = configurationClient.setConfigurationSettingWithResponse&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;updated_db_connection&quot;&#41;,
+     * responseSetting = configurationClient.setConfigurationSettingWithResponse&#40;new ConfigurationSetting&#40;&#41;
+     *         .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *         .setLabel&#40;&quot;westUS&quot;&#41;
+     *         .setValue&#40;&quot;updated_db_connection&quot;&#41;,
      *     false,
      *     new Context&#40;key2, value2&#41;&#41;;
-     * final ConfigurationSetting updatedSetting = responseSetting.getValue&#40;&#41;;
+     * ConfigurationSetting updatedSetting = responseSetting.getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, updatedSetting.getKey&#40;&#41;, updatedSetting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
@@ -554,8 +573,7 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string -->
      * <pre>
-     * ConfigurationSetting resultNoDateTime =
-     *     configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;&#41;;
+     * ConfigurationSetting resultNoDateTime = configurationClient.getConfigurationSetting&#40;&quot;prodDBConnection&quot;, &quot;westUS&quot;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, resultNoDateTime.getKey&#40;&#41;, resultNoDateTime.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#string-string -->
@@ -618,8 +636,9 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;&#41;;
+     * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *     .setLabel&#40;&quot;westUS&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
@@ -654,8 +673,12 @@ public final class ConfigurationClient {
      * <pre>
      * &#47;&#47; Retrieve the setting with the key-label &quot;prodDBConnection&quot;-&quot;westUS&quot;.
      * Response&lt;ConfigurationSetting&gt; responseResultSetting = configurationClient.getConfigurationSettingWithResponse&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;,
-     *     null, false, new Context&#40;key1, value1&#41;&#41;;
+     *     new ConfigurationSetting&#40;&#41;
+     *         .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *         .setLabel&#40;&quot;westUS&quot;&#41;,
+     *     null,
+     *     false,
+     *     new Context&#40;key1, value1&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, responseResultSetting.getValue&#40;&#41;.getKey&#40;&#41;,
      *     responseResultSetting.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
      * </pre>
@@ -736,8 +759,9 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;&#41;;
+     * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *     .setLabel&#40;&quot;westUS&quot;&#41;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
@@ -777,8 +801,11 @@ public final class ConfigurationClient {
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSettingWithResponse#ConfigurationSetting-boolean-Context -->
      * <pre>
      * Response&lt;ConfigurationSetting&gt; responseSetting = configurationClient.deleteConfigurationSettingWithResponse&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;,
-     *     false, new Context&#40;key2, value2&#41;&#41;;
+     *     new ConfigurationSetting&#40;&#41;
+     *         .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *         .setLabel&#40;&quot;westUS&quot;&#41;,
+     *     false,
+     *     new Context&#40;key2, value2&#41;&#41;;
      * System.out.printf&#40;
      *     &quot;Key: %s, Value: %s&quot;, responseSetting.getValue&#40;&#41;.getKey&#40;&#41;, responseSetting.getValue&#40;&#41;.getValue&#40;&#41;&#41;;
      * </pre>
@@ -861,8 +888,10 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true&#41;;
+     * ConfigurationSetting setting = configurationClient.setReadOnly&#40;new ConfigurationSetting&#40;&#41;
+     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *     .setLabel&#40;&quot;westUS&quot;&#41;,
+     *     true&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean -->
@@ -871,8 +900,10 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
      * <pre>
-     * ConfigurationSetting setting = configurationClient.setReadOnly&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, false&#41;;
+     * ConfigurationSetting setting = configurationClient.setReadOnly&#40;new ConfigurationSetting&#40;&#41;
+     *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *     .setLabel&#40;&quot;westUS&quot;&#41;,
+     *     false&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.data.applicationconfig.configurationclient.setReadOnly#ConfigurationSetting-boolean-clearReadOnly -->
@@ -904,8 +935,11 @@ public final class ConfigurationClient {
      *
      * <!-- src_embed com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-Boolean-Context -->
      * <pre>
-     * ConfigurationSetting resultSetting = configurationClient.setReadOnlyWithResponse&#40;
-     *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;, true, Context.NONE&#41;
+     * ConfigurationSetting resultSetting = configurationClient.setReadOnlyWithResponse&#40;new ConfigurationSetting&#40;&#41;
+     *         .setKey&#40;&quot;prodDBConnection&quot;&#41;
+     *         .setLabel&#40;&quot;westUS&quot;&#41;,
+     *         true,
+     *         Context.NONE&#41;
      *     .getValue&#40;&#41;;
      * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, resultSetting.getKey&#40;&#41;, resultSetting.getValue&#40;&#41;&#41;;
      * </pre>

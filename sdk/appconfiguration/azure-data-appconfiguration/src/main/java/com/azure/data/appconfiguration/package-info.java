@@ -66,15 +66,17 @@
  *
  * <h2>Add Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to add a configuration setting in the
- * Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#addConfigurationSetting(com.azure.data.appconfiguration.models.ConfigurationSetting)}
+ * can be used to add a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to add a setting with the key "prodDBConnection", label "westUS" and value "db_connection" using {@link com.azure.data.appconfiguration.ConfigurationClient}.</p>
  *
  * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
  * <pre>
- * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;;
+ * ConfigurationSetting setting = configurationClient.addConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;
+ *     .setValue&#40;&quot;db_connection&quot;&#41;&#41;;
  * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.appconfiguration.ConfigurationClient.addConfigurationSetting#ConfigurationSetting -->
@@ -87,20 +89,24 @@
  *
  * <h2>Update Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to update a configuration setting in the
- * Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setConfigurationSetting(com.azure.data.appconfiguration.models.ConfigurationSetting)}
+ * can be used to update a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to update setting's value "db_connection" to "updated_db_connection"</p>
  *
  * <!-- src_embed com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
  * <pre>
- * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;db_connection&quot;&#41;&#41;;
+ * ConfigurationSetting setting = configurationClient.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;
+ *     .setValue&#40;&quot;db_connection&quot;&#41;&#41;;
  * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  *
  * &#47;&#47; Update the value of the setting to &quot;updated_db_connection&quot;.
- * setting = configurationClient.setConfigurationSetting&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;.setLabel&#40;&quot;westUS&quot;&#41;.setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;;
+ * setting = configurationClient.setConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;
+ *     .setValue&#40;&quot;updated_db_connection&quot;&#41;&#41;;
  * System.out.printf&#40;&quot;Key: %s, Label: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getLabel&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.appconfiguration.ConfigurationClient.setConfigurationSetting#ConfigurationSetting -->
@@ -113,15 +119,16 @@
  *
  * <h2>Get Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to get a configuration setting in the
- * Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#getConfigurationSetting(com.azure.data.appconfiguration.models.ConfigurationSetting)}
+ * can be used to get a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to retrieve the setting with the key "prodDBConnection".</p>
  *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
  * <pre>
- * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;;
+ * ConfigurationSetting setting = configurationClient.getConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;&#41;;
  * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.getConfigurationSetting#ConfigurationSetting -->
@@ -134,15 +141,16 @@
  *
  * <h2>Delete Configuration Setting</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to delete a configuration setting in
- * the Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#deleteConfigurationSetting(com.azure.data.appconfiguration.models.ConfigurationSetting)}
+ * can be used to delete a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to delete the setting with the key "prodDBConnection".</p>
  *
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
  * <pre>
- * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;
- *     new ConfigurationSetting&#40;&#41;.setKey&#40;&quot;prodDBConnection&quot;&#41;&#41;;
+ * ConfigurationSetting setting = configurationClient.deleteConfigurationSetting&#40;new ConfigurationSetting&#40;&#41;
+ *     .setKey&#40;&quot;prodDBConnection&quot;&#41;
+ *     .setLabel&#40;&quot;westUS&quot;&#41;&#41;;
  * System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.applicationconfig.configurationclient.deleteConfigurationSetting#ConfigurationSetting -->
@@ -155,10 +163,10 @@
  *
  * <h2>List Configuration Settings</h2>
  *
- * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient} can be used to list configuration settings in
- * the Azure App Configuration.</p>
+ * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#listConfigurationSettings(com.azure.data.appconfiguration.models.SettingSelector)}
+ * can be used to list configuration settings in the Azure App Configuration.</p>
  *
- * <p>The sample below shows how to retrieve/List all settings that use the key "prodDBConnection".</p>
+ * <p>The sample below shows how to list all settings that use the key "prodDBConnection".</p>
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
  * <pre>
  * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
@@ -170,13 +178,9 @@
  *
  * <p><strong>Note:</strong> For asynchronous sample, refer to {@link com.azure.data.appconfiguration.ConfigurationAsyncClient}.</p>
  *
- * <br/>
- *
  * @see com.azure.data.appconfiguration.ConfigurationClientBuilder
  * @see com.azure.data.appconfiguration.ConfigurationAsyncClient
  * @see com.azure.data.appconfiguration.ConfigurationClient
  * @see com.azure.data.appconfiguration.models.ConfigurationSetting
- * @see com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting
- * @see com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting
  */
 package com.azure.data.appconfiguration;
