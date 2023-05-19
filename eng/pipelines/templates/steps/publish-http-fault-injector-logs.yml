@@ -9,7 +9,7 @@ steps:
     condition: always()
 
   - pwsh: |
-      Copy-Item -Path "$(Build.SourcesDirectory)/http-fault-injector.log" -Destination "$(Build.SourcesDirectory)/http-fault-injector.log"
+      Copy-Item -Path "$(Build.SourcesDirectory)/http-fault-injector.log" -Destination "$(Build.SourcesDirectory)/fault.log"
     condition: eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true')
 
   - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
