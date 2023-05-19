@@ -127,7 +127,7 @@ public final class ContainerRegistryContentClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SetManifestResult setManifest(OciImageManifest manifest, String tag) {
         Objects.requireNonNull(manifest, "'manifest' cannot be null.");
-        return setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_MANIFEST, Context.NONE).getValue();
+        return setManifestWithResponse(BinaryData.fromObject(manifest), tag, ManifestMediaType.OCI_IMAGE_MANIFEST, Context.NONE).getValue();
     }
 
     /**
@@ -248,7 +248,7 @@ public final class ContainerRegistryContentClient {
      * <pre>
      * GetManifestResult latestResult = contentClient.getManifest&#40;&quot;latest&quot;&#41;;
      * if &#40;ManifestMediaType.DOCKER_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;
-     *     || ManifestMediaType.OCI_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
+     *     || ManifestMediaType.OCI_IMAGE_MANIFEST.equals&#40;latestResult.getManifestMediaType&#40;&#41;&#41;&#41; &#123;
      *     OciImageManifest manifest = latestResult.getManifest&#40;&#41;.toObject&#40;OciImageManifest.class&#41;;
      * &#125; else &#123;
      *     throw new IllegalArgumentException&#40;&quot;Unexpected manifest type: &quot; + latestResult.getManifestMediaType&#40;&#41;&#41;;

@@ -207,7 +207,7 @@ class ServiceBusSessionReceiverAsyncClientTest {
         ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO,
             false, null, SESSION_IDLE_TIMEOUT);
         sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
-            messageSerializer, receiverOptions, CLIENT_IDENTIFIER);
+            messageSerializer, receiverOptions, CLIENT_IDENTIFIER, instrumentation.getTracer());
 
         final int numberOfMessages = 5;
         final Callable<OffsetDateTime> onRenewal = () -> OffsetDateTime.now().plus(Duration.ofSeconds(5));

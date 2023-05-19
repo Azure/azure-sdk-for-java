@@ -28,9 +28,6 @@ public final class ResultInformation {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ResultInformation class. */
-    public ResultInformation() {}
-
     /**
      * Get the code property: The code property.
      *

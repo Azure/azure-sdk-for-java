@@ -6,20 +6,19 @@ package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.fluent.models.RevisionInner;
-import org.junit.jupiter.api.Test;
 
 public final class RevisionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         RevisionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"createdTime\":\"2021-07-24T19:53:33Z\",\"lastActiveTime\":\"2021-05-24T12:41:33Z\",\"fqdn\":\"iin\",\"template\":{\"revisionSuffix\":\"wp\",\"initContainers\":[],\"containers\":[],\"volumes\":[]},\"active\":false,\"replicas\":901371312,\"trafficWeight\":1612307116,\"provisioningError\":\"szfjvfbgofelja\",\"healthState\":\"None\",\"provisioningState\":\"Provisioned\"},\"id\":\"ldvriiiojnalghfk\",\"name\":\"tvsexsowuel\",\"type\":\"qhhahhxvrhmzkwpj\"}")
+                    "{\"properties\":{\"createdTime\":\"2021-02-23T02:35:37Z\",\"lastActiveTime\":\"2021-04-21T01:27:36Z\",\"fqdn\":\"emfnczdwvvbal\",\"template\":{\"revisionSuffix\":\"lchpodbzevwrdn\",\"initContainers\":[],\"containers\":[],\"volumes\":[]},\"active\":false,\"replicas\":1208732585,\"trafficWeight\":195968189,\"provisioningError\":\"tuluq\",\"healthState\":\"Healthy\",\"provisioningState\":\"Deprovisioned\"},\"id\":\"er\",\"name\":\"hp\",\"type\":\"bm\"}")
                 .toObject(RevisionInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         RevisionInner model = new RevisionInner();
         model = BinaryData.fromObject(model).toObject(RevisionInner.class);
     }

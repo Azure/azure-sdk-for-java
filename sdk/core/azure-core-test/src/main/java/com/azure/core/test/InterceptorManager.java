@@ -324,7 +324,7 @@ public class InterceptorManager implements AutoCloseable {
                 throw new IllegalStateException("A playback client can only be requested in PLAYBACK mode.");
             }
             if (testProxyPlaybackClient == null) {
-                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient);
+                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, skipRecordingRequestBody);
                 proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile()));
             }
             return testProxyPlaybackClient;

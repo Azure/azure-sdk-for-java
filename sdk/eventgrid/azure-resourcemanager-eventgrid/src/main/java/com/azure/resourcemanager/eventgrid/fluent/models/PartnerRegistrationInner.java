@@ -27,6 +27,10 @@ public final class PartnerRegistrationInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of PartnerRegistrationInner class. */
+    public PartnerRegistrationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the partner registration.
      *

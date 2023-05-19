@@ -3,21 +3,21 @@
     "Method" : "PATCH",
     "Uri" : "https://REDACTED.communication.azure.com/routing/distributionPolicies/JAVA_LIVE_TESTS-BestWorkerAzureFunctionRule-DistributionPolicy?api-version=2022-07-18-preview",
     "Headers" : {
-      "x-ms-client-request-id" : "d14ce98b-6db3-4efb-9310-965657b89ace",
-      "Content-Type" : "application/merge-patch+json"
+      "content-type" : "application/merge-patch+json",
+      "x-ms-client-request-id" : "63a36060-daaa-4ff9-9b33-a14e277b04e4"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
-      "trace-id" : "5917f10b-dffd-6373-e58d-9d7ec3146aec",
-      "ETag" : "\"9100eda9-0000-0700-0000-64432dd20000\"",
-      "Last-Modified" : "Sat, 22 Apr 2023 00:44:02 GMT",
+      "trace-id" : "8e2d90dc-52f6-8d7e-29ad-10967b1b0ff7",
+      "ETag" : "\"7a0fef2b-0000-0700-0000-645982610000\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:14:41 GMT",
       "retry-after" : "0",
-      "X-Azure-Ref" : "00i1DZAAAAADZeGsIOn4lSb+5uOitd+AuWVZSMzExMDAwMTE1MDIxADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "X-Azure-Ref" : "0YYJZZAAAAABMmWAYLipkRq37j9VLjbgXWVZSMzExMDAwMTE1MDQ1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
       "StatusCode" : "200",
       "Body" : "{\"id\":\"JAVA_LIVE_TESTS-BestWorkerAzureFunctionRule-DistributionPolicy\",\"name\":\"JAVA_LIVE_TESTS-BestWorkerAzureFunctionRule-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"best-worker\",\"scoringRule\":{\"kind\":\"azure-function-rule\",\"credential\":{\"appKey\":\"MyAppKey\",\"clientId\":\"MyClientId\"}},\"scoringRuleOptions\":{\"scoringParameters\":[\"jobLabels\",\"workerSelectors\"],\"allowScoringBatchOfWorkers\":false,\"descendingOrder\":true},\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
-      "Date" : "Sat, 22 Apr 2023 00:44:01 GMT",
+      "Date" : "Mon, 08 May 2023 23:14:40 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
@@ -25,16 +25,18 @@
     "Method" : "DELETE",
     "Uri" : "https://REDACTED.communication.azure.com/routing/distributionPolicies/JAVA_LIVE_TESTS-BestWorkerAzureFunctionRule-DistributionPolicy?api-version=2022-07-18-preview",
     "Headers" : {
-      "x-ms-client-request-id" : "42996b68-4083-47c6-ae11-6e09e8fec9c5"
+      "x-ms-client-request-id" : "28b66e41-c7f8-4ba4-a218-90982010efa5"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
       "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
-      "trace-id" : "b394118c-3693-6abb-4082-05b2ce9e2b4f",
+      "trace-id" : "f425660b-52f8-8638-32a5-779873f54bc3",
       "retry-after" : "0",
-      "X-Azure-Ref" : "00i1DZAAAAACyS1cPt0GWRbMQzUhvm/7jWVZSMzExMDAwMTE1MDIxADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "X-Azure-Ref" : "0YYJZZAAAAAB3rczFikQyTqTUTUyK67mIWVZSMzExMDAwMTE1MDQ1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "0",
       "StatusCode" : "204",
-      "Date" : "Sat, 22 Apr 2023 00:44:02 GMT"
+      "Body" : "",
+      "Date" : "Mon, 08 May 2023 23:14:41 GMT"
     },
     "Exception" : null
   } ],

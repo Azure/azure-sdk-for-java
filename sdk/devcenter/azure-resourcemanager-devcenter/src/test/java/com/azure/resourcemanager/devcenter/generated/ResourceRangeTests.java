@@ -6,17 +6,16 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ResourceRange;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceRangeTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ResourceRange model =
-            BinaryData.fromString("{\"min\":703719662,\"max\":15253955}").toObject(ResourceRange.class);
+            BinaryData.fromString("{\"min\":10134075,\"max\":1131419469}").toObject(ResourceRange.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceRange model = new ResourceRange();
         model = BinaryData.fromObject(model).toObject(ResourceRange.class);
     }

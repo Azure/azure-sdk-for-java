@@ -6,6 +6,9 @@
 
 ### Breaking Changes
 
+- Replaced `OpenTelemetryTracingOptions.setProvider` with `OpenTelemetryTracingOptions.setOpenTelemetry` method. Instead of `io.opentelemetry.api.trace.TracerProvider` instance
+  it now takes `io.opentelemetry.api.OpenTelemetry` container.
+
 ### Bugs Fixed
 
 ### Other Changes

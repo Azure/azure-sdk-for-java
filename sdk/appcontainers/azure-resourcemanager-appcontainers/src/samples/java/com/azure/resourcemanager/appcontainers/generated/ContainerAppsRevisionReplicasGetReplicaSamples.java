@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerAppsRevisionReplicas GetReplica. */
 public final class ContainerAppsRevisionReplicasGetReplicaSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/Replicas_Get.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/Replicas_Get.json
      */
     /**
      * Sample code: Get Container App's revision replica.
@@ -21,6 +19,10 @@ public final class ContainerAppsRevisionReplicasGetReplicaSamples {
         manager
             .containerAppsRevisionReplicas()
             .getReplicaWithResponse(
-                "workerapps-rg-xj", "myapp", "myapp--0wlqy09", "myapp--0wlqy09-5d9774cff-5wnd8", Context.NONE);
+                "workerapps-rg-xj",
+                "myapp",
+                "myapp--0wlqy09",
+                "myapp--0wlqy09-5d9774cff-5wnd8",
+                com.azure.core.util.Context.NONE);
     }
 }

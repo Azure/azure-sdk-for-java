@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.BindingType;
 import com.azure.resourcemanager.appcontainers.models.CustomDomain;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomDomainTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         CustomDomain model =
             BinaryData
-                .fromString(
-                    "{\"name\":\"hfxobbcswsrtj\",\"bindingType\":\"SniEnabled\",\"certificateId\":\"lrbpbewtghfgbl\"}")
+                .fromString("{\"name\":\"fouyf\",\"bindingType\":\"Disabled\",\"certificateId\":\"cpwi\"}")
                 .toObject(CustomDomain.class);
-        Assertions.assertEquals("hfxobbcswsrtj", model.name());
-        Assertions.assertEquals(BindingType.SNI_ENABLED, model.bindingType());
-        Assertions.assertEquals("lrbpbewtghfgbl", model.certificateId());
+        Assertions.assertEquals("fouyf", model.name());
+        Assertions.assertEquals(BindingType.DISABLED, model.bindingType());
+        Assertions.assertEquals("cpwi", model.certificateId());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         CustomDomain model =
-            new CustomDomain()
-                .withName("hfxobbcswsrtj")
-                .withBindingType(BindingType.SNI_ENABLED)
-                .withCertificateId("lrbpbewtghfgbl");
+            new CustomDomain().withName("fouyf").withBindingType(BindingType.DISABLED).withCertificateId("cpwi");
         model = BinaryData.fromObject(model).toObject(CustomDomain.class);
-        Assertions.assertEquals("hfxobbcswsrtj", model.name());
-        Assertions.assertEquals(BindingType.SNI_ENABLED, model.bindingType());
-        Assertions.assertEquals("lrbpbewtghfgbl", model.certificateId());
+        Assertions.assertEquals("fouyf", model.name());
+        Assertions.assertEquals(BindingType.DISABLED, model.bindingType());
+        Assertions.assertEquals("cpwi", model.certificateId());
     }
 }
