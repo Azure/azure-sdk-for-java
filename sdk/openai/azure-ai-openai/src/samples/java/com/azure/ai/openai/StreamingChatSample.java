@@ -9,6 +9,7 @@ import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatMessageDelta;
 import com.azure.ai.openai.models.ChatRole;
+import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
 

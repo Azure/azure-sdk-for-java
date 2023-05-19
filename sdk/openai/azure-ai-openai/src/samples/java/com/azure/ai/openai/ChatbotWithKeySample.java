@@ -5,7 +5,6 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 
 /**
@@ -38,7 +37,6 @@ public class ChatbotWithKeySample {
             }
         }
 
-        // Genearl example of how to get usage info
         CompletionsUsage usage = completions.getUsage();
         System.out.printf("Usage: number of prompt token is %d, "
                 + "number of completion token is %d, and number of total tokens in request and response is %d.%n",

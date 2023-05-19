@@ -6,6 +6,7 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
+import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.HttpClientOptions;
@@ -48,5 +49,10 @@ public class OpenAIProxySample {
         for (Choice choice : completions.getChoices()) {
             System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
         }
+
+        CompletionsUsage usage = completions.getUsage();
+        System.out.printf("Usage: number of prompt token is %d, "
+                + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
+            usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
     }
 }
