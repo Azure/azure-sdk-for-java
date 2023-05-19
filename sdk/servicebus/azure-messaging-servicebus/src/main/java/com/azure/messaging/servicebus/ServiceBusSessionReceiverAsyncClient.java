@@ -21,6 +21,7 @@ import reactor.core.publisher.Mono;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.messaging.servicebus.ReceiverOptions.createNamedSessionOptions;
 
 /**
  * This <b>asynchronous</b> session receiver client is used to acquire session locks from a queue or topic and create
@@ -116,7 +117,7 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.unNamedSessionManager = new ServiceBusSessionManager(entityPath, entityType, connectionProcessor,
-             messageSerializer, receiverOptions, identifier);
+             messageSerializer, receiverOptions, identifier, instrumentation.getTracer());
         this.identifier = identifier;
         this.tracer = instrumentation.getTracer();
     }
@@ -136,12 +137,12 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
     public Mono<ServiceBusReceiverAsyncClient> acceptNextSession() {
         return tracer.traceMono("ServiceBus.acceptNextSession", unNamedSessionManager.getActiveLink().flatMap(receiveLink -> receiveLink.getSessionId()
             .map(sessionId -> {
-                final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
+                final ReceiverOptions newReceiverOptions = createNamedSessionOptions(receiverOptions.getReceiveMode(),
                     receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
-                    receiverOptions.isEnableAutoComplete(), sessionId, null);
+                    receiverOptions.isEnableAutoComplete(), sessionId);
                 final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath,
                     entityType, connectionProcessor, messageSerializer, newReceiverOptions,
-                    receiveLink, identifier);
+                    receiveLink, identifier, instrumentation.getTracer());
                 return new ServiceBusReceiverAsyncClient(fullyQualifiedNamespace, entityPath,
                     entityType, newReceiverOptions, connectionProcessor, ServiceBusConstants.OPERATION_TIMEOUT,
                     instrumentation, messageSerializer, () -> { }, sessionSpecificManager);
@@ -172,11 +173,11 @@ public final class ServiceBusSessionReceiverAsyncClient implements AutoCloseable
             return monoError(LOGGER, new IllegalArgumentException("'sessionId' cannot be empty"));
         }
 
-        final ReceiverOptions newReceiverOptions = new ReceiverOptions(receiverOptions.getReceiveMode(),
+        final ReceiverOptions newReceiverOptions = createNamedSessionOptions(receiverOptions.getReceiveMode(),
             receiverOptions.getPrefetchCount(), receiverOptions.getMaxLockRenewDuration(),
-            receiverOptions.isEnableAutoComplete(), sessionId, null);
+            receiverOptions.isEnableAutoComplete(), sessionId);
         final ServiceBusSessionManager sessionSpecificManager = new ServiceBusSessionManager(entityPath, entityType,
-            connectionProcessor, messageSerializer, newReceiverOptions, identifier);
+            connectionProcessor, messageSerializer, newReceiverOptions, identifier, instrumentation.getTracer());
 
         return tracer.traceMono("ServiceBus.acceptSession",
             sessionSpecificManager.getActiveLink().map(receiveLink -> new ServiceBusReceiverAsyncClient(

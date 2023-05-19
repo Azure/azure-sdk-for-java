@@ -50,11 +50,11 @@ public interface Domain {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: The system metadata relating to the Event Grid Domain resource.
+     * Gets the sku property: The Sku pricing tier for the Event Grid Domain resource.
      *
-     * @return the systemData value.
+     * @return the sku value.
      */
-    SystemData systemData();
+    ResourceSku sku();
 
     /**
      * Gets the identity property: Identity information for the Event Grid Domain resource.
@@ -64,7 +64,14 @@ public interface Domain {
     IdentityInfo identity();
 
     /**
-     * Gets the privateEndpointConnections property: List of private endpoint connections.
+     * Gets the systemData property: The system metadata relating to the Event Grid Domain resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
+     * Gets the privateEndpointConnections property: The privateEndpointConnections property.
      *
      * @return the privateEndpointConnections value.
      */
@@ -76,6 +83,14 @@ public interface Domain {
      * @return the provisioningState value.
      */
     DomainProvisioningState provisioningState();
+
+    /**
+     * Gets the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * domain.
+     *
+     * @return the minimumTlsVersionAllowed value.
+     */
+    TlsVersion minimumTlsVersionAllowed();
 
     /**
      * Gets the endpoint property: Endpoint for the Event Grid Domain Resource which is used for publishing the events.
@@ -91,6 +106,14 @@ public interface Domain {
      * @return the inputSchema value.
      */
     InputSchema inputSchema();
+
+    /**
+     * Gets the eventTypeInfo property: Event Type Information for the domain. This information is provided by the
+     * publisher and can be used by the subscriber to view different types of events that are published.
+     *
+     * @return the eventTypeInfo value.
+     */
+    EventTypeInfo eventTypeInfo();
 
     /**
      * Gets the inputSchemaMapping property: Information about the InputSchemaMapping which specified the info about
@@ -244,8 +267,11 @@ public interface Domain {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithSku,
                 DefinitionStages.WithIdentity,
+                DefinitionStages.WithMinimumTlsVersionAllowed,
                 DefinitionStages.WithInputSchema,
+                DefinitionStages.WithEventTypeInfo,
                 DefinitionStages.WithInputSchemaMapping,
                 DefinitionStages.WithPublicNetworkAccess,
                 DefinitionStages.WithInboundIpRules,
@@ -278,6 +304,16 @@ public interface Domain {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+        /** The stage of the Domain definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku pricing tier for the Event Grid Domain resource..
+             *
+             * @param sku The Sku pricing tier for the Event Grid Domain resource.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(ResourceSku sku);
+        }
         /** The stage of the Domain definition allowing to specify identity. */
         interface WithIdentity {
             /**
@@ -287,6 +323,17 @@ public interface Domain {
              * @return the next definition stage.
              */
             WithCreate withIdentity(IdentityInfo identity);
+        }
+        /** The stage of the Domain definition allowing to specify minimumTlsVersionAllowed. */
+        interface WithMinimumTlsVersionAllowed {
+            /**
+             * Specifies the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish
+             * to this domain.
+             *
+             * @param minimumTlsVersionAllowed Minimum TLS version of the publisher allowed to publish to this domain.
+             * @return the next definition stage.
+             */
+            WithCreate withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed);
         }
         /** The stage of the Domain definition allowing to specify inputSchema. */
         interface WithInputSchema {
@@ -299,6 +346,18 @@ public interface Domain {
              * @return the next definition stage.
              */
             WithCreate withInputSchema(InputSchema inputSchema);
+        }
+        /** The stage of the Domain definition allowing to specify eventTypeInfo. */
+        interface WithEventTypeInfo {
+            /**
+             * Specifies the eventTypeInfo property: Event Type Information for the domain. This information is provided
+             * by the publisher and can be used by the subscriber to view different types of events that are published..
+             *
+             * @param eventTypeInfo Event Type Information for the domain. This information is provided by the publisher
+             *     and can be used by the subscriber to view different types of events that are published.
+             * @return the next definition stage.
+             */
+            WithCreate withEventTypeInfo(EventTypeInfo eventTypeInfo);
         }
         /** The stage of the Domain definition allowing to specify inputSchemaMapping. */
         interface WithInputSchemaMapping {
@@ -431,12 +490,15 @@ public interface Domain {
     interface Update
         extends UpdateStages.WithTags,
             UpdateStages.WithIdentity,
+            UpdateStages.WithSku,
             UpdateStages.WithPublicNetworkAccess,
             UpdateStages.WithInboundIpRules,
+            UpdateStages.WithMinimumTlsVersionAllowed,
             UpdateStages.WithDisableLocalAuth,
             UpdateStages.WithAutoCreateTopicWithFirstSubscription,
             UpdateStages.WithAutoDeleteTopicWithLastSubscription,
-            UpdateStages.WithDataResidencyBoundary {
+            UpdateStages.WithDataResidencyBoundary,
+            UpdateStages.WithEventTypeInfo {
         /**
          * Executes the update request.
          *
@@ -474,19 +536,27 @@ public interface Domain {
              */
             Update withIdentity(IdentityInfo identity);
         }
+        /** The stage of the Domain update allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The Sku pricing tier for the domain..
+             *
+             * @param sku The Sku pricing tier for the domain.
+             * @return the next definition stage.
+             */
+            Update withSku(ResourceSku sku);
+        }
         /** The stage of the Domain update allowing to specify publicNetworkAccess. */
         interface WithPublicNetworkAccess {
             /**
              * Specifies the publicNetworkAccess property: This determines if traffic is allowed over public network. By
              * default it is enabled. You can further restrict to specific IPs by configuring &lt;seealso
-             * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties"
-                 + ".InboundIpRules"
+             * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties.InboundIpRules"
              * /&gt;.
              *
              * @param publicNetworkAccess This determines if traffic is allowed over public network. By default it is
              *     enabled. You can further restrict to specific IPs by configuring &lt;seealso
-             *     cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties"
-                 + ".InboundIpRules"
+             *     cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties.InboundIpRules"
              *     /&gt;.
              * @return the next definition stage.
              */
@@ -503,6 +573,17 @@ public interface Domain {
              * @return the next definition stage.
              */
             Update withInboundIpRules(List<InboundIpRule> inboundIpRules);
+        }
+        /** The stage of the Domain update allowing to specify minimumTlsVersionAllowed. */
+        interface WithMinimumTlsVersionAllowed {
+            /**
+             * Specifies the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish
+             * to this domain.
+             *
+             * @param minimumTlsVersionAllowed Minimum TLS version of the publisher allowed to publish to this domain.
+             * @return the next definition stage.
+             */
+            Update withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed);
         }
         /** The stage of the Domain update allowing to specify disableLocalAuth. */
         interface WithDisableLocalAuth {
@@ -584,6 +665,16 @@ public interface Domain {
              */
             Update withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary);
         }
+        /** The stage of the Domain update allowing to specify eventTypeInfo. */
+        interface WithEventTypeInfo {
+            /**
+             * Specifies the eventTypeInfo property: The eventTypeInfo for the domain..
+             *
+             * @param eventTypeInfo The eventTypeInfo for the domain.
+             * @return the next definition stage.
+             */
+            Update withEventTypeInfo(EventTypeInfo eventTypeInfo);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -601,16 +692,9 @@ public interface Domain {
     Domain refresh(Context context);
 
     /**
-     * List the two keys used to publish to a domain.
+     * List keys for a domain.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Domain.
-     */
-    DomainSharedAccessKeys listSharedAccessKeys();
-
-    /**
-     * List the two keys used to publish to a domain.
+     * <p>List the two keys used to publish to a domain.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -621,18 +705,20 @@ public interface Domain {
     Response<DomainSharedAccessKeys> listSharedAccessKeysWithResponse(Context context);
 
     /**
-     * Regenerate a shared access key for a domain.
+     * List keys for a domain.
      *
-     * @param regenerateKeyRequest Request body to regenerate key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * <p>List the two keys used to publish to a domain.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the Domain.
      */
-    DomainSharedAccessKeys regenerateKey(DomainRegenerateKeyRequest regenerateKeyRequest);
+    DomainSharedAccessKeys listSharedAccessKeys();
 
     /**
-     * Regenerate a shared access key for a domain.
+     * Regenerate key for a domain.
+     *
+     * <p>Regenerate a shared access key for a domain.
      *
      * @param regenerateKeyRequest Request body to regenerate key.
      * @param context The context to associate with this operation.
@@ -643,4 +729,17 @@ public interface Domain {
      */
     Response<DomainSharedAccessKeys> regenerateKeyWithResponse(
         DomainRegenerateKeyRequest regenerateKeyRequest, Context context);
+
+    /**
+     * Regenerate key for a domain.
+     *
+     * <p>Regenerate a shared access key for a domain.
+     *
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Domain.
+     */
+    DomainSharedAccessKeys regenerateKey(DomainRegenerateKeyRequest regenerateKeyRequest);
 }

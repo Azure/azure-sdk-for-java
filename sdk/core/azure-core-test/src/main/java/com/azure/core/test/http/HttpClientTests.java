@@ -490,7 +490,7 @@ public abstract class HttpClientTests {
                     byte[] randomStringBytes = randomString.getBytes(StandardCharsets.UTF_8);
                     BinaryData stringBinaryData = BinaryData.fromString(randomString);
 
-                    BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes));
+                    BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length);
 
                     List<ByteBuffer> bufferList = new ArrayList<>();
                     int bufferSize = 113;

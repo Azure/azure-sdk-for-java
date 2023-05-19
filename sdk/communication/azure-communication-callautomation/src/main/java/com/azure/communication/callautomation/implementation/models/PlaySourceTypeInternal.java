@@ -30,11 +30,7 @@ public final class PlaySourceTypeInternal extends ExpandableStringEnum<PlaySourc
         return fromString(name, PlaySourceTypeInternal.class);
     }
 
-    /**
-     * Gets known PlaySourceTypeInternal values.
-     *
-     * @return known PlaySourceTypeInternal values.
-     */
+    /** @return known PlaySourceTypeInternal values. */
     public static Collection<PlaySourceTypeInternal> values() {
         return values(PlaySourceTypeInternal.class);
     }

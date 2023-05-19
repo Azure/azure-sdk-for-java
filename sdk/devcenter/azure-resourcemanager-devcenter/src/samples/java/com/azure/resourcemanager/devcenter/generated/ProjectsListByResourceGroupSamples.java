@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Projects ListByResourceGroup. */
 public final class ProjectsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Projects_ListByResourceGroup.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Projects_ListByResourceGroup.json
      */
     /**
      * Sample code: Projects_ListByResourceGroup.
@@ -17,6 +15,6 @@ public final class ProjectsListByResourceGroupSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void projectsListByResourceGroup(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.projects().listByResourceGroup("rg1", null, Context.NONE);
+        manager.projects().listByResourceGroup("rg1", null, com.azure.core.util.Context.NONE);
     }
 }

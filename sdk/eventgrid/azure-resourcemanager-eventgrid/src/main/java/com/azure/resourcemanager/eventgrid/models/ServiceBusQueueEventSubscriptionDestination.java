@@ -22,6 +22,10 @@ public final class ServiceBusQueueEventSubscriptionDestination extends EventSubs
     @JsonProperty(value = "properties")
     private ServiceBusQueueEventSubscriptionDestinationProperties innerProperties;
 
+    /** Creates an instance of ServiceBusQueueEventSubscriptionDestination class. */
+    public ServiceBusQueueEventSubscriptionDestination() {
+    }
+
     /**
      * Get the innerProperties property: Service Bus Properties of the event subscription destination.
      *

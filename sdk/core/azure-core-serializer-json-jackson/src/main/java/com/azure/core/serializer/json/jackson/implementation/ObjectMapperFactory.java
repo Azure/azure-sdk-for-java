@@ -3,6 +3,7 @@
 
 package com.azure.core.serializer.json.jackson.implementation;
 
+import com.azure.core.serializer.json.jackson.JacksonJsonProvider;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -32,6 +33,7 @@ final class ObjectMapperFactory {
             .addModule(AdditionalPropertiesDeserializer.getModule(flatteningMapper))
             .addModule(FlatteningSerializer.getModule(innerMapper))
             .addModule(FlatteningDeserializer.getModule(innerMapper))
+            .addModule(JacksonJsonProvider.getJsonSerializableDatabindModule())
             .build();
     }
 
@@ -46,6 +48,7 @@ final class ObjectMapperFactory {
     public ObjectMapper createHeaderMapper() {
         return initializeMapperBuilder(JsonMapper.builder())
             .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
+            .addModule(JacksonJsonProvider.getJsonSerializableDatabindModule())
             .build();
     }
 

@@ -69,16 +69,9 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
             .flatMap(httpResponse -> {
                 if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
                     attemptedRedirectUrls)) {
-                    HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(httpResponse);
 
-                    // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
-                    // causing it to leak your authorization token to.
-                    httpResponse.getHeaders().remove(HttpHeaderName.AUTHORIZATION);
-
-                    return httpResponse
-                        .getBody()
-                        .ignoreElements()
-                        .then(attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls));
+                    HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
+                    return attemptRedirect(context, next, redirectRequestCopy, redirectAttempt + 1, attemptedRedirectUrls);
                 } else {
                     return Mono.just(httpResponse);
                 }
@@ -101,13 +94,22 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
 
         if (redirectStrategy.shouldAttemptRedirect(context, httpResponse, redirectAttempt,
             attemptedRedirectUrls)) {
-            HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(httpResponse);
-            // make sure we need this
-            httpResponse.getBody().blockLast();
+
+            HttpRequest redirectRequestCopy = createRedirectRequest(httpResponse);
             return attemptRedirectSync(context, next, redirectRequestCopy, redirectAttempt + 1,
                 attemptedRedirectUrls);
         } else {
             return httpResponse;
         }
+    }
+
+    private HttpRequest createRedirectRequest(HttpResponse redirectResponse) {
+        // Clear the authorization header to avoid the client to be redirected to an untrusted third party server
+        // causing it to leak your authorization token to.
+        redirectResponse.getRequest().getHeaders().remove(HttpHeaderName.AUTHORIZATION);
+        HttpRequest redirectRequestCopy = redirectStrategy.createRedirectRequest(redirectResponse);
+        redirectResponse.close();
+
+        return redirectRequestCopy;
     }
 }

@@ -73,17 +73,14 @@ public class ProxySelectorTest extends IntegrationTestBase {
             .queueName(queueName)
             .buildAsyncClient();
 
-        try {
-            StepVerifier.create(sender.sendMessage(message))
-                .expectErrorSatisfies(error -> {
-                    // The message can vary because it is returned from proton-j, so we don't want to compare against that.
-                    // This is a transient error from ExceptionUtil.java: line 67.
-                    System.out.println("Error: " + error);
-                })
-                .verify();
-        } finally {
-            dispose(sender);
-        }
+        toClose(sender);
+        StepVerifier.create(sender.sendMessage(message))
+            .expectErrorSatisfies(error -> {
+                // The message can vary because it is returned from proton-j, so we don't want to compare against that.
+                // This is a transient error from ExceptionUtil.java: line 67.
+                System.out.println("Error: " + error);
+            })
+            .verify();
 
         final boolean awaited = countDownLatch.await(2, TimeUnit.SECONDS);
         Assertions.assertTrue(awaited);

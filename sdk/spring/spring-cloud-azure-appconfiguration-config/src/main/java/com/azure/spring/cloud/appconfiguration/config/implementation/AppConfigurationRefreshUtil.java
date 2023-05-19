@@ -28,8 +28,8 @@ class AppConfigurationRefreshUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(AppConfigurationPullRefresh.class);
 
     /**
-     * Goes through each config store and checks if any of its keys need to be refreshed. If any store has a value that
-     * needs to be updated a refresh event is called after every store is checked.
+     * Goes through each config store and checks if any of its keys need to be refreshed. If any store
+     * has a value that needs to be updated a refresh event is called after every store is checked.
      *
      * @return If a refresh event is called.
      */
@@ -62,8 +62,7 @@ class AppConfigurationRefreshUtil {
                 if (monitor.isEnabled() && StateHolder.getLoadState(originEndpoint)) {
                     for (AppConfigurationReplicaClient client : clients) {
                         try {
-                            refreshWithTime(client, StateHolder.getState(originEndpoint), monitor.getRefreshInterval(),
-                                eventData);
+                            refreshWithTime(client, StateHolder.getState(originEndpoint), monitor.getRefreshInterval(), eventData);
                             if (eventData.getDoRefresh()) {
                                 clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
                                 return eventData;
@@ -71,8 +70,8 @@ class AppConfigurationRefreshUtil {
                             // If check didn't throw an error other clients don't need to be checked.
                             break;
                         } catch (AppConfigurationStatusException e) {
-                            LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
-                                + " during refresh check.");
+                            LOGGER.warn(
+                                "Failed attempting to connect to " + client.getEndpoint() + " during refresh check.");
 
                             clientFactory.backoffClientClient(originEndpoint, client.getEndpoint());
                         }
@@ -88,8 +87,7 @@ class AppConfigurationRefreshUtil {
                         try {
                             refreshWithTimeFeatureFlags(client, featureStore,
                                 StateHolder.getStateFeatureFlag(originEndpoint),
-                                monitor.getFeatureFlagRefreshInterval(),
-                                eventData, profiles);
+                                monitor.getFeatureFlagRefreshInterval(), eventData, profiles);
                             if (eventData.getDoRefresh()) {
                                 clientFactory.setCurrentConfigStoreClient(originEndpoint, client.getEndpoint());
                                 return eventData;
@@ -97,8 +95,8 @@ class AppConfigurationRefreshUtil {
                             // If check didn't throw an error other clients don't need to be checked.
                             break;
                         } catch (AppConfigurationStatusException e) {
-                            LOGGER.warn("Failed attempting to connect to " + client.getEndpoint()
-                                + " during refresh check.");
+                            LOGGER.warn(
+                                "Failed attempting to connect to " + client.getEndpoint() + " during refresh check.");
 
                             clientFactory.backoffClientClient(originEndpoint, client.getEndpoint());
                         }
@@ -139,6 +137,7 @@ class AppConfigurationRefreshUtil {
 
     /**
      * This is for a <b>refresh fail only</b>.
+     * 
      * @param featureStore Feature info for the store
      * @param profiles Current configured profiles, can be used as labels.
      * @param client Client checking for refresh
@@ -171,11 +170,7 @@ class AppConfigurationRefreshUtil {
 
             refreshWithoutTime(client, state.getWatchKeys(), eventData);
 
-            if (eventData.getDoRefresh()) {
-                // Just need to reset refreshInterval, if a refresh was triggered it will be updated after loading the
-                // new configurations.
-                StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
-            }
+            StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
         }
     }
 
@@ -186,8 +181,8 @@ class AppConfigurationRefreshUtil {
      * @param watchKeys Watch keys for the store.
      * @param eventData Refresh event info
      */
-    private static void refreshWithoutTime(AppConfigurationReplicaClient client,
-        List<ConfigurationSetting> watchKeys, RefreshEventData eventData) throws AppConfigurationStatusException {
+    private static void refreshWithoutTime(AppConfigurationReplicaClient client, List<ConfigurationSetting> watchKeys,
+        RefreshEventData eventData) throws AppConfigurationStatusException {
         for (ConfigurationSetting watchKey : watchKeys) {
             ConfigurationSetting watchedKey = client.getWatchKey(watchKey.getKey(), watchKey.getLabel());
 
@@ -202,9 +197,9 @@ class AppConfigurationRefreshUtil {
         }
     }
 
-    private static void refreshWithTimeFeatureFlags(AppConfigurationReplicaClient client,
-        FeatureFlagStore featureStore, State state, Duration refreshInterval, RefreshEventData eventData,
-        List<String> profiles) throws AppConfigurationStatusException {
+    private static void refreshWithTimeFeatureFlags(AppConfigurationReplicaClient client, FeatureFlagStore featureStore,
+        State state, Duration refreshInterval, RefreshEventData eventData, List<String> profiles)
+        throws AppConfigurationStatusException {
         Instant date = Instant.now();
         if (date.isAfter(state.getNextRefreshCheck())) {
 
@@ -217,8 +212,8 @@ class AppConfigurationRefreshUtil {
                     keyFilter = FEATURE_FLAG_PREFIX + watchKey.getKeyFilter();
                 }
 
-                SettingSelector selector = new SettingSelector().setKeyFilter(keyFilter)
-                    .setLabelFilter(watchKey.getLabelFilterText(profiles));
+                SettingSelector selector =
+                    new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(watchKey.getLabelFilterText(profiles));
                 List<ConfigurationSetting> currentKeys = client.listSettings(selector);
 
                 watchedKeySize += checkFeatureFlags(currentKeys, state, client, eventData);
@@ -234,8 +229,6 @@ class AppConfigurationRefreshUtil {
                 eventData.setMessage(eventDataInfo);
             }
 
-            // Just need to reset refreshInterval, if a refresh was triggered it will be updated after loading the new
-            // configurations.
             StateHolder.getCurrentState().updateStateRefresh(state, refreshInterval);
         }
     }
@@ -274,8 +267,8 @@ class AppConfigurationRefreshUtil {
                 keyFilter = FEATURE_FLAG_PREFIX + watchKey.getKeyFilter();
             }
 
-            SettingSelector selector = new SettingSelector().setKeyFilter(keyFilter)
-                .setLabelFilter(watchKey.getLabelFilterText(profiles));            
+            SettingSelector selector =
+                new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(watchKey.getLabelFilterText(profiles));
             List<ConfigurationSetting> currentTriggerConfigurations = client.listSettings(selector);
 
             int watchedKeySize = 0;
@@ -309,8 +302,8 @@ class AppConfigurationRefreshUtil {
         }
     }
 
-    private static Boolean compairKeys(ConfigurationSetting key1, ConfigurationSetting key2,
-        String endpoint, RefreshEventData eventData) {
+    private static Boolean compairKeys(ConfigurationSetting key1, ConfigurationSetting key2, String endpoint,
+        RefreshEventData eventData) {
         if (key1 != null && key1.getKey().equals(key2.getKey()) && key1.getLabel().equals(key2.getLabel())) {
             checkETag(key1, key2, endpoint, eventData);
             return true;
@@ -327,10 +320,8 @@ class AppConfigurationRefreshUtil {
 
         LOGGER.debug(watchSetting.getETag(), " - ", currentTriggerConfiguration.getETag());
         if (watchSetting.getETag() != null && !watchSetting.getETag().equals(currentTriggerConfiguration.getETag())) {
-            LOGGER.trace(
-                "Some keys in store [{}] matching the key [{}] and label [{}] is updated, "
-                    + "will send refresh event.",
-                endpoint, watchSetting.getKey(), watchSetting.getLabel());
+            LOGGER.trace("Some keys in store [{}] matching the key [{}] and label [{}] is updated, "
+                + "will send refresh event.", endpoint, watchSetting.getKey(), watchSetting.getLabel());
 
             String eventDataInfo = watchSetting.getKey();
 

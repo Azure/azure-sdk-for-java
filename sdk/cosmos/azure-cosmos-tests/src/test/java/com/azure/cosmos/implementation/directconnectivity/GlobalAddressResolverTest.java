@@ -7,6 +7,8 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosContainerProactiveInitConfigBuilder;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -19,6 +21,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -130,7 +133,7 @@ public class GlobalAddressResolverTest {
     }
 
     @Test(groups = "unit")
-    public void openConnectionAndInitCaches() {
+    public void submitOpenConnectionTasksAndInitCaches() {
         GlobalAddressResolver globalAddressResolver =
                 new GlobalAddressResolver(
                         mockDiagnosticsClientContext(),
@@ -150,6 +153,8 @@ public class GlobalAddressResolverTest {
         globalAddressResolver.addressCacheByEndpoint.clear();
         globalAddressResolver.addressCacheByEndpoint.put(urlforRead1, endpointCache);
         globalAddressResolver.addressCacheByEndpoint.put(urlforRead2, endpointCache);
+
+        AddressInformation addressInformation = new AddressInformation(true, true, "https://be1.west-us.com:8080", Protocol.TCP);
 
         Mockito
                 .when(endpointManager.getReadEndpoints())
@@ -186,25 +191,33 @@ public class GlobalAddressResolverTest {
             ranges.add(new PartitionKeyRangeIdentity(documentCollection.getResourceId(), partitionKeyRange.getId()));
         }
 
+        List<ImmutablePair<ImmutablePair<String, DocumentCollection>, AddressInformation>> collectionToAddresses = new ArrayList<>();
+
+        collectionToAddresses.add(new ImmutablePair<>(new ImmutablePair<>("coll1", documentCollection), addressInformation));
+
         List<OpenConnectionResponse> openConnectionResponses = new ArrayList<>();
-        OpenConnectionResponse response1 = new OpenConnectionResponse(new Uri("http://localhost:8081"), true);
-        OpenConnectionResponse response2 = new OpenConnectionResponse(new Uri("http://localhost:8082"), false, new IllegalStateException("Test"));
+        OpenConnectionResponse response1 = new OpenConnectionResponse(new Uri("http://localhost:8081"), true,null, 1);
+        OpenConnectionResponse response2 = new OpenConnectionResponse(new Uri("http://localhost:8082"), false, new IllegalStateException("Test"), 0);
 
         openConnectionResponses.add(response1);
         openConnectionResponses.add(response2);
 
         Mockito
-                .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges))
-                .thenReturn(Flux.fromIterable(openConnectionResponses));
+                .when(gatewayAddressCache.resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any()))
+                        .thenReturn(Flux.fromIterable(collectionToAddresses));
+
+        Mockito
+                .when(gatewayAddressCache.submitOpenConnectionTask(addressInformation, documentCollection, Configs.getMinConnectionPoolSizePerEndpoint()))
+                .thenReturn(Mono.empty());
 
         CosmosContainerProactiveInitConfig proactiveContainerInitConfig = new CosmosContainerProactiveInitConfigBuilder(Arrays.asList(new CosmosContainerIdentity("testDb", "TestColl")))
                 .setProactiveConnectionRegionsCount(1)
                 .build();
 
-        StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(proactiveContainerInitConfig))
-                        .expectNext(response1)
-                        .expectNext(response2)
-                        .verifyComplete();
+        StepVerifier.create(globalAddressResolver.submitOpenConnectionTasksAndInitCaches(proactiveContainerInitConfig))
+                .expectComplete()
+                .verify();
+
         Mockito
                 .verify(collectionCache, Mockito.times(1))
                 .resolveByNameAsync(null, documentCollection.getSelfLink(), null);
@@ -218,6 +231,10 @@ public class GlobalAddressResolverTest {
                         null);
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
-                .openConnectionsAndInitCaches(documentCollection, ranges);
+                .resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any());
+
+        Mockito
+                .verify(gatewayAddressCache, Mockito.times(1))
+                .submitOpenConnectionTask(addressInformation, documentCollection, Configs.getMinConnectionPoolSizePerEndpoint());
     }
 }

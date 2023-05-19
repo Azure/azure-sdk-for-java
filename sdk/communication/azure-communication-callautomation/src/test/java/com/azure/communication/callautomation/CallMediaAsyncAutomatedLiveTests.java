@@ -8,9 +8,8 @@ import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.HangUpOptions;
-import com.azure.communication.callautomation.models.events.CallConnectedEventData;
-import com.azure.communication.callautomation.models.events.PlayCompletedEventData;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
@@ -95,20 +94,20 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnectedEventData callConnectedEventData = waitForEvent(CallConnectedEventData.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(callConnectedEventData);
+            CallConnected callConnected = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(callConnected);
 
             // play media to all participants
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
             callMediaAsync.playToAll(new FileSource().setUrl(MEDIA_SOURCE)).block();
-            PlayCompletedEventData playCompletedEventData = waitForEvent(PlayCompletedEventData.class, callerConnectionId, Duration.ofSeconds(20));
-            assertNotNull(playCompletedEventData);
+            PlayCompleted playCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
+            assertNotNull(playCompleted);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true)).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(true).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.
