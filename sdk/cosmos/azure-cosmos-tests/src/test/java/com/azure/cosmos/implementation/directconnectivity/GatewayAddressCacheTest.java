@@ -1428,17 +1428,11 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         for (String uriUnderOpenConnectionsFlow : newAddressUrisUnderOpenConnectionsFlow) {
             assertThat(actualAddressUriStringsFetched.contains(uriUnderOpenConnectionsFlow)).isTrue();
-        }
-
-        for (String uriUnderOpenConnectionsFlow : addressUrisUnderOpenConnectionsFlow) {
-            assertThat(actualAddressUriStringsFetched.contains(uriUnderOpenConnectionsFlow)).isTrue();
-        }
-
-        for (String uriUnderOpenConnectionsFlow : newAddressUrisUnderOpenConnectionsFlow) {
             assertThat(mockAddressUriStrings.contains(uriUnderOpenConnectionsFlow)).isFalse();
         }
 
         for (String uriUnderOpenConnectionsFlow : addressUrisUnderOpenConnectionsFlow) {
+            assertThat(actualAddressUriStringsFetched.contains(uriUnderOpenConnectionsFlow)).isTrue();
             assertThat(mockAddressUriStrings.contains(uriUnderOpenConnectionsFlow)).isFalse();
         }
     }
