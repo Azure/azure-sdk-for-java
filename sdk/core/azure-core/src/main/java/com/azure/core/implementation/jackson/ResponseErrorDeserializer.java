@@ -37,11 +37,11 @@ final class ResponseErrorDeserializer extends StdDeserializer<Object> {
     /**
      * Creates an instance of {@link ResponseErrorDeserializer}.
      *
-     * @param vc type of values this deserializer handles.
+     * @param classType type of values this deserializer handles.
      * @param mapper the object mapper for default deserializations.
      */
-    private ResponseErrorDeserializer(Class<?> vc, ObjectMapper mapper) {
-        super(vc);
+    private ResponseErrorDeserializer(Class<?> classType, ObjectMapper mapper) {
+        super(classType);
         this.mapper = mapper;
     }
 
@@ -70,9 +70,9 @@ final class ResponseErrorDeserializer extends StdDeserializer<Object> {
     }
 
     @Override
-    public Object deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-        p.setCodec(mapper);
-        JsonNode errorNode = p.readValueAsTree();
+    public Object deserialize(JsonParser jsonParser, DeserializationContext context) throws IOException {
+        jsonParser.setCodec(mapper);
+        JsonNode errorNode = jsonParser.readValueAsTree();
         if (errorNode == null) {
             return null;
         }
