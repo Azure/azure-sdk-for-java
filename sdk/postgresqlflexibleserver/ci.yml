@@ -33,7 +33,8 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: postgresqlflexibleserver
-    EnableBatchRelease: true
+    EnableBatchRelease: false
+    UseEsrpRelease: false
     Artifacts:
       - name: azure-resourcemanager-postgresqlflexibleserver
         groupId: com.azure.resourcemanager
