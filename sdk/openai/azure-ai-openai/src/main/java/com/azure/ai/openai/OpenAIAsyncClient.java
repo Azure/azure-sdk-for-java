@@ -114,11 +114,9 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponse(
             String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
-        if (this.openAIServiceClient != null) {
-            return this.openAIServiceClient.getEmbeddingsWithResponseAsync(
-                    deploymentId, embeddingsOptions, requestOptions);
-        }
-        return this.azureServiceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
+        return openAIServiceClient != null
+            ? openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions)
+            : azureServiceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
     }
 
     /**
@@ -205,11 +203,9 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCompletionsWithResponse(
             String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
-        if (this.openAIServiceClient != null) {
-            return this.openAIServiceClient.getCompletionsWithResponseAsync(
-                    deploymentId, completionsOptions, requestOptions);
-        }
-        return this.azureServiceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
+        return openAIServiceClient != null
+            ? openAIServiceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions)
+            : azureServiceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
     }
 
     /**
@@ -287,11 +283,11 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getChatCompletionsWithResponse(
             String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
-        if (this.openAIServiceClient != null) {
-            return this.openAIServiceClient.getChatCompletionsWithResponseAsync(
-                    deploymentId, chatCompletionsOptions, requestOptions);
-        }
-        return this.azureServiceClient.getChatCompletionsWithResponseAsync(
+
+        return openAIServiceClient != null
+            ? openAIServiceClient.getChatCompletionsWithResponseAsync(
+                deploymentId, chatCompletionsOptions, requestOptions)
+            : azureServiceClient.getChatCompletionsWithResponseAsync(
                 deploymentId, chatCompletionsOptions, requestOptions);
     }
 
