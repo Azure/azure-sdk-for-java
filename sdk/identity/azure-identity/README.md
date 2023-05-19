@@ -399,9 +399,8 @@ Not all credentials require this configuration. Credentials that authenticate th
   </thead>
   <tbody>
     <tr>
-      <td><code>AzureDeveloperCliCredential</code></td>
+      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azuredeveloperclicredential?view=azure-java-stable">AzureDeveloperCliCredential</a></code></td>
       <td>Authenticate in a development environment with the enabled user or service principal in Azure Developer CLI</td>
-      <!-- Example and Reference for azd is WIP -->
       <td></td>  
       <td><a href="https://learn.microsoft.com/azure/developer/azure-developer-cli/reference">Azure Developer CLI Reference</a></td>
     </tr>
@@ -431,8 +430,6 @@ Not all credentials require this configuration. Credentials that authenticate th
     </tr>
   </tbody>
 </table>
-
-> __Note:__ `AzureDeveloperCliCredential` is in beta and its name may change before the stable release.
 
 > __Note:__ All credential implementations in the Azure Identity library are threadsafe, and a single credential instance can be used to create multiple service clients.
 
@@ -565,7 +562,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_sub]: https://azure.microsoft.com/free/
 [azuread_doc]: https://learn.microsoft.com/azure/active-directory/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[javadoc]: https://azure.github.io/azure-sdk-for-java
+[javadoc]: https://learn.microsoft.com/java/api/com.azure.identity?view=azure-java-stable
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
 [secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets
