@@ -8,13 +8,17 @@ steps:
     displayName: 'Check if http-fault-injector log file exists'
     condition: always()
 
+  - pwsh: |
+      Copy-Item -Path "$(Build.SourcesDirectory)/http-fault-injector.log" -Destination "$(Build.SourcesDirectory)/http-fault-injector.log"
+    condition: eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true')
+
   - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
     parameters:
       ArtifactName: "$(System.JobName)-http-fault-injector-logs"
-      ArtifactPath: "$(Build.SourcesDirectory)/http-fault-injector.log"
+      ArtifactPath: "$(Build.SourcesDirectory)/fault.log"
       CustomCondition: eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true')
 
   - pwsh: |
-      Remove-Item -Force $(Build.SourcesDirectory)/http-fault-injector.log
+      Remove-Item -Force $(Build.SourcesDirectory)/fault.log
     displayName: 'Cleanup http-fault-injector log file'
     condition: eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true')
