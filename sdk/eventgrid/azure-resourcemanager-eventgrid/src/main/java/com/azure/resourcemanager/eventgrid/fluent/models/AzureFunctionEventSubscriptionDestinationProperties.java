@@ -13,8 +13,7 @@ import java.util.List;
 @Fluent
 public final class AzureFunctionEventSubscriptionDestinationProperties {
     /*
-     * The Azure Resource Id that represents the endpoint of the Azure Function
-     * destination of an event subscription.
+     * The Azure Resource Id that represents the endpoint of the Azure Function destination of an event subscription.
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
@@ -36,6 +35,10 @@ public final class AzureFunctionEventSubscriptionDestinationProperties {
      */
     @JsonProperty(value = "deliveryAttributeMappings")
     private List<DeliveryAttributeMapping> deliveryAttributeMappings;
+
+    /** Creates an instance of AzureFunctionEventSubscriptionDestinationProperties class. */
+    public AzureFunctionEventSubscriptionDestinationProperties() {
+    }
 
     /**
      * Get the resourceId property: The Azure Resource Id that represents the endpoint of the Azure Function destination

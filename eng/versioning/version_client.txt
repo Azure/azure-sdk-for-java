@@ -66,7 +66,7 @@ com.azure:azure-communication-callautomation;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-communication-common;1.2.8;2.0.0-beta.2
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-sms;1.1.12;1.2.0-beta.1
-com.azure:azure-communication-identity;1.4.5;1.4.6
+com.azure:azure-communication-identity;1.4.6;1.5.0-beta.1
 com.azure:azure-communication-phonenumbers;1.1.1;1.2.0-beta.1
 com.azure:azure-communication-networktraversal;1.1.0-beta.2;1.1.0-beta.3
 com.azure:azure-communication-jobrouter;1.0.0-beta.1;1.0.0-beta.1
@@ -273,7 +273,7 @@ com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.5;1.0.
 com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.3;1.0.0-beta.4
-com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.1.0;1.2.0-beta.4
+com.azure.resourcemanager:azure-resourcemanager-eventgrid;1.1.0;1.2.0-beta.5
 com.azure.resourcemanager:azure-resourcemanager-healthbot;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-confluent;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-digitaltwins;1.2.0;1.3.0-beta.1
