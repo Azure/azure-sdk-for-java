@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,7 +36,6 @@ public final class CoreUtils {
     private static final ClientLogger LOGGER = new ClientLogger(CoreUtils.class);
 
     private static final char[] LOWERCASE_HEX_CHARACTERS = "0123456789abcdef".toCharArray();
-
 
     private CoreUtils() {
         // Exists only to defeat instantiation.
@@ -493,8 +494,8 @@ public final class CoreUtils {
      * Utility method for parsing query parameters one-by-one without the use of string splitting.
      * <p>
      * This method provides an optimization over parsing query parameters with {@link String#split(String)} or a
-     * {@link java.util.regex.Pattern} as it doesn't allocate any arrays to maintain values, instead it parses the
-     * query parameters linearly.
+     * {@link java.util.regex.Pattern} as it doesn't allocate any arrays to maintain values, instead it parses the query
+     * parameters linearly.
      * <p>
      * Query parameter parsing works the following way, {@code key=value} will turn into an immutable {@link Map.Entry}
      * where the {@link Map.Entry#getKey()} is {@code key} and the {@link Map.Entry#getValue()} is {@code value}. For
@@ -507,5 +508,27 @@ public final class CoreUtils {
         return (CoreUtils.isNullOrEmpty(queryParameters))
             ? Collections.emptyIterator()
             : new ImplUtils.QueryParameterIterator(queryParameters);
+    }
+
+    /**
+     * Creates a type 4 (pseudo randomly generated) UUID.
+     * <p>
+     * The {@link UUID} is generated using a non-cryptographically strong pseudo random number generator.
+     *
+     * @return A randomly generated {@link UUID}.
+     */
+    public static UUID randomUuid() {
+        return randomUuid(ThreadLocalRandom.current().nextLong(), ThreadLocalRandom.current().nextLong());
+    }
+
+    static UUID randomUuid(long msb, long lsb) {
+        msb &= 0xffffffffffff0fffL; // Clear the UUID version.
+        msb |= 0x0000000000004000L; // Set the UUID version to 4.
+        lsb &= 0x3fffffffffffffffL; // Clear the variant.
+        lsb |= 0x8000000000000000L; // Set the variant to IETF.
+
+        // Use new UUID(long, long) instead of UUID.randomUUID as UUID.randomUUID may be blocking.
+        // For environments using Reactor's BlockHound this will raise an exception if called in non-blocking threads.
+        return new UUID(msb, lsb);
     }
 }

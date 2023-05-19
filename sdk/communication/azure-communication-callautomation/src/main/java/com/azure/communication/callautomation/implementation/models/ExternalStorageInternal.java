@@ -22,9 +22,6 @@ public final class ExternalStorageInternal {
     @JsonProperty(value = "blobStorage")
     private BlobStorageInternal blobStorage;
 
-    /** Creates an instance of ExternalStorageInternal class. */
-    public ExternalStorageInternal() {}
-
     /**
      * Get the storageType property: Defines the type of external storage.
      *

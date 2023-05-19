@@ -367,18 +367,14 @@ class ServiceBusReceiverAsyncClientIntegrationTest extends IntegrationTestBase {
 
         setReceiver(entityType, USE_CASE_PEEK_MESSAGE, isSessionEnabled);
 
-        // Assert & Act
-        StepVerifier.create(receiver.peekMessage()
-                .filter(m -> messageId.equals(m.getMessageId()))
-                .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "peeked and filtered message")))
-            .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
-            .verifyComplete();
+        Mono<ServiceBusReceivedMessage> peek = receiver.peekMessage()
+            .filter(m -> messageId.equals(m.getMessageId()))
+            .repeatWhenEmpty(10, i -> i)
+            .delayElement(Duration.ofMillis(100));
 
-        // cleanup
-        StepVerifier.create(receiver.receiveMessages()
-                .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "received message"))
-                .flatMap(receivedMessage -> receiver.complete(receivedMessage).thenReturn(receivedMessage)).take(1)
-                .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "completed message")))
+        // Assert & Act
+        StepVerifier.create(peek
+                .doOnNext(m -> logMessage(m, receiver.getEntityPath(), "peeked and filtered message")))
             .assertNext(receivedMessage -> assertMessageEquals(receivedMessage, messageId, isSessionEnabled))
             .verifyComplete();
     }

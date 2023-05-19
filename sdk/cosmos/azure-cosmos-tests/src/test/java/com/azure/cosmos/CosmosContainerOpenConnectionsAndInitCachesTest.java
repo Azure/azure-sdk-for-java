@@ -101,8 +101,8 @@ public class CosmosContainerOpenConnectionsAndInitCachesTest extends TestSuiteBa
             this.directCosmosAsyncContainer.delete().block();
         }
 
-        safeCloseAsync(directCosmosAsyncClient);
-        safeCloseAsync(gatewayCosmosAsyncClient);
+        safeClose(directCosmosAsyncClient);
+        safeClose(gatewayCosmosAsyncClient);
         safeCloseSyncClient(directCosmosClient);
         safeCloseSyncClient(gatewayCosmosClient);
     }

@@ -19,7 +19,26 @@ import com.azure.core.util.Context;
 import com.azure.core.http.rest.PagedIterable;
 
 /**
- * Client for rooms operations with Azure Communication Rooms Service
+ * Client for Rooms operations of Azure Communication Room Service
+ *
+ * <p>
+ * <strong>Instantiating a Room Client</strong>
+ * </p>
+ *
+ * <!-- src_embed readme-sample-createRoomsClientUsingAzureKeyCredential
+ * -->
+ *
+ * <pre>
+ * RoomsClient roomsClient = new RoomsClientBuilder()
+ *      .endpoint&#40;endpoint&#41;
+ *      .credential&#40;azureKeyCredential&#41;
+ *      .buildClient&#40;&#41;;
+ * </pre>
+ *
+ * <!-- end readme-sample-createRoomsClientUsingAzureKeyCredential -->
+ *
+ * @see RoomsClientBuilder
+ *
  */
 @ServiceClient(builder = RoomsClientBuilder.class)
 public final class RoomsClient {
@@ -104,11 +123,10 @@ public final class RoomsClient {
      * Delete an existing room.
      *
      * @param roomId The room Id.
-     * @return Response with status code only.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void deleteRoom(String roomId) {
-        return roomsAsyncClient.deleteRoom(roomId).block();
+    public void deleteRoom(String roomId) {
+        roomsAsyncClient.deleteRoom(roomId).block();
     }
 
     /**

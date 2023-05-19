@@ -14,6 +14,7 @@ import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -56,6 +57,22 @@ public class CommunicationIdentityClientTestBase extends TestBase {
             this.httpClient = client;
             return;
         });
+    }
+
+    protected HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        HttpClient client = httpClient == null ? interceptorManager.getPlaybackClient() : httpClient;
+        return new AssertingHttpClientBuilder(client)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertSync()
+            .build();
+    }
+
+    protected HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
+        HttpClient client = httpClient == null ? interceptorManager.getPlaybackClient() : httpClient;
+        return new AssertingHttpClientBuilder(client)
+            .skipRequest((ignored1, ignored2) -> false)
+            .assertAsync()
+            .build();
     }
 
     protected CommunicationIdentityClientBuilder createClientBuilder(HttpClient httpClient) {

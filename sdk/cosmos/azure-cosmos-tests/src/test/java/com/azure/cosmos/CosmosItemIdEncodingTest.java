@@ -60,8 +60,14 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
                 .getDatabase(asyncContainer.getDatabase().getId())
                 .getContainer(asyncContainer.getId());
         } catch (Exception error) {
-            logger.error("Failed creating separate container {} for ItemIdEncoding tests to prevent leaving " +
-                "any left-overs with weird encoded ids in the shared container.", containerProperties.getId(), error);
+            String message = String.format(
+                "Failed creating separate container %s for ItemIdEncoding tests to prevent leaving " +
+                    "any left-overs with weird encoded ids in the shared container.",
+                containerProperties.getId());
+
+            logger.error(message, error);
+
+            fail(message);
         }
 
         logger.info("Finished creating separate container {} for ItemIdEncoding tests to prevent leaving " +

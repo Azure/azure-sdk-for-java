@@ -5,31 +5,30 @@
 package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
+import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationUpdateProperties;
+import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssociationUpdatePropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AssociationUpdateProperties model =
             BinaryData
-                .fromString("{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"wbnguitnwui\"}}")
+                .fromString("{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"qrimzinpv\"}}")
                 .toObject(AssociationUpdateProperties.class);
         Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("wbnguitnwui", model.subnet().id());
+        Assertions.assertEquals("qrimzinpv", model.subnet().id());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AssociationUpdateProperties model =
             new AssociationUpdateProperties()
                 .withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnet().withId("wbnguitnwui"));
+                .withSubnet(new AssociationSubnetUpdate().withId("qrimzinpv"));
         model = BinaryData.fromObject(model).toObject(AssociationUpdateProperties.class);
         Assertions.assertEquals(AssociationType.SUBNETS, model.associationType());
-        Assertions.assertEquals("wbnguitnwui", model.subnet().id());
+        Assertions.assertEquals("qrimzinpv", model.subnet().id());
     }
 }

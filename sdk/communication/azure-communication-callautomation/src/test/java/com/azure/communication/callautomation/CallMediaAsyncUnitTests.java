@@ -207,9 +207,8 @@ public class CallMediaAsyncUnitTests {
     public void sendDtmfWithResponse() {
         StepVerifier.create(
                 callMedia.sendDtmfWithResponse(
-                    new CommunicationUserIdentifier("id"),
-                    Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()),
-                    "operationContext"
+                        Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
+                        "operationContext"
                 )
             ).consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();

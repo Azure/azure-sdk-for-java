@@ -383,6 +383,21 @@ public class TestProxyUtils {
         }).collect(Collectors.toList());
     }
 
+    /**
+     * Set comparing bodies to false when running in playback and RecordWithoutRequestBody is set for the test.
+     * @return the HttpRequest for setting compare bodies matcher to false.
+     */
+    public static HttpRequest setCompareBodiesMatcher() {
+        String requestBody = createCustomMatcherRequestBody(new CustomMatcher().setComparingBodies(false));
+        HttpRequest request =
+            new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString())).setBody(
+                requestBody);
+
+        request.setHeader(X_ABSTRACTION_IDENTIFIER,
+            TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName());
+        return request;
+    }
+
     private static TestProxySanitizer addDefaultUrlSanitizer() {
         return new TestProxySanitizer(URL_REGEX, REDACTED_VALUE, TestProxySanitizerType.URL);
     }

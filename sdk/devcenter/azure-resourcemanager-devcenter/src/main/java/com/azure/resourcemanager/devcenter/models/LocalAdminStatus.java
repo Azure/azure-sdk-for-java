@@ -17,6 +17,15 @@ public final class LocalAdminStatus extends ExpandableStringEnum<LocalAdminStatu
     public static final LocalAdminStatus ENABLED = fromString("Enabled");
 
     /**
+     * Creates a new instance of LocalAdminStatus value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LocalAdminStatus() {
+    }
+
+    /**
      * Creates or finds a LocalAdminStatus from its string representation.
      *
      * @param name a name to look for.

@@ -31,7 +31,7 @@ public final class FirewallRulesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"startIpAddress\":\"ntnev\",\"endIpAddress\":\"iwjmygtdssls\"},\"id\":\"mweriofzpy\",\"name\":\"semwabnet\",\"type\":\"hhszh\"}";
+            "{\"properties\":{\"startIpAddress\":\"sotbob\",\"endIpAddress\":\"dopcjwvnh\"},\"id\":\"d\",\"name\":\"mgxcxrslpm\",\"type\":\"twuoegrpkhjwni\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class FirewallRulesCreateOrUpdateMockTests {
         FirewallRule response =
             manager
                 .firewallRules()
-                .define("dnbbglzps")
-                .withExistingFlexibleServer("aolps", "lqlfm")
-                .withStartIpAddress("iydmcwyhzdxs")
-                .withEndIpAddress("adbzmnvdfznud")
+                .define("pfuflrw")
+                .withExistingFlexibleServer("iiswacffgdkzze", "kfvhqcrailvpn")
+                .withStartIpAddress("mh")
+                .withEndIpAddress("lxyjr")
                 .create();
 
-        Assertions.assertEquals("ntnev", response.startIpAddress());
-        Assertions.assertEquals("iwjmygtdssls", response.endIpAddress());
+        Assertions.assertEquals("sotbob", response.startIpAddress());
+        Assertions.assertEquals("dopcjwvnh", response.endIpAddress());
     }
 }

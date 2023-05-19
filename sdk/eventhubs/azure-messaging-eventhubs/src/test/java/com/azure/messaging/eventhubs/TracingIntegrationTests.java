@@ -101,7 +101,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         dispose();
         ClientOptions options = new ClientOptions();
         if (otel != null) {
-            options.setTracingOptions(new OpenTelemetryTracingOptions().setProvider(otel.getTracerProvider()));
+            options.setTracingOptions(new OpenTelemetryTracingOptions().setOpenTelemetry(otel));
         }
 
         producer = toClose(new EventHubClientBuilder()

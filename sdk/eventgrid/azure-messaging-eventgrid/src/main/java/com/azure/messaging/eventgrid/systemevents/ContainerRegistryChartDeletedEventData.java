@@ -10,6 +10,9 @@ import java.time.OffsetDateTime;
 /** Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartDeleted event. */
 @Fluent
 public final class ContainerRegistryChartDeletedEventData extends ContainerRegistryArtifactEventData {
+    /** Creates an instance of ContainerRegistryChartDeletedEventData class. */
+    public ContainerRegistryChartDeletedEventData() {}
+
     /** {@inheritDoc} */
     @Override
     public ContainerRegistryChartDeletedEventData setId(String id) {

@@ -81,9 +81,9 @@ SdkMeterProvider meterProvider = SdkMeterProvider.builder()
     .registerMetricReader(PeriodicMetricReader.builder(OtlpGrpcMetricExporter.builder().build()).build())
     .build();
 
-// Pass OpenTelemetry meterProvider to MetricsOptions.
+// Pass OpenTelemetry instance to MetricsOptions.
 MetricsOptions customMetricsOptions = new OpenTelemetryMetricsOptions()
-    .setProvider(meterProvider);
+    .setOpenTelemetry(OpenTelemetrySdk.builder().setMeterProvider(meterProvider).build());
 
 // configure Azure Client to use customMetricsOptions - it will use meterProvider
 // to create meters and instruments

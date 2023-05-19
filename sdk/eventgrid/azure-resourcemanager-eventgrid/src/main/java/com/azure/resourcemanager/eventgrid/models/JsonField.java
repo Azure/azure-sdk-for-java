@@ -15,11 +15,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class JsonField {
     /*
-     * Name of a field in the input event schema that's to be used as the
-     * source of a mapping.
+     * Name of a field in the input event schema that's to be used as the source of a mapping.
      */
     @JsonProperty(value = "sourceField")
     private String sourceField;
+
+    /** Creates an instance of JsonField class. */
+    public JsonField() {
+    }
 
     /**
      * Get the sourceField property: Name of a field in the input event schema that's to be used as the source of a
