@@ -7,19 +7,20 @@ import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.core.credential.AzureKeyCredential;
 
+/**
+ * A sample demonstrating a prompt to summarize text using async method
+ */
 public class SummarizeTextSample {
     /**
-     * Sample demonstrating the minimal usage with default credentials
-     *
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
+        String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
-        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
 
         OpenAIClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
-            .credential(defaultCredential)
+            .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildClient();
 
         String textToSummarize = """
@@ -38,10 +39,23 @@ public class SummarizeTextSample {
 
         String deploymentOrModelId = "text-davinci-003";
         System.out.println("Input prompt: %d%n", summarizationPrompt);
-        Completions completions = client.getCompletions(deploymentOrModelId, summarizationPrompt);
 
-        for (Choice choice : completions.getChoices()) {
-            System.out.printf("%s.%n", choice.getText());
-        }
+        client.getCompletions(deploymentOrModelId, summarizationPrompt)
+            .subscribe(
+                completions -> {
+                    for (Choice choice : completions.getChoices()) {
+                        System.out.printf("%s.%n", choice.getText());
+                    }
+                },
+                error -> System.err.println("There was an error getting completions." + error),
+                () -> System.out.println("Completed called getCompletions.")
+            );
+
+        // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
+        // the thread so the program does not end before the send operation is complete. Using .block() instead of
+        // .subscribe() will turn this into a synchronous call.
+        TimeUnit.SECONDS.sleep(10);
+    }
+
     }
 }
