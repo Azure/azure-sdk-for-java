@@ -399,16 +399,16 @@ Not all credentials require this configuration. Credentials that authenticate th
   </thead>
   <tbody>
     <tr>
-      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azuredeveloperclicredential?view=azure-java-stable">AzureDeveloperCliCredential</a></code></td>
-      <td>Authenticate in a development environment with the enabled user or service principal in Azure Developer CLI</td>
-      <td></td>  
-      <td><a href="https://learn.microsoft.com/azure/developer/azure-developer-cli/reference">Azure Developer CLI Reference</a></td>
-    </tr>
-    <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azureclicredential?view=azure-java-stable">AzureCliCredential</a></code></td>
       <td>Authenticate in a development environment with the enabled user or service principal in Azure CLI</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-a-user-account-with-azure-cli">example</a></td>
       <td><a href="https://learn.microsoft.com/cli/azure/authenticate-azure-cli">Azure CLI authentication</a></td>
+    </tr>
+    <tr>
+      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azuredeveloperclicredential?view=azure-java-stable">AzureDeveloperCliCredential</a></code></td>
+      <td>Authenticate in a development environment with the enabled user or service principal in Azure Developer CLI</td>
+      <td></td>  
+      <td><a href="https://learn.microsoft.com/azure/developer/azure-developer-cli/reference">Azure Developer CLI Reference</a></td>
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.azurepowershellcredential?view=azure-java-stable">AzurePowerShellCredential </a></code></td>
