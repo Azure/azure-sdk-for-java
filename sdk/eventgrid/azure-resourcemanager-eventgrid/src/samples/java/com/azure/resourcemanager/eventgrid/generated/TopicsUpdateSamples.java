@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.IpActionType;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
@@ -16,7 +15,7 @@ import java.util.Map;
 /** Samples for Topics Update. */
 public final class TopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Topics_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Topics_Update.json
      */
     /**
      * Sample code: Topics_Update.
@@ -25,7 +24,10 @@ public final class TopicsUpdateSamples {
      */
     public static void topicsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         Topic resource =
-            manager.topics().getByResourceGroupWithResponse("examplerg", "exampletopic1", Context.NONE).getValue();
+            manager
+                .topics()
+                .getByResourceGroupWithResponse("examplerg", "exampletopic1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
             .withTags(mapOf("tag1", "value1", "tag2", "value2"))
