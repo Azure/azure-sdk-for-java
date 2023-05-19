@@ -3,10 +3,6 @@ import "@typespec/rest";
 import "@typespec/versioning";
 import "@azure-tools/typespec-azure-core";
 
-enum ServiceApiVersions {
-  v2023_06_01_preview: "2023-06-01-preview"
-}
-
 @useAuth(
   ApiKeyAuth<ApiKeyLocation.header, "SharedAccessKey">
 )
@@ -49,7 +45,7 @@ namespace Azure.Messaging.EventGrid {
   }
 
   @doc("Properties of an event published to an Azure Messaging EventGrid Namespace topic using the CloudEvent 1.0 Schema.")
-  model CloudEvent {
+  model CloudEvent extends Record<unknown> {
     @doc("An identifier for the event. The combination of id and source must be unique for each distinct event.")
     id: string;
 

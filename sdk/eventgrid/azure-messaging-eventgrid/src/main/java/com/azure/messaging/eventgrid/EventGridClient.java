@@ -154,7 +154,7 @@ public final class EventGridClient {
      *          (Required){
      *             brokerProperties (Required): {
      *                 lockToken: String (Required)
-     *                 deliveryAttemptCount: int (Required)
+     *                 deliveryCount: int (Required)
      *             }
      *             event (Required): {
      *                 id: String (Required)
@@ -245,15 +245,6 @@ public final class EventGridClient {
      * Release batch of Cloud Events. The server responds with an HTTP 200 status code if at least one event is
      * successfully released. The response body will include the set of successfully released lockTokens, along with
      * other failed lockTokens with their corresponding error information.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *

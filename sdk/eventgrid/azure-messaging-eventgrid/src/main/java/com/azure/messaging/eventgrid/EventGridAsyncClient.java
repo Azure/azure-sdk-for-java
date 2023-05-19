@@ -250,15 +250,6 @@ public final class EventGridAsyncClient {
      * successfully released. The response body will include the set of successfully released lockTokens, along with
      * other failed lockTokens with their corresponding error information.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
