@@ -302,6 +302,11 @@ Not all credentials require this configuration. Credentials that authenticate th
       <td>authenticates the managed identity of an Azure resource</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity">example</a></td>
     </tr>
+    <tr>
+      <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.workloadidentitycredential?view=azure-java-stable">WorkloadIdentityCredential</a></code></td>
+      <td>supports <a href="https://learn.microsoft.com/azure/aks/workload-identity-overview">Azure AD workload identity</a> on Kubernetes</td>
+      <td></td>
+    </tr>
   </tbody>
 </table>
 
