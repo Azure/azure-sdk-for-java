@@ -11,7 +11,7 @@ steps:
     parameters:
       ArtifactName: "$(System.JobName)-http-fault-injector-logs"
       ArtifactPath: "$(Build.SourcesDirectory)/http-fault-injector.log"
-      CustomCondition: $(HAS_HTTP_FAULT_INJECTOR_LOGS)
+      CustomCondition: eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true')
 
   - pwsh: |
       Remove-Item -Force $(Build.SourcesDirectory)/http-fault-injector.log
