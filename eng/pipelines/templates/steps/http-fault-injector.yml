@@ -8,7 +8,6 @@ steps:
       Write-Host "##vso[task.setvariable variable=ASPNETCORE_Kestrel__Certificates__Default__Password]password"
       Write-Host "##vso[task.setvariable variable=PROXY_MANUAL_START]true"
     displayName: 'Configure Kestrel and PROXY_MANUAL_START Variables'
-    condition: and(succeeded(), ${{ parameters.condition }})
 
   - powershell: |
       if (Test-Path $env:JAVA_HOME\jre\lib\security) {
