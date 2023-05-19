@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * <p> <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">Azure Form Recognizer</a>
+ * <p><a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">Azure Form Recognizer</a>
  * is a cloud-based service provided by Microsoft Azure that utilizes machine learning to extract information
  * from various types of documents. Form Recognizer applies machine-learning-based optical character recognition (OCR)
  * and document understanding technologies to classify documents, extract text, tables, structure, and key-value
@@ -23,14 +23,14 @@
  * <p>The Azure Form Recognizer client library provides the following capabilities:</p>
  *
  * <ol>
- *   <li>Document Analysis: It allows you to submit documents for analysis to detect and extract information like text,
- *    key-value pairs, tables, language, and fields. You can analyze both structured and unstructured documents.</li>
- *   <li>Model Management: It enables you to manage models created in your account by building, listing,
- *   deleting, and see the limit of custom models your account.</li>
- *   <li>Analysis Results: It provides methods to retrieve and interpret analysis results, including extracted text and
- *   field values, confidence scores, and document layout information.</li>
- *   <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
- *   operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ *     <li>Document Analysis: It allows you to submit documents for analysis to detect and extract information like text,
+ *     key-value pairs, tables, language, and fields. You can analyze both structured and unstructured documents.</li>
+ *     <li>Model Management: It enables you to manage models created in your account by building, listing,
+ *     deleting, and see the limit of custom models your account.</li>
+ *     <li>Analysis Results: It provides methods to retrieve and interpret analysis results, including extracted text
+ *     and field values, confidence scores, and document layout information.</li>
+ *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
  * <h2>Getting Started</h2>
@@ -69,25 +69,26 @@
  * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient}, using
  * the `DefaultAzureCredentialBuilder` to configure it.</p>
  *
- * <!-- src_embed readme-sample-createDocumentAdminClientWithAAD -->
+ * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
- * DocumentModelAdministrationClient documentModelAdministrationClient = new DocumentModelAdministrationClientBuilder&#40;&#41;
+ * DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder&#40;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
  *     .credential&#40;credential&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end readme-sample-createDocumentAdminClientWithAAD  -->
+ * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization  -->
  *
  * <p>Further, see the code sample below to use
  * {@link com.azure.core.credential.AzureKeyCredential AzureKeyCredential} for client creation.</p>
  *
  * <!-- src_embed readme-sample-createDocumentModelAdministrationClient -->
  * <pre>
- * DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder&#40;&#41;
- *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
- *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .buildClient&#40;&#41;;
+ * DocumentModelAdministrationClient client =
+ *     new DocumentModelAdministrationClientBuilder&#40;&#41;
+ *         .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-createDocumentModelAdministrationClient  -->
  *
@@ -202,8 +203,6 @@
  * documentModelAdminClient.deleteDocumentModel&#40;modelId.get&#40;&#41;&#41;;
  * </pre>
  * <!-- end readme-sample-manageModels -->
- *
- * <hr/>
  *
  * @see com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient
  * @see com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient

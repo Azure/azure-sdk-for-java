@@ -11,6 +11,7 @@ import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
 import com.azure.ai.formrecognizer.models.FormRecognizerOperationResult;
 import com.azure.ai.formrecognizer.models.RecognizedForm;
+import com.azure.ai.formrecognizer.training.FormTrainingAsyncClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.FormTrainingClientBuilder;
 import com.azure.ai.formrecognizer.training.models.AccountProperties;
@@ -48,13 +49,22 @@ public class ReadmeSamples {
     /**
      * Code snippet for getting sync client using the AzureKeyCredential authentication.
      */
-    public void useAzureKeyCredentialSyncClient() {
+    public void useAzureKeyCredentialClient() {
         // BEGIN: readme-sample-createFormRecognizerClient
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
         //END: readme-sample-createFormRecognizerClient
+    }
+
+    public void useAzureKeyCredentialAsyncClient() {
+        // BEGIN: readme-sample-createFormRecognizerAsyncClient
+        FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
+        //END: readme-sample-createFormRecognizerAsyncClient
     }
 
     /**
@@ -67,6 +77,15 @@ public class ReadmeSamples {
             .endpoint("{endpoint}")
             .buildClient();
         //END: readme-sample-createFormTrainingClient
+    }
+
+    public void useAzureKeyCredentialFormTrainingAsyncClient() {
+        // BEGIN: readme-sample-createFormTrainingAsyncClient
+        FormTrainingAsyncClient formTrainingAsyncClient = new FormTrainingClientBuilder()
+            .credential(new AzureKeyCredential("{key}"))
+            .endpoint("{endpoint}")
+            .buildAsyncClient();
+        //END: readme-sample-createFormTrainingAsyncClient
     }
 
     /**
@@ -85,7 +104,7 @@ public class ReadmeSamples {
     /**
      * Code snippet for getting async client using AAD authentication.
      */
-    public void useAadAsyncClient() {
+    public void useAadSyncClient() {
         // BEGIN: readme-sample-createFormRecognizerClientWithAAD
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         FormRecognizerClient formRecognizerClient = new FormRecognizerClientBuilder()
@@ -95,11 +114,20 @@ public class ReadmeSamples {
         // END: readme-sample-createFormRecognizerClientWithAAD
     }
 
+    public void useAadAsyncClient() {
+        // BEGIN: readme-sample-createFormRecognizerAsyncClientWithAAD
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(credential)
+            .buildAsyncClient();
+        // END: readme-sample-createFormRecognizerAsyncClientWithAAD
+    }
 
     /**
      * Code snippet for getting async client using AAD authentication.
      */
-    public void useAadFormTrainingClientClient() {
+    public void useAadFormTrainingClient() {
         // BEGIN: readme-sample-createFormTrainingClientWithAAD
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         FormTrainingClient client = new FormTrainingClientBuilder()
@@ -107,6 +135,16 @@ public class ReadmeSamples {
             .credential(credential)
             .buildClient();
         // END: readme-sample-createFormTrainingClientWithAAD
+    }
+
+    public void useAadFormTrainingAsyncClient() {
+        // BEGIN: readme-sample-createFormTrainingAsyncClientWithAAD
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        FormTrainingAsyncClient client = new FormTrainingClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(credential)
+            .buildAsyncClient();
+        // END: readme-sample-createFormTrainingAsyncClientWithAAD
     }
 
     /**
@@ -377,16 +415,6 @@ public class ReadmeSamples {
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
-    }
-
-    /**
-     * Code snippet for getting async client using the AzureKeyCredential authentication.
-     */
-    public void useAzureKeyCredentialAsyncClient() {
-        FormRecognizerAsyncClient formRecognizerAsyncClient = new FormRecognizerClientBuilder()
-            .credential(new AzureKeyCredential("{key}"))
-            .endpoint("{endpoint}")
-            .buildAsyncClient();
     }
 
     public void trainAndRecognizeCustomForm() {

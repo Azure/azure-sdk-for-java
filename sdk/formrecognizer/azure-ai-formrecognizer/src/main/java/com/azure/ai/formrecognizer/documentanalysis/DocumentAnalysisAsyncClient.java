@@ -42,24 +42,67 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
 import static com.azure.core.util.FluxUtil.monoError;
 
 /**
- * This class provides a synchronous client to connect to the Form Recognizer Azure Cognitive Service to analyze information
- * from documents and images and extract it into structured data.
- * <p>It provides methods for analyzing with prebuilt models (receipts, business cards, invoices,
- * identity documents, and others), analyzing layout from documents, analyzing general document types,
- * and analyzing custom documents with custom-built models.
- * </p>
- * See <a href="https://aka.ms/azsdk/formrecognizer/models">here</a> to see a full list of models supported by the service.
- * <p>This client also provides different methods based on inputs from a URL and inputs from a stream.</p>
- * <p><strong>Sample: Instantiating an asynchronous Document Analysis Client</strong></p>
+ * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
+ * <p>This client provides asynchronous methods to perform:</p>
  *
- * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.instantiation -->
+ * <ol>
+ *     <li>Custom Document Analysis: Classification, extraction and analysis of data from forms and documents specific
+ *     to distinct business data and use cases.</li>
+ *     <li>General Document Analysis: Extract text, tables, structure, and key-value pairs.</li>
+ *     <li>Prebuilt Model Analysis: Analyze receipts, business cards, invoices, ID's, W2's and other documents with
+ *     <a href="https://aka.ms/azsdk/formrecognizer/models">supported prebuilt models.</a></li>
+ *     <li>Layout Analysis: Extract text, selection marks, and tables structures, along with their bounding box
+ *     coordinates, from forms and documents.</li>
+ *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ * </ol>
+ *
+ * <p>This client also provides different methods based on inputs from a URL and inputs from a stream.</p>
+ *
+ * <p><strong>Note:</strong>This client only supports
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
+ * To use an older service version, @see com.azure.ai.formrecognizer.FormRecognizerClient and @see com.azure.ai
+ * .formrecognizer.training.FormTrainingClient.</p>
+ *
+ * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} is the synchronous service client and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient} is the asynchronous service client.
+ * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Construct a DocumentAnalysisAsyncClient with DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}, using
+ * the `DefaultAzureCredentialBuilder` to configure it.</p>
+ *
+ * <!-- src_embed readme-sample-createDocumentAnalysisAsyncClientWithAAD -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createDocumentAnalysisAsyncClientWithAAD  -->
+ *
+ * <p>Further, see the code sample below to use
+ * {@link com.azure.core.credential.AzureKeyCredential AzureKeyCredential} for client creation.</p>
+ *
+ * <!-- src_embed readme-sample-asyncClient -->
  * <pre>
  * DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder&#40;&#41;
  *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient.instantiation -->
+ * <!-- end readme-sample-asyncClient  -->
  *
  * @see DocumentAnalysisClientBuilder
  * @see DocumentAnalysisClient

@@ -22,15 +22,15 @@
  * <p>The Azure Form Recognizer client library provides the following capabilities:</p>
  *
  * <ol>
- *   <li>Document Analysis: It allows you to submit documents for analysis to detect and extract information like
- *   text, key-value pairs, tables, language, and fields. You can analyze both structured and unstructured
- *    documents.</li>
- *    <li>Model Management: It enables you to manage models created in your account by building, listing,
- *    deleting, and see the limit of custom models your account.</li>
- *    <li>Analysis Results: It provides methods to retrieve and interpret analysis results, including extracted
- *    text and field values, confidence scores, and document layout information.</li>
- *    <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
- *    operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ *     <li>Document Analysis: It allows you to submit documents for analysis to detect and extract information like
+ *     text, key-value pairs, tables, language, and fields. You can analyze both structured and unstructured
+ *     documents.</li>
+ *     <li>Model Management: It enables you to manage models created in your account by building, listing,
+ *     deleting, and see the limit of custom models your account.</li>
+ *     <li>Analysis Results: It provides methods to retrieve and interpret analysis results, including extracted
+ *     text and field values, confidence scores, and document layout information.</li>
+ *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
  * <h2>Getting Started</h2>
@@ -65,7 +65,7 @@
  * <p><strong>Sample: Construct a DocumentAnalysisClient with DefaultAzureCredential</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}, using
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient}, using
  * the `DefaultAzureCredentialBuilder` to configure it.</p>
  *
  * <!-- src_embed readme-sample-createDocumentAnalysisClientWithAAD -->
@@ -291,8 +291,6 @@
  * &#125;
  * </pre>
  * <!-- end readme-sample-build-analyze -->
- *
- * <hr/>
  *
  * @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient
  * @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient

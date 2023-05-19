@@ -53,7 +53,7 @@
  *
  * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
  * {@link com.azure.ai.formrecognizer.FormRecognizerClient} is the synchronous service client and
- * {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient} is the asynchronous service client.  The examples
+ * {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient} is the asynchronous service client. The examples
  * shown in this document use a credential object named DefaultAzureCredential for authentication, which is appropriate
  * for most scenarios, including local development and production environments. Additionally, we recommend using
  * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
@@ -61,7 +61,6 @@
  * You can find more information on different ways of authenticating and their corresponding credential types in the
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
  * </p>
- *
  *
  * <p><strong>Sample: Construct a FormTrainingClient with DefaultAzureCredential</strong></p>
  *
@@ -151,13 +150,14 @@
  * <hr/>
  *
  * <h2>Manage custom models</h2>
+ *
  * <p>Operations that can be executed are:</p>
  * <ol>
- *      <li> Check the number of models in the FormRecognizer resource account, and the maximum number of models that
- *      can be stored. </li>
- *      <li>List the models currently stored in the resource account.</li>
- *      <li>Get a specific model using the model's Id.</li>
- *      <li>Delete a model from the resource account.</li>
+ *     <li> Check the number of models in the FormRecognizer resource account, and the maximum number of models that
+ *     can be stored. </li>
+ *     <li>List the models currently stored in the resource account.</li>
+ *     <li>Get a specific model using the model's Id.</li>
+ *     <li>Delete a model from the resource account.</li>
  * </ol>
  *
  * <p><strong>Sample: Manage custom models stored in your account.</strong></p>
@@ -200,8 +200,6 @@
  *
  * <p>For a suggested approach to extracting information from custom forms with known fields, see
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/v3/StronglyTypedRecognizedForm.java">strongly-typing a recognized form</a>.</p>
- *
- * <hr/>
  *
  * @see com.azure.ai.formrecognizer.FormRecognizerClient
  * @see com.azure.ai.formrecognizer.FormRecognizerAsyncClient

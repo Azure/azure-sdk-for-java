@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * <p> <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">Azure Form Recognizer</a>
+ * <p><a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">Azure Form Recognizer</a>
  * is a cloud-based service provided by Microsoft Azure that utilizes machine learning to extract information
  * from various types of forms. It is designed to automate the process of
  * form recognition, data extraction, and form understanding. Azure Form Recognizer can handle structured
@@ -22,14 +22,14 @@
  * <p>The Azure Form Recognizer client library provides the following capabilities:</p>
  *
  * <ol>
- *    <li>Form recognizing: It allows you to submit forms to extract information like text, key-value pairs, tables, and
- *    form fields. You can analyze both structured and unstructured documents.</li>
- *    <li>Model Management: It enables you to train custom models by providing labeled training data. You can also list
- *    and delete existing models.</li>
- *    <li>Recognize Results: It provides methods to retrieve and interpret analysis results, including extracted text
- *    and field values, confidence scores, and form layout information.</li>
- *    <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
- *    operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ *     <li>Form recognizing: It allows you to submit forms to extract information like text, key-value pairs, tables, and
+ *     form fields. You can analyze both structured and unstructured documents.</li>
+ *     <li>Model Management: It enables you to train custom models by providing labeled training data. You can also
+ *     list and delete existing models.</li>
+ *     <li>Recognize Results: It provides methods to retrieve and interpret analysis results, including extracted text
+ *     and field values, confidence scores, and form layout information.</li>
+ *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
  * <h2>Getting Started</h2>
@@ -238,8 +238,6 @@
  * <p>For a suggested approach to extracting information from custom forms with known fields,
  * see
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/v3/StronglyTypedRecognizedForm.java">strongly-typing a recognized form</a>.</p>
- *
- * <hr/>
  *
  * @see com.azure.ai.formrecognizer.FormRecognizerClient
  * @see com.azure.ai.formrecognizer.FormRecognizerAsyncClient

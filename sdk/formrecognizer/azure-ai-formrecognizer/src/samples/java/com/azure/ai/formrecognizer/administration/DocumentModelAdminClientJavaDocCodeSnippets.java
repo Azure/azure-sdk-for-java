@@ -20,9 +20,12 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationSummary;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.time.Duration;
 import java.util.Arrays;
@@ -42,9 +45,26 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationClientInInitialization() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization
-        DocumentModelAdministrationClient documentModelAdministrationClient =
-            new DocumentModelAdministrationClientBuilder().buildClient();
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+        DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(credential)
+            .buildClient();
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization
+    }
+
+
+    /**
+     * Code snippet for getting sync DocumentModelAdministration client using the AzureKeyCredential authentication.
+     */
+    public void documentModelAdministrationClientKeyCred() {
+        // BEGIN: readme-sample-createDocumentModelAdministrationClient
+        DocumentModelAdministrationClient client =
+            new DocumentModelAdministrationClientBuilder()
+                .credential(new AzureKeyCredential("{key}"))
+                .endpoint("{endpoint}")
+                .buildClient();
+        // END: readme-sample-createDocumentModelAdministrationClient
     }
 
     /**

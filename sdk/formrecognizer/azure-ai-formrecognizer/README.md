@@ -146,10 +146,11 @@ DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilde
 ```
 
 ```java readme-sample-createDocumentModelAdministrationClient
-DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
-    .credential(new AzureKeyCredential("{key}"))
-    .endpoint("{endpoint}")
-    .buildClient();
+DocumentModelAdministrationClient client =
+    new DocumentModelAdministrationClientBuilder()
+        .credential(new AzureKeyCredential("{key}"))
+        .endpoint("{endpoint}")
+        .buildClient();
 ```
 
 #### Create a Document Analysis client with Azure Active Directory credential

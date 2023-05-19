@@ -77,21 +77,68 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
 import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.Utility.getTracingContext;
 
 /**
- * This class provides a synchronous client to connect with the Form Recognizer Azure Cognitive Service for
- * building and managing models.
+ * <p>This class provides an asynchronous client to connect to the Form Recognizer Azure Cognitive Service.</p>
+ * <p>This client provides asynchronous methods to perform:</p>
  *
- * <p>It provides methods for building models, viewing and deleting models,
- * viewing model operations, accessing resource details, copying models to another
- * Form Recognizer resource, and composing a new model from a collection of existing models.
+ * <ol>
+ *     <li>Build a custom model: Extract data from your specific or unique documents by building custom models.</li>
+ *     <li>Composed custom models: Creates a new model from document types of collection of existing models.</li>
+ *     <li>Copy custom model: Copy a custom Form Recognizer model to a target Form Recognizer resource.</li>
+ *     <li>Custom model management: Get detailed information, delete and list custom models.</li>
+ *     <li>Operations management: Get detailed information and list operations on the Form Recognizer account.</li>
+ *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ * </ol>
+ *
+ * <p><strong>Note:</strong>This client only supports
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
+ * To use an older service version, @see com.azure.ai.formrecognizer.FormRecognizerClient and @see com.azure.ai
+ * .formrecognizer.training.FormTrainingClient.</p>
+ *
+ * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient} is the
+ * synchronous service client and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} is the
+ * asynchronous service client.
+ * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
  * </p>
  *
- * <p><strong>Sample: Instantiating a synchronous Document Model Administration Client</strong></p>
+ * <p><strong>Sample: Construct a
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient} with
+ * DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient}, using
+ * the `DefaultAzureCredentialBuilder` to configure it.</p>
+ *
  * <!-- src_embed com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
  * <pre>
- * DocumentModelAdministrationClient documentModelAdministrationClient =
- *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildClient&#40;&#41;;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ * DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization -->
+ * <!-- end com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization  -->
+ *
+ * <p>Further, see the code sample below to use
+ * {@link com.azure.core.credential.AzureKeyCredential AzureKeyCredential} for client creation.</p>
+ *
+ * <!-- src_embed readme-sample-createDocumentModelAdministrationAsyncClient -->
+ * <pre>
+ * DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
+ *     new DocumentModelAdministrationClientBuilder&#40;&#41;
+ *         .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end readme-sample-createDocumentModelAdministrationAsyncClient  -->
  *
  * @see DocumentModelAdministrationClientBuilder
  * @see DocumentModelAdministrationAsyncClient
