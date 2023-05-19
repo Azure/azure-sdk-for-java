@@ -1394,11 +1394,14 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
         Map<String, Set<String>> collectionRidAndAddressUrisUnderOpenConnectionsFlow = ReflectionUtils
                 .getCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCachesFlow(proactiveOpenConnectionsProcessor);
 
+        Set<String> newAddressUrisUnderOpenConnectionsFlowFromMap = collectionRidAndAddressUrisUnderOpenConnectionsFlow
+                .get(createdCollection.getResourceId());
+
         for (String uriUnderOpenConnectionsFlow : addressUrisUnderOpenConnectionsFlow) {
             assertThat(mockAddressUriStrings.contains(uriUnderOpenConnectionsFlow)).isTrue();
         }
 
-        for (String uriUnderOpenConnectionsFlow : addressUrisUnderOpenConnectionsFlow) {
+        for (String uriUnderOpenConnectionsFlow : newAddressUrisUnderOpenConnectionsFlowFromMap) {
             assertThat(mockAddressUriStrings.contains(uriUnderOpenConnectionsFlow)).isTrue();
         }
 

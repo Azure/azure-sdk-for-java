@@ -648,14 +648,14 @@ public class GatewayAddressCache implements IAddressCache {
                                 // will exclude them if these addresses are also not used by any other partition
                                 if (forceRefresh) {
 
-                                    Set<Uri> addressUrisBeforeRefresh = Arrays
+                                    Set<Uri> addressUrisBeforeRefresh = (cachedAddresses == null) ? new HashSet<>() : Arrays
                                             .stream(cachedAddresses)
                                             .map(AddressInformation::getPhysicalUri)
                                             .collect(Collectors.toSet());
 
                                     AddressInformation[] addressInfosAfterRefresh = pkrIdToAddressInfos.getRight();
 
-                                    Set<Uri> addressUrisAfterRefresh = Arrays
+                                    Set<Uri> addressUrisAfterRefresh = (addressInfosAfterRefresh == null) ? new HashSet<>() : Arrays
                                             .stream(addressInfosAfterRefresh)
                                             .map(AddressInformation::getPhysicalUri)
                                             .collect(Collectors.toSet());
