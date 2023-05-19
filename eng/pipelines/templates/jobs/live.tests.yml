@@ -106,7 +106,7 @@ jobs:
               ${{ var.key }}: ${{ var.value }}
 
       - ${{ if eq(parameters.UseHttpFaultInjector, 'true') }}:
-        - template: /eng/pipeline/templates/steps/publish-http-fault-injector-logs.yml
+        - template: /eng/pipelines/templates/steps/publish-http-fault-injector-logs.yml
 
       - ${{ parameters.PostSteps }}
 
