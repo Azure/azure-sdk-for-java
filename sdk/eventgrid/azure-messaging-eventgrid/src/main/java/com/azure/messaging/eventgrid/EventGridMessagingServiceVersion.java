@@ -6,7 +6,7 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.util.ServiceVersion;
 
-/** Service version of EventGridPublisherClient. */
+/** Service version of EventGrid MessagingClient. */
 public enum EventGridMessagingServiceVersion implements ServiceVersion {
     /** Enum value 2023-06-01-preview. */
     V2023_06_01_PREVIEW("2023-06-01-preview");
