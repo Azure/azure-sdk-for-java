@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.19.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.18.2 (2023-05-16)
 
 #### Bugs Fixed
-
-#### Other Changes
+* Fixed `IllegalArgumentException` when different throughput control group is defined on the same container - See [PR 34702](https://github.com/Azure/azure-sdk-for-java/pull/34702)
 
 ### 4.18.1 (2023-04-10)
 

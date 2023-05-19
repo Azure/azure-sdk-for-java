@@ -24,16 +24,11 @@ cd <swagger-folder>
 autorest README.md --java --v4 --use=@autorest/java@4.0.20 --use=@autorest/modelerfour@4.15.442
 ```
 
-## Update generated files for call automation
-To update generated files for call automation, run the following command
-
-> autorest README.md --java --v4
-
 ### Code generation settings
 ``` yaml
 tag: package-2023-01-15-preview
 require:
-    - https://github.com/williamzhao87/azure-rest-api-specs/blob/ae5136ab33aa5d3a4e29028348ac060d0aafb4ab/specification/communication/data-plane/CallAutomation/readme.md
+    - https://github.com/williamzhao87/azure-rest-api-specs/blob/885b18fa094fbb953b1a0cb77c52536a8d745be5/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -186,6 +181,12 @@ directive:
 - rename-model:
     from: BlobStorage
     to: BlobStorageInternal
+- rename-model:
+    from: ContinuousDtmfRecognitionRequest
+    to: ContinuousDtmfRecognitionRequestInternal
+- rename-model:
+    from: SendDtmfRequest
+    to: SendDtmfRequestInternal
 
 # Remove models
 - remove-model: AddParticipantFailed
@@ -203,6 +204,12 @@ directive:
 - remove-model: RecognizeCompleted
 - remove-model: RecognizeFailed
 - remove-model: RecognizeCanceled
+- remove-model: ContinuousDtmfRecognitionToneReceived
+- remove-model: ToneInfo
+- remove-model: ContinuousDtmfRecognitionToneFailed
+- remove-model: ContinuousDtmfRecognitionStopped
+- remove-model: SendDtmfCompleted
+- remove-model: SendDtmfFailed
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal

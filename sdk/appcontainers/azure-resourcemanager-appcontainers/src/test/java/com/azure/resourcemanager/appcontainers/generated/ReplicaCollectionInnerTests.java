@@ -8,25 +8,25 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.fluent.models.ReplicaCollectionInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.ReplicaInner;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class ReplicaCollectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ReplicaCollectionInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"createdTime\":\"2021-01-22T12:04:18Z\",\"containers\":[]},\"id\":\"fffiak\",\"name\":\"jpqqmted\",\"type\":\"tmmjihyeozph\"},{\"properties\":{\"createdTime\":\"2021-06-27T09:23:26Z\",\"containers\":[]},\"id\":\"ncyg\",\"name\":\"p\",\"type\":\"vipmdscwxqupevzh\"}]}")
+                    "{\"value\":[{\"properties\":{\"createdTime\":\"2021-08-22T14:57:30Z\",\"containers\":[]},\"id\":\"yxcdyuibhmfdnbzy\",\"name\":\"vfvfcj\",\"type\":\"aeoisrvh\"},{\"properties\":{\"createdTime\":\"2021-04-23T05:38:58Z\",\"containers\":[]},\"id\":\"ukiscvwmzhw\",\"name\":\"lefaxvxilcbtgn\",\"type\":\"nzeyqxtjj\"},{\"properties\":{\"createdTime\":\"2021-06-09T05:30:24Z\",\"containers\":[]},\"id\":\"ycavodggxdbees\",\"name\":\"ieknl\",\"type\":\"ariaawi\"}]}")
                 .toObject(ReplicaCollectionInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ReplicaCollectionInner model =
             new ReplicaCollectionInner()
                 .withValue(
                     Arrays
                         .asList(
+                            new ReplicaInner().withContainers(Arrays.asList()),
                             new ReplicaInner().withContainers(Arrays.asList()),
                             new ReplicaInner().withContainers(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(ReplicaCollectionInner.class);

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.dns.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.dns.fluent.DnsManagementClient;
 import com.azure.resourcemanager.dns.fluent.DnsResourceReferencesClient;
@@ -19,8 +18,6 @@ import java.time.Duration;
 /** Initializes a new instance of the DnsManagementClientImpl type. */
 @ServiceClient(builder = DnsManagementClientBuilder.class)
 public final class DnsManagementClientImpl extends AzureServiceClient implements DnsManagementClient {
-    private final ClientLogger logger = new ClientLogger(DnsManagementClientImpl.class);
-
     /** Specifies the Azure subscription ID, which uniquely identifies the Microsoft Azure subscription. */
     private final String subscriptionId;
 

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Channels ListByPartnerNamespace. */
 public final class ChannelsListByPartnerNamespaceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Channels_ListByPartnerNamespace.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/Channels_ListByPartnerNamespace.json
      */
     /**
      * Sample code: Channels_ListByPartnerNamespace.
@@ -19,6 +17,7 @@ public final class ChannelsListByPartnerNamespaceSamples {
     public static void channelsListByPartnerNamespace(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
         manager
             .channels()
-            .listByPartnerNamespace("examplerg", "examplePartnerNamespaceName1", null, null, Context.NONE);
+            .listByPartnerNamespace(
+                "examplerg", "examplePartnerNamespaceName1", null, null, com.azure.core.util.Context.NONE);
     }
 }

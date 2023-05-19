@@ -15,84 +15,122 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ContainerAppCollectionTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ContainerAppCollection model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"extendedLocation\":{\"name\":\"ybcibvyvdcsit\",\"type\":\"CustomLocation\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Canceled\",\"managedEnvironmentId\":\"f\",\"environmentId\":\"scjeypv\",\"workloadProfileType\":\"zrkgqhcjrefovg\",\"latestRevisionName\":\"qsl\",\"latestRevisionFqdn\":\"yvxyqjp\",\"customDomainVerificationId\":\"attpngjcrcczsq\",\"outboundIpAddresses\":[],\"eventStreamEndpoint\":\"daj\"},\"location\":\"ysou\",\"tags\":{\"yhltrpmopjmcm\":\"canoaeupf\"},\"id\":\"tuo\",\"name\":\"thfuiuaodsfcpkvx\",\"type\":\"dpuozmyz\"},{\"extendedLocation\":{\"name\":\"gf\",\"type\":\"CustomLocation\"},\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"Deleting\",\"managedEnvironmentId\":\"twhrdxwzywqsm\",\"environmentId\":\"ureximoryocfs\",\"workloadProfileType\":\"s\",\"latestRevisionName\":\"ddystkiiuxhqy\",\"latestRevisionFqdn\":\"xorrqnb\",\"customDomainVerificationId\":\"czvyifq\",\"outboundIpAddresses\":[],\"eventStreamEndpoint\":\"jsllrmv\"},\"location\":\"f\",\"tags\":{\"wiqzbqjvsovmyo\":\"kpnpulexxbczwtr\"},\"id\":\"acspkwl\",\"name\":\"zdobpxjmflbvvnch\",\"type\":\"kcciwwzjuqkhr\"},{\"extendedLocation\":{\"name\":\"iwkuofos\",\"type\":\"CustomLocation\"},\"identity\":{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"InProgress\",\"managedEnvironmentId\":\"xieduugidyjrr\",\"environmentId\":\"y\",\"workloadProfileType\":\"svexcsonpclhoco\",\"latestRevisionName\":\"lkevle\",\"latestRevisionFqdn\":\"zfbuhf\",\"customDomainVerificationId\":\"faxkffeii\",\"outboundIpAddresses\":[],\"eventStreamEndpoint\":\"ez\"},\"location\":\"shxmzsbbzoggigrx\",\"tags\":{\"jnspydp\":\"rvjx\"},\"id\":\"koen\",\"name\":\"ou\",\"type\":\"nvudwtiukb\"}],\"nextLink\":\"ngkpocipazy\"}")
+                    "{\"value\":[{\"extendedLocation\":{\"name\":\"pabgyeps\",\"type\":\"CustomLocation\"},\"identity\":{\"principalId\":\"deac39aa-9334-4790-9a00-fe048007174c\",\"tenantId\":\"b656fa7f-7420-413a-96d5-b297ef5d799b\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"managedBy\":\"ywpmueefjzwfqkq\",\"properties\":{\"provisioningState\":\"Succeeded\",\"managedEnvironmentId\":\"uyonobglaoc\",\"environmentId\":\"tcc\",\"workloadProfileName\":\"yudxytlmoy\",\"latestRevisionName\":\"vwfudwpzntxhd\",\"latestReadyRevisionName\":\"lrqjbhckfr\",\"latestRevisionFqdn\":\"rxsbkyvp\",\"customDomainVerificationId\":\"anuzbpzkafkuw\",\"outboundIpAddresses\":[],\"eventStreamEndpoint\":\"bmehh\"},\"location\":\"yvjusrtslhsp\",\"tags\":{\"elmqk\":\"emaofmxagkvt\",\"hcdhmdual\":\"hahvljuahaq\",\"vfadmws\":\"exq\",\"lf\":\"crgvxpvgom\"},\"id\":\"isgwbnbbeldawkz\",\"name\":\"ali\",\"type\":\"urqhaka\"},{\"extendedLocation\":{\"name\":\"shsfwxosowzxcu\",\"type\":\"CustomLocation\"},\"identity\":{\"principalId\":\"9ca3190e-abc0-4e85-8548-56f3a19fed28\",\"tenantId\":\"63bcc451-5ebd-45a1-8787-75bc7ba93963\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"managedBy\":\"ebwpucwwfvo\",\"properties\":{\"provisioningState\":\"Canceled\",\"managedEnvironmentId\":\"uecivyhz\",\"environmentId\":\"uojgj\",\"workloadProfileName\":\"jueiotwmcdytd\",\"latestRevisionName\":\"it\",\"latestReadyRevisionName\":\"rjaw\",\"latestRevisionFqdn\":\"wgxhn\",\"customDomainVerificationId\":\"kxfbkpycgklwndn\",\"outboundIpAddresses\":[],\"eventStreamEndpoint\":\"whvylw\"},\"location\":\"tdhxujznbmpowuwp\",\"tags\":{\"alupjm\":\"lve\",\"iplrbpbewtghfgb\":\"hfxobbcswsrtj\",\"wxzvlvqhjkb\":\"c\",\"iebwwaloayqcgwrt\":\"gibtnm\"},\"id\":\"j\",\"name\":\"zg\",\"type\":\"yzm\"},{\"extendedLocation\":{\"name\":\"ongmtsa\",\"type\":\"CustomLocation\"},\"identity\":{\"principalId\":\"6656014a-be86-4d71-ad48-13196d61eb24\",\"tenantId\":\"ffaaeb45-4006-4757-beee-682e025e56f7\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"managedBy\":\"srknftguv\",\"properties\":{\"provisioningState\":\"Deleting\",\"managedEnvironmentId\":\"rwmdyvxqtay\",\"environmentId\":\"ww\",\"workloadProfileName\":\"yqbexrmcqibycno\",\"latestRevisionName\":\"knme\",\"latestReadyRevisionName\":\"sgzvahapjyzhpv\",\"latestRevisionFqdn\":\"zcjrvxdjzlmwlx\",\"customDomainVerificationId\":\"ug\",\"outboundIpAddresses\":[],\"eventStreamEndpoint\":\"awjvzunluthnnp\"},\"location\":\"xipeilpjzuaejx\",\"tags\":{\"pwo\":\"tskzbbtdzumveek\",\"fpbsjyofdxl\":\"uh\",\"ttouwaboekqvkel\":\"us\"},\"id\":\"smv\",\"name\":\"xwyjsflhhc\",\"type\":\"aln\"},{\"extendedLocation\":{\"name\":\"isxyawjoyaqcslyj\",\"type\":\"CustomLocation\"},\"identity\":{\"principalId\":\"97813a8e-f400-4824-87f3-35b8b42025f2\",\"tenantId\":\"b6dca7a5-f52d-4d76-8a33-ab158f1d62ad\",\"type\":\"None\",\"userAssignedIdentities\":{}},\"managedBy\":\"znelixhnrztfolh\",\"properties\":{\"provisioningState\":\"Succeeded\",\"managedEnvironmentId\":\"alaulppggdtpnapn\",\"environmentId\":\"ropuhpigv\",\"workloadProfileName\":\"ylgqgitxmedjvcsl\",\"latestRevisionName\":\"qwwncw\",\"latestReadyRevisionName\":\"hxg\",\"latestRevisionFqdn\":\"rmgucnap\",\"customDomainVerificationId\":\"eoellwptfdygp\",\"outboundIpAddresses\":[],\"eventStreamEndpoint\":\"ceopzfqrhhuaopp\"},\"location\":\"qeqxo\",\"tags\":{\"moizpos\":\"ahzxctobgbk\",\"rmfqjhhkxbpvj\":\"mgrcfbu\",\"xjyngudivk\":\"mjh\"},\"id\":\"tswb\",\"name\":\"qzvszjf\",\"type\":\"uvjfdxxive\"}],\"nextLink\":\"t\"}")
                 .toObject(ContainerAppCollection.class);
-        Assertions.assertEquals("ysou", model.value().get(0).location());
-        Assertions.assertEquals("canoaeupf", model.value().get(0).tags().get("yhltrpmopjmcm"));
-        Assertions.assertEquals("ybcibvyvdcsit", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("yvjusrtslhsp", model.value().get(0).location());
+        Assertions.assertEquals("emaofmxagkvt", model.value().get(0).tags().get("elmqk"));
+        Assertions.assertEquals("pabgyeps", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("f", model.value().get(0).managedEnvironmentId());
-        Assertions.assertEquals("scjeypv", model.value().get(0).environmentId());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.value().get(0).workloadProfileType());
+        Assertions.assertEquals("ywpmueefjzwfqkq", model.value().get(0).managedBy());
+        Assertions.assertEquals("uyonobglaoc", model.value().get(0).managedEnvironmentId());
+        Assertions.assertEquals("tcc", model.value().get(0).environmentId());
+        Assertions.assertEquals("yudxytlmoy", model.value().get(0).workloadProfileName());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ContainerAppCollection model =
             new ContainerAppCollection()
                 .withValue(
                     Arrays
                         .asList(
                             new ContainerAppInner()
-                                .withLocation("ysou")
-                                .withTags(mapOf("yhltrpmopjmcm", "canoaeupf"))
+                                .withLocation("yvjusrtslhsp")
+                                .withTags(
+                                    mapOf(
+                                        "elmqk",
+                                        "emaofmxagkvt",
+                                        "hcdhmdual",
+                                        "hahvljuahaq",
+                                        "vfadmws",
+                                        "exq",
+                                        "lf",
+                                        "crgvxpvgom"))
                                 .withExtendedLocation(
                                     new ExtendedLocation()
-                                        .withName("ybcibvyvdcsit")
+                                        .withName("pabgyeps")
                                         .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
                                 .withIdentity(
                                     new ManagedServiceIdentity()
                                         .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                                         .withUserAssignedIdentities(mapOf()))
-                                .withManagedEnvironmentId("f")
-                                .withEnvironmentId("scjeypv")
-                                .withWorkloadProfileType("zrkgqhcjrefovg"),
+                                .withManagedBy("ywpmueefjzwfqkq")
+                                .withManagedEnvironmentId("uyonobglaoc")
+                                .withEnvironmentId("tcc")
+                                .withWorkloadProfileName("yudxytlmoy"),
                             new ContainerAppInner()
-                                .withLocation("f")
-                                .withTags(mapOf("wiqzbqjvsovmyo", "kpnpulexxbczwtr"))
+                                .withLocation("tdhxujznbmpowuwp")
+                                .withTags(
+                                    mapOf(
+                                        "alupjm",
+                                        "lve",
+                                        "iplrbpbewtghfgb",
+                                        "hfxobbcswsrtj",
+                                        "wxzvlvqhjkb",
+                                        "c",
+                                        "iebwwaloayqcgwrt",
+                                        "gibtnm"))
                                 .withExtendedLocation(
                                     new ExtendedLocation()
-                                        .withName("gf")
+                                        .withName("shsfwxosowzxcu")
+                                        .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
+                                .withIdentity(
+                                    new ManagedServiceIdentity()
+                                        .withType(ManagedServiceIdentityType.NONE)
+                                        .withUserAssignedIdentities(mapOf()))
+                                .withManagedBy("ebwpucwwfvo")
+                                .withManagedEnvironmentId("uecivyhz")
+                                .withEnvironmentId("uojgj")
+                                .withWorkloadProfileName("jueiotwmcdytd"),
+                            new ContainerAppInner()
+                                .withLocation("xipeilpjzuaejx")
+                                .withTags(mapOf("pwo", "tskzbbtdzumveek", "fpbsjyofdxl", "uh", "ttouwaboekqvkel", "us"))
+                                .withExtendedLocation(
+                                    new ExtendedLocation()
+                                        .withName("ongmtsa")
                                         .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
                                 .withIdentity(
                                     new ManagedServiceIdentity()
                                         .withType(ManagedServiceIdentityType.USER_ASSIGNED)
                                         .withUserAssignedIdentities(mapOf()))
-                                .withManagedEnvironmentId("twhrdxwzywqsm")
-                                .withEnvironmentId("ureximoryocfs")
-                                .withWorkloadProfileType("s"),
+                                .withManagedBy("srknftguv")
+                                .withManagedEnvironmentId("rwmdyvxqtay")
+                                .withEnvironmentId("ww")
+                                .withWorkloadProfileName("yqbexrmcqibycno"),
                             new ContainerAppInner()
-                                .withLocation("shxmzsbbzoggigrx")
-                                .withTags(mapOf("jnspydp", "rvjx"))
+                                .withLocation("qeqxo")
+                                .withTags(
+                                    mapOf("moizpos", "ahzxctobgbk", "rmfqjhhkxbpvj", "mgrcfbu", "xjyngudivk", "mjh"))
                                 .withExtendedLocation(
                                     new ExtendedLocation()
-                                        .withName("iwkuofos")
+                                        .withName("isxyawjoyaqcslyj")
                                         .withType(ExtendedLocationTypes.CUSTOM_LOCATION))
                                 .withIdentity(
                                     new ManagedServiceIdentity()
-                                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                                        .withType(ManagedServiceIdentityType.NONE)
                                         .withUserAssignedIdentities(mapOf()))
-                                .withManagedEnvironmentId("xieduugidyjrr")
-                                .withEnvironmentId("y")
-                                .withWorkloadProfileType("svexcsonpclhoco")));
+                                .withManagedBy("znelixhnrztfolh")
+                                .withManagedEnvironmentId("alaulppggdtpnapn")
+                                .withEnvironmentId("ropuhpigv")
+                                .withWorkloadProfileName("ylgqgitxmedjvcsl")));
         model = BinaryData.fromObject(model).toObject(ContainerAppCollection.class);
-        Assertions.assertEquals("ysou", model.value().get(0).location());
-        Assertions.assertEquals("canoaeupf", model.value().get(0).tags().get("yhltrpmopjmcm"));
-        Assertions.assertEquals("ybcibvyvdcsit", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("yvjusrtslhsp", model.value().get(0).location());
+        Assertions.assertEquals("emaofmxagkvt", model.value().get(0).tags().get("elmqk"));
+        Assertions.assertEquals("pabgyeps", model.value().get(0).extendedLocation().name());
         Assertions.assertEquals(ExtendedLocationTypes.CUSTOM_LOCATION, model.value().get(0).extendedLocation().type());
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.value().get(0).identity().type());
-        Assertions.assertEquals("f", model.value().get(0).managedEnvironmentId());
-        Assertions.assertEquals("scjeypv", model.value().get(0).environmentId());
-        Assertions.assertEquals("zrkgqhcjrefovg", model.value().get(0).workloadProfileType());
+        Assertions.assertEquals("ywpmueefjzwfqkq", model.value().get(0).managedBy());
+        Assertions.assertEquals("uyonobglaoc", model.value().get(0).managedEnvironmentId());
+        Assertions.assertEquals("tcc", model.value().get(0).environmentId());
+        Assertions.assertEquals("yudxytlmoy", model.value().get(0).workloadProfileName());
     }
 
     @SuppressWarnings("unchecked")

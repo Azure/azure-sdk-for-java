@@ -3,9 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -28,6 +25,8 @@ import org.junit.jupiter.api.Test;
 
 import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class DownloadContentAsyncUnitTests {
 
@@ -84,7 +83,7 @@ public class DownloadContentAsyncUnitTests {
     }
 
     @Test
-    public void downloadToWithResponse() throws IOException {
+    public void downloadTo() throws IOException {
         String fileName = "./" + UUID.randomUUID().toString().replace("-", "") + ".txt";
         Path path = FileSystems.getDefault().getPath(fileName);
         ParallelDownloadOptions parallelOptions = new ParallelDownloadOptions().setMaxConcurrency(1).setBlockSize(512L);
@@ -92,8 +91,7 @@ public class DownloadContentAsyncUnitTests {
         File file = null;
 
         try {
-            StepVerifier.create(callRecording.downloadToWithResponse(AMS_ENDPOINT, path, options))
-                .consumeNextWith(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            StepVerifier.create(callRecording.downloadTo(AMS_ENDPOINT, path, options)).verifyComplete();
 
             file = path.toFile();
             assertTrue(file.exists(), "file does not exist");

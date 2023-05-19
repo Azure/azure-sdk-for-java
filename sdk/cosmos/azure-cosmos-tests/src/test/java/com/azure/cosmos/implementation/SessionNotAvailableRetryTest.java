@@ -18,8 +18,10 @@ import com.azure.cosmos.implementation.directconnectivity.StoreReader;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.routing.LocationCache;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
@@ -517,10 +519,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         protected Mono<StoreResponse> invokeStoreAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
             return Mono.empty();
         }
-        @Override
-        public Mono<OpenConnectionResponse> openConnection(Uri physicalAddress, RxDocumentServiceRequest openConnectionRequest) {
-            throw new NotImplementedException("openConnection is not supported in RntbdTransportClientTest");
-        }
 
         @Override
         public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
@@ -534,6 +532,21 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         @Override
         protected GlobalEndpointManager getGlobalEndpointManager() {
             return this.globalEndpointManager;
+        }
+
+        @Override
+        public ProactiveOpenConnectionsProcessor getProactiveOpenConnectionsProcessor() {
+            throw new NotImplementedException("getOpenConnectionsProcessor is not supported in RntbdTransportClientTest");
+        }
+
+        @Override
+        public void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+            throw new NotImplementedException("recordOpenConnectionsAndInitCachesCompleted is not supported in RntbdTransportClientTest");
+        }
+
+        @Override
+        public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
+            throw new NotImplementedException("recordOpenConnectionsAndInitCachesStarted is not supported in RntbdTransportClientTest");
         }
     }
 

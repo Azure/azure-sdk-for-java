@@ -4,8 +4,8 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
-import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
+import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
@@ -21,9 +21,10 @@ import com.azure.communication.callautomation.implementation.models.RecognizeCho
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
+import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
-import com.azure.communication.callautomation.models.CallingServerErrorException;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
@@ -33,14 +34,15 @@ import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.exception.HttpResponseException;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -53,7 +55,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * CallContent.
  */
-public class CallMediaAsync {
+public final class CallMediaAsync {
     private final CallMediasImpl contentsInternal;
     private final String callConnectionId;
     private final ClientLogger logger;
@@ -69,56 +71,54 @@ public class CallMediaAsync {
      *
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the targets to play to
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Void for successful play request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        return playWithResponse(playSource, playTo, null).flatMap(FluxUtil::toMono);
+        PlayOptions options = new PlayOptions(playSource, playTo);
+        return playWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Play to all participants
      *
      * @param playSource A {@link PlaySource} representing the source to play.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Void for successful playAll request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> playToAll(PlaySource playSource) {
-        return playToAllWithResponse(playSource, null).flatMap(FluxUtil::toMono);
+        PlayToAllOptions options = new PlayToAllOptions(playSource);
+        return playToAllWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Play
      *
-     * @param playSource A {@link PlaySource} representing the source to play.
-     * @param playTo the targets to play to
      * @param options play options.
      * @return Response for successful play request.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playWithResponse(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                                 PlayOptions options) {
-        return playWithResponseInternal(playSource, playTo, options, null);
+    public Mono<Response<Void>> playWithResponse(PlayOptions options) {
+        return playWithResponseInternal(options, null);
     }
 
     /**
      * Play to all participants
      *
-     * @param playSource A {@link PlaySource} representing the source to play.
-     * @param options play options.
+     * @param options play to all options.
      * @return Response for successful playAll request.
-     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> playToAllWithResponse(PlaySource playSource, PlayOptions options) {
-        return playWithResponseInternal(playSource, Collections.emptyList(), options, null);
+    public Mono<Response<Void>> playToAllWithResponse(PlayToAllOptions options) {
+        return playToAllWithResponseInternal(options, null);
     }
 
     /**
@@ -153,6 +153,9 @@ public class CallMediaAsync {
             } else if (recognizeOptions instanceof CallMediaRecognizeSpeechOptions) {
                 RecognizeRequest recognizeRequest = getRecognizeRequestFromSpeechConfiguration(recognizeOptions);
                 return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
+            } else if (recognizeOptions instanceof CallMediaRecognizeSpeechOrDtmfOptions) {
+                RecognizeRequest recognizeRequest = getRecognizeRequestFromSpeechOrDtmfConfiguration(recognizeOptions);
+                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
             } else {
                 return monoError(logger, new UnsupportedOperationException(recognizeOptions.getClass().getName()));
             }
@@ -184,8 +187,7 @@ public class CallMediaAsync {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                return contentsInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                return contentsInternal.cancelAllMediaOperationsWithResponseAsync(callConnectionId, contextValue);
             });
 
         } catch (RuntimeException ex) {
@@ -193,14 +195,12 @@ public class CallMediaAsync {
         }
     }
 
-    Mono<Response<Void>> playWithResponseInternal(PlaySource playSource, List<CommunicationIdentifier> playTo,
-                                                  PlayOptions options, Context context) {
+    Mono<Response<Void>> playWithResponseInternal(PlayOptions options, Context context) {
         try {
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
-                PlayRequest request = getPlayRequest(playSource, playTo, options);
-                return contentsInternal.playWithResponseAsync(callConnectionId, request, contextValue)
-                    .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create);
+                PlayRequest request = getPlayRequest(options);
+                return contentsInternal.playWithResponseAsync(callConnectionId, request, contextValue);
             });
 
         } catch (RuntimeException ex) {
@@ -208,38 +208,48 @@ public class CallMediaAsync {
         }
     }
 
-    PlayRequest getPlayRequest(PlaySource playSource, List<CommunicationIdentifier> playTo, PlayOptions options) {
+    Mono<Response<Void>> playToAllWithResponseInternal(PlayToAllOptions options, Context context) {
+        try {
+            PlayOptions playOptions = new PlayOptions(options.getPlaySource(), Collections.emptyList());
+            playOptions.setLoop(options.isLoop());
+            playOptions.setOperationContext(options.getOperationContext());
+
+            return playWithResponseInternal(playOptions, context);
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    PlayRequest getPlayRequest(PlayOptions options) {
         PlaySourceInternal playSourceInternal = new PlaySourceInternal();
-        if (playSource instanceof FileSource) {
-            playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
-        } else if (playSource instanceof TextSource) {
-            playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
-        } else if (playSource instanceof SsmlSource) {
-            playSourceInternal = getPlaySourceInternalFromSsmlSource((SsmlSource) playSource);
+        if (options.getPlaySource() instanceof FileSource) {
+            playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) options.getPlaySource());
+        } else if (options.getPlaySource() instanceof TextSource) {
+            playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) options.getPlaySource());
+        } else if (options.getPlaySource() instanceof SsmlSource) {
+            playSourceInternal = getPlaySourceInternalFromSsmlSource((SsmlSource) options.getPlaySource());
         }
 
         if (playSourceInternal.getSourceType() != null) {
             PlayRequest request = new PlayRequest()
                 .setPlaySourceInfo(playSourceInternal)
                 .setPlayTo(
-                    playTo
+                    options.getPlayTo()
                         .stream()
                         .map(CommunicationIdentifierConverter::convert)
                         .collect(Collectors.toList()));
 
-            if (options != null) {
-                request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
-                request.setOperationContext(options.getOperationContext());
-            }
+            request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
+            request.setOperationContext(options.getOperationContext());
 
             return request;
         }
 
-        throw logger.logExceptionAsError(new IllegalArgumentException(playSource.getClass().getCanonicalName()));
+        throw logger.logExceptionAsError(new IllegalArgumentException(options.getPlaySource().getClass().getCanonicalName()));
     }
 
     private PlaySourceInternal getPlaySourceInternalFromFileSource(FileSource playSource) {
-        FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(playSource.getUri());
+        FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(playSource.getUrl());
         PlaySourceInternal playSourceInternal = new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.FILE)
             .setFileSource(fileSourceInternal)
@@ -396,6 +406,45 @@ public class CallMediaAsync {
         return recognizeRequest;
     }
 
+    private RecognizeRequest getRecognizeRequestFromSpeechOrDtmfConfiguration(CallMediaRecognizeOptions recognizeOptions) {
+        CallMediaRecognizeSpeechOrDtmfOptions speechOrDtmfRecognizeOptions = (CallMediaRecognizeSpeechOrDtmfOptions) recognizeOptions;
+
+        DtmfOptionsInternal dtmfOptionsInternal = new DtmfOptionsInternal();
+        dtmfOptionsInternal.setInterToneTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInterToneTimeout().getSeconds());
+
+        if (speechOrDtmfRecognizeOptions.getMaxTonesToCollect() != null) {
+            dtmfOptionsInternal.setMaxTonesToCollect(speechOrDtmfRecognizeOptions.getMaxTonesToCollect());
+        }
+
+        if (speechOrDtmfRecognizeOptions.getStopTones() != null) {
+            List<DtmfToneInternal> dtmfTones = speechOrDtmfRecognizeOptions.getStopTones().stream()
+                                        .map(this::convertDtmfToneInternal)
+                                        .collect(Collectors.toList());
+            dtmfOptionsInternal.setStopTones(dtmfTones);
+        }
+
+        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeoutInMs().toMillis());
+
+        RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
+            .setSpeechOptions(speechOptionsInternal)
+            .setDtmfOptions(dtmfOptionsInternal)
+            .setInterruptPrompt(speechOrDtmfRecognizeOptions.isInterruptPrompt())
+            .setTargetParticipant(CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
+
+        recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInitialSilenceTimeout().getSeconds());
+
+        PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
+
+        RecognizeRequest recognizeRequest = new RecognizeRequest()
+            .setRecognizeInputType(RecognizeInputTypeInternal.fromString(speechOrDtmfRecognizeOptions.getRecognizeInputType().toString()))
+            .setInterruptCallMediaOperation(speechOrDtmfRecognizeOptions.isInterruptCallMediaOperation())
+            .setPlayPrompt(playSourceInternal)
+            .setRecognizeOptions(recognizeOptionsInternal)
+            .setOperationContext(recognizeOptions.getOperationContext());
+
+        return recognizeRequest;
+    }
+
     private PlaySourceInternal getPlaySourceInternalFromRecognizeOptions(CallMediaRecognizeOptions recognizeOptions) {
         PlaySourceInternal playSourceInternal = null;
         if (recognizeOptions.getPlayPrompt() != null) {
@@ -404,4 +453,110 @@ public class CallMediaAsync {
         }
         return playSourceInternal;
     }
+
+    /**
+     * Send DTMF tones
+     *
+     * @param tones tones to be sent
+     * @param targetParticipant the target participant
+     * @return Response for successful sendDtmf request.
+     */
+    public Mono<Void> sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
+        return sendDtmfWithResponse(tones, targetParticipant, null).then();
+    }
+
+    /**
+     * Send DTMF tones
+     *
+     * @param tones tones to be sent
+     * @param targetParticipant the target participant
+     * @param operationContext operationContext (pass null if not applicable)
+     * @return Response for successful sendDtmf request.
+     */
+    public Mono<Response<Void>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext) {
+        return withContext(context -> sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context));
+    }
+
+    Mono<Response<Void>> sendDtmfWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            SendDtmfRequestInternal requestInternal = new SendDtmfRequestInternal()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
+                .setTones(tones.stream()
+                .map(this::convertDtmfToneInternal)
+                .collect(Collectors.toList()))
+                .setOperationContext(operationContext);
+
+            return contentsInternal.sendDtmfWithResponseAsync(callConnectionId, requestInternal, context);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+
+    /**
+     * Starts continuous Dtmf recognition.
+     *
+     * @param targetParticipant the target participant
+     * @return void
+     */
+    public Mono<Void> startContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
+        return startContinuousDtmfRecognitionWithResponse(targetParticipant, null).then();
+    }
+
+    /**
+     * Starts continuous Dtmf recognition.
+     * @param targetParticipant the target participant
+     * @param operationContext operationContext (pass null if not applicable)
+     * @return Response for successful start continuous dtmf recognition request.
+     */
+    public Mono<Response<Void>> startContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext) {
+        return withContext(context -> startContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context));
+    }
+
+    Mono<Response<Void>> startContinuousDtmfRecognitionWithResponseInternal(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            ContinuousDtmfRecognitionRequestInternal requestInternal = new ContinuousDtmfRecognitionRequestInternal()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
+                .setOperationContext(operationContext);
+
+            return contentsInternal.startContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal, context);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
+    /**
+     * Stops continuous Dtmf recognition.
+     * @param targetParticipant the target participant
+     * @return void
+     */
+    public Mono<Void> stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
+        return stopContinuousDtmfRecognitionWithResponse(targetParticipant, null).then();
+    }
+
+    /**
+     * Stops continuous Dtmf recognition.
+     * @param targetParticipant the target participant
+     * @param operationContext operationContext (pass null if not applicable)
+     * @return Response for successful stop continuous dtmf recognition request.
+     */
+    public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext) {
+        return withContext(context -> stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context));
+    }
+
+    Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseInternal(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
+        try {
+            context = context == null ? Context.NONE : context;
+            ContinuousDtmfRecognitionRequestInternal requestInternal = new ContinuousDtmfRecognitionRequestInternal()
+                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
+                .setOperationContext(operationContext);
+
+            return contentsInternal.stopContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal, context);
+        } catch (RuntimeException e) {
+            return monoError(logger, e);
+        }
+    }
+
 }

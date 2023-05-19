@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.privatedns.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.privatedns.models.RecordType;
 
 /** Samples for RecordSets ListByType. */
@@ -23,7 +22,8 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("resourceGroup1", "privatezone1.com", RecordType.CNAME, null, null, Context.NONE);
+            .listByType(
+                "resourceGroup1", "privatezone1.com", RecordType.CNAME, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -40,7 +40,8 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("resourceGroup1", "privatezone1.com", RecordType.SOA, null, null, Context.NONE);
+            .listByType(
+                "resourceGroup1", "privatezone1.com", RecordType.SOA, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -57,7 +58,8 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("resourceGroup1", "privatezone1.com", RecordType.AAAA, null, null, Context.NONE);
+            .listByType(
+                "resourceGroup1", "privatezone1.com", RecordType.AAAA, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -74,7 +76,8 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("resourceGroup1", "privatezone1.com", RecordType.A, null, null, Context.NONE);
+            .listByType(
+                "resourceGroup1", "privatezone1.com", RecordType.A, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -91,7 +94,8 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("resourceGroup1", "privatezone1.com", RecordType.SRV, null, null, Context.NONE);
+            .listByType(
+                "resourceGroup1", "privatezone1.com", RecordType.SRV, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -108,7 +112,8 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("resourceGroup1", "privatezone1.com", RecordType.MX, null, null, Context.NONE);
+            .listByType(
+                "resourceGroup1", "privatezone1.com", RecordType.MX, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -125,7 +130,8 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("resourceGroup1", "privatezone1.com", RecordType.TXT, null, null, Context.NONE);
+            .listByType(
+                "resourceGroup1", "privatezone1.com", RecordType.TXT, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
@@ -142,6 +148,7 @@ public final class RecordSetsListByTypeSamples {
             .manager()
             .serviceClient()
             .getRecordSets()
-            .listByType("resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, null, null, Context.NONE);
+            .listByType(
+                "resourceGroup1", "0.0.127.in-addr.arpa", RecordType.PTR, null, null, com.azure.core.util.Context.NONE);
     }
 }

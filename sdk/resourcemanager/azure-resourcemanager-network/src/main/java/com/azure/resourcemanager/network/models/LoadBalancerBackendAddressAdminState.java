@@ -23,9 +23,6 @@ public final class LoadBalancerBackendAddressAdminState
     /** Static value Down for LoadBalancerBackendAddressAdminState. */
     public static final LoadBalancerBackendAddressAdminState DOWN = fromString("Down");
 
-    /** Static value Drain for LoadBalancerBackendAddressAdminState. */
-    public static final LoadBalancerBackendAddressAdminState DRAIN = fromString("Drain");
-
     /**
      * Creates a new instance of LoadBalancerBackendAddressAdminState value.
      *

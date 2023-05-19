@@ -14,11 +14,11 @@ import java.util.Map;
  * The options for creating a group call.
  */
 @Fluent
-public class CreateGroupCallOptions {
+public final class CreateGroupCallOptions {
     /**
      * The targets of the call.
      */
-    private final List<CommunicationIdentifier> targets;
+    private final List<CommunicationIdentifier> targetParticipants;
 
     /**
      * The call back URI.
@@ -28,7 +28,7 @@ public class CreateGroupCallOptions {
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
-    private String azureCognitiveServicesEndpointUrl;
+    private String azureCognitiveServicesUrl;
 
     /**
      * A customer set value used to track the answering of a call.
@@ -39,38 +39,38 @@ public class CreateGroupCallOptions {
      * Media Streaming Configuration.
      */
     private MediaStreamingOptions mediaStreamingOptions;
-    
+
     /**
      * Display name for call source
      */
     private String sourceDisplayName;
-    
+
     /**
      * PhoneNumber for call source when making PSTN call
      */
     private PhoneNumberIdentifier sourceCallIdNumber;
-    
+
     /**
      * Custom Context for PSTN targets
      */
     private Map<String, String> sipHeaders;
-    
+
     /**
      * Custom Context for Voip targets
      */
     private Map<String, String> voipHeaders;
-    
-    
-    
+
+
+
 
     /**
      * Constructor
      *
-     * @param targets The targets of the call.
+     * @param targetParticipants The targets of the call.
      * @param callbackUrl The call back URI.
      */
-    public CreateGroupCallOptions(List<CommunicationIdentifier> targets, String callbackUrl) {
-        this.targets = targets;
+    public CreateGroupCallOptions(List<CommunicationIdentifier> targetParticipants, String callbackUrl) {
+        this.targetParticipants = targetParticipants;
         this.callbackUrl = callbackUrl;
         this.sourceDisplayName = null;
         this.sourceCallIdNumber = null;
@@ -81,8 +81,8 @@ public class CreateGroupCallOptions {
      *
      * @return the targets list.
      */
-    public List<CommunicationIdentifier> getTargets() {
-        return targets;
+    public List<CommunicationIdentifier> getTargetParticipants() {
+        return targetParticipants;
     }
 
     /**
@@ -100,8 +100,8 @@ public class CreateGroupCallOptions {
      *
      * @return the azureCognitiveServicesEndpointUrl value.
      */
-    public String getAzureCognitiveServicesEndpointUrl() {
-        return this.azureCognitiveServicesEndpointUrl;
+    public String getAzureCognitiveServicesUrl() {
+        return this.azureCognitiveServicesUrl;
     }
 
     /**
@@ -137,7 +137,7 @@ public class CreateGroupCallOptions {
     public PhoneNumberIdentifier getSourceCallIdNumber() {
         return sourceCallIdNumber;
     }
-    
+
     /**
      * Get Custom Context for PSTN targets
      * @return Custom Context for PSTN targets
@@ -145,7 +145,7 @@ public class CreateGroupCallOptions {
     public Map<String, String> getSipHeaders() {
         return sipHeaders;
     }
-    
+
     /**
      *  Get Custom Context for Voip targets
      * @return Custom Context for Voip targets
@@ -180,11 +180,11 @@ public class CreateGroupCallOptions {
      * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
      * attached.
      *
-     * @param azureCognitiveServicesEndpointUrl the azureCognitiveServicesEndpointUrl value to set.
+     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public CreateGroupCallOptions setAzureCognitiveServicesEndpointUrl(String azureCognitiveServicesEndpointUrl) {
-        this.azureCognitiveServicesEndpointUrl = azureCognitiveServicesEndpointUrl;
+    public CreateGroupCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
+        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
         return this;
     }
 
@@ -207,28 +207,28 @@ public class CreateGroupCallOptions {
         this.sourceCallIdNumber = sourceCallIdNumber;
         return this;
     }
-    
-    
+
+
     /**
      * Set Custom Context for PSTN targets
-     * @param sipHeaders collection of Custom Context for PSTN targets 
+     * @param sipHeaders collection of Custom Context for PSTN targets
      * @return the CreateGroupCallOptions object itself
      */
     public CreateGroupCallOptions setSipHeaders(Map<String, String> sipHeaders) {
         this.sipHeaders = sipHeaders;
         return this;
     }
-    
-    
+
+
     /**
      * Set Custom Context for Voip targets
-     * @param voipHeaders collection of Custom Context for Voip targets 
+     * @param voipHeaders collection of Custom Context for Voip targets
      * @return the CreateGroupCallOptions object itself
      */
     public CreateGroupCallOptions setVoipHeaders(Map<String, String> voipHeaders) {
         this.voipHeaders = voipHeaders;
         return this;
     }
-    
-    
+
+
 }

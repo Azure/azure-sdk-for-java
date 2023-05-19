@@ -44,6 +44,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
             setHeadersOnRequest(request, connection);
             setBodyOnRequest(request, connection, Contexts.with(context).getHttpRequestProgressReporter());
+            connection.setInstanceFollowRedirects(false);
             connection.connect();
 
             return createHttpResponse(connection, request);
@@ -70,6 +71,7 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
             setHeadersOnRequest(request, connection);
             setBodyOnRequest(request, connection, Contexts.with(context).getHttpRequestProgressReporter());
+            connection.setInstanceFollowRedirects(false);
             connection.connect();
             return Mono.just(createHttpResponse(connection, request));
         } catch (IOException e) {

@@ -8,25 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AppAction. */
+/** Type of action of the operation. */
 public final class AppAction extends ExpandableStringEnum<AppAction> {
-    /** Static value Restarted for AppAction. */
+    /** Web app was restarted. */
     public static final AppAction RESTARTED = fromString("Restarted");
 
-    /** Static value Stopped for AppAction. */
+    /** Web app was stopped. */
     public static final AppAction STOPPED = fromString("Stopped");
 
-    /** Static value ChangedAppSettings for AppAction. */
+    /** There was an operation to change app setting on the web app. */
     public static final AppAction CHANGED_APP_SETTINGS = fromString("ChangedAppSettings");
 
-    /** Static value Started for AppAction. */
+    /** The job has started. */
     public static final AppAction STARTED = fromString("Started");
 
-    /** Static value Completed for AppAction. */
+    /** The job has completed. */
     public static final AppAction COMPLETED = fromString("Completed");
 
-    /** Static value Failed for AppAction. */
+    /** The job has failed to complete. */
     public static final AppAction FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of AppAction value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AppAction() {}
 
     /**
      * Creates or finds a AppAction from its string representation.

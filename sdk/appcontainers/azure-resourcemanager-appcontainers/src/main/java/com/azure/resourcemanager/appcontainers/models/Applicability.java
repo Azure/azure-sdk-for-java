@@ -17,6 +17,15 @@ public final class Applicability extends ExpandableStringEnum<Applicability> {
     public static final Applicability CUSTOM = fromString("Custom");
 
     /**
+     * Creates a new instance of Applicability value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Applicability() {
+    }
+
+    /**
      * Creates or finds a Applicability from its string representation.
      *
      * @param name a name to look for.

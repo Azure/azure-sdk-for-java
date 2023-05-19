@@ -24,6 +24,10 @@ public final class RecordSetListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of RecordSetListResult class. */
+    public RecordSetListResult() {
+    }
+
     /**
      * Get the value property: Information about the record sets in the response.
      *

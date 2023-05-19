@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -57,6 +56,6 @@ public final class FrontendsInterfacesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.frontendsInterfaces().delete("wrqpue", "ckzywbiexzfeyue", "xibxujwbhqwalm", Context.NONE);
+        manager.frontendsInterfaces().delete("gu", "svmkfssxquk", "fpl", com.azure.core.util.Context.NONE);
     }
 }

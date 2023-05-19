@@ -7,19 +7,18 @@ package com.azure.resourcemanager.servicenetworking.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AssociationSubnetTests {
-    @Test
-    public void testDeserialize() {
-        AssociationSubnet model = BinaryData.fromString("{\"id\":\"jfddgmbmbe\"}").toObject(AssociationSubnet.class);
-        Assertions.assertEquals("jfddgmbmbe", model.id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AssociationSubnet model = BinaryData.fromString("{\"id\":\"dfvzwdzuhty\"}").toObject(AssociationSubnet.class);
+        Assertions.assertEquals("dfvzwdzuhty", model.id());
     }
 
-    @Test
-    public void testSerialize() {
-        AssociationSubnet model = new AssociationSubnet().withId("jfddgmbmbe");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AssociationSubnet model = new AssociationSubnet().withId("dfvzwdzuhty");
         model = BinaryData.fromObject(model).toObject(AssociationSubnet.class);
-        Assertions.assertEquals("jfddgmbmbe", model.id());
+        Assertions.assertEquals("dfvzwdzuhty", model.id());
     }
 }

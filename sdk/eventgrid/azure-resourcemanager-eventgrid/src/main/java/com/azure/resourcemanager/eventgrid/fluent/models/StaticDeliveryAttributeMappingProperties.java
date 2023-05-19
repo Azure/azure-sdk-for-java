@@ -22,6 +22,10 @@ public final class StaticDeliveryAttributeMappingProperties {
     @JsonProperty(value = "isSecret")
     private Boolean isSecret;
 
+    /** Creates an instance of StaticDeliveryAttributeMappingProperties class. */
+    public StaticDeliveryAttributeMappingProperties() {
+    }
+
     /**
      * Get the value property: Value of the delivery attribute.
      *

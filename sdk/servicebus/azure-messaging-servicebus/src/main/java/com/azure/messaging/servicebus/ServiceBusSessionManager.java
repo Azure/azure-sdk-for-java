@@ -16,6 +16,7 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.EmitterProcessor;
 import reactor.core.publisher.Flux;
@@ -68,6 +69,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final List<Scheduler> schedulers;
     private final Deque<Scheduler> availableSchedulers = new ConcurrentLinkedDeque<>();
     private final Duration maxSessionLockRenewDuration;
+    private final Duration sessionIdleTimeout;
 
     /**
      * SessionId to receiver mapping.
@@ -75,12 +77,14 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final ConcurrentHashMap<String, ServiceBusSessionReceiver> sessionReceivers = new ConcurrentHashMap<>();
     private final EmitterProcessor<Flux<ServiceBusMessageContext>> processor;
     private final FluxSink<Flux<ServiceBusMessageContext>> sessionReceiveSink;
+    private final ServiceBusTracer tracer;
 
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier,
+        ServiceBusTracer tracer) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
@@ -89,6 +93,7 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.messageSerializer = messageSerializer;
         this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
         this.identifier = identifier;
+        this.tracer = tracer;
 
         // According to the documentation, if a sequence is not finite, it should be published on their own scheduler.
         // It's possible that some of these sessions have a lot of messages.
@@ -107,13 +112,16 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.processor = EmitterProcessor.create(numberOfSchedulers, false);
         this.sessionReceiveSink = processor.sink();
         this.receiveLink = receiveLink;
+        this.sessionIdleTimeout = receiverOptions.getSessionIdleTimeout() != null
+            ? receiverOptions.getSessionIdleTimeout()
+            : connectionProcessor.getRetryOptions().getTryTimeout();
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
         ServiceBusConnectionProcessor connectionProcessor,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier) {
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier, ServiceBusTracer tracer) {
         this(entityPath, entityType, connectionProcessor,
-            messageSerializer, receiverOptions, null, identifier);
+            messageSerializer, receiverOptions, null, identifier, tracer);
     }
 
     /**
@@ -188,12 +196,13 @@ class ServiceBusSessionManager implements AutoCloseable {
                 final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
                 final String associatedLinkName = receiver != null ? receiver.getLinkName() : null;
 
-                return channel.renewSessionLock(sessionId, associatedLinkName).handle((offsetDateTime, sink) -> {
-                    if (receiver != null) {
-                        receiver.setSessionLockedUntil(offsetDateTime);
-                    }
-                    sink.next(offsetDateTime);
-                });
+                return tracer.traceMono("ServiceBus.renewSessionLock", channel.renewSessionLock(sessionId, associatedLinkName))
+                    .handle((offsetDateTime, sink) -> {
+                        if (receiver != null) {
+                            receiver.setSessionLockedUntil(offsetDateTime);
+                        }
+                        sink.next(offsetDateTime);
+                    });
             }));
     }
 
@@ -348,8 +357,8 @@ class ServiceBusSessionManager implements AutoCloseable {
                 }
 
                 return new ServiceBusSessionReceiver(link, messageSerializer, connectionProcessor.getRetryOptions(),
-                    receiverOptions.getPrefetchCount(), disposeOnIdle, scheduler, this::renewSessionLock,
-                    maxSessionLockRenewDuration);
+                    receiverOptions.getPrefetchCount(), scheduler, this::renewSessionLock,
+                    maxSessionLockRenewDuration, disposeOnIdle ? sessionIdleTimeout : null);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
                 LOGGER.atVerbose()

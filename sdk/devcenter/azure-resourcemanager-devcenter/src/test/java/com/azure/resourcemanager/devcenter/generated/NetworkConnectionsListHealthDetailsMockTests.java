@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatusDetails;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class NetworkConnectionsListHealthDetailsMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-03-25T07:20:19Z\",\"endDateTime\":\"2021-09-19T04:29:07Z\",\"healthChecks\":[]},\"id\":\"ff\",\"name\":\"aqi\",\"type\":\"mhh\"}]}";
+            "{\"value\":[{\"properties\":{\"startDateTime\":\"2021-11-07T11:22:10Z\",\"endDateTime\":\"2021-03-07T02:03:14Z\",\"healthChecks\":[]},\"id\":\"lixqnrkcxkjibn\",\"name\":\"mysu\",\"type\":\"swqrntvlwijp\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +60,8 @@ public final class NetworkConnectionsListHealthDetailsMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<HealthCheckStatusDetails> response =
-            manager.networkConnections().listHealthDetails("ibudqwy", "eb", 1568036168, Context.NONE);
+            manager
+                .networkConnections()
+                .listHealthDetails("lalniex", "srzpgepqtybbww", 1790855590, com.azure.core.util.Context.NONE);
     }
 }

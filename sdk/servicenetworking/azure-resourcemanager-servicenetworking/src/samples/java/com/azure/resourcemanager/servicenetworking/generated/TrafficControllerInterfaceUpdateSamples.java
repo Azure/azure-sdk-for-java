@@ -4,11 +4,9 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.servicenetworking.models.TrafficController;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for TrafficControllerInterface Update. */
 public final class TrafficControllerInterfaceUpdateSamples {
@@ -21,18 +19,23 @@ public final class TrafficControllerInterfaceUpdateSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void patchTrafficController(
-        com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) throws IOException {
+        com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         TrafficController resource =
-            manager.trafficControllerInterfaces().getByResourceGroupWithResponse("rg1", "TC1", Context.NONE).getValue();
-        resource
-            .update()
-            .withProperties(
-                SerializerFactory
-                    .createDefaultManagementSerializerAdapter()
-                    .deserialize(
-                        "{\"configurationEndpoints\":[\"abc.eastus.trafficcontroller.azure.net\"]}",
-                        Object.class,
-                        SerializerEncoding.JSON))
-            .apply();
+            manager
+                .trafficControllerInterfaces()
+                .getByResourceGroupWithResponse("rg1", "tc1", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource.update().withTags(mapOf("key1", "value1")).apply();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

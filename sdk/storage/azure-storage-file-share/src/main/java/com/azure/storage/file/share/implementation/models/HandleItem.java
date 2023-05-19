@@ -6,9 +6,14 @@ package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.storage.file.share.models.ShareFileHandleAccessRights;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A listed Azure Storage handle item. */
 @JacksonXmlRootElement(localName = "Handle")
@@ -61,6 +66,23 @@ public final class HandleItem {
      */
     @JsonProperty(value = "LastReconnectTime")
     private DateTimeRfc1123 lastReconnectTime;
+
+    private static final class AccessRightListWrapper {
+        @JacksonXmlProperty(localName = "AccessRight")
+        private final List<ShareFileHandleAccessRights> items;
+
+        @JsonCreator
+        private AccessRightListWrapper(
+                @JacksonXmlProperty(localName = "AccessRight") List<ShareFileHandleAccessRights> items) {
+            this.items = items;
+        }
+    }
+
+    /*
+     * The AccessRightList property.
+     */
+    @JsonProperty(value = "AccessRightList")
+    private AccessRightListWrapper accessRightList;
 
     /** Creates an instance of HandleItem class. */
     public HandleItem() {}
@@ -238,6 +260,29 @@ public final class HandleItem {
         } else {
             this.lastReconnectTime = new DateTimeRfc1123(lastReconnectTime);
         }
+        return this;
+    }
+
+    /**
+     * Get the accessRightList property: The AccessRightList property.
+     *
+     * @return the accessRightList value.
+     */
+    public List<ShareFileHandleAccessRights> getAccessRightList() {
+        if (this.accessRightList == null) {
+            this.accessRightList = new AccessRightListWrapper(new ArrayList<ShareFileHandleAccessRights>());
+        }
+        return this.accessRightList.items;
+    }
+
+    /**
+     * Set the accessRightList property: The AccessRightList property.
+     *
+     * @param accessRightList the accessRightList value to set.
+     * @return the HandleItem object itself.
+     */
+    public HandleItem setAccessRightList(List<ShareFileHandleAccessRights> accessRightList) {
+        this.accessRightList = new AccessRightListWrapper(accessRightList);
         return this;
     }
 }

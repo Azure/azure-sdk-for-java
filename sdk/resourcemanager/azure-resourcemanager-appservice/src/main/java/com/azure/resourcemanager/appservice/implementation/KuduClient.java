@@ -14,9 +14,6 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.exception.AzureException;
 import com.azure.core.http.HttpHeader;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
@@ -24,12 +21,12 @@ import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.DeployType;
-import com.azure.resourcemanager.appservice.models.KuduAuthenticationPolicy;
 import com.azure.resourcemanager.appservice.models.KuduDeploymentResult;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
-import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
-import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy;
-import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
+import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.retry.Retry;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -46,11 +43,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
-
-import reactor.core.Exceptions;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import reactor.util.retry.Retry;
 
 /** A client which interacts with Kudu service. */
 class KuduClient {
@@ -71,22 +63,24 @@ class KuduClient {
         String[] parts = host.split("\\.", 2);
         host = parts[0] + ".scm." + parts[1];
         this.host = "https://" + host;
-        List<HttpPipelinePolicy> policies = new ArrayList<>();
-        for (int i = 0, count = webAppBase.manager().httpPipeline().getPolicyCount(); i < count; ++i) {
-            HttpPipelinePolicy policy = webAppBase.manager().httpPipeline().getPolicy(i);
-            if (!(policy instanceof AuthenticationPolicy)
-                && !(policy instanceof ProviderRegistrationPolicy)
-                && !(policy instanceof AuxiliaryAuthenticationPolicy)) {
-                policies.add(policy);
-            }
-        }
-        policies.add(new KuduAuthenticationPolicy(webAppBase));
-        HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(webAppBase.manager().httpPipeline().getHttpClient())
-            .build();
 
-        service = RestProxy.create(KuduService.class, httpPipeline,
+        // Kudu's authentication changed from Basic Auth to AAD Auth
+//        List<HttpPipelinePolicy> policies = new ArrayList<>();
+//        for (int i = 0, count = webAppBase.manager().httpPipeline().getPolicyCount(); i < count; ++i) {
+//            HttpPipelinePolicy policy = webAppBase.manager().httpPipeline().getPolicy(i);
+//            if (!(policy instanceof AuthenticationPolicy)
+//                && !(policy instanceof ProviderRegistrationPolicy)
+//                && !(policy instanceof AuxiliaryAuthenticationPolicy)) {
+//                policies.add(policy);
+//            }
+//        }
+//        policies.add(new KuduAuthenticationPolicy(webAppBase));
+//        HttpPipeline httpPipeline = new HttpPipelineBuilder()
+//            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+//            .httpClient(webAppBase.manager().httpPipeline().getHttpClient())
+//            .build();
+
+        service = RestProxy.create(KuduService.class, webAppBase.manager().httpPipeline(),
             SerializerFactory.createDefaultManagementSerializerAdapter());
     }
 

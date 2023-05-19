@@ -61,11 +61,11 @@ public final class ServersRestartMockTests {
         manager
             .servers()
             .restart(
-                "d",
-                "mgxcxrslpm",
+                "odlqiyntor",
+                "ihleos",
                 new ServerRestartParameter()
                     .withRestartWithFailover(EnableStatusEnum.ENABLED)
-                    .withMaxFailoverSeconds(306696017),
+                    .withMaxFailoverSeconds(2014449644),
                 com.azure.core.util.Context.NONE);
     }
 }

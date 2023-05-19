@@ -32,7 +32,7 @@ public final class FirewallRulesListByServerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"startIpAddress\":\"doy\",\"endIpAddress\":\"mifthnzdnd\"},\"id\":\"gnayqigynduh\",\"name\":\"vhqlkthumaqo\",\"type\":\"bgycduiertgccym\"}]}";
+            "{\"value\":[{\"properties\":{\"startIpAddress\":\"fikdowwqu\",\"endIpAddress\":\"v\"},\"id\":\"xclvit\",\"name\":\"hqzonosggbhcoh\",\"type\":\"wdsjnkalju\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,9 +61,9 @@ public final class FirewallRulesListByServerMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<FirewallRule> response =
-            manager.firewallRules().listByServer("tjrybnwjewgdr", "ervnaenqpehi", com.azure.core.util.Context.NONE);
+            manager.firewallRules().listByServer("el", "phsdyhto", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("doy", response.iterator().next().startIpAddress());
-        Assertions.assertEquals("mifthnzdnd", response.iterator().next().endIpAddress());
+        Assertions.assertEquals("fikdowwqu", response.iterator().next().startIpAddress());
+        Assertions.assertEquals("v", response.iterator().next().endIpAddress());
     }
 }

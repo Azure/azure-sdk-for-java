@@ -16,7 +16,7 @@ public final class PrivateEndpointConnectionTests {
         PrivateEndpointConnection model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"uvcc\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"bacfionlebxetq\",\"actionsRequired\":\"zxdpnqbqqw\"},\"groupIds\":[\"AzureBackup_secondary\",\"AzureBackup\",\"AzureBackup\"]}")
+                    "{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"xrjfeallnwsub\"},\"privateLinkServiceConnectionState\":{\"status\":\"Disconnected\",\"description\":\"mpmngnzscxaqwoo\",\"actionsRequired\":\"cbonqvpk\"},\"groupIds\":[\"AzureBackup_secondary\",\"AzureSiteRecovery\",\"AzureSiteRecovery\",\"AzureBackup\"]}")
                 .toObject(PrivateEndpointConnection.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP_SECONDARY, model.groupIds().get(0));
     }
@@ -29,7 +29,8 @@ public final class PrivateEndpointConnectionTests {
                     Arrays
                         .asList(
                             VaultSubResourceType.AZURE_BACKUP_SECONDARY,
-                            VaultSubResourceType.AZURE_BACKUP,
+                            VaultSubResourceType.AZURE_SITE_RECOVERY,
+                            VaultSubResourceType.AZURE_SITE_RECOVERY,
                             VaultSubResourceType.AZURE_BACKUP));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnection.class);
         Assertions.assertEquals(VaultSubResourceType.AZURE_BACKUP_SECONDARY, model.groupIds().get(0));

@@ -69,6 +69,7 @@ public class InterceptorManager implements AutoCloseable {
     // A state machine ensuring a test is always reset before another one is setup
     private final RecordedData recordedData;
     private final boolean testProxyEnabled;
+    private final boolean skipRecordingRequestBody;
     private TestProxyRecordPolicy testProxyRecordPolicy;
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
@@ -95,7 +96,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     @Deprecated
     public InterceptorManager(String testName, TestMode testMode) {
-        this(testName, testName, testMode, false, false);
+        this(testName, testName, testMode, false, false, false);
     }
 
     /**
@@ -120,10 +121,11 @@ public class InterceptorManager implements AutoCloseable {
      */
     public InterceptorManager(TestContextManager testContextManager) {
         this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
-            testContextManager.getTestMode(), testContextManager.doNotRecordTest(), testContextManager.isTestProxyEnabled());
+            testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
+            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody());
     }
 
-    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy) {
+    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy, boolean skipRecordingRequestBody) {
         this.testProxyEnabled = enableTestProxy;
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
@@ -131,6 +133,7 @@ public class InterceptorManager implements AutoCloseable {
         this.playbackRecordName = CoreUtils.isNullOrEmpty(playbackRecordName) ? testName : playbackRecordName;
         this.testMode = testMode;
         this.textReplacementRules = new HashMap<>();
+        this.skipRecordingRequestBody = skipRecordingRequestBody;
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
@@ -211,6 +214,7 @@ public class InterceptorManager implements AutoCloseable {
         this.allowedToReadRecordedValues = !doNotRecord;
         this.allowedToRecordValues = false;
         this.testProxyEnabled = false;
+        this.skipRecordingRequestBody = false;
 
         this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
         this.textReplacementRules = textReplacementRules;
@@ -320,7 +324,7 @@ public class InterceptorManager implements AutoCloseable {
                 throw new IllegalStateException("A playback client can only be requested in PLAYBACK mode.");
             }
             if (testProxyPlaybackClient == null) {
-                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient);
+                testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, skipRecordingRequestBody);
                 proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile()));
             }
             return testProxyPlaybackClient;
@@ -368,7 +372,7 @@ public class InterceptorManager implements AutoCloseable {
             if (!isRecordMode()) {
                 throw new IllegalStateException("A recording policy can only be requested in RECORD mode.");
             }
-            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient);
+            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient, skipRecordingRequestBody);
             testProxyRecordPolicy.startRecording(getTestProxyRecordFile());
         }
         return testProxyRecordPolicy;

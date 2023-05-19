@@ -53,7 +53,7 @@ parameters:
   - name: release_azurecorehttpjdkhttpclient
     displayName: 'azure-core-http-jdk-httpclient'
     type: boolean
-    default: false
+    default: true
   - name: release_azurecorehttpnetty
     displayName: 'azure-core-http-netty'
     type: boolean
@@ -65,7 +65,7 @@ parameters:
   - name: release_azurecorehttpvertx
     displayName: 'azure-core-http-vertx'
     type: boolean
-    default: false
+    default: true
   - name: release_azurecoremanagement
     displayName: 'azure-core-management'
     type: boolean
@@ -96,14 +96,6 @@ parameters:
     default: true
   - name: release_azurejson
     displayName: 'azure-json'
-    type: boolean
-    default: false
-  - name: release_azurejsongson
-    displayName: 'azure-json-gson'
-    type: boolean
-    default: false
-  - name: release_azurejsonreflect
-    displayName: 'azure-json-reflect'
     type: boolean
     default: false
   - name: release_azurexml
@@ -182,14 +174,6 @@ extends:
         groupId: com.azure
         safeName: azurejson
         releaseInBatch: ${{ parameters.release_azurejson }}
-      - name: azure-json-gson
-        groupId: com.azure
-        safeName: azurejsongson
-        releaseInBatch: ${{ parameters.release_azurejsongson }}
-      - name: azure-json-reflect
-        groupId: com.azure
-        safeName: azurejsonreflect
-        releaseInBatch: ${{ parameters.release_azurejsonreflect }}
       - name: azure-xml
         groupId: com.azure
         safeName: azurexml
@@ -287,12 +271,6 @@ extends:
             - name: azure-json
               groupId: com.azure
               safeName: azurejson
-            - name: azure-json-gson
-              groupId: com.azure
-              safeName: azurejsongson
-            - name: azure-json-reflect
-              groupId: com.azure
-              safeName: azurejsonreflect
           MatrixReplace:
             - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
       - template: /sdk/storage/tests-template.yml

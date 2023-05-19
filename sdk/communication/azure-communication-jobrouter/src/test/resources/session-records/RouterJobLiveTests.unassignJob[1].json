@@ -1,0 +1,453 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/distributionPolicies/JAVA_LIVE_TESTS-unassign-job-2-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "content-type" : "application/merge-patch+json",
+      "x-ms-client-request-id" : "c7e706b6-f28d-4f87-bf6c-504cff5879a8"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "d2b533ce-127a-dde2-cb86-434f72a86268",
+      "ETag" : "\"7a0f54ae-0000-0700-0000-645983e30000\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:07 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "04oNZZAAAAAA4Wcipn3cBRLxgizPlhmWxWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-DistributionPolicy\",\"name\":\"JAVA_LIVE_TESTS-unassign-job-2-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"longest-idle\",\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
+      "Date" : "Mon, 08 May 2023 23:21:06 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/queues/JAVA_LIVE_TESTS-unassign-job-2-Queue?api-version=2022-07-18-preview",
+    "Headers" : {
+      "content-type" : "application/merge-patch+json",
+      "x-ms-client-request-id" : "2967f0f8-7f3e-4542-8b0e-2d69ca454f9d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "61770082-1571-fb9c-c368-321d2be64828",
+      "ETag" : "\"af00ad33-0000-0700-0000-645983e30000\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:07 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "044NZZAAAAACOL7yr816uSYpKAKfTkDsQWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Queue\",\"name\":\"JAVA_LIVE_TESTS-unassign-job-2-Queue-Name\",\"distributionPolicyId\":\"JAVA_LIVE_TESTS-unassign-job-2-DistributionPolicy\",\"labels\":{\"Label_1\":\"Value_1\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Queue\"}}",
+      "Date" : "Mon, 08 May 2023 23:21:06 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "content-type" : "application/merge-patch+json",
+      "x-ms-client-request-id" : "163ea2cc-deaf-4286-8c94-2c0cee4fd73d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "0b317579-ea05-1413-b1f6-c48bdcf04b40",
+      "ETag" : "\"00000001-0000-0000-4d76-0fe71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:07 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "044NZZAAAAABm2gz+pr/zSrXajdMcCiA/WVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:07 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/jobs/JAVA_LIVE_TESTS-unassign-job-2-Job?api-version=2022-07-18-preview",
+    "Headers" : {
+      "content-type" : "application/merge-patch+json",
+      "x-ms-client-request-id" : "08ca1f4e-058f-480f-a0e9-9fd5dd85cc9c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "74acb898-caee-5063-1621-c42ed0d56cc5",
+      "ETag" : "\"00000000-0000-0000-6850-78e71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:08 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05INZZAAAAABgT+oDRQrcSrAnzFubJVWBWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Job\",\"jobStatus\":\"created\",\"channelId\":\"channel1\",\"queueId\":\"JAVA_LIVE_TESTS-unassign-job-2-Queue\",\"priority\":1,\"requestedWorkerSelectors\":[],\"attachedWorkerSelectors\":[],\"labels\":{},\"assignments\":{},\"tags\":{},\"notes\":{}}",
+      "Date" : "Mon, 08 May 2023 23:21:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "688d106b-29aa-4871-8abd-f38ccb571924"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "5d5554e6-d52d-a132-c6a7-76a4424c3933",
+      "ETag" : "\"00000001-0000-0000-4d76-0fe71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:07 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05INZZAAAAABF/5UwYR/zTpar9MFBlubiWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "f5d0e589-3451-4795-8720-aa80b7564ca2"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "7f36ea23-51ab-77f5-f796-31dc2eaa5954",
+      "ETag" : "\"00000002-0000-0000-685e-aae71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:08 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05YNZZAAAAAAGxNluazwvTpBvJm5QU6uhWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "02a4d16f-32d1-4ef5-89cc-3dcfcb596a68"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "f4ec21bf-94b4-68d9-5431-c6aeb3764d0b",
+      "ETag" : "\"00000002-0000-0000-685e-aae71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:08 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05YNZZAAAAADdFxMRyAiSSqIhnP+YMwdJWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "86894732-a15d-4d51-ae0a-776a563874ae"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "dac98d4a-1997-45f6-212f-d58f141a3577",
+      "ETag" : "\"00000002-0000-0000-685e-aae71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:08 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05YNZZAAAAADOj6fd/OlJT5a5neikHYbZWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:08 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "3e844bc4-c589-43c5-80af-ffb3ddd691dc"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "c4486b9e-cfc8-0960-b218-68846774698f",
+      "ETag" : "\"00000002-0000-0000-685e-aae71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:08 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05YNZZAAAAABdXuwB8YnwRpXUWJr/Uz9ZWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:09 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "dc51db8d-810d-4429-8275-3671569a1f61"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "51b14a38-7152-049b-1c8a-6203ba27c545",
+      "ETag" : "\"00000002-0000-0000-685e-aae71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:08 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05YNZZAAAAACtf3FF23JJTbjk9k/zFYgFWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:09 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "4a86808e-0705-4398-bc19-92203d75b14c"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "ee7ddbf4-3275-71f8-6484-0b74f6bb542f",
+      "ETag" : "\"00000002-0000-0000-685e-aae71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:08 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05YNZZAAAAACGJNP+FPH3Q6ENqGvmClC1WVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:09 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "7826bd12-a0b3-4284-8454-4db826276740"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "5bc776a4-d210-c9c5-b43f-518098eba57c",
+      "ETag" : "\"00000002-0000-0000-685e-aae71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:08 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05oNZZAAAAABPkZOjqzw4Qogh3B7eEo9eWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:09 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "957d8aff-b244-489e-958c-8e7430213839"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "5fdfc162-1a08-fc89-bbdf-9cd0fcb0aeff",
+      "ETag" : "\"00000002-0000-0000-685e-aae71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:08 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05oNZZAAAAABNjYKE7qv+R4dHEWC0c8w+WVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:09 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "e18fa262-714e-429d-a22b-53430e5f5682"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "9917fbbc-e72e-2b08-0a8c-2f86f9662e9e",
+      "ETag" : "\"00000002-0000-0000-685e-aae71a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:08 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05oNZZAAAAADSLO33V68VSowuVv/J+gUKWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[],\"assignedJobs\":[],\"loadRatio\":0,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:10 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "7c075230-9fc7-49e4-b782-01ec9cd7db39"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "4d7df755-0b12-0a5f-13c9-9c2139472554",
+      "ETag" : "\"00000003-0000-0000-4846-9ee81a50db08\"",
+      "Last-Modified" : "Mon, 08 May 2023 23:21:10 GMT",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05oNZZAAAAAAWXIwgpphxQ4SwzyE4iNedWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\",\"state\":\"active\",\"queueAssignments\":{\"JAVA_LIVE_TESTS-unassign-job-2-Queue\":{}},\"totalCapacity\":10,\"labels\":{\"Label\":\"Value\",\"Id\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"},\"tags\":{\"Tag\":\"Value\"},\"channelConfigurations\":{\"channel1\":{\"capacityCostPerJob\":1}},\"offers\":[{\"id\":\"0a58c907-4071-42f3-8f24-fad42e65cbcd\",\"jobId\":\"JAVA_LIVE_TESTS-unassign-job-2-Job\",\"capacityCost\":1,\"offerTimeUtc\":\"2023-05-08T23:21:10.5115692+00:00\",\"expiryTimeUtc\":\"2023-05-08T23:21:20.5115694+00:00\"}],\"assignedJobs\":[],\"loadRatio\":0.1,\"availableForOffers\":true}",
+      "Date" : "Mon, 08 May 2023 23:21:10 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker/offers/0a58c907-4071-42f3-8f24-fad42e65cbcd:accept?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "176a6b74-24da-457e-a310-1bbc34c0b8b6"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "b3f7933e-a2a2-c39a-d8c6-b60aef8e1d94",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "05oNZZAAAAAB2pca0gTvYSJounK3t34PzWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"assignmentId\":\"ef05e0f5-950a-41dc-bd06-ec71a61c08a4\",\"jobId\":\"JAVA_LIVE_TESTS-unassign-job-2-Job\",\"workerId\":\"JAVA_LIVE_TESTS-unassign-job-2-Worker\"}",
+      "Date" : "Mon, 08 May 2023 23:21:11 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/jobs/JAVA_LIVE_TESTS-unassign-job-2-Job/assignments/ef05e0f5-950a-41dc-bd06-ec71a61c08a4:unassign?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "3bcc1cc5-67d1-4b70-a7cd-d1cef2244105"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "b8e14a8b-ca81-7a63-00e7-90c2906c848c",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "054NZZAAAAAATwA1MaTq4Q7FIVo2rAh90WVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{\"jobId\":\"JAVA_LIVE_TESTS-unassign-job-2-Job\",\"unassignmentCount\":1}",
+      "Date" : "Mon, 08 May 2023 23:21:11 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/jobs/JAVA_LIVE_TESTS-unassign-job-2-Job:cancel?api-version=2022-07-18-preview",
+    "Headers" : {
+      "content-type" : "application/json",
+      "x-ms-client-request-id" : "36ef60e7-28af-4795-9ba5-f97d43ed812d"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "2d249bf6-7180-8ce5-7fd8-2d9843d75517",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "06INZZAAAAAC6j/NnG3/4RJVuedHZbmTxWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "StatusCode" : "200",
+      "Body" : "{}",
+      "Date" : "Mon, 08 May 2023 23:21:12 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/jobs/JAVA_LIVE_TESTS-unassign-job-2-Job?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "04c2b46d-a1fc-4d4a-9bab-34cd96862064"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "bb90db57-6d0f-d420-9146-d61454a95a23",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "06YNZZAAAAAAh4Un+NFl9QYYtLSa9HjbVWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Body" : "",
+      "Date" : "Mon, 08 May 2023 23:21:13 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/workers/JAVA_LIVE_TESTS-unassign-job-2-Worker?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "ec03b13a-8d7d-4790-a967-516d422c30ab"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "e7c9e7d1-d3c1-6134-d2df-dda93ad9b754",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "06YNZZAAAAAANO+Q9DgWmRLq/1noHceh6WVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Body" : "",
+      "Date" : "Mon, 08 May 2023 23:21:13 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/queues/JAVA_LIVE_TESTS-unassign-job-2-Queue?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "17b008c0-7f6d-49d0-b7ec-471463b1cc64"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "35aa230d-95c6-2502-2434-5b1978baf762",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "06oNZZAAAAAC450mMWDtMQ5eYLUaTnZmGWVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Body" : "",
+      "Date" : "Mon, 08 May 2023 23:21:14 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.communication.azure.com/routing/distributionPolicies/JAVA_LIVE_TESTS-unassign-job-2-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "22d0ddcd-920e-4551-854a-3d8470a218bb"
+    },
+    "Response" : {
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2022-07-18-preview",
+      "trace-id" : "716e0381-dc5e-6ffb-bcce-11180a925e3e",
+      "retry-after" : "0",
+      "X-Azure-Ref" : "06oNZZAAAAAD1icZCx3NrSIrutnFQg4O9WVZSMzExMDAwMTE1MDM1ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
+      "Content-Length" : "0",
+      "StatusCode" : "204",
+      "Body" : "",
+      "Date" : "Mon, 08 May 2023 23:21:14 GMT"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}
