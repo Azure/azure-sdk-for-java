@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.TestSuiteBase;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionTask;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.guava25.collect.Lists;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -56,6 +57,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -1337,6 +1339,108 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         assertThat(mergedAddresses).hasSize(newAddresses.length)
                 .containsExactly(address1, address7, address5, address6);
+    }
+
+    @Test(groups = { "direct" }, timeOut = TIMEOUT)
+    public void forceRefreshTrueWithAddressChangeTest() throws URISyntaxException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+
+        Configs configs = ConfigsBuilder.instance().withProtocol(Protocol.TCP).build();
+        URI serviceEndpoint = new URI(TestConfigurations.HOST);
+        IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        HttpClientUnderTestWrapper httpClientWrapper = getHttpClientUnderTestWrapper(configs);
+        RntbdEndpoint.Provider endpointProviderMock = Mockito.mock(RntbdEndpoint.Provider.class);
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor = new ProactiveOpenConnectionsProcessor(endpointProviderMock);
+
+        GatewayAddressCache cache = new GatewayAddressCache(
+                mockDiagnosticsClientContext(),
+                serviceEndpoint,
+                Protocol.TCP,
+                authorizationTokenProvider,
+                null,
+                httpClientWrapper.getSpyHttpClient(),
+                null,
+                null,
+                ConnectionPolicy.getDefaultPolicy(),
+                proactiveOpenConnectionsProcessor);
+
+        Method getAddressesForRangeIdMethod = GatewayAddressCache.class.getDeclaredMethod(
+                "getAddressesForRangeId",
+                RxDocumentServiceRequest.class,
+                PartitionKeyRangeIdentity.class,
+                boolean.class,
+                AddressInformation[].class);
+
+        getAddressesForRangeIdMethod.setAccessible(true);
+
+        PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(createdCollection.getResourceId(), "0");
+
+        AddressInformation mockAddressInfo1 = new AddressInformation(true, true, "rntbd://127.0.0.1:1", Protocol.TCP);
+        AddressInformation mockAddressInfo2 = new AddressInformation(true, false, "rntbd://127.0.0.1:2", Protocol.TCP);
+        AddressInformation mockAddressInfo3 = new AddressInformation(true, false, "rntbd://127.0.0.1:3", Protocol.TCP);
+        AddressInformation mockAddressInfo4 = new AddressInformation(true, false, "rntbd://127.0.0.1:4", Protocol.TCP);
+
+        AddressInformation[] mockAddressInfos = new AddressInformation[] { mockAddressInfo1, mockAddressInfo2, mockAddressInfo3, mockAddressInfo4 };
+
+        Set<String> mockAddressUriStrings = Arrays
+                .stream(mockAddressInfos)
+                .map(addressInformation -> addressInformation.getPhysicalUri().getURIAsString())
+                .collect(Collectors.toSet());
+
+        proactiveOpenConnectionsProcessor.recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(createdCollection.getResourceId(), mockAddressUriStrings);
+
+        Set<String> addressUrisUnderOpenConnectionsFlow = ReflectionUtils
+                .getAddressUrisAsStringUnderOpenConnectionsAndInitCachesFlow(proactiveOpenConnectionsProcessor);
+
+        Map<String, Set<String>> collectionRidAndAddressUrisUnderOpenConnectionsFlow = ReflectionUtils
+                .getCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCachesFlow(proactiveOpenConnectionsProcessor);
+
+        for (String uriUnderOpenConnectionsFlow : addressUrisUnderOpenConnectionsFlow) {
+            assertThat(mockAddressUriStrings.contains(uriUnderOpenConnectionsFlow)).isTrue();
+        }
+
+        for (String uriUnderOpenConnectionsFlow : addressUrisUnderOpenConnectionsFlow) {
+            assertThat(mockAddressUriStrings.contains(uriUnderOpenConnectionsFlow)).isTrue();
+        }
+
+        RxDocumentServiceRequest req = RxDocumentServiceRequest
+                .create(
+                        mockDiagnosticsClientContext(),
+                        OperationType.Create,
+                        ResourceType.Document,
+                        getCollectionSelfLink(),
+                        new Database(),
+                        new HashMap<>());
+
+        // pass mock addresses to see if the maps replace them with
+        // the correct addresses as forceRefresh == true
+        Mono<AddressInformation[]> getAddressesForRangeIdResult = (Mono<AddressInformation[]>) getAddressesForRangeIdMethod
+                .invoke(cache, new Object[]{req, partitionKeyRangeIdentity, true, mockAddressInfos});
+
+        AddressInformation[] actualAddressInfos = getSuccessResult(getAddressesForRangeIdResult, TIMEOUT);
+
+        Set<String> actualAddressUriStringsFetched = Arrays
+                .stream(actualAddressInfos)
+                .map(addressInformation -> addressInformation.getPhysicalUri().getURIAsString())
+                .collect(Collectors.toSet());
+
+        Set<String> newAddressUrisUnderOpenConnectionsFlow = collectionRidAndAddressUrisUnderOpenConnectionsFlow
+                .get(createdCollection.getResourceId());
+
+        for (String uriUnderOpenConnectionsFlow : newAddressUrisUnderOpenConnectionsFlow) {
+            assertThat(actualAddressUriStringsFetched.contains(uriUnderOpenConnectionsFlow)).isTrue();
+        }
+
+        for (String uriUnderOpenConnectionsFlow : addressUrisUnderOpenConnectionsFlow) {
+            assertThat(actualAddressUriStringsFetched.contains(uriUnderOpenConnectionsFlow)).isTrue();
+        }
+
+        for (String uriUnderOpenConnectionsFlow : newAddressUrisUnderOpenConnectionsFlow) {
+            assertThat(mockAddressUriStrings.contains(uriUnderOpenConnectionsFlow)).isFalse();
+        }
+
+        for (String uriUnderOpenConnectionsFlow : addressUrisUnderOpenConnectionsFlow) {
+            assertThat(mockAddressUriStrings.contains(uriUnderOpenConnectionsFlow)).isFalse();
+        }
     }
 
     public static void assertSameAs(List<AddressInformation> actual, List<Address> expected) {

@@ -51,6 +51,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Future;
@@ -312,6 +313,11 @@ public class ReflectionUtils {
     @SuppressWarnings("unchecked")
     public static Set<String> getAddressUrisAsStringUnderOpenConnectionsAndInitCachesFlow(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
         return get(Set.class, proactiveOpenConnectionsProcessor, "addressUrisUnderOpenConnectionsAndInitCaches");
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String, Set<String>> getCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCachesFlow(ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+        return get(Map.class, proactiveOpenConnectionsProcessor, "collectionRidsAndUrisUnderOpenConnectionAndInitCaches");
     }
 
     @SuppressWarnings("unchecked")

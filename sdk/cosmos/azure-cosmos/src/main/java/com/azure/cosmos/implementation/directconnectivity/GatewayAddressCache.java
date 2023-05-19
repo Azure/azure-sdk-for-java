@@ -664,7 +664,9 @@ public class GatewayAddressCache implements IAddressCache {
                                             collectionRid, addressUrisAfterRefresh);
 
                                     // extract addresses not used by the physical partition anymore
-                                    if (addressUrisBeforeRefresh.removeAll(addressUrisAfterRefresh)) {
+                                    if (!addressUrisBeforeRefresh.containsAll(addressUrisAfterRefresh)) {
+
+                                        addressUrisBeforeRefresh.removeAll(addressUrisAfterRefresh);
 
                                         for (Uri unusedAddressUri : addressUrisBeforeRefresh) {
 
@@ -678,8 +680,7 @@ public class GatewayAddressCache implements IAddressCache {
                                                 // if the address is not used by a physical partition for a container
                                                 // which is also under the connection warm up flow, it can be excluded
                                                 // from the open connection flow
-                                                if (pkrIdsForAddressUri != null &&
-                                                        (pkrIdsForAddressUri.isEmpty() || shouldExcludeAddressUriFromOpenConnectionsFlow(pkrIdsForAddressUri))) {
+                                                if (pkrIdsForAddressUri == null || pkrIdsForAddressUri.isEmpty() || shouldExcludeAddressUriFromOpenConnectionsFlow(pkrIdsForAddressUri)) {
                                                     this.proactiveOpenConnectionsProcessor
                                                             .excludeAddressUriFromOpenConnectionsFlow(
                                                                     collectionRid,
@@ -986,7 +987,7 @@ public class GatewayAddressCache implements IAddressCache {
                                 addressesNeedToValidation
                                         .stream()
                                         .map(Uri::getURIAsString)
-                                        .collect(Collectors.toList()));
+                                        .collect(Collectors.toSet()));
             }
 
             for (Uri addressToBeValidated : addressesNeedToValidation) {
@@ -1088,10 +1089,10 @@ public class GatewayAddressCache implements IAddressCache {
 
                                 this.serverPartitionAddressCache.set(partitionKeyRangeIdentity, addressInfos);
 
-                                List<String> addressUrisAsString = Arrays
+                                Set<String> addressUrisAsString = Arrays
                                         .stream(addressInfos)
                                         .map(addressInformation -> addressInformation.getPhysicalUri().getURIAsString())
-                                        .collect(Collectors.toList());
+                                        .collect(Collectors.toSet());
 
                                 this.proactiveOpenConnectionsProcessor
                                         .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(collection.getResourceId(), addressUrisAsString);
@@ -1149,10 +1150,10 @@ public class GatewayAddressCache implements IAddressCache {
     private void refreshCollectionRidAndAddressUrisUnderOpenConnectionsAndInitCaches(String collectionRid, Set<Uri> addressUris) {
         if (this.proactiveOpenConnectionsProcessor.isCollectionRidUnderOpenConnectionsFlow(collectionRid)) {
 
-            List<String> addressUrisAsString = addressUris
+            Set<String> addressUrisAsString = addressUris
                     .stream()
                     .map(Uri::getURIAsString)
-                    .collect(Collectors.toList());
+                    .collect(Collectors.toSet());
 
             this.proactiveOpenConnectionsProcessor
                     .recordCollectionRidsAndUrisUnderOpenConnectionsAndInitCaches(collectionRid, addressUrisAsString);
