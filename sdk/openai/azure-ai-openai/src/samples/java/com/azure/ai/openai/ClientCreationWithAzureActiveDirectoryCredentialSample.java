@@ -3,7 +3,12 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Sample demonstrates how to create a client with `AzureKeyCredential`.
@@ -22,6 +27,11 @@ public class ClientCreationWithAzureActiveDirectoryCredentialSample {
             .credential(new DefaultAzureCredentialBuilder().build());
 
         OpenAIClient client = builder.buildClient();
-        OpenAIAsyncClient asyncClient = builder.buildAsyncClient();
+
+        List<String> prompt = new ArrayList<>();
+        prompt.add("Why did the eagles not carry Frodo Baggins to Mordor?");
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        Completions completions = client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompt));
+        System.out.printf("Model ID=%s is created at %d.%n", completions.getId(), completions.getCreated());
     }
 }

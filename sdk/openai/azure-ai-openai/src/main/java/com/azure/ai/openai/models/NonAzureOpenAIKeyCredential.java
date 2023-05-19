@@ -8,7 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import java.util.Objects;
 
 /**
- * Token credential class for accepting non-Azure OpenAI API key credential string.
+ * Non-Azure OpenAI API keys credential class for accepting non-Azure OpenAI API key credential string.
  */
 public class NonAzureOpenAIKeyCredential {
     private static final ClientLogger LOGGER = new ClientLogger(NonAzureOpenAIKeyCredential.class);
@@ -42,7 +42,7 @@ public class NonAzureOpenAIKeyCredential {
     /**
      * Update the OpenAI API key value.
      *
-     * @param key The OpeNAi API key value.
+     * @param key The OpenAI API key value.
      * @return the object itself.
      */
     public NonAzureOpenAIKeyCredential update(String key) {
