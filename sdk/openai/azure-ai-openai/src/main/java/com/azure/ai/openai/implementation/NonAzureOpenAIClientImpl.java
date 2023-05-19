@@ -33,9 +33,9 @@ import reactor.core.publisher.Mono;
 /**
  * Implementation for calling Non-Azure OpenAI service
  */
-public final class OpenAIClientNonAzureImpl {
+public final class NonAzureOpenAIClientImpl {
     /** The proxy service used to perform REST calls. */
-    private final OpenAIClientNonAzureService service;
+    private final NonAzureOpenAIClientService service;
 
     /** The HTTP pipeline to send requests through. */
     private final HttpPipeline httpPipeline;
@@ -72,10 +72,10 @@ public final class OpenAIClientNonAzureImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      */
-    public OpenAIClientNonAzureImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
+    public NonAzureOpenAIClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.service = RestProxy.create(OpenAIClientNonAzureService.class, this.httpPipeline, this.getSerializerAdapter());
+        this.service = RestProxy.create(NonAzureOpenAIClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
 
     /**
@@ -83,7 +83,7 @@ public final class OpenAIClientNonAzureImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "OpenAIClient")
-    public interface OpenAIClientNonAzureService {
+    public interface NonAzureOpenAIClientService {
         @Post("/embeddings")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(

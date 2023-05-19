@@ -5,7 +5,7 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
-import com.azure.ai.openai.implementation.OpenAIClientNonAzureImpl;
+import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -32,7 +32,7 @@ import reactor.core.publisher.Flux;
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
     private final OpenAIClientImpl azureServiceClient;
-    private final OpenAIClientNonAzureImpl openAIServiceClient;
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
 
     /**
      * Initializes an instance of OpenAIClient class.
@@ -49,7 +49,7 @@ public final class OpenAIClient {
      *
      * @param service the service client implementation.
      */
-    OpenAIClient(OpenAIClientNonAzureImpl service) {
+    OpenAIClient(NonAzureOpenAIClientImpl service) {
         azureServiceClient = null;
         openAIServiceClient = service;
     }

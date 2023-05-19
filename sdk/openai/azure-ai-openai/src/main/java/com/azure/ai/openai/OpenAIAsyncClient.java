@@ -5,7 +5,7 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
-import com.azure.ai.openai.implementation.OpenAIClientNonAzureImpl;
+import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -34,8 +34,9 @@ import reactor.core.publisher.Mono;
 public final class OpenAIAsyncClient {
     // Azure OpenAI service client implementation class
     private final OpenAIClientImpl azureServiceClient;
+
     // Non-Azure OpenAI service client implementation class
-    private final OpenAIClientNonAzureImpl openAIServiceClient;
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
 
     /**
      * Initializes an instance of OpenAIAsyncClient class by using "Azure" OpenAI service implementation.
@@ -58,7 +59,7 @@ public final class OpenAIAsyncClient {
      *
      * @param service the service client implementation for Non-Azure OpenAI service client.
      */
-    OpenAIAsyncClient(OpenAIClientNonAzureImpl service) {
+    OpenAIAsyncClient(NonAzureOpenAIClientImpl service) {
         azureServiceClient = null;
         openAIServiceClient = service;
     }

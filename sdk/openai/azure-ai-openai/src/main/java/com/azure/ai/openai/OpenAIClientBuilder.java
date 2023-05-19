@@ -5,7 +5,7 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.NonAzureOpenAIKeyCredentialPolicy;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
-import com.azure.ai.openai.implementation.OpenAIClientNonAzureImpl;
+import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -307,10 +307,10 @@ public final class OpenAIClientBuilder
         return httpPipeline;
     }
 
-    private OpenAIClientNonAzureImpl buildInnerNonAzureOpenAIClient() {
+    private NonAzureOpenAIClientImpl buildInnerNonAzureOpenAIClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipelineNonAzureOpenAI();
-        OpenAIClientNonAzureImpl client =
-                new OpenAIClientNonAzureImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter());
+        NonAzureOpenAIClientImpl client =
+                new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter());
         return client;
     }
 
