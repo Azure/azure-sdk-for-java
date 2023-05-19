@@ -1142,7 +1142,7 @@ public final class QueueAsyncClient {
                             queueMessageItemInternal, QueueMessageEncoding.NONE)
                             .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
                                 new QueueMessageDecodingError(
-                                    this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this),
+                                    this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this, processMessageDecodingErrorHandler),
                                     messageItem, null, e)))
                             .then(Mono.empty());
                     } else if (processMessageDecodingErrorHandler != null) {
@@ -1152,7 +1152,7 @@ public final class QueueAsyncClient {
                                 try {
                                     processMessageDecodingErrorHandler.accept(
                                         new QueueMessageDecodingError(
-                                            this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this),
+                                            this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this, processMessageDecodingErrorHandler),
                                             messageItem, null, e));
                                     return Mono.<QueueMessageItem>empty();
                                 } catch (RuntimeException re) {

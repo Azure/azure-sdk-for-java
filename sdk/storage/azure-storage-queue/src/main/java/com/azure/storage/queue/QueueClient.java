@@ -22,12 +22,15 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
+import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
 import com.azure.storage.queue.implementation.models.MessagesEnqueueHeaders;
 import com.azure.storage.queue.implementation.models.QueueMessage;
+import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueProperties;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
@@ -35,7 +38,9 @@ import com.azure.storage.queue.models.QueueStorageException;
 import com.azure.storage.queue.models.SendMessageResult;
 import com.azure.storage.queue.models.UpdateMessageResult;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.Base64;
@@ -47,6 +52,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
@@ -82,6 +88,7 @@ public final class QueueClient {
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
+    private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
 
     /**
      * Creates a QueueClient.
@@ -93,7 +100,7 @@ public final class QueueClient {
      * @param asyncClient the async QueueClient.
      */
     QueueClient(AzureQueueStorageImpl azureQueueStorage, String queueName, String accountName, QueueServiceVersion serviceVersion,
-        QueueMessageEncoding messageEncoding, QueueAsyncClient asyncClient) {
+        QueueMessageEncoding messageEncoding, QueueAsyncClient asyncClient, Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         Objects.requireNonNull(queueName, "'queueName' cannot be null.");
         this.client = asyncClient;
         this.azureQueueStorage = azureQueueStorage;
@@ -101,6 +108,7 @@ public final class QueueClient {
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
+        this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
     }
 
     /**
@@ -1046,6 +1054,107 @@ public final class QueueClient {
         Duration timeout, Context context) {
         return new PagedIterable<>(
             client.receiveMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, timeout, context));
+    }
+
+    private PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformMessagesDequeueResponse(
+        ResponseBase<MessagesDequeueHeaders, List<QueueMessageItemInternal>> response) {
+        List<QueueMessageItemInternal> queueMessageInternalItems = response.getValue();
+        if (queueMessageInternalItems == null) {
+            queueMessageInternalItems = Collections.emptyList();
+        }
+        for (QueueMessageItemInternal queueMessage : queueMessageInternalItems) {
+            try {
+                QueueMessageItem decodedMessage = transformQueueMessageItemInternal(queueMessage, messageEncoding);
+
+            } catch (IllegalArgumentException e) {
+                if (processMessageDecodingErrorHandler != null) {
+                    try {
+                        QueueMessageItem decodedMessage = transformQueueMessageItemInternal(queueMessage, QueueMessageEncoding.NONE);
+                        processMessageDecodingErrorHandler.accept(new QueueMessageDecodingError(
+                            client, new QueueClient(azureQueueStorage, queueName, accountName, serviceVersion,
+                            messageEncoding, client, processMessageDecodingErrorHandler), decodedMessage, null, e));
+                    } catch (RuntimeException ex) {
+                        throw LOGGER.logExceptionAsError(ex);
+                    }
+                }
+            }
+
+
+
+            return Flux.fromIterable(queueMessageInternalItems)
+                .flatMapSequential(queueMessageItemInternal ->
+                    transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding)
+                        .onErrorResume(IllegalArgumentException.class, e -> {
+                            if (processMessageDecodingErrorAsyncHandler != null) {
+                                return transformQueueMessageItemInternal(
+                                    queueMessageItemInternal, QueueMessageEncoding.NONE)
+                                    .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
+                                        new QueueMessageDecodingError(
+                                            this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this),
+                                            messageItem, null, e)))
+                                    .then(Mono.empty());
+                            } else if (processMessageDecodingErrorHandler != null) {
+                                return transformQueueMessageItemInternal(
+                                    queueMessageItemInternal, QueueMessageEncoding.NONE)
+                                    .flatMap(messageItem -> {
+                                        try {
+                                            processMessageDecodingErrorHandler.accept(
+                                                new QueueMessageDecodingError(
+                                                    this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this),
+                                                    messageItem, null, e));
+                                            return Mono.<QueueMessageItem>empty();
+                                        } catch (RuntimeException re) {
+                                            return FluxUtil.<QueueMessageItem>monoError(LOGGER, re);
+                                        }
+                                    })
+                                    .subscribeOn(Schedulers.boundedElastic());
+                            } else {
+                                return FluxUtil.monoError(LOGGER, e);
+                            }
+                        }))
+                .collectList()
+                .map(queueMessageItems -> new PagedResponseBase<>(response.getRequest(),
+                    response.getStatusCode(),
+                    response.getHeaders(),
+                    queueMessageItems,
+                    null,
+                    response.getDeserializedHeaders()));
+        }
+    }
+
+    private static QueueMessageItem transformQueueMessageItemInternal(
+        QueueMessageItemInternal queueMessageItemInternal, QueueMessageEncoding messageEncoding) {
+        QueueMessageItem queueMessageItem = new QueueMessageItem()
+            .setMessageId(queueMessageItemInternal.getMessageId())
+            .setDequeueCount(queueMessageItemInternal.getDequeueCount())
+            .setExpirationTime(queueMessageItemInternal.getExpirationTime())
+            .setInsertionTime(queueMessageItemInternal.getInsertionTime())
+            .setPopReceipt(queueMessageItemInternal.getPopReceipt())
+            .setTimeNextVisible(queueMessageItemInternal.getTimeNextVisible());
+        BinaryData decodedMessageBody = decodeMessageBody(queueMessageItemInternal.getMessageText(), messageEncoding);
+        if (decodedMessageBody != null) {
+            queueMessageItem.setBody(decodedMessageBody);
+        }
+        return queueMessageItem;
+    }
+
+    private static BinaryData decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
+        if (messageText == null) {
+            return null;
+        }
+
+        switch (messageEncoding) {
+            case NONE:
+                return BinaryData.fromString(messageText);
+            case BASE64:
+                try {
+                    return BinaryData.fromBytes(Base64.getDecoder().decode(messageText));
+                } catch (IllegalArgumentException e) {
+                    throw LOGGER.logExceptionAsError(e);
+                }
+            default:
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
+        }
     }
 
     /**
