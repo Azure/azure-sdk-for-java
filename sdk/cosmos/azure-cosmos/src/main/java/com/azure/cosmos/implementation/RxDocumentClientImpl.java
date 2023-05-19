@@ -998,24 +998,30 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     // if there is any cancelled requests, collect cosmos diagnostics
                     if (cancelledRequestDiagnostics != null && !cancelledRequestDiagnostics.isEmpty()) {
                         // combine all the cosmos diagnostics
-                        CosmosDiagnostics aggregratedCosmosDiagnostics = cancelledRequestDiagnostics
-                            .stream().reduce((first, toBeMerged) -> {
-                                ClientSideRequestStatistics clientSideRequestStatistics =
-                                    ImplementationBridgeHelpers
-                                        .CosmosDiagnosticsHelper
-                                        .getCosmosDiagnosticsAccessor()
-                                        .getClientSideRequestStatisticsRaw(first);
+                        CosmosDiagnostics aggregratedCosmosDiagnostics =
+                            cancelledRequestDiagnostics
+                                .stream()
+                                .reduce((first, toBeMerged) -> {
+                                    ClientSideRequestStatistics clientSideRequestStatistics =
+                                        ImplementationBridgeHelpers
+                                            .CosmosDiagnosticsHelper
+                                            .getCosmosDiagnosticsAccessor()
+                                            .getClientSideRequestStatisticsRaw(first);
 
-                                ClientSideRequestStatistics toBeMergedClientSideRequestStatistics =
-                                    ImplementationBridgeHelpers
-                                        .CosmosDiagnosticsHelper
-                                        .getCosmosDiagnosticsAccessor()
-                                        .getClientSideRequestStatisticsRaw(first);
+                                    ClientSideRequestStatistics toBeMergedClientSideRequestStatistics =
+                                        ImplementationBridgeHelpers
+                                            .CosmosDiagnosticsHelper
+                                            .getCosmosDiagnosticsAccessor()
+                                            .getClientSideRequestStatisticsRaw(first);
 
-                                clientSideRequestStatistics.mergeClientSideRequestStatistics(toBeMergedClientSideRequestStatistics);
-                                return first;
-                            })
-                            .get();
+                                    if (clientSideRequestStatistics == null) {
+                                        return toBeMerged;
+                                    } else {
+                                        clientSideRequestStatistics.mergeClientSideRequestStatistics(toBeMergedClientSideRequestStatistics);
+                                        return first;
+                                    }
+                                })
+                                .get();
 
                         BridgeInternal.setCosmosDiagnostics(exception, aggregratedCosmosDiagnostics);
                     }

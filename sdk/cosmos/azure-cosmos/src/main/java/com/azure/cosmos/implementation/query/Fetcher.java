@@ -169,7 +169,9 @@ abstract class Fetcher<T> {
                     return;
                 }
 
-                this.cancelledRequestDiagnosticsTracker.add(request.requestContext.cosmosDiagnostics);
+                if (request.requestContext != null && request.requestContext.cosmosDiagnostics != null) {
+                    this.cancelledRequestDiagnosticsTracker.add(request.requestContext.cosmosDiagnostics);
+                }
             });
     }
 }
