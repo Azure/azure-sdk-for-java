@@ -64,7 +64,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
-    public void retriesOnConnectionTermination() {
+    public void shouldRetryOnConnectionTermination() {
         final Duration connectionStatePollInterval = Duration.ofSeconds(20);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient firstClient = mock(ServiceBusReceiverAsyncClient.class);
@@ -109,7 +109,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
-    public void retriesOnReceiverTerminalError() {
+    public void shouldRetryOnReceiverTerminalError() {
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient firstClient = mock(ServiceBusReceiverAsyncClient.class);
@@ -160,7 +160,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
-    public void retriesOnReceiverTerminalCompletion() {
+    public void shouldRetryOnReceiverTerminalCompletion() {
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient firstClient = mock(ServiceBusReceiverAsyncClient.class);
@@ -210,7 +210,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
-    public void requestsDispositionOnSuccessfulMessageProcessing() {
+    public void shouldCompleteMessageOnSuccessfulProcessing() {
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
@@ -247,8 +247,8 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
 
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
-    public void requestsDispositionOnErroredMessageProcessing() {
-        final RuntimeException userError = new RuntimeException("Rejecting the message!");
+    public void shouldAbandonMessageOnErroredProcessing() {
+        final RuntimeException userError = new RuntimeException("UserError");
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
