@@ -5,8 +5,7 @@ options:
     emitter-output-dir: "{project-root}/.."
     namespace: "com.azure.messaging.eventgrid"
     service-name: "EventGrid Messaging"
-    partial-update: false
+    partial-update: true
     namer: true
     generate-samples: false
     generate-tests: false
-    custom-types: CloudEvent,EventGridEvent
