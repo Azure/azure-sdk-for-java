@@ -181,6 +181,7 @@ public final class BatchServiceClientBuilder
     @Generated private TokenCredential tokenCredential;
 
     /** {@inheritDoc}. */
+    @Generated
     @Override
     public BatchServiceClientBuilder credential(TokenCredential tokenCredential) {
         this.tokenCredential = tokenCredential;
