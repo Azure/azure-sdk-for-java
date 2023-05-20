@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.PartnerConfigurationUpdateParameters;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for PartnerConfigurations Update. */
 public final class PartnerConfigurationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerConfigurations_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerConfigurations_Update.json
      */
     /**
      * Sample code: PartnerConfigurations_Update.
@@ -27,7 +26,7 @@ public final class PartnerConfigurationsUpdateSamples {
                 new PartnerConfigurationUpdateParameters()
                     .withTags(mapOf("tag1", "value11", "tag2", "value22"))
                     .withDefaultMaximumExpirationTimeInDays(100),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

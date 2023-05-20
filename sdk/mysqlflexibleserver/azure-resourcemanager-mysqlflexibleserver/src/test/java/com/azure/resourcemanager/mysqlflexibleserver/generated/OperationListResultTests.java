@@ -19,15 +19,15 @@ public final class OperationListResultTests {
         OperationListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"name\":\"e\",\"display\":{\"provider\":\"onpc\",\"resource\":\"ocohslkevleg\",\"operation\":\"fbuhfmvfaxkffe\",\"description\":\"th\"},\"origin\":\"m\",\"properties\":{\"hxmzsbbzoggig\":\"datav\",\"ydptkoen\":\"dataxwburvjxxjns\"}},{\"name\":\"uknvudwti\",\"display\":{\"provider\":\"ldngkpoci\",\"resource\":\"z\",\"operation\":\"o\",\"description\":\"ukgjnpiucgygevq\"},\"origin\":\"typmrbpizcdrqjsd\",\"properties\":{\"eoejzic\":\"datanfyhx\",\"hajdeyeamdpha\":\"dataifsjttgzfbishcb\",\"wkgshwa\":\"dataalpbuxwgipwhon\",\"bin\":\"datakix\"}},{\"name\":\"pu\",\"display\":{\"provider\":\"rywn\",\"resource\":\"oqftiyqzrnkcq\",\"operation\":\"xlwhzlsicoh\",\"description\":\"qnwvlrya\"},\"origin\":\"hheunmmqhgyx\",\"properties\":{\"koklya\":\"datanoc\",\"ewrmjmwvvjektc\":\"datauconuqszfkbey\"}},{\"name\":\"enhwlrs\",\"display\":{\"provider\":\"zpwv\",\"resource\":\"dqgbiqylihkaetc\",\"operation\":\"vfcivfsnkymuc\",\"description\":\"hjfbebrjcxe\"},\"origin\":\"uwutttxfvjrbi\",\"properties\":{\"jky\":\"dataxepcyvahfn\",\"ljyoxgvcltb\":\"dataxjvuujqgidokg\",\"bijhtxfvgxbf\":\"datasncghkjeszz\",\"ec\":\"datamxnehmp\"}}],\"nextLink\":\"odebfqkkrbmpu\"}")
+                    "{\"value\":[{\"name\":\"izcdrqjsd\",\"display\":{\"provider\":\"nfyhx\",\"resource\":\"oejzi\",\"operation\":\"ifsjttgzfbishcb\",\"description\":\"ajdeyeamdphaga\"},\"origin\":\"buxwgip\",\"properties\":{\"nkixzbinj\":\"datanowkgshw\",\"tmryw\":\"datapu\"}},{\"name\":\"zoqftiyqzrnkcqvy\",\"display\":{\"provider\":\"hzls\",\"resource\":\"ohoqqnwvlryav\",\"operation\":\"heun\",\"description\":\"qhgyxzkonocukok\"},\"origin\":\"axuconuq\",\"properties\":{\"rmjmwvvjektc\":\"datakbeype\",\"frzpwvlqdqgb\":\"datasenhwlrs\"}},{\"name\":\"ylihkaetckt\",\"display\":{\"provider\":\"ivfsnk\",\"resource\":\"uctqhjfbe\",\"operation\":\"jcxerfuwu\",\"description\":\"txfvjrbirph\"},\"origin\":\"pcyvahfnljkyqx\",\"properties\":{\"jljyoxgv\":\"dataujqgidok\",\"szzhbijhtxfvgxbf\":\"dataltbgsncghkj\",\"ec\":\"datamxnehmp\",\"gr\":\"datagodebfqkkrbmpu\"}},{\"name\":\"flz\",\"display\":{\"provider\":\"xzpuzycisp\",\"resource\":\"zahmgkbrpyydhibn\",\"operation\":\"qkpikadrgvtqagnb\",\"description\":\"nhijggmebfsi\"},\"origin\":\"butr\",\"properties\":{\"zmhjrunmp\":\"datana\",\"nkxmyskpbhenbtk\":\"datattdbhrbnl\"}}],\"nextLink\":\"ywn\"}")
                 .toObject(OperationListResult.class);
-        Assertions.assertEquals("e", model.value().get(0).name());
-        Assertions.assertEquals("onpc", model.value().get(0).display().provider());
-        Assertions.assertEquals("ocohslkevleg", model.value().get(0).display().resource());
-        Assertions.assertEquals("fbuhfmvfaxkffe", model.value().get(0).display().operation());
-        Assertions.assertEquals("th", model.value().get(0).display().description());
-        Assertions.assertEquals("m", model.value().get(0).origin());
-        Assertions.assertEquals("odebfqkkrbmpu", model.nextLink());
+        Assertions.assertEquals("izcdrqjsd", model.value().get(0).name());
+        Assertions.assertEquals("nfyhx", model.value().get(0).display().provider());
+        Assertions.assertEquals("oejzi", model.value().get(0).display().resource());
+        Assertions.assertEquals("ifsjttgzfbishcb", model.value().get(0).display().operation());
+        Assertions.assertEquals("ajdeyeamdphaga", model.value().get(0).display().description());
+        Assertions.assertEquals("buxwgip", model.value().get(0).origin());
+        Assertions.assertEquals("ywn", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,72 +38,63 @@ public final class OperationListResultTests {
                     Arrays
                         .asList(
                             new OperationInner()
-                                .withName("e")
+                                .withName("izcdrqjsd")
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("onpc")
-                                        .withResource("ocohslkevleg")
-                                        .withOperation("fbuhfmvfaxkffe")
-                                        .withDescription("th"))
-                                .withOrigin("m")
-                                .withProperties(mapOf("hxmzsbbzoggig", "datav", "ydptkoen", "dataxwburvjxxjns")),
+                                        .withProvider("nfyhx")
+                                        .withResource("oejzi")
+                                        .withOperation("ifsjttgzfbishcb")
+                                        .withDescription("ajdeyeamdphaga"))
+                                .withOrigin("buxwgip")
+                                .withProperties(mapOf("nkixzbinj", "datanowkgshw", "tmryw", "datapu")),
                             new OperationInner()
-                                .withName("uknvudwti")
+                                .withName("zoqftiyqzrnkcqvy")
                                 .withDisplay(
                                     new OperationDisplay()
-                                        .withProvider("ldngkpoci")
-                                        .withResource("z")
-                                        .withOperation("o")
-                                        .withDescription("ukgjnpiucgygevq"))
-                                .withOrigin("typmrbpizcdrqjsd")
+                                        .withProvider("hzls")
+                                        .withResource("ohoqqnwvlryav")
+                                        .withOperation("heun")
+                                        .withDescription("qhgyxzkonocukok"))
+                                .withOrigin("axuconuq")
+                                .withProperties(mapOf("rmjmwvvjektc", "datakbeype", "frzpwvlqdqgb", "datasenhwlrs")),
+                            new OperationInner()
+                                .withName("ylihkaetckt")
+                                .withDisplay(
+                                    new OperationDisplay()
+                                        .withProvider("ivfsnk")
+                                        .withResource("uctqhjfbe")
+                                        .withOperation("jcxerfuwu")
+                                        .withDescription("txfvjrbirph"))
+                                .withOrigin("pcyvahfnljkyqx")
                                 .withProperties(
                                     mapOf(
-                                        "eoejzic",
-                                        "datanfyhx",
-                                        "hajdeyeamdpha",
-                                        "dataifsjttgzfbishcb",
-                                        "wkgshwa",
-                                        "dataalpbuxwgipwhon",
-                                        "bin",
-                                        "datakix")),
-                            new OperationInner()
-                                .withName("pu")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("rywn")
-                                        .withResource("oqftiyqzrnkcq")
-                                        .withOperation("xlwhzlsicoh")
-                                        .withDescription("qnwvlrya"))
-                                .withOrigin("hheunmmqhgyx")
-                                .withProperties(mapOf("koklya", "datanoc", "ewrmjmwvvjektc", "datauconuqszfkbey")),
-                            new OperationInner()
-                                .withName("enhwlrs")
-                                .withDisplay(
-                                    new OperationDisplay()
-                                        .withProvider("zpwv")
-                                        .withResource("dqgbiqylihkaetc")
-                                        .withOperation("vfcivfsnkymuc")
-                                        .withDescription("hjfbebrjcxe"))
-                                .withOrigin("uwutttxfvjrbi")
-                                .withProperties(
-                                    mapOf(
-                                        "jky",
-                                        "dataxepcyvahfn",
-                                        "ljyoxgvcltb",
-                                        "dataxjvuujqgidokg",
-                                        "bijhtxfvgxbf",
-                                        "datasncghkjeszz",
+                                        "jljyoxgv",
+                                        "dataujqgidok",
+                                        "szzhbijhtxfvgxbf",
+                                        "dataltbgsncghkj",
                                         "ec",
-                                        "datamxnehmp"))))
-                .withNextLink("odebfqkkrbmpu");
+                                        "datamxnehmp",
+                                        "gr",
+                                        "datagodebfqkkrbmpu")),
+                            new OperationInner()
+                                .withName("flz")
+                                .withDisplay(
+                                    new OperationDisplay()
+                                        .withProvider("xzpuzycisp")
+                                        .withResource("zahmgkbrpyydhibn")
+                                        .withOperation("qkpikadrgvtqagnb")
+                                        .withDescription("nhijggmebfsi"))
+                                .withOrigin("butr")
+                                .withProperties(mapOf("zmhjrunmp", "datana", "nkxmyskpbhenbtk", "datattdbhrbnl"))))
+                .withNextLink("ywn");
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
-        Assertions.assertEquals("e", model.value().get(0).name());
-        Assertions.assertEquals("onpc", model.value().get(0).display().provider());
-        Assertions.assertEquals("ocohslkevleg", model.value().get(0).display().resource());
-        Assertions.assertEquals("fbuhfmvfaxkffe", model.value().get(0).display().operation());
-        Assertions.assertEquals("th", model.value().get(0).display().description());
-        Assertions.assertEquals("m", model.value().get(0).origin());
-        Assertions.assertEquals("odebfqkkrbmpu", model.nextLink());
+        Assertions.assertEquals("izcdrqjsd", model.value().get(0).name());
+        Assertions.assertEquals("nfyhx", model.value().get(0).display().provider());
+        Assertions.assertEquals("oejzi", model.value().get(0).display().resource());
+        Assertions.assertEquals("ifsjttgzfbishcb", model.value().get(0).display().operation());
+        Assertions.assertEquals("ajdeyeamdphaga", model.value().get(0).display().description());
+        Assertions.assertEquals("buxwgip", model.value().get(0).origin());
+        Assertions.assertEquals("ywn", model.nextLink());
     }
 
     @SuppressWarnings("unchecked")

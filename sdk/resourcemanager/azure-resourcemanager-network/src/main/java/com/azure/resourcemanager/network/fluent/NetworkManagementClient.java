@@ -942,6 +942,13 @@ public interface NetworkManagementClient {
     ExpressRouteConnectionsClient getExpressRouteConnections();
 
     /**
+     * Gets the NetworkVirtualApplianceConnectionsClient object to access its operations.
+     *
+     * @return the NetworkVirtualApplianceConnectionsClient object.
+     */
+    NetworkVirtualApplianceConnectionsClient getNetworkVirtualApplianceConnections();
+
+    /**
      * Gets the VirtualHubBgpConnectionsClient object to access its operations.
      *
      * @return the VirtualHubBgpConnectionsClient object.
