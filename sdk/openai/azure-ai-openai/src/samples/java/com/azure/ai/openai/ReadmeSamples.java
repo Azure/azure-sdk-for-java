@@ -17,6 +17,7 @@ import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
+import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
@@ -54,6 +55,22 @@ public final class ReadmeSamples {
             .endpoint("{endpoint}")
             .buildAsyncClient();
         // END: readme-sample-createAsyncClientKeyCredential
+    }
+
+    public void createNonAzureSyncClientWithApiKey() {
+        // BEGIN: readme-sample-createNonAzureOpenAISyncClientApiKey
+        OpenAIClient client = new OpenAIClientBuilder()
+            .credential(new NonAzureOpenAIKeyCredential("{key}"))
+            .buildClient();
+        // END: readme-sample-createNonAzureOpenAISyncClientApiKey
+    }
+
+    public void createNonAzureAsyncClientWithApiKey() {
+        // BEGIN: readme-sample-createNonAzureOpenAIAsyncClientApiKey
+        OpenAIAsyncClient client = new OpenAIClientBuilder()
+            .credential(new NonAzureOpenAIKeyCredential("{key}"))
+            .buildAsyncClient();
+        // END: readme-sample-createNonAzureOpenAIAsyncClientApiKey
     }
 
     public void createOpenAIClientWithAAD() {
