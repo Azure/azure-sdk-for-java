@@ -4,8 +4,8 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
-import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
+import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
@@ -32,6 +32,7 @@ import reactor.core.publisher.Flux;
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
     private final OpenAIClientImpl azureServiceClient;
+
     private final NonAzureOpenAIClientImpl openAIServiceClient;
 
     /**
@@ -101,7 +102,6 @@ public final class OpenAIClient {
      *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
      *     with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(
             String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
@@ -194,8 +194,8 @@ public final class OpenAIClient {
     public Response<BinaryData> getCompletionsWithResponse(
             String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-            ? openAIServiceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions)
-            : azureServiceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions);
+                ? openAIServiceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions)
+                : azureServiceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions);
     }
 
     /**
@@ -269,7 +269,6 @@ public final class OpenAIClient {
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      *     text that continues from or "completes" provided prompt data along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(
             String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
