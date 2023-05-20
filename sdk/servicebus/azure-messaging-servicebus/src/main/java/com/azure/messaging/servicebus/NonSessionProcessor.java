@@ -102,10 +102,10 @@ public final class NonSessionProcessor {
 
     /**
      * The abstraction to stream messages using {@link MessagePump}. {@link RollingMessagePump} transparently switch
-     * to next {@link MessagePump} to continue streaming when the current pump terminates.
+     * (rolls) to the next {@link MessagePump} to continue streaming when the current pump terminates.
      */
     static final class RollingMessagePump extends AtomicBoolean {
-        private static final RuntimeException STREAMING_DISPOSED = new RuntimeException("The Processor closure disposed the RollingMessagePump.");
+        private static final RuntimeException DISPOSED_ERROR = new RuntimeException("The Processor closure disposed the RollingMessagePump.");
         private static final Duration NEXT_PUMP_BACKOFF = Duration.ofSeconds(5);
         private final ClientLogger logger;
         private final ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder;
@@ -153,7 +153,7 @@ public final class NonSessionProcessor {
             }
         }
 
-        // Internal API to begin streaming messages once subscribed to the mono it returns, this method is supposed
+        // Internal API that begin streaming messages once subscribed to the mono it returns, this method is supposed
         // to be called only from 'MessagePump#begin'. The package internal scope is to support testing.
         Mono<Void> beginIntern() {
             final Mono<Void> pumping = Mono.using(
@@ -183,7 +183,7 @@ public final class NonSessionProcessor {
         /**
          * Retry spec to roll to the next {@link MessagePump} with a back-off. If the spec is asked for retry after
          * the {@link RollingMessagePump} is disposed of (due to {@link NonSessionProcessor} closure), then an exception
-         * {@link RollingMessagePump#STREAMING_DISPOSED} will be emitted.
+         * {@link RollingMessagePump#DISPOSED_ERROR} will be emitted.
          *
          * @return the retry spec.
          */
@@ -196,14 +196,14 @@ public final class NonSessionProcessor {
                         return monoError(logger, new IllegalStateException("RetrySignal::failure() not expected to be null."));
                     }
                     if (!(error instanceof MessagePump.TerminatedException)) {
-                        return monoError(logger, new IllegalStateException("RetrySignal::failure() expected to be PumpTerminatedException.", error));
+                        return monoError(logger, new IllegalStateException("RetrySignal::failure() expected to be MessagePump.TerminatedException.", error));
                     }
 
                     final MessagePump.TerminatedException e = (MessagePump.TerminatedException) error;
 
                     if (disposable.isDisposed()) {
                         e.logWithCause(logger, "The Processor closure disposed the streaming, canceling retry for the next MessagePump.");
-                        return Mono.error(STREAMING_DISPOSED);
+                        return Mono.error(DISPOSED_ERROR);
                     }
 
                     e.logWithCause(logger, "The current MessagePump is terminated, scheduling retry for the next pump.");
@@ -213,7 +213,7 @@ public final class NonSessionProcessor {
                             if (disposable.isDisposed()) {
                                 e.log(logger,
                                     "During backoff, The Processor closure disposed the streaming, canceling retry for the next MessagePump.");
-                                sink.error(STREAMING_DISPOSED);
+                                sink.error(DISPOSED_ERROR);
                             } else {
                                 e.log(logger, "Retrying for the next MessagePump.");
                                 sink.next(v);
@@ -299,7 +299,7 @@ public final class NonSessionProcessor {
 
                 return Mono.firstWithSignal(pumping, terminatePumping)
                     .onErrorMap(e -> new TerminatedException(pumpId, fqdn, entityPath, e))
-                    .then(Mono.error(TerminatedException.forCompletion(pumpId, fqdn, entityPath)));
+                    .then(Mono.error(() -> TerminatedException.forCompletion(pumpId, fqdn, entityPath)));
             }
 
             private Mono<Void> pollConnectionState() {
@@ -418,7 +418,7 @@ public final class NonSessionProcessor {
              * The {@link TerminatedException#getCause()}} indicates the cause for the termination of message pumping.
              */
             private static final class TerminatedException extends RuntimeException {
-                static final RuntimeException TERMINAL_COMPLETION = new RuntimeException("The MessagePump reached completion.");
+                static final RuntimeException COMPLETION_ERROR = new RuntimeException("The MessagePump reached completion.");
                 private final long pumpId;
                 private final String fqdn;
                 private final String entityPath;
@@ -448,7 +448,7 @@ public final class NonSessionProcessor {
                  * @return the {@link TerminatedException}.
                  */
                 static TerminatedException forCompletion(long pumpId, String fqdn, String entityPath) {
-                    return new TerminatedException(pumpId, fqdn, entityPath, TERMINAL_COMPLETION);
+                    return new TerminatedException(pumpId, fqdn, entityPath, COMPLETION_ERROR);
                 }
 
                 /**
