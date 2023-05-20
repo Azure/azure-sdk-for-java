@@ -17,6 +17,15 @@ public final class Scheme extends ExpandableStringEnum<Scheme> {
     public static final Scheme HTTPS = fromString("HTTPS");
 
     /**
+     * Creates a new instance of Scheme value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Scheme() {
+    }
+
+    /**
      * Creates or finds a Scheme from its string representation.
      *
      * @param name a name to look for.

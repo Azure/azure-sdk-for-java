@@ -23,17 +23,17 @@ public final class CreateClassificationPolicyOptions {
     /**
      * Friendly name of this policy.
      */
-    private final String name;
+    private String name;
 
     /**
      * The fallback queue to select if the queue selector doesn't find a match.
      */
-    private final String fallbackQueueId;
+    private String fallbackQueueId;
 
     /**
      * The queue selectors to resolve a queue for a given job.
      */
-    private final List<QueueSelectorAttachment> queueSelectors;
+    private List<QueueSelectorAttachment> queueSelectors;
 
     /**
      * A rule of one of the following types:
@@ -43,31 +43,20 @@ public final class CreateClassificationPolicyOptions {
      *  ExpressionRule: A rule providing inline expression rules.
      *  AzureFunctionRule: A rule providing a binding to an HTTP Triggered Azure Function.
      */
-    private final RouterRule prioritizationRule;
+    private RouterRule prioritizationRule;
 
     /**
      * The worker label selectors to attach to a given job.
      */
-    private final List<WorkerSelectorAttachment> workerSelectors;
+    private List<WorkerSelectorAttachment> workerSelectors;
 
 
     /**
      * Constructor for CreateClassificationPolicyOptions
      * @param id ClassificationPolicy id
-     * @param name ClassificationPolicy name
-     * @param prioritizationRule One of {@link RouterRule}s
-     * @param workerSelectors List of {@link WorkerSelectorAttachment}s
-     * @param queueSelectors List of {@link QueueSelectorAttachment}s
-     * @param fallbackQueueId fallback queueId if queue selectors don't work.
      */
-    public CreateClassificationPolicyOptions(String id, String name, RouterRule prioritizationRule, List<WorkerSelectorAttachment> workerSelectors,
-                                             List<QueueSelectorAttachment> queueSelectors, String fallbackQueueId) {
+    public CreateClassificationPolicyOptions(String id) {
         this.id = id;
-        this.name = name;
-        this.prioritizationRule = prioritizationRule;
-        this.workerSelectors = workerSelectors;
-        this.queueSelectors = queueSelectors;
-        this.fallbackQueueId = fallbackQueueId;
     }
 
     /**
@@ -87,6 +76,16 @@ public final class CreateClassificationPolicyOptions {
     }
 
     /**
+     * Sets ClassificationPolicy name.
+     * @param name CreateClassificationPolicyOptions name
+     * @return this
+     */
+    public CreateClassificationPolicyOptions setName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Returns fallback queue id.
      * @return fallbackQueueId
      */
@@ -95,11 +94,31 @@ public final class CreateClassificationPolicyOptions {
     }
 
     /**
-     * Returns queueSelectors.
+     * Sets ClassificationPolicy fallbackQueueId.
+     * @param fallbackQueueId CreateClassificationPolicyOptions fallbackQueueId
+     * @return this
+     */
+    public CreateClassificationPolicyOptions setFallbackQueueId(String fallbackQueueId) {
+        this.fallbackQueueId = fallbackQueueId;
+        return this;
+    }
+
+    /**
+     * Returns list of {@link QueueSelectorAttachment}s
      * @return queueSelectors
      */
     public List<QueueSelectorAttachment> getQueueSelectors() {
         return this.queueSelectors;
+    }
+
+    /**
+     * Sets ClassificationPolicy queueSelectors.
+     * @param queueSelectors CreateClassificationPolicyOptions list of {@link WorkerSelectorAttachment}s
+     * @return this
+     */
+    public CreateClassificationPolicyOptions setQueueSelectors(List<QueueSelectorAttachment> queueSelectors) {
+        this.queueSelectors = queueSelectors;
+        return this;
     }
 
     /**
@@ -111,10 +130,30 @@ public final class CreateClassificationPolicyOptions {
     }
 
     /**
-     * Returns workerSelectors.
+     * Sets ClassificationPolicy prioritizationRule.
+     * @param prioritizationRule CreateClassificationPolicyOptions prioritizationRule
+     * @return this
+     */
+    public CreateClassificationPolicyOptions setPrioritizationRule(RouterRule prioritizationRule) {
+        this.prioritizationRule = prioritizationRule;
+        return this;
+    }
+
+    /**
+     * Returns list of {@link WorkerSelectorAttachment}s
      * @return workerSelectors
      */
     public List<WorkerSelectorAttachment> getWorkerSelectors() {
         return this.workerSelectors;
+    }
+
+    /**
+     * Sets ClassificationPolicy workerSelectors.
+     * @param workerSelectors CreateClassificationPolicyOptions list of {@link WorkerSelectorAttachment}s
+     * @return this
+     */
+    public CreateClassificationPolicyOptions setWorkerSelectors(List<WorkerSelectorAttachment> workerSelectors) {
+        this.workerSelectors = workerSelectors;
+        return this;
     }
 }

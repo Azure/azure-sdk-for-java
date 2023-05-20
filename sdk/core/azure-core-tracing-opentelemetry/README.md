@@ -78,9 +78,10 @@ SdkTracerProvider tracerProvider = SdkTracerProvider.builder()
     .addSpanProcessor(SimpleSpanProcessor.create(LoggingSpanExporter.create()))
     .build();
 
-// Pass OpenTelemetry tracerProvider to TracingOptions.
+OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+// Pass OpenTelemetry container to TracingOptions.
 TracingOptions customTracingOptions = new OpenTelemetryTracingOptions()
-    .setProvider(tracerProvider);
+    .setOpenTelemetry(openTelemetry);
 
 // configure Azure Client to use customTracingOptions - it will use tracerProvider
 // to create tracers

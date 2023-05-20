@@ -310,6 +310,29 @@ public final class BastionHostInner extends Resource {
     }
 
     /**
+     * Get the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
+     *
+     * @return the enableKerberos value.
+     */
+    public Boolean enableKerberos() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableKerberos();
+    }
+
+    /**
+     * Set the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
+     *
+     * @param enableKerberos the enableKerberos value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnableKerberos(Boolean enableKerberos) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnableKerberos(enableKerberos);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

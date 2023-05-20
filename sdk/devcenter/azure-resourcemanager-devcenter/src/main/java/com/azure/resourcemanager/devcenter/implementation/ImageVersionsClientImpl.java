@@ -58,8 +58,7 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
     public interface ImageVersionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}/versions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}/versions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageVersionListResult>> listByImage(
@@ -75,8 +74,7 @@ public final class ImageVersionsClientImpl implements ImageVersionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}/versions/{versionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/galleries/{galleryName}/images/{imageName}/versions/{versionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ImageVersionInner>> get(

@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.DevCenter;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
@@ -34,8 +33,7 @@ public final class DevCentersListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"devCenterUri\":\"itqscywuggwoluhc\"},\"identity\":{\"principalId\":\"dae60f8d-942d-4891-a014-8e17b8d0913f\",\"tenantId\":\"89e07989-e019-4e2b-be67-ed9dba459180\",\"type\":\"SystemAssigned,"
-                + " UserAssigned\",\"userAssignedIdentities\":{}},\"location\":\"rsbrgzdwm\",\"tags\":{\"xqhuexm\":\"ypqwdxggiccc\",\"ncsdtclusiyp\":\"ttlstvlzywemhz\",\"ygqukyhejh\":\"sfgytguslfead\",\"lolp\":\"isxgfp\"},\"id\":\"vk\",\"name\":\"r\",\"type\":\"qvujzraehtwdwrf\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"devCenterUri\":\"drhneuyow\"},\"identity\":{\"principalId\":\"eca40579-e706-4f65-8e7f-53286419c244\",\"tenantId\":\"fdbf0ee5-aa3b-4aad-ac54-e312fa057fd1\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{}},\"location\":\"ib\",\"tags\":{\"lfzxiavrmbzonoki\":\"gpikpzimejza\",\"rgz\":\"rjqc\"},\"id\":\"frl\",\"name\":\"zszrnwoiindfpw\",\"type\":\"jylwbtlhflsj\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,12 +61,11 @@ public final class DevCentersListMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<DevCenter> response = manager.devCenters().list(1791253895, Context.NONE);
+        PagedIterable<DevCenter> response = manager.devCenters().list(1224801299, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rsbrgzdwm", response.iterator().next().location());
-        Assertions.assertEquals("ypqwdxggiccc", response.iterator().next().tags().get("xqhuexm"));
+        Assertions.assertEquals("ib", response.iterator().next().location());
+        Assertions.assertEquals("gpikpzimejza", response.iterator().next().tags().get("lfzxiavrmbzonoki"));
         Assertions
-            .assertEquals(
-                ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.iterator().next().identity().type());
+            .assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, response.iterator().next().identity().type());
     }
 }

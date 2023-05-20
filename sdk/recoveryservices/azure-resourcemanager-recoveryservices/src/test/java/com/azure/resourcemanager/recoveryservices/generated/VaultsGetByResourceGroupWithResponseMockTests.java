@@ -35,7 +35,7 @@ public final class VaultsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"identity\":{\"principalId\":\"bmnzbtbhjpgl\",\"tenantId\":\"gohdneuelfphsd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"ikdowwquuvx\",\"upgradeDetails\":{\"operationId\":\"lvithhqzonosgg\",\"startTimeUtc\":\"2021-07-06T22:10:43Z\",\"lastUpdatedTimeUtc\":\"2021-02-03T18:39:52Z\",\"endTimeUtc\":\"2021-09-10T06:03:01Z\",\"status\":\"InProgress\",\"message\":\"n\",\"triggerType\":\"UserTriggered\",\"upgradedResourceId\":\"utiiswacf\",\"previousResourceId\":\"dkzzewkfvhqcrail\"},\"privateEndpointConnections\":[],\"privateEndpointStateForBackup\":\"None\",\"privateEndpointStateForSiteRecovery\":\"None\",\"encryption\":{\"infrastructureEncryption\":\"Disabled\"},\"moveDetails\":{\"operationId\":\"dlxyjrxs\",\"startTimeUtc\":\"2021-10-27T14:22:38Z\",\"completionTimeUtc\":\"2020-12-27T20:37:24Z\",\"sourceResourceId\":\"hgw\",\"targetResourceId\":\"pnedgf\"},\"moveState\":\"Unknown\",\"backupStorageVersion\":\"V1\",\"publicNetworkAccess\":\"Enabled\",\"monitoringSettings\":{},\"redundancySettings\":{\"standardTierStorageRedundancy\":\"LocallyRedundant\",\"crossRegionRestore\":\"Enabled\"},\"securitySettings\":{}},\"sku\":{\"name\":\"Standard\",\"tier\":\"odsotbobzdop\",\"family\":\"wvnhdldwmgx\",\"size\":\"rslpmutwuoeg\",\"capacity\":\"khjwn\"},\"etag\":\"sluicpdggkzz\",\"location\":\"vmbmp\",\"tags\":{\"vmwy\":\"odfvuefywsbp\",\"yzvqt\":\"rfouyftaakcpw\",\"zksmondj\":\"nubexk\",\"whojvp\":\"quxvypomgkop\"},\"id\":\"jqg\",\"name\":\"ysmocmbqfqvmkcxo\",\"type\":\"apvhelxprgly\"}";
+            "{\"identity\":{\"principalId\":\"bmnzbtbhjpgl\",\"tenantId\":\"gohdneuelfphsd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{}},\"properties\":{\"provisioningState\":\"ikdowwquuvx\",\"upgradeDetails\":{\"operationId\":\"lvithhqzonosgg\",\"startTimeUtc\":\"2021-07-06T22:10:43Z\",\"lastUpdatedTimeUtc\":\"2021-02-03T18:39:52Z\",\"endTimeUtc\":\"2021-09-10T06:03:01Z\",\"status\":\"InProgress\",\"message\":\"n\",\"triggerType\":\"UserTriggered\",\"upgradedResourceId\":\"utiiswacf\",\"previousResourceId\":\"dkzzewkfvhqcrail\"},\"privateEndpointConnections\":[],\"privateEndpointStateForBackup\":\"None\",\"privateEndpointStateForSiteRecovery\":\"None\",\"encryption\":{\"infrastructureEncryption\":\"Disabled\"},\"moveDetails\":{\"operationId\":\"dlxyjrxs\",\"startTimeUtc\":\"2021-10-27T14:22:38Z\",\"completionTimeUtc\":\"2020-12-27T20:37:24Z\",\"sourceResourceId\":\"hgw\",\"targetResourceId\":\"pnedgf\"},\"moveState\":\"Unknown\",\"backupStorageVersion\":\"V1\",\"publicNetworkAccess\":\"Enabled\",\"monitoringSettings\":{},\"restoreSettings\":{},\"redundancySettings\":{\"standardTierStorageRedundancy\":\"LocallyRedundant\",\"crossRegionRestore\":\"Enabled\"},\"securitySettings\":{}},\"sku\":{\"name\":\"RS0\",\"tier\":\"sotbob\",\"family\":\"opcjwvnhd\",\"size\":\"wmgxcxrsl\",\"capacity\":\"utwu\"},\"etag\":\"rpkhjwn\",\"location\":\"yqsluic\",\"tags\":{\"zl\":\"gk\",\"sbpfvmwyhr\":\"mbmpaxmodfvuefy\",\"wiyzvqtmnubexkp\":\"ouyftaakc\"},\"id\":\"ksmond\",\"name\":\"mquxvypo\",\"type\":\"gkopkwhojvpajqgx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -69,18 +69,18 @@ public final class VaultsGetByResourceGroupWithResponseMockTests {
                 .getByResourceGroupWithResponse("pbttdum", "rp", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("vmbmp", response.location());
-        Assertions.assertEquals("odfvuefywsbp", response.tags().get("vmwy"));
+        Assertions.assertEquals("yqsluic", response.location());
+        Assertions.assertEquals("gk", response.tags().get("zl"));
         Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, response.identity().type());
         Assertions
             .assertEquals(
                 InfrastructureEncryptionState.DISABLED, response.properties().encryption().infrastructureEncryption());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.properties().publicNetworkAccess());
-        Assertions.assertEquals(SkuName.STANDARD, response.sku().name());
-        Assertions.assertEquals("odsotbobzdop", response.sku().tier());
-        Assertions.assertEquals("wvnhdldwmgx", response.sku().family());
-        Assertions.assertEquals("rslpmutwuoeg", response.sku().size());
-        Assertions.assertEquals("khjwn", response.sku().capacity());
-        Assertions.assertEquals("sluicpdggkzz", response.etag());
+        Assertions.assertEquals(SkuName.RS0, response.sku().name());
+        Assertions.assertEquals("sotbob", response.sku().tier());
+        Assertions.assertEquals("opcjwvnhd", response.sku().family());
+        Assertions.assertEquals("wmgxcxrsl", response.sku().size());
+        Assertions.assertEquals("utwu", response.sku().capacity());
+        Assertions.assertEquals("rpkhjwn", response.etag());
     }
 }

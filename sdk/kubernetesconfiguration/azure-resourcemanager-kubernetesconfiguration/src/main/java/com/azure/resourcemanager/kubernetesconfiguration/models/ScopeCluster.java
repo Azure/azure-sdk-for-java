@@ -11,11 +11,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ScopeCluster {
     /*
-     * Namespace where the extension Release must be placed, for a Cluster
-     * scoped extension.  If this namespace does not exist, it will be created
+     * Namespace where the extension Release must be placed, for a Cluster scoped extension.  If this namespace does
+     * not exist, it will be created
      */
     @JsonProperty(value = "releaseNamespace")
     private String releaseNamespace;
+
+    /** Creates an instance of ScopeCluster class. */
+    public ScopeCluster() {
+    }
 
     /**
      * Get the releaseNamespace property: Namespace where the extension Release must be placed, for a Cluster scoped

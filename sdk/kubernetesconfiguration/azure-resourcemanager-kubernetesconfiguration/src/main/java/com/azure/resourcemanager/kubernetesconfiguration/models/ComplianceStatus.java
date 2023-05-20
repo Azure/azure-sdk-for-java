@@ -35,6 +35,10 @@ public final class ComplianceStatus {
     @JsonProperty(value = "messageLevel")
     private MessageLevelType messageLevel;
 
+    /** Creates an instance of ComplianceStatus class. */
+    public ComplianceStatus() {
+    }
+
     /**
      * Get the complianceState property: The compliance state of the configuration.
      *

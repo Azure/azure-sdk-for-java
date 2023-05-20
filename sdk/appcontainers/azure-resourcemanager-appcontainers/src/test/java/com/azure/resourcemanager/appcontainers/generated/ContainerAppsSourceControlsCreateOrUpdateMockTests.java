@@ -32,7 +32,7 @@ public final class ContainerAppsSourceControlsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"operationState\":\"InProgress\",\"repoUrl\":\"k\",\"branch\":\"qirwrweoox\",\"githubActionConfiguration\":{\"contextPath\":\"xwrsnew\",\"image\":\"zqvbubqm\",\"publishType\":\"hsycxhxzgaz\",\"os\":\"abo\",\"runtimeStack\":\"vmfqhppubo\",\"runtimeVersion\":\"epdfgkmtdherng\"}},\"id\":\"c\",\"name\":\"uahokq\",\"type\":\"obkauxofsh\"}";
+            "{\"properties\":{\"operationState\":\"Canceled\",\"repoUrl\":\"bbklqpxzuca\",\"branch\":\"ddwwnlzafwxudgnh\",\"githubActionConfiguration\":{\"contextPath\":\"talvnbwgp\",\"image\":\"meluclvdjj\",\"publishType\":\"yrdnqod\",\"os\":\"hhxhq\",\"runtimeStack\":\"qnvzoqgyipemch\",\"runtimeVersion\":\"v\"}},\"id\":\"zuejd\",\"name\":\"xptlghwzho\",\"type\":\"ewj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,27 +63,27 @@ public final class ContainerAppsSourceControlsCreateOrUpdateMockTests {
         SourceControl response =
             manager
                 .containerAppsSourceControls()
-                .define("btozipqwje")
-                .withExistingContainerApp("neiknpg", "xgjiuqh")
-                .withRepoUrl("xxgewpk")
-                .withBranch("qylkmqpzoyhlf")
+                .define("ypsjoq")
+                .withExistingContainerApp("yglqdhmrjzral", "xpjb")
+                .withRepoUrl("yhfqzvsqxfxje")
+                .withBranch("cmpzqjhhhqx")
                 .withGithubActionConfiguration(
                     new GithubActionConfiguration()
-                        .withContextPath("cloxo")
-                        .withImage("qinjipnwjf")
-                        .withPublishType("qlafcbahhpzpofoi")
-                        .withOs("w")
-                        .withRuntimeStack("ilkmk")
-                        .withRuntimeVersion("olvdnd"))
+                        .withContextPath("acoyvivbsizusjs")
+                        .withImage("bscm")
+                        .withPublishType("zijiufehgmv")
+                        .withOs("nwyvq")
+                        .withRuntimeStack("rerlniy")
+                        .withRuntimeVersion("lyfwxzutg"))
                 .create();
 
-        Assertions.assertEquals("k", response.repoUrl());
-        Assertions.assertEquals("qirwrweoox", response.branch());
-        Assertions.assertEquals("xwrsnew", response.githubActionConfiguration().contextPath());
-        Assertions.assertEquals("zqvbubqm", response.githubActionConfiguration().image());
-        Assertions.assertEquals("hsycxhxzgaz", response.githubActionConfiguration().publishType());
-        Assertions.assertEquals("abo", response.githubActionConfiguration().os());
-        Assertions.assertEquals("vmfqhppubo", response.githubActionConfiguration().runtimeStack());
-        Assertions.assertEquals("epdfgkmtdherng", response.githubActionConfiguration().runtimeVersion());
+        Assertions.assertEquals("bbklqpxzuca", response.repoUrl());
+        Assertions.assertEquals("ddwwnlzafwxudgnh", response.branch());
+        Assertions.assertEquals("talvnbwgp", response.githubActionConfiguration().contextPath());
+        Assertions.assertEquals("meluclvdjj", response.githubActionConfiguration().image());
+        Assertions.assertEquals("yrdnqod", response.githubActionConfiguration().publishType());
+        Assertions.assertEquals("hhxhq", response.githubActionConfiguration().os());
+        Assertions.assertEquals("qnvzoqgyipemch", response.githubActionConfiguration().runtimeStack());
+        Assertions.assertEquals("v", response.githubActionConfiguration().runtimeVersion());
     }
 }

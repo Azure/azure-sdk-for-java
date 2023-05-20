@@ -34,6 +34,7 @@ final class ObjectMapperFactory {
             .addModule(FlatteningDeserializer.getModule(innerMapper))
             .addModule(JsonSerializableSerializer.getModule())
             .addModule(JsonSerializableDeserializer.getModule())
+            .addModule(ResponseErrorDeserializer.getModule(innerMapper))
             .build();
     }
 

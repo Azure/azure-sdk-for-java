@@ -312,12 +312,12 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             .manager()
             .serviceClient()
             .getRecordSets()
-            .deleteAsync(
+            .deleteWithResponseAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
                 this.recordType(),
-                this.etagState.ifMatchValueOnDelete());
+                this.etagState.ifMatchValueOnDelete()).then();
     }
 
     @Override
@@ -347,7 +347,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
             .manager()
             .serviceClient()
             .getRecordSets()
-            .createOrUpdateAsync(
+            .createOrUpdateWithResponseAsync(
                 this.parent().resourceGroupName(),
                 this.parent().name(),
                 this.name(),
@@ -357,7 +357,7 @@ class DnsRecordSetImpl extends ExternalChildResourceImpl<DnsRecordSet, RecordSet
                 etagState.ifNonMatchValueOnCreate())
             .map(
                 recordSetInner -> {
-                    setInner(recordSetInner);
+                    setInner(recordSetInner.getValue());
                     self.etagState.clear();
                     return self;
                 });

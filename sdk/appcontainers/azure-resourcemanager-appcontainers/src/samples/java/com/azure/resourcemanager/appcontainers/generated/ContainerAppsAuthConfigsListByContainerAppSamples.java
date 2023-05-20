@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerAppsAuthConfigs ListByContainerApp. */
 public final class ContainerAppsAuthConfigsListByContainerAppSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/AuthConfigs_ListByContainer.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/AuthConfigs_ListByContainer.json
      */
     /**
      * Sample code: List Auth Configs by Container Apps.
@@ -18,6 +16,8 @@ public final class ContainerAppsAuthConfigsListByContainerAppSamples {
      */
     public static void listAuthConfigsByContainerApps(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.containerAppsAuthConfigs().listByContainerApp("workerapps-rg-xj", "testcanadacentral", Context.NONE);
+        manager
+            .containerAppsAuthConfigs()
+            .listByContainerApp("workerapps-rg-xj", "testcanadacentral", com.azure.core.util.Context.NONE);
     }
 }

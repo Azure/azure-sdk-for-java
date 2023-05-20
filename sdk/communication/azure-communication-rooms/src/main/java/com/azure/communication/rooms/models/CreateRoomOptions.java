@@ -6,9 +6,12 @@ package com.azure.communication.rooms.models;
 import java.time.OffsetDateTime;
 import java.util.List;
 
+import com.azure.core.annotation.Fluent;
+
 /**
  * The options for creating a room.
  */
+@Fluent
 public final class CreateRoomOptions {
 
     /*
