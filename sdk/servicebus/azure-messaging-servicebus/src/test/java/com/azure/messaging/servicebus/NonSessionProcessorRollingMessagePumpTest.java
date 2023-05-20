@@ -39,7 +39,7 @@ public class NonSessionProcessorRollingMessagePumpTest {
     }
 
     @Test
-    public void beginAfterDisposeThrows() {
+    public void shouldThrowIfBeginAfterDisposal() {
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
 
@@ -47,13 +47,13 @@ public class NonSessionProcessorRollingMessagePumpTest {
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
 
         final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
-        pump.dispose();
 
+        pump.dispose();
         assertThrows(IllegalStateException.class, () -> pump.begin());
     }
 
     @Test
-    public void invokingBeginMoreThanOnceThrows() {
+    public void shouldThrowIfBeginMoreThanOnce() {
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
 
@@ -61,8 +61,8 @@ public class NonSessionProcessorRollingMessagePumpTest {
         when(client.nonSessionProcessorReceiveV2()).thenReturn(Flux.never());
 
         final RollingMessagePump pump = new RollingMessagePump(builder, m -> { }, e -> { }, 1, false);
-        pump.begin();
 
+        pump.begin();
         try {
             assertThrows(IllegalStateException.class, () -> pump.begin());
         } finally {
@@ -73,7 +73,7 @@ public class NonSessionProcessorRollingMessagePumpTest {
     // This is to assert that when RollingMessagePump rolls to the next MessagePump, the cancellation internal to
     // the RollingMessagePump will close the client associated with the previous MessagePump.
     @Test
-    public void cancelClosesClient() {
+    public void shouldCloseClientOnCancel() {
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
 
