@@ -28,7 +28,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -37,18 +36,9 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.messaging.eventgrid.EventGridMessagingServiceVersion;
-import com.azure.messaging.eventgrid.models.AcknowledgeOptions;
-import com.azure.messaging.eventgrid.models.AcknowledgeResult;
-import com.azure.messaging.eventgrid.models.PublishResult;
-import com.azure.messaging.eventgrid.models.ReceiveResult;
-import com.azure.messaging.eventgrid.models.RejectOptions;
-import com.azure.messaging.eventgrid.models.RejectResult;
-import com.azure.messaging.eventgrid.models.ReleaseOptions;
-import com.azure.messaging.eventgrid.models.ReleaseResult;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.util.List;
 
 /** Initializes a new instance of the EventGridClient type. */
 public final class EventGridClientImpl {
@@ -313,13 +303,18 @@ public final class EventGridClientImpl {
      *     dataschema: String (Optional)
      *     datacontenttype: String (Optional)
      *     subject: String (Optional)
+     *      (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     result: String (Required)
+     * }
      * }</pre>
      *
      * @param topicName Topic Name.
@@ -332,42 +327,28 @@ public final class EventGridClientImpl {
      * @return the result of the Publish operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PublishResult>> publishCloudEventWithResponseAsync(
-        String topicName, CloudEvent event, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> publishCloudEventWithResponseAsync(
+            String topicName, BinaryData event, RequestOptions requestOptions) {
         final String contentType = "application/cloudevents+json; charset=utf-8";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.publishCloudEvent(
+                {
+                    try {
+                        return service.publishCloudEvent(
                                 this.getEndpoint(),
                                 this.getServiceVersion().getVersion(),
                                 contentType,
                                 topicName,
                                 accept,
-                                removeExtraFields(event),
+                                BinaryData.fromString(getSerializerAdapter().serialize(event.toObject(CloudEvent.class), SerializerEncoding.JSON)),
                                 requestOptions,
-                                context)
-                            .map(resp -> new SimpleResponse<>(resp, resp.getValue().toObject(PublishResult.class))));
+                                context);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
     }
-
-    BinaryData removeExtraFields(CloudEvent event) {
-        try {
-            String json = getSerializerAdapter().serialize(event, SerializerEncoding.JSON);
-            return BinaryData.fromString(json);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    BinaryData removeExtraFields(List<CloudEvent> events) {
-        try {
-            String json = getSerializerAdapter().serialize(events, SerializerEncoding.JSON);
-            return BinaryData.fromString(json);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
 
     /**
      * Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
@@ -389,13 +370,18 @@ public final class EventGridClientImpl {
      *     dataschema: String (Optional)
      *     datacontenttype: String (Optional)
      *     subject: String (Optional)
+     *      (Optional): {
+     *         String: Object (Optional)
+     *     }
      * }
      * }</pre>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     result: String (Required)
+     * }
      * }</pre>
      *
      * @param topicName Topic Name.
@@ -408,8 +394,8 @@ public final class EventGridClientImpl {
      * @return the result of the Publish operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PublishResult> publishCloudEventWithResponse(
-            String topicName, CloudEvent event, RequestOptions requestOptions) {
+    public Response<BinaryData> publishCloudEventWithResponse(
+            String topicName, BinaryData event, RequestOptions requestOptions) {
         return publishCloudEventWithResponseAsync(topicName, event, requestOptions).block();
     }
 
@@ -434,6 +420,9 @@ public final class EventGridClientImpl {
      *         dataschema: String (Optional)
      *         datacontenttype: String (Optional)
      *         subject: String (Optional)
+     *          (Optional): {
+     *             String: Object (Optional)
+     *         }
      *     }
      * ]
      * }</pre>
@@ -441,7 +430,9 @@ public final class EventGridClientImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     result: String (Required)
+     * }
      * }</pre>
      *
      * @param topicName Topic Name.
@@ -454,23 +445,27 @@ public final class EventGridClientImpl {
      * @return the result of the Publish operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PublishResult>> publishCloudEventsWithResponseAsync(
-        String topicName, List<CloudEvent> events, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> publishCloudEventsWithResponseAsync(
+            String topicName, BinaryData events, RequestOptions requestOptions) {
         final String contentType = "application/cloudevents-batch+json; charset=utf-8";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        Mono.from(service.publishCloudEvents(
-                        this.getEndpoint(),
-                        this.getServiceVersion().getVersion(),
-                        contentType,
-                        topicName,
-                        accept,
-                        removeExtraFields(events),
-                        requestOptions,
-                        context)
-                        .map(resp -> new SimpleResponse<>(resp, resp.getValue().toObject(PublishResult.class))))
-                );
+                {
+                    try {
+                        return service.publishCloudEvents(
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                contentType,
+                                topicName,
+                                accept,
+                                BinaryData.fromString(getSerializerAdapter().serialize(events.toObject(CloudEvent[].class), SerializerEncoding.JSON)),
+                                requestOptions,
+                                context);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
     }
 
     /**
@@ -494,6 +489,9 @@ public final class EventGridClientImpl {
      *         dataschema: String (Optional)
      *         datacontenttype: String (Optional)
      *         subject: String (Optional)
+     *          (Optional): {
+     *             String: Object (Optional)
+     *         }
      *     }
      * ]
      * }</pre>
@@ -501,7 +499,9 @@ public final class EventGridClientImpl {
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
-     * Object
+     * {
+     *     result: String (Required)
+     * }
      * }</pre>
      *
      * @param topicName Topic Name.
@@ -514,8 +514,8 @@ public final class EventGridClientImpl {
      * @return the result of the Publish operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PublishResult> publishCloudEventsWithResponse(
-            String topicName, List<CloudEvent> events, RequestOptions requestOptions) {
+    public Response<BinaryData> publishCloudEventsWithResponse(
+            String topicName, BinaryData events, RequestOptions requestOptions) {
         return publishCloudEventsWithResponseAsync(topicName, events, requestOptions).block();
     }
 
@@ -528,7 +528,7 @@ public final class EventGridClientImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxEvents</td><td>Integer</td><td>No</td><td>Max Events count to be received. Minimum value is 1, while maximum value is 100 events. If not specified, the default value is 1.</td></tr>
-     *     <tr><td>maxWaitTime</td><td>Integer</td><td>No</td><td>Max wait time value for receive operation in Seconds. It is the time in seconds that the server approximately waits for the availability of an event and responds to the request. If an event is available, the broker responds immediately to the client. Minimum value is 10 seconds, while maximum value is 120 seconds. If not specified, the default value is 60 seconds.</td></tr>
+     *     <tr><td>maxWaitTime</td><td>Duration</td><td>No</td><td>Max wait time value for receive operation in Seconds. It is the time in seconds that the server approximately waits for the availability of an event and responds to the request. If an event is available, the broker responds immediately to the client. Minimum value is 10 seconds, while maximum value is 120 seconds. If not specified, the default value is 60 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -541,7 +541,7 @@ public final class EventGridClientImpl {
      *          (Required){
      *             brokerProperties (Required): {
      *                 lockToken: String (Required)
-     *                 deliveryAttemptCount: int (Required)
+     *                 deliveryCount: int (Required)
      *             }
      *             event (Required): {
      *                 id: String (Required)
@@ -554,6 +554,9 @@ public final class EventGridClientImpl {
      *                 dataschema: String (Optional)
      *                 datacontenttype: String (Optional)
      *                 subject: String (Optional)
+     *                  (Optional): {
+     *                     String: Object (Optional)
+     *                 }
      *             }
      *         }
      *     ]
@@ -571,7 +574,7 @@ public final class EventGridClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReceiveResult>> receiveCloudEventsWithResponseAsync(
+    public Mono<Response<BinaryData>> receiveCloudEventsWithResponseAsync(
             String topicName, String eventSubscriptionName, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -583,8 +586,7 @@ public final class EventGridClientImpl {
                                 eventSubscriptionName,
                                 accept,
                                 requestOptions,
-                                context)
-                            .map(resp -> new SimpleResponse<>(resp, resp.getValue().toObject(ReceiveResult.class))));
+                                context));
     }
 
     /**
@@ -596,7 +598,7 @@ public final class EventGridClientImpl {
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
      *     <tr><td>maxEvents</td><td>Integer</td><td>No</td><td>Max Events count to be received. Minimum value is 1, while maximum value is 100 events. If not specified, the default value is 1.</td></tr>
-     *     <tr><td>maxWaitTime</td><td>Integer</td><td>No</td><td>Max wait time value for receive operation in Seconds. It is the time in seconds that the server approximately waits for the availability of an event and responds to the request. If an event is available, the broker responds immediately to the client. Minimum value is 10 seconds, while maximum value is 120 seconds. If not specified, the default value is 60 seconds.</td></tr>
+     *     <tr><td>maxWaitTime</td><td>Duration</td><td>No</td><td>Max wait time value for receive operation in Seconds. It is the time in seconds that the server approximately waits for the availability of an event and responds to the request. If an event is available, the broker responds immediately to the client. Minimum value is 10 seconds, while maximum value is 120 seconds. If not specified, the default value is 60 seconds.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addQueryParam}
@@ -609,7 +611,7 @@ public final class EventGridClientImpl {
      *          (Required){
      *             brokerProperties (Required): {
      *                 lockToken: String (Required)
-     *                 deliveryAttemptCount: int (Required)
+     *                 deliveryCount: int (Required)
      *             }
      *             event (Required): {
      *                 id: String (Required)
@@ -622,6 +624,9 @@ public final class EventGridClientImpl {
      *                 dataschema: String (Optional)
      *                 datacontenttype: String (Optional)
      *                 subject: String (Optional)
+     *                  (Optional): {
+     *                     String: Object (Optional)
+     *                 }
      *             }
      *         }
      *     ]
@@ -638,7 +643,7 @@ public final class EventGridClientImpl {
      * @return details of the Receive operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReceiveResult> receiveCloudEventsWithResponse(
+    public Response<BinaryData> receiveCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, RequestOptions requestOptions) {
         return receiveCloudEventsWithResponseAsync(topicName, eventSubscriptionName, requestOptions).block();
     }
@@ -688,8 +693,8 @@ public final class EventGridClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AcknowledgeResult>> acknowledgeCloudEventsWithResponseAsync(
-        String topicName, String eventSubscriptionName, AcknowledgeOptions lockTokens, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> acknowledgeCloudEventsWithResponseAsync(
+            String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
         final String contentType = "application/json; charset=utf-8";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -701,10 +706,9 @@ public final class EventGridClientImpl {
                                 topicName,
                                 eventSubscriptionName,
                                 accept,
-                                BinaryData.fromObject(lockTokens),
+                                lockTokens,
                                 requestOptions,
-                                context)
-                            .map(resp -> new SimpleResponse<>(resp, resp.getValue().toObject(AcknowledgeResult.class))));
+                                context));
     }
 
     /**
@@ -751,8 +755,8 @@ public final class EventGridClientImpl {
      * @return the result of the Acknowledge operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AcknowledgeResult> acknowledgeCloudEventsWithResponse(
-            String topicName, String eventSubscriptionName, AcknowledgeOptions lockTokens, RequestOptions requestOptions) {
+    public Response<BinaryData> acknowledgeCloudEventsWithResponse(
+            String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
         return acknowledgeCloudEventsWithResponseAsync(topicName, eventSubscriptionName, lockTokens, requestOptions)
                 .block();
     }
@@ -761,15 +765,6 @@ public final class EventGridClientImpl {
      * Release batch of Cloud Events. The server responds with an HTTP 200 status code if at least one event is
      * successfully released. The response body will include the set of successfully released lockTokens, along with
      * other failed lockTokens with their corresponding error information.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -809,8 +804,8 @@ public final class EventGridClientImpl {
      * @return the result of the Release operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ReleaseResult>> releaseCloudEventsWithResponseAsync(
-        String topicName, String eventSubscriptionName, ReleaseOptions lockTokens, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> releaseCloudEventsWithResponseAsync(
+            String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
         final String contentType = "application/json; charset=utf-8";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -822,25 +817,15 @@ public final class EventGridClientImpl {
                                 topicName,
                                 eventSubscriptionName,
                                 accept,
-                                BinaryData.fromObject(lockTokens),
+                                lockTokens,
                                 requestOptions,
-                                context)
-                            .map(resp -> new SimpleResponse<>(resp, resp.getValue().toObject(ReleaseResult.class))));
+                                context));
     }
 
     /**
      * Release batch of Cloud Events. The server responds with an HTTP 200 status code if at least one event is
      * successfully released. The response body will include the set of successfully released lockTokens, along with
      * other failed lockTokens with their corresponding error information.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * </table>
-     *
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -880,8 +865,8 @@ public final class EventGridClientImpl {
      * @return the result of the Release operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReleaseResult> releaseCloudEventsWithResponse(
-            String topicName, String eventSubscriptionName, ReleaseOptions lockTokens, RequestOptions requestOptions) {
+    public Response<BinaryData> releaseCloudEventsWithResponse(
+            String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
         return releaseCloudEventsWithResponseAsync(topicName, eventSubscriptionName, lockTokens, requestOptions)
                 .block();
     }
@@ -927,8 +912,8 @@ public final class EventGridClientImpl {
      * @return the result of the Reject operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<RejectResult>> rejectCloudEventsWithResponseAsync(
-        String topicName, String eventSubscriptionName, RejectOptions lockTokens, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> rejectCloudEventsWithResponseAsync(
+            String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
         final String contentType = "application/json; charset=utf-8";
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -940,10 +925,9 @@ public final class EventGridClientImpl {
                                 topicName,
                                 eventSubscriptionName,
                                 accept,
-                                BinaryData.fromObject(lockTokens),
+                                lockTokens,
                                 requestOptions,
-                                context)
-                            .map(resp -> new SimpleResponse<>(resp, resp.getValue().toObject(RejectResult.class))));
+                                context));
     }
 
     /**
@@ -987,8 +971,8 @@ public final class EventGridClientImpl {
      * @return the result of the Reject operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RejectResult> rejectCloudEventsWithResponse(
-            String topicName, String eventSubscriptionName, RejectOptions lockTokens, RequestOptions requestOptions) {
+    public Response<BinaryData> rejectCloudEventsWithResponse(
+            String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
         return rejectCloudEventsWithResponseAsync(topicName, eventSubscriptionName, lockTokens, requestOptions).block();
     }
 }

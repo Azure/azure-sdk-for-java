@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "type": "module",
   "dependencies": {
-    "@azure-tools/typespec-java": "^0.6.2",
+    "@azure-tools/typespec-java": "^0.7.0",
     "@typespec/compiler": "latest",
     "@typespec/http": "latest",
     "@typespec/rest": "latest",
