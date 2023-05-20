@@ -248,6 +248,7 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
     @Test
     @Execution(ExecutionMode.SAME_THREAD)
     public void requestsDispositionOnErroredMessageProcessing() {
+        final RuntimeException userError = new RuntimeException("Rejecting the message!");
         final ServiceBusReceivedMessage message = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceiverClientBuilder builder = mock(ServiceBusReceiverClientBuilder.class);
         final ServiceBusReceiverAsyncClient client = mock(ServiceBusReceiverAsyncClient.class);
@@ -261,12 +262,18 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
         when(client.abandon(any())).thenReturn(Mono.empty());
         doNothing().when(client).close();
 
-        final Deque<ServiceBusReceivedMessage> rejectedMessages = new ConcurrentLinkedDeque<>();
+        final Deque<ServiceBusReceivedMessage> consumedMessages = new ConcurrentLinkedDeque<>();
         final Consumer<ServiceBusReceivedMessageContext> messageConsumer = (messageContext) -> {
-            rejectedMessages.add(messageContext.getMessage());
-            throw new RuntimeException("Rejecting the message!");
+            consumedMessages.add(messageContext.getMessage());
+            throw userError;
         };
-        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, e -> { }, 1, true);
+
+        final Deque<Throwable> consumedErrors = new ConcurrentLinkedDeque<>();
+        final Consumer<ServiceBusErrorContext> errorConsumer = (errorContext) -> {
+            consumedErrors.add(errorContext.getException());
+        };
+
+        final RollingMessagePump pump = new RollingMessagePump(builder, messageConsumer, errorConsumer, 1, true);
 
         try (VirtualTimeStepVerifier verifier = new VirtualTimeStepVerifier()) {
             verifier.create(() -> pump.beginIntern())
@@ -275,11 +282,16 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
                 .verify();
         }
 
-        Assertions.assertEquals(1, rejectedMessages.size());
-        Assertions.assertEquals(message, rejectedMessages.pop());
+        Assertions.assertEquals(1, consumedMessages.size());
+        Assertions.assertEquals(message, consumedMessages.pop());
+        Assertions.assertEquals(1, consumedErrors.size());
+        final Throwable e = consumedErrors.pop();
+        Assertions.assertTrue(e instanceof ServiceBusException);
+        Assertions.assertEquals(userError, e.getCause());
+
         verify(client).abandon(messageCaptor.capture());
-        final ServiceBusReceivedMessage completedMessage = messageCaptor.getValue();
-        Assertions.assertEquals(message, completedMessage);
+        final ServiceBusReceivedMessage abandonedMessage = messageCaptor.getValue();
+        Assertions.assertEquals(message, abandonedMessage);
         verify(client).close();
     }
 
