@@ -7,7 +7,11 @@ package com.azure.spring.cloud.appconfiguration.config.web.implementation;
  */
 public final class AppConfigurationWebConstants {
 
-    /**
+    private AppConfigurationWebConstants() {
+    	throw new IllegalStateException("Utility class");
+    }
+	
+	/**
      * Validation Code Key value
      */
     public static final String VALIDATION_CODE_KEY = "validationCode";
