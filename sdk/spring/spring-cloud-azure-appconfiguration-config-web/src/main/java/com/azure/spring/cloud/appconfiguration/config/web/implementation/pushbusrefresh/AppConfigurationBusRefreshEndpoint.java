@@ -90,7 +90,7 @@ public final class AppConfigurationBusRefreshEndpoint extends AbstractBusEndpoin
             if (endpoint.triggerRefresh()) {
                 // Spring Bus is in use, will publish a RefreshRemoteApplicationEvent
 
-                publish(new AppConfigurationBusRefreshEvent(endpoint.getEndpoint(), syncToken, this, getInstanceId(),
+                publish(new AppConfigurationBusRefreshEvent(endpoint.getEndpoint(), syncToken, getInstanceId(),
                         new PathDestinationFactory().getDestination(null)));
                 return HttpStatus.OK.getReasonPhrase();
             } else {
