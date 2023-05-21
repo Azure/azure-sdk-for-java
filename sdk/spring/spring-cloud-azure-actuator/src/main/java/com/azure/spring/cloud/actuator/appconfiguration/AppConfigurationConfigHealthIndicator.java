@@ -29,11 +29,12 @@ public final class AppConfigurationConfigHealthIndicator implements HealthIndica
         boolean healthy = true;
 
         for (String store : refresh.getAppConfigurationStoresHealth().keySet()) {
-            if (AppConfigurationStoreHealth.DOWN.equals(refresh.getAppConfigurationStoresHealth().get(store))) {
+            if (AppConfigurationStoreHealth.DOWN
+            		== refresh.getAppConfigurationStoresHealth().get(store)) {
                 healthy = false;
                 healthBuilder.withDetail(store, AppConfigurationStoreHealth.DOWN.toString());
             } else if (AppConfigurationStoreHealth.NOT_LOADED
-                .equals(refresh.getAppConfigurationStoresHealth().get(store))) {
+                == refresh.getAppConfigurationStoresHealth().get(store)) {
                 healthBuilder.withDetail(store, AppConfigurationStoreHealth.NOT_LOADED.toString());
             } else {
                 healthBuilder.withDetail(store, AppConfigurationStoreHealth.UP.toString());
