@@ -34,12 +34,10 @@ public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
             this.configurationAsyncClient.getConfigurationSetting("spring-cloud-azure-not-existing-setting", null)
                 .block(timeout);
             builder.up();
+        } catch (ResourceNotFoundException e) {
+            builder.up();
         } catch (Exception e) {
-            if (e instanceof ResourceNotFoundException) {
-                builder.up();
-            } else {
-                throw e;
-            }
+        	throw e;
         }
     }
 
