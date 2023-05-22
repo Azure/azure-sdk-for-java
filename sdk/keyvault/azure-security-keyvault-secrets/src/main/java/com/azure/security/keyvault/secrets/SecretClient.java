@@ -28,7 +28,6 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  *
  * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
  * {@link com.azure.security.keyvault.secrets.SecretClient} class, a vault url and a credential object.</p>
- *
  * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
  * which is appropriate for most scenarios, including local development and production environments. Additionally,
  * we recommend using a
