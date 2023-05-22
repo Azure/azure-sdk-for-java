@@ -4,7 +4,6 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.Choice;
-import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -26,9 +25,9 @@ public class SummarizeTextSample {
             .credential(new AzureKeyCredential(azureOpenaiKey))
             .buildAsyncClient();
 
-        String textToSummarize = "On December 5, 192 giant lasers at the laboratory’s National Ignition Facility blasted a small cylinder about the size of a pencil eraser that contained a frozen nubbin of hydrogen encased in diamond. " +
-            "The laser beams entered at the top and bottom of the cylinder, vaporizing it. That generated an inward onslaught of X-rays that compresses a BB-size fuel pellet of deuterium and tritium, the heavier forms of hydrogen. " +
-            "In a brief moment lasting less than 100 trillionths of a second, 2.05 megajoules of energy — roughly the equivalent of a pound of TNT — bombarded the hydrogen pellet. Out flowed a flood of neutron particles — the product of fusion — which carried about 3 megajoules of energy, a factor of 1.5 in energy gain.";
+        String textToSummarize = "On December 5, 192 giant lasers at the laboratory’s National Ignition Facility blasted a small cylinder about the size of a pencil eraser that contained a frozen nubbin of hydrogen encased in diamond. "
+            + "The laser beams entered at the top and bottom of the cylinder, vaporizing it. That generated an inward onslaught of X-rays that compresses a BB-size fuel pellet of deuterium and tritium, the heavier forms of hydrogen. "
+            + "In a brief moment lasting less than 100 trillionths of a second, 2.05 megajoules of energy — roughly the equivalent of a pound of TNT — bombarded the hydrogen pellet. Out flowed a flood of neutron particles — the product of fusion — which carried about 3 megajoules of energy, a factor of 1.5 in energy gain.";
 
         String summarizationPrompt = "Summarize the following text.%n" + "Text:%n" + textToSummarize + "%n Summary:%n";
 

@@ -5,7 +5,6 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
-import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 

@@ -35,7 +35,7 @@ public class ChatbotWithKeySample {
 
         Completions completions = client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompts));
 
-        for(String prompt : prompts) {
+        for (String prompt : prompts) {
             System.out.printf("Input prompt: %d%n", prompt);
 
             for (Choice choice : completions.getChoices()) {
