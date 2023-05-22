@@ -45,11 +45,11 @@ Environment variable name: `AZURE_HTTP_LOG_DETAIL_LEVEL`
 
 | Value            | Logging level                                                        |
 |------------------|----------------------------------------------------------------------|
-| none             | HTTP request/response logging is disabled                            |
-| basic            | Logs only URLs, HTTP methods, and time to finish the request.        |
-| headers          | Logs everything in BASIC, plus all the request and response headers. |
-| body             | Logs everything in BASIC, plus all the request and response body.    |
-| body_and_headers | Logs everything in HEADERS and BODY.                                 |
+| `none`             | HTTP request/response logging is disabled                            |
+| `basic`            | Logs only URLs, HTTP methods, and time to finish the request.        |
+| `headers`          | Logs everything in `basic`, plus all the request and response headers. |
+| `body`             | Logs everything in `basic`, plus all the request and response body.    |
+| `body_and_headers` | Logs everything in `headers` and `body`.                                 |
 
 **NOTE**: When logging the request and response bodies, ensure that they don't contain confidential information. When logging headers, the client library has a default set of headers that are considered safe to log. This set can be updated by updating the log options in the builder, as follows:
 
@@ -59,13 +59,11 @@ clientBuilder.httpLogOptions(new HttpLogOptions().addAllowedHeaderName("safe-to-
 
 ### Authentication errors
 
-Azure Monitor Ingestion supports Azure Active Directory authentication. The LogsIngestionClientBuilder can be configured to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more information on getting started, see the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-ingestion#create-the-client) of the Azure Monitor Ingestion library. For more information on the credential types supported in `azure-identity`, see the [Azure Identity library documentation](https://learn.microsoft.com/azure/developer/java/sdk/identity).
+The Azure Monitor Ingestion library supports Azure Active Directory authentication. The `LogsIngestionClientBuilder` can be configured to set the `credential`. To provide a valid credential, you can use `azure-identity` dependency. For more information on getting started, see the [README](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/monitor/azure-monitor-ingestion#create-the-client) of the Azure Monitor Ingestion library. For more information on the credential types supported in `azure-identity`, see the [Azure Identity library documentation](https://learn.microsoft.com/azure/developer/java/sdk/identity).
 
 ### Dependency conflicts
 
-If you see `NoSuchMethodError` or `NoClassDefFoundError` during your application runtime, this is due to a
-dependency version conflict. Please take a look at [troubleshooting dependency version conflicts](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict)
-for more information on why this happens and [ways to mitigate this issue](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict#mitigate-version-mismatch-issues).
+If you see `NoSuchMethodError` or `NoClassDefFoundError` during your application runtime, this is due to a dependency version conflict. For more information on why this happens and [ways to mitigate this issue](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict#mitigate-version-mismatch-issues), see [troubleshooting dependency version conflicts](https://learn.microsoft.com/azure/developer/java/sdk/troubleshooting-dependency-version-conflict).
 
 ## Troubleshooting logs ingestion
 
@@ -105,10 +103,10 @@ When you send logs to Azure Monitor for ingestion, the request may succeed, but 
 
 If you experience delays when uploading logs, it could be due to reaching service limits, which may trigger the rate limiter to throttle your client. To determine if your client has reached service limits, you can enable logging and check if the service is returning errors with an HTTP status code 429. For more information on service limits, see the [Azure Monitor service limits documentation](https://learn.microsoft.com/azure/azure-monitor/service-limits#logs-ingestion-api).
 
-To enable client logging and to troubleshoot this issue further, see the instructions provided in the section titled ["Enable Client Logging."](#enable-client-logging).
+To enable client logging and to troubleshoot this issue further, see the instructions provided in the section titled [Enable client logging](#enable-client-logging).
 
 If there are no throttling errors, then consider increasing the concurrency to upload multiple log requests in parallel.
-To set the concurrency, use `UploadLogsOptions` type to `setMaxConcurrency`.
+To set the concurrency, use the `UploadLogsOptions` type's `setMaxConcurrency` method.
 
 ```java readme-sample-uploadLogsWithMaxConcurrency
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
