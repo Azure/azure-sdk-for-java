@@ -33,7 +33,7 @@ public final class NetworkExperimentProfilesListByResourceGroupMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Disabled\"},\"etag\":\"pyklyhpluodpvru\",\"location\":\"dlgzibthostgkt\",\"tags\":{\"lhpl\":\"dxeclzedqbcvh\",\"lkxt\":\"dqkdlwwqfbu\"},\"id\":\"qjfsmlmbtxhw\",\"name\":\"fwsrtawcoezbrhu\",\"type\":\"skh\"}]}";
+            "{\"value\":[{\"properties\":{\"resourceState\":\"Creating\",\"enabledState\":\"Disabled\"},\"etag\":\"mbnraauzzp\",\"location\":\"jazysdzhezwwvaiq\",\"tags\":{\"uyav\":\"vfonkphhqyikvyl\"},\"id\":\"uwmncs\",\"name\":\"tijfybvp\",\"type\":\"ekrsgs\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,11 +62,11 @@ public final class NetworkExperimentProfilesListByResourceGroupMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Profile> response =
-            manager.networkExperimentProfiles().listByResourceGroup("tbaxk", com.azure.core.util.Context.NONE);
+            manager.networkExperimentProfiles().listByResourceGroup("xqvkjlmxhomdyn", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dlgzibthostgkt", response.iterator().next().location());
-        Assertions.assertEquals("dxeclzedqbcvh", response.iterator().next().tags().get("lhpl"));
-        Assertions.assertEquals("pyklyhpluodpvru", response.iterator().next().etag());
+        Assertions.assertEquals("jazysdzhezwwvaiq", response.iterator().next().location());
+        Assertions.assertEquals("vfonkphhqyikvyl", response.iterator().next().tags().get("uyav"));
+        Assertions.assertEquals("mbnraauzzp", response.iterator().next().etag());
         Assertions.assertEquals(State.DISABLED, response.iterator().next().enabledState());
     }
 }
