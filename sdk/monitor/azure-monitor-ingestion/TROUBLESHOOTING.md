@@ -97,7 +97,7 @@ When you send logs to Azure Monitor for ingestion, the request may succeed, but 
 
 * Confirm that the logs you're sending adhere to the format expected by the DCR. The data should be in the form of a JSON object or array, structured according to the requirements specified in the DCR. Additionally, it's essential to encode the request body in UTF-8 to avoid any data transmission issues.
 
-* Keep in mind that data ingestion may take some time, especially if you're sending data to a specific table for the
+* Keep in mind that data ingestion may take some time, especially if you're sending data to a specific table for the first time. In such cases, allow up to 15 minutes for the data to be fully ingested and available for querying and analysis.
 
 ### Troubleshooting slow logs upload
 
