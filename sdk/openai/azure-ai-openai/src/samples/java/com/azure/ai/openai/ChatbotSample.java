@@ -6,6 +6,8 @@ package com.azure.ai.openai;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
  * A sample demonstrating the minimal usage with default credentials 
@@ -23,7 +25,7 @@ public class ChatbotSample {
             .credential(defaultCredential)
             .buildClient();
 
-        String deploymentOrModelId = "text-davinci-003";
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
         String prompt = "Tell me 3 jokes about trains";
 
         Completions completions = client.getCompletions(deploymentOrModelId, prompt);

@@ -5,7 +5,12 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.models.CompletionsOptions;
+import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A sample demonstrating usage with Azure key credentials and fetching usage details
@@ -28,10 +33,11 @@ public class ChatbotWithKeySample {
         prompts.add("What is Azure OpenAI?");
         prompts.add("What is the difference between a horse and a unicorn?");
 
+        Completions completions = client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompts));
+
         for(String prompt : prompts) {
-            System.out.println("Input prompt: %d%n", prompt);
-            
-            Completions completions = client.getCompletions(deploymentOrModelId, new CompletionsOptions(prompt));
+            System.out.printf("Input prompt: %d%n", prompt);
+
             for (Choice choice : completions.getChoices()) {
                 System.out.printf("Index: %d, Text: %s.%n", choice.getIndex(), choice.getText());
             }

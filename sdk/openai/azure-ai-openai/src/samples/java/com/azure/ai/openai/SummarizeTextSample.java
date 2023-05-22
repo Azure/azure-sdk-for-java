@@ -5,7 +5,10 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
+import com.azure.ai.openai.OpenAIAsyncClient;
 import com.azure.core.credential.AzureKeyCredential;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * A sample demonstrating a prompt to summarize text using async method
@@ -14,31 +17,23 @@ public class SummarizeTextSample {
     /**
      * @param args Unused. Arguments to the program.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         String azureOpenaiKey = "{azure-open-ai-key}";
         String endpoint = "{azure-open-ai-endpoint}";
 
-        OpenAIClient client = new OpenAIClientBuilder()
+        OpenAIAsyncClient client = new OpenAIClientBuilder()
             .endpoint(endpoint)
             .credential(new AzureKeyCredential(azureOpenaiKey))
-            .buildClient();
+            .buildAsyncClient();
 
-        String textToSummarize = """
-            On December 5, 192 giant lasers at the laboratory’s National Ignition Facility blasted a small cylinder about the size of a pencil eraser that contained a frozen nubbin of hydrogen encased in diamond.
-            The laser beams entered at the top and bottom of the cylinder, vaporizing it. That generated an inward onslaught of X-rays that compresses a BB-size fuel pellet of deuterium and tritium, the heavier forms of hydrogen.
-            In a brief moment lasting less than 100 trillionths of a second, 2.05 megajoules of energy — roughly the equivalent of a pound of TNT — bombarded the hydrogen pellet. Out flowed a flood of neutron particles — the product of fusion — which carried about 3 megajoules of energy, a factor of 1.5 in energy gain.""";
+        String textToSummarize = "On December 5, 192 giant lasers at the laboratory’s National Ignition Facility blasted a small cylinder about the size of a pencil eraser that contained a frozen nubbin of hydrogen encased in diamond. " +
+            "The laser beams entered at the top and bottom of the cylinder, vaporizing it. That generated an inward onslaught of X-rays that compresses a BB-size fuel pellet of deuterium and tritium, the heavier forms of hydrogen. " +
+            "In a brief moment lasting less than 100 trillionths of a second, 2.05 megajoules of energy — roughly the equivalent of a pound of TNT — bombarded the hydrogen pellet. Out flowed a flood of neutron particles — the product of fusion — which carried about 3 megajoules of energy, a factor of 1.5 in energy gain.";
 
-        String summarizationPrompt = """
-            Summarize the following text.
-            
-            Text:
-            "textToSummarize"
+        String summarizationPrompt = "Summarize the following text.%n" + "Text:%n" + textToSummarize + "%n Summary:%n";
 
-            Summary:
-            """;
-
-        String deploymentOrModelId = "text-davinci-003";
-        System.out.println("Input prompt: %d%n", summarizationPrompt);
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        System.out.printf("Input prompt: %d%n", summarizationPrompt);
 
         client.getCompletions(deploymentOrModelId, summarizationPrompt)
             .subscribe(
@@ -57,5 +52,4 @@ public class SummarizeTextSample {
         TimeUnit.SECONDS.sleep(10);
     }
 
-    }
 }
