@@ -8,7 +8,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 public class AppConfigurationConstants {
 
     private AppConfigurationConstants() {
-    	throw new IllegalStateException("You can not initialize AppConfigurationConstants Utility Class");
+    	throw new IllegalStateException("You can not initialize AppConfigurationConstants utility class.");
     }
 	
 	/**
