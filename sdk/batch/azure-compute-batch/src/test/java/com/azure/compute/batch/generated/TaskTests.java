@@ -6,16 +6,11 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.storage.blob.BlobContainerClient;
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
-import com.azure.compute.batch.JobClient;
-import com.azure.compute.batch.PoolClient;
-import com.azure.compute.batch.TaskClient;
 import com.azure.core.test.TestMode;
 
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.charset.StandardCharsets;
@@ -25,32 +20,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskTests extends BatchServiceClientTestBase {
-	private static BatchPool livePool;
 	private static String livePoolId;
-	private static PoolClient poolClient;
-	private static JobClient jobClient;
-	private static TaskClient taskClient;
     private static String liveIaasPoolId;
 	 
 	@Override
     protected void beforeTest() {
 	   	super.beforeTest();
-	   	poolClient = batchClientBuilder.buildPoolClient();
-	   	jobClient = batchClientBuilder.buildJobClient();
-	   	taskClient = batchClientBuilder.buildTaskClient();
 	   	livePoolId = getStringIdWithUserNamePrefix("-testpool");
         liveIaasPoolId = getStringIdWithUserNamePrefix("-testIaaSpool");
 	    if(getTestMode() == TestMode.RECORD) {
-	    	if (livePool == null) {
-	    		try {
-					livePool = createIfNotExistIaaSPool(livePoolId);
-                    createIfNotExistIaaSPool(liveIaasPoolId);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-               Assert.assertNotNull(livePool);
-	    	}
+            try {
+                createIfNotExistIaaSPool(livePoolId);
+                createIfNotExistIaaSPool(liveIaasPoolId);
+            } catch (Exception e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
        }
    }
 	
@@ -78,10 +63,10 @@ public class TaskTests extends BatchServiceClientTestBase {
 
             // GET
             BatchTask task = taskClient.get(jobId, taskId);
-            Assert.assertNotNull(task);
-            Assert.assertEquals(taskId, task.getId());
-            Assert.assertEquals("test-user", task.getUserIdentity().getUsername());
-            Assert.assertEquals("msmpi", task.getApplicationPackageReferences().get(0).getApplicationId());
+            Assertions.assertNotNull(task);
+            Assertions.assertEquals(taskId, task.getId());
+            Assertions.assertEquals("test-user", task.getUserIdentity().getUsername());
+            Assertions.assertEquals("msmpi", task.getApplicationPackageReferences().get(0).getApplicationId());
 
         } finally {
             try {
@@ -138,11 +123,11 @@ public class TaskTests extends BatchServiceClientTestBase {
 
             // GET
             BatchTask task = taskClient.get(jobId, taskId);
-            Assert.assertNotNull(task);
-            Assert.assertEquals(taskId, task.getId());
+            Assertions.assertNotNull(task);
+            Assertions.assertEquals(taskId, task.getId());
 
             // Verify default retention time
-            Assert.assertEquals(Duration.ofDays(7), task.getConstraints().getRetentionTime());
+            Assertions.assertEquals(Duration.ofDays(7), task.getConstraints().getRetentionTime());
 
             // TODO UPDATE - modifying taskToAdd vs creating new BatchTask instance
 //            BatchTask taskToUpdate = new BatchTask().setId(taskId).setConstraints(new TaskConstraints().setMaxTaskRetryCount(5));
@@ -150,11 +135,11 @@ public class TaskTests extends BatchServiceClientTestBase {
 //            taskClient.update(jobId, taskId, taskToUpdate);
 //
 //            task = taskClient.get(jobId, taskId);
-//            Assert.assertEquals((Integer) 5, task.getConstraints().getMaxTaskRetryCount());
+//            Assertions.assertEquals((Integer) 5, task.getConstraints().getMaxTaskRetryCount());
 
             // LIST
             PagedIterable<BatchTask> tasks = taskClient.list(jobId);
-            Assert.assertNotNull(tasks);
+            Assertions.assertNotNull(tasks);
 
             boolean found = false;
             for (BatchTask t : tasks) {
@@ -164,7 +149,7 @@ public class TaskTests extends BatchServiceClientTestBase {
                 }
             }
 
-            Assert.assertTrue(found);
+            Assertions.assertTrue(found);
 
             if (waitForTasksToComplete(taskClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 // Get the task command output file
@@ -174,7 +159,7 @@ public class TaskTests extends BatchServiceClientTestBase {
                 BinaryData binaryData = fileClient.getFromTask(jobId, taskId, STANDARD_CONSOLE_OUTPUT_FILENAME);
 
                 String fileContent = new String(binaryData.toBytes(), StandardCharsets.UTF_8);
-                Assert.assertEquals("This is an example", fileContent);
+                Assertions.assertEquals("This is an example", fileContent);
 
                 String outputSas = "";
 
@@ -187,16 +172,16 @@ public class TaskTests extends BatchServiceClientTestBase {
                 UploadBatchServiceLogsConfiguration logsConfiguration = new UploadBatchServiceLogsConfiguration(outputSas, OffsetDateTime.now().minusMinutes(-10));
                 UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClientBuilder.buildComputeNodesClient().uploadBatchServiceLogs(liveIaasPoolId, task.getNodeInfo().getNodeId(), logsConfiguration);
 
-                Assert.assertNotNull(uploadBatchServiceLogsResult);
-                Assert.assertTrue(uploadBatchServiceLogsResult.getNumberOfFilesUploaded() > 0);
-                Assert.assertTrue(uploadBatchServiceLogsResult.getVirtualDirectoryName().toLowerCase().contains(liveIaasPoolId.toLowerCase()));
+                Assertions.assertNotNull(uploadBatchServiceLogsResult);
+                Assertions.assertTrue(uploadBatchServiceLogsResult.getNumberOfFilesUploaded() > 0);
+                Assertions.assertTrue(uploadBatchServiceLogsResult.getVirtualDirectoryName().toLowerCase().contains(liveIaasPoolId.toLowerCase()));
             }
 
             // DELETE
             taskClient.delete(jobId, taskId);
             try {
                 taskClient.get(jobId, taskId);
-                Assert.assertTrue("Shouldn't be here, the job should be deleted", true);
+                Assertions.assertTrue(true, "Shouldn't be here, the job should be deleted");
             }   //TODO Integrate BatchErrorException
             catch (Exception e) {
                 if (!e.getMessage().contains("Status code 404")) {
@@ -211,6 +196,7 @@ public class TaskTests extends BatchServiceClientTestBase {
                 try {
                     jobClient.delete(jobId);
                     container.deleteIfExists();
+                    poolClient.delete(liveIaasPoolId);
                 } catch (Exception e) {
                     // Ignore here
                 }
