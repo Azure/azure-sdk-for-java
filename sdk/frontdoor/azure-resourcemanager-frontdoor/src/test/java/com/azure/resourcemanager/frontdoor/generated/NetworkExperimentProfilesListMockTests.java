@@ -33,7 +33,7 @@ public final class NetworkExperimentProfilesListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Disabled\"},\"etag\":\"sx\",\"location\":\"ojmsvpkjprvkwc\",\"tags\":{\"dbsdshm\":\"ljyxgtczhe\"},\"id\":\"xmaehvbbxu\",\"name\":\"iplt\",\"type\":\"n\"}]}";
+            "{\"value\":[{\"properties\":{\"resourceState\":\"Enabled\",\"enabledState\":\"Disabled\"},\"etag\":\"tpzdmovzvfvaawzq\",\"location\":\"dflgzuri\",\"tags\":{\"t\":\"ecxn\",\"mlqtmldgxob\":\"cokpv\",\"iayz\":\"irclnpk\"},\"id\":\"iykhy\",\"name\":\"wf\",\"type\":\"jlb\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -63,9 +63,9 @@ public final class NetworkExperimentProfilesListMockTests {
 
         PagedIterable<Profile> response = manager.networkExperimentProfiles().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ojmsvpkjprvkwc", response.iterator().next().location());
-        Assertions.assertEquals("ljyxgtczhe", response.iterator().next().tags().get("dbsdshm"));
-        Assertions.assertEquals("sx", response.iterator().next().etag());
+        Assertions.assertEquals("dflgzuri", response.iterator().next().location());
+        Assertions.assertEquals("ecxn", response.iterator().next().tags().get("t"));
+        Assertions.assertEquals("tpzdmovzvfvaawzq", response.iterator().next().etag());
         Assertions.assertEquals(State.DISABLED, response.iterator().next().enabledState());
     }
 }

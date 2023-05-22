@@ -20,48 +20,49 @@ public final class TimeseriesInnerTests {
         TimeseriesInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"endpoint\":\"pjhvmdajvnys\",\"startDateTimeUTC\":\"nqecanoaeup\",\"endDateTimeUTC\":\"yhltrpmopjmcm\",\"aggregationInterval\":\"Hourly\",\"timeseriesType\":\"LatencyP50\",\"country\":\"hfuiuaodsfc\",\"timeseriesData\":[{\"dateTimeUTC\":\"odpuozmyzydag\",\"value\":52.79117},{\"dateTimeUTC\":\"bezy\",\"value\":56.270218}]},\"location\":\"kktwhrdxw\",\"tags\":{\"mbsureximo\":\"q\",\"fksymddystki\":\"yocf\"},\"id\":\"uxh\",\"name\":\"yudxorrqnbp\",\"type\":\"czvyifq\"}")
+                    "{\"properties\":{\"endpoint\":\"tvgbmhrixkwmy\",\"startDateTimeUTC\":\"ejvegrhbpnaixex\",\"endDateTimeUTC\":\"b\",\"aggregationInterval\":\"Daily\",\"timeseriesType\":\"LatencyP95\",\"country\":\"cexdrrvqa\",\"timeseriesData\":[{\"dateTimeUTC\":\"htpwij\",\"value\":39.47339},{\"dateTimeUTC\":\"svfycxzbfv\",\"value\":37.85908},{\"dateTimeUTC\":\"rvmtgjq\",\"value\":2.3739636}]},\"location\":\"ostronz\",\"tags\":{\"cwaekrrjre\":\"gfipnsxk\",\"jglikkxwslolb\":\"fxtsgum\",\"elfk\":\"pvuzlmv\"},\"id\":\"gplcrpwjxeznoigb\",\"name\":\"njwmwkpnbsazejj\",\"type\":\"qkagfhsxt\"}")
                 .toObject(TimeseriesInner.class);
-        Assertions.assertEquals("kktwhrdxw", model.location());
-        Assertions.assertEquals("q", model.tags().get("mbsureximo"));
-        Assertions.assertEquals("pjhvmdajvnys", model.endpoint());
-        Assertions.assertEquals("nqecanoaeup", model.startDateTimeUtc());
-        Assertions.assertEquals("yhltrpmopjmcm", model.endDateTimeUtc());
-        Assertions.assertEquals(AggregationInterval.HOURLY, model.aggregationInterval());
-        Assertions.assertEquals(TimeseriesType.LATENCY_P50, model.timeseriesType());
-        Assertions.assertEquals("hfuiuaodsfc", model.country());
-        Assertions.assertEquals("odpuozmyzydag", model.timeseriesData().get(0).dateTimeUtc());
-        Assertions.assertEquals(52.79117F, model.timeseriesData().get(0).value());
+        Assertions.assertEquals("ostronz", model.location());
+        Assertions.assertEquals("gfipnsxk", model.tags().get("cwaekrrjre"));
+        Assertions.assertEquals("tvgbmhrixkwmy", model.endpoint());
+        Assertions.assertEquals("ejvegrhbpnaixex", model.startDateTimeUtc());
+        Assertions.assertEquals("b", model.endDateTimeUtc());
+        Assertions.assertEquals(AggregationInterval.DAILY, model.aggregationInterval());
+        Assertions.assertEquals(TimeseriesType.LATENCY_P95, model.timeseriesType());
+        Assertions.assertEquals("cexdrrvqa", model.country());
+        Assertions.assertEquals("htpwij", model.timeseriesData().get(0).dateTimeUtc());
+        Assertions.assertEquals(39.47339F, model.timeseriesData().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         TimeseriesInner model =
             new TimeseriesInner()
-                .withLocation("kktwhrdxw")
-                .withTags(mapOf("mbsureximo", "q", "fksymddystki", "yocf"))
-                .withEndpoint("pjhvmdajvnys")
-                .withStartDateTimeUtc("nqecanoaeup")
-                .withEndDateTimeUtc("yhltrpmopjmcm")
-                .withAggregationInterval(AggregationInterval.HOURLY)
-                .withTimeseriesType(TimeseriesType.LATENCY_P50)
-                .withCountry("hfuiuaodsfc")
+                .withLocation("ostronz")
+                .withTags(mapOf("cwaekrrjre", "gfipnsxk", "jglikkxwslolb", "fxtsgum", "elfk", "pvuzlmv"))
+                .withEndpoint("tvgbmhrixkwmy")
+                .withStartDateTimeUtc("ejvegrhbpnaixex")
+                .withEndDateTimeUtc("b")
+                .withAggregationInterval(AggregationInterval.DAILY)
+                .withTimeseriesType(TimeseriesType.LATENCY_P95)
+                .withCountry("cexdrrvqa")
                 .withTimeseriesData(
                     Arrays
                         .asList(
-                            new TimeseriesDataPoint().withDateTimeUtc("odpuozmyzydag").withValue(52.79117F),
-                            new TimeseriesDataPoint().withDateTimeUtc("bezy").withValue(56.270218F)));
+                            new TimeseriesDataPoint().withDateTimeUtc("htpwij").withValue(39.47339F),
+                            new TimeseriesDataPoint().withDateTimeUtc("svfycxzbfv").withValue(37.85908F),
+                            new TimeseriesDataPoint().withDateTimeUtc("rvmtgjq").withValue(2.3739636F)));
         model = BinaryData.fromObject(model).toObject(TimeseriesInner.class);
-        Assertions.assertEquals("kktwhrdxw", model.location());
-        Assertions.assertEquals("q", model.tags().get("mbsureximo"));
-        Assertions.assertEquals("pjhvmdajvnys", model.endpoint());
-        Assertions.assertEquals("nqecanoaeup", model.startDateTimeUtc());
-        Assertions.assertEquals("yhltrpmopjmcm", model.endDateTimeUtc());
-        Assertions.assertEquals(AggregationInterval.HOURLY, model.aggregationInterval());
-        Assertions.assertEquals(TimeseriesType.LATENCY_P50, model.timeseriesType());
-        Assertions.assertEquals("hfuiuaodsfc", model.country());
-        Assertions.assertEquals("odpuozmyzydag", model.timeseriesData().get(0).dateTimeUtc());
-        Assertions.assertEquals(52.79117F, model.timeseriesData().get(0).value());
+        Assertions.assertEquals("ostronz", model.location());
+        Assertions.assertEquals("gfipnsxk", model.tags().get("cwaekrrjre"));
+        Assertions.assertEquals("tvgbmhrixkwmy", model.endpoint());
+        Assertions.assertEquals("ejvegrhbpnaixex", model.startDateTimeUtc());
+        Assertions.assertEquals("b", model.endDateTimeUtc());
+        Assertions.assertEquals(AggregationInterval.DAILY, model.aggregationInterval());
+        Assertions.assertEquals(TimeseriesType.LATENCY_P95, model.timeseriesType());
+        Assertions.assertEquals("cexdrrvqa", model.country());
+        Assertions.assertEquals("htpwij", model.timeseriesData().get(0).dateTimeUtc());
+        Assertions.assertEquals(39.47339F, model.timeseriesData().get(0).value());
     }
 
     @SuppressWarnings("unchecked")

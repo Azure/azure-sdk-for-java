@@ -14,15 +14,15 @@ public final class ExperimentListTests {
         ExperimentList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"jaoyfhrtx\",\"enabledState\":\"Enabled\",\"resourceState\":\"Disabled\",\"status\":\"ysvlejuvf\",\"scriptFileUri\":\"wrlyxwjkcprb\"},\"location\":\"wbxgjvt\",\"tags\":{\"uouq\":\"ysszdnrujqguh\"},\"id\":\"prwzwbnguitnwui\",\"name\":\"gazxuf\",\"type\":\"zuckyfi\"},{\"properties\":{\"description\":\"idf\",\"enabledState\":\"Disabled\",\"resourceState\":\"Creating\",\"status\":\"ymwisdkft\",\"scriptFileUri\":\"xmnteiwaop\"},\"location\":\"km\",\"tags\":{\"uf\":\"mmxdcu\"},\"id\":\"rpymzidnsez\",\"name\":\"xtbzsgfyccsne\",\"type\":\"mdwzjeiachboo\"},{\"properties\":{\"description\":\"nrosfqpte\",\"enabledState\":\"Disabled\",\"resourceState\":\"Creating\",\"status\":\"qrimzinpv\",\"scriptFileUri\":\"jdkirsoodqx\"},\"location\":\"crmnohjtckwhds\",\"tags\":{\"pjxsqwpgrjbznor\":\"iy\",\"ocpcy\":\"jxvsnbyxqabn\",\"gpbtoqcjmklj\":\"hurzafblj\",\"qajzyulpkudjkr\":\"vbqid\"},\"id\":\"khbzhfepgzg\",\"name\":\"e\",\"type\":\"zloc\"}],\"nextLink\":\"c\"}")
+                    "{\"value\":[{\"properties\":{\"description\":\"lolp\",\"enabledState\":\"Enabled\",\"resourceState\":\"Enabling\",\"status\":\"ujzra\",\"scriptFileUri\":\"twdw\"},\"location\":\"ftswibyrcdlbhsh\",\"tags\":{\"hevxcced\":\"racstwity\"},\"id\":\"pnmdyodnwzxltjcv\",\"name\":\"hlt\",\"type\":\"ugcxnavvwxq\"}],\"nextLink\":\"y\"}")
                 .toObject(ExperimentList.class);
-        Assertions.assertEquals("c", model.nextLink());
+        Assertions.assertEquals("y", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExperimentList model = new ExperimentList().withNextLink("c");
+        ExperimentList model = new ExperimentList().withNextLink("y");
         model = BinaryData.fromObject(model).toObject(ExperimentList.class);
-        Assertions.assertEquals("c", model.nextLink());
+        Assertions.assertEquals("y", model.nextLink());
     }
 }

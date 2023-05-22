@@ -18,10 +18,10 @@ public final class RulesEnginePropertiesTests {
         RulesEngineProperties model =
             BinaryData
                 .fromString(
-                    "{\"resourceState\":\"Enabled\",\"rules\":[{\"name\":\"ujmkcjhwqy\",\"priority\":1656357002,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Stop\"},{\"name\":\"wgdrjervnaenqp\",\"priority\":682074960,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Stop\"},{\"name\":\"ifthnz\",\"priority\":2033787842,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Continue\"},{\"name\":\"qig\",\"priority\":1427716289,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Continue\"}]}")
+                    "{\"resourceState\":\"Deleting\",\"rules\":[{\"name\":\"mtxpsiebtfh\",\"priority\":1543115619,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Stop\"},{\"name\":\"dqmh\",\"priority\":1058725142,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Continue\"},{\"name\":\"yzxuutkncw\",\"priority\":355088461,\"action\":{\"requestHeaderActions\":[],\"responseHeaderActions\":[]},\"matchConditions\":[],\"matchProcessingBehavior\":\"Continue\"}]}")
                 .toObject(RulesEngineProperties.class);
-        Assertions.assertEquals("ujmkcjhwqy", model.rules().get(0).name());
-        Assertions.assertEquals(1656357002, model.rules().get(0).priority());
+        Assertions.assertEquals("mtxpsiebtfh", model.rules().get(0).name());
+        Assertions.assertEquals(1543115619, model.rules().get(0).priority());
         Assertions.assertEquals(MatchProcessingBehavior.STOP, model.rules().get(0).matchProcessingBehavior());
     }
 
@@ -33,8 +33,8 @@ public final class RulesEnginePropertiesTests {
                     Arrays
                         .asList(
                             new RulesEngineRule()
-                                .withName("ujmkcjhwqy")
-                                .withPriority(1656357002)
+                                .withName("mtxpsiebtfh")
+                                .withPriority(1543115619)
                                 .withAction(
                                     new RulesEngineAction()
                                         .withRequestHeaderActions(Arrays.asList())
@@ -42,17 +42,8 @@ public final class RulesEnginePropertiesTests {
                                 .withMatchConditions(Arrays.asList())
                                 .withMatchProcessingBehavior(MatchProcessingBehavior.STOP),
                             new RulesEngineRule()
-                                .withName("wgdrjervnaenqp")
-                                .withPriority(682074960)
-                                .withAction(
-                                    new RulesEngineAction()
-                                        .withRequestHeaderActions(Arrays.asList())
-                                        .withResponseHeaderActions(Arrays.asList()))
-                                .withMatchConditions(Arrays.asList())
-                                .withMatchProcessingBehavior(MatchProcessingBehavior.STOP),
-                            new RulesEngineRule()
-                                .withName("ifthnz")
-                                .withPriority(2033787842)
+                                .withName("dqmh")
+                                .withPriority(1058725142)
                                 .withAction(
                                     new RulesEngineAction()
                                         .withRequestHeaderActions(Arrays.asList())
@@ -60,8 +51,8 @@ public final class RulesEnginePropertiesTests {
                                 .withMatchConditions(Arrays.asList())
                                 .withMatchProcessingBehavior(MatchProcessingBehavior.CONTINUE),
                             new RulesEngineRule()
-                                .withName("qig")
-                                .withPriority(1427716289)
+                                .withName("yzxuutkncw")
+                                .withPriority(355088461)
                                 .withAction(
                                     new RulesEngineAction()
                                         .withRequestHeaderActions(Arrays.asList())
@@ -69,8 +60,8 @@ public final class RulesEnginePropertiesTests {
                                 .withMatchConditions(Arrays.asList())
                                 .withMatchProcessingBehavior(MatchProcessingBehavior.CONTINUE)));
         model = BinaryData.fromObject(model).toObject(RulesEngineProperties.class);
-        Assertions.assertEquals("ujmkcjhwqy", model.rules().get(0).name());
-        Assertions.assertEquals(1656357002, model.rules().get(0).priority());
+        Assertions.assertEquals("mtxpsiebtfh", model.rules().get(0).name());
+        Assertions.assertEquals(1543115619, model.rules().get(0).priority());
         Assertions.assertEquals(MatchProcessingBehavior.STOP, model.rules().get(0).matchProcessingBehavior());
     }
 }
