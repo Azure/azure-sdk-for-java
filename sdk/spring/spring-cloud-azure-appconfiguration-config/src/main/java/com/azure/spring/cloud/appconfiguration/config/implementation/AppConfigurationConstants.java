@@ -7,7 +7,11 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
  */
 public class AppConfigurationConstants {
 
-    /**
+    private AppConfigurationConstants() {
+    	throw new IllegalStateException("You can not initialize AppConfigurationConstants Utility Class");
+    }
+	
+	/**
      * App Configurations Feature Flag Content Type
      */
     public static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
