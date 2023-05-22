@@ -5,7 +5,6 @@
 package com.azure.messaging.eventgrid.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result of the Publish operation. */
 @Immutable
