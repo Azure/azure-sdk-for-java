@@ -13,7 +13,7 @@ public final class UpgradeDetailsTests {
         UpgradeDetails model =
             BinaryData
                 .fromString(
-                    "{\"operationId\":\"og\",\"startTimeUtc\":\"2021-03-07T19:37:36Z\",\"lastUpdatedTimeUtc\":\"2021-10-27T21:17:16Z\",\"endTimeUtc\":\"2021-10-29T01:50:02Z\",\"status\":\"Upgraded\",\"message\":\"rzayv\",\"triggerType\":\"UserTriggered\",\"upgradedResourceId\":\"vdfgiotk\",\"previousResourceId\":\"utqxlngx\"}")
+                    "{\"operationId\":\"i\",\"startTimeUtc\":\"2021-12-07T02:37:39Z\",\"lastUpdatedTimeUtc\":\"2021-07-18T22:53:57Z\",\"endTimeUtc\":\"2021-10-23T16:11:35Z\",\"status\":\"Upgraded\",\"message\":\"abhjybi\",\"triggerType\":\"UserTriggered\",\"upgradedResourceId\":\"qfbow\",\"previousResourceId\":\"anyktzlcuiywg\"}")
                 .toObject(UpgradeDetails.class);
     }
 

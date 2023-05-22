@@ -40,6 +40,10 @@ public final class ExtensionStatus {
     @JsonProperty(value = "time")
     private String time;
 
+    /** Creates an instance of ExtensionStatus class. */
+    public ExtensionStatus() {
+    }
+
     /**
      * Get the code property: Status code provided by the Extension.
      *

@@ -28,9 +28,6 @@ public final class CallLocatorInternal {
     @JsonProperty(value = "kind")
     private CallLocatorKindInternal kind;
 
-    /** Creates an instance of CallLocatorInternal class. */
-    public CallLocatorInternal() {}
-
     /**
      * Get the groupCallId property: The group call id.
      *

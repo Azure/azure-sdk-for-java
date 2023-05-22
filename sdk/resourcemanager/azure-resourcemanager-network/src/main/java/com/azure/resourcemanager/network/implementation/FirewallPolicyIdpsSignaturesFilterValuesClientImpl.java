@@ -63,8 +63,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
     public interface FirewallPolicyIdpsSignaturesFilterValuesService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/firewallPolicies/{firewallPolicyName}/listIdpsFilterOptions")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/firewallPolicies/{firewallPolicyName}/listIdpsFilterOptions")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SignatureOverridesFilterValuesResponseInner>> list(
@@ -118,7 +117,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -180,7 +179,7 @@ public final class FirewallPolicyIdpsSignaturesFilterValuesClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

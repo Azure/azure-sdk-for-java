@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the delivery for an event subscription with resource identity. */
 @Fluent
-public class DeliveryWithResourceIdentity {
+public final class DeliveryWithResourceIdentity {
     /*
      * The identity to use when delivering events.
      */
@@ -17,13 +17,16 @@ public class DeliveryWithResourceIdentity {
     private EventSubscriptionIdentity identity;
 
     /*
-     * Information about the destination where events have to be delivered for
-     * the event subscription.
-     * Uses Azure Event Grid's identity to acquire the authentication tokens
-     * being used during delivery / dead-lettering.
+     * Information about the destination where events have to be delivered for the event subscription.
+     * Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
+     * dead-lettering.
      */
     @JsonProperty(value = "destination")
     private EventSubscriptionDestination destination;
+
+    /** Creates an instance of DeliveryWithResourceIdentity class. */
+    public DeliveryWithResourceIdentity() {
+    }
 
     /**
      * Get the identity property: The identity to use when delivering events.

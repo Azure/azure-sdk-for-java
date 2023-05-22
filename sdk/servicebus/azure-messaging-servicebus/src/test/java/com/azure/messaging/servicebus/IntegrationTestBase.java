@@ -8,9 +8,9 @@ import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.amqp.models.AmqpMessageBody;
+import com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.tracing.opentelemetry.OpenTelemetryTracingOptions;
 import com.azure.core.util.AsyncCloseable;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
@@ -25,10 +25,6 @@ import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusSessionR
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
-import io.opentelemetry.api.GlobalOpenTelemetry;
-import io.opentelemetry.api.OpenTelemetry;
-import io.opentelemetry.sdk.OpenTelemetrySdk;
-import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -98,12 +94,7 @@ public abstract class IntegrationTestBase extends TestBase {
 
         StepVerifier.setDefaultTimeout(TIMEOUT);
         toClose = new ArrayList<>();
-        GlobalOpenTelemetry.resetForTest();
-        OpenTelemetry otel = OpenTelemetrySdk.builder()
-            .setTracerProvider(
-                SdkTracerProvider.builder().addSpanProcessor(new LoggingSpanProcessor(logger)).build())
-            .build();
-        optionsWithTracing = new ClientOptions().setTracingOptions(new OpenTelemetryTracingOptions().setProvider(otel.getTracerProvider()));
+        optionsWithTracing = new ClientOptions().setTracingOptions(new LoggingTracerProvider.LoggingTracingOptions());
         beforeTest();
     }
 
@@ -127,7 +118,6 @@ public abstract class IntegrationTestBase extends TestBase {
 
         logger.info("Disposing of subscriptions, consumers and clients.");
         dispose();
-        GlobalOpenTelemetry.resetForTest();
     }
 
     /**

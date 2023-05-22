@@ -48,11 +48,14 @@ public final class AssociationsInterfaceCreateOrUpdateSamples {
     public static void putAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         manager
             .associationsInterfaces()
-            .define("associatedvnet-1")
-            .withRegion("West US")
-            .withExistingTrafficController("rg1", "TC1")
+            .define("as1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
             .withAssociationType(AssociationType.SUBNETS)
-            .withSubnet(new AssociationSubnet().withId("subnetFullRef"))
+            .withSubnet(
+                new AssociationSubnet()
+                    .withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"))
             .create();
     }
 }
@@ -61,8 +64,6 @@ public final class AssociationsInterfaceCreateOrUpdateSamples {
 ### AssociationsInterface_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AssociationsInterface Delete. */
 public final class AssociationsInterfaceDeleteSamples {
     /*
@@ -74,7 +75,7 @@ public final class AssociationsInterfaceDeleteSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void deleteAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.associationsInterfaces().delete("rg1", "TC1", "associatedvnet-2", Context.NONE);
+        manager.associationsInterfaces().delete("rg1", "tc1", "as1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -82,8 +83,6 @@ public final class AssociationsInterfaceDeleteSamples {
 ### AssociationsInterface_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AssociationsInterface Get. */
 public final class AssociationsInterfaceGetSamples {
     /*
@@ -95,7 +94,7 @@ public final class AssociationsInterfaceGetSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void getAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.associationsInterfaces().getWithResponse("rg1", "TC1", "associatedvnet-2", Context.NONE);
+        manager.associationsInterfaces().getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -103,8 +102,6 @@ public final class AssociationsInterfaceGetSamples {
 ### AssociationsInterface_ListByTrafficController
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for AssociationsInterface ListByTrafficController. */
 public final class AssociationsInterfaceListByTrafficControllerSamples {
     /*
@@ -116,7 +113,7 @@ public final class AssociationsInterfaceListByTrafficControllerSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void getAssociations(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.associationsInterfaces().listByTrafficController("rg1", "TC1", Context.NONE);
+        manager.associationsInterfaces().listByTrafficController("rg1", "tc1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -124,11 +121,9 @@ public final class AssociationsInterfaceListByTrafficControllerSamples {
 ### AssociationsInterface_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.models.Association;
-import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
+import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
 import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
 
 /** Samples for AssociationsInterface Update. */
 public final class AssociationsInterfaceUpdateSamples {
@@ -142,13 +137,17 @@ public final class AssociationsInterfaceUpdateSamples {
      */
     public static void updateAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         Association resource =
-            manager.associationsInterfaces().getWithResponse("rg1", "TC1", "associatedvnet-1", Context.NONE).getValue();
+            manager
+                .associationsInterfaces()
+                .getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE)
+                .getValue();
         resource
             .update()
-            .withProperties(
-                new AssociationUpdateProperties()
-                    .withAssociationType(AssociationType.SUBNETS)
-                    .withSubnet(new AssociationSubnet().withId("subnetFullRef")))
+            .withAssociationType(AssociationType.SUBNETS)
+            .withSubnet(
+                new AssociationSubnetUpdate()
+                    .withId(
+                        "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet"))
             .apply();
     }
 }
@@ -157,10 +156,6 @@ public final class AssociationsInterfaceUpdateSamples {
 ### FrontendsInterface_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
-import com.azure.resourcemanager.servicenetworking.models.FrontendPropertiesIpAddress;
-
 /** Samples for FrontendsInterface CreateOrUpdate. */
 public final class FrontendsInterfaceCreateOrUpdateSamples {
     /*
@@ -174,12 +169,9 @@ public final class FrontendsInterfaceCreateOrUpdateSamples {
     public static void putFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         manager
             .frontendsInterfaces()
-            .define("publicIp1")
-            .withRegion("West US")
-            .withExistingTrafficController("rg1", "TC1")
-            .withMode(FrontendMode.PUBLIC)
-            .withIpAddressVersion(FrontendIpAddressVersion.IPV4)
-            .withPublicIpAddress(new FrontendPropertiesIpAddress().withId("resourceUriAsString"))
+            .define("fe1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
             .create();
     }
 }
@@ -188,8 +180,6 @@ public final class FrontendsInterfaceCreateOrUpdateSamples {
 ### FrontendsInterface_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for FrontendsInterface Delete. */
 public final class FrontendsInterfaceDeleteSamples {
     /*
@@ -201,7 +191,7 @@ public final class FrontendsInterfaceDeleteSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void deleteFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.frontendsInterfaces().delete("rg1", "TC1", "publicIp1", Context.NONE);
+        manager.frontendsInterfaces().delete("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -209,8 +199,6 @@ public final class FrontendsInterfaceDeleteSamples {
 ### FrontendsInterface_Get
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for FrontendsInterface Get. */
 public final class FrontendsInterfaceGetSamples {
     /*
@@ -222,7 +210,7 @@ public final class FrontendsInterfaceGetSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void getFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.frontendsInterfaces().getWithResponse("rg1", "TC1", "publicIp1", Context.NONE);
+        manager.frontendsInterfaces().getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -230,8 +218,6 @@ public final class FrontendsInterfaceGetSamples {
 ### FrontendsInterface_ListByTrafficController
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for FrontendsInterface ListByTrafficController. */
 public final class FrontendsInterfaceListByTrafficControllerSamples {
     /*
@@ -243,7 +229,7 @@ public final class FrontendsInterfaceListByTrafficControllerSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void getFrontends(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.frontendsInterfaces().listByTrafficController("rg1", "TC1", Context.NONE);
+        manager.frontendsInterfaces().listByTrafficController("rg1", "tc1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -251,12 +237,7 @@ public final class FrontendsInterfaceListByTrafficControllerSamples {
 ### FrontendsInterface_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
-import com.azure.resourcemanager.servicenetworking.models.FrontendPropertiesIpAddress;
-import com.azure.resourcemanager.servicenetworking.models.FrontendUpdateProperties;
 
 /** Samples for FrontendsInterface Update. */
 public final class FrontendsInterfaceUpdateSamples {
@@ -270,15 +251,11 @@ public final class FrontendsInterfaceUpdateSamples {
      */
     public static void updateFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         Frontend resource =
-            manager.frontendsInterfaces().getWithResponse("rg1", "TC1", "publicIp1", Context.NONE).getValue();
-        resource
-            .update()
-            .withProperties(
-                new FrontendUpdateProperties()
-                    .withMode(FrontendMode.PUBLIC)
-                    .withIpAddressVersion(FrontendIpAddressVersion.IPV4)
-                    .withPublicIpAddress(new FrontendPropertiesIpAddress().withId("resourceUriAsString")))
-            .apply();
+            manager
+                .frontendsInterfaces()
+                .getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource.update().apply();
     }
 }
 ```
@@ -286,8 +263,6 @@ public final class FrontendsInterfaceUpdateSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for Operations List. */
 public final class OperationsListSamples {
     /*
@@ -299,7 +274,7 @@ public final class OperationsListSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void getOperationsList(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -324,8 +299,8 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         manager
             .trafficControllerInterfaces()
-            .define("TC1")
-            .withRegion("West US")
+            .define("tc1")
+            .withRegion("NorthCentralUS")
             .withExistingResourceGroup("rg1")
             .withTags(mapOf("key1", "value1"))
             .create();
@@ -347,8 +322,6 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
 ### TrafficControllerInterface_Delete
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for TrafficControllerInterface Delete. */
 public final class TrafficControllerInterfaceDeleteSamples {
     /*
@@ -361,7 +334,7 @@ public final class TrafficControllerInterfaceDeleteSamples {
      */
     public static void deleteTrafficController(
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces().delete("rg1", "TC1", Context.NONE);
+        manager.trafficControllerInterfaces().delete("rg1", "tc1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -369,8 +342,6 @@ public final class TrafficControllerInterfaceDeleteSamples {
 ### TrafficControllerInterface_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for TrafficControllerInterface GetByResourceGroup. */
 public final class TrafficControllerInterfaceGetByResourceGroupSamples {
     /*
@@ -383,7 +354,9 @@ public final class TrafficControllerInterfaceGetByResourceGroupSamples {
      */
     public static void getTrafficController(
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces().getByResourceGroupWithResponse("rg1", "TC1", Context.NONE);
+        manager
+            .trafficControllerInterfaces()
+            .getByResourceGroupWithResponse("rg1", "tc1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -391,8 +364,6 @@ public final class TrafficControllerInterfaceGetByResourceGroupSamples {
 ### TrafficControllerInterface_List
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for TrafficControllerInterface List. */
 public final class TrafficControllerInterfaceListSamples {
     /*
@@ -405,7 +376,7 @@ public final class TrafficControllerInterfaceListSamples {
      */
     public static void getTrafficControllersList(
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces().list(Context.NONE);
+        manager.trafficControllerInterfaces().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -413,8 +384,6 @@ public final class TrafficControllerInterfaceListSamples {
 ### TrafficControllerInterface_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
 /** Samples for TrafficControllerInterface ListByResourceGroup. */
 public final class TrafficControllerInterfaceListByResourceGroupSamples {
     /*
@@ -427,7 +396,7 @@ public final class TrafficControllerInterfaceListByResourceGroupSamples {
      */
     public static void getTrafficControllers(
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces().listByResourceGroup("rg1", Context.NONE);
+        manager.trafficControllerInterfaces().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -435,11 +404,9 @@ public final class TrafficControllerInterfaceListByResourceGroupSamples {
 ### TrafficControllerInterface_Update
 
 ```java
-import com.azure.core.management.serializer.SerializerFactory;
-import com.azure.core.util.Context;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.servicenetworking.models.TrafficController;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 /** Samples for TrafficControllerInterface Update. */
 public final class TrafficControllerInterfaceUpdateSamples {
@@ -452,19 +419,24 @@ public final class TrafficControllerInterfaceUpdateSamples {
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void patchTrafficController(
-        com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) throws IOException {
+        com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         TrafficController resource =
-            manager.trafficControllerInterfaces().getByResourceGroupWithResponse("rg1", "TC1", Context.NONE).getValue();
-        resource
-            .update()
-            .withProperties(
-                SerializerFactory
-                    .createDefaultManagementSerializerAdapter()
-                    .deserialize(
-                        "{\"configurationEndpoints\":[\"abc.eastus.trafficcontroller.azure.net\"]}",
-                        Object.class,
-                        SerializerEncoding.JSON))
-            .apply();
+            manager
+                .trafficControllerInterfaces()
+                .getByResourceGroupWithResponse("rg1", "tc1", com.azure.core.util.Context.NONE)
+                .getValue();
+        resource.update().withTags(mapOf("key1", "value1")).apply();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
 ```

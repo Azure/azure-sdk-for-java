@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.kubernetesconfiguration.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.kubernetesconfiguration.models.PatchExtension;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for Extensions Update. */
 public final class ExtensionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/PatchExtension.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/PatchExtension.json
      */
     /**
      * Sample code: Update Extension.
@@ -39,7 +38,7 @@ public final class ExtensionsUpdateSamples {
                             "omsagent.secret.wsid",
                             "a38cef99-5a89-52ed-b6db-22095c23664b"))
                     .withConfigurationProtectedSettings(mapOf("omsagent.secret.key", "secretKeyValue01")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     @SuppressWarnings("unchecked")

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PartnerTopicProvisioningState. */
+/** Provisioning state of the partner topic. */
 public final class PartnerTopicProvisioningState extends ExpandableStringEnum<PartnerTopicProvisioningState> {
     /** Static value Creating for PartnerTopicProvisioningState. */
     public static final PartnerTopicProvisioningState CREATING = fromString("Creating");
@@ -31,6 +31,15 @@ public final class PartnerTopicProvisioningState extends ExpandableStringEnum<Pa
     /** Static value IdleDueToMirroredChannelResourceDeletion for PartnerTopicProvisioningState. */
     public static final PartnerTopicProvisioningState IDLE_DUE_TO_MIRRORED_CHANNEL_RESOURCE_DELETION =
         fromString("IdleDueToMirroredChannelResourceDeletion");
+
+    /**
+     * Creates a new instance of PartnerTopicProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PartnerTopicProvisioningState() {
+    }
 
     /**
      * Creates or finds a PartnerTopicProvisioningState from its string representation.

@@ -11,26 +11,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PartnerDetails {
     /*
-     * This is short description about the partner. The length of this
-     * description should not exceed 256 characters.
+     * This is short description about the partner. The length of this description should not exceed 256 characters.
      */
     @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Long description for the partner's scenarios and integration.Length of
-     * this description should not exceed 2048 characters.
+     * Long description for the partner's scenarios and integration.Length of this description should not exceed 2048
+     * characters.
      */
     @JsonProperty(value = "longDescription")
     private String longDescription;
 
     /*
-     * URI of the partner website that can be used by Azure customers to setup
-     * Event Grid
+     * URI of the partner website that can be used by Azure customers to setup Event Grid
      * integration on an event source.
      */
     @JsonProperty(value = "setupUri")
     private String setupUri;
+
+    /** Creates an instance of PartnerDetails class. */
+    public PartnerDetails() {
+    }
 
     /**
      * Get the description property: This is short description about the partner. The length of this description should

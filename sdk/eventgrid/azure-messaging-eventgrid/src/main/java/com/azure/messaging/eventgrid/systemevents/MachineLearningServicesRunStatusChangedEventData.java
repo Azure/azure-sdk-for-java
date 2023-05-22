@@ -52,6 +52,9 @@ public final class MachineLearningServicesRunStatusChangedEventData {
     @JsonProperty(value = "runStatus")
     private String runStatus;
 
+    /** Creates an instance of MachineLearningServicesRunStatusChangedEventData class. */
+    public MachineLearningServicesRunStatusChangedEventData() {}
+
     /**
      * Get the experimentId property: The ID of the experiment that the Machine Learning Run belongs to.
      *

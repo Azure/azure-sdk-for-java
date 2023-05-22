@@ -640,7 +640,7 @@ public class IdentityClientTests {
     }
 
     private void mockForMSICodeFlow(String tokenJson, Runnable test) throws Exception {
-        try (MockedStatic<IdentityClient> identityClientMockedStatic = mockStatic(IdentityClient.class)) {
+        try (MockedStatic<IdentityClientBase> identityClientMockedStatic = mockStatic(IdentityClientBase.class)) {
             URL url = mock(URL.class);
             HttpURLConnection huc = mock(HttpURLConnection.class);
             doNothing().when(huc).setRequestMethod(anyString());
@@ -649,14 +649,14 @@ public class IdentityClientTests {
             when(url.openConnection()).thenReturn(huc);
             InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
             when(huc.getInputStream()).thenReturn(inputStream);
-            identityClientMockedStatic.when(() -> IdentityClient.getUrl(anyString())).thenReturn(url);
+            identityClientMockedStatic.when(() -> IdentityClientBase.getUrl(anyString())).thenReturn(url);
             test.run();
         }
     }
 
     private void mockForServiceFabricCodeFlow(String tokenJson, Runnable test) throws Exception {
 
-        try (MockedStatic<IdentityClient> identityClientMockedStatic = mockStatic(IdentityClient.class)) {
+        try (MockedStatic<IdentityClientBase> identityClientMockedStatic = mockStatic(IdentityClientBase.class)) {
             URL url = mock(URL.class);
             HttpsURLConnection huc = mock(HttpsURLConnection.class);
             doNothing().when(huc).setRequestMethod(anyString());
@@ -666,13 +666,13 @@ public class IdentityClientTests {
             when(url.openConnection()).thenReturn(huc);
             InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
             when(huc.getInputStream()).thenReturn(inputStream);
-            identityClientMockedStatic.when(() -> IdentityClient.getUrl(anyString())).thenReturn(url);
+            identityClientMockedStatic.when(() -> IdentityClientBase.getUrl(anyString())).thenReturn(url);
             test.run();
         }
     }
 
     private void mockForArcCodeFlow(int responseCode, Runnable test) throws Exception {
-        try (MockedStatic<IdentityClient> identityClientMockedStatic = mockStatic(IdentityClient.class)) {
+        try (MockedStatic<IdentityClientBase> identityClientMockedStatic = mockStatic(IdentityClientBase.class)) {
             URL url = mock(URL.class);
             HttpURLConnection huc = mock(HttpURLConnection.class);
             doNothing().when(huc).setRequestMethod(anyString());
@@ -681,13 +681,13 @@ public class IdentityClientTests {
             when(url.openConnection()).thenReturn(huc);
             when(huc.getInputStream()).thenThrow(new IOException());
             when(huc.getResponseCode()).thenReturn(responseCode);
-            identityClientMockedStatic.when(() -> IdentityClient.getUrl(anyString())).thenReturn(url);
+            identityClientMockedStatic.when(() -> IdentityClientBase.getUrl(anyString())).thenReturn(url);
             test.run();
         }
     }
 
     private void mockForIMDSCodeFlow(String endpoint, String tokenJson, Runnable test) throws Exception {
-        try (MockedStatic<IdentityClient> identityClientMockedStatic = mockStatic(IdentityClient.class)) {
+        try (MockedStatic<IdentityClientBase> identityClientMockedStatic = mockStatic(IdentityClientBase.class)) {
             URL url = mock(URL.class);
             HttpURLConnection huc = mock(HttpURLConnection.class);
             doNothing().when(huc).setRequestMethod(anyString());
@@ -696,7 +696,7 @@ public class IdentityClientTests {
             when(url.openConnection()).thenReturn(huc);
             InputStream inputStream = new ByteArrayInputStream(tokenJson.getBytes(Charset.defaultCharset()));
             when(huc.getInputStream()).thenReturn(inputStream);
-            identityClientMockedStatic.when(() -> IdentityClient.getUrl(anyString())).thenReturn(url);
+            identityClientMockedStatic.when(() -> IdentityClientBase.getUrl(anyString())).thenReturn(url);
             test.run();
         }
     }

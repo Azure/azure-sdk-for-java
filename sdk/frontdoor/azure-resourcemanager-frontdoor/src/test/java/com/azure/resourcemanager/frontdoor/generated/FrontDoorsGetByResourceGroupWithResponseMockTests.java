@@ -33,7 +33,7 @@ public final class FrontDoorsGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"resourceState\":\"Disabled\",\"provisioningState\":\"qaz\",\"cname\":\"tgguwpijrajcivmm\",\"frontdoorId\":\"f\",\"rulesEngines\":[],\"friendlyName\":\"rxgkne\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":1507856575},\"enabledState\":\"Disabled\"},\"location\":\"sgbpfgzdjtx\",\"tags\":{\"rdve\":\"lbqvgaqvlgafcqu\",\"uzhyrmewipmvekdx\":\"nwsdtutnwlduyc\"},\"id\":\"kuqgsjjxundxgket\",\"name\":\"zhhzjhfjmhvvmu\",\"type\":\"gpmuneqsxvmhfbuz\"}";
+            "{\"properties\":{\"resourceState\":\"Disabled\",\"provisioningState\":\"czheyd\",\"cname\":\"dshmkxmaehvbbx\",\"frontdoorId\":\"iplt\",\"rulesEngines\":[],\"extendedProperties\":{\"wrck\":\"axkgx\"},\"friendlyName\":\"kl\",\"routingRules\":[],\"loadBalancingSettings\":[],\"healthProbeSettings\":[],\"backendPools\":[],\"frontendEndpoints\":[],\"backendPoolsSettings\":{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":1016035136},\"enabledState\":\"Enabled\"},\"location\":\"thost\",\"tags\":{\"dqbcvhzlhplod\":\"stvdxeclz\",\"wqfbumlkxtrqjfsm\":\"kdl\",\"srtawcoezbr\":\"mbtxhwgf\",\"qjbvleorfmlu\":\"ubskhudygoookkq\"},\"id\":\"qtqzfavyv\",\"name\":\"qqybarye\",\"type\":\"ayjkqa\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,17 +64,17 @@ public final class FrontDoorsGetByResourceGroupWithResponseMockTests {
         FrontDoor response =
             manager
                 .frontDoors()
-                .getByResourceGroupWithResponse("cporxvxcjz", "qizxfpxtgqscjavf", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("kwcf", "ql", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("sgbpfgzdjtx", response.location());
-        Assertions.assertEquals("lbqvgaqvlgafcqu", response.tags().get("rdve"));
-        Assertions.assertEquals("rxgkne", response.friendlyName());
+        Assertions.assertEquals("thost", response.location());
+        Assertions.assertEquals("stvdxeclz", response.tags().get("dqbcvhzlhplod"));
+        Assertions.assertEquals("kl", response.friendlyName());
         Assertions
             .assertEquals(
                 EnforceCertificateNameCheckEnabledState.ENABLED,
                 response.backendPoolsSettings().enforceCertificateNameCheck());
-        Assertions.assertEquals(1507856575, response.backendPoolsSettings().sendRecvTimeoutSeconds());
-        Assertions.assertEquals(FrontDoorEnabledState.DISABLED, response.enabledState());
+        Assertions.assertEquals(1016035136, response.backendPoolsSettings().sendRecvTimeoutSeconds());
+        Assertions.assertEquals(FrontDoorEnabledState.ENABLED, response.enabledState());
     }
 }

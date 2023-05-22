@@ -35,6 +35,10 @@ public final class SystemTopicProperties {
     @JsonProperty(value = "metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricResourceId;
 
+    /** Creates an instance of SystemTopicProperties class. */
+    public SystemTopicProperties() {
+    }
+
     /**
      * Get the provisioningState property: Provisioning state of the system topic.
      *

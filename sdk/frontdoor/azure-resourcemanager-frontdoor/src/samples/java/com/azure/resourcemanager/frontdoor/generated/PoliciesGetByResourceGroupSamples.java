@@ -7,7 +7,7 @@ package com.azure.resourcemanager.frontdoor.generated;
 /** Samples for Policies GetByResourceGroup. */
 public final class PoliciesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2020-11-01/examples/WafPolicyGet.json
+     * x-ms-original-file: specification/frontdoor/resource-manager/Microsoft.Network/stable/2022-05-01/examples/WafPolicyGet.json
      */
     /**
      * Sample code: Get Policy.

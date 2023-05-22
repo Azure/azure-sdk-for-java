@@ -23,6 +23,15 @@ public final class CatalogSyncState extends ExpandableStringEnum<CatalogSyncStat
     public static final CatalogSyncState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of CatalogSyncState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CatalogSyncState() {
+    }
+
+    /**
      * Creates or finds a CatalogSyncState from its string representation.
      *
      * @param name a name to look for.

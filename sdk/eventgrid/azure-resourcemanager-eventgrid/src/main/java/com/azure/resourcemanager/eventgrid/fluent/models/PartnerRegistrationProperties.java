@@ -20,11 +20,14 @@ public final class PartnerRegistrationProperties {
 
     /*
      * The immutableId of the corresponding partner registration.
-     * Note: This property is marked for deprecation and is not supported in
-     * any future GA API version
+     * Note: This property is marked for deprecation and is not supported in any future GA API version
      */
     @JsonProperty(value = "partnerRegistrationImmutableId")
     private UUID partnerRegistrationImmutableId;
+
+    /** Creates an instance of PartnerRegistrationProperties class. */
+    public PartnerRegistrationProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the partner registration.
