@@ -562,6 +562,4 @@ the main ServiceBusClientBuilder. -->
 
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.search.documents.indexes.models.SynonymMap"/>
 
-  <!-- variable client might not have been initialized but null is a possible value -->
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.ai.openai.(OpenAIClient|OpenAIAsyncClient)"/>
 </suppressions>
