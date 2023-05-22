@@ -15,7 +15,7 @@ mvn clean install
 ```
 
 ## Test
-There're integration tests on azure and on emulator to trigger integration test execution against Azure Cosmos DB and against [Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/cosmos-db/local-emulator), you need to follow the link to setup emulator before test execution.
+There are integration tests on azure and on emulator to trigger integration test execution against Azure Cosmos DB and against [Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/cosmos-db/local-emulator), you need to follow the link to setup emulator before test execution.
 
 - Run unit tests
 ```bash
@@ -35,7 +35,7 @@ mvn clean install -Dgpg.skip
   
      2. Set environment variables ACCOUNT_HOST, ACCOUNT_KEY and SECONDARY_ACCOUNT_KEY, where value of them are Cosmos account URI, primary key and secondary key. 
      
-        `azure-spring-data-cosmos-core` also support multiple database configuration. So set the second group environment variables NEW_ACCOUNT_HOST, NEW_ACCOUNT_KEY and NEW_SECONDARY_ACCOUNT_KEY, the two group environment variables can be same.
+        `azure-spring-data-cosmos` also support multiple database configuration. So set the second group environment variables NEW_ACCOUNT_HOST, NEW_ACCOUNT_KEY and NEW_SECONDARY_ACCOUNT_KEY, the two group environment variables can be same.
      3. Run maven command with `integration-test-azure` profile. 
   
         ```bash

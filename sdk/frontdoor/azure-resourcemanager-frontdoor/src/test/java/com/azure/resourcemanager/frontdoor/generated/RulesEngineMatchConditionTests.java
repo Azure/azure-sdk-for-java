@@ -18,13 +18,13 @@ public final class RulesEngineMatchConditionTests {
         RulesEngineMatchCondition model =
             BinaryData
                 .fromString(
-                    "{\"rulesEngineMatchVariable\":\"QueryString\",\"selector\":\"gfbcvkcv\",\"rulesEngineOperator\":\"GreaterThanOrEqual\",\"negateCondition\":true,\"rulesEngineMatchValue\":[\"qdcvdrhvoo\",\"sotbob\"],\"transforms\":[\"Lowercase\",\"UrlDecode\",\"Trim\"]}")
+                    "{\"rulesEngineMatchVariable\":\"IsMobile\",\"selector\":\"wndnhj\",\"rulesEngineOperator\":\"Any\",\"negateCondition\":false,\"rulesEngineMatchValue\":[\"vylwzbtdhxuj\",\"nbmpowuwprzq\"],\"transforms\":[\"Lowercase\",\"Trim\",\"Trim\"]}")
                 .toObject(RulesEngineMatchCondition.class);
-        Assertions.assertEquals(RulesEngineMatchVariable.QUERY_STRING, model.rulesEngineMatchVariable());
-        Assertions.assertEquals("gfbcvkcv", model.selector());
-        Assertions.assertEquals(RulesEngineOperator.GREATER_THAN_OR_EQUAL, model.rulesEngineOperator());
-        Assertions.assertEquals(true, model.negateCondition());
-        Assertions.assertEquals("qdcvdrhvoo", model.rulesEngineMatchValue().get(0));
+        Assertions.assertEquals(RulesEngineMatchVariable.IS_MOBILE, model.rulesEngineMatchVariable());
+        Assertions.assertEquals("wndnhj", model.selector());
+        Assertions.assertEquals(RulesEngineOperator.ANY, model.rulesEngineOperator());
+        Assertions.assertEquals(false, model.negateCondition());
+        Assertions.assertEquals("vylwzbtdhxuj", model.rulesEngineMatchValue().get(0));
         Assertions.assertEquals(Transform.LOWERCASE, model.transforms().get(0));
     }
 
@@ -32,18 +32,18 @@ public final class RulesEngineMatchConditionTests {
     public void testSerialize() throws Exception {
         RulesEngineMatchCondition model =
             new RulesEngineMatchCondition()
-                .withRulesEngineMatchVariable(RulesEngineMatchVariable.QUERY_STRING)
-                .withSelector("gfbcvkcv")
-                .withRulesEngineOperator(RulesEngineOperator.GREATER_THAN_OR_EQUAL)
-                .withNegateCondition(true)
-                .withRulesEngineMatchValue(Arrays.asList("qdcvdrhvoo", "sotbob"))
-                .withTransforms(Arrays.asList(Transform.LOWERCASE, Transform.URL_DECODE, Transform.TRIM));
+                .withRulesEngineMatchVariable(RulesEngineMatchVariable.IS_MOBILE)
+                .withSelector("wndnhj")
+                .withRulesEngineOperator(RulesEngineOperator.ANY)
+                .withNegateCondition(false)
+                .withRulesEngineMatchValue(Arrays.asList("vylwzbtdhxuj", "nbmpowuwprzq"))
+                .withTransforms(Arrays.asList(Transform.LOWERCASE, Transform.TRIM, Transform.TRIM));
         model = BinaryData.fromObject(model).toObject(RulesEngineMatchCondition.class);
-        Assertions.assertEquals(RulesEngineMatchVariable.QUERY_STRING, model.rulesEngineMatchVariable());
-        Assertions.assertEquals("gfbcvkcv", model.selector());
-        Assertions.assertEquals(RulesEngineOperator.GREATER_THAN_OR_EQUAL, model.rulesEngineOperator());
-        Assertions.assertEquals(true, model.negateCondition());
-        Assertions.assertEquals("qdcvdrhvoo", model.rulesEngineMatchValue().get(0));
+        Assertions.assertEquals(RulesEngineMatchVariable.IS_MOBILE, model.rulesEngineMatchVariable());
+        Assertions.assertEquals("wndnhj", model.selector());
+        Assertions.assertEquals(RulesEngineOperator.ANY, model.rulesEngineOperator());
+        Assertions.assertEquals(false, model.negateCondition());
+        Assertions.assertEquals("vylwzbtdhxuj", model.rulesEngineMatchValue().get(0));
         Assertions.assertEquals(Transform.LOWERCASE, model.transforms().get(0));
     }
 }

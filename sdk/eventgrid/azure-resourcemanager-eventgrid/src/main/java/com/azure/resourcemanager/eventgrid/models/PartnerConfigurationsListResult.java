@@ -24,6 +24,10 @@ public final class PartnerConfigurationsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of PartnerConfigurationsListResult class. */
+    public PartnerConfigurationsListResult() {
+    }
+
     /**
      * Get the value property: A collection of partner configurations.
      *

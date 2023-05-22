@@ -12,7 +12,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.Image;
 import java.nio.ByteBuffer;
@@ -32,7 +31,7 @@ public final class ImagesListByGalleryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"ehuwrykqgaifmvik\",\"publisher\":\"ydv\",\"offer\":\"bejdznxcv\",\"sku\":\"rhnj\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"StorageProvisioningFailed\"},\"id\":\"ovqfzge\",\"name\":\"jdftuljltd\",\"type\":\"ceamtm\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"uwrbehwagoh\",\"publisher\":\"f\",\"offer\":\"mrqemvvhmx\",\"sku\":\"rjfut\",\"recommendedMachineConfiguration\":{},\"provisioningState\":\"MovingResources\",\"hibernateSupport\":\"Enabled\"},\"id\":\"zcjznmwcpmgua\",\"name\":\"draufactkah\",\"type\":\"ovajjziuxxps\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,6 +60,8 @@ public final class ImagesListByGalleryMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Image> response =
-            manager.images().listByGallery("jslb", "wkojgcyztsfmzn", "aeqphchqnr", 1219456707, Context.NONE);
+            manager
+                .images()
+                .listByGallery("jkqa", "qgzsles", "cbhernntiewdj", 1433935156, com.azure.core.util.Context.NONE);
     }
 }

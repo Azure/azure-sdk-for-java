@@ -8,44 +8,53 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 import com.azure.resourcemanager.devcenter.models.PoolUpdate;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectConfiguration;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectEnableStatus;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PoolUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         PoolUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"devBoxDefinitionName\":\"rtfudxepxg\",\"networkConnectionName\":\"agvrvmnpkuk\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"tags\":{\"njhf\":\"xgwim\",\"szkkfoqre\":\"xw\",\"wneaiv\":\"fkzikfj\"},\"location\":\"czelpcirel\"}")
+                    "{\"properties\":{\"devBoxDefinitionName\":\"eqidbqfatpx\",\"networkConnectionName\":\"rxcyjmoad\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\",\"stopOnDisconnect\":{\"status\":\"Disabled\",\"gracePeriodMinutes\":1450729079}},\"tags\":{\"xrwlyc\":\"jqbjhhy\",\"kgymareqnajxqug\":\"duhpk\",\"ubeddg\":\"hky\"},\"location\":\"ofwq\"}")
                 .toObject(PoolUpdate.class);
-        Assertions.assertEquals("xgwim", model.tags().get("njhf"));
-        Assertions.assertEquals("czelpcirel", model.location());
-        Assertions.assertEquals("rtfudxepxg", model.devBoxDefinitionName());
-        Assertions.assertEquals("agvrvmnpkuk", model.networkConnectionName());
+        Assertions.assertEquals("jqbjhhy", model.tags().get("xrwlyc"));
+        Assertions.assertEquals("ofwq", model.location());
+        Assertions.assertEquals("eqidbqfatpx", model.devBoxDefinitionName());
+        Assertions.assertEquals("rxcyjmoad", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
         Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
+        Assertions.assertEquals(StopOnDisconnectEnableStatus.DISABLED, model.stopOnDisconnect().status());
+        Assertions.assertEquals(1450729079, model.stopOnDisconnect().gracePeriodMinutes());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         PoolUpdate model =
             new PoolUpdate()
-                .withTags(mapOf("njhf", "xgwim", "szkkfoqre", "xw", "wneaiv", "fkzikfj"))
-                .withLocation("czelpcirel")
-                .withDevBoxDefinitionName("rtfudxepxg")
-                .withNetworkConnectionName("agvrvmnpkuk")
+                .withTags(mapOf("xrwlyc", "jqbjhhy", "kgymareqnajxqug", "duhpk", "ubeddg", "hky"))
+                .withLocation("ofwq")
+                .withDevBoxDefinitionName("eqidbqfatpx")
+                .withNetworkConnectionName("rxcyjmoad")
                 .withLicenseType(LicenseType.WINDOWS_CLIENT)
-                .withLocalAdministrator(LocalAdminStatus.DISABLED);
+                .withLocalAdministrator(LocalAdminStatus.DISABLED)
+                .withStopOnDisconnect(
+                    new StopOnDisconnectConfiguration()
+                        .withStatus(StopOnDisconnectEnableStatus.DISABLED)
+                        .withGracePeriodMinutes(1450729079));
         model = BinaryData.fromObject(model).toObject(PoolUpdate.class);
-        Assertions.assertEquals("xgwim", model.tags().get("njhf"));
-        Assertions.assertEquals("czelpcirel", model.location());
-        Assertions.assertEquals("rtfudxepxg", model.devBoxDefinitionName());
-        Assertions.assertEquals("agvrvmnpkuk", model.networkConnectionName());
+        Assertions.assertEquals("jqbjhhy", model.tags().get("xrwlyc"));
+        Assertions.assertEquals("ofwq", model.location());
+        Assertions.assertEquals("eqidbqfatpx", model.devBoxDefinitionName());
+        Assertions.assertEquals("rxcyjmoad", model.networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, model.licenseType());
         Assertions.assertEquals(LocalAdminStatus.DISABLED, model.localAdministrator());
+        Assertions.assertEquals(StopOnDisconnectEnableStatus.DISABLED, model.stopOnDisconnect().status());
+        Assertions.assertEquals(1450729079, model.stopOnDisconnect().gracePeriodMinutes());
     }
 
     @SuppressWarnings("unchecked")

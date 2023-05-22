@@ -6,6 +6,7 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
+import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -13,15 +14,13 @@ import java.util.List;
 @Fluent
 public final class WebhookEventSubscriptionDestinationProperties {
     /*
-     * The URL that represents the endpoint of the destination of an event
-     * subscription.
+     * The URL that represents the endpoint of the destination of an event subscription.
      */
     @JsonProperty(value = "endpointUrl")
     private String endpointUrl;
 
     /*
-     * The base URL that represents the endpoint of the destination of an event
-     * subscription.
+     * The base URL that represents the endpoint of the destination of an event subscription.
      */
     @JsonProperty(value = "endpointBaseUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String endpointBaseUrl;
@@ -39,15 +38,15 @@ public final class WebhookEventSubscriptionDestinationProperties {
     private Integer preferredBatchSizeInKilobytes;
 
     /*
-     * The Azure Active Directory Tenant ID to get the access token that will
-     * be included as the bearer token in delivery requests.
+     * The Azure Active Directory Tenant ID to get the access token that will be included as the bearer token in
+     * delivery requests.
      */
     @JsonProperty(value = "azureActiveDirectoryTenantId")
     private String azureActiveDirectoryTenantId;
 
     /*
-     * The Azure Active Directory Application ID or URI to get the access token
-     * that will be included as the bearer token in delivery requests.
+     * The Azure Active Directory Application ID or URI to get the access token that will be included as the bearer
+     * token in delivery requests.
      */
     @JsonProperty(value = "azureActiveDirectoryApplicationIdOrUri")
     private String azureActiveDirectoryApplicationIdOrUri;
@@ -57,6 +56,16 @@ public final class WebhookEventSubscriptionDestinationProperties {
      */
     @JsonProperty(value = "deliveryAttributeMappings")
     private List<DeliveryAttributeMapping> deliveryAttributeMappings;
+
+    /*
+     * Minimum TLS version that should be supported by webhook endpoint
+     */
+    @JsonProperty(value = "minimumTlsVersionAllowed")
+    private TlsVersion minimumTlsVersionAllowed;
+
+    /** Creates an instance of WebhookEventSubscriptionDestinationProperties class. */
+    public WebhookEventSubscriptionDestinationProperties() {
+    }
 
     /**
      * Get the endpointUrl property: The URL that represents the endpoint of the destination of an event subscription.
@@ -193,6 +202,27 @@ public final class WebhookEventSubscriptionDestinationProperties {
     public WebhookEventSubscriptionDestinationProperties withDeliveryAttributeMappings(
         List<DeliveryAttributeMapping> deliveryAttributeMappings) {
         this.deliveryAttributeMappings = deliveryAttributeMappings;
+        return this;
+    }
+
+    /**
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version that should be supported by webhook endpoint.
+     *
+     * @return the minimumTlsVersionAllowed value.
+     */
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.minimumTlsVersionAllowed;
+    }
+
+    /**
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version that should be supported by webhook endpoint.
+     *
+     * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
+     * @return the WebhookEventSubscriptionDestinationProperties object itself.
+     */
+    public WebhookEventSubscriptionDestinationProperties withMinimumTlsVersionAllowed(
+        TlsVersion minimumTlsVersionAllowed) {
+        this.minimumTlsVersionAllowed = minimumTlsVersionAllowed;
         return this;
     }
 

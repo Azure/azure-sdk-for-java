@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for Pools ListByProject. */
 public final class PoolsListByProjectSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Pools_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/Pools_List.json
      */
     /**
      * Sample code: Pools_ListByProject.
@@ -17,6 +15,6 @@ public final class PoolsListByProjectSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void poolsListByProject(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.pools().listByProject("rg1", "DevProject", null, Context.NONE);
+        manager.pools().listByProject("rg1", "DevProject", null, com.azure.core.util.Context.NONE);
     }
 }

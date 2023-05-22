@@ -23,6 +23,15 @@ public final class LogLevel extends ExpandableStringEnum<LogLevel> {
     public static final LogLevel ERROR = fromString("error");
 
     /**
+     * Creates a new instance of LogLevel value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LogLevel() {
+    }
+
+    /**
      * Creates or finds a LogLevel from its string representation.
      *
      * @param name a name to look for.

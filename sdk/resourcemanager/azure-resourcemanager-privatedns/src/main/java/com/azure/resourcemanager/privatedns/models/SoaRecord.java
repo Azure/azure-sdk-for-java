@@ -52,6 +52,10 @@ public final class SoaRecord {
     @JsonProperty(value = "minimumTtl")
     private Long minimumTtl;
 
+    /** Creates an instance of SoaRecord class. */
+    public SoaRecord() {
+    }
+
     /**
      * Get the host property: The domain name of the authoritative name server for this SOA record.
      *

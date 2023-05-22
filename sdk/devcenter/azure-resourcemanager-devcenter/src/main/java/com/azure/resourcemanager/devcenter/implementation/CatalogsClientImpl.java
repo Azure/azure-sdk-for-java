@@ -68,8 +68,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     public interface CatalogsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/catalogs")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CatalogListResult>> listByDevCenter(
@@ -84,8 +83,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/catalogs/{catalogName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<CatalogInner>> get(
@@ -100,8 +98,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/catalogs/{catalogName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -117,8 +114,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/catalogs/{catalogName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(
@@ -134,8 +130,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/catalogs/{catalogName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -150,8 +145,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter"
-                + "/devcenters/{devCenterName}/catalogs/{catalogName}/sync")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/devcenters/{devCenterName}/catalogs/{catalogName}/sync")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> sync(
@@ -719,7 +713,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(
         String resourceGroupName, String devCenterName, String catalogName, CatalogInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, catalogName, body).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, devCenterName, catalogName, body).getSyncPoller();
     }
 
     /**
@@ -738,7 +732,9 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CatalogInner>, CatalogInner> beginCreateOrUpdate(
         String resourceGroupName, String devCenterName, String catalogName, CatalogInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, devCenterName, catalogName, body, context).getSyncPoller();
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, devCenterName, catalogName, body, context)
+            .getSyncPoller();
     }
 
     /**
@@ -1000,7 +996,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CatalogInner>, CatalogInner> beginUpdate(
         String resourceGroupName, String devCenterName, String catalogName, CatalogUpdate body) {
-        return beginUpdateAsync(resourceGroupName, devCenterName, catalogName, body).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, devCenterName, catalogName, body).getSyncPoller();
     }
 
     /**
@@ -1019,7 +1015,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CatalogInner>, CatalogInner> beginUpdate(
         String resourceGroupName, String devCenterName, String catalogName, CatalogUpdate body, Context context) {
-        return beginUpdateAsync(resourceGroupName, devCenterName, catalogName, body, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, devCenterName, catalogName, body, context).getSyncPoller();
     }
 
     /**
@@ -1261,7 +1257,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String devCenterName, String catalogName) {
-        return beginDeleteAsync(resourceGroupName, devCenterName, catalogName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, devCenterName, catalogName).getSyncPoller();
     }
 
     /**
@@ -1279,7 +1275,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String devCenterName, String catalogName, Context context) {
-        return beginDeleteAsync(resourceGroupName, devCenterName, catalogName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, devCenterName, catalogName, context).getSyncPoller();
     }
 
     /**
@@ -1513,7 +1509,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSync(
         String resourceGroupName, String devCenterName, String catalogName) {
-        return beginSyncAsync(resourceGroupName, devCenterName, catalogName).getSyncPoller();
+        return this.beginSyncAsync(resourceGroupName, devCenterName, catalogName).getSyncPoller();
     }
 
     /**
@@ -1531,7 +1527,7 @@ public final class CatalogsClientImpl implements CatalogsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSync(
         String resourceGroupName, String devCenterName, String catalogName, Context context) {
-        return beginSyncAsync(resourceGroupName, devCenterName, catalogName, context).getSyncPoller();
+        return this.beginSyncAsync(resourceGroupName, devCenterName, catalogName, context).getSyncPoller();
     }
 
     /**

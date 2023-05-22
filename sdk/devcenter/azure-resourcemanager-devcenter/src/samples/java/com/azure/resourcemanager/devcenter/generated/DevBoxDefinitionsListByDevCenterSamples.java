@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DevBoxDefinitions ListByDevCenter. */
 public final class DevBoxDefinitionsListByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/DevBoxDefinitions_ListByDevCenter.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2023-04-01/examples/DevBoxDefinitions_ListByDevCenter.json
      */
     /**
      * Sample code: DevBoxDefinitions_ListByDevCenter.
@@ -17,6 +15,6 @@ public final class DevBoxDefinitionsListByDevCenterSamples {
      * @param manager Entry point to DevCenterManager.
      */
     public static void devBoxDefinitionsListByDevCenter(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.devBoxDefinitions().listByDevCenter("rg1", "Contoso", null, Context.NONE);
+        manager.devBoxDefinitions().listByDevCenter("rg1", "Contoso", null, com.azure.core.util.Context.NONE);
     }
 }
