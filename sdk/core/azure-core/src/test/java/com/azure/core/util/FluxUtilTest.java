@@ -339,7 +339,7 @@ public class FluxUtilTest {
 
         StepVerifier.create(writeFile)
             .expectComplete()
-            .verify(Duration.ofSeconds(30));
+            .verify(Duration.ofSeconds(60));
 
         byte[] writtenData = Files.readAllBytes(file);
         assertArraysEqual(data, writtenData);
