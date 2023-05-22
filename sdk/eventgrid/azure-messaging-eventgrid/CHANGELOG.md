@@ -8,6 +8,11 @@
 ### Other Changes
 - Moved customization to its own project.
 
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.3`.
+- Upgraded `azure-core` from `1.37.0` to version `1.39.0`.
+
 ## 4.15.1 (2023-04-21)
 
 ### Other Changes
