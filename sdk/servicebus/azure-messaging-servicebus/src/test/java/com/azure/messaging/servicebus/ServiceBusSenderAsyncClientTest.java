@@ -8,11 +8,13 @@ import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.amqp.FixedAmqpRetryPolicy;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.amqp.implementation.AmqpSendLink;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.ErrorContextProvider;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.ReactorConnectionCache;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.test.utils.metrics.TestCounter;
@@ -25,10 +27,10 @@ import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
+import com.azure.messaging.servicebus.implementation.ServiceBusReactorAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.messaging.Section;
@@ -40,6 +42,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -56,6 +60,7 @@ import java.nio.ByteBuffer;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -106,7 +111,7 @@ class ServiceBusSenderAsyncClientTest {
     @Mock
     private AmqpSendLink sendLink;
     @Mock
-    private ServiceBusAmqpConnection connection;
+    private ServiceBusReactorAmqpConnection connection;
     @Mock
     private TokenCredential tokenCredential;
     @Mock
@@ -209,9 +214,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that the default batch is the same size as the message link.
      */
-    @Test
-    void createBatchDefault() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void createBatchDefault(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(), eq(CLIENT_IDENTIFIER)))
             .thenReturn(Mono.just(sendLink));
         when(sendLink.getLinkSize()).thenReturn(Mono.just(MAX_MESSAGE_LENGTH_BYTES));
@@ -229,9 +239,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies we cannot create a batch if the options size is larger than the link.
      */
-    @Test
-    void createBatchWhenSizeTooBig() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void createBatchWhenSizeTooBig(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         int maxLinkSize = 1024;
         int batchSize = maxLinkSize + 10;
 
@@ -253,9 +268,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that the producer can create a batch with a given {@link CreateMessageBatchOptions#getMaximumSizeInBytes()}.
      */
-    @Test
-    void createsMessageBatchWithSize() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void createsMessageBatchWithSize(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         int maxLinkSize = 10000;
         int batchSize = 1024;
 
@@ -294,9 +314,14 @@ class ServiceBusSenderAsyncClientTest {
             .verify(DEFAULT_TIMEOUT);
     }
 
-    @Test
-    void scheduleMessageSizeTooBig() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void scheduleMessageSizeTooBig(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         int maxLinkSize = 1024;
         int batchSize = maxLinkSize + 10;
 
@@ -322,9 +347,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sending multiple message will result in calling sender.send(MessageBatch, transaction).
      */
-    @Test
-    void sendMultipleMessagesWithTransaction() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendMultipleMessagesWithTransaction(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
@@ -362,9 +392,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sending multiple message will result in calling sender.send(MessageBatch).
      */
-    @Test
-    void sendMultipleMessages() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendMultipleMessages(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final ServiceBusMessageBatch batch = new ServiceBusMessageBatch(256 * 1024,
@@ -392,10 +427,15 @@ class ServiceBusSenderAsyncClientTest {
         messagesSent.forEach(message -> Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType()));
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
     @SuppressWarnings("unchecked")
-    void sendMultipleMessagesTracesSpans() {
+    void sendMultipleMessagesTracesSpans(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final int count = 4;
         final byte[] contents = TEST_CONTENTS.toBytes();
         final Tracer tracer1 = mock(Tracer.class);
@@ -451,10 +491,15 @@ class ServiceBusSenderAsyncClientTest {
         verify(tracer1, times(5)).end(isNull(), isNull(), any(Context.class));
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
     @SuppressWarnings("unchecked")
-    void sendCancelledIsInstrumented() {
+    void sendCancelledIsInstrumented(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final Tracer tracer1 = mock(Tracer.class);
         final TestMeter meter = new TestMeter();
         when(tracer1.isEnabled()).thenReturn(true);
@@ -502,10 +547,15 @@ class ServiceBusSenderAsyncClientTest {
         assertCommonMetricAttributes(attributes1, "cancelled");
     }
 
-    @Test
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
     @SuppressWarnings("unchecked")
-    void sendCancelledMetricsOnly() {
+    void sendCancelledMetricsOnly(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final TestMeter meter = new TestMeter();
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
@@ -533,9 +583,14 @@ class ServiceBusSenderAsyncClientTest {
         assertCommonMetricAttributes(attributes1, "cancelled");
     }
 
-    @Test
-    void sendMessageReportsMetrics() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendMessageReportsMetrics(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         TestMeter meter = new TestMeter();
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
@@ -570,9 +625,14 @@ class ServiceBusSenderAsyncClientTest {
         assertCommonMetricAttributes(attributes2, "ok");
     }
 
-    @Test
-    void sendMessageReportsMetricsAndTraces() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendMessageReportsMetricsAndTraces(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         TestMeter meter = new TestMeter();
         Tracer tracer = mock(Tracer.class);
         when(tracer.isEnabled()).thenReturn(true);
@@ -608,9 +668,14 @@ class ServiceBusSenderAsyncClientTest {
         assertEquals(span, measurement.getContext());
     }
 
-    @Test
-    void sendMessageBatchReportsMetrics() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendMessageBatchReportsMetrics(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         TestMeter meter = new TestMeter();
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
@@ -640,9 +705,14 @@ class ServiceBusSenderAsyncClientTest {
         assertCommonMetricAttributes(measurement.getAttributes(), "ok");
     }
 
-    @Test
-    void failedSendMessageReportsMetrics() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void failedSendMessageReportsMetrics(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         TestMeter meter = new TestMeter();
         ServiceBusSenderInstrumentation instrumentation = new ServiceBusSenderInstrumentation(null, meter, NAMESPACE, ENTITY_NAME);
 
@@ -671,9 +741,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sending multiple message will result in calling sender.send(Message...).
      */
-    @Test
-    void sendMessagesListWithTransaction() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendMessagesListWithTransaction(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final int count = 4;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
@@ -704,9 +779,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sending multiple message will result in calling sender.send(Message...).
      */
-    @Test
-    void sendMessagesList() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendMessagesList(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final int count = 4;
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
 
@@ -731,9 +811,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sending multiple message which does not fit in single batch will throw exception.
      */
-    @Test
-    void sendMessagesListExceedSize() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendMessagesListExceedSize(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final int count = 4;
         final Mono<Integer> linkMaxSize = Mono.just(1);
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(count, UUID.randomUUID().toString());
@@ -751,9 +836,14 @@ class ServiceBusSenderAsyncClientTest {
         verify(sendLink, never()).send(anyList());
     }
 
-    @Test
-    void sendSingleMessageThatExceedsSize() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendSingleMessageThatExceedsSize(boolean isV2) {
         // arrange
+        arrangeIfV2(isV2);
         ServiceBusMessage message = TestUtils.getServiceBusMessages(1, UUID.randomUUID().toString()).get(0);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
@@ -772,9 +862,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sending a single message will result in calling sender.send(Message, transaction).
      */
-    @Test
-    void sendSingleMessageWithTransaction() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendSingleMessageWithTransaction(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final ServiceBusMessage testData = new ServiceBusMessage(TEST_CONTENTS);
 
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), eq(retryOptions), isNull(), eq(CLIENT_IDENTIFIER)))
@@ -805,9 +900,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sending a single message will result in calling sender.send(Message).
      */
-    @Test
-    void sendSingleMessage() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void sendSingleMessage(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final ServiceBusMessage testData =
             new ServiceBusMessage(TEST_CONTENTS);
 
@@ -831,9 +931,14 @@ class ServiceBusSenderAsyncClientTest {
         Assertions.assertEquals(Section.SectionType.Data, message.getBody().getType());
     }
 
-    @Test
-    void scheduleMessage() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void scheduleMessage(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         long sequenceNumberReturned = 10;
         OffsetDateTime instant = mock(OffsetDateTime.class);
 
@@ -856,9 +961,14 @@ class ServiceBusSenderAsyncClientTest {
         Assertions.assertEquals(message, actualMessages.get(0));
     }
 
-    @Test
-    void scheduleMessageWithTransaction() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void scheduleMessageWithTransaction(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final long sequenceNumberReturned = 10;
         final OffsetDateTime instant = mock(OffsetDateTime.class);
         when(connection.createSendLink(eq(ENTITY_NAME), eq(ENTITY_NAME), any(AmqpRetryOptions.class), isNull(), eq(CLIENT_IDENTIFIER)))
@@ -880,9 +990,14 @@ class ServiceBusSenderAsyncClientTest {
         Assertions.assertEquals(message, actualMessages.get(0));
     }
 
-    @Test
-    void cancelScheduleMessage() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void cancelScheduleMessage(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final long sequenceNumberReturned = 10;
         when(managementNode.cancelScheduledMessages(anyList(), isNull())).thenReturn(Mono.empty());
 
@@ -903,9 +1018,14 @@ class ServiceBusSenderAsyncClientTest {
         Assertions.assertEquals(1, actualTotal.get());
     }
 
-    @Test
-    void cancelScheduleMessages() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void cancelScheduleMessages(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final List<Long> sequenceNumbers = new ArrayList<>();
         sequenceNumbers.add(10L);
         sequenceNumbers.add(11L);
@@ -933,9 +1053,14 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that sending multiple message will result in calling sender.send(Message...).
      */
-    @Test
-    void verifyMessageOrdering() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void verifyMessageOrdering(boolean isV2) {
         // Arrange
+        arrangeIfV2(isV2);
         final ServiceBusMessage firstMessage = new ServiceBusMessage("First message " + UUID.randomUUID());
         final ServiceBusMessage secondMessage = new ServiceBusMessage("Second message " + UUID.randomUUID());
         final ServiceBusMessage thirdMessage = new ServiceBusMessage("Third message " + UUID.randomUUID());
@@ -976,8 +1101,13 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that the onClientClose is called.
      */
-    @Test
-    void callsClientClose() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void callsClientClose(boolean isV2) {
+        arrangeIfV2(isV2);
         // Act
         sender.close();
 
@@ -988,8 +1118,13 @@ class ServiceBusSenderAsyncClientTest {
     /**
      * Verifies that the onClientClose is only called once.
      */
-    @Test
-    void callsClientCloseOnce() {
+    @ParameterizedTest
+    @CsvSource({
+        "true",
+        "false"
+    })
+    void callsClientCloseOnce(boolean isV2) {
+        arrangeIfV2(isV2);
         // Act
         sender.close();
         sender.close();
@@ -1014,5 +1149,19 @@ class ServiceBusSenderAsyncClientTest {
         } else {
             assertEquals(linkCount, startOpts.getLinks().size());
         }
+    }
+
+    // Once on V2 completely, block of code in this function should be moved to JUnit setup() method.
+    private void arrangeIfV2(boolean isV2) {
+        if (!isV2) {
+            return;
+        }
+        when(connection.connectAndAwaitToActive()).thenReturn(Mono.just(connection));
+        final ReactorConnectionCache<ServiceBusReactorAmqpConnection> connectionCache = new ReactorConnectionCache<>(
+            () -> connection, NAMESPACE, ENTITY_NAME,
+            new FixedAmqpRetryPolicy(new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(3))),
+            new HashMap<>());
+        sender = new ServiceBusSenderAsyncClient(ENTITY_NAME, MessagingEntityType.QUEUE, new ConnectionCacheWrapper(connectionCache),
+            retryOptions, DEFAULT_INSTRUMENTATION, serializer, onClientClose, null, CLIENT_IDENTIFIER);
     }
 }
