@@ -213,8 +213,7 @@ client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOpti
 ```
 ## Troubleshooting
 
-See our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/TROUBLESHOOTING.md)
-for details on how to diagnose various failure scenarios.
+For details on diagnosing various failure scenarios, see our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/TROUBLESHOOTING.md).
 
 ## Next steps
 More samples can be found [here][samples].
