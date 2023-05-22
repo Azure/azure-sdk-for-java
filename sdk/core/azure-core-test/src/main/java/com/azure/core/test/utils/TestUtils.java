@@ -249,7 +249,7 @@ public final class TestUtils {
                     "'successRate', 'partialRate', and 'failureRate' must add to 100 and no values can be negative."));
         }
 
-        return new HttpFaultInjectingHttpClient(clientToWrap, useHttps, successRate, partialRate, failureRate);
+        return new HttpFaultInjectingHttpClient(clientToWrap, useHttps, successRate, partialRate);
     }
 
     private static final class HttpFaultInjectingHttpClient implements HttpClient {
@@ -257,15 +257,12 @@ public final class TestUtils {
         private final boolean useHttps;
         private final int successRate;
         private final int partialRate;
-        private final int failureRate;
 
-        HttpFaultInjectingHttpClient(HttpClient wrappedHttpClient, boolean useHttps, int successRate, int partialRate,
-            int failureRate) {
+        HttpFaultInjectingHttpClient(HttpClient wrappedHttpClient, boolean useHttps, int successRate, int partialRate) {
             this.wrappedHttpClient = wrappedHttpClient;
             this.useHttps = useHttps;
             this.successRate = successRate;
             this.partialRate = partialRate;
-            this.failureRate = failureRate;
         }
 
         @Override
