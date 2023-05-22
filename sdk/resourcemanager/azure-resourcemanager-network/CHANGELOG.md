@@ -4,11 +4,17 @@
 
 ### Features Added
 
+- Supported `withNatGateway` in `Subnet`.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed `DRAIN` from class `LoadBalancerBackendAddressAdminState`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
 
 ## 2.26.0 (2023-04-21)
 

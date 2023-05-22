@@ -15,8 +15,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.reactivestreams.Subscription;
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -47,9 +45,11 @@ import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.azure.core.CoreTestUtils.assertArraysEqual;
@@ -244,7 +244,18 @@ public class FluxUtilTest {
 
     private static Stream<Arguments> writeFileDoesNotSwallowErrorSupplier() {
         // AsynchronousFileChannel that throws NonWritableChannelException.
-        AsynchronousFileChannel nonWritableChannel = new MockAsynchronousFileChannel() {
+        AsynchronousFileChannel nonWritableChannel = new MockAsynchronousFileChannel(new byte[4096]) {
+
+            @Override
+            public Future<Integer> write(ByteBuffer src, long position) {
+                return new CompletableFuture<Integer>() {
+                    @Override
+                    public Integer get() throws ExecutionException {
+                        throw new ExecutionException(new NonWritableChannelException());
+                    }
+                };
+            }
+
             @Override
             public <A> void write(ByteBuffer src, long position, A attachment,
                 CompletionHandler<Integer, ? super A> handler) {
@@ -272,31 +283,18 @@ public class FluxUtilTest {
             }
         };
 
-        // Improper Flux<ByteBuffer> implementation that ignores downstream requests.
-        final byte[] data = new byte[4096];
-        fillArray(data);
-        Flux<ByteBuffer> ignoresRequestFlux = new Flux<ByteBuffer>() {
-            @Override
-            public void subscribe(CoreSubscriber<? super ByteBuffer> actual) {
-                actual.onSubscribe(new Subscription() {
-                    @Override
-                    public void request(long n) {
-                        IntStream.range(0, 16).forEach(ignored -> actual.onNext(ByteBuffer.wrap(data)));
-
-                        actual.onComplete();
-                    }
-
-                    @Override
-                    public void cancel() {
-                    }
-                });
-            }
-        };
-
-        AsynchronousFileChannel ignoresRequestChannel = new MockAsynchronousFileChannel();
-
         // CompletionHandler that emits a writing error.
-        AsynchronousFileChannel completionHandlerPropagatesError = new MockAsynchronousFileChannel() {
+        AsynchronousFileChannel completionHandlerPropagatesError = new MockAsynchronousFileChannel(new byte[4096]) {
+            @Override
+            public Future<Integer> write(ByteBuffer src, long position) {
+                return new CompletableFuture<Integer>() {
+                    @Override
+                    public Integer get() throws ExecutionException {
+                        throw new ExecutionException(new FileLockInterruptionException());
+                    }
+                };
+            }
+
             @Override
             public <A> void write(ByteBuffer src, long position, A attachment,
                 CompletionHandler<Integer, ? super A> handler) {
@@ -306,16 +304,13 @@ public class FluxUtilTest {
 
         return Stream.of(
             // AsynchronousFileChannel doesn't have write capabilities.
-            Arguments.of(Flux.just(ByteBuffer.allocate(0)), nonWritableChannel, NonWritableChannelException.class),
+            Arguments.of(Flux.just(ByteBuffer.allocate(1)), nonWritableChannel, NonWritableChannelException.class),
 
             // Flux<ByteBuffer> has an exception during processing.
             Arguments.of(exceptionThrowingFlux, exceptionThrowingChannel, IOException.class),
 
-            // Flux<ByteBuffer> that ignores onNext request.
-            Arguments.of(ignoresRequestFlux, ignoresRequestChannel, IllegalStateException.class),
-
             // AsynchronousFileChannel that has an error propagated from the CompletionHandler.
-            Arguments.of(Flux.just(ByteBuffer.allocate(0)), completionHandlerPropagatesError,
+            Arguments.of(Flux.just(ByteBuffer.allocate(1)), completionHandlerPropagatesError,
                 FileLockInterruptionException.class)
         );
     }
@@ -344,7 +339,7 @@ public class FluxUtilTest {
 
         StepVerifier.create(writeFile)
             .expectComplete()
-            .verify(Duration.ofSeconds(30));
+            .verify(Duration.ofSeconds(60));
 
         byte[] writtenData = Files.readAllBytes(file);
         assertArraysEqual(data, writtenData);

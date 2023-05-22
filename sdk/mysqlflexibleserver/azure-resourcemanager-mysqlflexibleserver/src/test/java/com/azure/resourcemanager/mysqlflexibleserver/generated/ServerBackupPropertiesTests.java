@@ -15,23 +15,23 @@ public final class ServerBackupPropertiesTests {
         ServerBackupProperties model =
             BinaryData
                 .fromString(
-                    "{\"backupType\":\"bejhphoycmsxa\",\"completedTime\":\"2021-05-13T08:05:39Z\",\"source\":\"xbmtqioqjz\"}")
+                    "{\"backupType\":\"ekuksjtx\",\"completedTime\":\"2021-01-21T08:28Z\",\"source\":\"mparcryuanzw\"}")
                 .toObject(ServerBackupProperties.class);
-        Assertions.assertEquals("bejhphoycmsxa", model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-13T08:05:39Z"), model.completedTime());
-        Assertions.assertEquals("xbmtqioqjz", model.source());
+        Assertions.assertEquals("ekuksjtx", model.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T08:28Z"), model.completedTime());
+        Assertions.assertEquals("mparcryuanzw", model.source());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ServerBackupProperties model =
             new ServerBackupProperties()
-                .withBackupType("bejhphoycmsxa")
-                .withCompletedTime(OffsetDateTime.parse("2021-05-13T08:05:39Z"))
-                .withSource("xbmtqioqjz");
+                .withBackupType("ekuksjtx")
+                .withCompletedTime(OffsetDateTime.parse("2021-01-21T08:28Z"))
+                .withSource("mparcryuanzw");
         model = BinaryData.fromObject(model).toObject(ServerBackupProperties.class);
-        Assertions.assertEquals("bejhphoycmsxa", model.backupType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-13T08:05:39Z"), model.completedTime());
-        Assertions.assertEquals("xbmtqioqjz", model.source());
+        Assertions.assertEquals("ekuksjtx", model.backupType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-21T08:28Z"), model.completedTime());
+        Assertions.assertEquals("mparcryuanzw", model.source());
     }
 }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PartnerRegistrationProvisioningState. */
+/** Provisioning state of the partner registration. */
 public final class PartnerRegistrationProvisioningState
     extends ExpandableStringEnum<PartnerRegistrationProvisioningState> {
     /** Static value Creating for PartnerRegistrationProvisioningState. */
@@ -28,6 +28,15 @@ public final class PartnerRegistrationProvisioningState
 
     /** Static value Failed for PartnerRegistrationProvisioningState. */
     public static final PartnerRegistrationProvisioningState FAILED = fromString("Failed");
+
+    /**
+     * Creates a new instance of PartnerRegistrationProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PartnerRegistrationProvisioningState() {
+    }
 
     /**
      * Creates or finds a PartnerRegistrationProvisioningState from its string representation.
