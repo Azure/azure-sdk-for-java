@@ -1,5 +1,10 @@
 # Release History
 
+## 4.17.0-beta.1 (Unreleased)
+
+### Features Added
+New Event Grid client for Namespace feature.
+
 ## 4.16.0 (2023-06-06)
 
 ### Features Added
