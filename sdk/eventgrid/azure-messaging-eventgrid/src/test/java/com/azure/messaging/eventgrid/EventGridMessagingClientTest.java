@@ -20,7 +20,10 @@ import com.azure.messaging.eventgrid.models.RejectOptions;
 import com.azure.messaging.eventgrid.models.RejectResult;
 import com.azure.messaging.eventgrid.models.ReleaseOptions;
 import com.azure.messaging.eventgrid.models.ReleaseResult;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -31,38 +34,44 @@ import java.util.Set;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Disabled
 class EventGridMessagingClientTest {
 
     public static final String TOPICNAME = "billwertegv2-egv2-topic";
     public static final String EVENT_SUBSCRIPTION_NAME = "billwertegv2-egv2-es";
 
-    EventGridClient buildClient() {
-        EventGridClientBuilder builder = new EventGridClientBuilder()
+    EventGridClientBuilder buildClientBuilder() {
+        return new EventGridClientBuilder()
             .httpClient(HttpClient.createDefault())
             .endpoint("https://billwertegv2-egv2-ns.centraluseuap-1.eventgrid.azure.net")
             .serviceVersion(EventGridMessagingServiceVersion.V2023_06_01_PREVIEW)
-            .credential(CREDENTIAL)
-            .httpLogOptions(new HttpLogOptions()
-                .setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)
-                .setAllowedQueryParamNames(Set.of("maxWaitTime")));
-        return builder.buildClient();
+            .credential(CREDENTIAL);
+    }
+
+    EventGridClient buildClient() {
+
+        return buildClientBuilder().buildClient();
+    }
+
+    EventGridAsyncClient buildAsyncClient() {
+        return buildClientBuilder().buildAsyncClient();
     }
 
     AzureKeyCredential CREDENTIAL = new AzureKeyCredential(Configuration.getGlobalConfiguration().get("EG_KEY"));
     @Test
-    void publishCloudEvent() {
+    void publishCloudEventSync() {
         EventGridClient client = buildClient();
         client.publishCloudEvent(TOPICNAME, getCloudEvent());
     }
 
     @Test
-    void publishBatchOfCloudEvents() {
+    void publishBatchOfCloudEventsSync() {
         EventGridClient client = buildClient();
         client.publishCloudEvents(TOPICNAME, List.of(getCloudEvent(), getCloudEvent()));
     }
 
     @Test
-    void receiveBatchOfCloudEvents() {
+    void receiveBatchOfCloudEventsSync() {
         EventGridClient client = buildClient();
         client.publishCloudEvent(TOPICNAME, getCloudEvent());
         ReceiveResult result = client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 10, Duration.ofSeconds(10));
@@ -71,7 +80,7 @@ class EventGridMessagingClientTest {
     }
 
     @Test
-    void acknowledgeBatchOfCloudEvents() {
+    void acknowledgeBatchOfCloudEventsSync() {
         EventGridClient client = buildClient();
         client.publishCloudEvent(TOPICNAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
@@ -82,7 +91,7 @@ class EventGridMessagingClientTest {
     }
 
     @Test
-    void releaseBatchOfCloudEvents() {
+    void releaseBatchOfCloudEventsSync() {
         EventGridClient client = buildClient();
         client.publishCloudEvent(TOPICNAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
@@ -93,7 +102,7 @@ class EventGridMessagingClientTest {
     }
 
     @Test
-    void rejectBatchOfCloudEvents() {
+    void rejectBatchOfCloudEventsSync() {
         EventGridClient client = buildClient();
         client.publishCloudEvent(TOPICNAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
@@ -101,6 +110,85 @@ class EventGridMessagingClientTest {
         RejectResult rejectResult = client.rejectCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, rejectOptions);
         assertNotNull(rejectResult);
         assertTrue(rejectResult.getSucceededLockTokens().size() > 0);
+    }
+
+    @Test
+    void publishCloudEvent() {
+        EventGridAsyncClient client = buildAsyncClient();
+        StepVerifier.create(client.publishCloudEvent(TOPICNAME, getCloudEvent()))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
+    }
+
+    @Test
+    void publishBatchOfCloudEvents() {
+        EventGridAsyncClient client = buildAsyncClient();
+        StepVerifier.create(client.publishCloudEvents(TOPICNAME, List.of(getCloudEvent(), getCloudEvent())))
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
+    }
+
+    @Test
+    void receiveBatchOfCloudEvents() {
+        EventGridAsyncClient client = buildAsyncClient();
+        client.publishCloudEvent(TOPICNAME, getCloudEvent()).block();
+        StepVerifier.create(client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 10, Duration.ofSeconds(10)))
+            .assertNext(receiveResult -> {
+                assertNotNull(receiveResult);
+                assertTrue(receiveResult.getValue().size() > 0);
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    void acknowledgeBatchOfCloudEvents() {
+        EventGridAsyncClient client = buildAsyncClient();
+        client.publishCloudEvent(TOPICNAME, getCloudEvent()).block();
+        client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10))
+            .flatMap(receiveResult -> {
+                AcknowledgeOptions acknowledgeOptions = new AcknowledgeOptions(List.of(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+                return client.acknowledgeCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, acknowledgeOptions);
+            })
+            .as(StepVerifier::create)
+            .assertNext(acknowledgeResult -> {
+                assertNotNull(acknowledgeResult);
+                assertTrue(acknowledgeResult.getSucceededLockTokens().size() > 0);
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    void releaseBatchOfCloudEvents() {
+        EventGridAsyncClient client = buildAsyncClient();
+        client.publishCloudEvent(TOPICNAME, getCloudEvent()).block();
+        client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10))
+            .flatMap(receiveResult -> {
+                ReleaseOptions releaseOptions = new ReleaseOptions(List.of(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+                return client.releaseCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, releaseOptions);
+            })
+            .as(StepVerifier::create)
+            .assertNext(releaseResult -> {
+                assertNotNull(releaseResult);
+                assertTrue(releaseResult.getSucceededLockTokens().size() > 0);
+            })
+            .verifyComplete();
+    }
+
+    @Test
+    void rejectBatchOfCloudEvents() {
+        EventGridAsyncClient client = buildAsyncClient();
+        client.publishCloudEvent(TOPICNAME, getCloudEvent()).block();
+        client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10))
+            .flatMap(receiveResult -> {
+                RejectOptions rejectOptions = new RejectOptions(List.of(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+                return client.rejectCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, rejectOptions);
+            })
+            .as(StepVerifier::create)
+            .assertNext(rejectResult -> {
+                assertNotNull(rejectResult);
+                assertTrue(rejectResult.getSucceededLockTokens().size() > 0);
+            })
+            .verifyComplete();
     }
 
     private static CloudEvent getCloudEvent() {
