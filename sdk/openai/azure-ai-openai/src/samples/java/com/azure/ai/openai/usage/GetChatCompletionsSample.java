@@ -3,14 +3,14 @@
 
 package com.azure.ai.openai.usage;
 
+import com.azure.ai.openai.OpenAIClient;
+import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletions;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.CompletionsUsage;
-import com.azure.ai.openai.OpenAIClient;
-import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
  * Completions support a wide variety of tasks and generate text that continues from or "completes" provided
  * prompt data.
  */
-public class GetChatCompletions {
+public class GetChatCompletionsSample {
     /**
      * Runs the sample algorithm and demonstrates how to get chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes" provided

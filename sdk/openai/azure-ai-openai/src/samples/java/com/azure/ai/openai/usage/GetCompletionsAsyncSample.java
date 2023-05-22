@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * Sample demonstrates how to get completions for the provided input prompts. Completions support a wide variety of
  * tasks and generate text that continues from or "completes" provided prompt data.
  */
-public class GetCompletionsAsync {
+public class GetCompletionsAsyncSample {
     /**
      * Runs the sample algorithm and demonstrates how to get completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes" provided

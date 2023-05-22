@@ -3,12 +3,12 @@
 
 package com.azure.ai.openai.usage;
 
+import com.azure.ai.openai.OpenAIClient;
+import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
-import com.azure.ai.openai.OpenAIClient;
-import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 
 import java.util.ArrayList;
@@ -18,7 +18,7 @@ import java.util.List;
  * Sample demonstrates how to get completions for the provided input prompts. Completions support a wide variety of
  * tasks and generate text that continues from or "completes" provided prompt data.
  */
-public class GetCompletions {
+public class GetCompletionsSample {
     /**
      * Runs the sample algorithm and demonstrates how to get completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes" provided

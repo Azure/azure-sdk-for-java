@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.openai;
+package com.azure.ai.openai.usage;
 
+import com.azure.ai.openai.OpenAIClient;
+import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
@@ -14,7 +16,7 @@ import java.util.Arrays;
 /**
  * Sample demonstrates how to get the embeddings for a given prompt.
  */
-public class GetEmbeddings {
+public class GetEmbeddingsSample {
     /**
      * Runs the sample algorithm and demonstrates how to get the embeddings for a given prompt.
      *

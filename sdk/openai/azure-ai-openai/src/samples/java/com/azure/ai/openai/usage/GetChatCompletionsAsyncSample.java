@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * Completions support a wide variety of tasks and generate text that continues from or "completes" provided
  * prompt data.
  */
-public class GetChatCompletionsAsync {
+public class GetChatCompletionsAsyncSample {
     /**
      * Runs the sample algorithm and demonstrates how to get chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes" provided
