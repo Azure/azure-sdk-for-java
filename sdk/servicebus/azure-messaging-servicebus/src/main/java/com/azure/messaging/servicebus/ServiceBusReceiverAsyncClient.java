@@ -1771,17 +1771,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         // A Mono, when subscribed, requests the broker to renew the message once and updates the message's lockedUntil
         // field to reflect the new expiration time.
-        final Mono<OffsetDateTime> renewalMono = this.renewMessageLock(lockToken)
+        final Mono<OffsetDateTime> renewalMono = tracer.traceRenewMessageLock(this.renewMessageLock(lockToken)
             .map(nextExpireAt -> {
                 message.setLockedUntil(nextExpireAt);
                 return nextExpireAt;
-            });
+            }), message);
 
         // The operation performing recurring renewal by subscribing to 'renewalMono' before the message expires each time.
         // The periodic renewal stops when the object is disposed of, or when the 'maxRenewalDuration' elapses.
         final LockRenewalOperation recurringRenewal = new LockRenewalOperation(lockToken, maxRenewalDuration, false, __ -> renewalMono, initialExpireAt);
         // TODO: anu ^ - (allocation improvement)
-        //  Update LockRenewalOperation::Ctr to take Mono<OffsetDateTime> instead of a Function<String, Mono<OffsetDateTime>>
+        //  Update LockRenewalOperation::Ctr to take Mono<OffsetDateTime> instead of a Func<String, Mono<OffsetDateTime>>,
+        //  the Func code never uses first lockToken 'String' param.
         try {
             // Track the recurring renewal operation in client scope so that it can be disposed of (to prevent memory leak)
             // 1. when the client closes, or

@@ -76,7 +76,6 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
             @Override
             public ServiceBusReceiverAsyncClient answer(InvocationOnMock invocation) {
                 if (buildClientCalls.incrementAndGet() == 1) {
-                    // The first client.
                     return firstClient;
                 } else {
                     throw new UnsupportedOperationException("NoSecondClient");
@@ -95,6 +94,8 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
             verifier.create(() -> pump.beginIntern())
                 .thenAwait(connectionStatePollInterval.multipliedBy(3))
                 .verifyErrorSatisfies(e -> {
+                    // The assertions confirm that the RollingMessagePump attempted to create the second pump
+                    // by requesting a second client, that proves the retry happened on connection termination.
                     Assertions.assertTrue(e instanceof IllegalStateException);
                     Assertions.assertNotNull(e.getCause());
                     Assertions.assertTrue(e.getCause() instanceof UnsupportedOperationException);
@@ -121,7 +122,6 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
             @Override
             public ServiceBusReceiverAsyncClient answer(InvocationOnMock invocation) {
                 if (buildClientCalls.incrementAndGet() == 1) {
-                    // The first client.
                     return firstClient;
                 } else {
                     throw new UnsupportedOperationException("NoSecondClient");
@@ -172,7 +172,6 @@ public class NonSessionProcessorRollingMessagePumpIsolatedTest {
             @Override
             public ServiceBusReceiverAsyncClient answer(InvocationOnMock invocation) {
                 if (buildClientCalls.incrementAndGet() == 1) {
-                    // The first client.
                     return firstClient;
                 } else {
                     throw new UnsupportedOperationException("NoSecondClient");
