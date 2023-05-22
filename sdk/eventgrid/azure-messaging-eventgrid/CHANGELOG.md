@@ -1,13 +1,9 @@
 # Release History
 
-## 4.16.0-beta.1 (Unreleased)
+## 4.16.0 (2023-06-06)
 
 ### Features Added
 - Added new events for Healthcare, Acs, and Storage.
-
-### Breaking Changes
-
-### Bugs Fixed
 
 ### Other Changes
 - Moved customization to its own project.
