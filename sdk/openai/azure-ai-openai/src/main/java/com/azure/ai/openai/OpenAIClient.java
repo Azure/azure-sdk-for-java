@@ -31,7 +31,7 @@ import reactor.core.publisher.Flux;
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
-    private final OpenAIClientImpl azureServiceClient;
+    @Generated private final OpenAIClientImpl serviceClient;
 
     private final NonAzureOpenAIClientImpl openAIServiceClient;
 
@@ -41,7 +41,7 @@ public final class OpenAIClient {
      * @param service the service client implementation.
      */
     OpenAIClient(OpenAIClientImpl service) {
-        azureServiceClient = service;
+        serviceClient = service;
         openAIServiceClient = null;
     }
 
@@ -51,7 +51,7 @@ public final class OpenAIClient {
      * @param service the service client implementation.
      */
     OpenAIClient(NonAzureOpenAIClientImpl service) {
-        azureServiceClient = null;
+        serviceClient = null;
         openAIServiceClient = service;
     }
 
@@ -106,8 +106,8 @@ public final class OpenAIClient {
     public Response<BinaryData> getEmbeddingsWithResponse(
             String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-            ? openAIServiceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions)
-            : azureServiceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions);
+                ? openAIServiceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions)
+                : serviceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions);
     }
 
     /**
@@ -195,7 +195,7 @@ public final class OpenAIClient {
             String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
                 ? openAIServiceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions)
-                : azureServiceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions);
+                : serviceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions);
     }
 
     /**
@@ -273,8 +273,10 @@ public final class OpenAIClient {
     public Response<BinaryData> getChatCompletionsWithResponse(
             String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-            ? openAIServiceClient.getChatCompletionsWithResponse(deploymentId, chatCompletionsOptions, requestOptions)
-            : azureServiceClient.getChatCompletionsWithResponse(deploymentId, chatCompletionsOptions, requestOptions);
+                ? openAIServiceClient.getChatCompletionsWithResponse(
+                        deploymentId, chatCompletionsOptions, requestOptions)
+                : serviceClient.getChatCompletionsWithResponse(
+                        deploymentId, chatCompletionsOptions, requestOptions);
     }
 
     /**

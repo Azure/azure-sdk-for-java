@@ -32,9 +32,7 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
-
-    private final OpenAIClientImpl azureServiceClient;
-
+    @Generated private final OpenAIClientImpl serviceClient;
     private final NonAzureOpenAIClientImpl openAIServiceClient;
 
     /**
@@ -45,7 +43,7 @@ public final class OpenAIAsyncClient {
      * @param service the service client implementation for Azure OpenAI service client.
      */
     OpenAIAsyncClient(OpenAIClientImpl service) {
-        azureServiceClient = service;
+        serviceClient = service;
         openAIServiceClient = null;
     }
 
@@ -57,7 +55,7 @@ public final class OpenAIAsyncClient {
      * @param service the service client implementation for Non-Azure OpenAI service client.
      */
     OpenAIAsyncClient(NonAzureOpenAIClientImpl service) {
-        azureServiceClient = null;
+        serviceClient = null;
         openAIServiceClient = service;
     }
 
@@ -113,7 +111,7 @@ public final class OpenAIAsyncClient {
             String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
                 ? openAIServiceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions)
-                : azureServiceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
+                : serviceClient.getEmbeddingsWithResponseAsync(deploymentId, embeddingsOptions, requestOptions);
     }
 
     /**
@@ -202,7 +200,7 @@ public final class OpenAIAsyncClient {
             String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
                 ? openAIServiceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions)
-                : azureServiceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
+                : serviceClient.getCompletionsWithResponseAsync(deploymentId, completionsOptions, requestOptions);
     }
 
     /**
@@ -283,7 +281,7 @@ public final class OpenAIAsyncClient {
         return openAIServiceClient != null
                 ? openAIServiceClient.getChatCompletionsWithResponseAsync(
                         deploymentId, chatCompletionsOptions, requestOptions)
-                : azureServiceClient.getChatCompletionsWithResponseAsync(
+                : serviceClient.getChatCompletionsWithResponseAsync(
                         deploymentId, chatCompletionsOptions, requestOptions);
     }
 
