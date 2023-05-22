@@ -20,7 +20,7 @@ import os
 import argparse
 import requests
 from log import log
-from sync_external_dependencies import version_bigger_than
+from sync_external_dependencies import version_greater_than
 from replace_util import change_to_repo_root_dir
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
@@ -98,7 +98,7 @@ def three_way_merge(ver_local, ver_remote, ver_sb3_managed):
             v_local = ver_local[k]
             v_remote = ver_remote[k]
             v_sb3 = ver_sb3_managed.get(k, 'N/A')
-            if v_sb3 != 'N/A' and v_remote == v_sb3 and version_bigger_than(v_remote, v_local):
+            if v_sb3 != 'N/A' and v_remote == v_sb3 and version_greater_than(v_remote, v_local):
                 resolve_dict[k] = v_remote
             else:
                 log.warn("Conflicting version found for [{:<{}}], local is [{:<{}}], but remote is [{:<{}}], the sb3 managed version is [{:<{}}], it will be set as remote version,"

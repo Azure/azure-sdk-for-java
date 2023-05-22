@@ -35,36 +35,39 @@ def sync_external_dependencies(source_file, target_file):
     # Read artifact version from source_file.
     dependency_dict = {}
     remove_list = []
-    with open(source_file) as file:
-        for line in file:
-            if line.startswith('#remove'):
-                remove_list = line.strip().split(';', 1)
-            else:
-                line = line.strip()
-                key, val = line.split(';', 1)
-                dependency_dict[key] = val
-    # Write artifact versions into target file.
-    with in_place.InPlace(target_file) as file:
-        for line in file:
-            line = line.strip()
-            if line.startswith('#') or not line:
-                file.write(line)
-                file.write('\n')
-            else:
-                key, val = line.split(';', 1)
-                if key not in SKIP_IDS and key in dependency_dict:
-                    file.write('{};{}\n'.format(key, dependency_dict[key]))
-                    log.info("update artifact:{} to {}".format(key, dependency_dict[key]))
-                    del dependency_dict[key]
-                elif key not in SKIP_IDS and key in remove_list:
-                    log.warn("remove artifact:{}".format(key))
+    if os.path.exists(source_file):
+        with open(source_file) as file:
+            for line in file:
+                if line.startswith('#remove'):
+                    remove_list = line.strip().split(';', 1)
                 else:
+                    line = line.strip()
+                    key, val = line.split(';', 1)
+                    dependency_dict[key] = val
+        # Write artifact versions into target file.
+        with in_place.InPlace(target_file) as file:
+            for line in file:
+                line = line.strip()
+                if line.startswith('#') or not line:
                     file.write(line)
                     file.write('\n')
-        if dependency_dict:
-            file.write("\n# Spring Boot 3 dependency versions\n")
-            for key in dependency_dict:
-                file.write('{};{}\n'.format(key, dependency_dict[key]))
+                else:
+                    key, val = line.split(';', 1)
+                    if key not in SKIP_IDS and key in dependency_dict:
+                        file.write('{};{}\n'.format(key, dependency_dict[key]))
+                        log.info("update artifact:{} to {}".format(key, dependency_dict[key]))
+                        del dependency_dict[key]
+                    elif key not in SKIP_IDS and key in remove_list:
+                        log.warn("remove artifact:{}".format(key))
+                    else:
+                        file.write(line)
+                        file.write('\n')
+            if dependency_dict:
+                file.write("\n# Spring Boot 3 dependency versions\n")
+                for key in dependency_dict:
+                    file.write('{};{}\n'.format(key, dependency_dict[key]))
+    else:
+        log.warn('No conflict versions!')
 
 
 if __name__ == '__main__':

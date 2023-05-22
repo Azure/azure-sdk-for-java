@@ -90,10 +90,10 @@ def sync_external_dependencies(source_file, target_file):
                 key, value = line.split(';', 1)
                 if key not in SKIP_IDS and key in dependency_dict:
                     value_in_dict = dependency_dict[key]
-                    if version_bigger_than(value, value_in_dict):
+                    if version_greater_than(value, value_in_dict):
                         log.warn('Version update skipped. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
                         file.write(line)
-                    elif version_bigger_than(value_in_dict, value):
+                    elif version_greater_than(value_in_dict, value):
                         log.info('Version updated. key = {}, value = {}, new_value = {}'.format(key, value, value_in_dict))
                         file.write('{};{}'.format(key, value_in_dict))
                     else:
@@ -112,7 +112,7 @@ def update_external_dependencies_comment(source_name, target_file):
         file.writelines(lines)
 
 
-def version_bigger_than(source_version, target_version):
+def version_greater_than(source_version, target_version):
     source_version = format_version(source_version, SPECIAL_VERSION_LIST)
     target_version = format_version(target_version, SPECIAL_VERSION_LIST)
     sv = parse(source_version)
@@ -127,7 +127,7 @@ def version_bigger_than(source_version, target_version):
 
         # ('1.0-RELEASE','1.1') ('1.1-RELEASE','1') ('1.1-RELEASE','1.0')
         if is_invalid_version(source_version) or is_invalid_version(target_version):
-            return special_version_bigger_than(source_version, target_version)
+            return special_version_greater_than(source_version, target_version)
     else:
         # Spring RC version should be bigger than milestone version ('3.0.0-RC1', '3.0.0-M5')
         if not is_invalid_version(source_version) and sv.is_prerelease and is_invalid_version(target_version):
@@ -139,7 +139,7 @@ def version_bigger_than(source_version, target_version):
 
         # ('2.7.4', '3.0.0-M5')
         if is_invalid_version(source_version) or is_invalid_version(target_version):
-            return special_version_bigger_than(source_version, target_version)
+            return special_version_greater_than(source_version, target_version)
 
     if sv.major != tv.major:
         return sv.major > tv.major
@@ -162,7 +162,7 @@ def is_invalid_version(verify_version):
     return type(version_dict['_version']) == str
 
 
-def special_version_bigger_than(version1, version2):
+def special_version_greater_than(version1, version2):
     v1 = version1.split('.')
     v2 = version2.split('.')
     len_1 = len(v1)
@@ -183,31 +183,31 @@ def special_version_bigger_than(version1, version2):
 
 
 class Tests(unittest.TestCase):
-    def test_version_bigger_than(self):
-        self.assertEqual(version_bigger_than('1', '2'), False)
-        self.assertEqual(version_bigger_than('2', '1'), True)
-        self.assertEqual(version_bigger_than('1.0', '2'), False)
-        self.assertEqual(version_bigger_than('2.0', '1'), True)
-        self.assertEqual(version_bigger_than('1.1', '1'), True)
-        self.assertEqual(version_bigger_than('1', '1.1'), False)
-        self.assertEqual(version_bigger_than('1.0-RELEASE', '1.1'), False)
-        self.assertEqual(version_bigger_than('1.1-RELEASE', '1'), True)
-        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0'), True)
-        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0.1'), True)
-        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.0.1-RELEASE'), True)
-        self.assertEqual(version_bigger_than('1.1-RELEASE', '1.1.1-RELEASE'), False)
-        self.assertEqual(version_bigger_than('2.7.4', '3.0.0-M5'), False)
-        self.assertEqual(version_bigger_than('3.0.0-M5', '2.7.4'), True)
-        self.assertEqual(version_bigger_than('3.0.0-M4', '3.0.0-M5'), False)
-        self.assertEqual(version_bigger_than('3.0.0-M5', '3.0.0-M4'), True)
-        self.assertEqual(version_bigger_than('3.0.0-M5', '3.0.0-RC1'), False)
-        self.assertEqual(version_bigger_than('3.0.0-RC1', '3.0.0-M5'), True)
-        self.assertEqual(version_bigger_than('3.0.0-RC1', '3.0.0-RC2'), False)
-        self.assertEqual(version_bigger_than('3.0.0-RC2', '3.0.0-RC1'), True)
-        self.assertEqual(version_bigger_than('11.2.3.jre17', '10.2.3.jre8'), True)
-        self.assertEqual(version_bigger_than('4.1.89.Final', '4.1.87.Final'), True)
-        self.assertEqual(version_bigger_than('6.2.0.RELEASE', '6.2.2.RELEASE'), False)
-        self.assertEqual(version_bigger_than('9.4.50.v20221201', '11.0.13'), False)
+    def test_version_greater_than(self):
+        self.assertEqual(version_greater_than('1', '2'), False)
+        self.assertEqual(version_greater_than('2', '1'), True)
+        self.assertEqual(version_greater_than('1.0', '2'), False)
+        self.assertEqual(version_greater_than('2.0', '1'), True)
+        self.assertEqual(version_greater_than('1.1', '1'), True)
+        self.assertEqual(version_greater_than('1', '1.1'), False)
+        self.assertEqual(version_greater_than('1.0-RELEASE', '1.1'), False)
+        self.assertEqual(version_greater_than('1.1-RELEASE', '1'), True)
+        self.assertEqual(version_greater_than('1.1-RELEASE', '1.0'), True)
+        self.assertEqual(version_greater_than('1.1-RELEASE', '1.0.1'), True)
+        self.assertEqual(version_greater_than('1.1-RELEASE', '1.0.1-RELEASE'), True)
+        self.assertEqual(version_greater_than('1.1-RELEASE', '1.1.1-RELEASE'), False)
+        self.assertEqual(version_greater_than('2.7.4', '3.0.0-M5'), False)
+        self.assertEqual(version_greater_than('3.0.0-M5', '2.7.4'), True)
+        self.assertEqual(version_greater_than('3.0.0-M4', '3.0.0-M5'), False)
+        self.assertEqual(version_greater_than('3.0.0-M5', '3.0.0-M4'), True)
+        self.assertEqual(version_greater_than('3.0.0-M5', '3.0.0-RC1'), False)
+        self.assertEqual(version_greater_than('3.0.0-RC1', '3.0.0-M5'), True)
+        self.assertEqual(version_greater_than('3.0.0-RC1', '3.0.0-RC2'), False)
+        self.assertEqual(version_greater_than('3.0.0-RC2', '3.0.0-RC1'), True)
+        self.assertEqual(version_greater_than('11.2.3.jre17', '10.2.3.jre8'), True)
+        self.assertEqual(version_greater_than('4.1.89.Final', '4.1.87.Final'), True)
+        self.assertEqual(version_greater_than('6.2.0.RELEASE', '6.2.2.RELEASE'), False)
+        self.assertEqual(version_greater_than('9.4.50.v20221201', '11.0.13'), False)
 
 
 if __name__ == '__main__':
