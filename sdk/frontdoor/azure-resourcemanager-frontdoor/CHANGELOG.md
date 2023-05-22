@@ -1,14 +1,31 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2023-05-22)
 
-### Features Added
+- Azure Resource Manager FrontDoor client library for Java. This package contains Microsoft Azure SDK for FrontDoor Management SDK. FrontDoor Client. Package tag package-2022-05. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.WebApplicationFirewallPolicy$Update` was modified
 
-### Other Changes
+* `withEtag(java.lang.String)` was removed
+* `withManagedRules(models.ManagedRuleSetList)` was removed
+* `withCustomRules(models.CustomRuleList)` was removed
+* `withSku(models.Sku)` was removed
+* `withPolicySettings(models.PolicySettings)` was removed
+
+### Features Added
+
+* `models.TagsObject` was added
+
+#### `models.Policies` was modified
+
+* `list()` was added
+* `list(com.azure.core.util.Context)` was added
+
+#### `models.FrontDoor` was modified
+
+* `extendedProperties()` was added
 
 ## 1.0.0-beta.2 (2023-01-13)
 
