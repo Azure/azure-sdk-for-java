@@ -4,6 +4,31 @@
 
 ### Features Added
 
+* Added Deny List for Targeting Filter.
+
+ ```yml
+ feature-management:
+   TargetingTest:
+     enabled-for:
+       -
+         name: Microsoft.Targeting
+         parameters:
+           users:
+             - Jeff
+             - Alicia
+           groups:
+             -
+               name: Ring0
+               rolloutPercentage: 100
+             -
+               name: Ring1
+               rolloutPercentage: 100
+           defaultRolloutPercentage: 50
+           exclusion:
+             users:
+               - Ross
+ ```
+
 ### Breaking Changes
 
 ### Bugs Fixed

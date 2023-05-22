@@ -32,8 +32,6 @@ public class TargetingFilterTest {
 
     private static final String DEFAULT_ROLLOUT_PERCENTAGE = "defaultRolloutPercentage";
 
-    private static final String REQUIRED_PARAMETER = "Value cannot be null.";
-
     private static final String OUT_OF_RANGE = "The value is out of the accepted range.";
 
     @Test
@@ -301,13 +299,13 @@ public class TargetingFilterTest {
 
         FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
 
-        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
 
-        Map<String, String> users = new LinkedHashMap<String, String>();
+        Map<String, String> users = new LinkedHashMap<>();
         users.put("0", "Doe");
 
         parameters.put(USERS, users);
-        parameters.put(GROUPS, new LinkedHashMap<String, Object>());
+        parameters.put(GROUPS, new LinkedHashMap<>());
         parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, 0);
 
         context.setParameters(null);
@@ -315,8 +313,78 @@ public class TargetingFilterTest {
 
         TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("doe", null), options);
 
-        Exception exception = assertThrows(TargetingException.class, () -> filter.evaluate(context));
-        assertEquals("Audience : " + REQUIRED_PARAMETER, exception.getMessage());
+        assertFalse(filter.evaluate(context));
+    }
+    
+    public void excludeUser() {
+        FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+
+        Map<String, Object> parameters = new LinkedHashMap<>();
+
+        Map<String, String> users = new LinkedHashMap<>();
+        users.put("0", "Doe");
+
+        parameters.put(USERS, users);
+        parameters.put(GROUPS, new LinkedHashMap<>());
+        parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, 0);
+
+        context.setParameters(parameters);
+        context.setFeatureName("testFeature");
+
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor("Doe", null));
+
+        assertTrue(filter.evaluate(context));
+
+        // Now the users is excluded
+        Map<String, Object> excludes = new LinkedHashMap<>();
+        Map<String, String> excludedUsers = new LinkedHashMap<>();
+        excludedUsers.put("0", "Doe");
+
+        excludes.put(USERS, excludedUsers);
+        parameters.put("exclusion", excludes);
+
+        context.setParameters(parameters);
+
+        assertFalse(filter.evaluate(context));
+    }
+    
+    @Test
+    public void excludeGroup() {
+        FeatureFilterEvaluationContext context = new FeatureFilterEvaluationContext();
+
+        Map<String, Object> parameters = new LinkedHashMap<String, Object>();
+
+        Map<String, Object> groups = new LinkedHashMap<String, Object>();
+        Map<String, String> g1 = new LinkedHashMap<String, String>();
+        g1.put("name", "g1");
+        g1.put("rolloutPercentage", "100");
+        groups.put("0", g1);
+
+        parameters.put(USERS, new LinkedHashMap<String, Object>());
+        parameters.put(GROUPS, groups);
+        parameters.put(DEFAULT_ROLLOUT_PERCENTAGE, 0);
+
+        context.setParameters(parameters);
+        context.setFeatureName("testFeature");
+
+        ArrayList<String> targetedGroups = new ArrayList<String>();
+        targetedGroups.add("g1");
+
+        TargetingFilter filter = new TargetingFilter(new TargetingFilterTestContextAccessor(null, targetedGroups));
+
+        assertTrue(filter.evaluate(context));
+
+        // Now the users is excluded
+        Map<String, Object> excludes = new LinkedHashMap<>();
+        Map<String, String> excludedGroups = new LinkedHashMap<>();
+        excludedGroups.put("0", "g1");
+
+        excludes.put(GROUPS, excludedGroups);
+        parameters.put("exclusion", excludes);
+
+        context.setParameters(parameters);
+
+        assertFalse(filter.evaluate(context));
     }
 
     class TargetingFilterTestContextAccessor implements TargetingContextAccessor {
