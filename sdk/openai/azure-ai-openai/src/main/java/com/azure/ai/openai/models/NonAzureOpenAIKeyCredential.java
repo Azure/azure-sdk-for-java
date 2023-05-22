@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Non-Azure OpenAI API keys credential class for accepting non-Azure OpenAI API key credential string.
  */
-public class NonAzureOpenAIKeyCredential {
+public final class NonAzureOpenAIKeyCredential {
     private static final ClientLogger LOGGER = new ClientLogger(NonAzureOpenAIKeyCredential.class);
 
     private String key;
