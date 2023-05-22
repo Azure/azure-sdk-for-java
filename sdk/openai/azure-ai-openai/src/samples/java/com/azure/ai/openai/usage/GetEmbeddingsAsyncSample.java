@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.openai;
+package com.azure.ai.openai.usage;
 
+import com.azure.ai.openai.OpenAIAsyncClient;
+import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.EmbeddingsUsage;
@@ -14,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Sample demonstrates how to get the embeddings for a given prompt.
  */
-public class GetEmbeddingsAsync {
+public class GetEmbeddingsAsyncSample {
     /**
      * Runs the sample algorithm and demonstrates how to get the embeddings for a given prompt.
      *

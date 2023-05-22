@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.openai;
+package com.azure.ai.openai.usage;
 
+import com.azure.ai.openai.OpenAIAsyncClient;
+import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.ChatChoice;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatMessage;
@@ -19,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * Completions support a wide variety of tasks and generate text that continues from or "completes" provided
  * prompt data.
  */
-public class GetChatCompletionsAsync {
+public class GetChatCompletionsAsyncSample {
     /**
      * Runs the sample algorithm and demonstrates how to get chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes" provided

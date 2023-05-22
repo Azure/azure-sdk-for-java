@@ -1,8 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.openai;
+package com.azure.ai.openai.usage;
 
+import com.azure.ai.openai.OpenAIAsyncClient;
+import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
@@ -16,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * Sample demonstrates how to get completions for the provided input prompts. Completions support a wide variety of
  * tasks and generate text that continues from or "completes" provided prompt data.
  */
-public class GetCompletionsAsync {
+public class GetCompletionsAsyncSample {
     /**
      * Runs the sample algorithm and demonstrates how to get completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes" provided
