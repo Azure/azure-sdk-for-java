@@ -435,7 +435,6 @@ public final class OpenAIAsyncClient {
         openAIServiceClient = null;
     }
 
-
     /**
      * Initializes an instance of OpenAIAsyncClient class by using "Non-Azure" OpenAI service implementation. Azure
      * OpenAI and Non-Azure OpenAI service implementations are mutually exclusive. Both service client implementation
