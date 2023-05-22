@@ -60,7 +60,7 @@ public final class ReadmeSamples {
     public void createNonAzureSyncClientWithApiKey() {
         // BEGIN: readme-sample-createNonAzureOpenAISyncClientApiKey
         OpenAIClient client = new OpenAIClientBuilder()
-            .credential(new NonAzureOpenAIKeyCredential("{key}"))
+            .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
             .buildClient();
         // END: readme-sample-createNonAzureOpenAISyncClientApiKey
     }
@@ -68,7 +68,7 @@ public final class ReadmeSamples {
     public void createNonAzureAsyncClientWithApiKey() {
         // BEGIN: readme-sample-createNonAzureOpenAIAsyncClientApiKey
         OpenAIAsyncClient client = new OpenAIClientBuilder()
-            .credential(new NonAzureOpenAIKeyCredential("{key}"))
+            .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
             .buildAsyncClient();
         // END: readme-sample-createNonAzureOpenAIAsyncClientApiKey
     }

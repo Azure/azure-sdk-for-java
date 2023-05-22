@@ -66,14 +66,14 @@ The SDK also supports operating against the public non-Azure OpenAI. The respons
 
 ```java readme-sample-createNonAzureOpenAISyncClientApiKey
 OpenAIClient client = new OpenAIClientBuilder()
-    .credential(new NonAzureOpenAIKeyCredential("{key}"))
+    .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
     .buildClient();
 ```
 or 
 
 ```java readme-sample-createNonAzureOpenAIAsyncClientApiKey
 OpenAIAsyncClient client = new OpenAIClientBuilder()
-    .credential(new NonAzureOpenAIKeyCredential("{key}"))
+    .credential(new NonAzureOpenAIKeyCredential("{openai-secret-key}"))
     .buildAsyncClient();
 ```
 

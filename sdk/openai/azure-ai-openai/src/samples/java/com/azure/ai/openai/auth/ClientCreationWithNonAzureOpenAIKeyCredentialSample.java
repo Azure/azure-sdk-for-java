@@ -1,31 +1,31 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.ai.openai;
+package com.azure.ai.openai.auth;
 
+import com.azure.ai.openai.OpenAIClient;
+import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Sample demonstrates how to create a client with `AzureKeyCredential`.
+ * Sample demonstrates how to create a client with public Non-Azure API Key.
  */
-public class ClientCreationWithAzureKeyCredentialSample {
+public class ClientCreationWithNonAzureOpenAIKeyCredentialSample {
     /**
-     * Runs the sample algorithm and demonstrates how to create a client with `AzureKeyCredential`.
+     * Runs the sample algorithm and demonstrates how to create a client with public Non-Azure API Key.
      *
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        String endpoint = "{azure-open-ai-endpoint}";
-        String azureOpenaiKey = "{azure-open-ai-key}";
+        String apiKey = "{non-azure-open-ai-api-key}";
 
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-            .endpoint(endpoint)
-            .credential(new AzureKeyCredential(azureOpenaiKey));
+            .credential(new NonAzureOpenAIKeyCredential(apiKey));
 
         OpenAIClient client = builder.buildClient();
 
