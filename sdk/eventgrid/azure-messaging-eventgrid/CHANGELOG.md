@@ -3,7 +3,7 @@
 ## 4.21.0-beta.1 (Unreleased)
 
 ### Features Added
-
+New Event Grid client for Namespace feature.
 ### Breaking Changes
 
 ### Bugs Fixed
