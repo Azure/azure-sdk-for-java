@@ -43,16 +43,13 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
-import java.util.Base64;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
@@ -1052,8 +1049,34 @@ public final class QueueClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueMessageItem> receiveMessages(Integer maxMessages, Duration visibilityTimeout,
         Duration timeout, Context context) {
-        return new PagedIterable<>(
-            client.receiveMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, timeout, context));
+        return receiveMessagesWithOptionalTimeout(maxMessages, visibilityTimeout, timeout, context);
+    }
+
+    PagedIterable<QueueMessageItem> receiveMessagesWithOptionalTimeout(Integer maxMessages, Duration visibilityTimeout,
+        Duration timeout, Context context) {
+        Context finalContext = context == null ? Context.NONE : context;
+        Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
+        try {
+            Supplier<ResponseBase<MessagesDequeueHeaders, List<QueueMessageItemInternal>>> operation = () ->
+                this.azureQueueStorage.getMessages().dequeueWithResponse(queueName, maxMessages, visibilityTimeoutInSeconds,
+                    null, null, finalContext);
+            ResponseBase<MessagesDequeueHeaders, List<QueueMessageItemInternal>> response =
+                timeout != null ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformedMessages = transformMessagesDequeueResponse(response);
+            Supplier<PagedResponse<QueueMessageItem>> res = () -> new PagedResponseBase<>(response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                transformedMessages,
+                response.getDeserializedHeaders());
+
+            return new PagedIterable<>(res);
+
+        } catch (QueueStorageException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (RuntimeException | InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     private PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem> transformMessagesDequeueResponse(
@@ -1062,10 +1085,11 @@ public final class QueueClient {
         if (queueMessageInternalItems == null) {
             queueMessageInternalItems = Collections.emptyList();
         }
+        List<QueueMessageItem> messageItems = new ArrayList<>();
         for (QueueMessageItemInternal queueMessage : queueMessageInternalItems) {
             try {
                 QueueMessageItem decodedMessage = transformQueueMessageItemInternal(queueMessage, messageEncoding);
-
+                messageItems.add(decodedMessage);
             } catch (IllegalArgumentException e) {
                 if (processMessageDecodingErrorHandler != null) {
                     try {
@@ -1073,53 +1097,15 @@ public final class QueueClient {
                         processMessageDecodingErrorHandler.accept(new QueueMessageDecodingError(
                             client, new QueueClient(azureQueueStorage, queueName, accountName, serviceVersion,
                             messageEncoding, client, processMessageDecodingErrorHandler), decodedMessage, null, e));
+                        messageItems.add(decodedMessage);
                     } catch (RuntimeException ex) {
                         throw LOGGER.logExceptionAsError(ex);
                     }
                 }
             }
-
-
-
-            return Flux.fromIterable(queueMessageInternalItems)
-                .flatMapSequential(queueMessageItemInternal ->
-                    transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding)
-                        .onErrorResume(IllegalArgumentException.class, e -> {
-                            if (processMessageDecodingErrorAsyncHandler != null) {
-                                return transformQueueMessageItemInternal(
-                                    queueMessageItemInternal, QueueMessageEncoding.NONE)
-                                    .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
-                                        new QueueMessageDecodingError(
-                                            this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this),
-                                            messageItem, null, e)))
-                                    .then(Mono.empty());
-                            } else if (processMessageDecodingErrorHandler != null) {
-                                return transformQueueMessageItemInternal(
-                                    queueMessageItemInternal, QueueMessageEncoding.NONE)
-                                    .flatMap(messageItem -> {
-                                        try {
-                                            processMessageDecodingErrorHandler.accept(
-                                                new QueueMessageDecodingError(
-                                                    this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this),
-                                                    messageItem, null, e));
-                                            return Mono.<QueueMessageItem>empty();
-                                        } catch (RuntimeException re) {
-                                            return FluxUtil.<QueueMessageItem>monoError(LOGGER, re);
-                                        }
-                                    })
-                                    .subscribeOn(Schedulers.boundedElastic());
-                            } else {
-                                return FluxUtil.monoError(LOGGER, e);
-                            }
-                        }))
-                .collectList()
-                .map(queueMessageItems -> new PagedResponseBase<>(response.getRequest(),
-                    response.getStatusCode(),
-                    response.getHeaders(),
-                    queueMessageItems,
-                    null,
-                    response.getDeserializedHeaders()));
         }
+        return new PagedResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            messageItems, null, response.getDeserializedHeaders());
     }
 
     private static QueueMessageItem transformQueueMessageItemInternal(
@@ -1142,7 +1128,6 @@ public final class QueueClient {
         if (messageText == null) {
             return null;
         }
-
         switch (messageEncoding) {
             case NONE:
                 return BinaryData.fromString(messageText);

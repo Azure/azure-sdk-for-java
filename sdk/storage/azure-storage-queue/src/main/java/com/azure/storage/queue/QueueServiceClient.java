@@ -104,7 +104,7 @@ public final class QueueServiceClient {
      */
     public QueueClient getQueueClient(String queueName) {
         return new QueueClient(client.getAzureQueueStorage(), queueName, client.getAccountName(),
-            client.getServiceVersion(), client.getMessageEncoding(), client.getQueueAsyncClient(queueName));
+            client.getServiceVersion(), client.getMessageEncoding(), client.getQueueAsyncClient(queueName), null);
     }
 
     /**
@@ -164,7 +164,7 @@ public final class QueueServiceClient {
         Response<QueueAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(asyncResponse, timeout);
         return new SimpleResponse<>(response, new QueueClient(response.getValue().getAzureQueueStorage(), queueName,
             response.getValue().getAccountName(), response.getValue().getServiceVersion(),
-            response.getValue().getMessageEncoding(), response.getValue()));
+            response.getValue().getMessageEncoding(), response.getValue(), null));
     }
 
     /**
