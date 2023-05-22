@@ -32,30 +32,6 @@ import reactor.core.publisher.Flux;
 @ServiceClient(builder = OpenAIClientBuilder.class)
 public final class OpenAIClient {
 
-    @Generated private final OpenAIClientImpl serviceClient;
-
-    private final NonAzureOpenAIClientImpl openAIServiceClient;
-
-    /**
-     * Initializes an instance of OpenAIClient class.
-     *
-     * @param service the service client implementation.
-     */
-    OpenAIClient(OpenAIClientImpl service) {
-        serviceClient = service;
-        openAIServiceClient = null;
-    }
-
-    /**
-     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
-     *
-     * @param service the service client implementation.
-     */
-    OpenAIClient(NonAzureOpenAIClientImpl service) {
-        serviceClient = null;
-        openAIServiceClient = service;
-    }
-
     /**
      * Return the embeddings for a given prompt.
      *
@@ -437,5 +413,29 @@ public final class OpenAIClient {
         OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
                 new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
         return new IterableStream<ChatCompletions>(chatCompletionsStream.getEvents());
+    }
+
+    @Generated private final OpenAIClientImpl serviceClient;
+
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
+
+    /**
+     * Initializes an instance of OpenAIClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(OpenAIClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
+        openAIServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(NonAzureOpenAIClientImpl serviceClient) {
+        this.serviceClient = null;
+        openAIServiceClient = serviceClient;
     }
 }
