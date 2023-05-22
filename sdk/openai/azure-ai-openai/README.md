@@ -11,6 +11,16 @@ Use the client library for Azure OpenAI to:
 * [Create a completion for text][microsoft_docs_openai_completion]
 * [Create a text embedding for comparisons][microsoft_docs_openai_embedding]
 
+For concrete examples you can have a look at the following links. Some of the more common scenarios are covered: 
+
+* [Text completions sample](#text-completions "Text completions")
+* [Streaming text completions sample](#streaming-text-completions "Streaming text completions")
+* [Chat completions sample](#chat-completions "Chat completions")
+* [Streaming chat completions sample](#streaming-chat-completions "Streaming chat completions")
+* [Embeddings sample](#text-embeddings "Text Embeddings")
+
+If you want to see the full code for these snippets check out our [samples folder][samples_folder].
+
 [Source code][source_code] | [API reference documentation][docs] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
 ## Getting started
@@ -287,6 +297,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [product_documentation]: https://azure.microsoft.com/services/
 [quickstart]: https://learn.microsoft.com/azure/cognitive-services/openai/quickstart
 [source_code]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src
+[samples_folder]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai/src/samples
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
