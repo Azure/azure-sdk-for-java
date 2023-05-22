@@ -5,14 +5,10 @@ package com.azure.messaging.eventgrid;
 
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.models.CloudEventDataFormat;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-
 import com.azure.messaging.eventgrid.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.models.AcknowledgeResult;
 import com.azure.messaging.eventgrid.models.ReceiveResult;
@@ -27,9 +23,8 @@ import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,6 +37,7 @@ class EventGridMessagingClientTest {
     public static final String TOPICNAME = "TOPICNAME";
     public static final String EVENT_SUBSCRIPTION_NAME = "ES_NAME";
     public static final String ENDPOINT = "ENDPOINT";
+    public static final AzureKeyCredential CREDENTIAL = new AzureKeyCredential(Configuration.getGlobalConfiguration().get("EG_KEY"));
 
     EventGridClientBuilder buildClientBuilder() {
         return new EventGridClientBuilder()
@@ -52,7 +48,6 @@ class EventGridMessagingClientTest {
     }
 
     EventGridClient buildClient() {
-
         return buildClientBuilder().buildClient();
     }
 
@@ -60,7 +55,7 @@ class EventGridMessagingClientTest {
         return buildClientBuilder().buildAsyncClient();
     }
 
-    AzureKeyCredential CREDENTIAL = new AzureKeyCredential(Configuration.getGlobalConfiguration().get("EG_KEY"));
+
     @Test
     void publishCloudEventSync() {
         EventGridClient client = buildClient();
@@ -70,7 +65,7 @@ class EventGridMessagingClientTest {
     @Test
     void publishBatchOfCloudEventsSync() {
         EventGridClient client = buildClient();
-        client.publishCloudEvents(TOPICNAME, List.of(getCloudEvent(), getCloudEvent()));
+        client.publishCloudEvents(TOPICNAME, Arrays.asList(getCloudEvent(), getCloudEvent()));
     }
 
     @Test
@@ -87,7 +82,7 @@ class EventGridMessagingClientTest {
         EventGridClient client = buildClient();
         client.publishCloudEvent(TOPICNAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
-        AcknowledgeOptions acknowledgeOptions = new AcknowledgeOptions(List.of(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+        AcknowledgeOptions acknowledgeOptions = new AcknowledgeOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
         AcknowledgeResult acknowledgeResult = client.acknowledgeCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, acknowledgeOptions);
         assertNotNull(acknowledgeResult);
         assertTrue(acknowledgeResult.getSucceededLockTokens().size() > 0);
@@ -98,7 +93,7 @@ class EventGridMessagingClientTest {
         EventGridClient client = buildClient();
         client.publishCloudEvent(TOPICNAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
-        ReleaseOptions releaseOptions = new ReleaseOptions(List.of(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+        ReleaseOptions releaseOptions = new ReleaseOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
         ReleaseResult releaseResult = client.releaseCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, releaseOptions);
         assertNotNull(releaseResult);
         assertTrue(releaseResult.getSucceededLockTokens().size() > 0);
@@ -109,7 +104,7 @@ class EventGridMessagingClientTest {
         EventGridClient client = buildClient();
         client.publishCloudEvent(TOPICNAME, getCloudEvent());
         ReceiveResult receiveResult = client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10));
-        RejectOptions rejectOptions = new RejectOptions(List.of(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+        RejectOptions rejectOptions = new RejectOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
         RejectResult rejectResult = client.rejectCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, rejectOptions);
         assertNotNull(rejectResult);
         assertTrue(rejectResult.getSucceededLockTokens().size() > 0);
@@ -126,7 +121,7 @@ class EventGridMessagingClientTest {
     @Test
     void publishBatchOfCloudEvents() {
         EventGridAsyncClient client = buildAsyncClient();
-        StepVerifier.create(client.publishCloudEvents(TOPICNAME, List.of(getCloudEvent(), getCloudEvent())))
+        StepVerifier.create(client.publishCloudEvents(TOPICNAME, Arrays.asList(getCloudEvent(), getCloudEvent())))
             .assertNext(Assertions::assertNotNull)
             .verifyComplete();
     }
@@ -149,7 +144,7 @@ class EventGridMessagingClientTest {
         client.publishCloudEvent(TOPICNAME, getCloudEvent()).block();
         client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10))
             .flatMap(receiveResult -> {
-                AcknowledgeOptions acknowledgeOptions = new AcknowledgeOptions(List.of(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+                AcknowledgeOptions acknowledgeOptions = new AcknowledgeOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
                 return client.acknowledgeCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, acknowledgeOptions);
             })
             .as(StepVerifier::create)
@@ -166,7 +161,7 @@ class EventGridMessagingClientTest {
         client.publishCloudEvent(TOPICNAME, getCloudEvent()).block();
         client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10))
             .flatMap(receiveResult -> {
-                ReleaseOptions releaseOptions = new ReleaseOptions(List.of(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+                ReleaseOptions releaseOptions = new ReleaseOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
                 return client.releaseCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, releaseOptions);
             })
             .as(StepVerifier::create)
@@ -183,7 +178,7 @@ class EventGridMessagingClientTest {
         client.publishCloudEvent(TOPICNAME, getCloudEvent()).block();
         client.receiveCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, 1, Duration.ofSeconds(10))
             .flatMap(receiveResult -> {
-                RejectOptions rejectOptions = new RejectOptions(List.of(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
+                RejectOptions rejectOptions = new RejectOptions(Arrays.asList(receiveResult.getValue().get(0).getBrokerProperties().getLockToken()));
                 return client.rejectCloudEvents(TOPICNAME, EVENT_SUBSCRIPTION_NAME, rejectOptions);
             })
             .as(StepVerifier::create)
