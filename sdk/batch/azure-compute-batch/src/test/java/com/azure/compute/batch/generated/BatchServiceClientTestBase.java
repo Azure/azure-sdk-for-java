@@ -4,16 +4,14 @@
 
 package com.azure.compute.batch.generated;
 
-import com.azure.compute.batch.BatchServiceClientBuilder;
-import com.azure.compute.batch.PoolClient;
-import com.azure.compute.batch.TaskClient;
+import com.azure.compute.batch.*;
+import com.azure.compute.batch.auth.BatchSharedKeyCredentials;
 import com.azure.compute.batch.models.*;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
@@ -21,7 +19,6 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 
@@ -32,7 +29,6 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.sas.BlobSasPermission;
-
 import reactor.core.publisher.Mono;
 
 import java.util.*;
@@ -47,10 +43,31 @@ import org.junit.Assert;
 
 
 class BatchServiceClientTestBase extends TestBase {
-	static BatchServiceClientBuilder batchClientBuilder;
+    protected BatchServiceClientBuilder batchClientBuilder;
+
+    protected ApplicationsClient applicationsClient;
+
+    protected PoolClient poolClient;
+
+    protected AccountClient accountClient;
+
+    protected JobClient jobClient;
+
+    protected CertificatesClient certificatesClient;
+
+    protected FileClient fileClient;
+
+    protected JobScheduleClient jobScheduleClient;
+
+    protected TaskClient taskClient;
+
+    protected ComputeNodesClient computeNodesClient;
+
+    protected ComputeNodeExtensionsClient computeNodeExtensionsClient;
+
 	static final int MAX_LEN_ID = 64;
 
-	 public enum AuthMode {
+	public enum AuthMode {
 	        AAD, SharedKey
 	    }
 	
@@ -66,33 +83,44 @@ class BatchServiceClientTestBase extends TestBase {
                     .httpClient(interceptorManager.getPlaybackClient())
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-        	batchClientBuilder
-                    .addPolicy(interceptorManager.getRecordPolicy());
+        	batchClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
-        
-        //TODO LIVE Testing
-        
-        try {
-			authenticateClient(AuthMode.AAD);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+        authenticateClient(AuthMode.AAD);
+
+        applicationsClient = batchClientBuilder.buildApplicationsClient();
+        poolClient = batchClientBuilder.buildPoolClient();
+        accountClient = batchClientBuilder.buildAccountClient();
+        jobClient = batchClientBuilder.buildJobClient();
+        certificatesClient = batchClientBuilder.buildCertificatesClient();
+        fileClient = batchClientBuilder.buildFileClient();
+        jobScheduleClient = batchClientBuilder.buildJobScheduleClient();
+        taskClient = batchClientBuilder.buildTaskClient();
+        computeNodesClient = batchClientBuilder.buildComputeNodesClient();
+        computeNodeExtensionsClient = batchClientBuilder.buildComputeNodeExtensionsClient();
     }
     
-    public void authenticateClient(AuthMode auth) throws Exception {
-    	if (auth == AuthMode.AAD) {
-    		batchClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
-    	}
-    	else if (auth == AuthMode.SharedKey) {
-    		//TODO Add support for Shared Key Auth
-    	}
-    	else {
-    		throw new Exception("Unsupported Auth " + auth);
-    	}
+    void authenticateClient(AuthMode auth) {
+	    if (getTestMode() == TestMode.RECORD) {
+            if (auth == AuthMode.AAD) {
+                batchClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+            }
+            else {
+                BatchSharedKeyCredentials keyCredentials = getSharedKeyCredentials();
+                batchClientBuilder.credential(keyCredentials);
+            }
+        }
     }
-    
-    protected static String getStringIdWithUserNamePrefix(String name) {
+
+    static BatchSharedKeyCredentials getSharedKeyCredentials() {
+        Configuration localConfig = Configuration.getGlobalConfiguration();
+        String baseUrl = localConfig.get("AZURE_BATCH_ENDPOINT");
+        String accountName = localConfig.get("AZURE_BATCH_ACCOUNT");
+        String accountKey = localConfig.get("AZURE_BATCH_ACCESS_KEY");
+        return new BatchSharedKeyCredentials(baseUrl, accountName, accountKey);
+    }
+
+    static String getStringIdWithUserNamePrefix(String name) {
         //'BatchUser' is the name used for Recording / Playing Back tests.
         // For Local testing, use your username here, to create your unique Batch resources and avoiding conflict in shared batch account.
         String userName = "BatchUser";
@@ -111,7 +139,7 @@ class BatchServiceClientTestBase extends TestBase {
         return out.toString();
     }
     
-    public BatchPool createIfNotExistIaaSPool(String poolId) throws Exception {
+    BatchPool createIfNotExistIaaSPool(String poolId) throws Exception {
         // Create a pool with 3 Small VMs
         String poolVmSize = "STANDARD_D1_V2";
         int poolVmCount = 1;
@@ -120,11 +148,9 @@ class BatchServiceClientTestBase extends TestBase {
         long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
         PoolClient poolClient = batchClientBuilder.buildPoolClient();
         
-        
-        	
-        
+
         // Check if pool exists
-        if (!poolExists(poolId)) {
+        if (!poolExists(poolClient, poolId)) {
             // Use IaaS VM with Ubuntu
             ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
                     .setSku("18.04-LTS").setVersion("latest");
@@ -175,7 +201,7 @@ class BatchServiceClientTestBase extends TestBase {
         return pool;
     }
     
-    public NetworkConfiguration createNetworkConfiguration(){
+   NetworkConfiguration createNetworkConfiguration(){
     	Configuration localConfig = Configuration.getGlobalConfiguration();
         String vnetName = localConfig.get("AZURE_VNET", "");
         String subnetName = localConfig.get("AZURE_VNET_SUBNET");
@@ -219,7 +245,7 @@ class BatchServiceClientTestBase extends TestBase {
         return new NetworkConfiguration().setSubnetId(vNetResourceId);
     }
     
-    public void threadSleepInRecordMode(long millis) throws InterruptedException {
+    void threadSleepInRecordMode(long millis) throws InterruptedException {
         // Called for long timeouts which should only happen in Record mode.
         // Speeds up the tests in Playback mode.
         if (getTestMode() == TestMode.RECORD) {
@@ -227,10 +253,9 @@ class BatchServiceClientTestBase extends TestBase {
         }
     }
     
-    public static boolean poolExists(String poolId) {
+    static boolean poolExists(PoolClient poolClient, String poolId) {
     	try {
-    		PoolClient poolOps = batchClientBuilder.buildPoolClient();
-        	poolOps.exists(poolId);
+            poolClient.exists(poolId);
         	return true;
         }
         catch (Exception e) {
@@ -241,7 +266,7 @@ class BatchServiceClientTestBase extends TestBase {
         }
     }
 
-    public static BlobContainerClient createBlobContainer(String storageAccountName, String storageAccountKey,
+    static BlobContainerClient createBlobContainer(String storageAccountName, String storageAccountKey,
                                                   String containerName) throws BlobStorageException  {
         // Create storage credential from name and key
         String endPoint = String.format(Locale.ROOT, "https://%s.blob.core.windows.net", storageAccountName);
@@ -261,12 +286,8 @@ class BatchServiceClientTestBase extends TestBase {
      * @param filePath
      *            the local file path
      * @return SAS key for the uploaded file
-     * @throws URISyntaxException
-     * @throws IOException
-     * @throws InvalidKeyException
-     * @throws BlobStorageException
      */
-    public static String uploadFileToCloud(BlobContainerClient container, String fileName, String filePath)
+    static String uploadFileToCloud(BlobContainerClient container, String fileName, String filePath)
             throws BlobStorageException {
         // Create the container if it does not exist.
         container.createIfNotExists();
@@ -288,7 +309,7 @@ class BatchServiceClientTestBase extends TestBase {
         return blobClient.getBlobUrl() + "?" + sas;
     }
 
-    public static String generateContainerSasToken(BlobContainerClient container) throws InvalidKeyException {
+    static String generateContainerSasToken(BlobContainerClient container) throws InvalidKeyException {
         container.createIfNotExists();
 
         // Create policy with 1 day read permission
@@ -303,7 +324,7 @@ class BatchServiceClientTestBase extends TestBase {
         return container.getBlobContainerUrl() + "?" + sas;
     }
 
-    public static boolean waitForTasksToComplete(TaskClient taskClient, String jobId, int expiryTimeInSeconds)
+    static boolean waitForTasksToComplete(TaskClient taskClient, String jobId, int expiryTimeInSeconds)
             throws IOException, InterruptedException {
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
@@ -331,5 +352,30 @@ class BatchServiceClientTestBase extends TestBase {
 
         // Timeout, return false
         return false;
+    }
+
+    BatchPool waitForPoolState(String poolId, AllocationState targetState, long poolAllocationTimeoutInMilliseconds) throws IOException, InterruptedException {
+        long startTime = System.currentTimeMillis();
+        long elapsedTime = 0L;
+        boolean allocationStateReached = false;
+        BatchPool pool = null;
+
+        // Wait for the VM to be allocated
+        while (elapsedTime < poolAllocationTimeoutInMilliseconds) {
+            pool = poolClient.get(poolId);
+            Assert.assertNotNull(pool);
+
+            if (pool.getAllocationState() == targetState) {
+                allocationStateReached = true;
+                break;
+            }
+
+            System.out.println("wait 30 seconds for pool allocationStateReached...");
+            threadSleepInRecordMode(30 * 1000);
+            elapsedTime = (new Date()).getTime() - startTime;
+        }
+
+        Assert.assertTrue("The pool did not reach a allocationStateReached state in the allotted time", allocationStateReached);
+        return pool;
     }
 }

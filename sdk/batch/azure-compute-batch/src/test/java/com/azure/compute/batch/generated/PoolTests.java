@@ -1,11 +1,9 @@
 package com.azure.compute.batch.generated;
 
-import org.junit.Assert;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import com.azure.compute.batch.BatchServiceClientBuilder;
 import com.azure.compute.batch.ComputeNodesClient;
-import com.azure.compute.batch.PoolClient;
 import com.azure.compute.batch.models.AllocationState;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolResizeParameters;
@@ -14,7 +12,6 @@ import com.azure.compute.batch.models.ComputeNode;
 import com.azure.compute.batch.models.NetworkConfiguration;
 import com.azure.compute.batch.models.NodeCommunicationMode;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.test.TestMode;
 import com.azure.compute.batch.models.DataDisk;
 import com.azure.compute.batch.models.ImageReference;
@@ -26,8 +23,6 @@ import com.azure.compute.batch.models.PoolNodeCounts;
 import com.azure.compute.batch.models.InboundNATPool;
 import com.azure.compute.batch.models.MetadataItem;
 import com.azure.compute.batch.models.ApplicationPackageReference;
-
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,12 +32,10 @@ public class PoolTests extends BatchServiceClientTestBase {
 	 private static BatchPool livePool;
 	 private static String poolId;
 	 private static NetworkConfiguration networkConfiguration;
-	 private static PoolClient poolClient;
-	 
+
 	 @Override
      protected void beforeTest() {
     	super.beforeTest();
-    	poolClient = batchClientBuilder.buildPoolClient();
         poolId = getStringIdWithUserNamePrefix("-testpool");
         if(getTestMode() == TestMode.RECORD) {
         	if (livePool == null) {
@@ -52,13 +45,14 @@ public class PoolTests extends BatchServiceClientTestBase {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-                Assert.assertNotNull(livePool);
+                Assertions.assertNotNull(livePool);
         	}
         }
-        
+
+         // Need VNet to allow security to inject NSGs
         networkConfiguration = createNetworkConfiguration();
     }
-	 
+
 	 @Test
 	 public void testPoolOData() throws Exception {
 
@@ -69,40 +63,40 @@ public class PoolTests extends BatchServiceClientTestBase {
 
 		//Temporarily Disabling the stats check, REST API doesn't provide the stats consistently for newly created pools
         // Will be enabled back soon.
-        //Assert.assertNotNull(pool.stats());
+        //Assertions.assertNotNull(pool.stats());
 
         PagedIterable<BatchPool> pools = poolClient.list(null, null, null, null, null, null, "id, state", null);
-        Assert.assertNotNull(pools);
+        Assertions.assertNotNull(pools);
         BatchPool pool = null;
-        
+
         for (BatchPool batchPool: pools) {
         	if (batchPool.getId().equals(poolId)) {
         		pool = batchPool;
         	}
         }
 
-        Assert.assertNotNull(String.format("Pool with ID %s was not found in list response", poolId), pool);
-        Assert.assertNotNull(pool.getId());
-        Assert.assertNotNull(pool.getState());
-        Assert.assertNull(pool.getVmSize());
+        Assertions.assertNotNull(pool, String.format("Pool with ID %s was not found in list response", poolId));
+        Assertions.assertNotNull(pool.getId());
+        Assertions.assertNotNull(pool.getState());
+        Assertions.assertNull(pool.getVmSize());
 
-        
+
         // When tests are being ran in parallel, there may be a previous pool delete still in progress
         pools = poolClient.list(null, null, null, null, null, "state eq 'deleting'", null, null);
-        Assert.assertNotNull(pools);
+        Assertions.assertNotNull(pools);
 
     }
-	 
+
 	 @Test
 	 public void canCreateDataDisk() throws Exception {
 	    String poolId = getStringIdWithUserNamePrefix("-testpool3");
-	
+
 	    // Create a pool with 0 Small VMs
 	    String POOL_VM_SIZE = "STANDARD_D1_V2";
 	    int POOL_VM_COUNT = 0;
 	    int lun = 50;
 	    int diskSizeGB = 50;
-	
+
 	    // Use IaaS VM with Linux
 	    List<DataDisk> dataDisks = new ArrayList<DataDisk>();
 	    dataDisks.add(new DataDisk(lun, diskSizeGB));
@@ -122,13 +116,13 @@ public class PoolTests extends BatchServiceClientTestBase {
 
 	    try {
 	    	poolClient.add(poolToAdd);
-	
+
 	    	BatchPool pool = poolClient.get(poolId);
-	        Assert.assertEquals(lun, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getLun());
-	        Assert.assertEquals(diskSizeGB, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getDiskSizeGB());
+	        Assertions.assertEquals(lun, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getLun());
+	        Assertions.assertEquals(diskSizeGB, pool.getVirtualMachineConfiguration().getDataDisks().get(0).getDiskSizeGB());
 	    } finally {
 	        try {
-	            if (poolExists(poolId)) {
+	            if (poolExists(poolClient, poolId)) {
 	                poolClient.delete(poolId);
 	            }
 	        } catch (Exception e) {
@@ -136,7 +130,7 @@ public class PoolTests extends BatchServiceClientTestBase {
 	        }
 	    }
 	}
-	 
+
 	@Test
     public void canCRUDLowPriIaaSPool() throws Exception {
         // CREATE
@@ -152,7 +146,7 @@ public class PoolTests extends BatchServiceClientTestBase {
         TimeUnit.SECONDS.toMillis(30);
 
         // Check if pool exists
-        if (!poolExists(poolId)) {
+        if (!poolExists(poolClient, poolId)) {
         	ImageReference imgRef = new ImageReference().setPublisher("Canonical").setOffer("UbuntuServer")
                     .setSku("18.04-LTS").setVersion("latest");
 
@@ -170,14 +164,14 @@ public class PoolTests extends BatchServiceClientTestBase {
             		 .setTargetLowPriorityNodes(POOL_LOW_PRI_VM_COUNT).setVmSize(POOL_VM_SIZE)
             		 .setVirtualMachineConfiguration(configuration).setNetworkConfiguration(netConfig)
             		 .setTargetNodeCommunicationMode(NodeCommunicationMode.DEFAULT);
-            	
-            
+
+
             poolClient.add(poolToAdd);
         }
 
         try {
             // GET
-            Assert.assertTrue(poolExists(poolId));
+            Assertions.assertTrue(poolExists(poolClient, poolId));
 
             long startTime = System.currentTimeMillis();
             long elapsedTime = 0L;
@@ -185,28 +179,28 @@ public class PoolTests extends BatchServiceClientTestBase {
             // Wait for the VM to be allocated
             BatchPool pool = waitForPoolState(poolId, AllocationState.STEADY, POOL_STEADY_TIMEOUT_IN_MILLISECONDS);
 
-            Assert.assertEquals(POOL_VM_COUNT, (long) pool.getCurrentDedicatedNodes());
-            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.getCurrentLowPriorityNodes());
-            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.getCurrentNodeCommunicationMode());
-            Assert.assertEquals(NodeCommunicationMode.DEFAULT, pool.getTargetNodeCommunicationMode());
+            Assertions.assertEquals(POOL_VM_COUNT, (long) pool.getCurrentDedicatedNodes());
+            Assertions.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.getCurrentLowPriorityNodes());
+            Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
+            Assertions.assertEquals(NodeCommunicationMode.DEFAULT, pool.getTargetNodeCommunicationMode());
 
             ComputeNodesClient nodeClient = batchClientBuilder.buildComputeNodesClient();
 
             PagedIterable<ComputeNode> nodeListIterator = nodeClient.list(poolId);
             List<ComputeNode> computeNodes = new ArrayList<ComputeNode>();
-            
+
             for (ComputeNode node: nodeListIterator) {
             	computeNodes.add(node);
             }
 
             List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).getEndpointConfiguration().getInboundEndpoints();
-            Assert.assertEquals(2, inboundEndpoints.size());
+            Assertions.assertEquals(2, inboundEndpoints.size());
             InboundEndpoint inboundEndpoint = inboundEndpoints.get(0);
-            Assert.assertEquals(5000, inboundEndpoint.getBackendPort());
-            Assert.assertTrue(inboundEndpoint.getFrontendPort() >= 60000);
-            Assert.assertTrue(inboundEndpoint.getFrontendPort() <= 60040);
-            Assert.assertTrue(inboundEndpoint.getName().startsWith("testinbound."));
-            Assert.assertTrue(inboundEndpoints.get(1).getName().startsWith("SSHRule"));
+            Assertions.assertEquals(5000, inboundEndpoint.getBackendPort());
+            Assertions.assertTrue(inboundEndpoint.getFrontendPort() >= 60000);
+            Assertions.assertTrue(inboundEndpoint.getFrontendPort() <= 60040);
+            Assertions.assertTrue(inboundEndpoint.getName().startsWith("testinbound."));
+            Assertions.assertTrue(inboundEndpoints.get(1).getName().startsWith("SSHRule"));
 
             // CHECK POOL NODE COUNTS
             PoolNodeCounts poolNodeCount = null;
@@ -218,11 +212,11 @@ public class PoolTests extends BatchServiceClientTestBase {
                     break;
                 }
             }
-            Assert.assertNotNull(poolNodeCount); // Single pool only
-            Assert.assertNotNull(poolNodeCount.getLowPriority());
+            Assertions.assertNotNull(poolNodeCount); // Single pool only
+            Assertions.assertNotNull(poolNodeCount.getLowPriority());
 
-            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, poolNodeCount.getLowPriority().getTotal());
-            Assert.assertEquals(POOL_VM_COUNT, poolNodeCount.getDedicated().getTotal());
+            Assertions.assertEquals(POOL_LOW_PRI_VM_COUNT, poolNodeCount.getLowPriority().getTotal());
+            Assertions.assertEquals(POOL_VM_COUNT, poolNodeCount.getDedicated().getTotal());
 
             // Update NodeCommunicationMode to Simplified
 
@@ -241,29 +235,29 @@ public class PoolTests extends BatchServiceClientTestBase {
             poolClient.updateProperties(poolId, poolToUpdate);
 
             pool = poolClient.get(poolId);
-            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.getCurrentNodeCommunicationMode());
-            Assert.assertEquals(NodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
+            Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
+            Assertions.assertEquals(NodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
 
             // Patch NodeCommunicationMode to Classic
-            
+
             //You cannot take an existing BatchPool object that has i.e. Id and vmSize properties defined and call patch with it
 //	            pool.setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
 //	            poolClient.patch(poolId, pool);
-            
+
             BatchPool poolToPatch = new BatchPool();
             poolToPatch.setTargetNodeCommunicationMode(NodeCommunicationMode.CLASSIC);
             poolClient.patch(poolId, poolToPatch);
-            
+
             pool = poolClient.get(poolId);
-            Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.getCurrentNodeCommunicationMode());
-            Assert.assertEquals(NodeCommunicationMode.CLASSIC, pool.getTargetNodeCommunicationMode());
+            Assertions.assertNotNull(pool.getCurrentNodeCommunicationMode(), "CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node");
+            Assertions.assertEquals(NodeCommunicationMode.CLASSIC, pool.getTargetNodeCommunicationMode());
 
             // RESIZE
             poolClient.resize(poolId, new BatchPoolResizeParameters().setTargetDedicatedNodes(1).setTargetLowPriorityNodes(1));
 
             pool = poolClient.get(poolId);
-            Assert.assertEquals(1, (long) pool.getTargetDedicatedNodes());
-            Assert.assertEquals(1, (long) pool.getTargetLowPriorityNodes());
+            Assertions.assertEquals(1, (long) pool.getTargetDedicatedNodes());
+            Assertions.assertEquals(1, (long) pool.getTargetLowPriorityNodes());
 
             // DELETE
             boolean deleted = false;
@@ -286,11 +280,11 @@ public class PoolTests extends BatchServiceClientTestBase {
                 threadSleepInRecordMode(15 * 1000);
                 elapsedTime = (new Date()).getTime() - startTime;
             }
-            Assert.assertTrue(deleted);
+            Assertions.assertTrue(deleted);
 
         } finally {
             try {
-                if (poolExists(poolId)) {
+                if (poolExists(poolClient, poolId)) {
                     poolClient.delete(poolId);
                 }
             } catch (Exception e) {
@@ -298,31 +292,4 @@ public class PoolTests extends BatchServiceClientTestBase {
             }
         }
     }
-
- 
-	 public BatchPool waitForPoolState(String poolId, AllocationState targetState, long poolAllocationTimeoutInMilliseconds) throws IOException, InterruptedException {
-	        long startTime = System.currentTimeMillis();
-	        long elapsedTime = 0L;
-	        boolean allocationStateReached = false;
-	        BatchPool pool = null;
-
-	        // Wait for the VM to be allocated
-	        while (elapsedTime < poolAllocationTimeoutInMilliseconds) {
-	            pool = poolClient.get(poolId);
-	            Assert.assertNotNull(pool);
-
-	            if (pool.getAllocationState() == targetState) {
-	                allocationStateReached = true;
-	                break;
-	            }
-
-	            System.out.println("wait 30 seconds for pool allocationStateReached...");
-	            threadSleepInRecordMode(30 * 1000);
-	            elapsedTime = (new Date()).getTime() - startTime;
-	        }
-
-	        Assert.assertTrue("The pool did not reach a allocationStateReached state in the allotted time", allocationStateReached);
-	        return pool;
-	    }
-
 }
