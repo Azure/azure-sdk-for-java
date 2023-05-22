@@ -5,16 +5,50 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlWriter;
+import javax.xml.stream.XMLStreamException;
 
 /** The EmptyRuleAction model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("EmptyRuleAction")
-@JacksonXmlRootElement(localName = "EmptyRuleAction")
 @Immutable
 public final class EmptyRuleActionImpl extends RuleActionImpl {
+    /*
+     * The type property.
+     */
+    private static final String TYPE = "EmptyRuleAction";
+
     /** Creates an instance of EmptyRuleAction class. */
     public EmptyRuleActionImpl() {}
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("EmptyRuleAction");
+        xmlWriter.writeStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type", TYPE);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of EmptyRuleAction from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of EmptyRuleAction if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     */
+    public static EmptyRuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "EmptyRuleAction",
+                reader -> {
+                    String type = reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
+                    if (!"EmptyRuleAction".equals(type)) {
+                        throw new IllegalStateException(
+                                "'type' was expected to be non-null and equal to 'EmptyRuleAction'. The found 'type' was '"
+                                        + type
+                                        + "'.");
+                    }
+                    EmptyRuleActionImpl deserializedEmptyRuleActionImpl = new EmptyRuleActionImpl();
+
+                    return deserializedEmptyRuleActionImpl;
+                });
+    }
 }

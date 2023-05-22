@@ -5,105 +5,109 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** Authorization rule of an entity. */
-@JacksonXmlRootElement(
-        localName = "AuthorizationRule",
-        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
-public final class AuthorizationRuleImpl {
+public final class AuthorizationRuleImpl implements XmlSerializable<AuthorizationRuleImpl> {
 
     /*
      * The authorization type.
      */
-    @JacksonXmlProperty(localName = "type", isAttribute = true, namespace = "http://www.w3.org/2001/XMLSchema-instance")
     private String type;
 
     /*
      * The claim type.
      */
-    @JacksonXmlProperty(
-            localName = "ClaimType",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String claimType;
 
     /*
      * The claim value.
      */
-    @JacksonXmlProperty(
-            localName = "ClaimValue",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String claimValue;
 
-    private static final class RightsWrapper {
+    static final class RightsWrapper implements XmlSerializable<RightsWrapper> {
 
-        @JacksonXmlProperty(
-                localName = "AccessRights",
-                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
         private final List<AccessRights> items;
 
-        @JsonCreator
-        private RightsWrapper(
-                @JacksonXmlProperty(
-                                localName = "AccessRights",
-                                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-                        List<AccessRights> items) {
+        private RightsWrapper(List<AccessRights> items) {
             this.items = items;
+        }
+
+        @Override
+        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+            xmlWriter.writeStartElement(
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Rights");
+            if (items != null) {
+                for (AccessRights element : items) {
+                    xmlWriter.writeStringElement(
+                            "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                            "AccessRights",
+                            Objects.toString(element, null));
+                }
+            }
+            return xmlWriter.writeEndElement();
+        }
+
+        public static RightsWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
+            return xmlReader.readObject(
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                    "Rights",
+                    reader -> {
+                        List<AccessRights> items = null;
+                        while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                            String elementName = reader.getElementName().getLocalPart();
+                            if ("AccessRights".equals(elementName)) {
+                                if (items == null) {
+                                    items = new ArrayList<>();
+                                }
+                                items.add(reader.getNullableElement(AccessRights::fromString));
+                            } else {
+                                reader.nextElement();
+                            }
+                        }
+                        return new RightsWrapper(items);
+                    });
         }
     }
 
     /*
      * Access rights of the entity. Values are 'Send', 'Listen', or 'Manage'
      */
-    @JacksonXmlProperty(
-            localName = "Rights",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private RightsWrapper rights;
 
     /*
      * The date and time when the authorization rule was created.
      */
-    @JacksonXmlProperty(
-            localName = "CreatedTime",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private OffsetDateTime createdTime;
 
     /*
      * The date and time when the authorization rule was modified.
      */
-    @JacksonXmlProperty(
-            localName = "ModifiedTime",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private OffsetDateTime modifiedTime;
 
     /*
      * The authorization rule key name
      */
-    @JacksonXmlProperty(
-            localName = "KeyName",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String keyName;
 
     /*
      * The primary key of the authorization rule
      */
-    @JacksonXmlProperty(
-            localName = "PrimaryKey",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String primaryKey;
 
     /*
      * The primary key of the authorization rule
      */
-    @JacksonXmlProperty(
-            localName = "SecondaryKey",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String secondaryKey;
 
     /** Creates an instance of AuthorizationRule class. */
@@ -290,5 +294,107 @@ public final class AuthorizationRuleImpl {
     public AuthorizationRuleImpl setSecondaryKey(String secondaryKey) {
         this.secondaryKey = secondaryKey;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("AuthorizationRule");
+        xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
+        xmlWriter.writeStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type", this.type);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimType", this.claimType);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ClaimValue", this.claimValue);
+        xmlWriter.writeXml(this.rights);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "CreatedTime",
+                Objects.toString(this.createdTime, null));
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "ModifiedTime",
+                Objects.toString(this.modifiedTime, null));
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "KeyName", this.keyName);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "PrimaryKey", this.primaryKey);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "SecondaryKey",
+                this.secondaryKey);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of AuthorizationRule from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of AuthorizationRule if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static AuthorizationRuleImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "AuthorizationRule",
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                reader -> {
+                    String type = reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
+                    String claimType = null;
+                    String claimValue = null;
+                    RightsWrapper rights = null;
+                    OffsetDateTime createdTime = null;
+                    OffsetDateTime modifiedTime = null;
+                    String keyName = null;
+                    String primaryKey = null;
+                    String secondaryKey = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName elementName = reader.getElementName();
+                        if ("ClaimType".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            claimType = reader.getStringElement();
+                        } else if ("ClaimValue".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            claimValue = reader.getStringElement();
+                        } else if ("Rights".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            rights = RightsWrapper.fromXml(reader);
+                        } else if ("CreatedTime".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            createdTime = reader.getNullableElement(OffsetDateTime::parse);
+                        } else if ("ModifiedTime".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            modifiedTime = reader.getNullableElement(OffsetDateTime::parse);
+                        } else if ("KeyName".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            keyName = reader.getStringElement();
+                        } else if ("PrimaryKey".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            primaryKey = reader.getStringElement();
+                        } else if ("SecondaryKey".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            secondaryKey = reader.getStringElement();
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    AuthorizationRuleImpl deserializedAuthorizationRule = new AuthorizationRuleImpl();
+                    deserializedAuthorizationRule.type = type;
+                    deserializedAuthorizationRule.claimType = claimType;
+                    deserializedAuthorizationRule.claimValue = claimValue;
+                    deserializedAuthorizationRule.rights = rights;
+                    deserializedAuthorizationRule.createdTime = createdTime;
+                    deserializedAuthorizationRule.modifiedTime = modifiedTime;
+                    deserializedAuthorizationRule.keyName = keyName;
+                    deserializedAuthorizationRule.primaryKey = primaryKey;
+                    deserializedAuthorizationRule.secondaryKey = secondaryKey;
+                    return deserializedAuthorizationRule;
+                });
     }
 }

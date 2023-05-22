@@ -5,23 +5,24 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** The error response from Service Bus. */
-@JacksonXmlRootElement(localName = "ServiceBusManagementError")
 @Fluent
-public final class ServiceBusManagementError {
+public final class ServiceBusManagementError implements XmlSerializable<ServiceBusManagementError> {
     /*
      * The service error code.
      */
-    @JsonProperty(value = "Code")
     private Integer code;
 
     /*
      * The service error message.
      */
-    @JsonProperty(value = "Detail")
     private String detail;
 
     /** Creates an instance of ServiceBusManagementError class. */
@@ -65,5 +66,45 @@ public final class ServiceBusManagementError {
     public ServiceBusManagementError setDetail(String detail) {
         this.detail = detail;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("ServiceBusManagementError");
+        xmlWriter.writeNumberElement("Code", this.code);
+        xmlWriter.writeStringElement("Detail", this.detail);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of ServiceBusManagementError from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of ServiceBusManagementError if the XmlReader was pointing to an instance of it, or null if
+     *     it was pointing to XML null.
+     */
+    public static ServiceBusManagementError fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "ServiceBusManagementError",
+                reader -> {
+                    Integer code = null;
+                    String detail = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName elementName = reader.getElementName();
+
+                        if ("Code".equals(elementName.getLocalPart())) {
+                            code = reader.getNullableElement(Integer::parseInt);
+                        } else if ("Detail".equals(elementName.getLocalPart())) {
+                            detail = reader.getStringElement();
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    ServiceBusManagementError deserializedServiceBusManagementError = new ServiceBusManagementError();
+                    deserializedServiceBusManagementError.code = code;
+                    deserializedServiceBusManagementError.detail = detail;
+
+                    return deserializedServiceBusManagementError;
+                });
     }
 }

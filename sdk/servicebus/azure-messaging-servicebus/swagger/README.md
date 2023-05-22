@@ -48,6 +48,7 @@ enable-sync-stack: true
 generic-response-type: true
 custom-strongly-typed-header-deserialization: true
 disable-client-builder: true
+stream-style-serialization: true
 ```
 
 ### Change Return Types of Subscription REST Methods
@@ -147,4 +148,23 @@ directive:
       $.SubscriptionDescriptionFeed.properties.title["$ref"] = "#/definitions/Title";
       $.RuleDescriptionEntry.properties.title["$ref"] = "#/definitions/Title";
       $.RuleDescriptionFeed.properties.title["$ref"] = "#/definitions/Title";
+```
+
+### Add x-ms-discriminator-value to Polymorphic Types
+
+Adds `x-ms-discriminator-value` to `CorrelationFilter`, `SqlFilter`, `TrueFilter`, and `FalseFilter` for `RuleFilter`
+subtypes and `SqlRuleAction` and `EmptyRuleAction` for `RuleAction` subtypes.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.CorrelationFilter["x-ms-discriminator-value"] = "CorrelationFilter";
+      $.SqlFilter["x-ms-discriminator-value"] = "SqlFilter";
+      $.TrueFilter["x-ms-discriminator-value"] = "TrueFilter";
+      $.FalseFilter["x-ms-discriminator-value"] = "FalseFilter";
+
+      $.SqlRuleAction["x-ms-discriminator-value"] = "SqlRuleAction";
+      $.EmptyRuleAction["x-ms-discriminator-value"] = "EmptyRuleAction";
 ```

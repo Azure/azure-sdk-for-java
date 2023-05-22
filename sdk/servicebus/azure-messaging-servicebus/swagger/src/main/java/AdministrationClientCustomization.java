@@ -74,8 +74,7 @@ public class AdministrationClientCustomization extends Customization {
                 classCustomization = addAuthorizationRuleXmlNamespace(classCustomization, logger);
             }
 
-            classCustomization = addJacksonXmlRootElementImport(classCustomization, logger);
-            classCustomization = addImplementationToClassName(classCustomization, logger);
+            addImplementationToClassName(classCustomization, logger);
         }
 
         // Change getCreatedTime modifier on NamespaceProperties.
@@ -93,45 +92,6 @@ public class AdministrationClientCustomization extends Customization {
         logger.info("Rename: '{}' -> '{}'", current, renamed);
 
         return classCustomization.rename(renamed);
-    }
-
-    /**
-     * When JacksonXmlRootElement annotation is added to the class, sometimes the import is not added. Consequently, it
-     * breaks the build.
-     */
-    private ClassCustomization addJacksonXmlRootElementImport(ClassCustomization classCustomization, Logger logger) {
-        final String className = classCustomization.getClassName();
-
-        return classCustomization.customizeAst(ast -> {
-            logger.debug("{}: Add Import - Getting declaration.", className);
-            final ClassOrInterfaceDeclaration declaration = ast.getClassByName(className)
-                .orElse(null);
-
-            if (Objects.isNull(declaration)) {
-                logger.warn("{}: Add Import - Could not find classByName.", className);
-                return;
-            }
-
-            logger.info("{}: Add Import - Checking for JacksonXmlRootElement attribute.", className);
-            final AnnotationExpr jackson = declaration.getAnnotationByName("JacksonXmlRootElement")
-                .orElse(null);
-
-            // Doesn't have the XML attribute.
-            if (jackson == null) {
-                return;
-            }
-
-            logger.debug("{}: Add Import - Looking for correct import.", className);
-            final boolean hasImport = ast.getImports().stream().anyMatch(
-                importDeclaration -> importDeclaration.getName().getIdentifier().equals("JacksonXmlRootElement"));
-
-            if (hasImport) {
-                return;
-            }
-
-            logger.info("{}: Add Import - Adding JacksonXmlRootElement import.", className);
-            ast.addImport("com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement");
-        });
     }
 
     /**

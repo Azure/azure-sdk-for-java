@@ -5,70 +5,51 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.OffsetDateTime;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** The metadata related to a Service Bus namespace. */
-@JacksonXmlRootElement(
-        localName = "NamespaceInfo",
-        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
-public final class NamespaceProperties {
+public final class NamespaceProperties implements XmlSerializable<NamespaceProperties> {
     /*
      * Alias for the geo-disaster recovery Service Bus namespace.
      */
-    @JacksonXmlProperty(
-            localName = "Alias",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String alias;
 
     /*
      * The exact time the namespace was created.
      */
-    @JacksonXmlProperty(
-            localName = "CreatedTime",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private OffsetDateTime createdTime;
 
     /*
      * The SKU for the messaging entity.
      */
-    @JacksonXmlProperty(
-            localName = "MessagingSKU",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private MessagingSku messagingSku;
 
     /*
      * The number of messaging units allocated to the namespace.
      */
-    @JacksonXmlProperty(
-            localName = "MessagingUnits",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Integer messagingUnits;
 
     /*
      * The exact time the namespace was last modified.
      */
-    @JacksonXmlProperty(
-            localName = "ModifiedTime",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private OffsetDateTime modifiedTime;
 
     /*
      * Name of the namespace
      */
-    @JacksonXmlProperty(
-            localName = "Name",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String name;
 
     /*
      * The type of entities the namespace can contain.
      */
-    @JacksonXmlProperty(
-            localName = "NamespaceType",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private NamespaceType namespaceType;
 
     /** Creates an instance of NamespaceProperties class. */
@@ -212,5 +193,103 @@ public final class NamespaceProperties {
     public NamespaceProperties setNamespaceType(NamespaceType namespaceType) {
         this.namespaceType = namespaceType;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("NamespaceInfo");
+        xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Alias", this.alias);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "CreatedTime",
+                Objects.toString(this.createdTime, null));
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "MessagingSKU",
+                Objects.toString(this.messagingSku, null));
+        xmlWriter.writeNumberElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "MessagingUnits",
+                this.messagingUnits);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "ModifiedTime",
+                Objects.toString(this.modifiedTime, null));
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Name", this.name);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "NamespaceType",
+                Objects.toString(this.namespaceType, null));
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of NamespaceProperties from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of NamespaceProperties if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static NamespaceProperties fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "NamespaceInfo",
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                reader -> {
+                    String alias = null;
+                    OffsetDateTime createdTime = null;
+                    MessagingSku messagingSku = null;
+                    Integer messagingUnits = null;
+                    OffsetDateTime modifiedTime = null;
+                    String name = null;
+                    NamespaceType namespaceType = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName elementName = reader.getElementName();
+
+                        if ("Alias".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            alias = reader.getStringElement();
+                        } else if ("CreatedTime".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            createdTime = reader.getNullableElement(OffsetDateTime::parse);
+                        } else if ("MessagingSKU".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            messagingSku = reader.getNullableElement(MessagingSku::fromString);
+                        } else if ("MessagingUnits".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            messagingUnits = reader.getNullableElement(Integer::parseInt);
+                        } else if ("ModifiedTime".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            modifiedTime = reader.getNullableElement(OffsetDateTime::parse);
+                        } else if ("Name".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            name = reader.getStringElement();
+                        } else if ("NamespaceType".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            namespaceType = reader.getNullableElement(NamespaceType::fromString);
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    NamespaceProperties deserializedNamespaceProperties = new NamespaceProperties();
+                    deserializedNamespaceProperties.alias = alias;
+                    deserializedNamespaceProperties.createdTime = createdTime;
+                    deserializedNamespaceProperties.messagingSku = messagingSku;
+                    deserializedNamespaceProperties.messagingUnits = messagingUnits;
+                    deserializedNamespaceProperties.modifiedTime = modifiedTime;
+                    deserializedNamespaceProperties.name = name;
+                    deserializedNamespaceProperties.namespaceType = namespaceType;
+
+                    return deserializedNamespaceProperties;
+                });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Status of a Service Bus resource. */
@@ -51,7 +50,6 @@ public final class EntityStatus extends ExpandableStringEnum<EntityStatus> {
      * @param name a name to look for.
      * @return the corresponding EntityStatus.
      */
-    @JsonCreator
     public static EntityStatus fromString(String name) {
         return fromString(name, EntityStatus.class);
     }

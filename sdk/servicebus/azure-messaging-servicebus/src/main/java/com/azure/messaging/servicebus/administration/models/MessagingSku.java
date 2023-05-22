@@ -5,7 +5,6 @@
 package com.azure.messaging.servicebus.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The SKU for the messaging entity. */
@@ -33,7 +32,6 @@ public final class MessagingSku extends ExpandableStringEnum<MessagingSku> {
      * @param name a name to look for.
      * @return the corresponding MessagingSku.
      */
-    @JsonCreator
     public static MessagingSku fromString(String name) {
         return fromString(name, MessagingSku.class);
     }

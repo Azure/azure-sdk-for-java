@@ -5,52 +5,41 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** Description of a Service Bus queue resource. */
-@JacksonXmlRootElement(
-        localName = "QueueDescription",
-        namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
 @Fluent
-public final class QueueDescriptionImpl {
+public final class QueueDescriptionImpl implements XmlSerializable<QueueDescriptionImpl> {
 
     /*
      * ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other
      * receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute.
      */
-    @JacksonXmlProperty(
-            localName = "LockDuration",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Duration lockDuration;
 
     /*
      * The maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
      */
-    @JacksonXmlProperty(
-            localName = "MaxSizeInMegabytes",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Long maxSizeInMegabytes;
 
     /*
      * A value indicating if this queue requires duplicate detection.
      */
-    @JacksonXmlProperty(
-            localName = "RequiresDuplicateDetection",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean requiresDuplicateDetection;
 
     /*
      * A value that indicates whether the queue supports the concept of sessions.
      */
-    @JacksonXmlProperty(
-            localName = "RequiresSession",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean requiresSession;
 
     /*
@@ -58,83 +47,84 @@ public final class QueueDescriptionImpl {
      * from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a
      * message itself.
      */
-    @JacksonXmlProperty(
-            localName = "DefaultMessageTimeToLive",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Duration defaultMessageTimeToLive;
 
     /*
      * A value that indicates whether this queue has dead letter support when a message expires.
      */
-    @JacksonXmlProperty(
-            localName = "DeadLetteringOnMessageExpiration",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean deadLetteringOnMessageExpiration;
 
     /*
      * ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is
      * 10 minutes.
      */
-    @JacksonXmlProperty(
-            localName = "DuplicateDetectionHistoryTimeWindow",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Duration duplicateDetectionHistoryTimeWindow;
 
     /*
      * The maximum delivery count. A message is automatically deadlettered after this number of deliveries. Default
      * value is 10.
      */
-    @JacksonXmlProperty(
-            localName = "MaxDeliveryCount",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Integer maxDeliveryCount;
 
     /*
      * Value that indicates whether server-side batched operations are enabled.
      */
-    @JacksonXmlProperty(
-            localName = "EnableBatchedOperations",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean enableBatchedOperations;
 
     /*
      * The size of the queue, in bytes.
      */
-    @JacksonXmlProperty(
-            localName = "SizeInBytes",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Long sizeInBytes;
 
     /*
      * The number of messages in the queue.
      */
-    @JacksonXmlProperty(
-            localName = "MessageCount",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Integer messageCount;
 
     /*
      * A value indicating if the resource can be accessed without authorization.
      */
-    @JacksonXmlProperty(
-            localName = "IsAnonymousAccessible",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean isAnonymousAccessible;
 
-    private static final class AuthorizationRulesWrapper {
+    static final class AuthorizationRulesWrapper implements XmlSerializable<AuthorizationRulesWrapper> {
 
-        @JacksonXmlProperty(
-                localName = "AuthorizationRule",
-                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
         private final List<AuthorizationRuleImpl> items;
 
-        @JsonCreator
-        private AuthorizationRulesWrapper(
-                @JacksonXmlProperty(
-                                localName = "AuthorizationRule",
-                                namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
-                        List<AuthorizationRuleImpl> items) {
+        private AuthorizationRulesWrapper(List<AuthorizationRuleImpl> items) {
             this.items = items;
+        }
+
+        @Override
+        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+            xmlWriter.writeStartElement(
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
+            if (items != null) {
+                for (AuthorizationRuleImpl element : items) {
+                    xmlWriter.writeXml(element);
+                }
+            }
+            return xmlWriter.writeEndElement();
+        }
+
+        public static AuthorizationRulesWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
+            return xmlReader.readObject(
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                    "AuthorizationRules",
+                    reader -> {
+                        List<AuthorizationRuleImpl> items = null;
+                        while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                            String elementName = reader.getElementName().getLocalPart();
+                            if ("AuthorizationRule".equals(elementName)) {
+                                if (items == null) {
+                                    items = new ArrayList<>();
+                                }
+                                items.add(AuthorizationRuleImpl.fromXml(reader));
+                            } else {
+                                reader.nextElement();
+                            }
+                        }
+                        return new AuthorizationRulesWrapper(items);
+                    });
         }
 
         @JsonCreator()
@@ -146,124 +136,79 @@ public final class QueueDescriptionImpl {
     /*
      * Authorization rules for resource.
      */
-    @JacksonXmlProperty(
-            localName = "AuthorizationRules",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private AuthorizationRulesWrapper authorizationRules;
 
     /*
      * Status of a Service Bus resource
      */
-    @JacksonXmlProperty(
-            localName = "Status",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private EntityStatus status;
 
     /*
      * The name of the recipient entity to which all the messages sent to the queue are forwarded to.
      */
-    @JacksonXmlProperty(
-            localName = "ForwardTo",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String forwardTo;
 
     /*
      * Custom metadata that user can associate with the description. Max length is 1024 chars.
      */
-    @JacksonXmlProperty(
-            localName = "UserMetadata",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String userMetadata;
 
     /*
      * The exact time the queue was created.
      */
-    @JacksonXmlProperty(
-            localName = "CreatedAt",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private OffsetDateTime createdAt;
 
     /*
      * The exact time the entity description was last updated.
      */
-    @JacksonXmlProperty(
-            localName = "UpdatedAt",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private OffsetDateTime updatedAt;
 
     /*
      * Last time a message was sent, or the last time there was a receive request to this queue.
      */
-    @JacksonXmlProperty(
-            localName = "AccessedAt",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private OffsetDateTime accessedAt;
 
     /*
      * Indicates if messages are received in the same order they are sent. For queues, defaults to true and setting it
      * to false has no effect.
      */
-    @JacksonXmlProperty(
-            localName = "SupportOrdering",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean supportOrdering;
 
     /*
      * Details about the message counts in entity.
      */
-    @JacksonXmlProperty(
-            localName = "CountDetails",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private MessageCountDetailsImpl messageCountDetails;
 
     /*
      * ISO 8601 timeSpan idle interval after which the queue is automatically deleted. The minimum duration is 5
      * minutes.
      */
-    @JacksonXmlProperty(
-            localName = "AutoDeleteOnIdle",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Duration autoDeleteOnIdle;
 
     /*
      * A value that indicates whether the queue is to be partitioned across multiple message brokers.
      */
-    @JacksonXmlProperty(
-            localName = "EnablePartitioning",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean enablePartitioning;
 
     /*
      * Availability status of the entity
      */
-    @JacksonXmlProperty(
-            localName = "EntityAvailabilityStatus",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private EntityAvailabilityStatusImpl entityAvailabilityStatus;
 
     /*
      * A value that indicates whether Express Entities are enabled. An express queue holds a message in memory
      * temporarily before writing it to persistent storage.
      */
-    @JacksonXmlProperty(
-            localName = "EnableExpress",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Boolean enableExpress;
 
     /*
      * The name of the recipient entity to which all the dead-lettered messages of this subscription are forwarded to.
      */
-    @JacksonXmlProperty(
-            localName = "ForwardDeadLetteredMessagesTo",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private String forwardDeadLetteredMessagesTo;
 
     /*
      * The maximum size in kilobytes of message payload that can be accepted by the queue.
      */
-    @JacksonXmlProperty(
-            localName = "MaxMessageSizeInKilobytes",
-            namespace = "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect")
     private Long maxMessageSizeInKilobytes;
 
     /** Creates an instance of QueueDescription class. */
@@ -846,5 +791,297 @@ public final class QueueDescriptionImpl {
     public QueueDescriptionImpl setMaxMessageSizeInKilobytes(Long maxMessageSizeInKilobytes) {
         this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        xmlWriter.writeStartElement("QueueDescription");
+        xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "LockDuration",
+                Objects.toString(this.lockDuration, null));
+        xmlWriter.writeNumberElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "MaxSizeInMegabytes",
+                this.maxSizeInMegabytes);
+        xmlWriter.writeBooleanElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "RequiresDuplicateDetection",
+                this.requiresDuplicateDetection);
+        xmlWriter.writeBooleanElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "RequiresSession",
+                this.requiresSession);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "DefaultMessageTimeToLive",
+                Objects.toString(this.defaultMessageTimeToLive, null));
+        xmlWriter.writeBooleanElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "DeadLetteringOnMessageExpiration",
+                this.deadLetteringOnMessageExpiration);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "DuplicateDetectionHistoryTimeWindow",
+                Objects.toString(this.duplicateDetectionHistoryTimeWindow, null));
+        xmlWriter.writeNumberElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "MaxDeliveryCount",
+                this.maxDeliveryCount);
+        xmlWriter.writeBooleanElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "EnableBatchedOperations",
+                this.enableBatchedOperations);
+        xmlWriter.writeNumberElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "SizeInBytes", this.sizeInBytes);
+        xmlWriter.writeNumberElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "MessageCount",
+                this.messageCount);
+        xmlWriter.writeBooleanElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "IsAnonymousAccessible",
+                this.isAnonymousAccessible);
+        xmlWriter.writeXml(this.authorizationRules);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "Status",
+                Objects.toString(this.status, null));
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "ForwardTo", this.forwardTo);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "UserMetadata",
+                this.userMetadata);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "CreatedAt",
+                Objects.toString(this.createdAt, null));
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "UpdatedAt",
+                Objects.toString(this.updatedAt, null));
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "AccessedAt",
+                Objects.toString(this.accessedAt, null));
+        xmlWriter.writeBooleanElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "SupportOrdering",
+                this.supportOrdering);
+        xmlWriter.writeXml(this.messageCountDetails);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "AutoDeleteOnIdle",
+                Objects.toString(this.autoDeleteOnIdle, null));
+        xmlWriter.writeBooleanElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "EnablePartitioning",
+                this.enablePartitioning);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "EntityAvailabilityStatus",
+                Objects.toString(this.entityAvailabilityStatus, null));
+        xmlWriter.writeBooleanElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "EnableExpress",
+                this.enableExpress);
+        xmlWriter.writeStringElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "ForwardDeadLetteredMessagesTo",
+                this.forwardDeadLetteredMessagesTo);
+        xmlWriter.writeNumberElement(
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                "MaxMessageSizeInKilobytes",
+                this.maxMessageSizeInKilobytes);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of QueueDescription from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of QueueDescription if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static QueueDescriptionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return xmlReader.readObject(
+                "QueueDescription",
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                reader -> {
+                    Duration lockDuration = null;
+                    Long maxSizeInMegabytes = null;
+                    Boolean requiresDuplicateDetection = null;
+                    Boolean requiresSession = null;
+                    Duration defaultMessageTimeToLive = null;
+                    Boolean deadLetteringOnMessageExpiration = null;
+                    Duration duplicateDetectionHistoryTimeWindow = null;
+                    Integer maxDeliveryCount = null;
+                    Boolean enableBatchedOperations = null;
+                    Long sizeInBytes = null;
+                    Integer messageCount = null;
+                    Boolean isAnonymousAccessible = null;
+                    AuthorizationRulesWrapper authorizationRules = null;
+                    EntityStatus status = null;
+                    String forwardTo = null;
+                    String userMetadata = null;
+                    OffsetDateTime createdAt = null;
+                    OffsetDateTime updatedAt = null;
+                    OffsetDateTime accessedAt = null;
+                    Boolean supportOrdering = null;
+                    MessageCountDetailsImpl messageCountDetails = null;
+                    Duration autoDeleteOnIdle = null;
+                    Boolean enablePartitioning = null;
+                    EntityAvailabilityStatusImpl entityAvailabilityStatus = null;
+                    Boolean enableExpress = null;
+                    String forwardDeadLetteredMessagesTo = null;
+                    Long maxMessageSizeInKilobytes = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName elementName = reader.getElementName();
+                        if ("LockDuration".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            lockDuration = reader.getNullableElement(Duration::parse);
+                        } else if ("MaxSizeInMegabytes".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            maxSizeInMegabytes = reader.getNullableElement(Long::parseLong);
+                        } else if ("RequiresDuplicateDetection".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            requiresDuplicateDetection = reader.getNullableElement(Boolean::parseBoolean);
+                        } else if ("RequiresSession".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            requiresSession = reader.getNullableElement(Boolean::parseBoolean);
+                        } else if ("DefaultMessageTimeToLive".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            defaultMessageTimeToLive = reader.getNullableElement(Duration::parse);
+                        } else if ("DeadLetteringOnMessageExpiration".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            deadLetteringOnMessageExpiration = reader.getNullableElement(Boolean::parseBoolean);
+                        } else if ("DuplicateDetectionHistoryTimeWindow".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            duplicateDetectionHistoryTimeWindow = reader.getNullableElement(Duration::parse);
+                        } else if ("MaxDeliveryCount".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            maxDeliveryCount = reader.getNullableElement(Integer::parseInt);
+                        } else if ("EnableBatchedOperations".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            enableBatchedOperations = reader.getNullableElement(Boolean::parseBoolean);
+                        } else if ("SizeInBytes".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            sizeInBytes = reader.getNullableElement(Long::parseLong);
+                        } else if ("MessageCount".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            messageCount = reader.getNullableElement(Integer::parseInt);
+                        } else if ("IsAnonymousAccessible".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            isAnonymousAccessible = reader.getNullableElement(Boolean::parseBoolean);
+                        } else if ("AuthorizationRules".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            authorizationRules = AuthorizationRulesWrapper.fromXml(reader);
+                        } else if ("Status".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            status = reader.getNullableElement(EntityStatus::fromString);
+                        } else if ("ForwardTo".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            forwardTo = reader.getStringElement();
+                        } else if ("UserMetadata".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            userMetadata = reader.getStringElement();
+                        } else if ("CreatedAt".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            createdAt = reader.getNullableElement(OffsetDateTime::parse);
+                        } else if ("UpdatedAt".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            updatedAt = reader.getNullableElement(OffsetDateTime::parse);
+                        } else if ("AccessedAt".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            accessedAt = reader.getNullableElement(OffsetDateTime::parse);
+                        } else if ("SupportOrdering".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            supportOrdering = reader.getNullableElement(Boolean::parseBoolean);
+                        } else if ("CountDetails".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            messageCountDetails = MessageCountDetailsImpl.fromXml(reader);
+                        } else if ("AutoDeleteOnIdle".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            autoDeleteOnIdle = reader.getNullableElement(Duration::parse);
+                        } else if ("EnablePartitioning".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            enablePartitioning = reader.getNullableElement(Boolean::parseBoolean);
+                        } else if ("EntityAvailabilityStatus".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            entityAvailabilityStatus =
+                                    reader.getNullableElement(EntityAvailabilityStatusImpl::fromString);
+                        } else if ("EnableExpress".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            enableExpress = reader.getNullableElement(Boolean::parseBoolean);
+                        } else if ("ForwardDeadLetteredMessagesTo".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            forwardDeadLetteredMessagesTo = reader.getStringElement();
+                        } else if ("MaxMessageSizeInKilobytes".equals(elementName.getLocalPart())
+                                && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
+                                        .equals(elementName.getNamespaceURI())) {
+                            maxMessageSizeInKilobytes = reader.getNullableElement(Long::parseLong);
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    QueueDescriptionImpl deserializedQueueDescription = new QueueDescriptionImpl();
+                    deserializedQueueDescription.lockDuration = lockDuration;
+                    deserializedQueueDescription.maxSizeInMegabytes = maxSizeInMegabytes;
+                    deserializedQueueDescription.requiresDuplicateDetection = requiresDuplicateDetection;
+                    deserializedQueueDescription.requiresSession = requiresSession;
+                    deserializedQueueDescription.defaultMessageTimeToLive = defaultMessageTimeToLive;
+                    deserializedQueueDescription.deadLetteringOnMessageExpiration = deadLetteringOnMessageExpiration;
+                    deserializedQueueDescription.duplicateDetectionHistoryTimeWindow =
+                            duplicateDetectionHistoryTimeWindow;
+                    deserializedQueueDescription.maxDeliveryCount = maxDeliveryCount;
+                    deserializedQueueDescription.enableBatchedOperations = enableBatchedOperations;
+                    deserializedQueueDescription.sizeInBytes = sizeInBytes;
+                    deserializedQueueDescription.messageCount = messageCount;
+                    deserializedQueueDescription.isAnonymousAccessible = isAnonymousAccessible;
+                    deserializedQueueDescription.authorizationRules = authorizationRules;
+                    deserializedQueueDescription.status = status;
+                    deserializedQueueDescription.forwardTo = forwardTo;
+                    deserializedQueueDescription.userMetadata = userMetadata;
+                    deserializedQueueDescription.createdAt = createdAt;
+                    deserializedQueueDescription.updatedAt = updatedAt;
+                    deserializedQueueDescription.accessedAt = accessedAt;
+                    deserializedQueueDescription.supportOrdering = supportOrdering;
+                    deserializedQueueDescription.messageCountDetails = messageCountDetails;
+                    deserializedQueueDescription.autoDeleteOnIdle = autoDeleteOnIdle;
+                    deserializedQueueDescription.enablePartitioning = enablePartitioning;
+                    deserializedQueueDescription.entityAvailabilityStatus = entityAvailabilityStatus;
+                    deserializedQueueDescription.enableExpress = enableExpress;
+                    deserializedQueueDescription.forwardDeadLetteredMessagesTo = forwardDeadLetteredMessagesTo;
+                    deserializedQueueDescription.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
+                    return deserializedQueueDescription;
+                });
     }
 }

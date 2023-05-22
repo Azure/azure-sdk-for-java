@@ -2,8 +2,10 @@
 // Licensed under the MIT License.
 
 module com.azure.messaging.servicebus {
+    requires transitive com.azure.xml;
     requires transitive com.azure.core.amqp;
 
+    requires transitive java.xml;
     requires com.fasterxml.jackson.dataformat.xml;
 
     exports com.azure.messaging.servicebus;
