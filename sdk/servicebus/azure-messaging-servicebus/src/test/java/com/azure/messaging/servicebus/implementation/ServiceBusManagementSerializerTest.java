@@ -29,6 +29,7 @@ import com.azure.messaging.servicebus.administration.implementation.models.Subsc
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionImpl;
+import com.azure.messaging.servicebus.administration.implementation.models.TitleImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TrueFilterImpl;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.messaging.servicebus.administration.models.AuthorizationRule;
@@ -55,8 +56,6 @@ import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -69,9 +68,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class ServiceBusManagementSerializerTest {
-    private static final String TITLE_KEY = "";
-
-    private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
+    private static final ServiceBusManagementSerializer SERIALIZER = new ServiceBusManagementSerializer();
 
     /**
      * Verify we can deserialize XML request when creating a queue.
@@ -100,7 +97,7 @@ class ServiceBusManagementSerializerTest {
         expected.getAuthorizationRules().add(rule);
 
         // Act
-        final QueueDescriptionEntryImpl entry = serializer.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
 
         // Assert
         assertNotNull(entry);
@@ -137,7 +134,7 @@ class ServiceBusManagementSerializerTest {
             .setPartitioningEnabled(true);
 
         // Act
-        final QueueDescriptionEntryImpl entry = serializer.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
 
         // Assert
         assertNotNull(entry);
@@ -170,7 +167,7 @@ class ServiceBusManagementSerializerTest {
             .setTransferDeadLetterMessageCount(123);
 
         // Act
-        final QueueDescriptionEntryImpl entry = serializer.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
         final QueueProperties properties = EntityHelper.toModel(entry.getContent().getQueueDescription());
         final QueueRuntimeProperties actual = new QueueRuntimeProperties(properties);
 
@@ -199,7 +196,7 @@ class ServiceBusManagementSerializerTest {
         final String contents = getContents("QueueDescriptionFeed-Errors.xml");
 
         // Act
-        final QueueDescriptionFeedImpl actual = serializer.deserialize(contents, QueueDescriptionFeedImpl.class);
+        final QueueDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, QueueDescriptionFeedImpl.class);
 
         // Assert
         assertNotNull(actual);
@@ -265,23 +262,20 @@ class ServiceBusManagementSerializerTest {
             .setContent(new QueueDescriptionEntryContentImpl().setType("application/xml")
                 .setQueueDescription(queueProperties));
 
-        final Map<String, String> titleMap = new HashMap<>();
-        titleMap.put("", "Queues");
-        titleMap.put("type", "text");
         final List<QueueDescriptionEntryImpl> entries = Arrays.asList(entry1, entry2, entry3);
         final QueueDescriptionFeedImpl expected = new QueueDescriptionFeedImpl()
             .setId("feed-id")
-            .setTitle(titleMap)
+            .setTitle(new TitleImpl().setType("type").setContent("Queues"))
             .setUpdated(OffsetDateTime.parse("2020-12-05T07:17:21Z"))
             .setLink(responseLinks)
             .setEntry(entries);
 
         // Act
-        final QueueDescriptionFeedImpl actual = serializer.deserialize(contents, QueueDescriptionFeedImpl.class);
+        final QueueDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, QueueDescriptionFeedImpl.class);
 
         // Assert
         assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getTitle(), actual.getTitle());
+        assertEquals(expected.getTitle().getContent(), actual.getTitle().getContent());
         assertEquals(expected.getUpdated(), actual.getUpdated());
 
         assertNotNull(actual.getLink());
@@ -303,7 +297,7 @@ class ServiceBusManagementSerializerTest {
             assertEquals(expected.getId(), actual.getId());
             assertNotNull(actual.getTitle());
 
-            assertResponseTitle(expectedEntry.getTitle(), actualEntry.getTitle());
+            assertEquals(expectedEntry.getTitle().getContent(), actualEntry.getTitle().getContent());
             assertEquals(expectedEntry.getUpdated(), actualEntry.getUpdated());
             assertEquals(expectedEntry.getPublished(), actualEntry.getPublished());
             assertEquals(expectedEntry.getAuthor().getName(), actualEntry.getAuthor().getName());
@@ -327,7 +321,7 @@ class ServiceBusManagementSerializerTest {
         final NamespaceType namespaceType = NamespaceType.MESSAGING;
 
         // Act
-        final NamespacePropertiesEntryImpl entry = serializer.deserialize(contents, NamespacePropertiesEntryImpl.class);
+        final NamespacePropertiesEntryImpl entry = SERIALIZER.deserialize(contents, NamespacePropertiesEntryImpl.class);
 
         // Assert
         assertNotNull(entry);
@@ -363,7 +357,7 @@ class ServiceBusManagementSerializerTest {
             .setAutoDeleteOnIdle(Duration.ofHours(1).plusMinutes(48));
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry = serializer.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
 
         // Assert
         assertNotNull(entry);
@@ -392,7 +386,7 @@ class ServiceBusManagementSerializerTest {
                 .setMaxDeliveryCount(7));
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry = serializer.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
 
         // Assert
         assertNotNull(entry);
@@ -423,7 +417,7 @@ class ServiceBusManagementSerializerTest {
             .setTransferDeadLetterMessageCount(2);
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry = serializer.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
         final SubscriptionRuntimeProperties actual = new SubscriptionRuntimeProperties(
             EntityHelper.toModel(entry.getContent().getSubscriptionDescription()));
 
@@ -504,24 +498,21 @@ class ServiceBusManagementSerializerTest {
                 .setType("application/xml")
                 .setSubscriptionDescription(subscription3));
 
-        final Map<String, String> titleMap = new HashMap<>();
-        titleMap.put("", "Subscriptions");
-        titleMap.put("type", "text");
         final List<SubscriptionDescriptionEntryImpl> entries = Arrays.asList(entry1, entry2, entry3);
         final SubscriptionDescriptionFeedImpl expected = new SubscriptionDescriptionFeedImpl()
             .setId("feed-id")
-            .setTitle(titleMap)
+            .setTitle(new TitleImpl().setType("text").setContent("Subscriptions"))
             .setUpdated(OffsetDateTime.parse("2020-06-30T11:41:32Z"))
             .setLink(responseLinks)
             .setEntry(entries);
         final int expectedNumberOfEntries = 11;
 
         // Act
-        final SubscriptionDescriptionFeedImpl actual = serializer.deserialize(contents, SubscriptionDescriptionFeedImpl.class);
+        final SubscriptionDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, SubscriptionDescriptionFeedImpl.class);
 
         // Assert
         assertEquals(expected.getId(), actual.getId());
-        assertEquals(expected.getTitle(), actual.getTitle());
+        assertEquals(expected.getTitle().getContent(), actual.getTitle().getContent());
         assertEquals(expected.getUpdated(), actual.getUpdated());
 
         assertNotNull(actual.getLink());
@@ -580,7 +571,7 @@ class ServiceBusManagementSerializerTest {
                 .setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = serializer.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -611,7 +602,7 @@ class ServiceBusManagementSerializerTest {
                 .setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = serializer.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -639,7 +630,7 @@ class ServiceBusManagementSerializerTest {
                 .setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = serializer.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -704,7 +695,7 @@ class ServiceBusManagementSerializerTest {
             .setUpdated(OffsetDateTime.parse("2020-08-28T14:59:16Z"));
 
         // Act
-        final RuleDescriptionFeedImpl actual = serializer.deserialize(contents, RuleDescriptionFeedImpl.class);
+        final RuleDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionFeedImpl.class);
 
         // Assert
         assertNotNull(actual);
@@ -737,7 +728,7 @@ class ServiceBusManagementSerializerTest {
         final RuleDescriptionEntryImpl expected = new RuleDescriptionEntryImpl().setContent(content);
 
         // Act
-        final RuleDescriptionEntryImpl actual = serializer.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -766,7 +757,7 @@ class ServiceBusManagementSerializerTest {
             .setContent(content);
 
         // Act
-        final RuleDescriptionEntryImpl actual = serializer.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -938,30 +929,16 @@ class ServiceBusManagementSerializerTest {
         assertTrue(actualMap.isEmpty());
     }
 
-    @SuppressWarnings("unchecked")
-    private static void assertTitle(String expectedTitle, Object responseTitle) {
-        assertTrue(responseTitle instanceof LinkedHashMap);
-
-        final LinkedHashMap<String, String> map = (LinkedHashMap<String, String>) responseTitle;
-        assertTrue(map.containsKey(TITLE_KEY));
-        assertEquals(expectedTitle, map.get(TITLE_KEY));
+    private static void assertTitle(String expectedTitle, TitleImpl responseTitle) {
+        assertEquals(responseTitle.getContent(), expectedTitle);
     }
 
-    @SuppressWarnings("unchecked")
-    private static void assertResponseTitle(Object expectedResponseTitle, Object actualResponseTitle) {
-        assertTrue(actualResponseTitle instanceof LinkedHashMap);
-
-        final LinkedHashMap<String, String> actualMap = (LinkedHashMap<String, String>) actualResponseTitle;
-
-        assertTrue(actualMap.containsKey(TITLE_KEY));
-        assertTitle(actualMap.get(TITLE_KEY), expectedResponseTitle);
+    private static void assertResponseTitle(TitleImpl expectedResponseTitle, TitleImpl actualResponseTitle) {
+        assertEquals(expectedResponseTitle.getContent(), actualResponseTitle.getContent());
     }
 
-    private static LinkedHashMap<String, String> getResponseTitle(String entityName) {
-        final LinkedHashMap<String, String> map = new LinkedHashMap<>();
-        map.put("", entityName);
-        map.put("type", "text");
-        return map;
+    private static TitleImpl getResponseTitle(String entityName) {
+        return new TitleImpl().setType("text").setContent(entityName);
     }
 
     private static class TestAuthorizationRule implements AuthorizationRule {

@@ -129,7 +129,7 @@ com.azure:azure-maps-search;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-json;1.0.1;1.1.0-beta.1
 com.azure:azure-json-gson;1.0.0-beta.3;1.0.0-beta.4
 com.azure:azure-json-reflect;1.0.0-beta.2;1.0.0-beta.3
-com.azure:azure-messaging-eventgrid;4.15.1;4.16.0-beta.1
+com.azure:azure-messaging-eventgrid;4.15.1;4.16.0
 com.azure:azure-messaging-eventgrid-cloudnative-cloudevents;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-messaging-eventhubs;5.15.4;5.16.0-beta.1
 com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.16.5;1.17.0-beta.1
@@ -270,7 +270,7 @@ com.azure.resourcemanager:azure-resourcemanager-postgresql;1.0.2;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-hdinsight;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-sqlvirtualmachine;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-relay;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.5;1.0.0-beta.6
+com.azure.resourcemanager:azure-resourcemanager-costmanagement;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-recoveryservices;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-kusto;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-loganalytics;1.0.0-beta.3;1.0.0-beta.4
@@ -294,7 +294,7 @@ com.azure.resourcemanager:azure-resourcemanager-synapse;1.0.0-beta.7;1.0.0-beta.
 com.azure.resourcemanager:azure-resourcemanager-resourcehealth;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-databricks;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-databoxedge;1.0.0-beta.2;1.0.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.2;1.0.0-beta.3
+com.azure.resourcemanager:azure-resourcemanager-frontdoor;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-mixedreality;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-automation;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-resourcemover;1.0.0;1.1.0-beta.1
@@ -350,7 +350,7 @@ com.azure.resourcemanager:azure-resourcemanager-maps;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-botservice;1.0.0-beta.5;1.0.0-beta.6
 com.azure.resourcemanager:azure-resourcemanager-recoveryservicesbackup;1.1.0;1.2.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-deviceprovisioningservices;1.0.0;1.1.0-beta.3
-com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-beta.5;1.0.0-beta.6
+com.azure.resourcemanager:azure-resourcemanager-postgresqlflexibleserver;1.0.0-beta.6;1.0.0-beta.7
 com.azure.resourcemanager:azure-resourcemanager-elastic;1.0.0-beta.3;1.0.0-beta.4
 com.azure.resourcemanager:azure-resourcemanager-webpubsub;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-security;1.0.0-beta.5;1.0.0-beta.6
@@ -409,7 +409,7 @@ com.azure.resourcemanager:azure-resourcemanager-voiceservices;1.0.0;1.1.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-graphservices;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-paloaltonetworks-ngfw;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-newrelicobservability;1.0.0;1.1.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-qumulo;1.0.0-beta.1;1.0.0-beta.2
+com.azure.resourcemanager:azure-resourcemanager-qumulo;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-selfhelp;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-networkcloud;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
