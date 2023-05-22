@@ -32,7 +32,9 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class, isAsync = true)
 public final class OpenAIAsyncClient {
+
     @Generated private final OpenAIClientImpl serviceClient;
+
     private final NonAzureOpenAIClientImpl openAIServiceClient;
 
     /**
