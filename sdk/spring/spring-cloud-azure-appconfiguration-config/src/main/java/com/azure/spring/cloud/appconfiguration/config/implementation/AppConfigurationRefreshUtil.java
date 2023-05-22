@@ -245,10 +245,9 @@ class AppConfigurationRefreshUtil {
 
                     // If there is no result, etag will be considered empty.
                     // A refresh will trigger once the selector returns a value.
-                    if (compairKeys(watchFlag, currentKey, client.getEndpoint(), eventData)) {
-                        if (eventData.getDoRefresh()) {
-                            return watchedKeySize;
-                        }
+                    if (Boolean.TRUE.equals(compairKeys(watchFlag, currentKey, client.getEndpoint(), eventData)
+                    		&& eventData.getDoRefresh())) {
+                    	return watchedKeySize;
                     }
                 }
             }
