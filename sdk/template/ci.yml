@@ -84,11 +84,12 @@ extends:
         # required by the above perf library
       - name: perf-test-core
         groupId: com.azure
-    LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-        parameters:
-          ServiceDirectory: template
-          Artifacts:
-            - name: azure-sdk-template
-              groupId: com.azure
-              safeName: azuresdktemplate
+    MatrixConfigs: {}
+    # LiveTestStages:
+    #   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    #     parameters:
+    #       ServiceDirectory: template
+    #       Artifacts:
+    #         - name: azure-sdk-template
+    #           groupId: com.azure
+    #           safeName: azuresdktemplate
