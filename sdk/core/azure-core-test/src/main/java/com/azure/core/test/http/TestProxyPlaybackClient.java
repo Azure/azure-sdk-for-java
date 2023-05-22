@@ -42,7 +42,6 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     private final HttpClient client;
     private final URL proxyUrl;
-    private final boolean skipExternalizeRecording;
     private String xRecordingId;
     private static final SerializerAdapter SERIALIZER = new JacksonAdapter();
 
@@ -61,7 +60,6 @@ public class TestProxyPlaybackClient implements HttpClient {
     public TestProxyPlaybackClient(HttpClient httpClient, boolean skipRecordingRequestBody) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
         this.proxyUrl = TestProxyUtils.getProxyUrl();
-        this.skipExternalizeRecording = skipExternalizeRecording;
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
         this.skipRecordingRequestBody = skipRecordingRequestBody;
     }
@@ -76,7 +74,7 @@ public class TestProxyPlaybackClient implements HttpClient {
     public Queue<String> startPlayback(File recordFile) {
         HttpRequest request = null;
         // subpath removes nodes "src/test/resources/session-records"
-        String assetJsonPath = skipExternalizeRecording ? null : recordFile.toPath().subpath(0, 3) + "\\assets.json";
+        String assetJsonPath = recordFile.toPath().subpath(0, 3) + "\\assets.json";
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
                 .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath), SerializerEncoding.JSON));

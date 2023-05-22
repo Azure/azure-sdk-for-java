@@ -100,7 +100,6 @@ public class TestProxyManager {
         }
     }
 
-
     /**
      * Checks the environment variables commonly set in CI to determine if the run is local.
      * @return True if the run is local.

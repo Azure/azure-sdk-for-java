@@ -158,9 +158,10 @@ public final class TestUtils {
      * @throws RuntimeException The specified folder could not be located.
      */
     public static Path getRepoRootResolveUntil(Path testClassPath, String resolveFolder) {
+        String repoName = "\\azure-sdk-for-java";
         Path path = testClassPath;
         Path candidate = null;
-        while (path != null) {
+        while (path != null && !path.endsWith(repoName)) {
             candidate = path.resolve(resolveFolder);
             if (Files.exists(candidate)) {
                 break;
@@ -168,7 +169,8 @@ public final class TestUtils {
             path = path.getParent();
         }
         if (path == null) {
-            throw new RuntimeException(String.format("Could not locate %s folder", resolveFolder));
+            throw new RuntimeException(String.format(
+                "Could not locate %s folder within repository %s", resolveFolder, repoName));
         }
         return path;
     }

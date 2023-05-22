@@ -13,13 +13,13 @@ public class RecordFilePayload {
     /**
      * The record file path
      */
-    @JsonProperty("x-recording-file")
+    @JsonProperty(value = "x-recording-file", access = JsonProperty.Access.WRITE_ONLY)
     private String recordingFile;
 
     /**
      * The asset file path
      */
-    @JsonProperty("x-recording-assets-file")
+    @JsonProperty(value = "x-recording-assets-file", access = JsonProperty.Access.WRITE_ONLY)
     private String assetFile;
 
     /**
@@ -31,5 +31,4 @@ public class RecordFilePayload {
         this.recordingFile = recordingFile;
         this.assetFile = assetFile;
     }
-
 }

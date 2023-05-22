@@ -44,7 +44,6 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
     private final HttpClient client;
     private final URL proxyUrl;
     private final boolean skipRecordingRequestBody;
-    private final boolean skipExternalizeRecording;
     private String xRecordingId;
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
     private static final List<TestProxySanitizer> DEFAULT_SANITIZERS = loadSanitizers();
@@ -55,12 +54,10 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      *
      * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
      * @param skipRecordingRequestBody Flag indicating to skip recording request bodies when tests run in Record mode.
-     * @param skipExternalizeRecording Flag indicating if the test recording should be externalized.
      */
-    public TestProxyRecordPolicy(HttpClient httpClient, boolean skipRecordingRequestBody, boolean skipExternalizeRecording) {
+    public TestProxyRecordPolicy(HttpClient httpClient, boolean skipRecordingRequestBody) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
         this.skipRecordingRequestBody = skipRecordingRequestBody;
-        this.skipExternalizeRecording = skipExternalizeRecording;
         this.proxyUrl = TestProxyUtils.getProxyUrl();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
     }
@@ -73,7 +70,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void startRecording(File recordFile) {
         // subpath removes nodes "src/test/resources/session-records"
-        String assetJsonPath = skipExternalizeRecording ? null : recordFile.toPath().subpath(0, 3) + "\\assets.json";
+        String assetJsonPath = recordFile.toPath().subpath(0, 3) + "\\assets.json";
         HttpRequest request = null;
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))

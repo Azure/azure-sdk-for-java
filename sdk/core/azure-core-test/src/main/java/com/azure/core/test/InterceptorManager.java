@@ -71,7 +71,6 @@ public class InterceptorManager implements AutoCloseable {
     private final RecordedData recordedData;
     private final boolean testProxyEnabled;
     private final boolean skipRecordingRequestBody;
-    private final boolean skipExternalizeRecording;
     private TestProxyRecordPolicy testProxyRecordPolicy;
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
@@ -139,7 +138,6 @@ public class InterceptorManager implements AutoCloseable {
         this.textReplacementRules = new HashMap<>();
         this.skipRecordingRequestBody = skipRecordingRequestBody;
         this.testClassPath = testClassPath;
-        this.skipExternalizeRecording = skipExternalizeRecording;
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
@@ -221,7 +219,6 @@ public class InterceptorManager implements AutoCloseable {
         this.allowedToRecordValues = false;
         this.testProxyEnabled = false;
         this.skipRecordingRequestBody = false;
-        this.skipExternalizeRecording = false;
         this.testClassPath = null;
 
         this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
@@ -380,7 +377,7 @@ public class InterceptorManager implements AutoCloseable {
             if (!isRecordMode()) {
                 throw new IllegalStateException("A recording policy can only be requested in RECORD mode.");
             }
-            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient, skipRecordingRequestBody, skipExternalizeRecording);
+            testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient, skipRecordingRequestBody);
             testProxyRecordPolicy.startRecording(getTestProxyRecordFile());
         }
         return testProxyRecordPolicy;
