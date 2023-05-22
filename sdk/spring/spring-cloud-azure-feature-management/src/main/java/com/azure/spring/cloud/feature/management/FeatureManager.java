@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,9 +94,16 @@ public class FeatureManager {
             return false;
         }
 
-        return featureItem.getEnabledFor().values().stream().filter(Objects::nonNull)
-            .filter(featureFilter -> featureFilter.getName() != null)
-            .anyMatch(featureFilter -> isFeatureOn(featureFilter, feature));
+        Stream<FeatureFilterEvaluationContext> filters = featureItem.getEnabledFor().values().stream()
+            .filter(Objects::nonNull).filter(featureFilter -> featureFilter.getName() != null);
+
+        // All Filters must be true
+        if (featureItem.getRequirementType().equals("All")) {
+            return filters.allMatch(featureFilter -> isFeatureOn(featureFilter, feature));
+        }
+
+        // Any Filter must be true
+        return filters.anyMatch(featureFilter -> isFeatureOn(featureFilter, feature));
     }
 
     private boolean isFeatureOn(FeatureFilterEvaluationContext filter, String feature) {
