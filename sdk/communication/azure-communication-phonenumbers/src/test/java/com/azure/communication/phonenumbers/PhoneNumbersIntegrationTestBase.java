@@ -2,6 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringJoiner;
+import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.AzureKeyCredential;
@@ -19,15 +27,8 @@ import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import reactor.core.publisher.Mono;
 
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringJoiner;
-import java.util.function.Function;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import reactor.core.publisher.Mono;
 
 public class PhoneNumbersIntegrationTestBase extends TestBase {
     private static final String CONNECTION_STRING = Configuration.getGlobalConfiguration()
