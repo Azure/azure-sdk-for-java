@@ -12,6 +12,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.databox.DataBoxManager;
+import com.azure.resourcemanager.databox.models.DatacenterAddressRequest;
 import com.azure.resourcemanager.databox.models.RegionConfigurationRequest;
 import com.azure.resourcemanager.databox.models.RegionConfigurationResponse;
 import com.azure.resourcemanager.databox.models.ScheduleAvailabilityRequest;
@@ -34,7 +35,7 @@ public final class ServicesRegionConfigurationByResourceGroupWithResponseMockTes
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"scheduleAvailabilityResponse\":{\"availableDates\":[\"2021-10-28T18:31:30Z\"]},\"transportAvailabilityResponse\":{\"transportAvailabilityDetails\":[]}}";
+            "{\"scheduleAvailabilityResponse\":{\"availableDates\":[\"2021-04-04T05:02:20Z\"]},\"transportAvailabilityResponse\":{\"transportAvailabilityDetails\":[]},\"datacenterAddressResponse\":{\"datacenterAddressType\":\"DatacenterAddressResponse\",\"supportedCarriersForReturnShipment\":[\"pjorwkqnyhg\",\"ij\",\"jivfxzsjabib\",\"ystawfsdjpvkvp\"],\"dataCenterAzureLocation\":\"xbkzbzkdvncj\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,15 +67,19 @@ public final class ServicesRegionConfigurationByResourceGroupWithResponseMockTes
             manager
                 .services()
                 .regionConfigurationByResourceGroupWithResponse(
-                    "nzgmwznmabik",
-                    "sorgj",
+                    "wxqibyq",
+                    "nyowxwlmdjrkvfg",
                     new RegionConfigurationRequest()
                         .withScheduleAvailabilityRequest(
                             new ScheduleAvailabilityRequest()
-                                .withStorageLocation("bldtlww")
-                                .withCountry("kdmtncvokotll"))
+                                .withStorageLocation("fvpdbo")
+                                .withCountry("cizsjqlhkrribdei"))
                         .withTransportAvailabilityRequest(
-                            new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX_HEAVY)),
+                            new TransportAvailabilityRequest().withSkuName(SkuName.DATA_BOX))
+                        .withDatacenterAddressRequest(
+                            new DatacenterAddressRequest()
+                                .withStorageLocation("kghv")
+                                .withSkuName(SkuName.DATA_BOX_HEAVY)),
                     com.azure.core.util.Context.NONE)
                 .getValue();
     }
