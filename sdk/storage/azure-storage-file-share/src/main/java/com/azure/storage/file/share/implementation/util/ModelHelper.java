@@ -217,8 +217,7 @@ public class ModelHelper {
             .setFileId(handleItem.getFileId())
             .setParentId(handleItem.getParentId())
             .setLastReconnectTime(handleItem.getLastReconnectTime())
-            .setOpenTime(handleItem.getOpenTime())
-            .setAccessRights(handleItem.getAccessRightList());
+            .setOpenTime(handleItem.getOpenTime());
     }
 
     public static List<HandleItem> transformHandleItems(List<com.azure.storage.file.share.implementation.models.HandleItem> handleItems) {
