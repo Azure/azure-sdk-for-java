@@ -19,6 +19,7 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.ServicesGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeaders;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
@@ -27,7 +28,6 @@ import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
 import com.azure.storage.queue.models.QueueStorageException;
 import reactor.core.publisher.Mono;
-
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,7 +68,6 @@ import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_PO
 @ServiceClient(builder = QueueServiceClientBuilder.class)
 public final class QueueServiceClient {
     private static final ClientLogger LOGGER = new ClientLogger(QueueServiceClient.class);
-    private final QueueServiceAsyncClient client;
     private final AzureQueueStorageImpl azureQueueStorage;
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
@@ -79,12 +78,18 @@ public final class QueueServiceClient {
     /**
      * Creates a QueueServiceClient that wraps a QueueServiceAsyncClient and blocks requests.
      *
-     * @param client QueueServiceAsyncClient that is used to send requests
+     * @param azureQueueStorage Client that interacts with the service interfaces.
+     * @param accountName name of the account.
+     * @param serviceVersion {@link QueueServiceVersion} of the service to be used when making requests.
+     * @param processMessageDecodingErrorAsyncHandler the asynchronous handler that performs the tasks needed when a
+     * message is received or peaked from the queue but cannot be decoded.
+     * @param processMessageDecodingErrorHandler the synchronous handler that performs the tasks needed when a
+     * message is received or peaked from the queue but cannot be decoded.
      */
     QueueServiceClient(AzureQueueStorageImpl azureQueueStorage, String accountName, QueueServiceVersion serviceVersion,
-        QueueMessageEncoding messageEncoding, QueueServiceAsyncClient client, Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
-                       Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
-        this.client = client;
+        QueueMessageEncoding messageEncoding, Function<QueueMessageDecodingError,
+        Mono<Void>> processMessageDecodingErrorAsyncHandler,
+        Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         this.azureQueueStorage = azureQueueStorage;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
@@ -127,8 +132,8 @@ public final class QueueServiceClient {
      * @return QueueClient that interacts with the specified queue
      */
     public QueueClient getQueueClient(String queueName) {
-        return new QueueClient(client.getAzureQueueStorage(), queueName, client.getAccountName(),
-            client.getServiceVersion(), client.getMessageEncoding(), processMessageDecodingErrorAsyncHandler,
+        return new QueueClient(this.azureQueueStorage, queueName, accountName,
+            serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler,
             processMessageDecodingErrorHandler);
     }
 

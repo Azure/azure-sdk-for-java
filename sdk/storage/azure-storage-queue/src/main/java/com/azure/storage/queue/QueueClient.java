@@ -39,9 +39,13 @@ import com.azure.storage.queue.models.SendMessageResult;
 import com.azure.storage.queue.models.UpdateMessageResult;
 import com.azure.storage.queue.sas.QueueServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
-
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -92,6 +96,10 @@ public final class QueueClient {
      * @param accountName Name of the account.
      * @param serviceVersion the {@link QueueServiceVersion}.
      * @param messageEncoding the {@link QueueMessageEncoding}.
+     * @param processMessageDecodingErrorAsyncHandler the asynchronous handler that performs the tasks needed when a
+     * message is received or peaked from the queue but cannot be decoded.
+     * @param processMessageDecodingErrorHandler the synchronous handler that performs the tasks needed when a
+     * message is received or peaked from the queue but cannot be decoded.
      */
     QueueClient(AzureQueueStorageImpl azureQueueStorage, String queueName, String accountName,
         QueueServiceVersion serviceVersion, QueueMessageEncoding messageEncoding, Function<QueueMessageDecodingError,
