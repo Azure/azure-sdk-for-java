@@ -17,9 +17,6 @@ public final class CustomEntitiesResult extends CustomResult {
     @JsonProperty(value = "documents", required = true)
     private List<CustomEntitiesResultDocumentsItem> documents;
 
-    /** Creates an instance of CustomEntitiesResult class. */
-    public CustomEntitiesResult() {}
-
     /**
      * Get the documents property: Response by document.
      *

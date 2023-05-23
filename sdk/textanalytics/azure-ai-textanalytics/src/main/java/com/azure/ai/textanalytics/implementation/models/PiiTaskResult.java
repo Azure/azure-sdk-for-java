@@ -20,9 +20,6 @@ public final class PiiTaskResult extends AnalyzeTextTaskResult {
     @JsonProperty(value = "results", required = true)
     private PiiResult results;
 
-    /** Creates an instance of PiiTaskResult class. */
-    public PiiTaskResult() {}
-
     /**
      * Get the results property: The results property.
      *

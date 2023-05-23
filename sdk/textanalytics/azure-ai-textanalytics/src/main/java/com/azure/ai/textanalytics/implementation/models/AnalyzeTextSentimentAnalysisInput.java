@@ -26,9 +26,6 @@ public final class AnalyzeTextSentimentAnalysisInput extends AnalyzeTextTask {
     @JsonProperty(value = "parameters")
     private SentimentAnalysisTaskParameters parameters;
 
-    /** Creates an instance of AnalyzeTextSentimentAnalysisInput class. */
-    public AnalyzeTextSentimentAnalysisInput() {}
-
     /**
      * Get the analysisInput property: The analysisInput property.
      *

@@ -17,9 +17,6 @@ public final class LanguageDetectionDocumentResult extends DocumentResult {
     @JsonProperty(value = "detectedLanguage", required = true)
     private DetectedLanguage detectedLanguage;
 
-    /** Creates an instance of LanguageDetectionDocumentResult class. */
-    public LanguageDetectionDocumentResult() {}
-
     /**
      * Get the detectedLanguage property: Detected Language.
      *

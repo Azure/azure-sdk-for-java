@@ -22,9 +22,6 @@ public final class ClassificationResult {
     @JsonProperty(value = "confidenceScore", required = true)
     private double confidenceScore;
 
-    /** Creates an instance of ClassificationResult class. */
-    public ClassificationResult() {}
-
     /**
      * Get the category property: Classification type.
      *

@@ -9,9 +9,6 @@ import com.azure.core.annotation.Fluent;
 /** Supported parameters for a Custom Single Classification task. */
 @Fluent
 public final class CustomSingleLabelClassificationTaskParameters extends CustomTaskParameters {
-    /** Creates an instance of CustomSingleLabelClassificationTaskParameters class. */
-    public CustomSingleLabelClassificationTaskParameters() {}
-
     /** {@inheritDoc} */
     @Override
     public CustomSingleLabelClassificationTaskParameters setProjectName(String projectName) {

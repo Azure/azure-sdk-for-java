@@ -16,9 +16,6 @@ public final class ErrorResponse {
     @JsonProperty(value = "error", required = true)
     private Error error;
 
-    /** Creates an instance of ErrorResponse class. */
-    public ErrorResponse() {}
-
     /**
      * Get the error property: The error object.
      *

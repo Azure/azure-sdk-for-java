@@ -3,9 +3,8 @@
 
 package com.azure.ai.textanalytics.implementation;
 
-import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
-import com.azure.ai.textanalytics.models.DetectedLanguage;
+import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.core.util.IterableStream;
 
@@ -23,7 +22,6 @@ public final class ClassifyDocumentResultPropertiesHelper {
     public interface ClassifyDocumentResultAccessor {
         void setClassifications(ClassifyDocumentResult classifyDocumentResult,
             IterableStream<ClassificationCategory> classifications);
-        void setDetectedLanguage(ClassifyDocumentResult classifyDocumentResult, DetectedLanguage detectedLanguage);
         void setWarnings(ClassifyDocumentResult classifyDocumentResult,
             IterableStream<TextAnalyticsWarning> warnings);
     }
@@ -40,11 +38,6 @@ public final class ClassifyDocumentResultPropertiesHelper {
     public static void setClassifications(ClassifyDocumentResult classifyDocumentResult,
         IterableStream<ClassificationCategory> classifications) {
         accessor.setClassifications(classifyDocumentResult, classifications);
-    }
-
-    public static void setDetectedLanguage(ClassifyDocumentResult classifyDocumentResult,
-        DetectedLanguage detectedLanguage) {
-        accessor.setDetectedLanguage(classifyDocumentResult, detectedLanguage);
     }
 
     public static void setWarnings(ClassifyDocumentResult classifyDocumentResult,

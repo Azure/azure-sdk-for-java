@@ -7,8 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.util.Collection;
-
 /**
  * Gets the PII entity category inferred by the text analytics service's PII entity recognition model.
  * The list of available categories is described at
@@ -561,10 +559,5 @@ public final class PiiEntityCategory extends ExpandableStringEnum<PiiEntityCateg
     @JsonCreator
     public static PiiEntityCategory fromString(String name) {
         return fromString(name, PiiEntityCategory.class);
-    }
-
-    /** @return known PiiEntityCategory values. */
-    public static Collection<PiiEntityCategory> values() {
-        return values(PiiEntityCategory.class);
     }
 }

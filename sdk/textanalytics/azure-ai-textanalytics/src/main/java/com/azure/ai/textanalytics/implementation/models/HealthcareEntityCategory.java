@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Healthcare Entity Category. */
+/** Defines values for HealthcareEntityCategory. */
 public final class HealthcareEntityCategory extends ExpandableStringEnum<HealthcareEntityCategory> {
     /** Static value BodyStructure for HealthcareEntityCategory. */
     public static final HealthcareEntityCategory BODY_STRUCTURE = fromString("BodyStructure");
