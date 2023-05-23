@@ -1,6 +1,16 @@
 # Release History
 
-## 4.16.0 (2023-06-06)
+## 4.17.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.16.0 (2023-05-22)
 
 ### Features Added
 - Added new events for Healthcare, Acs, and Storage.
