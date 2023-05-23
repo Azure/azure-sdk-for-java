@@ -194,7 +194,7 @@ public final class QueueClientBuilder implements
      */
     public QueueClient buildClient() {
         QueueAsyncClient asyncClient = buildAsyncClient();
-        return new QueueClient(asyncClient.getAzureQueueStorage(), queueName, accountName, version, messageEncoding, buildAsyncClient(), processMessageDecodingErrorHandler);
+        return new QueueClient(asyncClient.getAzureQueueStorage(), queueName, accountName, version, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
     /**

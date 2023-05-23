@@ -10,12 +10,14 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.models.QueueCorsRule;
 import com.azure.storage.queue.models.QueueItem;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
 import com.azure.storage.queue.models.QueueServiceProperties;
 import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueuesSegmentOptions;
@@ -24,6 +26,15 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+
+import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
 
 /**
  * This class provides a client that contains all the operations for interacting with a queue account in Azure Storage.
@@ -49,11 +60,14 @@ import java.util.Map;
  */
 @ServiceClient(builder = QueueServiceClientBuilder.class)
 public final class QueueServiceClient {
+    private static final ClientLogger LOGGER = new ClientLogger(QueueServiceClient.class);
     private final QueueServiceAsyncClient client;
     private final AzureQueueStorageImpl azureQueueStorage;
     private final String accountName;
     private final QueueServiceVersion serviceVersion;
     private final QueueMessageEncoding messageEncoding;
+    private final Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler;
+    private final Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler;
 
     /**
      * Creates a QueueServiceClient that wraps a QueueServiceAsyncClient and blocks requests.
@@ -61,12 +75,15 @@ public final class QueueServiceClient {
      * @param client QueueServiceAsyncClient that is used to send requests
      */
     QueueServiceClient(AzureQueueStorageImpl azureQueueStorage, String accountName, QueueServiceVersion serviceVersion,
-        QueueMessageEncoding messageEncoding, QueueServiceAsyncClient client) {
+        QueueMessageEncoding messageEncoding, QueueServiceAsyncClient client, Function<QueueMessageDecodingError, Mono<Void>> processMessageDecodingErrorAsyncHandler,
+                       Consumer<QueueMessageDecodingError> processMessageDecodingErrorHandler) {
         this.client = client;
         this.azureQueueStorage = azureQueueStorage;
         this.accountName = accountName;
         this.serviceVersion = serviceVersion;
         this.messageEncoding = messageEncoding;
+        this.processMessageDecodingErrorAsyncHandler = processMessageDecodingErrorAsyncHandler;
+        this.processMessageDecodingErrorHandler = processMessageDecodingErrorHandler;
     }
 
     /**
@@ -104,7 +121,7 @@ public final class QueueServiceClient {
      */
     public QueueClient getQueueClient(String queueName) {
         return new QueueClient(client.getAzureQueueStorage(), queueName, client.getAccountName(),
-            client.getServiceVersion(), client.getMessageEncoding(), client.getQueueAsyncClient(queueName), null);
+            client.getServiceVersion(), client.getMessageEncoding(), processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
     /**
@@ -159,12 +176,15 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueClient> createQueueWithResponse(String queueName, Map<String, String> metadata,
         Duration timeout, Context context) {
-
-        Mono<Response<QueueAsyncClient>> asyncResponse = client.createQueueWithResponse(queueName, metadata, context);
-        Response<QueueAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(asyncResponse, timeout);
-        return new SimpleResponse<>(response, new QueueClient(response.getValue().getAzureQueueStorage(), queueName,
-            response.getValue().getAccountName(), response.getValue().getServiceVersion(),
-            response.getValue().getMessageEncoding(), response.getValue(), null));
+        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
+        try {
+            QueueClient queueClient = new QueueClient(azureQueueStorage, queueName, accountName, getServiceVersion(),
+                getMessageEncoding(), processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+            Response<Void> response = queueClient.createWithResponse(metadata, timeout, context);
+            return new SimpleResponse<>(response, queueClient);
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
     }
 
     /**

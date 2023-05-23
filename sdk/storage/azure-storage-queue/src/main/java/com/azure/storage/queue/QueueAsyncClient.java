@@ -1142,7 +1142,7 @@ public final class QueueAsyncClient {
                             queueMessageItemInternal, QueueMessageEncoding.NONE)
                             .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
                                 new QueueMessageDecodingError(
-                                    this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this, processMessageDecodingErrorHandler),
+                                    this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler),
                                     messageItem, null, e)))
                             .then(Mono.empty());
                     } else if (processMessageDecodingErrorHandler != null) {
@@ -1152,7 +1152,7 @@ public final class QueueAsyncClient {
                                 try {
                                     processMessageDecodingErrorHandler.accept(
                                         new QueueMessageDecodingError(
-                                            this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this, processMessageDecodingErrorHandler),
+                                            this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, null, processMessageDecodingErrorHandler),
                                             messageItem, null, e));
                                     return Mono.<QueueMessageItem>empty();
                                 } catch (RuntimeException re) {
@@ -1303,7 +1303,7 @@ public final class QueueAsyncClient {
                                 peekedMessageItemInternal, QueueMessageEncoding.NONE)
                                 .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
                                     new QueueMessageDecodingError(
-                                        this,  new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this, processMessageDecodingErrorHandler),
+                                        this,  new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler),
                                         null, messageItem, e)))
                                 .then(Mono.empty());
                         } else if (processMessageDecodingErrorHandler != null) {
@@ -1313,7 +1313,7 @@ public final class QueueAsyncClient {
                                     try {
                                         processMessageDecodingErrorHandler.accept(
                                             new QueueMessageDecodingError(
-                                                this,  new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, this, processMessageDecodingErrorHandler),
+                                                this,  new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler),
                                                 null, messageItem, e));
                                         return Mono.<PeekedMessageItem>empty();
                                     } catch (RuntimeException re) {
