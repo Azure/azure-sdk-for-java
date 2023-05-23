@@ -34,13 +34,12 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.metrics.MeterProvider;
-import com.azure.core.util.tracing.Tracer;
-import com.azure.core.util.tracing.TracerProvider;
 import com.azure.messaging.eventhubs.implementation.ClientConstants;
 import com.azure.messaging.eventhubs.implementation.EventHubAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubConnectionProcessor;
 import com.azure.messaging.eventhubs.implementation.EventHubReactorAmqpConnection;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
 import org.apache.qpid.proton.engine.SslDomain;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Scheduler;
@@ -57,7 +56,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.AZ_NAMESPACE_VALUE;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
 
 /**
@@ -844,7 +842,7 @@ public class EventHubClientBuilder implements
         }
 
         return new EventHubAsyncClient(processor, messageSerializer, scheduler,
-            isSharedConnection.get(), this::onClientClose, identifier, meter, createTracer());
+            isSharedConnection.get(), this::onClientClose, identifier, meter, EventHubsTracer.getDefaultTracer());
     }
 
     /**
@@ -904,9 +902,9 @@ public class EventHubClientBuilder implements
         }
     }
 
-    Tracer createTracer() {
-        return TracerProvider.getDefaultProvider().createTracer(LIBRARY_NAME, LIBRARY_VERSION,
-            AZ_NAMESPACE_VALUE, clientOptions == null ? null : clientOptions.getTracingOptions());
+    Meter createMeter() {
+        return MeterProvider.getDefaultProvider().createMeter(LIBRARY_NAME, LIBRARY_VERSION,
+            clientOptions == null ? null : clientOptions.getMetricsOptions());
     }
 
     private EventHubConnectionProcessor buildConnectionProcessor(MessageSerializer messageSerializer, Meter meter) {
