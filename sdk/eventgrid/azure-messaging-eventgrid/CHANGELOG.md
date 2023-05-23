@@ -5,7 +5,7 @@
 ### Features Added
 New Event Grid client for Namespace feature.
 
-## 4.16.0 (2023-06-06)
+## 4.16.0 (2023-05-22)
 
 ### Features Added
 - Added new events for Healthcare, Acs, and Storage.
