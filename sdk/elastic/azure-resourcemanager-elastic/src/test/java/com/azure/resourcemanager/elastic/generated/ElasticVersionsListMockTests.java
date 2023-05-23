@@ -9,10 +9,11 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.elastic.ElasticManager;
-import com.azure.resourcemanager.elastic.models.ElasticVersionsListResponse;
+import com.azure.resourcemanager.elastic.models.ElasticVersionListFormat;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -23,14 +24,14 @@ import org.mockito.Mockito;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public final class ElasticVersionsListWithResponseMockTests {
+public final class ElasticVersionsListMockTests {
     @Test
-    public void testListWithResponse() throws Exception {
+    public void testList() throws Exception {
         HttpClient httpClient = Mockito.mock(HttpClient.class);
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[\"jmflbvvnch\",\"kcciwwzjuqkhr\"],\"nextLink\":\"jiwkuofoskghsau\"}";
+        String responseStr = "{\"value\":[{\"properties\":{\"version\":\"imjm\"}}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -58,10 +59,9 @@ public final class ElasticVersionsListWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ElasticVersionsListResponse response =
-            manager.elasticVersions().listWithResponse("kwlhzdo", com.azure.core.util.Context.NONE).getValue();
+        PagedIterable<ElasticVersionListFormat> response =
+            manager.elasticVersions().list("ofoskghs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("jmflbvvnch", response.value().get(0));
-        Assertions.assertEquals("jiwkuofoskghsau", response.nextLink());
+        Assertions.assertEquals("imjm", response.iterator().next().properties().version());
     }
 }

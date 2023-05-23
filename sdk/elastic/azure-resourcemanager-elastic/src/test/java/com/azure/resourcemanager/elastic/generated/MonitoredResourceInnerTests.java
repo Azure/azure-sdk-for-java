@@ -14,23 +14,23 @@ public final class MonitoredResourceInnerTests {
     public void testDeserialize() throws Exception {
         MonitoredResourceInner model =
             BinaryData
-                .fromString("{\"id\":\"qrolfpf\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"gbquxigj\"}")
+                .fromString("{\"id\":\"kujysvlejuvfq\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"yxwjkcp\"}")
                 .toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("qrolfpf", model.id());
+        Assertions.assertEquals("kujysvlejuvfq", model.id());
         Assertions.assertEquals(SendingLogs.FALSE, model.sendingLogs());
-        Assertions.assertEquals("gbquxigj", model.reasonForLogsStatus());
+        Assertions.assertEquals("yxwjkcp", model.reasonForLogsStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MonitoredResourceInner model =
             new MonitoredResourceInner()
-                .withId("qrolfpf")
+                .withId("kujysvlejuvfq")
                 .withSendingLogs(SendingLogs.FALSE)
-                .withReasonForLogsStatus("gbquxigj");
+                .withReasonForLogsStatus("yxwjkcp");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceInner.class);
-        Assertions.assertEquals("qrolfpf", model.id());
+        Assertions.assertEquals("kujysvlejuvfq", model.id());
         Assertions.assertEquals(SendingLogs.FALSE, model.sendingLogs());
-        Assertions.assertEquals("gbquxigj", model.reasonForLogsStatus());
+        Assertions.assertEquals("yxwjkcp", model.reasonForLogsStatus());
     }
 }
