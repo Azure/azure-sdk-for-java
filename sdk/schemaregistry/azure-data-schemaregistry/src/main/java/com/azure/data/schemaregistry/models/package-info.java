@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Package containing the model classes for Schema Registry.
+ * Package containing the model classes for schema registry.
  */
 package com.azure.data.schemaregistry.models;

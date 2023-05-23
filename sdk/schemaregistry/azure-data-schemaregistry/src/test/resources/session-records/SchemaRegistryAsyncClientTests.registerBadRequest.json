@@ -1,24 +1,23 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/azsdk_java_group/schemas/sch07370a357?api-version=2022-10",
+    "Uri" : "https://REDACTED.servicebus.windows.net/$schemaGroups/mygroup/schemas/sch7670427d1?api-version=2021-10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.4.0-beta.1 (11.0.5; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "68ea894f-5dd6-42ec-85af-1ca8631ccd1b",
-      "Content-Type" : "application/json; serialization=Avro"
+      "User-Agent" : "azsdk-java-azure-data-schemaregistry/1.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "ac8c16d5-8001-4a49-beb0-7c883cbe29e2",
+      "Content-Type" : "application/json; serialization=avro"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "Strict-Transport-Security" : "max-age=31536000",
       "Server" : "Microsoft-HTTPAPI/2.0",
-      "x-ms-error-code" : "InvalidRequest",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Body" : "{\"error\":{\"code\":\"InvalidRequest\",\"message\":\"Json schema validation failed: 'type' was not found for field: name at 'fields[1]'. TrackingId:c70f0419-9209-498b-9d4d-1d9e0b92c9c3_G4, SystemTracker:conniey-rg4-avro.servicebus.windows.net:$schemaGroups\\/azsdk_java_group\\/schemas\\/sch07370a357, Timestamp:2023-01-25T20:07:55\"}}",
-      "Date" : "Wed, 25 Jan 2023 20:07:55 GMT",
+      "Body" : "{\"Code\":400,\"Detail\":\"Schema validation failed: Error reading JObject from JsonReader. Current JsonReader item is not an object: String. Path '', line 1, position 3. TrackingId:e58eab9a-680e-4b8d-ad3e-0272b6f6dcc2_G29, SystemTracker:conniey.servicebus.windows.net:$schemaGroups\\/mygroup\\/schemas\\/sch7670427d1, Timestamp:2021-11-11T02:50:18\"}",
+      "Date" : "Thu, 11 Nov 2021 02:50:18 GMT",
       "Content-Type" : "application/json"
     },
     "Exception" : null
   } ],
-  "variables" : [ "sch07370a357" ]
+  "variables" : [ "sch7670427d1" ]
 }
