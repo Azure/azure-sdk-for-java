@@ -17,7 +17,7 @@ import java.util.Map;
 /** Samples for FileSystems CreateOrUpdate. */
 public final class FileSystemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_CreateOrUpdate_MaximumSet_Gen.
@@ -53,7 +53,7 @@ public final class FileSystemsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_CreateOrUpdate_MinimumSet_Gen.
@@ -73,7 +73,7 @@ public final class FileSystemsCreateOrUpdateSamples {
                     .withOfferId("aaaaaaaaaaaaaaaaaaaaaaaaa")
                     .withPublisherId("aa"))
             .withStorageSku(StorageSku.STANDARD)
-            .withUserDetails(new UserDetails().withEmail("aaaaaaaaaaaaaaaaaaaaaaa"))
+            .withUserDetails(new UserDetails().withEmail("viptslwulnpaupfljvnjeq"))
             .withDelegatedSubnetId("aaaaaaaaaa")
             .withAdminPassword("ekceujoecaashtjlsgcymnrdozk")
             .withInitialCapacity(9)

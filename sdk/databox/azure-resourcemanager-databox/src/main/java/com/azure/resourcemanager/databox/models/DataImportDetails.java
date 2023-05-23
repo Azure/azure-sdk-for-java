@@ -17,6 +17,12 @@ public final class DataImportDetails {
     @JsonProperty(value = "accountDetails", required = true)
     private DataAccountDetails accountDetails;
 
+    /*
+     * Level of the logs to be collected.
+     */
+    @JsonProperty(value = "logCollectionLevel")
+    private LogCollectionLevel logCollectionLevel;
+
     /** Creates an instance of DataImportDetails class. */
     public DataImportDetails() {
     }
@@ -38,6 +44,26 @@ public final class DataImportDetails {
      */
     public DataImportDetails withAccountDetails(DataAccountDetails accountDetails) {
         this.accountDetails = accountDetails;
+        return this;
+    }
+
+    /**
+     * Get the logCollectionLevel property: Level of the logs to be collected.
+     *
+     * @return the logCollectionLevel value.
+     */
+    public LogCollectionLevel logCollectionLevel() {
+        return this.logCollectionLevel;
+    }
+
+    /**
+     * Set the logCollectionLevel property: Level of the logs to be collected.
+     *
+     * @param logCollectionLevel the logCollectionLevel value to set.
+     * @return the DataImportDetails object itself.
+     */
+    public DataImportDetails withLogCollectionLevel(LogCollectionLevel logCollectionLevel) {
+        this.logCollectionLevel = logCollectionLevel;
         return this;
     }
 

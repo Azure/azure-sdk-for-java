@@ -4,6 +4,7 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
+import com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIClientImpl;
 import com.azure.ai.openai.implementation.OpenAIServerSentEvents;
 import com.azure.ai.openai.models.ChatCompletions;
@@ -78,11 +79,12 @@ public final class OpenAIClient {
      *     text strings and are commonly used for search, clustering, recommendations, and other similar scenarios along
      *     with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEmbeddingsWithResponse(
             String deploymentId, BinaryData embeddingsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions);
+        return openAIServiceClient != null
+                ? openAIServiceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions)
+                : serviceClient.getEmbeddingsWithResponse(deploymentId, embeddingsOptions, requestOptions);
     }
 
     /**
@@ -165,11 +167,12 @@ public final class OpenAIClient {
      * @return completions for the provided input prompts. Completions support a wide variety of tasks and generate text
      *     that continues from or "completes" provided prompt data along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getCompletionsWithResponse(
             String deploymentId, BinaryData completionsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions);
+        return openAIServiceClient != null
+                ? openAIServiceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions)
+                : serviceClient.getCompletionsWithResponse(deploymentId, completionsOptions, requestOptions);
     }
 
     /**
@@ -243,11 +246,13 @@ public final class OpenAIClient {
      * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
      *     text that continues from or "completes" provided prompt data along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getChatCompletionsWithResponse(
             String deploymentId, BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
-        return this.serviceClient.getChatCompletionsWithResponse(deploymentId, chatCompletionsOptions, requestOptions);
+        return openAIServiceClient != null
+                ? openAIServiceClient.getChatCompletionsWithResponse(
+                        deploymentId, chatCompletionsOptions, requestOptions)
+                : serviceClient.getChatCompletionsWithResponse(deploymentId, chatCompletionsOptions, requestOptions);
     }
 
     /**
@@ -412,13 +417,25 @@ public final class OpenAIClient {
 
     @Generated private final OpenAIClientImpl serviceClient;
 
+    private final NonAzureOpenAIClientImpl openAIServiceClient;
+
     /**
      * Initializes an instance of OpenAIClient class.
      *
      * @param serviceClient the service client implementation.
      */
-    @Generated
     OpenAIClient(OpenAIClientImpl serviceClient) {
         this.serviceClient = serviceClient;
+        openAIServiceClient = null;
+    }
+
+    /**
+     * Initializes an instance of OpenAIClient class for NonAzure Implementation.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    OpenAIClient(NonAzureOpenAIClientImpl serviceClient) {
+        this.serviceClient = null;
+        openAIServiceClient = serviceClient;
     }
 }

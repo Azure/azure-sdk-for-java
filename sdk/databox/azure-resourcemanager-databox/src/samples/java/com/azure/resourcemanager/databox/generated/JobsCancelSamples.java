@@ -9,7 +9,7 @@ import com.azure.resourcemanager.databox.models.CancellationReason;
 /** Samples for Jobs Cancel. */
 public final class JobsCancelSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsCancelPost.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsCancelPost.json
      */
     /**
      * Sample code: JobsCancelPost.
@@ -20,8 +20,8 @@ public final class JobsCancelSamples {
         manager
             .jobs()
             .cancelWithResponse(
-                "SdkRg5154",
-                "SdkJob952",
+                "YourResourceGroupName",
+                "TestJobName1",
                 new CancellationReason().withReason("CancelTest"),
                 com.azure.core.util.Context.NONE);
     }

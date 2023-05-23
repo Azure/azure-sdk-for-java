@@ -19,14 +19,14 @@ public final class CustomRuleListTests {
         CustomRuleList model =
             BinaryData
                 .fromString(
-                    "{\"rules\":[{\"name\":\"thaqfxssmwu\",\"priority\":1174161651,\"enabledState\":\"Enabled\",\"ruleType\":\"MatchRule\",\"rateLimitDurationInMinutes\":213351747,\"rateLimitThreshold\":1581108567,\"matchConditions\":[],\"action\":\"Log\"},{\"name\":\"neuyow\",\"priority\":738746300,\"enabledState\":\"Disabled\",\"ruleType\":\"MatchRule\",\"rateLimitDurationInMinutes\":227245186,\"rateLimitThreshold\":372277345,\"matchConditions\":[],\"action\":\"Log\"}]}")
+                    "{\"rules\":[{\"name\":\"cnyejhkryhtnapcz\",\"priority\":48641393,\"enabledState\":\"Disabled\",\"ruleType\":\"MatchRule\",\"rateLimitDurationInMinutes\":782174040,\"rateLimitThreshold\":186394728,\"matchConditions\":[],\"action\":\"Log\"}]}")
                 .toObject(CustomRuleList.class);
-        Assertions.assertEquals("thaqfxssmwu", model.rules().get(0).name());
-        Assertions.assertEquals(1174161651, model.rules().get(0).priority());
-        Assertions.assertEquals(CustomRuleEnabledState.ENABLED, model.rules().get(0).enabledState());
+        Assertions.assertEquals("cnyejhkryhtnapcz", model.rules().get(0).name());
+        Assertions.assertEquals(48641393, model.rules().get(0).priority());
+        Assertions.assertEquals(CustomRuleEnabledState.DISABLED, model.rules().get(0).enabledState());
         Assertions.assertEquals(RuleType.MATCH_RULE, model.rules().get(0).ruleType());
-        Assertions.assertEquals(213351747, model.rules().get(0).rateLimitDurationInMinutes());
-        Assertions.assertEquals(1581108567, model.rules().get(0).rateLimitThreshold());
+        Assertions.assertEquals(782174040, model.rules().get(0).rateLimitDurationInMinutes());
+        Assertions.assertEquals(186394728, model.rules().get(0).rateLimitThreshold());
         Assertions.assertEquals(ActionType.LOG, model.rules().get(0).action());
     }
 
@@ -38,30 +38,21 @@ public final class CustomRuleListTests {
                     Arrays
                         .asList(
                             new CustomRule()
-                                .withName("thaqfxssmwu")
-                                .withPriority(1174161651)
-                                .withEnabledState(CustomRuleEnabledState.ENABLED)
-                                .withRuleType(RuleType.MATCH_RULE)
-                                .withRateLimitDurationInMinutes(213351747)
-                                .withRateLimitThreshold(1581108567)
-                                .withMatchConditions(Arrays.asList())
-                                .withAction(ActionType.LOG),
-                            new CustomRule()
-                                .withName("neuyow")
-                                .withPriority(738746300)
+                                .withName("cnyejhkryhtnapcz")
+                                .withPriority(48641393)
                                 .withEnabledState(CustomRuleEnabledState.DISABLED)
                                 .withRuleType(RuleType.MATCH_RULE)
-                                .withRateLimitDurationInMinutes(227245186)
-                                .withRateLimitThreshold(372277345)
+                                .withRateLimitDurationInMinutes(782174040)
+                                .withRateLimitThreshold(186394728)
                                 .withMatchConditions(Arrays.asList())
                                 .withAction(ActionType.LOG)));
         model = BinaryData.fromObject(model).toObject(CustomRuleList.class);
-        Assertions.assertEquals("thaqfxssmwu", model.rules().get(0).name());
-        Assertions.assertEquals(1174161651, model.rules().get(0).priority());
-        Assertions.assertEquals(CustomRuleEnabledState.ENABLED, model.rules().get(0).enabledState());
+        Assertions.assertEquals("cnyejhkryhtnapcz", model.rules().get(0).name());
+        Assertions.assertEquals(48641393, model.rules().get(0).priority());
+        Assertions.assertEquals(CustomRuleEnabledState.DISABLED, model.rules().get(0).enabledState());
         Assertions.assertEquals(RuleType.MATCH_RULE, model.rules().get(0).ruleType());
-        Assertions.assertEquals(213351747, model.rules().get(0).rateLimitDurationInMinutes());
-        Assertions.assertEquals(1581108567, model.rules().get(0).rateLimitThreshold());
+        Assertions.assertEquals(782174040, model.rules().get(0).rateLimitDurationInMinutes());
+        Assertions.assertEquals(186394728, model.rules().get(0).rateLimitThreshold());
         Assertions.assertEquals(ActionType.LOG, model.rules().get(0).action());
     }
 }
