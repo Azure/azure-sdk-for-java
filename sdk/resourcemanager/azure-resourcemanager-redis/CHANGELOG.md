@@ -2,6 +2,10 @@
 
 ## 2.27.0-beta.1 (Unreleased)
 
+### Breaking Changes
+
+- Redis version 4.0 is retiring. Please see https://aka.ms/RedisVersionRetirementTimelines for more information.
+
 ### Other Changes
 
 #### Dependency Updates
