@@ -3,6 +3,11 @@
 ## 4.17.0-beta.1 (2023-05-22)
 
 ### Features Added
+- New `EventGridClient` for new Event Grid features
+
+## 4.16.0 (2023-05-22)
+
+### Features Added
 - Added new events for Healthcare, Acs, and Storage.
 
 ### Other Changes
