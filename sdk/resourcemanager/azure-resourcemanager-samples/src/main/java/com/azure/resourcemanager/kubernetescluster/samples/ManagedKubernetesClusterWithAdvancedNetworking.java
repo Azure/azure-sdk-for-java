@@ -37,7 +37,7 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
         final String rgName = Utils.randomResourceName(azureResourceManager, "rgaks", 15);
         final String vnetName = Utils.randomResourceName(azureResourceManager, "vnetaks", 20);
         final String aksName = Utils.randomResourceName(azureResourceManager, "akssample", 30);
-        final Region region = Region.US_CENTRAL;
+        final Region region = Region.US_SOUTH_CENTRAL;
 
         try {
 
