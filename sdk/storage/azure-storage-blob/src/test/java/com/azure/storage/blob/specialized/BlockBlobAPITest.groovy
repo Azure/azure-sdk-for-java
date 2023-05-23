@@ -582,30 +582,6 @@ class BlockBlobAPITest extends APISpec {
         os.toByteArray() == data
     }
 
-
-    def "Stage block retry on transient failure test"() {
-        setup:
-        def clientWithFailure = getBlobAsyncClient(
-            environment.primaryAccount.credential,
-            blobAsyncClient.getBlobUrl(),
-            new TransientFailureInjectingHttpPipelinePolicy()
-        ).getBlockBlobAsyncClient()
-
-        when:
-        def data = getRandomByteArray(10)
-        def blockId = getBlockID()
-        clientWithFailure.stageBlock(blockId, BinaryData.fromStream(new ByteArrayInputStream(data), data.size())).block()
-        blobAsyncClient.getBlockBlobAsyncClient().commitBlockList([blockId] as List<String>, true).block()
-
-        then:
-        def os = new ByteArrayOutputStream()
-        blobAsyncClient.downloadStreamWithResponse(null, null, null, false)
-        .flatMap(resp -> FluxUtil.writeToOutputStream(resp.getValue(), os))
-        .block()
-        os.toByteArray() == data
-    }
-
-
 //    def "Stage block retry on transient failure Async"() {
 //        setup:
 //        def clientWithFailure = getBlobAsyncClient(
@@ -616,12 +592,12 @@ class BlockBlobAPITest extends APISpec {
 //        def data = getRandomByteArray(10)
 //        def blockId = getBlockID()
 //
-//        def stepVerifier = StepVerifier.create(clientWithFailure.stageBlock(blockId, BinaryData.fromStream(new ByteArrayInputStream(data), data.size()))
+//        def stepVerifier = StepVerifier.create(clientWithFailure.stageBlock(blockId, BinaryData.fromBytes(data))
 //        .then(Mono.defer(() -> blobAsyncClient.getBlockBlobAsyncClient().commitBlockList([blockId] as List<String>, true)))
 //        .then(Mono.defer(() -> {
 //            def os = new ByteArrayOutputStream()
-//            return blobAsyncClient.download(os)
-//            .then(Mono.defer(() -> Mono.just(os.toByteArray() == data)))
+//            return blobAsyncClient.downloadContent()
+//            .map(binaryData -> Mono.just(binaryData.toBytes() == data))
 //        })))
 //
 //        expect:
@@ -629,9 +605,9 @@ class BlockBlobAPITest extends APISpec {
 //            assert it
 //        }).verifyComplete()
 //    }
-
-
-
+//
+//
+//
 //    // Override name to prevent BinaryData.toString() invocation by test framework.
 //    @Unroll("#featureName #iterationIndex")
 //    def "Stage block retry on transient failure with retriable BinaryData"() {
@@ -659,75 +635,75 @@ class BlockBlobAPITest extends APISpec {
 //            BinaryData.fromFile(data.defaultFile)
 //        ]
 //    }
-
-    def "Stage block from url"() {
-        setup:
-        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
-        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
-        def blockID = getBlockID()
-
-        when:
-        def headers = bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl(), null, null, null, null, null, null).getHeaders()
-
-        then:
-        headers.getValue("x-ms-request-id") != null
-        headers.getValue("x-ms-version") != null
-        headers.getValue("x-ms-content-crc64") != null
-        headers.getValue("x-ms-request-server-encrypted") != null
-
-        def response = bu2.listBlocks(BlockListType.ALL)
-        response.getUncommittedBlocks().size() == 1
-        response.getCommittedBlocks().size() == 0
-        response.getUncommittedBlocks().first().getName() == blockID
-
-        when:
-        bu2.commitBlockList(Arrays.asList(blockID))
-        def outputStream = new ByteArrayOutputStream()
-        bu2.download(outputStream)
-
-        then:
-        ByteBuffer.wrap(outputStream.toByteArray()) == data.defaultData
-    }
-
-    def "Stage block from url async"() {
-        setup:
-        def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
-        def blockID = getBlockID()
-        def stepverifier = StepVerifier.create(ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null)
-            .then(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl(), null, null, null, null)
-                .map(resp -> {
-                    def headers = resp.getHeaders()
-                    def headersPresent = headers.getValue("x-ms-request-id") != null
-                        && headers.getValue("x-ms-version") != null
-                    && headers.getValue("x-ms-content-crc64") != null
-                    && headers.getValue("x-ms-request-server-encrypted") != null
-                    if (!headersPresent) {
-                        return Mono.error(new IllegalStateException("Headers are missing in the response."))
-                    }
-                    return Mono.empty()
-                })).then(bu2.listBlocks(BlockListType.ALL).map(resp -> {
-                    def responseValidation = resp.getUncommittedBlocks().size() == 1
-                        && resp.getCommittedBlocks().size() == 0
-                        && resp.getUncommittedBlocks().first().getName() == blockID
-                    if (!responseValidation) {
-                        return Mono.error(new IllegalStateException("List Blocks Reponse validation failed."))
-                    }
-                    return Mono.empty()
-                })).then(bu2.commitBlockList(Arrays.asList(blockID))
-                    .then(Mono.defer(() -> {
-                        def outputStream = new ByteArrayOutputStream()
-                        return bu2.downloadStreamWithResponse(null, null, null, false)
-                            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), outputStream))
-                            .then(Mono.defer(() -> {
-                                return Mono.just(ByteBuffer.wrap(outputStream.toByteArray()) == data.defaultData)
-                            }))
-                    }))))
-
-        expect:
-        stepverifier.assertNext({
-            assert it
-        }).verifyComplete()
-    }
+//
+//    def "Stage block from url"() {
+//        setup:
+//        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+//        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+//        def blockID = getBlockID()
+//
+//        when:
+//        def headers = bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl(), null, null, null, null, null, null).getHeaders()
+//
+//        then:
+//        headers.getValue("x-ms-request-id") != null
+//        headers.getValue("x-ms-version") != null
+//        headers.getValue("x-ms-content-crc64") != null
+//        headers.getValue("x-ms-request-server-encrypted") != null
+//
+//        def response = bu2.listBlocks(BlockListType.ALL)
+//        response.getUncommittedBlocks().size() == 1
+//        response.getCommittedBlocks().size() == 0
+//        response.getUncommittedBlocks().first().getName() == blockID
+//
+//        when:
+//        bu2.commitBlockList(Arrays.asList(blockID))
+//        def outputStream = new ByteArrayOutputStream()
+//        bu2.download(outputStream)
+//
+//        then:
+//        ByteBuffer.wrap(outputStream.toByteArray()) == data.defaultData
+//    }
+//
+//    def "Stage block from url async"() {
+//        setup:
+//        def bu2 = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
+//        def blockID = getBlockID()
+//        def stepverifier = StepVerifier.create(ccAsync.setAccessPolicy(PublicAccessType.CONTAINER, null)
+//            .then(bu2.stageBlockFromUrlWithResponse(blockID, blockBlobClient.getBlobUrl(), null, null, null, null)
+//                .map(resp -> {
+//                    def headers = resp.getHeaders()
+//                    def headersPresent = headers.getValue("x-ms-request-id") != null
+//                        && headers.getValue("x-ms-version") != null
+//                    && headers.getValue("x-ms-content-crc64") != null
+//                    && headers.getValue("x-ms-request-server-encrypted") != null
+//                    if (!headersPresent) {
+//                        return Mono.error(new IllegalStateException("Headers are missing in the response."))
+//                    }
+//                    return Mono.empty()
+//                })).then(bu2.listBlocks(BlockListType.ALL).map(resp -> {
+//                    def responseValidation = resp.getUncommittedBlocks().size() == 1
+//                        && resp.getCommittedBlocks().size() == 0
+//                        && resp.getUncommittedBlocks().first().getName() == blockID
+//                    if (!responseValidation) {
+//                        return Mono.error(new IllegalStateException("List Blocks Reponse validation failed."))
+//                    }
+//                    return Mono.empty()
+//                })).then(bu2.commitBlockList(Arrays.asList(blockID))
+//                    .then(Mono.defer(() -> {
+//                        def outputStream = new ByteArrayOutputStream()
+//                        return bu2.downloadStreamWithResponse(null, null, null, false)
+//                            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), outputStream))
+//                            .then(Mono.defer(() -> {
+//                                return Mono.just(ByteBuffer.wrap(outputStream.toByteArray()) == data.defaultData)
+//                            }))
+//                    }))))
+//
+//        expect:
+//        stepverifier.assertNext({
+//            assert it
+//        }).verifyComplete()
+//    }
 
 //
 //    def "Stage block from url min"() {

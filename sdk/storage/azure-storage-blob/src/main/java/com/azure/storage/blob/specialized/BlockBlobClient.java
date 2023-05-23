@@ -62,9 +62,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
@@ -73,15 +71,14 @@ import java.nio.charset.Charset;
 import java.nio.channels.SeekableByteChannel;
 
 import java.time.Duration;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.storage.blob.BlobClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE;
 import static com.azure.storage.common.Utility.STORAGE_TRACING_NAMESPACE_VALUE;
 import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
 import static com.azure.storage.common.implementation.StorageImplUtils.enableSyncRestProxy;
@@ -920,11 +917,11 @@ public final class BlockBlobClient extends BlobClientBase {
      * @throws NullPointerException if the input data is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
+    public Response<Void>  stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
         return executeOperation(() -> stageBlockWithResponseSync(base64BlockId,
-            BinaryData.fromStream(data, length), contentMd5, leaseId, enableSyncRestProxy(context)), timeout);
+            BinaryData.fromStream(data, length).toReplayableBinaryData(), contentMd5, leaseId, enableSyncRestProxy(context)), timeout);
     }
 
     Response<Void> stageBlockWithResponseSync(String base64BlockId, BinaryData data,
@@ -1584,5 +1581,69 @@ public final class BlockBlobClient extends BlobClientBase {
 
         return new SimpleResponse<>(rb, BlobPropertiesConstructorProxy
             .create(new BlobPropertiesInternalGetProperties(rb.getDeserializedHeaders())));
+    }
+
+    private byte[] readBytes(InputStream in , long len) throws IOException {
+        if (len < 0) {
+            throw new IllegalArgumentException("len < 0");
+        }
+
+        List<byte[]> bufs = null;
+        byte[] result = null;
+        int total = 0;
+        int remaining = Long.valueOf(len).intValue();
+        int n;
+        do {
+            byte[] buf = new byte[Math.min(remaining, BLOB_DEFAULT_UPLOAD_BLOCK_SIZE)];
+            int nread = 0;
+
+            // read to EOF which may read more or less than buffer size
+            while ((n = in.read(buf, nread,
+                Math.min(buf.length - nread, remaining))) > 0) {
+                nread += n;
+                remaining -= n;
+            }
+
+            if (nread > 0) {
+                if (BLOB_DEFAULT_UPLOAD_BLOCK_SIZE - total < nread) {
+                    throw new OutOfMemoryError("Required array size too large");
+                }
+                if (nread < buf.length) {
+                    buf = Arrays.copyOfRange(buf, 0, nread);
+                }
+                total += nread;
+                if (result == null) {
+                    result = buf;
+                } else {
+                    if (bufs == null) {
+                        bufs = new ArrayList<>();
+                        bufs.add(result);
+                    }
+                    bufs.add(buf);
+                }
+            }
+            // if the last call to read returned -1 or the number of bytes
+            // requested have been read then break
+        } while (n >= 0 && remaining > 0);
+
+        if (bufs == null) {
+            if (result == null) {
+                return new byte[0];
+            }
+            return result.length == total ?
+                result : Arrays.copyOf(result, total);
+        }
+
+        result = new byte[total];
+        int offset = 0;
+        remaining = total;
+        for (byte[] b : bufs) {
+            int count = Math.min(b.length, remaining);
+            System.arraycopy(b, 0, result, offset, count);
+            offset += count;
+            remaining -= count;
+        }
+
+        return result;
     }
 }
