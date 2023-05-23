@@ -11,10 +11,6 @@ import com.azure.communication.callautomation.implementation.accesshelpers.CallC
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationUserIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
@@ -29,7 +25,6 @@ import com.azure.communication.callautomation.implementation.models.RejectCallRe
 import com.azure.communication.callautomation.implementation.models.CallRejectReasonInternal;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
-import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -227,12 +222,6 @@ public final class CallAutomationAsyncClient {
             request.setCustomContext(customContext);
         }
 
-        if (createCallOptions.getMediaStreamingConfiguration() != null) {
-            MediaStreamingConfigurationInternal streamingConfigurationInternal =
-                getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
-            request.setMediaStreamingConfiguration(streamingConfigurationInternal);
-        }
-
         if (createCallOptions.getAzureCognitiveServicesUrl() != null && !createCallOptions.getAzureCognitiveServicesUrl().isEmpty()) {
             request.setAzureCognitiveServicesEndpointUrl(createCallOptions.getAzureCognitiveServicesUrl());
         }
@@ -259,32 +248,11 @@ public final class CallAutomationAsyncClient {
             request.setCustomContext(customContext);
         }
 
-        if (createCallGroupOptions.getMediaStreamingConfiguration() != null) {
-            MediaStreamingConfigurationInternal streamingConfigurationInternal =
-                getMediaStreamingConfigurationInternal(createCallGroupOptions.getMediaStreamingConfiguration());
-            request.setMediaStreamingConfiguration(streamingConfigurationInternal);
-        }
-
         if (createCallGroupOptions.getAzureCognitiveServicesUrl() != null && !createCallGroupOptions.getAzureCognitiveServicesUrl().isEmpty()) {
             request.setAzureCognitiveServicesEndpointUrl(createCallGroupOptions.getAzureCognitiveServicesUrl());
         }
 
         return request;
-    }
-
-    private MediaStreamingConfigurationInternal getMediaStreamingConfigurationInternal(
-        MediaStreamingOptions mediaStreamingOptions) {
-        return new MediaStreamingConfigurationInternal()
-            .setTransportUrl(mediaStreamingOptions.getTransportUrl())
-            .setAudioChannelType(
-                MediaStreamingAudioChannelTypeInternal.fromString(
-                    mediaStreamingOptions.getAudioChannelType().toString()))
-            .setContentType(
-                MediaStreamingContentTypeInternal.fromString(
-                    mediaStreamingOptions.getContentType().toString()))
-            .setTransportType(
-                MediaStreamingTransportTypeInternal.fromString(
-                    mediaStreamingOptions.getTransportType().toString()));
     }
 
     /**
@@ -325,13 +293,6 @@ public final class CallAutomationAsyncClient {
                 .setCallbackUri(answerCallOptions.getCallbackUrl())
                 .setAnsweredByIdentifier(sourceIdentity)
                 .setOperationContext(answerCallOptions.getOperationContext());
-
-            if (answerCallOptions.getMediaStreamingConfiguration() != null) {
-                MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
-                    getMediaStreamingConfigurationInternal(answerCallOptions.getMediaStreamingConfiguration());
-
-                request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
-            }
 
             if (answerCallOptions.getAzureCognitiveServicesUrl() != null && !answerCallOptions.getAzureCognitiveServicesUrl().isEmpty()) {
                 request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesUrl());

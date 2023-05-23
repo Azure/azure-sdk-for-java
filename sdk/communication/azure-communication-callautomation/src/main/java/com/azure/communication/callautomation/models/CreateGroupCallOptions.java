@@ -36,11 +36,6 @@ public final class CreateGroupCallOptions {
     private String operationContext;
 
     /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-    /**
      * Display name for call source
      */
     private String sourceDisplayName;
@@ -114,15 +109,6 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-
-    /**
      * get caller's display name
      * @return display name for caller
      */
@@ -162,17 +148,6 @@ public final class CreateGroupCallOptions {
      */
     public CreateGroupCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateGroupCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 

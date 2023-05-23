@@ -20,16 +20,11 @@ public final class AnswerCallOptions {
      */
     private final String callbackUrl;
 
-    /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
     /*
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
     private String azureCognitiveServicesUrl;
-    
+
     /**
      * The operational context
      */
@@ -75,32 +70,12 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-    
-    /**
      * Get the operationContext.
      *
      * @return the operationContext
      */
     public String getOperationContext() {
         return operationContext;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
     }
 
     /**
@@ -114,7 +89,7 @@ public final class AnswerCallOptions {
         this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
         return this;
     }
-    
+
      /**
      * Set the operationContext.
      *
