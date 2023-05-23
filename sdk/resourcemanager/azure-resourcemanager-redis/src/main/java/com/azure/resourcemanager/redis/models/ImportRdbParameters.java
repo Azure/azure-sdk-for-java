@@ -31,6 +31,12 @@ public final class ImportRdbParameters {
     @JsonProperty(value = "preferred-data-archive-auth-method")
     private String preferredDataArchiveAuthMethod;
 
+    /*
+     * Subscription id of the storage container containing files to import using Managed Identity.
+     */
+    @JsonProperty(value = "storage-subscription-id")
+    private String storageSubscriptionId;
+
     /** Creates an instance of ImportRdbParameters class. */
     public ImportRdbParameters() {
     }
@@ -94,6 +100,28 @@ public final class ImportRdbParameters {
      */
     public ImportRdbParameters withPreferredDataArchiveAuthMethod(String preferredDataArchiveAuthMethod) {
         this.preferredDataArchiveAuthMethod = preferredDataArchiveAuthMethod;
+        return this;
+    }
+
+    /**
+     * Get the storageSubscriptionId property: Subscription id of the storage container containing files to import using
+     * Managed Identity.
+     *
+     * @return the storageSubscriptionId value.
+     */
+    public String storageSubscriptionId() {
+        return this.storageSubscriptionId;
+    }
+
+    /**
+     * Set the storageSubscriptionId property: Subscription id of the storage container containing files to import using
+     * Managed Identity.
+     *
+     * @param storageSubscriptionId the storageSubscriptionId value to set.
+     * @return the ImportRdbParameters object itself.
+     */
+    public ImportRdbParameters withStorageSubscriptionId(String storageSubscriptionId) {
+        this.storageSubscriptionId = storageSubscriptionId;
         return this;
     }
 
