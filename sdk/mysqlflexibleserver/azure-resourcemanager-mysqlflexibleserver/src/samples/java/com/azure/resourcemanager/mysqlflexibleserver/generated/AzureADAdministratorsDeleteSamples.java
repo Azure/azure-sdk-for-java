@@ -9,7 +9,7 @@ import com.azure.resourcemanager.mysqlflexibleserver.models.AdministratorName;
 /** Samples for AzureADAdministrators Delete. */
 public final class AzureADAdministratorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/AzureADAdministratorDelete.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/AAD/preview/2021-12-01-preview/examples/AzureADAdministratorDelete.json
      */
     /**
      * Sample code: Delete an azure ad administrator.

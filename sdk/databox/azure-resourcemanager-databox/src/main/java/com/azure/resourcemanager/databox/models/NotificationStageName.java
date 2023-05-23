@@ -4,60 +4,62 @@
 
 package com.azure.resourcemanager.databox.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Name of the stage. */
-public enum NotificationStageName {
-    /** Enum value DevicePrepared. */
-    DEVICE_PREPARED("DevicePrepared"),
+public final class NotificationStageName extends ExpandableStringEnum<NotificationStageName> {
+    /** Static value DevicePrepared for NotificationStageName. */
+    public static final NotificationStageName DEVICE_PREPARED = fromString("DevicePrepared");
 
-    /** Enum value Dispatched. */
-    DISPATCHED("Dispatched"),
+    /** Static value Dispatched for NotificationStageName. */
+    public static final NotificationStageName DISPATCHED = fromString("Dispatched");
 
-    /** Enum value Delivered. */
-    DELIVERED("Delivered"),
+    /** Static value Delivered for NotificationStageName. */
+    public static final NotificationStageName DELIVERED = fromString("Delivered");
 
-    /** Enum value PickedUp. */
-    PICKED_UP("PickedUp"),
+    /** Static value PickedUp for NotificationStageName. */
+    public static final NotificationStageName PICKED_UP = fromString("PickedUp");
 
-    /** Enum value AtAzureDC. */
-    AT_AZURE_DC("AtAzureDC"),
+    /** Static value AtAzureDC for NotificationStageName. */
+    public static final NotificationStageName AT_AZURE_DC = fromString("AtAzureDC");
 
-    /** Enum value DataCopy. */
-    DATA_COPY("DataCopy");
+    /** Static value DataCopy for NotificationStageName. */
+    public static final NotificationStageName DATA_COPY = fromString("DataCopy");
 
-    /** The actual serialized value for a NotificationStageName instance. */
-    private final String value;
+    /** Static value Created for NotificationStageName. */
+    public static final NotificationStageName CREATED = fromString("Created");
 
-    NotificationStageName(String value) {
-        this.value = value;
+    /** Static value ShippedToCustomer for NotificationStageName. */
+    public static final NotificationStageName SHIPPED_TO_CUSTOMER = fromString("ShippedToCustomer");
+
+    /**
+     * Creates a new instance of NotificationStageName value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotificationStageName() {
     }
 
     /**
-     * Parses a serialized value to a NotificationStageName instance.
+     * Creates or finds a NotificationStageName from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed NotificationStageName object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding NotificationStageName.
      */
     @JsonCreator
-    public static NotificationStageName fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        NotificationStageName[] items = NotificationStageName.values();
-        for (NotificationStageName item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static NotificationStageName fromString(String name) {
+        return fromString(name, NotificationStageName.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known NotificationStageName values.
+     *
+     * @return known NotificationStageName values.
+     */
+    public static Collection<NotificationStageName> values() {
+        return values(NotificationStageName.class);
     }
 }

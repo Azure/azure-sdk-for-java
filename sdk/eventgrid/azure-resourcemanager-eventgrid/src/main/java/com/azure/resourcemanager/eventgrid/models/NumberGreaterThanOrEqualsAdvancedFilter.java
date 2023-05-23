@@ -20,6 +20,10 @@ public final class NumberGreaterThanOrEqualsAdvancedFilter extends AdvancedFilte
     @JsonProperty(value = "value")
     private Double value;
 
+    /** Creates an instance of NumberGreaterThanOrEqualsAdvancedFilter class. */
+    public NumberGreaterThanOrEqualsAdvancedFilter() {
+    }
+
     /**
      * Get the value property: The filter value.
      *

@@ -22,6 +22,10 @@ public final class ExtensionTopicProperties {
     @JsonProperty(value = "systemTopic")
     private String systemTopic;
 
+    /** Creates an instance of ExtensionTopicProperties class. */
+    public ExtensionTopicProperties() {
+    }
+
     /**
      * Get the description property: Description of the extension topic.
      *

@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.elastic.implementation;
 
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.elastic.fluent.ElasticVersionsClient;
-import com.azure.resourcemanager.elastic.fluent.models.ElasticVersionsListResponseInner;
+import com.azure.resourcemanager.elastic.fluent.models.ElasticVersionListFormatInner;
+import com.azure.resourcemanager.elastic.models.ElasticVersionListFormat;
 import com.azure.resourcemanager.elastic.models.ElasticVersions;
-import com.azure.resourcemanager.elastic.models.ElasticVersionsListResponse;
 
 public final class ElasticVersionsImpl implements ElasticVersions {
     private static final ClientLogger LOGGER = new ClientLogger(ElasticVersionsImpl.class);
@@ -26,26 +25,14 @@ public final class ElasticVersionsImpl implements ElasticVersions {
         this.serviceManager = serviceManager;
     }
 
-    public Response<ElasticVersionsListResponse> listWithResponse(String region, Context context) {
-        Response<ElasticVersionsListResponseInner> inner = this.serviceClient().listWithResponse(region, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ElasticVersionsListResponseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<ElasticVersionListFormat> list(String region) {
+        PagedIterable<ElasticVersionListFormatInner> inner = this.serviceClient().list(region);
+        return Utils.mapPage(inner, inner1 -> new ElasticVersionListFormatImpl(inner1, this.manager()));
     }
 
-    public ElasticVersionsListResponse list(String region) {
-        ElasticVersionsListResponseInner inner = this.serviceClient().list(region);
-        if (inner != null) {
-            return new ElasticVersionsListResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public PagedIterable<ElasticVersionListFormat> list(String region, Context context) {
+        PagedIterable<ElasticVersionListFormatInner> inner = this.serviceClient().list(region, context);
+        return Utils.mapPage(inner, inner1 -> new ElasticVersionListFormatImpl(inner1, this.manager()));
     }
 
     private ElasticVersionsClient serviceClient() {

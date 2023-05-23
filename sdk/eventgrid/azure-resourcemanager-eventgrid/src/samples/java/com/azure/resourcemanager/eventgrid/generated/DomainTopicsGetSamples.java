@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for DomainTopics Get. */
 public final class DomainTopicsGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/DomainTopics_Get.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/DomainTopics_Get.json
      */
     /**
      * Sample code: DomainTopics_Get.
@@ -17,6 +15,8 @@ public final class DomainTopicsGetSamples {
      * @param manager Entry point to EventGridManager.
      */
     public static void domainTopicsGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.domainTopics().getWithResponse("examplerg", "exampledomain2", "topic1", Context.NONE);
+        manager
+            .domainTopics()
+            .getWithResponse("examplerg", "exampledomain2", "topic1", com.azure.core.util.Context.NONE);
     }
 }
