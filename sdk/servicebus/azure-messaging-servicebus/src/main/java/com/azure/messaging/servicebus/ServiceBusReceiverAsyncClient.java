@@ -1726,8 +1726,19 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     Flux<ServiceBusReceivedMessage> nonSessionReactiveReceiveV2() {
         assert !isSessionEnabled && connectionCacheWrapper.isV2();
-        // TODO: apply auto-complete etc.
-        return getOrCreateConsumer().receive();
+
+        final boolean enableAutoDisposition = receiverOptions.isEnableAutoComplete();
+        final boolean enableAutoLockRenew = receiverOptions.isAutoLockRenewEnabled();
+        final Flux<ServiceBusReceivedMessage> messages = getOrCreateConsumer().receive()
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
+
+        if (enableAutoDisposition | enableAutoLockRenew) {
+            // AutoDisposition(Complete|Abandon) and AutoLockRenew features in Low-Level Reactor Receiver Client are
+            // slated for deprecation.
+            return new AutoDispositionLockRenew(messages, this, enableAutoDisposition, enableAutoLockRenew, completionLock);
+        } else {
+            return messages;
+        }
     }
 
     Flux<ServiceBusReceivedMessage> nonSessionSyncReceiveV2() {
