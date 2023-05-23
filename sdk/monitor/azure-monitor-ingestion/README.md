@@ -213,11 +213,7 @@ client.upload("<data-collection-rule-id>", "<stream-name>", logs, logsUploadOpti
 ```
 ## Troubleshooting
 
-### Enabling Logging
-
-Azure SDKs for Java offer a consistent logging story to help aid in troubleshooting application errors and expedite
-their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
-locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+For details on diagnosing various failure scenarios, see our [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/monitor/azure-monitor-ingestion/TROUBLESHOOTING.md).
 
 ## Next steps
 More samples can be found [here][samples].

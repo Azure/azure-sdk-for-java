@@ -77,6 +77,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.util.concurrent.Queues;
@@ -2373,14 +2374,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = getRangeQueryMap(partitionRangeItemKeyMap, collection.getPartitionKey());
 
                         // create point reads
-                        Flux<FeedResponse<Document>> pointReads = createPointReadOperations(
+                        Flux<FeedResponse<Document>> pointReads = pointReadsForReadMany(
                             partitionRangeItemKeyMap,
                             resourceLink,
                             options,
                             klass);
 
                         // create the executable query
-                        Flux<FeedResponse<Document>> queries = createReadManyQuery(
+                        Flux<FeedResponse<Document>> queries = queryForReadMany(
                             resourceLink,
                             new SqlQuerySpec(DUMMY_SQL_QUERY),
                             options,
@@ -2597,7 +2598,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .collect(Collectors.joining());
     }
 
-    private <T extends Resource> Flux<FeedResponse<T>> createReadManyQuery(
+    private <T extends Resource> Flux<FeedResponse<T>> queryForReadMany(
         String parentResourceLink,
         SqlQuerySpec sqlQuery,
         CosmosQueryRequestOptions options,
@@ -2625,7 +2626,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
     }
 
-    private <T> Flux<FeedResponse<Document>> createPointReadOperations(
+    private <T> Flux<FeedResponse<Document>> pointReadsForReadMany(
         Map<PartitionKeyRange, List<CosmosItemIdentity>> singleItemPartitionRequestMap,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
@@ -2657,6 +2658,35 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         BridgeInternal.getClientSideRequestStatics(cosmosItemResponse.getDiagnostics())));
 
                 return Mono.just(feedResponse);
+            })
+            .onErrorResume(throwable -> {
+
+                Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
+
+                if (unwrappedThrowable instanceof CosmosException) {
+
+                    CosmosException cosmosException = (CosmosException) unwrappedThrowable;
+
+                    int statusCode = cosmosException.getStatusCode();
+                    int subStatusCode = cosmosException.getSubStatusCode();
+
+                    CosmosDiagnostics diagnostics = cosmosException.getDiagnostics();
+
+                    if (statusCode == HttpConstants.StatusCodes.NOTFOUND && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
+                        FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(new ArrayList<>(), cosmosException.getResponseHeaders());
+
+                        diagnosticsAccessor.addClientSideDiagnosticsToFeed(
+                                feedResponse.getCosmosDiagnostics(),
+                                Collections.singleton(
+                                        BridgeInternal.getClientSideRequestStatics(diagnostics)
+                                )
+                        );
+
+                        return Mono.just(feedResponse);
+                    }
+                }
+
+                return Mono.error(unwrappedThrowable);
             });
     }
 

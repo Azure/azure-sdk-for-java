@@ -39,6 +39,16 @@ public final class PoliciesImpl implements Policies {
         return Utils.mapPage(inner, inner1 -> new WebApplicationFirewallPolicyImpl(inner1, this.manager()));
     }
 
+    public PagedIterable<WebApplicationFirewallPolicy> list() {
+        PagedIterable<WebApplicationFirewallPolicyInner> inner = this.serviceClient().list();
+        return Utils.mapPage(inner, inner1 -> new WebApplicationFirewallPolicyImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<WebApplicationFirewallPolicy> list(Context context) {
+        PagedIterable<WebApplicationFirewallPolicyInner> inner = this.serviceClient().list(context);
+        return Utils.mapPage(inner, inner1 -> new WebApplicationFirewallPolicyImpl(inner1, this.manager()));
+    }
+
     public Response<WebApplicationFirewallPolicy> getByResourceGroupWithResponse(
         String resourceGroupName, String policyName, Context context) {
         Response<WebApplicationFirewallPolicyInner> inner =

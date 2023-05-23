@@ -58,8 +58,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
     public interface PriceSheetsService {
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/invoices/{invoiceName}/providers/Microsoft.CostManagement/pricesheets/default/download")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/invoices/{invoiceName}/providers/Microsoft.CostManagement/pricesheets/default/download")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> download(
@@ -73,8 +72,7 @@ public final class PriceSheetsClientImpl implements PriceSheetsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}"
-                + "/providers/Microsoft.CostManagement/pricesheets/default/download")
+            "/providers/Microsoft.Billing/billingAccounts/{billingAccountName}/billingProfiles/{billingProfileName}/providers/Microsoft.CostManagement/pricesheets/default/download")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> downloadByBillingProfile(
