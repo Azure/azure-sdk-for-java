@@ -3,7 +3,6 @@
 
 package com.azure.search.documents.test.environment.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -18,7 +17,7 @@ public class HotelTwoDimensional {
      * @return The matrix of hotel.
      */
     public List<List<String>> getMatrix() {
-        return (matrix == null) ? null : new ArrayList<>(matrix);
+        return matrix;
     }
 
     /**
@@ -28,7 +27,7 @@ public class HotelTwoDimensional {
      * @return The {@link HotelTwoDimensional} object itself.
      */
     public HotelTwoDimensional setMatrix(List<List<String>> matrix) {
-        this.matrix = (matrix == null) ? null : new ArrayList<>(matrix);
+        this.matrix = matrix;
         return this;
     }
 

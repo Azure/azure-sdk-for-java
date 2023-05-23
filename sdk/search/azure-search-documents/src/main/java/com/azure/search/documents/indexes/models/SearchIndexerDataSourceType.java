@@ -7,35 +7,28 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines the type of a datasource. */
+/** Defines values for SearchIndexerDataSourceType. */
 public final class SearchIndexerDataSourceType extends ExpandableStringEnum<SearchIndexerDataSourceType> {
-    /** Indicates an Azure SQL datasource. */
+    /** Static value azuresql for SearchIndexerDataSourceType. */
     public static final SearchIndexerDataSourceType AZURE_SQL = fromString("azuresql");
 
-    /** Indicates a CosmosDB datasource. */
+    /** Static value cosmosdb for SearchIndexerDataSourceType. */
     public static final SearchIndexerDataSourceType COSMOS_DB = fromString("cosmosdb");
 
-    /** Indicates an Azure Blob datasource. */
+    /** Static value azureblob for SearchIndexerDataSourceType. */
     public static final SearchIndexerDataSourceType AZURE_BLOB = fromString("azureblob");
 
-    /** Indicates an Azure Table datasource. */
+    /** Static value azuretable for SearchIndexerDataSourceType. */
     public static final SearchIndexerDataSourceType AZURE_TABLE = fromString("azuretable");
 
-    /** Indicates a MySql datasource. */
+    /** Static value mysql for SearchIndexerDataSourceType. */
     public static final SearchIndexerDataSourceType MY_SQL = fromString("mysql");
 
-    /** Indicates an ADLS Gen2 datasource. */
+    /** Static value adlsgen2 for SearchIndexerDataSourceType. */
     public static final SearchIndexerDataSourceType ADLS_GEN2 = fromString("adlsgen2");
-
-    /**
-     * Creates a new instance of SearchIndexerDataSourceType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public SearchIndexerDataSourceType() {}
 
     /**
      * Creates or finds a SearchIndexerDataSourceType from its string representation.
@@ -43,6 +36,7 @@ public final class SearchIndexerDataSourceType extends ExpandableStringEnum<Sear
      * @param name a name to look for.
      * @return the corresponding SearchIndexerDataSourceType.
      */
+    @JsonCreator
     public static SearchIndexerDataSourceType fromString(String name) {
         return fromString(name, SearchIndexerDataSourceType.class);
     }

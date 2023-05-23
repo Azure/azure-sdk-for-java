@@ -15,16 +15,12 @@ import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
-import com.azure.search.documents.indexes.models.CreateOrUpdateDataSourceConnectionOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateIndexerOptions;
-import com.azure.search.documents.indexes.models.CreateOrUpdateSkillsetOptions;
 import com.azure.search.documents.indexes.models.FieldMapping;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.InputFieldMappingEntry;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.OcrSkill;
 import com.azure.search.documents.indexes.models.OutputFieldMappingEntry;
-import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchFieldDataType;
 import com.azure.search.documents.indexes.models.SearchIndex;
@@ -59,9 +55,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused")
 public class SearchJavaDocCodeSnippets {
-    private static final SearchClient SEARCH_CLIENT = new SearchClientBuilder().buildClient();
+    private SearchClient searchClient = new SearchClientBuilder().buildClient();
 
     /**
      * Code snippet for creating a {@link SearchClient}.
@@ -84,7 +79,7 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        IndexDocumentsResult result = SEARCH_CLIENT.uploadDocuments(Collections.singletonList(searchDocument));
+        IndexDocumentsResult result = searchClient.uploadDocuments(Collections.singletonList(searchDocument));
         for (IndexingResult indexingResult : result.getResults()) {
             System.out.printf("Does document with key %s upload successfully? %b%n", indexingResult.getKey(),
                 indexingResult.isSucceeded());
@@ -100,8 +95,8 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        Response<IndexDocumentsResult> resultResponse = SEARCH_CLIENT.uploadDocumentsWithResponse(
-            Collections.singletonList(searchDocument), null, new Context(KEY_1, VALUE_1));
+        Response<IndexDocumentsResult> resultResponse = searchClient.uploadDocumentsWithResponse(
+            Collections.singletonList(searchDocument), null, new Context(key1, value1));
         System.out.println("The status code of the response is " + resultResponse.getStatusCode());
         for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
             System.out.printf("Does document with key %s upload successfully? %b%n", indexingResult.getKey(),
@@ -117,7 +112,7 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.SearchClient.mergeDocuments#Iterable
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelName", "merge");
-        IndexDocumentsResult result = SEARCH_CLIENT.mergeDocuments(Collections.singletonList(searchDocument));
+        IndexDocumentsResult result = searchClient.mergeDocuments(Collections.singletonList(searchDocument));
         for (IndexingResult indexingResult : result.getResults()) {
             System.out.printf("Does document with key %s merge successfully? %b%n", indexingResult.getKey(),
                 indexingResult.isSucceeded());
@@ -132,8 +127,8 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.SearchClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions-Context
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelName", "test");
-        Response<IndexDocumentsResult> resultResponse = SEARCH_CLIENT.mergeDocumentsWithResponse(
-            Collections.singletonList(searchDocument), null, new Context(KEY_1, VALUE_1));
+        Response<IndexDocumentsResult> resultResponse = searchClient.mergeDocumentsWithResponse(
+            Collections.singletonList(searchDocument), null, new Context(key1, value1));
         System.out.println("The status code of the response is " + resultResponse.getStatusCode());
         for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
             System.out.printf("Does document with key %s merge successfully? %b%n", indexingResult.getKey(),
@@ -150,7 +145,7 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        IndexDocumentsResult result = SEARCH_CLIENT.mergeOrUploadDocuments(Collections.singletonList(searchDocument));
+        IndexDocumentsResult result = searchClient.mergeOrUploadDocuments(Collections.singletonList(searchDocument));
         for (IndexingResult indexingResult : result.getResults()) {
             System.out.printf("Does document with key %s mergeOrUpload successfully? %b%n", indexingResult.getKey(),
                 indexingResult.isSucceeded());
@@ -166,8 +161,8 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        Response<IndexDocumentsResult> resultResponse = SEARCH_CLIENT.mergeOrUploadDocumentsWithResponse(
-            Collections.singletonList(searchDocument), null, new Context(KEY_1, VALUE_1));
+        Response<IndexDocumentsResult> resultResponse = searchClient.mergeOrUploadDocumentsWithResponse(
+            Collections.singletonList(searchDocument), null, new Context(key1, value1));
         System.out.println("The status code of the response is " + resultResponse.getStatusCode());
         for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
             System.out.printf("Does document with key %s mergeOrUpload successfully? %b%n", indexingResult.getKey(),
@@ -184,7 +179,7 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        IndexDocumentsResult result = SEARCH_CLIENT.deleteDocuments(Collections.singletonList(searchDocument));
+        IndexDocumentsResult result = searchClient.deleteDocuments(Collections.singletonList(searchDocument));
         for (IndexingResult indexingResult : result.getResults()) {
             System.out.printf("Does document with key %s delete successfully? %b%n", indexingResult.getKey(),
                 indexingResult.isSucceeded());
@@ -201,8 +196,8 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        Response<IndexDocumentsResult> resultResponse = SEARCH_CLIENT.deleteDocumentsWithResponse(
-            Collections.singletonList(searchDocument), null, new Context(KEY_1, VALUE_1));
+        Response<IndexDocumentsResult> resultResponse = searchClient.deleteDocumentsWithResponse(
+            Collections.singletonList(searchDocument), null, new Context(key1, value1));
         System.out.println("The status code of the response is " + resultResponse.getStatusCode());
         for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
             System.out.printf("Does document with key %s delete successfully? %b%n", indexingResult.getKey(),
@@ -225,7 +220,7 @@ public class SearchJavaDocCodeSnippets {
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
         indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
         indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
-        IndexDocumentsResult result = SEARCH_CLIENT.indexDocuments(indexDocumentsBatch);
+        IndexDocumentsResult result = searchClient.indexDocuments(indexDocumentsBatch);
         for (IndexingResult indexingResult : result.getResults()) {
             System.out.printf("Does document with key %s finish successfully? %b%n", indexingResult.getKey(),
                 indexingResult.isSucceeded());
@@ -247,8 +242,8 @@ public class SearchJavaDocCodeSnippets {
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
         indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
         indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
-        Response<IndexDocumentsResult> resultResponse = SEARCH_CLIENT.indexDocumentsWithResponse(indexDocumentsBatch,
-            null, new Context(KEY_1, VALUE_1));
+        Response<IndexDocumentsResult> resultResponse = searchClient.indexDocumentsWithResponse(indexDocumentsBatch,
+            null, new Context(key1, value1));
         System.out.println("The status code of the response is " + resultResponse.getStatusCode());
         for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
             System.out.printf("Does document with key %s finish successfully? %b%n", indexingResult.getKey(),
@@ -262,7 +257,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDocuments() {
         // BEGIN: com.azure.search.documents.SearchClient.getDocuments#String-Class
-        SearchDocument result = SEARCH_CLIENT.getDocument("hotelId", SearchDocument.class);
+        SearchDocument result = searchClient.getDocument("hotelId", SearchDocument.class);
         for (Map.Entry<String, Object> keyValuePair : result.entrySet()) {
             System.out.printf("Document key %s, Document value %s", keyValuePair.getKey(), keyValuePair.getValue());
         }
@@ -274,8 +269,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDocumentsWithResponse() {
         // BEGIN: com.azure.search.documents.SearchClient.getDocumentWithResponse#String-Class-List-Context
-        Response<SearchDocument> resultResponse = SEARCH_CLIENT.getDocumentWithResponse("hotelId",
-            SearchDocument.class, null, new Context(KEY_1, VALUE_1));
+        Response<SearchDocument> resultResponse = searchClient.getDocumentWithResponse("hotelId",
+            SearchDocument.class, null, new Context(key1, value1));
         System.out.println("The status code of the response is " + resultResponse.getStatusCode());
         for (Map.Entry<String, Object> keyValuePair : resultResponse.getValue().entrySet()) {
             System.out.printf("Document key %s, Document value %s", keyValuePair.getKey(), keyValuePair.getValue());
@@ -288,7 +283,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDocumentCount() {
         // BEGIN: com.azure.search.documents.SearchClient.getDocumentCount
-        long count = SEARCH_CLIENT.getDocumentCount();
+        long count = searchClient.getDocumentCount();
         System.out.printf("There are %d documents in service.", count);
         // END: com.azure.search.documents.SearchClient.getDocumentCount
     }
@@ -298,7 +293,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDocumentCountWithResponse() {
         // BEGIN: com.azure.search.documents.SearchClient.getDocumentCountWithResponse#Context
-        Response<Long> countResponse = SEARCH_CLIENT.getDocumentCountWithResponse(new Context(KEY_1, VALUE_1));
+        Response<Long> countResponse = searchClient.getDocumentCountWithResponse(new Context(key1, value1));
         System.out.println("The status code of the response is " + countResponse.getStatusCode());
         System.out.printf("There are %d documents in service.", countResponse.getValue());
         // END: com.azure.search.documents.SearchClient.getDocumentCountWithResponse#Context
@@ -309,7 +304,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void searchDocuments() {
         // BEGIN: com.azure.search.documents.SearchClient.search#String
-        SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search("searchText");
+        SearchPagedIterable searchPagedIterable = searchClient.search("searchText");
         System.out.printf("There are around %d results.", searchPagedIterable.getTotalCount());
 
         for (SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage()) {
@@ -330,8 +325,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void searchDocumentsWithOptions() {
         // BEGIN: com.azure.search.documents.SearchClient.search#String-SearchOptions-Context
-        SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search("searchText",
-            new SearchOptions().setOrderBy("hotelId desc"), new Context(KEY_1, VALUE_1));
+        SearchPagedIterable searchPagedIterable = searchClient.search("searchText",
+            new SearchOptions().setOrderBy("hotelId desc"), new Context(key1, value1));
         System.out.printf("There are around %d results.", searchPagedIterable.getTotalCount());
         for (SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage()) {
             System.out.println("The status code of the response is " + resultResponse.getStatusCode());
@@ -351,7 +346,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void suggestDocuments() {
         // BEGIN: com.azure.search.documents.SearchClient.suggest#String-String
-        SuggestPagedIterable suggestPagedIterable = SEARCH_CLIENT.suggest("searchText", "sg");
+        SuggestPagedIterable suggestPagedIterable = searchClient.suggest("searchText", "sg");
         for (SuggestResult result: suggestPagedIterable) {
             SearchDocument searchDocument = result.getDocument(SearchDocument.class);
             for (Map.Entry<String, Object> keyValuePair: searchDocument.entrySet()) {
@@ -366,8 +361,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void suggestDocumentsWithOptions() {
         // BEGIN: com.azure.search.documents.SearchClient.suggest#String-String-SuggestOptions-Context
-        SuggestPagedIterable suggestPagedIterable = SEARCH_CLIENT.suggest("searchText", "sg",
-            new SuggestOptions().setOrderBy("hotelId desc"), new Context(KEY_1, VALUE_1));
+        SuggestPagedIterable suggestPagedIterable = searchClient.suggest("searchText", "sg",
+            new SuggestOptions().setOrderBy("hotelId desc"), new Context(key1, value1));
         for (SuggestResult result: suggestPagedIterable) {
             SearchDocument searchDocument = result.getDocument(SearchDocument.class);
             for (Map.Entry<String, Object> keyValuePair: searchDocument.entrySet()) {
@@ -382,7 +377,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void autocompleteDocuments() {
         // BEGIN: com.azure.search.documents.SearchClient.autocomplete#String-String
-        AutocompletePagedIterable autocompletePagedIterable = SEARCH_CLIENT.autocomplete("searchText", "sg");
+        AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete("searchText", "sg");
         for (AutocompleteItem result: autocompletePagedIterable) {
             System.out.printf("The complete term is %s", result.getText());
         }
@@ -394,16 +389,16 @@ public class SearchJavaDocCodeSnippets {
      */
     public void autocompleteDocumentsWithOptions() {
         // BEGIN: com.azure.search.documents.SearchClient.autocomplete#String-String-AutocompleteOptions-Context
-        AutocompletePagedIterable autocompletePagedIterable = SEARCH_CLIENT.autocomplete("searchText", "sg",
+        AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete("searchText", "sg",
             new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT),
-            new Context(KEY_1, VALUE_1));
+            new Context(key1, value1));
         for (AutocompleteItem result: autocompletePagedIterable) {
             System.out.printf("The complete term is %s", result.getText());
         }
         // END: com.azure.search.documents.SearchClient.autocomplete#String-String-AutocompleteOptions-Context
     }
 
-    private static final SearchAsyncClient SEARCH_ASYNC_CLIENT = new SearchClientBuilder().buildAsyncClient();
+    private SearchAsyncClient searchAsyncClient = new SearchClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for {@link SearchAsyncClient#uploadDocuments(Iterable)}.
@@ -413,7 +408,7 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        SEARCH_ASYNC_CLIENT.uploadDocuments(Collections.singletonList(searchDocument))
+        searchAsyncClient.uploadDocuments(Collections.singletonList(searchDocument))
             .subscribe(result -> {
                 for (IndexingResult indexingResult : result.getResults()) {
                     System.out.printf("Does document with key %s upload successfully? %b%n",
@@ -431,7 +426,7 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        SEARCH_ASYNC_CLIENT.uploadDocumentsWithResponse(Collections.singletonList(searchDocument), null)
+        searchAsyncClient.uploadDocumentsWithResponse(Collections.singletonList(searchDocument), null)
             .subscribe(resultResponse -> {
                 System.out.println("The status code of the response is " + resultResponse.getStatusCode());
                 for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
@@ -449,7 +444,7 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.mergeDocuments#Iterable
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelName", "merge");
-        SEARCH_ASYNC_CLIENT.mergeDocuments(Collections.singletonList(searchDocument))
+        searchAsyncClient.mergeDocuments(Collections.singletonList(searchDocument))
             .subscribe(result -> {
                 for (IndexingResult indexingResult : result.getResults()) {
                     System.out.printf("Does document with key %s merge successfully? %b%n", indexingResult.getKey(),
@@ -466,7 +461,7 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.mergeDocumentsWithResponse#Iterable-IndexDocumentsOptions
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelName", "test");
-        SEARCH_ASYNC_CLIENT.mergeDocumentsWithResponse(Collections.singletonList(searchDocument), null)
+        searchAsyncClient.mergeDocumentsWithResponse(Collections.singletonList(searchDocument), null)
             .subscribe(resultResponse -> {
                 System.out.println("The status code of the response is " + resultResponse.getStatusCode());
                 for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
@@ -485,7 +480,7 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        SEARCH_ASYNC_CLIENT.mergeOrUploadDocuments(Collections.singletonList(searchDocument))
+        searchAsyncClient.mergeOrUploadDocuments(Collections.singletonList(searchDocument))
             .subscribe(result -> {
                 for (IndexingResult indexingResult : result.getResults()) {
                     System.out.printf("Does document with key %s mergeOrUpload successfully? %b%n",
@@ -503,7 +498,7 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        SEARCH_ASYNC_CLIENT.mergeOrUploadDocumentsWithResponse(Collections.singletonList(searchDocument), null)
+        searchAsyncClient.mergeOrUploadDocumentsWithResponse(Collections.singletonList(searchDocument), null)
             .subscribe(resultResponse -> {
                 System.out.println("The status code of the response is " + resultResponse.getStatusCode());
                 for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
@@ -522,7 +517,7 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        SEARCH_ASYNC_CLIENT.deleteDocuments(Collections.singletonList(searchDocument))
+        searchAsyncClient.deleteDocuments(Collections.singletonList(searchDocument))
             .subscribe(result -> {
                 for (IndexingResult indexingResult : result.getResults()) {
                     System.out.printf("Does document with key %s delete successfully? %b%n", indexingResult.getKey(),
@@ -541,7 +536,7 @@ public class SearchJavaDocCodeSnippets {
         SearchDocument searchDocument = new SearchDocument();
         searchDocument.put("hotelId", "1");
         searchDocument.put("hotelName", "test");
-        SEARCH_ASYNC_CLIENT.deleteDocumentsWithResponse(Collections.singletonList(searchDocument), null)
+        searchAsyncClient.deleteDocumentsWithResponse(Collections.singletonList(searchDocument), null)
             .subscribe(resultResponse -> {
                 System.out.println("The status code of the response is " + resultResponse.getStatusCode());
                 for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
@@ -566,7 +561,7 @@ public class SearchJavaDocCodeSnippets {
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
         indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
         indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
-        SEARCH_ASYNC_CLIENT.indexDocuments(indexDocumentsBatch)
+        searchAsyncClient.indexDocuments(indexDocumentsBatch)
             .subscribe(result -> {
                 for (IndexingResult indexingResult : result.getResults()) {
                     System.out.printf("Does document with key %s finish successfully? %b%n", indexingResult.getKey(),
@@ -590,7 +585,7 @@ public class SearchJavaDocCodeSnippets {
         IndexDocumentsBatch<SearchDocument> indexDocumentsBatch = new IndexDocumentsBatch<>();
         indexDocumentsBatch.addUploadActions(Collections.singletonList(searchDocument1));
         indexDocumentsBatch.addDeleteActions(Collections.singletonList(searchDocument2));
-        SEARCH_ASYNC_CLIENT.indexDocumentsWithResponse(indexDocumentsBatch, null)
+        searchAsyncClient.indexDocumentsWithResponse(indexDocumentsBatch, null)
             .subscribe(resultResponse -> {
                 System.out.println("The status code of the response is " + resultResponse.getStatusCode());
                 for (IndexingResult indexingResult : resultResponse.getValue().getResults()) {
@@ -606,7 +601,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDocumentsAsync() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.getDocuments#String-Class
-        SEARCH_ASYNC_CLIENT.getDocument("hotelId", SearchDocument.class)
+        searchAsyncClient.getDocument("hotelId", SearchDocument.class)
             .subscribe(result -> {
                 for (Map.Entry<String, Object> keyValuePair : result.entrySet()) {
                     System.out.printf("Document key %s, Document value %s", keyValuePair.getKey(),
@@ -621,7 +616,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDocumentsWithResponseAsync() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.getDocumentWithResponse#String-Class-List
-        SEARCH_ASYNC_CLIENT.getDocumentWithResponse("hotelId", SearchDocument.class, null)
+        searchAsyncClient.getDocumentWithResponse("hotelId", SearchDocument.class, null)
             .subscribe(resultResponse -> {
                 System.out.println("The status code of the response is " + resultResponse.getStatusCode());
                 for (Map.Entry<String, Object> keyValuePair : resultResponse.getValue().entrySet()) {
@@ -637,7 +632,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDocumentCountAsync() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.getDocumentCount
-        SEARCH_ASYNC_CLIENT.getDocumentCount()
+        searchAsyncClient.getDocumentCount()
             .subscribe(count -> System.out.printf("There are %d documents in service.", count));
         // END: com.azure.search.documents.SearchAsyncClient.getDocumentCount
     }
@@ -647,7 +642,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDocumentCountWithResponseAsync() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.getDocumentCountWithResponse
-        SEARCH_ASYNC_CLIENT.getDocumentCountWithResponse()
+        searchAsyncClient.getDocumentCountWithResponse()
             .subscribe(countResponse -> {
                 System.out.println("The status code of the response is " + countResponse.getStatusCode());
                 System.out.printf("There are %d documents in service.", countResponse.getValue());
@@ -660,13 +655,13 @@ public class SearchJavaDocCodeSnippets {
      */
     public void searchDocumentsAsync() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.search#String
-        SearchPagedFlux searchPagedFlux = SEARCH_ASYNC_CLIENT.search("searchText");
+        SearchPagedFlux searchPagedFlux = searchAsyncClient.search("searchText");
         searchPagedFlux.getTotalCount().subscribe(
             count -> System.out.printf("There are around %d results.", count)
         );
         searchPagedFlux.byPage()
-            .subscribe(resultResponse -> {
-                for (SearchResult result: resultResponse.getValue()) {
+            .subscribe(resultRespones -> {
+                for (SearchResult result: resultRespones.getValue()) {
                     SearchDocument searchDocument = result.getDocument(SearchDocument.class);
                     for (Map.Entry<String, Object> keyValuePair: searchDocument.entrySet()) {
                         System.out.printf("Document key %s, document value %s", keyValuePair.getKey(), keyValuePair.getValue());
@@ -681,19 +676,23 @@ public class SearchJavaDocCodeSnippets {
      */
     public void searchDocumentsWithOptionsAsync() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions
-        SearchPagedFlux pagedFlux = SEARCH_ASYNC_CLIENT.search("searchText",
+        SearchPagedFlux pagedFlux = searchAsyncClient.search("searchText",
             new SearchOptions().setOrderBy("hotelId desc"));
 
-        pagedFlux.getTotalCount().subscribe(count -> System.out.printf("There are around %d results.", count));
+        pagedFlux.getTotalCount().subscribe(count -> {
+            System.out.printf("There are around %d results.", count);
+        });
 
         pagedFlux.byPage()
-            .subscribe(searchResultResponse -> searchResultResponse.getValue().forEach(searchDocument -> {
-                for (Map.Entry<String, Object> keyValuePair
-                    : searchDocument.getDocument(SearchDocument.class).entrySet()) {
-                    System.out.printf("Document key %s, document value %s", keyValuePair.getKey(),
-                        keyValuePair.getValue());
-                }
-            }));
+            .subscribe(searchResultResponse -> {
+                searchResultResponse.getValue().forEach(searchDocument -> {
+                    for (Map.Entry<String, Object> keyValuePair
+                        : searchDocument.getDocument(SearchDocument.class).entrySet()) {
+                        System.out.printf("Document key %s, document value %s", keyValuePair.getKey(),
+                            keyValuePair.getValue());
+                    }
+                });
+            });
         // END: com.azure.search.documents.SearchAsyncClient.search#String-SearchOptions
     }
 
@@ -702,7 +701,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void suggestDocumentsAsync() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.suggest#String-String
-        SEARCH_ASYNC_CLIENT.suggest("searchText", "sg")
+        searchAsyncClient.suggest("searchText", "sg")
             .subscribe(results -> {
                 for (Map.Entry<String, Object> keyValuePair: results.getDocument(SearchDocument.class).entrySet()) {
                     System.out.printf("Document key %s, document value %s", keyValuePair.getKey(),
@@ -717,7 +716,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void suggestDocumentsWithOptionsAsync() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.suggest#String-String-SuggestOptions
-        SEARCH_ASYNC_CLIENT.suggest("searchText", "sg",
+        searchAsyncClient.suggest("searchText", "sg",
             new SuggestOptions().setOrderBy("hotelId desc"))
             .subscribe(results -> {
                 for (Map.Entry<String, Object> keyValuePair: results.getDocument(SearchDocument.class).entrySet()) {
@@ -733,8 +732,10 @@ public class SearchJavaDocCodeSnippets {
      */
     public void autocompleteDocumentsAsync() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.autocomplete#String-String
-        SEARCH_ASYNC_CLIENT.autocomplete("searchText", "sg")
-            .subscribe(result -> System.out.printf("The complete term is %s", result.getText()));
+        searchAsyncClient.autocomplete("searchText", "sg")
+            .subscribe(result -> {
+                System.out.printf("The complete term is %s", result.getText());
+            });
         // END: com.azure.search.documents.SearchAsyncClient.autocomplete#String-String
     }
 
@@ -743,7 +744,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void autocompleteDocumentsWithOptionsAsync() {
         // BEGIN: com.azure.search.documents.SearchAsyncClient.autocomplete#String-String-AutocompleteOptions
-        SEARCH_ASYNC_CLIENT.autocomplete("searchText", "sg",
+        searchAsyncClient.autocomplete("searchText", "sg",
             new AutocompleteOptions().setAutocompleteMode(AutocompleteMode.ONE_TERM_WITH_CONTEXT))
             .subscribe(result ->
                 System.out.printf("The complete term is %s", result.getText())
@@ -764,9 +765,9 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.SearchAsyncClient.instantiation
     }
 
-    private static final SearchIndexClient SEARCH_INDEX_CLIENT = new SearchIndexClientBuilder().buildClient();
-    private static final String KEY_1 = "key1";
-    private static final String VALUE_1 = "val1";
+    private SearchIndexClient searchIndexClient = new SearchIndexClientBuilder().buildClient();
+    private String key1 = "key1";
+    private String value1 = "val1";
 
     /**
      * Code snippet for creating a {@link SearchIndexClient}.
@@ -790,8 +791,8 @@ public class SearchJavaDocCodeSnippets {
             new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true)
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
-        SearchIndex indexFromService = SEARCH_INDEX_CLIENT.createIndex(searchIndex);
-        System.out.printf("The index name is %s. The ETag of index is %s.%n", indexFromService.getName(),
+        SearchIndex indexFromService = searchIndexClient.createIndex(searchIndex);
+        System.out.printf("The index name is %s. The etag of index is %s.%n", indexFromService.getName(),
             indexFromService.getETag());
         // END: com.azure.search.documents.indexes.SearchIndexClient.createIndex#SearchIndex
     }
@@ -808,7 +809,7 @@ public class SearchJavaDocCodeSnippets {
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
 
         Response<SearchIndex> indexFromServiceResponse =
-            SEARCH_INDEX_CLIENT.createIndexWithResponse(searchIndex, new Context(KEY_1, VALUE_1));
+            searchIndexClient.createIndexWithResponse(searchIndex, new Context(key1, value1));
         System.out.printf("The status code of the response is %s. The index name is %s.%n",
             indexFromServiceResponse.getStatusCode(), indexFromServiceResponse.getValue().getName());
         // END: com.azure.search.documents.indexes.SearchIndexClient.createIndexWithResponse#SearchIndex-Context
@@ -820,8 +821,8 @@ public class SearchJavaDocCodeSnippets {
     public void getSearchIndex() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getIndex#String
         SearchIndex indexFromService =
-            SEARCH_INDEX_CLIENT.getIndex("searchIndex");
-        System.out.printf("The index name is %s. The ETag of index is %s.%n", indexFromService.getName(),
+            searchIndexClient.getIndex("searchIndex");
+        System.out.printf("The index name is %s. The etag of index is %s.%n", indexFromService.getName(),
             indexFromService.getETag());
         // END: com.azure.search.documents.indexes.SearchIndexClient.getIndex#String
     }
@@ -832,7 +833,7 @@ public class SearchJavaDocCodeSnippets {
     public void getSearchIndexWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getIndexWithResponse#String-Context
         Response<SearchIndex> indexFromServiceResponse =
-            SEARCH_INDEX_CLIENT.getIndexWithResponse("searchIndex", new Context(KEY_1, VALUE_1));
+            searchIndexClient.getIndexWithResponse("searchIndex", new Context(key1, value1));
 
         System.out.printf("The status code of the response is %s. The index name is %s.%n",
             indexFromServiceResponse.getStatusCode(), indexFromServiceResponse.getValue().getName());
@@ -844,7 +845,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexStatistics() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getIndexStatistics#String
-        SearchIndexStatistics statistics = SEARCH_INDEX_CLIENT.getIndexStatistics("searchIndex");
+        SearchIndexStatistics statistics = searchIndexClient.getIndexStatistics("searchIndex");
         System.out.printf("There are %d documents and storage size of %d available in 'searchIndex'.%n",
             statistics.getDocumentCount(), statistics.getStorageSize());
         // END: com.azure.search.documents.indexes.SearchIndexClient.getIndexStatistics#String
@@ -855,8 +856,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexStatisticsWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getIndexStatisticsWithResponse#String-Context
-        Response<SearchIndexStatistics> statistics = SEARCH_INDEX_CLIENT.getIndexStatisticsWithResponse("searchIndex",
-            new Context(KEY_1, VALUE_1));
+        Response<SearchIndexStatistics> statistics = searchIndexClient.getIndexStatisticsWithResponse("searchIndex",
+            new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%n"
                 + "There are %d documents and storage size of %d available in 'searchIndex'.%n",
             statistics.getStatusCode(), statistics.getValue().getDocumentCount(),
@@ -869,9 +870,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexes() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listIndexes
-        PagedIterable<SearchIndex> indexes = SEARCH_INDEX_CLIENT.listIndexes();
+        PagedIterable<SearchIndex> indexes = searchIndexClient.listIndexes();
         for (SearchIndex index: indexes) {
-            System.out.printf("The index name is %s. The ETag of index is %s.%n", index.getName(),
+            System.out.printf("The index name is %s. The etag of index is %s.%n", index.getName(),
                 index.getETag());
         }
         // END: com.azure.search.documents.indexes.SearchIndexClient.listIndexes
@@ -882,11 +883,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexesWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listIndexesWithResponse#Context
-        PagedIterable<SearchIndex> indexes = SEARCH_INDEX_CLIENT.listIndexes(new Context(KEY_1, VALUE_1));
+        PagedIterable<SearchIndex> indexes = searchIndexClient.listIndexes(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + indexes.iterableByPage().iterator().next().getStatusCode());
         for (SearchIndex index: indexes) {
-            System.out.printf("The index name is %s. The ETag of index is %s.%n", index.getName(), index.getETag());
+            System.out.printf("The index name is %s. The etag of index is %s.%n", index.getName(), index.getETag());
         }
         // END: com.azure.search.documents.indexes.SearchIndexClient.listIndexesWithResponse#Context
     }
@@ -896,7 +897,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexNames() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listIndexNames
-        PagedIterable<String> indexes = SEARCH_INDEX_CLIENT.listIndexNames();
+        PagedIterable<String> indexes = searchIndexClient.listIndexNames();
         for (String indexName: indexes) {
             System.out.printf("The index name is %s.%n", indexName);
         }
@@ -908,7 +909,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexNamesWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listIndexNames#Context
-        PagedIterable<String> indexes = SEARCH_INDEX_CLIENT.listIndexNames(new Context(KEY_1, VALUE_1));
+        PagedIterable<String> indexes = searchIndexClient.listIndexNames(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + indexes.iterableByPage().iterator().next().getStatusCode());
         for (String indexName: indexes) {
@@ -922,10 +923,10 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateIndex() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndex#SearchIndex
-        SearchIndex indexFromService = SEARCH_INDEX_CLIENT.getIndex("searchIndex");
+        SearchIndex indexFromService = searchIndexClient.getIndex("searchIndex");
         indexFromService.setSuggesters(Collections.singletonList(new SearchSuggester("sg",
             Collections.singletonList("hotelName"))));
-        SearchIndex updatedIndex = SEARCH_INDEX_CLIENT.createOrUpdateIndex(indexFromService);
+        SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndex(indexFromService);
         System.out.printf("The index name is %s. The suggester name of index is %s.%n", updatedIndex.getName(),
             updatedIndex.getSuggesters().get(0).getName());
         // END: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndex#SearchIndex
@@ -936,13 +937,13 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateIndexWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context
-        SearchIndex indexFromService = SEARCH_INDEX_CLIENT.getIndex("searchIndex");
+        SearchIndex indexFromService = searchIndexClient.getIndex("searchIndex");
         indexFromService.setSuggesters(Collections.singletonList(new SearchSuggester("sg",
             Collections.singletonList("hotelName"))));
-        Response<SearchIndex> updatedIndexResponse = SEARCH_INDEX_CLIENT.createOrUpdateIndexWithResponse(indexFromService, true,
-            false, new Context(KEY_1, VALUE_1));
+        Response<SearchIndex> updatedIndexResponse = searchIndexClient.createOrUpdateIndexWithResponse(indexFromService, true,
+            false, new Context(key1, value1));
         System.out.printf("The status code of the normal response is %s.%n"
-                + "The index name is %s. The ETag of index is %s.%n", updatedIndexResponse.getStatusCode(),
+                + "The index name is %s. The etag of index is %s.%n", updatedIndexResponse.getStatusCode(),
             updatedIndexResponse.getValue().getName(), updatedIndexResponse.getValue().getETag());
         // END: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context
     }
@@ -952,7 +953,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSearchIndex() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String
-        SEARCH_INDEX_CLIENT.deleteIndex("searchIndex");
+        searchIndexClient.deleteIndex("searchIndex");
         // END: com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String
     }
 
@@ -961,9 +962,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSearchIndexWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteIndexWithResponse#SearchIndex-boolean-Context
-        SearchIndex indexFromService = SEARCH_INDEX_CLIENT.getIndex("searchIndex");
-        Response<Void> deleteResponse = SEARCH_INDEX_CLIENT.deleteIndexWithResponse(indexFromService, true,
-            new Context(KEY_1, VALUE_1));
+        SearchIndex indexFromService = searchIndexClient.getIndex("searchIndex");
+        Response<Void> deleteResponse = searchIndexClient.deleteIndexWithResponse(indexFromService, true,
+            new Context(key1, value1));
         System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode());
         // END: com.azure.search.documents.indexes.SearchIndexClient.deleteIndexWithResponse#SearchIndex-boolean-Context
     }
@@ -973,7 +974,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void analyzeText() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions
-        PagedIterable<AnalyzedTokenInfo> tokenInfos = SEARCH_INDEX_CLIENT.analyzeText("searchIndex",
+        PagedIterable<AnalyzedTokenInfo> tokenInfos = searchIndexClient.analyzeText("searchIndex",
             new AnalyzeTextOptions("The quick brown fox", LexicalTokenizerName.CLASSIC));
         for (AnalyzedTokenInfo tokenInfo : tokenInfos) {
             System.out.printf("The token emitted by the analyzer is %s.%n", tokenInfo.getToken());
@@ -986,8 +987,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void analyzeTextResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions-Context
-        PagedIterable<AnalyzedTokenInfo> tokenInfos = SEARCH_INDEX_CLIENT.analyzeText("searchIndex",
-            new AnalyzeTextOptions("The quick brown fox", LexicalTokenizerName.CLASSIC), new Context(KEY_1, VALUE_1));
+        PagedIterable<AnalyzedTokenInfo> tokenInfos = searchIndexClient.analyzeText("searchIndex",
+            new AnalyzeTextOptions("The quick brown fox", LexicalTokenizerName.CLASSIC), new Context(key1, value1));
         System.out.println("The status code of the response is "
             + tokenInfos.iterableByPage().iterator().next().getStatusCode());
         for (AnalyzedTokenInfo tokenInfo : tokenInfos) {
@@ -1003,8 +1004,8 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createSynonymMap#SynonymMap
         SynonymMap synonymMap = new SynonymMap("synonymMap",
             "United States, United States of America, USA\nWashington, Wash. => WA");
-        SynonymMap synonymMapFromService = SEARCH_INDEX_CLIENT.createSynonymMap(synonymMap);
-        System.out.printf("The synonym map name is %s. The ETag of synonym map is %s.%n",
+        SynonymMap synonymMapFromService = searchIndexClient.createSynonymMap(synonymMap);
+        System.out.printf("The synonym map name is %s. The etag of synonym map is %s.%n",
             synonymMapFromService.getName(), synonymMapFromService.getETag());
         // END: com.azure.search.documents.indexes.SearchIndexClient.createSynonymMap#SynonymMap
     }
@@ -1016,10 +1017,10 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createSynonymMapWithResponse#SynonymMap-Context
         SynonymMap synonymMap = new SynonymMap("synonymMap",
             "United States, United States of America, USA\nWashington, Wash. => WA");
-        Response<SynonymMap> synonymMapFromService = SEARCH_INDEX_CLIENT.createSynonymMapWithResponse(synonymMap,
-            new Context(KEY_1, VALUE_1));
+        Response<SynonymMap> synonymMapFromService = searchIndexClient.createSynonymMapWithResponse(synonymMap,
+            new Context(key1, value1));
         System.out.printf("The status code of the response is %d.%n"
-                + "The synonym map name is %s. The ETag of synonym map is %s.%n", synonymMapFromService.getStatusCode(),
+                + "The synonym map name is %s. The etag of synonym map is %s.%n", synonymMapFromService.getStatusCode(),
             synonymMapFromService.getValue().getName(), synonymMapFromService.getValue().getETag());
         // END: com.azure.search.documents.indexes.SearchIndexClient.createSynonymMapWithResponse#SynonymMap-Context
     }
@@ -1030,8 +1031,8 @@ public class SearchJavaDocCodeSnippets {
     public void getSynonymMap() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getSynonymMap#String
         SynonymMap synonymMapFromService =
-            SEARCH_INDEX_CLIENT.getSynonymMap("synonymMap");
-        System.out.printf("The synonym map is %s. The ETag of synonym map is %s.%n", synonymMapFromService.getName(),
+            searchIndexClient.getSynonymMap("synonymMap");
+        System.out.printf("The synonym map is %s. The etag of synonym map is %s.%n", synonymMapFromService.getName(),
             synonymMapFromService.getETag());
         // END: com.azure.search.documents.indexes.SearchIndexClient.getSynonymMap#String
     }
@@ -1042,9 +1043,9 @@ public class SearchJavaDocCodeSnippets {
     public void getSynonymMapWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getSynonymMapWithResponse#String-Context
         Response<SynonymMap> synonymMapFromService =
-            SEARCH_INDEX_CLIENT.getSynonymMapWithResponse("synonymMap", new Context(KEY_1, VALUE_1));
+            searchIndexClient.getSynonymMapWithResponse("synonymMap", new Context(key1, value1));
         System.out.printf("The status code of the response is %d.%n"
-                + "The synonym map name is %s. The ETag of synonym map is %s.%n", synonymMapFromService.getStatusCode(),
+                + "The synonym map name is %s. The etag of synonym map is %s.%n", synonymMapFromService.getStatusCode(),
             synonymMapFromService.getValue().getName(), synonymMapFromService.getValue().getETag());
         // END: com.azure.search.documents.indexes.SearchIndexClient.getSynonymMapWithResponse#String-Context
     }
@@ -1054,9 +1055,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listSynonymMaps() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps
-        PagedIterable<SynonymMap> synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMaps();
+        PagedIterable<SynonymMap> synonymMaps = searchIndexClient.listSynonymMaps();
         for (SynonymMap synonymMap: synonymMaps) {
-            System.out.printf("The synonymMap name is %s. The ETag of synonymMap is %s.%n", synonymMap.getName(),
+            System.out.printf("The synonymMap name is %s. The etag of synonymMap is %s.%n", synonymMap.getName(),
                 synonymMap.getETag());
         }
         // END: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps
@@ -1067,11 +1068,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listSynonymMapsWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapsWithResponse#Context
-        PagedIterable<SynonymMap> synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMaps(new Context(KEY_1, VALUE_1));
+        PagedIterable<SynonymMap> synonymMaps = searchIndexClient.listSynonymMaps(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + synonymMaps.iterableByPage().iterator().next().getStatusCode());
         for (SynonymMap index: synonymMaps) {
-            System.out.printf("The index name is %s. The ETag of index is %s.%n", index.getName(), index.getETag());
+            System.out.printf("The index name is %s. The etag of index is %s.%n", index.getName(), index.getETag());
         }
         // END: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapsWithResponse#Context
     }
@@ -1081,7 +1082,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listSynonymMapNames() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNames
-        PagedIterable<String> synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMapNames();
+        PagedIterable<String> synonymMaps = searchIndexClient.listSynonymMapNames();
         for (String synonymMap: synonymMaps) {
             System.out.printf("The synonymMap name is %s.%n", synonymMap);
         }
@@ -1093,7 +1094,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listSynonymMapNamesWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNamesWithResponse#Context
-        PagedIterable<String> synonymMaps = SEARCH_INDEX_CLIENT.listIndexNames(new Context(KEY_1, VALUE_1));
+        PagedIterable<String> synonymMaps = searchIndexClient.listIndexNames(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + synonymMaps.iterableByPage().iterator().next().getStatusCode());
         for (String synonymMapNames: synonymMaps) {
@@ -1107,9 +1108,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateSynonymMap() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMap#SynonymMap
-        SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap("searchIndex");
+        SynonymMap synonymMap = searchIndexClient.getSynonymMap("searchIndex");
         synonymMap.setSynonyms("United States, United States of America, USA, America\nWashington, Wash. => WA");
-        SynonymMap updatedSynonymMap = SEARCH_INDEX_CLIENT.createOrUpdateSynonymMap(synonymMap);
+        SynonymMap updatedSynonymMap = searchIndexClient.createOrUpdateSynonymMap(synonymMap);
         System.out.printf("The synonym map name is %s. The synonyms are %s.%n", updatedSynonymMap.getName(),
             updatedSynonymMap.getSynonyms());
         // END: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMap#SynonymMap
@@ -1120,11 +1121,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateSynonymMapWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context
-        SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap("searchIndex");
+        SynonymMap synonymMap = searchIndexClient.getSynonymMap("searchIndex");
         synonymMap.setSynonyms("United States, United States of America, USA, America\nWashington, Wash. => WA");
         Response<SynonymMap> updatedSynonymMap =
-            SEARCH_INDEX_CLIENT.createOrUpdateSynonymMapWithResponse(synonymMap, true,
-                new Context(KEY_1, VALUE_1));
+            searchIndexClient.createOrUpdateSynonymMapWithResponse(synonymMap, true,
+                new Context(key1, value1));
         System.out.printf("The status code of the normal response is %s.%n"
                 + "The synonym map name is %s. The synonyms are %s.%n", updatedSynonymMap.getStatusCode(),
             updatedSynonymMap.getValue().getName(), updatedSynonymMap.getValue().getSynonyms());
@@ -1136,7 +1137,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSynonymMap() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMap#String
-        SEARCH_INDEX_CLIENT.deleteSynonymMap("synonymMap");
+        searchIndexClient.deleteSynonymMap("synonymMap");
         // END: com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMap#String
     }
 
@@ -1145,9 +1146,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSynonymMapWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SynonymMap-boolean-Context
-        SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap("synonymMap");
-        Response<Void> response = SEARCH_INDEX_CLIENT.deleteSynonymMapWithResponse(synonymMap, true,
-            new Context(KEY_1, VALUE_1));
+        SynonymMap synonymMap = searchIndexClient.getSynonymMap("synonymMap");
+        Response<Void> response = searchIndexClient.deleteSynonymMapWithResponse(synonymMap, true,
+            new Context(key1, value1));
         System.out.println("The status code of the response is" + response.getStatusCode());
         // END: com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SynonymMap-boolean-Context
     }
@@ -1157,7 +1158,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getServiceStatistics() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getServiceStatistics
-        SearchServiceStatistics serviceStatistics = SEARCH_INDEX_CLIENT.getServiceStatistics();
+        SearchServiceStatistics serviceStatistics = searchIndexClient.getServiceStatistics();
         System.out.printf("There are %s search indexes in your service.%n",
             serviceStatistics.getCounters().getIndexCounter());
         // END: com.azure.search.documents.indexes.SearchIndexClient.getServiceStatistics
@@ -1169,15 +1170,14 @@ public class SearchJavaDocCodeSnippets {
     public void getServiceStatisticsWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getServiceStatisticsWithResponse#Context
         Response<SearchServiceStatistics> serviceStatistics =
-            SEARCH_INDEX_CLIENT.getServiceStatisticsWithResponse(new Context(KEY_1, VALUE_1));
+            searchIndexClient.getServiceStatisticsWithResponse(new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%nThere are %s search indexes in your service.%n",
             serviceStatistics.getStatusCode(),
             serviceStatistics.getValue().getCounters().getIndexCounter());
         // END: com.azure.search.documents.indexes.SearchIndexClient.getServiceStatisticsWithResponse#Context
     }
 
-    private static final SearchIndexAsyncClient SEARCH_INDEX_ASYNC_CLIENT = new SearchIndexClientBuilder()
-        .buildAsyncClient();
+    private SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for creating a {@link SearchIndexAsyncClient}.
@@ -1201,9 +1201,9 @@ public class SearchJavaDocCodeSnippets {
             new SearchField("hotelName", SearchFieldDataType.STRING).setSearchable(true)
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
-        SEARCH_INDEX_ASYNC_CLIENT.createIndex(searchIndex)
+        searchIndexAsyncClient.createIndex(searchIndex)
             .subscribe(indexFromService ->
-                System.out.printf("The index name is %s. The ETag of index is %s.%n", indexFromService.getName(),
+                System.out.printf("The index name is %s. The etag of index is %s.%n", indexFromService.getName(),
                 indexFromService.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createIndex#SearchIndex
     }
@@ -1219,7 +1219,7 @@ public class SearchJavaDocCodeSnippets {
         );
         SearchIndex searchIndex = new SearchIndex("searchIndex", searchFields);
 
-        SEARCH_INDEX_ASYNC_CLIENT.createIndexWithResponse(searchIndex)
+        searchIndexAsyncClient.createIndexWithResponse(searchIndex)
             .subscribe(indexFromServiceResponse ->
                 System.out.printf("The status code of the response is %s. The index name is %s.%n",
                 indexFromServiceResponse.getStatusCode(), indexFromServiceResponse.getValue().getName()));
@@ -1231,9 +1231,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndex#String
-        SEARCH_INDEX_ASYNC_CLIENT.getIndex("searchIndex")
+        searchIndexAsyncClient.getIndex("searchIndex")
             .subscribe(indexFromService ->
-                System.out.printf("The index name is %s. The ETag of index is %s.%n", indexFromService.getName(),
+                System.out.printf("The index name is %s. The etag of index is %s.%n", indexFromService.getName(),
                     indexFromService.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndex#String
     }
@@ -1243,7 +1243,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexWithResponse#String
-        SEARCH_INDEX_ASYNC_CLIENT.getIndexWithResponse("searchIndex")
+        searchIndexAsyncClient.getIndexWithResponse("searchIndex")
             .subscribe(indexFromServiceResponse ->
                 System.out.printf("The status code of the response is %s. The index name is %s.%n",
                     indexFromServiceResponse.getStatusCode(), indexFromServiceResponse.getValue().getName()));
@@ -1255,7 +1255,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexStatisticsAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatistics#String
-        SEARCH_INDEX_ASYNC_CLIENT.getIndexStatistics("searchIndex")
+        searchIndexAsyncClient.getIndexStatistics("searchIndex")
             .subscribe(statistics ->
                 System.out.printf("There are %d documents and storage size of %d available in 'searchIndex'.%n",
                 statistics.getDocumentCount(), statistics.getStorageSize()));
@@ -1267,7 +1267,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexStatisticsWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getIndexStatisticsWithResponse#String
-        SEARCH_INDEX_ASYNC_CLIENT.getIndexStatisticsWithResponse("searchIndex")
+        searchIndexAsyncClient.getIndexStatisticsWithResponse("searchIndex")
             .subscribe(statistics -> System.out.printf("The status code of the response is %s.%n"
                     + "There are %d documents and storage size of %d available in 'searchIndex'.%n",
                 statistics.getStatusCode(), statistics.getValue().getDocumentCount(),
@@ -1280,9 +1280,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexes
-        SEARCH_INDEX_ASYNC_CLIENT.listIndexes()
+        searchIndexAsyncClient.listIndexes()
             .subscribe(index ->
-                System.out.printf("The index name is %s. The ETag of index is %s.%n", index.getName(),
+                System.out.printf("The index name is %s. The etag of index is %s.%n", index.getName(),
                     index.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexes
     }
@@ -1292,7 +1292,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexNamesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexNames
-        SEARCH_INDEX_ASYNC_CLIENT.listIndexNames()
+        searchIndexAsyncClient.listIndexNames()
             .subscribe(indexName -> System.out.printf("The index name is %s.%n", indexName));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listIndexNames
     }
@@ -1302,10 +1302,12 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateIndexAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndex#SearchIndex
-        SEARCH_INDEX_ASYNC_CLIENT.getIndex("searchIndex")
-            .doOnNext(indexFromService -> indexFromService.setSuggesters(Collections.singletonList(
-                new SearchSuggester("sg", Collections.singletonList("hotelName")))))
-            .flatMap(SEARCH_INDEX_ASYNC_CLIENT::createOrUpdateIndex)
+        searchIndexAsyncClient.getIndex("searchIndex")
+            .doOnNext(indexFromService -> {
+                indexFromService.setSuggesters(Collections.singletonList(new SearchSuggester("sg",
+                    Collections.singletonList("hotelName"))));
+            })
+            .flatMap(index -> searchIndexAsyncClient.createOrUpdateIndex(index))
             .subscribe(updatedIndex ->
                 System.out.printf("The index name is %s. The suggester name of index is %s.%n",
                     updatedIndex.getName(), updatedIndex.getSuggesters().get(0).getName()));
@@ -1317,13 +1319,13 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateIndexWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context
-        SEARCH_INDEX_ASYNC_CLIENT.getIndex("searchIndex")
+        searchIndexAsyncClient.getIndex("searchIndex")
             .doOnNext(indexFromService -> indexFromService.setSuggesters(Collections.singletonList(
                 new SearchSuggester("sg", Collections.singletonList("hotelName")))))
-            .flatMap(indexFromService -> SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateIndexWithResponse(indexFromService, true,
+            .flatMap(indexFromService -> searchIndexAsyncClient.createOrUpdateIndexWithResponse(indexFromService, true,
                 false))
             .subscribe(updatedIndexResponse -> System.out.printf("The status code of the normal response is %s.%n"
-                    + "The index name is %s. The ETag of index is %s.%n", updatedIndexResponse.getStatusCode(),
+                    + "The index name is %s. The etag of index is %s.%n", updatedIndexResponse.getStatusCode(),
                 updatedIndexResponse.getValue().getName(), updatedIndexResponse.getValue().getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context
     }
@@ -1333,7 +1335,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSearchIndexAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String
-        SEARCH_INDEX_ASYNC_CLIENT.deleteIndex("searchIndex")
+        searchIndexAsyncClient.deleteIndex("searchIndex")
             .subscribe();
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndex#String
     }
@@ -1343,8 +1345,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSearchIndexWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean
-        SEARCH_INDEX_ASYNC_CLIENT.getIndex("searchIndex")
-            .flatMap(indexFromService -> SEARCH_INDEX_ASYNC_CLIENT.deleteIndexWithResponse(indexFromService, true))
+        searchIndexAsyncClient.getIndex("searchIndex")
+            .flatMap(indexFromService -> searchIndexAsyncClient.deleteIndexWithResponse(indexFromService, true))
             .subscribe(deleteResponse ->
                 System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteIndexWithResponse#SearchIndex-boolean
@@ -1355,7 +1357,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void analyzeTextAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.analyzeText#String-AnalyzeTextOptions
-        SEARCH_INDEX_ASYNC_CLIENT.analyzeText("searchIndex",
+        searchIndexAsyncClient.analyzeText("searchIndex",
             new AnalyzeTextOptions("The quick brown fox", LexicalTokenizerName.CLASSIC))
             .subscribe(tokenInfo ->
                 System.out.printf("The token emitted by the analyzer is %s.%n", tokenInfo.getToken()));
@@ -1369,9 +1371,9 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMap#SynonymMap
         SynonymMap synonymMap = new SynonymMap("synonymMap",
             "United States, United States of America, USA\nWashington, Wash. => WA");
-        SEARCH_INDEX_ASYNC_CLIENT.createSynonymMap(synonymMap)
+        searchIndexAsyncClient.createSynonymMap(synonymMap)
             .subscribe(synonymMapFromService ->
-                System.out.printf("The synonym map name is %s. The ETag of synonym map is %s.%n",
+                System.out.printf("The synonym map name is %s. The etag of synonym map is %s.%n",
                 synonymMapFromService.getName(), synonymMapFromService.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMap#SynonymMap
     }
@@ -1383,10 +1385,10 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap
         SynonymMap synonymMap = new SynonymMap("synonymMap",
             "United States, United States of America, USA\nWashington, Wash. => WA");
-        SEARCH_INDEX_ASYNC_CLIENT.createSynonymMapWithResponse(synonymMap)
+        searchIndexAsyncClient.createSynonymMapWithResponse(synonymMap)
             .subscribe(synonymMapFromService ->
                 System.out.printf("The status code of the response is %d.%n"
-                    + "The synonym map name is %s. The ETag of synonym map is %s.%n",
+                    + "The synonym map name is %s. The etag of synonym map is %s.%n",
                     synonymMapFromService.getStatusCode(),
                 synonymMapFromService.getValue().getName(), synonymMapFromService.getValue().getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createSynonymMapWithResponse#SynonymMap
@@ -1397,9 +1399,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSynonymMapAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String
-        SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap("synonymMap")
+        searchIndexAsyncClient.getSynonymMap("synonymMap")
             .subscribe(synonymMapFromService ->
-                System.out.printf("The synonym map is %s. The ETag of synonym map is %s.%n",
+                System.out.printf("The synonym map is %s. The etag of synonym map is %s.%n",
                     synonymMapFromService.getName(), synonymMapFromService.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMap#String
     }
@@ -1409,9 +1411,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSynonymMapWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMapWithResponse#String
-        SEARCH_INDEX_ASYNC_CLIENT.getSynonymMapWithResponse("synonymMap")
+        searchIndexAsyncClient.getSynonymMapWithResponse("synonymMap")
             .subscribe(synonymMapFromService -> System.out.printf("The status code of the response is %d.%n"
-                    + "The synonym map name is %s. The ETag of synonym map is %s.%n",
+                    + "The synonym map name is %s. The etag of synonym map is %s.%n",
                 synonymMapFromService.getStatusCode(), synonymMapFromService.getValue().getName(),
                 synonymMapFromService.getValue().getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getSynonymMapWithResponse#String
@@ -1422,8 +1424,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listSynonymMapsAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps
-        SEARCH_INDEX_ASYNC_CLIENT.listSynonymMaps()
-            .subscribe(synonymMap -> System.out.printf("The synonymMap name is %s. The ETag of synonymMap is %s.%n",
+        searchIndexAsyncClient.listSynonymMaps()
+            .subscribe(synonymMap -> System.out.printf("The synonymMap name is %s. The etag of synonymMap is %s.%n",
                 synonymMap.getName(), synonymMap.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMaps
     }
@@ -1433,7 +1435,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listSynonymMapNamesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMapNames
-        SEARCH_INDEX_ASYNC_CLIENT.listSynonymMapNames()
+        searchIndexAsyncClient.listSynonymMapNames()
             .subscribe(synonymMap -> System.out.printf("The synonymMap name is %s.%n", synonymMap));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listSynonymMapNames
     }
@@ -1443,10 +1445,10 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateSynonymMapAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMap#SynonymMap
-        SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap("searchIndex")
+        searchIndexAsyncClient.getSynonymMap("searchIndex")
             .doOnNext(synonymMap -> synonymMap
                 .setSynonyms("United States, United States of America, USA, America\nWashington, Wash. => WA"))
-            .flatMap(SEARCH_INDEX_ASYNC_CLIENT::createOrUpdateSynonymMap)
+            .flatMap(synonymMap -> searchIndexAsyncClient.createOrUpdateSynonymMap(synonymMap))
             .subscribe(updatedSynonymMap ->
                 System.out.printf("The synonym map name is %s. The synonyms are %s.%n", updatedSynonymMap.getName(),
                 updatedSynonymMap.getSynonyms()));
@@ -1458,11 +1460,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateSynonymMapWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context
-        SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap("searchIndex")
+        searchIndexAsyncClient.getSynonymMap("searchIndex")
             .flatMap(synonymMap -> {
                 synonymMap.setSynonyms(
                     "United States, United States of America, USA, America\nWashington, Wash. => WA");
-                return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateSynonymMapWithResponse(synonymMap, true);
+                return searchIndexAsyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, true);
             })
             .subscribe(updatedSynonymMap ->
                 System.out.printf("The status code of the normal response is %s.%n"
@@ -1476,7 +1478,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSynonymMapAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMap#String
-        SEARCH_INDEX_ASYNC_CLIENT.deleteSynonymMap("synonymMap")
+        searchIndexAsyncClient.deleteSynonymMap("synonymMap")
             .subscribe();
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMap#String
     }
@@ -1486,8 +1488,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSynonymMapWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean
-        SEARCH_INDEX_ASYNC_CLIENT.getSynonymMap("synonymMap")
-            .flatMap(synonymMap -> SEARCH_INDEX_ASYNC_CLIENT.deleteSynonymMapWithResponse(synonymMap, true))
+        searchIndexAsyncClient.getSynonymMap("synonymMap")
+            .flatMap(synonymMap -> searchIndexAsyncClient.deleteSynonymMapWithResponse(synonymMap, true))
             .subscribe(response -> System.out.println("The status code of the response is" + response.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteSynonymMapWithResponse#SynonymMap-boolean
     }
@@ -1497,7 +1499,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getServiceStatisticsAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatistics
-        SEARCH_INDEX_ASYNC_CLIENT.getServiceStatistics()
+        searchIndexAsyncClient.getServiceStatistics()
             .subscribe(serviceStatistics -> System.out.printf("There are %s search indexes in your service.%n",
                 serviceStatistics.getCounters().getIndexCounter()));
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatistics
@@ -1508,7 +1510,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getServiceStatisticsWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse
-        SEARCH_INDEX_ASYNC_CLIENT.getServiceStatisticsWithResponse()
+        searchIndexAsyncClient.getServiceStatisticsWithResponse()
             .subscribe(serviceStatistics ->
                 System.out.printf("The status code of the response is %s.%n"
                         + "There are %s search indexes in your service.%n",
@@ -1517,7 +1519,7 @@ public class SearchJavaDocCodeSnippets {
         // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getServiceStatisticsWithResponse
     }
 
-    private static final SearchIndexerClient SEARCH_INDEXER_CLIENT = new SearchIndexerClientBuilder().buildClient();
+    private SearchIndexerClient searchIndexerClient = new SearchIndexerClientBuilder().buildClient();
     /**
      * Code snippet for creating a {@link SearchIndexerClient}.
      */
@@ -1537,8 +1539,8 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createIndexer#SearchIndexer
         SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
             "searchIndex");
-        SearchIndexer indexerFromService = SEARCH_INDEXER_CLIENT.createIndexer(searchIndexer);
-        System.out.printf("The indexer name is %s. The ETag of indexer is %s.%n", indexerFromService.getName(),
+        SearchIndexer indexerFromService = searchIndexerClient.createIndexer(searchIndexer);
+        System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexerFromService.getName(),
             indexerFromService.getETag());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createIndexer#SearchIndexer
     }
@@ -1550,8 +1552,8 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createIndexerWithResponse#SearchIndexer-Context
         SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
             "searchIndex");
-        Response<SearchIndexer> indexerFromServiceResponse = SEARCH_INDEXER_CLIENT.createIndexerWithResponse(
-            searchIndexer, new Context(KEY_1, VALUE_1));
+        Response<SearchIndexer> indexerFromServiceResponse = searchIndexerClient.createIndexerWithResponse(
+            searchIndexer, new Context(key1, value1));
 
         System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
             indexerFromServiceResponse.getStatusCode(), indexerFromServiceResponse.getValue().getName());
@@ -1564,8 +1566,8 @@ public class SearchJavaDocCodeSnippets {
     public void getSearchIndexer() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexer#String
         SearchIndexer indexerFromService =
-            SEARCH_INDEXER_CLIENT.getIndexer("searchIndexer");
-        System.out.printf("The indexer name is %s. The ETag of indexer is %s.%n", indexerFromService.getName(),
+            searchIndexerClient.getIndexer("searchIndexer");
+        System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexerFromService.getName(),
             indexerFromService.getETag());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexer#String
     }
@@ -1575,8 +1577,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexerWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerWithResponse#String-Context
-        Response<SearchIndexer> indexerFromServiceResponse = SEARCH_INDEXER_CLIENT.getIndexerWithResponse(
-            "searchIndexer", new Context(KEY_1, VALUE_1));
+        Response<SearchIndexer> indexerFromServiceResponse = searchIndexerClient.getIndexerWithResponse(
+            "searchIndexer", new Context(key1, value1));
 
         System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
             indexerFromServiceResponse.getStatusCode(), indexerFromServiceResponse.getValue().getName());
@@ -1589,9 +1591,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexers() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexers
-        PagedIterable<SearchIndexer> indexers = SEARCH_INDEXER_CLIENT.listIndexers();
+        PagedIterable<SearchIndexer> indexers = searchIndexerClient.listIndexers();
         for (SearchIndexer indexer: indexers) {
-            System.out.printf("The indexer name is %s. The ETag of indexer is %s.%n", indexer.getName(),
+            System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexer.getName(),
                 indexer.getETag());
         }
         // END: com.azure.search.documents.indexes.SearchIndexerClient.listIndexers
@@ -1602,11 +1604,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexersWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexersWithResponse#Context
-        PagedIterable<SearchIndexer> indexers = SEARCH_INDEXER_CLIENT.listIndexers(new Context(KEY_1, VALUE_1));
+        PagedIterable<SearchIndexer> indexers = searchIndexerClient.listIndexers(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + indexers.iterableByPage().iterator().next().getStatusCode());
         for (SearchIndexer indexer: indexers) {
-            System.out.printf("The indexer name is %s. The ETag of index is %s.%n",
+            System.out.printf("The indexer name is %s. The etag of index is %s.%n",
                 indexer.getName(), indexer.getETag());
         }
         // END: com.azure.search.documents.indexes.SearchIndexerClient.listIndexersWithResponse#Context
@@ -1617,7 +1619,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerNames() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames
-        PagedIterable<String> indexers = SEARCH_INDEXER_CLIENT.listIndexerNames();
+        PagedIterable<String> indexers = searchIndexerClient.listIndexerNames();
         for (String indexerName: indexers) {
             System.out.printf("The indexer name is %s.%n", indexerName);
         }
@@ -1629,7 +1631,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerNamesWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listIndexerNames#Context
-        PagedIterable<String> indexers = SEARCH_INDEXER_CLIENT.listIndexerNames(new Context(KEY_1, VALUE_1));
+        PagedIterable<String> indexers = searchIndexerClient.listIndexerNames(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + indexers.iterableByPage().iterator().next().getStatusCode());
         for (String indexerName: indexers) {
@@ -1643,25 +1645,25 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateIndexer() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexer#SearchIndexer
-        SearchIndexer searchIndexerFromService = SEARCH_INDEXER_CLIENT.getIndexer("searchIndexer");
+        SearchIndexer searchIndexerFromService = searchIndexerClient.getIndexer("searchIndexer");
         searchIndexerFromService.setFieldMappings(Collections.singletonList(
             new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-        SearchIndexer updateIndexer = SEARCH_INDEXER_CLIENT.createOrUpdateIndexer(searchIndexerFromService);
+        SearchIndexer updateIndexer = searchIndexerClient.createOrUpdateIndexer(searchIndexerFromService);
         System.out.printf("The indexer name is %s. The target field name of indexer is %s.%n",
             updateIndexer.getName(), updateIndexer.getFieldMappings().get(0).getTargetFieldName());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexer#SearchIndexer
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateIndexerWithResponse(SearchIndexer, boolean, Context)}
+     * Code snippet for {@link SearchIndexerClient#createOrUpdateIndexer(SearchIndexer)}
      */
     public void createOrUpdateIndexerWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean-Context
-        SearchIndexer searchIndexerFromService = SEARCH_INDEXER_CLIENT.getIndexer("searchIndexer");
+        SearchIndexer searchIndexerFromService = searchIndexerClient.getIndexer("searchIndexer");
         searchIndexerFromService.setFieldMappings(Collections.singletonList(
             new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-        Response<SearchIndexer> indexerFromService = SEARCH_INDEXER_CLIENT.createOrUpdateIndexerWithResponse(
-            searchIndexerFromService, true, new Context(KEY_1, VALUE_1));
+        Response<SearchIndexer> indexerFromService = searchIndexerClient.createOrUpdateIndexerWithResponse(
+            searchIndexerFromService, true, new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
             + "The target field name of indexer is %s.%n", indexerFromService.getStatusCode(),
             indexerFromService.getValue().getName(),
@@ -1670,32 +1672,11 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions, Context)}
-     */
-    public void createOrUpdateIndexerWithResponse2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context
-        SearchIndexer searchIndexerFromService = SEARCH_INDEXER_CLIENT.getIndexer("searchIndexer");
-        searchIndexerFromService.setFieldMappings(Collections.singletonList(
-            new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-        CreateOrUpdateIndexerOptions options = new CreateOrUpdateIndexerOptions(searchIndexerFromService)
-            .setOnlyIfUnchanged(true)
-            .setCacheReprocessingChangeDetectionDisabled(false)
-            .setCacheResetRequirementsIgnored(true);
-        Response<SearchIndexer> indexerFromService = SEARCH_INDEXER_CLIENT.createOrUpdateIndexerWithResponse(
-            options, new Context(KEY_1, VALUE_1));
-        System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
-                + "The target field name of indexer is %s.%n", indexerFromService.getStatusCode(),
-            indexerFromService.getValue().getName(),
-            indexerFromService.getValue().getFieldMappings().get(0).getTargetFieldName());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions-Context
-    }
-
-    /**
      * Code snippet for {@link SearchIndexerClient#deleteIndexer(String)}
      */
     public void deleteSearchIndexer() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexer#String
-        SEARCH_INDEXER_CLIENT.deleteIndexer("searchIndexer");
+        searchIndexerClient.deleteIndexer("searchIndexer");
         // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexer#String
     }
 
@@ -1704,9 +1685,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSearchIndexerWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context
-        SearchIndexer searchIndexer = SEARCH_INDEXER_CLIENT.getIndexer("searchIndexer");
-        Response<Void> deleteResponse = SEARCH_INDEXER_CLIENT.deleteIndexerWithResponse(searchIndexer, true,
-            new Context(KEY_1, VALUE_1));
+        SearchIndexer searchIndexer = searchIndexerClient.getIndexer("searchIndexer");
+        Response<Void> deleteResponse = searchIndexerClient.deleteIndexerWithResponse(searchIndexer, true,
+            new Context(key1, value1));
         System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteIndexerWithResponse#SearchIndexer-boolean-Context
     }
@@ -1716,7 +1697,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void resetIndexer() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetIndexer#String
-        SEARCH_INDEXER_CLIENT.resetIndexer("searchIndexer");
+        searchIndexerClient.resetIndexer("searchIndexer");
         // END: com.azure.search.documents.indexes.SearchIndexerClient.resetIndexer#String
     }
 
@@ -1725,8 +1706,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void resetIndexerWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetIndexerWithResponse#String-Context
-        Response<Void> response = SEARCH_INDEXER_CLIENT.resetIndexerWithResponse("searchIndexer",
-            new Context(KEY_1, VALUE_1));
+        Response<Void> response = searchIndexerClient.resetIndexerWithResponse("searchIndexer",
+            new Context(key1, value1));
         System.out.println("The status code of the response is " + response.getStatusCode());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.resetIndexerWithResponse#String-Context
     }
@@ -1736,7 +1717,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void runIndexer() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.runIndexer#String
-        SEARCH_INDEXER_CLIENT.runIndexer("searchIndexer");
+        searchIndexerClient.runIndexer("searchIndexer");
         // END: com.azure.search.documents.indexes.SearchIndexerClient.runIndexer#String
     }
 
@@ -1745,8 +1726,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void runIndexerWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context
-        Response<Void> response = SEARCH_INDEXER_CLIENT.runIndexerWithResponse("searchIndexer",
-            new Context(KEY_1, VALUE_1));
+        Response<Void> response = searchIndexerClient.runIndexerWithResponse("searchIndexer",
+            new Context(key1, value1));
         System.out.println("The status code of the response is " + response.getStatusCode());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.runIndexerWithResponse#String-Context
     }
@@ -1756,7 +1737,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getIndexerStatus() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatus#String
-        SearchIndexerStatus indexerStatus = SEARCH_INDEXER_CLIENT.getIndexerStatus("searchIndexer");
+        SearchIndexerStatus indexerStatus = searchIndexerClient.getIndexerStatus("searchIndexer");
         System.out.printf("The indexer status is %s.%n", indexerStatus.getStatus());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatus#String
     }
@@ -1766,45 +1747,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getIndexerStatusWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-Context
-        Response<SearchIndexerStatus> response = SEARCH_INDEXER_CLIENT.getIndexerStatusWithResponse("searchIndexer",
-            new Context(KEY_1, VALUE_1));
+        Response<SearchIndexerStatus> response = searchIndexerClient.getIndexerStatusWithResponse("searchIndexer",
+            new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%nThe indexer status is %s.%n",
             response.getStatusCode(), response.getValue().getStatus());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.getIndexerStatusWithResponse#String-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#resetDocuments(String, Boolean, List, List)}
-     */
-    public void resetDocuments() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-List-List
-        // Reset the documents with keys 1234 and 4321.
-        SEARCH_INDEXER_CLIENT.resetDocuments("searchIndexer", false, Arrays.asList("1234", "4321"), null);
-
-        // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-        SEARCH_INDEXER_CLIENT.resetDocuments("searchIndexer", true, Arrays.asList("1235", "5321"), null);
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetDocuments#String-Boolean-List-List
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#resetDocumentsWithResponse(SearchIndexer, Boolean, List, List, Context)}
-     */
-    public void resetDocumentsWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List-Context
-        SearchIndexer searchIndexer = SEARCH_INDEXER_CLIENT.getIndexer("searchIndexer");
-
-        // Reset the documents with keys 1234 and 4321.
-        Response<Void> resetDocsResult = SEARCH_INDEXER_CLIENT.resetDocumentsWithResponse(searchIndexer, false,
-            Arrays.asList("1234", "4321"), null, new Context(KEY_1, VALUE_1));
-        System.out.printf("Requesting documents to be reset completed with status code %d.%n",
-            resetDocsResult.getStatusCode());
-
-        // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-        resetDocsResult = SEARCH_INDEXER_CLIENT.resetDocumentsWithResponse(searchIndexer, true,
-            Arrays.asList("1235", "5321"), null, new Context(KEY_1, VALUE_1));
-        System.out.printf("Overwriting the documents to be reset completed with status code %d.%n",
-            resetDocsResult.getStatusCode());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List-Context
     }
 
     /**
@@ -1816,8 +1763,8 @@ public class SearchJavaDocCodeSnippets {
             com.azure.search.documents.indexes.models.SearchIndexerDataSourceType.AZURE_BLOB, "{connectionString}",
             new com.azure.search.documents.indexes.models.SearchIndexerDataContainer("container"));
         SearchIndexerDataSourceConnection dataSourceFromService =
-            SEARCH_INDEXER_CLIENT.createDataSourceConnection(dataSource);
-        System.out.printf("The data source name is %s. The ETag of data source is %s.%n",
+            searchIndexerClient.createDataSourceConnection(dataSource);
+        System.out.printf("The data source name is %s. The etag of data source is %s.%n",
             dataSourceFromService.getName(), dataSourceFromService.getETag());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createDataSourceConnection#SearchIndexerDataSourceConnection
     }
@@ -1831,7 +1778,7 @@ public class SearchJavaDocCodeSnippets {
             SearchIndexerDataSourceType.AZURE_BLOB, "{connectionString}",
             new SearchIndexerDataContainer("container"));
         Response<SearchIndexerDataSourceConnection> dataSourceFromService =
-            SEARCH_INDEXER_CLIENT.createDataSourceConnectionWithResponse(dataSource, new Context(KEY_1, VALUE_1));
+            searchIndexerClient.createDataSourceConnectionWithResponse(dataSource, new Context(key1, value1));
 
         System.out.printf("The status code of the response is %s. The data source name is %s.%n",
             dataSourceFromService.getStatusCode(), dataSourceFromService.getValue().getName());
@@ -1844,8 +1791,8 @@ public class SearchJavaDocCodeSnippets {
     public void getDataSource() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnection#String
         SearchIndexerDataSourceConnection dataSource =
-            SEARCH_INDEXER_CLIENT.getDataSourceConnection("dataSource");
-        System.out.printf("The dataSource name is %s. The ETag of dataSource is %s.%n", dataSource.getName(),
+            searchIndexerClient.getDataSourceConnection("dataSource");
+        System.out.printf("The dataSource name is %s. The etag of dataSource is %s.%n", dataSource.getName(),
             dataSource.getETag());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnection#String
     }
@@ -1856,8 +1803,8 @@ public class SearchJavaDocCodeSnippets {
     public void getDataSourceWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getDataSourceConnectionWithResponse#String-Context
         Response<SearchIndexerDataSourceConnection> dataSource =
-            SEARCH_INDEXER_CLIENT.getDataSourceConnectionWithResponse(
-                "dataSource", new Context(KEY_1, VALUE_1));
+            searchIndexerClient.getDataSourceConnectionWithResponse(
+                "dataSource", new Context(key1, value1));
 
         System.out.printf("The status code of the response is %s. The data source name is %s.%n",
             dataSource.getStatusCode(), dataSource.getValue().getName());
@@ -1870,9 +1817,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listDataSources() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections
-        PagedIterable<SearchIndexerDataSourceConnection> dataSources = SEARCH_INDEXER_CLIENT.listDataSourceConnections();
+        PagedIterable<SearchIndexerDataSourceConnection> dataSources = searchIndexerClient.listDataSourceConnections();
         for (SearchIndexerDataSourceConnection dataSource: dataSources) {
-            System.out.printf("The dataSource name is %s. The ETag of dataSource is %s.%n", dataSource.getName(),
+            System.out.printf("The dataSource name is %s. The etag of dataSource is %s.%n", dataSource.getName(),
                 dataSource.getETag());
         }
         // END: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnections
@@ -1884,12 +1831,12 @@ public class SearchJavaDocCodeSnippets {
     public void listDataSourcesWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionsWithResponse#Context
         PagedIterable<SearchIndexerDataSourceConnection> dataSources =
-            SEARCH_INDEXER_CLIENT.listDataSourceConnections(new Context(KEY_1, VALUE_1));
+            searchIndexerClient.listDataSourceConnections(new Context(key1, value1));
 
         System.out.println("The status code of the response is"
             + dataSources.iterableByPage().iterator().next().getStatusCode());
         for (SearchIndexerDataSourceConnection dataSource: dataSources) {
-            System.out.printf("The dataSource name is %s. The ETag of dataSource is %s.%n",
+            System.out.printf("The dataSource name is %s. The etag of dataSource is %s.%n",
                 dataSource.getName(), dataSource.getETag());
         }
         // END: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionsWithResponse#Context
@@ -1900,7 +1847,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listDataSourceNames() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNames
-        PagedIterable<String> dataSources = SEARCH_INDEXER_CLIENT.listDataSourceConnectionNames();
+        PagedIterable<String> dataSources = searchIndexerClient.listDataSourceConnectionNames();
         for (String dataSourceName: dataSources) {
             System.out.printf("The dataSource name is %s.%n", dataSourceName);
         }
@@ -1912,7 +1859,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listDataSourceNamesWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listDataSourceConnectionNamesWithContext#Context
-        PagedIterable<String> dataSources = SEARCH_INDEXER_CLIENT.listDataSourceConnectionNames(new Context(KEY_1, VALUE_1));
+        PagedIterable<String> dataSources = searchIndexerClient.listDataSourceConnectionNames(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + dataSources.iterableByPage().iterator().next().getStatusCode());
         for (String dataSourceName: dataSources) {
@@ -1926,26 +1873,25 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateDataSource() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
-        SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection("dataSource");
+        SearchIndexerDataSourceConnection dataSource = searchIndexerClient.getDataSourceConnection("dataSource");
         dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
 
-        SearchIndexerDataSourceConnection updateDataSource = SEARCH_INDEXER_CLIENT
-            .createOrUpdateDataSourceConnection(dataSource);
+        SearchIndexerDataSourceConnection updateDataSource = searchIndexerClient.createOrUpdateDataSourceConnection(dataSource);
         System.out.printf("The dataSource name is %s. The container name of dataSource is %s.%n",
             updateDataSource.getName(), updateDataSource.getContainer().getName());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection, boolean, Context)}
+     * Code snippet for {@link SearchIndexerClient#createIndexerWithResponse(SearchIndexer, Context)}
      */
     public void createOrUpdateDataSourceWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context
-        SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection("dataSource");
+        SearchIndexerDataSourceConnection dataSource = searchIndexerClient.getDataSourceConnection("dataSource");
         dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
 
-        Response<SearchIndexerDataSourceConnection> updateDataSource = SEARCH_INDEXER_CLIENT
-            .createOrUpdateDataSourceConnectionWithResponse(dataSource, true, new Context(KEY_1, VALUE_1));
+        Response<SearchIndexerDataSourceConnection> updateDataSource = searchIndexerClient
+            .createOrUpdateDataSourceConnectionWithResponse(dataSource, true, new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
             + "The container name of dataSource is %s.%n", updateDataSource.getStatusCode(),
             updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName());
@@ -1953,30 +1899,11 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateDataSourceConnectionWithResponse(CreateOrUpdateDataSourceConnectionOptions, Context)}
-     */
-    public void createOrUpdateDataSourceWithResponse2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context
-        SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection("dataSource");
-        dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
-        CreateOrUpdateDataSourceConnectionOptions options = new CreateOrUpdateDataSourceConnectionOptions(dataSource)
-            .setOnlyIfUnchanged(true)
-            .setCacheResetRequirementsIgnored(true);
-
-        Response<SearchIndexerDataSourceConnection> updateDataSource = SEARCH_INDEXER_CLIENT
-            .createOrUpdateDataSourceConnectionWithResponse(options, new Context(KEY_1, VALUE_1));
-        System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
-                + "The container name of dataSource is %s.%n", updateDataSource.getStatusCode(),
-            updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions-Context
-    }
-
-    /**
      * Code snippet for {@link SearchIndexerClient#deleteDataSourceConnection(String)}
      */
     public void deleteDataSource() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnection#String
-        SEARCH_INDEXER_CLIENT.deleteDataSourceConnection("dataSource");
+        searchIndexerClient.deleteDataSourceConnection("dataSource");
         // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnection#String
     }
 
@@ -1986,9 +1913,9 @@ public class SearchJavaDocCodeSnippets {
     public void deleteDataSourceWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context
         SearchIndexerDataSourceConnection dataSource =
-            SEARCH_INDEXER_CLIENT.getDataSourceConnection("dataSource");
-        Response<Void> deleteResponse = SEARCH_INDEXER_CLIENT.deleteDataSourceConnectionWithResponse(dataSource, true,
-            new Context(KEY_1, VALUE_1));
+            searchIndexerClient.getDataSourceConnection("dataSource");
+        Response<Void> deleteResponse = searchIndexerClient.deleteDataSourceConnectionWithResponse(dataSource, true,
+            new Context(key1, value1));
         System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean-Context
     }
@@ -2016,8 +1943,8 @@ public class SearchJavaDocCodeSnippets {
                 .setName("myocr")
                 .setDescription("Extracts text (plain and structured) from image.")
                 .setContext("/document/normalized_images/*")));
-        SearchIndexerSkillset skillset = SEARCH_INDEXER_CLIENT.createSkillset(searchIndexerSkillset);
-        System.out.printf("The indexer skillset name is %s. The ETag of indexer skillset is %s.%n",
+        SearchIndexerSkillset skillset = searchIndexerClient.createSkillset(searchIndexerSkillset);
+        System.out.printf("The indexer skillset name is %s. The etag of indexer skillset is %s.%n",
             skillset.getName(), skillset.getETag());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createSkillset#SearchIndexerSkillset
     }
@@ -2046,7 +1973,7 @@ public class SearchJavaDocCodeSnippets {
                 .setDescription("Extracts text (plain and structured) from image.")
                 .setContext("/document/normalized_images/*")));
         Response<SearchIndexerSkillset> skillsetWithResponse =
-            SEARCH_INDEXER_CLIENT.createSkillsetWithResponse(searchIndexerSkillset, new Context(KEY_1, VALUE_1));
+            searchIndexerClient.createSkillsetWithResponse(searchIndexerSkillset, new Context(key1, value1));
         System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
             skillsetWithResponse.getStatusCode(), skillsetWithResponse.getValue().getName());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createSkillsetWithResponse#SearchIndexerSkillset-Context
@@ -2058,8 +1985,8 @@ public class SearchJavaDocCodeSnippets {
     public void getSearchIndexerSkillset() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getSearchIndexerSkillset#String
         SearchIndexerSkillset indexerSkillset =
-            SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
-        System.out.printf("The indexer skillset name is %s. The ETag of indexer skillset is %s.%n",
+            searchIndexerClient.getSkillset("searchIndexerSkillset");
+        System.out.printf("The indexer skillset name is %s. The etag of indexer skillset is %s.%n",
             indexerSkillset.getName(), indexerSkillset.getETag());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.getSearchIndexerSkillset#String
     }
@@ -2069,8 +1996,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexerSkillsetWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.getSkillsetWithResponse#String-Context
-        Response<SearchIndexerSkillset> skillsetWithResponse = SEARCH_INDEXER_CLIENT.getSkillsetWithResponse(
-            "searchIndexerSkillset", new Context(KEY_1, VALUE_1));
+        Response<SearchIndexerSkillset> skillsetWithResponse = searchIndexerClient.getSkillsetWithResponse(
+            "searchIndexerSkillset", new Context(key1, value1));
 
         System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
             skillsetWithResponse.getStatusCode(), skillsetWithResponse.getValue().getName());
@@ -2083,9 +2010,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerSkillset() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsets
-        PagedIterable<SearchIndexerSkillset> indexerSkillsets = SEARCH_INDEXER_CLIENT.listSkillsets();
+        PagedIterable<SearchIndexerSkillset> indexerSkillsets = searchIndexerClient.listSkillsets();
         for (SearchIndexerSkillset skillset: indexerSkillsets) {
-            System.out.printf("The skillset name is %s. The ETag of skillset is %s.%n", skillset.getName(),
+            System.out.printf("The skillset name is %s. The etag of skillset is %s.%n", skillset.getName(),
                 skillset.getETag());
         }
         // END: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsets
@@ -2096,12 +2023,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerSkillsetsWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetsWithContext#Context
-        PagedIterable<SearchIndexerSkillset> indexerSkillsets = SEARCH_INDEXER_CLIENT
-            .listSkillsets(new Context(KEY_1, VALUE_1));
+        PagedIterable<SearchIndexerSkillset> indexerSkillsets = searchIndexerClient.listSkillsets(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + indexerSkillsets.iterableByPage().iterator().next().getStatusCode());
         for (SearchIndexerSkillset skillset: indexerSkillsets) {
-            System.out.printf("The skillset name is %s. The ETag of skillset is %s.%n",
+            System.out.printf("The skillset name is %s. The etag of skillset is %s.%n",
                 skillset.getName(), skillset.getETag());
         }
         // END: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetsWithContext#Context
@@ -2112,7 +2038,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerSkillsetNames() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNames
-        PagedIterable<String> skillsetNames = SEARCH_INDEXER_CLIENT.listSkillsetNames();
+        PagedIterable<String> skillsetNames = searchIndexerClient.listSkillsetNames();
         for (String skillsetName: skillsetNames) {
             System.out.printf("The indexer skillset name is %s.%n", skillsetName);
         }
@@ -2124,7 +2050,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerSkillsetNamesWithContext() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.listSkillsetNamesWithResponse#Context
-        PagedIterable<String> skillsetNames = SEARCH_INDEXER_CLIENT.listSkillsetNames(new Context(KEY_1, VALUE_1));
+        PagedIterable<String> skillsetNames = searchIndexerClient.listSkillsetNames(new Context(key1, value1));
         System.out.println("The status code of the response is"
             + skillsetNames.iterableByPage().iterator().next().getStatusCode());
         for (String skillsetName: skillsetNames) {
@@ -2139,9 +2065,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateIndexerSkillset() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset
-        SearchIndexerSkillset indexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
+        SearchIndexerSkillset indexerSkillset = searchIndexerClient.getSkillset("searchIndexerSkilset");
         indexerSkillset.setDescription("This is new description!");
-        SearchIndexerSkillset updateSkillset = SEARCH_INDEXER_CLIENT.createOrUpdateSkillset(indexerSkillset);
+        SearchIndexerSkillset updateSkillset = searchIndexerClient.createOrUpdateSkillset(indexerSkillset);
         System.out.printf("The indexer skillset name is %s. The description of indexer skillset is %s.%n",
             updateSkillset.getName(), updateSkillset.getDescription());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset
@@ -2152,35 +2078,15 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateIndexerSkillsetWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean-Context
-        SearchIndexerSkillset indexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
+        SearchIndexerSkillset indexerSkillset = searchIndexerClient.getSkillset("searchIndexerSkilset");
         indexerSkillset.setDescription("This is new description!");
-        Response<SearchIndexerSkillset> updateSkillsetResponse = SEARCH_INDEXER_CLIENT.createOrUpdateSkillsetWithResponse(
-            indexerSkillset, true, new Context(KEY_1, VALUE_1));
+        Response<SearchIndexerSkillset> updateSkillsetResponse = searchIndexerClient.createOrUpdateSkillsetWithResponse(
+            indexerSkillset, true, new Context(key1, value1));
         System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
-                + "The description of indexer skillset is %s.%n", updateSkillsetResponse.getStatusCode(),
+                + "The description of indexer skilset is %s.%n", updateSkillsetResponse.getStatusCode(),
             updateSkillsetResponse.getValue().getName(),
             updateSkillsetResponse.getValue().getDescription());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions, Context)}
-     */
-    public void createOrUpdateIndexerSkillsetWithResponse2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context
-        SearchIndexerSkillset indexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
-        indexerSkillset.setDescription("This is new description!");
-        CreateOrUpdateSkillsetOptions options = new CreateOrUpdateSkillsetOptions(indexerSkillset)
-            .setOnlyIfUnchanged(true)
-            .setCacheReprocessingChangeDetectionDisabled(false)
-            .setCacheResetRequirementsIgnored(true);
-        Response<SearchIndexerSkillset> updateSkillsetResponse = SEARCH_INDEXER_CLIENT.createOrUpdateSkillsetWithResponse(
-            options, new Context(KEY_1, VALUE_1));
-        System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
-                + "The description of indexer skillset is %s.%n", updateSkillsetResponse.getStatusCode(),
-            updateSkillsetResponse.getValue().getName(),
-            updateSkillsetResponse.getValue().getDescription());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions-Context
     }
 
     /**
@@ -2188,7 +2094,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSearchIndexerSkillset() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillset#String
-        SEARCH_INDEXER_CLIENT.deleteSkillset("searchIndexerSkillset");
+        searchIndexerClient.deleteSkillset("searchIndexerSkillset");
         // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillset#String
     }
 
@@ -2197,39 +2103,14 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSearchIndexerSkillsetWithResponse() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context
-        SearchIndexerSkillset searchIndexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
-        Response<Void> deleteResponse = SEARCH_INDEXER_CLIENT.deleteSkillsetWithResponse(searchIndexerSkillset, true,
-            new Context(KEY_1, VALUE_1));
+        SearchIndexerSkillset searchIndexerSkilset = searchIndexerClient.getSkillset("searchIndexerSkilset");
+        Response<Void> deleteResponse = searchIndexerClient.deleteSkillsetWithResponse(searchIndexerSkilset, true,
+            new Context(key1, value1));
         System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode());
         // END: com.azure.search.documents.indexes.SearchIndexerClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean-Context
     }
 
-    /**
-     * Code snippet for {@link SearchIndexerClient#resetSkills(String, List)}
-     */
-    public void resetSkills() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-List
-        // Reset the "myOcr" and "myText" skills.
-        SEARCH_INDEXER_CLIENT.resetSkills("searchIndexerSkillset", Arrays.asList("myOcr", "myText"));
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetSkills#String-List
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerClient#resetSkillsWithResponse(SearchIndexerSkillset, List, Context)}
-     */
-    public void resetSkillsWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#SearchIndexerSkillset-List-Context
-        SearchIndexerSkillset searchIndexerSkillset = SEARCH_INDEXER_CLIENT.getSkillset("searchIndexerSkillset");
-
-        // Reset the "myOcr" and "myText" skills.
-        Response<Void> resetSkillsResponse = SEARCH_INDEXER_CLIENT.resetSkillsWithResponse(searchIndexerSkillset,
-            Arrays.asList("myOcr", "myText"), new Context(KEY_1, VALUE_1));
-        System.out.printf("Resetting skills completed with status code %d.%n", resetSkillsResponse.getStatusCode());
-        // END: com.azure.search.documents.indexes.SearchIndexerClient.resetSkillsWithResponse#SearchIndexerSkillset-List-Context
-    }
-
-    private static final SearchIndexerAsyncClient SEARCH_INDEXER_ASYNC_CLIENT = new SearchIndexerClientBuilder()
-        .buildAsyncClient();
+    private SearchIndexerAsyncClient searchIndexerAsyncClient = new SearchIndexerClientBuilder().buildAsyncClient();
 
     /**
      * Code snippet for creating a {@link SearchIndexerAsyncClient}.
@@ -2250,9 +2131,9 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexer#SearchIndexer
         SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
             "searchIndex");
-        SEARCH_INDEXER_ASYNC_CLIENT.createIndexer(searchIndexer)
+        searchIndexerAsyncClient.createIndexer(searchIndexer)
             .subscribe(indexerFromService ->
-                System.out.printf("The indexer name is %s. The ETag of indexer is %s.%n", indexerFromService.getName(),
+                System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexerFromService.getName(),
                 indexerFromService.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexer#SearchIndexer
     }
@@ -2264,7 +2145,7 @@ public class SearchJavaDocCodeSnippets {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createIndexerWithResponse#SearchIndexer
         SearchIndexer searchIndexer = new SearchIndexer("searchIndexer", "dataSource",
             "searchIndex");
-        SEARCH_INDEXER_ASYNC_CLIENT.createIndexerWithResponse(searchIndexer)
+        searchIndexerAsyncClient.createIndexerWithResponse(searchIndexer)
             .subscribe(indexerFromServiceResponse ->
                 System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
                     indexerFromServiceResponse.getStatusCode(), indexerFromServiceResponse.getValue().getName()));
@@ -2276,9 +2157,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexerAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexer#String
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
+        searchIndexerAsyncClient.getIndexer("searchIndexer")
             .subscribe(indexerFromService ->
-                System.out.printf("The indexer name is %s. The ETag of indexer is %s.%n", indexerFromService.getName(),
+                System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexerFromService.getName(),
                     indexerFromService.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexer#String
     }
@@ -2288,7 +2169,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexerWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerWithResponse#String
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexerWithResponse("searchIndexer")
+        searchIndexerAsyncClient.getIndexerWithResponse("searchIndexer")
             .subscribe(indexerFromServiceResponse ->
                 System.out.printf("The status code of the response is %s. The indexer name is %s.%n",
                 indexerFromServiceResponse.getStatusCode(), indexerFromServiceResponse.getValue().getName()));
@@ -2301,9 +2182,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexersAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers
-        SEARCH_INDEXER_ASYNC_CLIENT.listIndexers()
+        searchIndexerAsyncClient.listIndexers()
             .subscribe(indexer ->
-                System.out.printf("The indexer name is %s. The ETag of indexer is %s.%n", indexer.getName(),
+                System.out.printf("The indexer name is %s. The etag of indexer is %s.%n", indexer.getName(),
                 indexer.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexers
     }
@@ -2313,7 +2194,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerNamesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexerNames
-        SEARCH_INDEXER_ASYNC_CLIENT.listIndexerNames()
+        searchIndexerAsyncClient.listIndexerNames()
             .subscribe(indexerName -> System.out.printf("The indexer name is %s.%n", indexerName));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listIndexerNames
     }
@@ -2323,11 +2204,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateIndexerAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexer#SearchIndexer
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
+        searchIndexerAsyncClient.getIndexer("searchIndexer")
             .flatMap(searchIndexerFromService -> {
                 searchIndexerFromService.setFieldMappings(Collections.singletonList(
                     new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateIndexer(searchIndexerFromService);
+                return searchIndexerAsyncClient.createOrUpdateIndexer(searchIndexerFromService);
             })
             .subscribe(updatedIndexer ->
                 System.out.printf("The indexer name is %s. The target field name of indexer is %s.%n",
@@ -2336,15 +2217,15 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateIndexerWithResponse(SearchIndexer, boolean)}
+     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateIndexer(SearchIndexer)}
      */
     public void createOrUpdateIndexerWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#SearchIndexer-boolean
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
+        searchIndexerAsyncClient.getIndexer("searchIndexer")
             .flatMap(searchIndexerFromService -> {
                 searchIndexerFromService.setFieldMappings(Collections.singletonList(
                     new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateIndexerWithResponse(searchIndexerFromService, true);
+                return searchIndexerAsyncClient.createOrUpdateIndexerWithResponse(searchIndexerFromService, true);
             })
             .subscribe(indexerFromService ->
                 System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
@@ -2355,34 +2236,11 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateIndexerWithResponse(CreateOrUpdateIndexerOptions)}
-     */
-    public void createOrUpdateIndexerWithResponseAsync2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
-            .flatMap(searchIndexerFromService -> {
-                searchIndexerFromService.setFieldMappings(Collections.singletonList(
-                    new FieldMapping("hotelName").setTargetFieldName("HotelName")));
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateIndexerWithResponse(
-                    new CreateOrUpdateIndexerOptions(searchIndexerFromService)
-                        .setOnlyIfUnchanged(true)
-                        .setCacheReprocessingChangeDetectionDisabled(false)
-                        .setCacheResetRequirementsIgnored(true));
-            })
-            .subscribe(indexerFromService ->
-                System.out.printf("The status code of the response is %s.%nThe indexer name is %s. "
-                        + "The target field name of indexer is %s.%n", indexerFromService.getStatusCode(),
-                    indexerFromService.getValue().getName(),
-                    indexerFromService.getValue().getFieldMappings().get(0).getTargetFieldName()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerWithResponse#CreateOrUpdateIndexerOptions
-    }
-
-    /**
      * Code snippet for {@link SearchIndexerAsyncClient#deleteIndexer(String)}
      */
     public void deleteSearchIndexerAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexer#String
-        SEARCH_INDEXER_ASYNC_CLIENT.deleteIndexer("searchIndexer")
+        searchIndexerAsyncClient.deleteIndexer("searchIndexer")
             .subscribe();
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexer#String
     }
@@ -2392,9 +2250,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSearchIndexerWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
+        searchIndexerAsyncClient.getIndexer("searchIndexer")
             .flatMap(searchIndexer ->
-                SEARCH_INDEXER_ASYNC_CLIENT.deleteIndexerWithResponse(searchIndexer, true))
+                searchIndexerAsyncClient.deleteIndexerWithResponse(searchIndexer, true))
             .subscribe(deleteResponse ->
                 System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteIndexerWithResponse#SearchIndexer-boolean
@@ -2405,7 +2263,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void resetIndexerAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexer#String
-        SEARCH_INDEXER_ASYNC_CLIENT.resetIndexer("searchIndexer")
+        searchIndexerAsyncClient.resetIndexer("searchIndexer")
             .subscribe();
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexer#String
     }
@@ -2415,7 +2273,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void resetIndexerWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexerWithResponse#String
-        SEARCH_INDEXER_ASYNC_CLIENT.resetIndexerWithResponse("searchIndexer")
+        searchIndexerAsyncClient.resetIndexerWithResponse("searchIndexer")
             .subscribe(response ->
                 System.out.println("The status code of the response is " + response.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetIndexerWithResponse#String
@@ -2426,7 +2284,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void runIndexerAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexer#String
-        SEARCH_INDEXER_ASYNC_CLIENT.runIndexer("searchIndexer")
+        searchIndexerAsyncClient.runIndexer("searchIndexer")
             .subscribe();
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexer#String
     }
@@ -2436,7 +2294,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void runIndexerWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexerWithResponse#String
-        SEARCH_INDEXER_ASYNC_CLIENT.runIndexerWithResponse("searchIndexer")
+        searchIndexerAsyncClient.runIndexerWithResponse("searchIndexer")
             .subscribe(response ->
                 System.out.println("The status code of the response is " + response.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.runIndexerWithResponse#String
@@ -2447,7 +2305,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getIndexerStatusAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatus#String
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexerStatus("searchIndexer")
+        searchIndexerAsyncClient.getIndexerStatus("searchIndexer")
             .subscribe(indexerStatus ->
                 System.out.printf("The indexer status is %s.%n", indexerStatus.getStatus()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatus#String
@@ -2458,46 +2316,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getIndexerStatusWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexerStatusWithResponse("searchIndexer")
+        searchIndexerAsyncClient.getIndexerStatusWithResponse("searchIndexer")
             .subscribe(response ->
                 System.out.printf("The status code of the response is %s.%nThe indexer status is %s.%n",
                 response.getStatusCode(), response.getValue().getStatus()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getIndexerStatusWithResponse#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetDocuments(String, Boolean, List, List)}
-     */
-    public void resetDocumentsAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocuments#String-Boolean-List-List
-        // Reset the documents with keys 1234 and 4321.
-        SEARCH_INDEXER_ASYNC_CLIENT.resetDocuments("searchIndexer", false, Arrays.asList("1234", "4321"), null)
-            // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-            .then(SEARCH_INDEXER_ASYNC_CLIENT.resetDocuments("searchIndexer", true, Arrays.asList("1235", "5321"), null))
-            .subscribe();
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocuments#String-Boolean-List-List
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetDocumentsWithResponse(SearchIndexer, Boolean, List, List)}
-     */
-    public void resetDocumentsWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List
-        SEARCH_INDEXER_ASYNC_CLIENT.getIndexer("searchIndexer")
-            .flatMap(searchIndexer -> SEARCH_INDEXER_ASYNC_CLIENT.resetDocumentsWithResponse(searchIndexer, false,
-                Arrays.asList("1234", "4321"), null)
-                .flatMap(resetDocsResult -> {
-                    System.out.printf("Requesting documents to be reset completed with status code %d.%n",
-                        resetDocsResult.getStatusCode());
-
-                    // Clear the previous documents to be reset and replace them with documents 1235 and 5231.
-                    return SEARCH_INDEXER_ASYNC_CLIENT.resetDocumentsWithResponse(searchIndexer, true,
-                        Arrays.asList("1235", "5321"), null);
-                }))
-            .subscribe(resetDocsResult ->
-                System.out.printf("Overwriting the documents to be reset completed with status code %d.%n",
-                    resetDocsResult.getStatusCode()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetDocumentsWithResponse#SearchIndexer-Boolean-List-List
     }
 
     /**
@@ -2508,9 +2331,9 @@ public class SearchJavaDocCodeSnippets {
         SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection("dataSource",
             com.azure.search.documents.indexes.models.SearchIndexerDataSourceType.AZURE_BLOB, "{connectionString}",
             new com.azure.search.documents.indexes.models.SearchIndexerDataContainer("container"));
-        SEARCH_INDEXER_ASYNC_CLIENT.createDataSourceConnection(dataSource)
+        searchIndexerAsyncClient.createDataSourceConnection(dataSource)
             .subscribe(dataSourceFromService ->
-                System.out.printf("The data source name is %s. The ETag of data source is %s.%n",
+                System.out.printf("The data source name is %s. The etag of data source is %s.%n",
                     dataSourceFromService.getName(), dataSourceFromService.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createDataSourceConnection#SearchIndexerDataSourceConnection
     }
@@ -2523,7 +2346,7 @@ public class SearchJavaDocCodeSnippets {
         SearchIndexerDataSourceConnection dataSource = new SearchIndexerDataSourceConnection("dataSource",
             SearchIndexerDataSourceType.AZURE_BLOB, "{connectionString}",
             new SearchIndexerDataContainer("container"));
-        SEARCH_INDEXER_ASYNC_CLIENT.createDataSourceConnectionWithResponse(dataSource)
+        searchIndexerAsyncClient.createDataSourceConnectionWithResponse(dataSource)
             .subscribe(dataSourceFromService ->
                 System.out.printf("The status code of the response is %s. The data source name is %s.%n",
                 dataSourceFromService.getStatusCode(), dataSourceFromService.getValue().getName()));
@@ -2535,9 +2358,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDataSourceAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnection#String
-        SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnection("dataSource")
+        searchIndexerAsyncClient.getDataSourceConnection("dataSource")
             .subscribe(dataSource ->
-                System.out.printf("The dataSource name is %s. The ETag of dataSource is %s.%n", dataSource.getName(),
+                System.out.printf("The dataSource name is %s. The etag of dataSource is %s.%n", dataSource.getName(),
                 dataSource.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnection#String
     }
@@ -2547,7 +2370,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getDataSourceWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getDataSourceConnectionWithResponse#String
-        SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnectionWithResponse("dataSource")
+        searchIndexerAsyncClient.getDataSourceConnectionWithResponse("dataSource")
             .subscribe(dataSource ->
                 System.out.printf("The status code of the response is %s. The data source name is %s.%n",
                 dataSource.getStatusCode(), dataSource.getValue().getName()));
@@ -2560,9 +2383,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listDataSourcesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections
-        SEARCH_INDEXER_ASYNC_CLIENT.listDataSourceConnections()
+        searchIndexerAsyncClient.listDataSourceConnections()
             .subscribe(dataSource ->
-                System.out.printf("The dataSource name is %s. The ETag of dataSource is %s.%n",
+                System.out.printf("The dataSource name is %s. The etag of dataSource is %s.%n",
                     dataSource.getName(), dataSource.getETag())
             );
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnections
@@ -2573,7 +2396,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listDataSourceNamesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnectionNames
-        SEARCH_INDEXER_ASYNC_CLIENT.listDataSourceConnectionNames()
+        searchIndexerAsyncClient.listDataSourceConnectionNames()
             .subscribe(dataSourceName -> System.out.printf("The dataSource name is %s.%n", dataSourceName));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listDataSourceConnectionNames
     }
@@ -2583,25 +2406,24 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateDataSourceAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
-        SearchIndexerDataSourceConnection dataSource = SEARCH_INDEXER_CLIENT.getDataSourceConnection("dataSource");
+        SearchIndexerDataSourceConnection dataSource = searchIndexerClient.getDataSourceConnection("dataSource");
         dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
 
-        SearchIndexerDataSourceConnection updateDataSource = SEARCH_INDEXER_CLIENT
-            .createOrUpdateDataSourceConnection(dataSource);
+        SearchIndexerDataSourceConnection updateDataSource = searchIndexerClient.createOrUpdateDataSourceConnection(dataSource);
         System.out.printf("The dataSource name is %s. The container name of dataSource is %s.%n",
             updateDataSource.getName(), updateDataSource.getContainer().getName());
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnection#SearchIndexerDataSourceConnection
     }
 
     /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateDataSourceConnectionWithResponse(SearchIndexerDataSourceConnection, boolean)}
+     * Code snippet for {@link SearchIndexerAsyncClient#createIndexerWithResponse(SearchIndexer)}
      */
     public void createOrUpdateDataSourceWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
-        SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnection("dataSource")
+        searchIndexerAsyncClient.getDataSourceConnection("dataSource")
             .flatMap(dataSource -> {
                 dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateDataSourceConnectionWithResponse(dataSource, true);
+                return searchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse(dataSource, true);
             })
             .subscribe(updateDataSource ->
                 System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
@@ -2611,31 +2433,11 @@ public class SearchJavaDocCodeSnippets {
     }
 
     /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateDataSourceConnectionWithResponse(CreateOrUpdateDataSourceConnectionOptions)}
-     */
-    public void createOrUpdateDataSourceWithResponseAsync2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnection("dataSource")
-            .flatMap(dataSource -> {
-                dataSource.setContainer(new SearchIndexerDataContainer("updatecontainer"));
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateDataSourceConnectionWithResponse(
-                    new CreateOrUpdateDataSourceConnectionOptions(dataSource)
-                        .setOnlyIfUnchanged(true)
-                        .setCacheResetRequirementsIgnored(true));
-            })
-            .subscribe(updateDataSource ->
-                System.out.printf("The status code of the response is %s.%nThe dataSource name is %s. "
-                        + "The container name of dataSource is %s.%n", updateDataSource.getStatusCode(),
-                    updateDataSource.getValue().getName(), updateDataSource.getValue().getContainer().getName()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateDataSourceConnectionWithResponse#CreateOrUpdateDataSourceConnectionOptions
-    }
-
-    /**
      * Code snippet for {@link SearchIndexerAsyncClient#deleteDataSourceConnection(String)}
      */
     public void deleteDataSourceAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnection#String
-        SEARCH_INDEXER_ASYNC_CLIENT.deleteDataSourceConnection("dataSource")
+        searchIndexerAsyncClient.deleteDataSourceConnection("dataSource")
             .subscribe();
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnection#String
     }
@@ -2645,8 +2447,8 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteDataSourceWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
-        SEARCH_INDEXER_ASYNC_CLIENT.getDataSourceConnection("dataSource")
-            .flatMap(dataSource -> SEARCH_INDEXER_ASYNC_CLIENT.deleteDataSourceConnectionWithResponse(dataSource, true))
+        searchIndexerAsyncClient.getDataSourceConnection("dataSource")
+            .flatMap(dataSource -> searchIndexerAsyncClient.deleteDataSourceConnectionWithResponse(dataSource, true))
             .subscribe(deleteResponse ->
                 System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteDataSourceConnectionWithResponse#SearchIndexerDataSourceConnection-boolean
@@ -2675,9 +2477,9 @@ public class SearchJavaDocCodeSnippets {
                 .setName("myocr")
                 .setDescription("Extracts text (plain and structured) from image.")
                 .setContext("/document/normalized_images/*")));
-        SEARCH_INDEXER_ASYNC_CLIENT.createSkillset(searchIndexerSkillset)
+        searchIndexerAsyncClient.createSkillset(searchIndexerSkillset)
             .subscribe(skillset ->
-                System.out.printf("The indexer skillset name is %s. The ETag of indexer skillset is %s.%n",
+                System.out.printf("The indexer skillset name is %s. The etag of indexer skillset is %s.%n",
                 skillset.getName(), skillset.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createSkillset#SearchIndexerSkillset
     }
@@ -2705,7 +2507,7 @@ public class SearchJavaDocCodeSnippets {
                 .setName("myocr")
                 .setDescription("Extracts text (plain and structured) from image.")
                 .setContext("/document/normalized_images/*")));
-        SEARCH_INDEXER_ASYNC_CLIENT.createSkillsetWithResponse(searchIndexerSkillset)
+        searchIndexerAsyncClient.createSkillsetWithResponse(searchIndexerSkillset)
             .subscribe(skillsetWithResponse ->
                 System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
                 skillsetWithResponse.getStatusCode(), skillsetWithResponse.getValue().getName()));
@@ -2717,9 +2519,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexerSkillsetAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSearchIndexerSkillset#String
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
+        searchIndexerAsyncClient.getSkillset("searchIndexerSkillset")
             .subscribe(indexerSkillset ->
-                System.out.printf("The indexer skillset name is %s. The ETag of indexer skillset is %s.%n",
+                System.out.printf("The indexer skillset name is %s. The etag of indexer skillset is %s.%n",
                 indexerSkillset.getName(), indexerSkillset.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSearchIndexerSkillset#String
     }
@@ -2729,7 +2531,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void getSearchIndexerSkillsetWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.getSkillsetWithResponse#String
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillsetWithResponse("searchIndexerSkillset")
+        searchIndexerAsyncClient.getSkillsetWithResponse("searchIndexerSkillset")
             .subscribe(skillsetWithResponse ->
                 System.out.printf("The status code of the response is %s. The indexer skillset name is %s.%n",
                 skillsetWithResponse.getStatusCode(), skillsetWithResponse.getValue().getName()));
@@ -2741,9 +2543,9 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerSkillsetAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsets
-        SEARCH_INDEXER_ASYNC_CLIENT.listSkillsets()
+        searchIndexerAsyncClient.listSkillsets()
             .subscribe(skillset ->
-                System.out.printf("The skillset name is %s. The ETag of skillset is %s.%n", skillset.getName(),
+                System.out.printf("The skillset name is %s. The etag of skillset is %s.%n", skillset.getName(),
                 skillset.getETag()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsets
     }
@@ -2753,7 +2555,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void listIndexerSkillsetNamesAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsetNames
-        SEARCH_INDEXER_ASYNC_CLIENT.listSkillsetNames()
+        searchIndexerAsyncClient.listSkillsetNames()
             .subscribe(skillsetName -> System.out.printf("The indexer skillset name is %s.%n", skillsetName));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.listSkillsetNames
     }
@@ -2763,10 +2565,10 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateIndexerSkillsetAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateIndexerSkillset#SearchIndexerSkillset
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
+        searchIndexerAsyncClient.getSkillset("searchIndexerSkilset")
             .flatMap(indexerSkillset -> {
                 indexerSkillset.setDescription("This is new description!");
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateSkillset(indexerSkillset);
+                return searchIndexerAsyncClient.createOrUpdateSkillset(indexerSkillset);
             }).subscribe(updateSkillset ->
                 System.out.printf("The indexer skillset name is %s. The description of indexer skillset is %s.%n",
                 updateSkillset.getName(), updateSkillset.getDescription()));
@@ -2778,39 +2580,17 @@ public class SearchJavaDocCodeSnippets {
      */
     public void createOrUpdateIndexerSkillsetWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
+        searchIndexerAsyncClient.getSkillset("searchIndexerSkilset")
             .flatMap(indexerSkillset -> {
                 indexerSkillset.setDescription("This is new description!");
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateSkillsetWithResponse(indexerSkillset, true);
+                return searchIndexerAsyncClient.createOrUpdateSkillsetWithResponse(indexerSkillset, true);
             })
             .subscribe(updateSkillsetResponse ->
                 System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
-                    + "The description of indexer skillset is %s.%n", updateSkillsetResponse.getStatusCode(),
+                    + "The description of indexer skilset is %s.%n", updateSkillsetResponse.getStatusCode(),
                 updateSkillsetResponse.getValue().getName(),
                 updateSkillsetResponse.getValue().getDescription()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#SearchIndexerSkillset-boolean
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#createOrUpdateSkillsetWithResponse(CreateOrUpdateSkillsetOptions)}
-     */
-    public void createOrUpdateIndexerSkillsetWithResponseAsync2() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
-            .flatMap(indexerSkillset -> {
-                indexerSkillset.setDescription("This is new description!");
-                return SEARCH_INDEXER_ASYNC_CLIENT.createOrUpdateSkillsetWithResponse(
-                    new CreateOrUpdateSkillsetOptions(indexerSkillset)
-                        .setOnlyIfUnchanged(true)
-                        .setCacheReprocessingChangeDetectionDisabled(false)
-                        .setCacheResetRequirementsIgnored(true));
-            })
-            .subscribe(updateSkillsetResponse ->
-                System.out.printf("The status code of the response is %s.%nThe indexer skillset name is %s. "
-                    + "The description of indexer skillset is %s.%n", updateSkillsetResponse.getStatusCode(),
-                    updateSkillsetResponse.getValue().getName(),
-                    updateSkillsetResponse.getValue().getDescription()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.createOrUpdateSkillsetWithResponse#CreateOrUpdateSkillsetOptions
     }
 
     /**
@@ -2818,7 +2598,7 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSearchIndexerSkillsetAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillset#String
-        SEARCH_INDEXER_ASYNC_CLIENT.deleteSkillset("searchIndexerSkillset")
+        searchIndexerAsyncClient.deleteSkillset("searchIndexerSkillset")
             .subscribe();
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillset#String
     }
@@ -2828,290 +2608,11 @@ public class SearchJavaDocCodeSnippets {
      */
     public void deleteSearchIndexerSkillsetWithResponseAsync() {
         // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
-            .flatMap(searchIndexerSkillset ->
-                SEARCH_INDEXER_ASYNC_CLIENT.deleteSkillsetWithResponse(searchIndexerSkillset, true))
+        searchIndexerAsyncClient.getSkillset("searchIndexerSkilset")
+            .flatMap(searchIndexerSkilset ->
+                searchIndexerAsyncClient.deleteSkillsetWithResponse(searchIndexerSkilset, true))
             .subscribe(deleteResponse ->
                 System.out.printf("The status code of the response is %d.%n", deleteResponse.getStatusCode()));
         // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.deleteSkillsetWithResponse#SearchIndexerSkillset-boolean
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetSkills(String, List)}
-     */
-    public void resetSkillsAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkills#String-List
-        // Reset the "myOcr" and "myText" skills.
-        SEARCH_INDEXER_ASYNC_CLIENT.resetSkills("searchIndexerSkillset", Arrays.asList("myOcr", "myText"))
-            .subscribe();
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkills#String-List
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexerAsyncClient#resetSkillsWithResponse(SearchIndexerSkillset, List)}
-     */
-    public void resetSkillsWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List
-        SEARCH_INDEXER_ASYNC_CLIENT.getSkillset("searchIndexerSkillset")
-            .flatMap(searchIndexerSkillset -> SEARCH_INDEXER_ASYNC_CLIENT.resetSkillsWithResponse(searchIndexerSkillset,
-                Arrays.asList("myOcr", "myText")))
-            .subscribe(resetSkillsResponse -> System.out.printf("Resetting skills completed with status code %d.%n",
-                resetSkillsResponse.getStatusCode()));
-        // END: com.azure.search.documents.indexes.SearchIndexerAsyncClient.resetSkillsWithResponse#SearchIndexerSkillset-List
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#createAlias(SearchAlias)}.
-     */
-    public void createAliasAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias
-        SEARCH_INDEX_ASYNC_CLIENT.createAlias(new SearchAlias("my-alias", Collections.singletonList("index-to-alias")))
-            .subscribe(searchAlias -> System.out.printf("Created alias '%s' that aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAlias#SearchAlias
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#createAliasWithResponse(SearchAlias)}.
-     */
-    public void createAliasWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias
-        SEARCH_INDEX_ASYNC_CLIENT.createAliasWithResponse(new SearchAlias("my-alias",
-            Collections.singletonList("index-to-alias")))
-            .subscribe(response ->
-                System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
-                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createAliasWithResponse#SearchAlias
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#createAlias(SearchAlias)}.
-     */
-    public void createAlias() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias
-        SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createAlias(new SearchAlias("my-alias",
-            Collections.singletonList("index-to-alias")));
-        System.out.printf("Created alias '%s' that aliases index '%s'.", searchAlias.getName(),
-            searchAlias.getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#createAliasWithResponse(SearchAlias, Context)}.
-     */
-    public void createAliasWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context
-        Response<SearchAlias> response = SEARCH_INDEX_CLIENT.createAliasWithResponse(new SearchAlias("my-alias",
-                Collections.singletonList("index-to-alias")), new Context(KEY_1, VALUE_1));
-
-        System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
-            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context
-
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#createOrUpdateAlias(SearchAlias)}.
-     */
-    public void createOrUpdateAliasAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias
-        SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAlias(
-            new SearchAlias("my-alias", Collections.singletonList("index-to-alias")))
-            .flatMap(searchAlias -> {
-                System.out.printf("Created alias '%s' that aliases index '%s'.", searchAlias.getName(),
-                    searchAlias.getIndexes().get(0));
-
-                return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAlias(new SearchAlias(searchAlias.getName(),
-                    Collections.singletonList("new-index-to-alias")));
-            }).subscribe(searchAlias -> System.out.printf("Updated alias '%s' to aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAlias#SearchAlias
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#createOrUpdateAliasWithResponse(SearchAlias, boolean)}.
-     */
-    public void createOrUpdateAliasWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean
-        SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAliasWithResponse(
-                new SearchAlias("my-alias", Collections.singletonList("index-to-alias")), false)
-            .flatMap(response -> {
-                System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
-                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
-
-                return SEARCH_INDEX_ASYNC_CLIENT.createOrUpdateAliasWithResponse(
-                    new SearchAlias(response.getValue().getName(), Collections.singletonList("new-index-to-alias"))
-                    .setETag(response.getValue().getETag()), true);
-            }).subscribe(response ->
-                System.out.printf("Response status code %d. Updated alias '%s' that aliases index '%s'.",
-                response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.createOrUpdateAliasWithResponse#SearchAlias-boolean
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#createOrUpdateAlias(SearchAlias)}.
-     */
-    public void createOrUpdateAlias() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias
-        SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias(
-            new SearchAlias("my-alias", Collections.singletonList("index-to-alias")));
-
-        System.out.printf("Created alias '%s' that aliases index '%s'.", searchAlias.getName(),
-            searchAlias.getIndexes().get(0));
-
-        searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias(new SearchAlias(searchAlias.getName(),
-            Collections.singletonList("new-index-to-alias")));
-
-        System.out.printf("Updated alias '%s' to aliases index '%s'.", searchAlias.getName(),
-            searchAlias.getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#createOrUpdateAliasWithResponse(SearchAlias, boolean, Context)}.
-     */
-    public void createOrUpdateAliasWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context
-        Response<SearchAlias> response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse(
-            new SearchAlias("my-alias", Collections.singletonList("index-to-alias")), false, new Context(KEY_1, VALUE_1));
-
-        System.out.printf("Response status code %d. Created alias '%s' that aliases index '%s'.",
-            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
-
-        response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse(
-            new SearchAlias(response.getValue().getName(), Collections.singletonList("new-index-to-alias"))
-                .setETag(response.getValue().getETag()), true, new Context(KEY_1, VALUE_1));
-
-        System.out.printf("Response status code %d. Updated alias '%s' that aliases index '%s'.",
-            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#getAlias(String)}.
-     */
-    public void getAliasAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String
-        SEARCH_INDEX_ASYNC_CLIENT.getAlias("my-alias")
-            .subscribe(searchAlias -> System.out.printf("Retrieved alias '%s' that aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAlias#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#getAliasWithResponse(String)}.
-     */
-    public void getAliasWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String
-        SEARCH_INDEX_ASYNC_CLIENT.getAliasWithResponse("my-alias")
-            .subscribe(response ->
-                System.out.printf("Response status code %d. Retrieved alias '%s' that aliases index '%s'.",
-                    response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.getAliasWithResponse#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#getAlias(String)}.
-     */
-    public void getAlias() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getAlias#String
-        SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias("my-alias");
-
-        System.out.printf("Retrieved alias '%s' that aliases index '%s'.", searchAlias.getName(),
-            searchAlias.getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.getAlias#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#getAliasWithResponse(String, Context)}.
-     */
-    public void getAliasWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context
-        Response<SearchAlias> response = SEARCH_INDEX_CLIENT.getAliasWithResponse("my-alias", new Context(KEY_1, VALUE_1));
-
-        System.out.printf("Response status code %d. Retrieved alias '%s' that aliases index '%s'.",
-            response.getStatusCode(), response.getValue().getName(), response.getValue().getIndexes().get(0));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#deleteAlias(String)}.
-     */
-    public void deleteAliasAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String
-        SEARCH_INDEX_ASYNC_CLIENT.deleteAlias("my-alias")
-            .subscribe(ignored -> System.out.println("Deleted alias 'my-alias'."));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAlias#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#deleteAliasWithResponse(SearchAlias, boolean)}.
-     */
-    public void deleteAliasWithResponseAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean
-        SEARCH_INDEX_ASYNC_CLIENT.getAlias("my-alias")
-            .flatMap(searchAlias -> SEARCH_INDEX_ASYNC_CLIENT.deleteAliasWithResponse(searchAlias, true))
-            .subscribe(response -> System.out.printf("Response status code %d. Deleted alias 'my-alias'.",
-                response.getStatusCode()));
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.deleteAliasWithResponse#SearchAlias-boolean
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#deleteAlias(String)}.
-     */
-    public void deleteAlias() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String
-        SEARCH_INDEX_CLIENT.deleteAlias("my-alias");
-
-        System.out.println("Deleted alias 'my-alias'.");
-        // END: com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#deleteAliasWithResponse(SearchAlias, boolean, Context)}.
-     */
-    public void deleteAliasWithResponse() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context
-        SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias("my-alias");
-
-        Response<Void> response = SEARCH_INDEX_CLIENT.deleteAliasWithResponse(searchAlias, true,
-            new Context(KEY_1, VALUE_1));
-
-        System.out.printf("Response status code %d. Deleted alias 'my-alias'.", response.getStatusCode());
-        // END: com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexAsyncClient#listAliases()}.
-     */
-    public void listAliasesAsync() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases
-        SEARCH_INDEX_ASYNC_CLIENT.listAliases()
-            .doOnNext(searchAlias -> System.out.printf("Listed alias '%s' that aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)))
-            .subscribe();
-        // END: com.azure.search.documents.indexes.SearchIndexAsyncClient.listAliases
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#listAliases()}.
-     */
-    public void listAliases() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listAliases
-        SEARCH_INDEX_CLIENT.listAliases()
-            .forEach(searchAlias -> System.out.printf("Listed alias '%s' that aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.listAliases
-    }
-
-    /**
-     * Code snippet for {@link SearchIndexClient#listAliases(Context)}.
-     */
-    public void listAliasesWithContext() {
-        // BEGIN: com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context
-        SEARCH_INDEX_CLIENT.listAliases(new Context(KEY_1, VALUE_1))
-            .forEach(searchAlias -> System.out.printf("Listed alias '%s' that aliases index '%s'.",
-                searchAlias.getName(), searchAlias.getIndexes().get(0)));
-        // END: com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context
     }
 }

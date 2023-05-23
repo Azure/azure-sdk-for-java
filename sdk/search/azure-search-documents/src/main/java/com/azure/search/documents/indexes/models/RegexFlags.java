@@ -7,44 +7,34 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines flags that can be combined to control how regular expressions are used in the pattern analyzer and pattern
- * tokenizer.
- */
+/** Defines values for RegexFlags. */
 public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
-    /** Enables canonical equivalence. */
+    /** Static value CANON_EQ for RegexFlags. */
     public static final RegexFlags CANON_EQ = fromString("CANON_EQ");
 
-    /** Enables case-insensitive matching. */
+    /** Static value CASE_INSENSITIVE for RegexFlags. */
     public static final RegexFlags CASE_INSENSITIVE = fromString("CASE_INSENSITIVE");
 
-    /** Permits whitespace and comments in the pattern. */
+    /** Static value COMMENTS for RegexFlags. */
     public static final RegexFlags COMMENTS = fromString("COMMENTS");
 
-    /** Enables dotall mode. */
+    /** Static value DOTALL for RegexFlags. */
     public static final RegexFlags DOT_ALL = fromString("DOTALL");
 
-    /** Enables literal parsing of the pattern. */
+    /** Static value LITERAL for RegexFlags. */
     public static final RegexFlags LITERAL = fromString("LITERAL");
 
-    /** Enables multiline mode. */
+    /** Static value MULTILINE for RegexFlags. */
     public static final RegexFlags MULTILINE = fromString("MULTILINE");
 
-    /** Enables Unicode-aware case folding. */
+    /** Static value UNICODE_CASE for RegexFlags. */
     public static final RegexFlags UNICODE_CASE = fromString("UNICODE_CASE");
 
-    /** Enables Unix lines mode. */
+    /** Static value UNIX_LINES for RegexFlags. */
     public static final RegexFlags UNIX_LINES = fromString("UNIX_LINES");
-
-    /**
-     * Creates a new instance of RegexFlags value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public RegexFlags() {}
 
     /**
      * Creates or finds a RegexFlags from its string representation.
@@ -52,6 +42,7 @@ public final class RegexFlags extends ExpandableStringEnum<RegexFlags> {
      * @param name a name to look for.
      * @return the corresponding RegexFlags.
      */
+    @JsonCreator
     public static RegexFlags fromString(String name) {
         return fromString(name, RegexFlags.class);
     }
