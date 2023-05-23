@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -18,8 +19,13 @@ import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
 import com.azure.storage.queue.implementation.models.ServicesGetPropertiesHeaders;
-import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeaders;
-import com.azure.storage.queue.models.*;
+import com.azure.storage.queue.models.QueueCorsRule;
+import com.azure.storage.queue.models.QueueItem;
+import com.azure.storage.queue.models.QueueMessageDecodingError;
+import com.azure.storage.queue.models.QueueServiceProperties;
+import com.azure.storage.queue.models.QueueServiceStatistics;
+import com.azure.storage.queue.models.QueuesSegmentOptions;
+import com.azure.storage.queue.models.QueueStorageException;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -30,6 +36,7 @@ import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -267,7 +274,7 @@ public final class QueueServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueItem> listQueues() {
-        return listQueues(null, null, Context.NONE);
+        return listQueues(null, (Duration)null, Context.NONE);
     }
 
     /**
@@ -303,7 +310,15 @@ public final class QueueServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueItem> listQueues(QueuesSegmentOptions options, Duration timeout, Context context) {
-        return listQueues(null, options, timeout, context);
+        Supplier<PagedIterable<QueueItem>> operation = () -> listQueues(null, options, context);
+        try {
+            return timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -315,14 +330,11 @@ public final class QueueServiceClient {
      * @param marker Starting point to list the queues
      * @param options Options for listing queues. If iterating by page, the page size passed to byPage methods such as
      * {@link PagedIterable#iterableByPage(int)} will be preferred over the value set on these options.S
-     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
-     * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return {@link QueueItem Queues} in the storage account that satisfy the filter requirements
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
-    PagedIterable<QueueItem> listQueues(String marker, QueuesSegmentOptions options, Duration timeout,
-        Context context) {
+    PagedIterable<QueueItem> listQueues(String marker, QueuesSegmentOptions options, Context context) {
         Context finalContext = context == null ? Context.NONE : context;
         final String prefix = (options != null) ? options.getPrefix() : null;
         final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
@@ -333,19 +345,11 @@ public final class QueueServiceClient {
                 include.add("metadata");
             }
         }
+        BiFunction<String, Integer, PagedResponse<QueueItem>> retriever =
+            (nextMarker, pageSize) -> this.azureQueueStorage.getServices().listQueuesSegmentSinglePage(
+                prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize, include, null, null, finalContext);
 
-        try {
-            Supplier<PagedIterable<QueueItem>> operation = () ->
-                this.azureQueueStorage.getServices().listQueuesSegment(prefix, marker, maxResultsPerPage, include,
-                    null, null, finalContext);
-
-            return timeout != null
-                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+            return new PagedIterable<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
 
     /**
