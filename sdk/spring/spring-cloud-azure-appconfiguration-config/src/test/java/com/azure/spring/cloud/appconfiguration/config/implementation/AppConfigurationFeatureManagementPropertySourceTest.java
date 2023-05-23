@@ -141,7 +141,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         gamma.setKey("Gamma");
         filters = new HashMap<>();
         ffec = new FeatureFlagFilter("TestFilter");
-        LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
+        Map<String, Object> parameters = new LinkedHashMap<>();
         parameters.put("key", "value");
         ffec.setParameters(parameters);
         filters.put(0, ffec);
