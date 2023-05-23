@@ -26,6 +26,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
@@ -134,7 +135,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
 
         propertySourceOverride.initProperties();
 
-        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        Map<Integer, FeatureFlagFilter> filters = new HashMap<>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
         filters.put(0, ffec);
         Feature gamma = new Feature();
@@ -161,7 +162,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
 
         propertySource.initProperties();
 
-        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        Map<Integer, FeatureFlagFilter> filters = new HashMap<>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
         filters.put(0, ffec);
         Feature gamma = new Feature();
