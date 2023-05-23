@@ -8,21 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** hook type. */
+/** Defines values for HookType. */
 public final class HookType extends ExpandableStringEnum<HookType> {
     /** Static value Webhook for HookType. */
     public static final HookType WEBHOOK = fromString("Webhook");
 
     /** Static value Email for HookType. */
     public static final HookType EMAIL = fromString("Email");
-
-    /**
-     * Creates a new instance of HookType value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public HookType() {}
 
     /**
      * Creates or finds a HookType from its string representation.
@@ -35,11 +27,7 @@ public final class HookType extends ExpandableStringEnum<HookType> {
         return fromString(name, HookType.class);
     }
 
-    /**
-     * Gets known HookType values.
-     *
-     * @return known HookType values.
-     */
+    /** @return known HookType values. */
     public static Collection<HookType> values() {
         return values(HookType.class);
     }

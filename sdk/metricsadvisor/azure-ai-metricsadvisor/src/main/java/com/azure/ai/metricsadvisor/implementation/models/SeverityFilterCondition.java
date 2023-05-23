@@ -4,6 +4,7 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.ai.metricsadvisor.administration.models.AnomalySeverity;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -14,23 +15,20 @@ public final class SeverityFilterCondition {
      * min severity
      */
     @JsonProperty(value = "min", required = true)
-    private Severity min;
+    private AnomalySeverity min;
 
     /*
      * max severity
      */
     @JsonProperty(value = "max", required = true)
-    private Severity max;
-
-    /** Creates an instance of SeverityFilterCondition class. */
-    public SeverityFilterCondition() {}
+    private AnomalySeverity max;
 
     /**
      * Get the min property: min severity.
      *
      * @return the min value.
      */
-    public Severity getMin() {
+    public AnomalySeverity getMin() {
         return this.min;
     }
 
@@ -40,7 +38,7 @@ public final class SeverityFilterCondition {
      * @param min the min value to set.
      * @return the SeverityFilterCondition object itself.
      */
-    public SeverityFilterCondition setMin(Severity min) {
+    public SeverityFilterCondition setMin(AnomalySeverity min) {
         this.min = min;
         return this;
     }
@@ -50,7 +48,7 @@ public final class SeverityFilterCondition {
      *
      * @return the max value.
      */
-    public Severity getMax() {
+    public AnomalySeverity getMax() {
         return this.max;
     }
 
@@ -60,7 +58,7 @@ public final class SeverityFilterCondition {
      * @param max the max value to set.
      * @return the SeverityFilterCondition object itself.
      */
-    public SeverityFilterCondition setMax(Severity max) {
+    public SeverityFilterCondition setMax(AnomalySeverity max) {
         this.max = max;
         return this;
     }

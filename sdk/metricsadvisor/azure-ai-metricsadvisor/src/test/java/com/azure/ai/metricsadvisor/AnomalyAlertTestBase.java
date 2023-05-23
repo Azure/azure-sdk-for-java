@@ -9,10 +9,7 @@ import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertCondi
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertScope;
 import com.azure.ai.metricsadvisor.administration.models.MetricAnomalyAlertSnoozeCondition;
 import com.azure.ai.metricsadvisor.administration.models.MetricBoundaryCondition;
-import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.List;
@@ -30,30 +27,6 @@ public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationC
     @Override
     protected void beforeTest() {
     }
-
-    @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    public abstract void getAnomalyAlertValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-
-    @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    public abstract void createAnomalyAlertConfiguration(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-
-    @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    public abstract void testListAnomalyAlert(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-
-    @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    public abstract void updateAnomalyAlertRemoveHooks(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-
-    @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    public abstract void updateAnomalyAlertHappyPath(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-
-    @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
-    public abstract void deleteAnomalyAlertWithResponse(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     void listAnomalyAlertRunner(Consumer<List<AnomalyAlertConfiguration>> testRunner) {
         // create anomaly alert
