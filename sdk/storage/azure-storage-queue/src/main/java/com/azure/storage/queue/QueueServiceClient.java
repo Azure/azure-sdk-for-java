@@ -8,23 +8,23 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.AccountSasImplUtil;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.models.QueueCorsRule;
-import com.azure.storage.queue.models.QueueItem;
-import com.azure.storage.queue.models.QueueMessageDecodingError;
-import com.azure.storage.queue.models.QueueServiceProperties;
-import com.azure.storage.queue.models.QueueServiceStatistics;
-import com.azure.storage.queue.models.QueuesSegmentOptions;
-import com.azure.storage.queue.models.QueueStorageException;
+import com.azure.storage.queue.implementation.models.ServicesGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeaders;
+import com.azure.storage.queue.models.*;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
@@ -121,7 +121,8 @@ public final class QueueServiceClient {
      */
     public QueueClient getQueueClient(String queueName) {
         return new QueueClient(client.getAzureQueueStorage(), queueName, client.getAccountName(),
-            client.getServiceVersion(), client.getMessageEncoding(), processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+            client.getServiceVersion(), client.getMessageEncoding(), processMessageDecodingErrorAsyncHandler,
+            processMessageDecodingErrorHandler);
     }
 
     /**
@@ -234,8 +235,14 @@ public final class QueueServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteQueueWithResponse(String queueName, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.deleteQueueWithResponse(queueName, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Objects.requireNonNull(queueName, "'queueName' cannot be null.");
+        try {
+            QueueClient queueClient = new QueueClient(azureQueueStorage, queueName, accountName, getServiceVersion(),
+                getMessageEncoding(), processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+            return queueClient.deleteWithResponse(timeout, context);
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -316,7 +323,29 @@ public final class QueueServiceClient {
      */
     PagedIterable<QueueItem> listQueues(String marker, QueuesSegmentOptions options, Duration timeout,
         Context context) {
-        return new PagedIterable<>(client.listQueuesWithOptionalTimeout(marker, options, timeout, context));
+        Context finalContext = context == null ? Context.NONE : context;
+        final String prefix = (options != null) ? options.getPrefix() : null;
+        final Integer maxResultsPerPage = (options != null) ? options.getMaxResultsPerPage() : null;
+        final List<String> include = new ArrayList<>();
+
+        if (options != null) {
+            if (options.isIncludeMetadata()) {
+                include.add("metadata");
+            }
+        }
+
+        try {
+            Supplier<PagedIterable<QueueItem>> operation = () ->
+                this.azureQueueStorage.getServices().listQueuesSegment(prefix, marker, maxResultsPerPage, include,
+                    null, null, finalContext);
+
+            return timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -375,8 +404,20 @@ public final class QueueServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceProperties> getPropertiesWithResponse(Duration timeout, Context context) {
-        Mono<Response<QueueServiceProperties>> response = client.getPropertiesWithResponse(context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        try {
+            Supplier<ResponseBase<ServicesGetPropertiesHeaders, QueueServiceProperties>> operation =
+                () -> this.azureQueueStorage.getServices().getPropertiesWithResponse(null, null, finalContext);
+
+            ResponseBase<ServicesGetPropertiesHeaders, QueueServiceProperties> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return new SimpleResponse<>(response, response.getValue());
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -506,8 +547,18 @@ public final class QueueServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(QueueServiceProperties properties, Duration timeout,
         Context context) {
-        Mono<Response<Void>> response = client.setPropertiesWithResponse(properties, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        try {
+            Supplier<Response<Void>> operation = () ->
+                this.azureQueueStorage.getServices().setPropertiesWithResponse(properties, null, null, finalContext);
+
+            return timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -562,8 +613,18 @@ public final class QueueServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueServiceStatistics> getStatisticsWithResponse(Duration timeout, Context context) {
-        Mono<Response<QueueServiceStatistics>> response = client.getStatisticsWithResponse(context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        try {
+            Supplier<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> operation = () ->
+                this.azureQueueStorage.getServices().getStatisticsWithResponse(null, null, finalContext);
+
+            return timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
 
@@ -583,7 +644,7 @@ public final class QueueServiceClient {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return this.client.getHttpPipeline();
+        return this.azureQueueStorage.getHttpPipeline();
     }
 
     /**
@@ -616,7 +677,7 @@ public final class QueueServiceClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
-        return this.client.generateAccountSas(accountSasSignatureValues);
+        return generateAccountSas(accountSasSignatureValues, null);
     }
 
     /**
@@ -650,6 +711,7 @@ public final class QueueServiceClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
-        return this.client.generateAccountSas(accountSasSignatureValues, context);
+        return new AccountSasImplUtil(accountSasSignatureValues, null)
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 }
