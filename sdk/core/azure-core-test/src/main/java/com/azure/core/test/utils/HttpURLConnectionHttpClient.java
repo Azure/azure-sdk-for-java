@@ -202,27 +202,28 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
         @Override
         public Mono<byte[]> getBodyAsByteArray() {
-            return Mono.just(body.array());
+            return body == null ? Mono.empty() : Mono.just(body.array());
         }
 
         @Override
         public Mono<String> getBodyAsString() {
-            return Mono.just(CoreUtils.bomAwareToString(body.array(), getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
+            return body == null ? Mono.empty() : Mono.just(CoreUtils.bomAwareToString(body.array(),
+                getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
         }
 
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
-            return Mono.just(new String(body.array(), charset));
+            return body == null ? Mono.empty() : Mono.just(new String(body.array(), charset));
         }
 
         @Override
         public BinaryData getBodyAsBinaryData() {
-            return BinaryData.fromBytes(body.array());
+            return body == null ? null : BinaryData.fromBytes(body.array());
         }
 
         @Override
         public Mono<InputStream> getBodyAsInputStream() {
-            return Mono.fromSupplier(() -> new ByteArrayInputStream(body.array()));
+            return body == null ? Mono.empty() : Mono.fromSupplier(() -> new ByteArrayInputStream(body.array()));
         }
 
         @Override
