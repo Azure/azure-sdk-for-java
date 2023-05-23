@@ -134,7 +134,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
 
         propertySourceOverride.initProperties();
 
-        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        Map<Integer, FeatureFlagFilter> filters = new HashMap<>();
         FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
         filters.put(0, ffec);
         Feature gamma = new Feature();
