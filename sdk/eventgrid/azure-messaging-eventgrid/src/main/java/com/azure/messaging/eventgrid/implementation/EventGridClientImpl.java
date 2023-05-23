@@ -182,7 +182,51 @@ public final class EventGridClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> publishCloudEventSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("topicName") String topicName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/cloudevents+json; charset=utf-8") BinaryData event,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/topics/{topicName}:publish")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> publishCloudEvents(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("topicName") String topicName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/cloudevents-batch+json; charset=utf-8") BinaryData events,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/topics/{topicName}:publish")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> publishCloudEventsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
@@ -213,6 +257,27 @@ public final class EventGridClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:receive")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> receiveCloudEventsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @PathParam("topicName") String topicName,
+                @PathParam("eventSubscriptionName") String eventSubscriptionName,
+                @HeaderParam("accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:acknowledge")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -226,6 +291,29 @@ public final class EventGridClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> acknowledgeCloudEvents(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("topicName") String topicName,
+                @PathParam("eventSubscriptionName") String eventSubscriptionName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; charset=utf-8") BinaryData lockTokens,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:acknowledge")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> acknowledgeCloudEventsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
@@ -259,6 +347,29 @@ public final class EventGridClientImpl {
                 RequestOptions requestOptions,
                 Context context);
 
+        @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:release")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> releaseCloudEventsSync(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("topicName") String topicName,
+                @PathParam("eventSubscriptionName") String eventSubscriptionName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; charset=utf-8") BinaryData lockTokens,
+                RequestOptions requestOptions,
+                Context context);
+
         @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(
@@ -272,6 +383,29 @@ public final class EventGridClientImpl {
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> rejectCloudEvents(
+                @HostParam("endpoint") String endpoint,
+                @QueryParam("api-version") String apiVersion,
+                @HeaderParam("content-type") String contentType,
+                @PathParam("topicName") String topicName,
+                @PathParam("eventSubscriptionName") String eventSubscriptionName,
+                @HeaderParam("accept") String accept,
+                @BodyParam("application/json; charset=utf-8") BinaryData lockTokens,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/topics/{topicName}/eventsubscriptions/{eventSubscriptionName}:reject")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> rejectCloudEventsSync(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("content-type") String contentType,
@@ -395,7 +529,21 @@ public final class EventGridClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> publishCloudEventWithResponse(
             String topicName, BinaryData event, RequestOptions requestOptions) {
-        return publishCloudEventWithResponseAsync(topicName, event, requestOptions).block();
+        final String contentType = "application/cloudevents+json; charset=utf-8";
+        final String accept = "application/json";
+        try {
+            return service.publishCloudEventSync(
+                    this.getEndpoint(),
+                    this.getServiceVersion().getVersion(),
+                    contentType,
+                    topicName,
+                    accept,
+                    BinaryData.fromString(getSerializerAdapter().serialize(event.toObject(CloudEvent.class), SerializerEncoding.JSON)),
+                    requestOptions,
+                    Context.NONE);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -514,7 +662,21 @@ public final class EventGridClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> publishCloudEventsWithResponse(
             String topicName, BinaryData events, RequestOptions requestOptions) {
-        return publishCloudEventsWithResponseAsync(topicName, events, requestOptions).block();
+        final String contentType = "application/cloudevents-batch+json; charset=utf-8";
+        final String accept = "application/json";
+        try {
+            return service.publishCloudEventsSync(
+                    this.getEndpoint(),
+                    this.getServiceVersion().getVersion(),
+                    contentType,
+                    topicName,
+                    accept,
+                    BinaryData.fromString(getSerializerAdapter().serialize(events.toObject(CloudEvent[].class), SerializerEncoding.JSON)),
+                    requestOptions,
+                    Context.NONE);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -643,7 +805,15 @@ public final class EventGridClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> receiveCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, RequestOptions requestOptions) {
-        return receiveCloudEventsWithResponseAsync(topicName, eventSubscriptionName, requestOptions).block();
+        final String accept = "application/json";
+        return service.receiveCloudEventsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                topicName,
+                eventSubscriptionName,
+                accept,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -755,8 +925,18 @@ public final class EventGridClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> acknowledgeCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
-        return acknowledgeCloudEventsWithResponseAsync(topicName, eventSubscriptionName, lockTokens, requestOptions)
-                .block();
+        final String contentType = "application/json; charset=utf-8";
+        final String accept = "application/json";
+        return service.acknowledgeCloudEventsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                contentType,
+                topicName,
+                eventSubscriptionName,
+                accept,
+                lockTokens,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -865,8 +1045,18 @@ public final class EventGridClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> releaseCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
-        return releaseCloudEventsWithResponseAsync(topicName, eventSubscriptionName, lockTokens, requestOptions)
-                .block();
+        final String contentType = "application/json; charset=utf-8";
+        final String accept = "application/json";
+        return service.releaseCloudEventsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                contentType,
+                topicName,
+                eventSubscriptionName,
+                accept,
+                lockTokens,
+                requestOptions,
+                Context.NONE);
     }
 
     /**
@@ -971,6 +1161,17 @@ public final class EventGridClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> rejectCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
-        return rejectCloudEventsWithResponseAsync(topicName, eventSubscriptionName, lockTokens, requestOptions).block();
+        final String contentType = "application/json; charset=utf-8";
+        final String accept = "application/json";
+        return service.rejectCloudEventsSync(
+                this.getEndpoint(),
+                this.getServiceVersion().getVersion(),
+                contentType,
+                topicName,
+                eventSubscriptionName,
+                accept,
+                lockTokens,
+                requestOptions,
+                Context.NONE);
     }
 }

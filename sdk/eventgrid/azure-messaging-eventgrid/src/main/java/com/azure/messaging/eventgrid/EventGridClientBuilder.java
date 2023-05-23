@@ -285,6 +285,6 @@ public final class EventGridClientBuilder
      */
     @Generated
     public EventGridClient buildClient() {
-        return new EventGridClient(new EventGridAsyncClient(buildInnerClient()));
+        return new EventGridClient(buildInnerClient());
     }
 }

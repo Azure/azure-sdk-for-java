@@ -9,3 +9,4 @@ options:
     namer: true
     generate-samples: false
     generate-tests: false
+    enable-sync-stack: true
