@@ -12,6 +12,8 @@ import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microsoft.aad.msal4j.TokenCache;
+import com.microsoft.aad.msal4jextensions.persistence.CacheFileAccessor;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
 import com.sun.jna.platform.win32.Crypt32Util;
@@ -94,8 +96,9 @@ public class IntelliJCacheAccessor {
         } else if (Platform.isWindows()) {
 
             try {
-                String jsonCred = new WindowsCredentialAccessor("Microsoft.Developer.IdentityService", "azure-toolkit.cache").read();
-                return parseRefreshTokenFromJson(jsonCred);
+                CacheFileAccessor cacheFileAccessor = new CacheFileAccessor(PersistentTokenCacheImpl.DEFAULT_CACHE_FILE_PATH + File.separator + "azure-toolkit.cache");
+                String data = new String(cacheFileAccessor.read(), StandardCharsets.UTF_8);
+                return parseRefreshTokenFromJson(data);
             } catch (Exception | Error e) {
                 LOGGER.verbose("IntelliJCredential => Refresh Token Cache Unavailable: " + e.getMessage());
             }
