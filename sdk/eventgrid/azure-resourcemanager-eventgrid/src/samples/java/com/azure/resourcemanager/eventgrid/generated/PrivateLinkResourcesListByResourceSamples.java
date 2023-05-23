@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateLinkResources ListByResource. */
 public final class PrivateLinkResourcesListByResourceSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PrivateLinkResources_ListByResource.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PrivateLinkResources_ListByResource.json
      */
     /**
      * Sample code: PrivateLinkResources_ListByResource.
@@ -18,6 +16,8 @@ public final class PrivateLinkResourcesListByResourceSamples {
      */
     public static void privateLinkResourcesListByResource(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.privateLinkResources().listByResource("examplerg", "topics", "exampletopic1", null, null, Context.NONE);
+        manager
+            .privateLinkResources()
+            .listByResource("examplerg", "topics", "exampletopic1", null, null, com.azure.core.util.Context.NONE);
     }
 }

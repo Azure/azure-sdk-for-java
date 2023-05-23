@@ -34,6 +34,8 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VirtualHubsClient;
+import com.azure.resourcemanager.network.fluent.models.EffectiveRouteMapRouteListInner;
+import com.azure.resourcemanager.network.fluent.models.VirtualHubEffectiveRouteListInner;
 import com.azure.resourcemanager.network.fluent.models.VirtualHubInner;
 import com.azure.resourcemanager.network.models.EffectiveRoutesParameters;
 import com.azure.resourcemanager.network.models.GetInboundRoutesParameters;
@@ -79,8 +81,7 @@ public final class VirtualHubsClientImpl
     public interface VirtualHubsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualHubInner>> getByResourceGroup(
@@ -94,8 +95,7 @@ public final class VirtualHubsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -110,8 +110,7 @@ public final class VirtualHubsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VirtualHubInner>> updateTags(
@@ -126,8 +125,7 @@ public final class VirtualHubsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -141,8 +139,7 @@ public final class VirtualHubsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/virtualHubs")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVirtualHubsResult>> listByResourceGroup(
@@ -166,8 +163,7 @@ public final class VirtualHubsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}/effectiveRoutes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/effectiveRoutes")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> getEffectiveVirtualHubRoutes(
@@ -182,8 +178,7 @@ public final class VirtualHubsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}/inboundRoutes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/inboundRoutes")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> getInboundRoutes(
@@ -198,8 +193,7 @@ public final class VirtualHubsClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs"
-                + "/{virtualHubName}/outboundRoutes")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualHubs/{virtualHubName}/outboundRoutes")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> getOutboundRoutes(
@@ -265,7 +259,7 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -315,7 +309,7 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -416,7 +410,7 @@ public final class VirtualHubsClientImpl
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -474,7 +468,7 @@ public final class VirtualHubsClientImpl
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -689,7 +683,7 @@ public final class VirtualHubsClientImpl
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -747,7 +741,7 @@ public final class VirtualHubsClientImpl
         } else {
             virtualHubParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -846,7 +840,7 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -896,7 +890,7 @@ public final class VirtualHubsClientImpl
         if (virtualHubName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualHubName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1074,7 +1068,7 @@ public final class VirtualHubsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1129,7 +1123,7 @@ public final class VirtualHubsClientImpl
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1235,7 +1229,7 @@ public final class VirtualHubsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1278,7 +1272,7 @@ public final class VirtualHubsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1384,7 +1378,7 @@ public final class VirtualHubsClientImpl
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1443,7 +1437,7 @@ public final class VirtualHubsClientImpl
         if (effectiveRoutesParameters != null) {
             effectiveRoutesParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1471,14 +1465,19 @@ public final class VirtualHubsClientImpl
      *     specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutesAsync(
-        String resourceGroupName, String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters) {
+    public PollerFlux<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
+        beginGetEffectiveVirtualHubRoutesAsync(
+            String resourceGroupName, String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             getEffectiveVirtualHubRoutesWithResponseAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<VirtualHubEffectiveRouteListInner, VirtualHubEffectiveRouteListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualHubEffectiveRouteListInner.class,
+                VirtualHubEffectiveRouteListInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1493,15 +1492,19 @@ public final class VirtualHubsClientImpl
      *     specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutesAsync(
-        String resourceGroupName, String virtualHubName) {
+    public PollerFlux<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
+        beginGetEffectiveVirtualHubRoutesAsync(String resourceGroupName, String virtualHubName) {
         final EffectiveRoutesParameters effectiveRoutesParameters = null;
         Mono<Response<Flux<ByteBuffer>>> mono =
             getEffectiveVirtualHubRoutesWithResponseAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<VirtualHubEffectiveRouteListInner, VirtualHubEffectiveRouteListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualHubEffectiveRouteListInner.class,
+                VirtualHubEffectiveRouteListInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1518,18 +1521,24 @@ public final class VirtualHubsClientImpl
      *     specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutesAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        EffectiveRoutesParameters effectiveRoutesParameters,
-        Context context) {
+    private PollerFlux<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
+        beginGetEffectiveVirtualHubRoutesAsync(
+            String resourceGroupName,
+            String virtualHubName,
+            EffectiveRoutesParameters effectiveRoutesParameters,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getEffectiveVirtualHubRoutesWithResponseAsync(
                 resourceGroupName, virtualHubName, effectiveRoutesParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<VirtualHubEffectiveRouteListInner, VirtualHubEffectiveRouteListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                VirtualHubEffectiveRouteListInner.class,
+                VirtualHubEffectiveRouteListInner.class,
+                context);
     }
 
     /**
@@ -1544,8 +1553,8 @@ public final class VirtualHubsClientImpl
      *     specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutes(
-        String resourceGroupName, String virtualHubName) {
+    public SyncPoller<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
+        beginGetEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName) {
         final EffectiveRoutesParameters effectiveRoutesParameters = null;
         return this
             .beginGetEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters)
@@ -1566,11 +1575,12 @@ public final class VirtualHubsClientImpl
      *     specified resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGetEffectiveVirtualHubRoutes(
-        String resourceGroupName,
-        String virtualHubName,
-        EffectiveRoutesParameters effectiveRoutesParameters,
-        Context context) {
+    public SyncPoller<PollResult<VirtualHubEffectiveRouteListInner>, VirtualHubEffectiveRouteListInner>
+        beginGetEffectiveVirtualHubRoutes(
+            String resourceGroupName,
+            String virtualHubName,
+            EffectiveRoutesParameters effectiveRoutesParameters,
+            Context context) {
         return this
             .beginGetEffectiveVirtualHubRoutesAsync(
                 resourceGroupName, virtualHubName, effectiveRoutesParameters, context)
@@ -1590,7 +1600,7 @@ public final class VirtualHubsClientImpl
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getEffectiveVirtualHubRoutesAsync(
+    public Mono<VirtualHubEffectiveRouteListInner> getEffectiveVirtualHubRoutesAsync(
         String resourceGroupName, String virtualHubName, EffectiveRoutesParameters effectiveRoutesParameters) {
         return beginGetEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters)
             .last()
@@ -1609,7 +1619,8 @@ public final class VirtualHubsClientImpl
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getEffectiveVirtualHubRoutesAsync(String resourceGroupName, String virtualHubName) {
+    public Mono<VirtualHubEffectiveRouteListInner> getEffectiveVirtualHubRoutesAsync(
+        String resourceGroupName, String virtualHubName) {
         final EffectiveRoutesParameters effectiveRoutesParameters = null;
         return beginGetEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters)
             .last()
@@ -1630,7 +1641,7 @@ public final class VirtualHubsClientImpl
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getEffectiveVirtualHubRoutesAsync(
+    private Mono<VirtualHubEffectiveRouteListInner> getEffectiveVirtualHubRoutesAsync(
         String resourceGroupName,
         String virtualHubName,
         EffectiveRoutesParameters effectiveRoutesParameters,
@@ -1649,11 +1660,13 @@ public final class VirtualHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the effective routes configured for the Virtual Hub resource or the specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEffectiveVirtualHubRoutes(String resourceGroupName, String virtualHubName) {
+    public VirtualHubEffectiveRouteListInner getEffectiveVirtualHubRoutes(
+        String resourceGroupName, String virtualHubName) {
         final EffectiveRoutesParameters effectiveRoutesParameters = null;
-        getEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters).block();
+        return getEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters).block();
     }
 
     /**
@@ -1666,14 +1679,15 @@ public final class VirtualHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the effective routes configured for the Virtual Hub resource or the specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getEffectiveVirtualHubRoutes(
+    public VirtualHubEffectiveRouteListInner getEffectiveVirtualHubRoutes(
         String resourceGroupName,
         String virtualHubName,
         EffectiveRoutesParameters effectiveRoutesParameters,
         Context context) {
-        getEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters, context)
+        return getEffectiveVirtualHubRoutesAsync(resourceGroupName, virtualHubName, effectiveRoutesParameters, context)
             .block();
     }
 
@@ -1719,7 +1733,7 @@ public final class VirtualHubsClientImpl
         } else {
             getInboundRoutesParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1783,7 +1797,7 @@ public final class VirtualHubsClientImpl
         } else {
             getInboundRoutesParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1811,14 +1825,19 @@ public final class VirtualHubsClientImpl
      *     connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginGetInboundRoutesAsync(
-        String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters) {
+    public PollerFlux<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
+        beginGetInboundRoutesAsync(
+            String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             getInboundRoutesWithResponseAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<EffectiveRouteMapRouteListInner, EffectiveRouteMapRouteListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                EffectiveRouteMapRouteListInner.class,
+                EffectiveRouteMapRouteListInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -1835,17 +1854,23 @@ public final class VirtualHubsClientImpl
      *     connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginGetInboundRoutesAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        GetInboundRoutesParameters getInboundRoutesParameters,
-        Context context) {
+    private PollerFlux<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
+        beginGetInboundRoutesAsync(
+            String resourceGroupName,
+            String virtualHubName,
+            GetInboundRoutesParameters getInboundRoutesParameters,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getInboundRoutesWithResponseAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<EffectiveRouteMapRouteListInner, EffectiveRouteMapRouteListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                EffectiveRouteMapRouteListInner.class,
+                EffectiveRouteMapRouteListInner.class,
+                context);
     }
 
     /**
@@ -1861,8 +1886,9 @@ public final class VirtualHubsClientImpl
      *     connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGetInboundRoutes(
-        String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters) {
+    public SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
+        beginGetInboundRoutes(
+            String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters) {
         return this
             .beginGetInboundRoutesAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters)
             .getSyncPoller();
@@ -1882,11 +1908,12 @@ public final class VirtualHubsClientImpl
      *     connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGetInboundRoutes(
-        String resourceGroupName,
-        String virtualHubName,
-        GetInboundRoutesParameters getInboundRoutesParameters,
-        Context context) {
+    public SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
+        beginGetInboundRoutes(
+            String resourceGroupName,
+            String virtualHubName,
+            GetInboundRoutesParameters getInboundRoutesParameters,
+            Context context) {
         return this
             .beginGetInboundRoutesAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters, context)
             .getSyncPoller();
@@ -1905,7 +1932,7 @@ public final class VirtualHubsClientImpl
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getInboundRoutesAsync(
+    public Mono<EffectiveRouteMapRouteListInner> getInboundRoutesAsync(
         String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters) {
         return beginGetInboundRoutesAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters)
             .last()
@@ -1926,7 +1953,7 @@ public final class VirtualHubsClientImpl
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getInboundRoutesAsync(
+    private Mono<EffectiveRouteMapRouteListInner> getInboundRoutesAsync(
         String resourceGroupName,
         String virtualHubName,
         GetInboundRoutesParameters getInboundRoutesParameters,
@@ -1945,11 +1972,12 @@ public final class VirtualHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the inbound routes configured for the Virtual Hub on a particular connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getInboundRoutes(
+    public EffectiveRouteMapRouteListInner getInboundRoutes(
         String resourceGroupName, String virtualHubName, GetInboundRoutesParameters getInboundRoutesParameters) {
-        getInboundRoutesAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters).block();
+        return getInboundRoutesAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters).block();
     }
 
     /**
@@ -1962,14 +1990,15 @@ public final class VirtualHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the inbound routes configured for the Virtual Hub on a particular connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getInboundRoutes(
+    public EffectiveRouteMapRouteListInner getInboundRoutes(
         String resourceGroupName,
         String virtualHubName,
         GetInboundRoutesParameters getInboundRoutesParameters,
         Context context) {
-        getInboundRoutesAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters, context).block();
+        return getInboundRoutesAsync(resourceGroupName, virtualHubName, getInboundRoutesParameters, context).block();
     }
 
     /**
@@ -2014,7 +2043,7 @@ public final class VirtualHubsClientImpl
         } else {
             getOutboundRoutesParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2078,7 +2107,7 @@ public final class VirtualHubsClientImpl
         } else {
             getOutboundRoutesParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2106,14 +2135,19 @@ public final class VirtualHubsClientImpl
      *     connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginGetOutboundRoutesAsync(
-        String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters) {
+    public PollerFlux<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
+        beginGetOutboundRoutesAsync(
+            String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             getOutboundRoutesWithResponseAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters);
         return this
             .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+            .<EffectiveRouteMapRouteListInner, EffectiveRouteMapRouteListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                EffectiveRouteMapRouteListInner.class,
+                EffectiveRouteMapRouteListInner.class,
+                this.client.getContext());
     }
 
     /**
@@ -2130,17 +2164,23 @@ public final class VirtualHubsClientImpl
      *     connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginGetOutboundRoutesAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        GetOutboundRoutesParameters getOutboundRoutesParameters,
-        Context context) {
+    private PollerFlux<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
+        beginGetOutboundRoutesAsync(
+            String resourceGroupName,
+            String virtualHubName,
+            GetOutboundRoutesParameters getOutboundRoutesParameters,
+            Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
             getOutboundRoutesWithResponseAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters, context);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+            .<EffectiveRouteMapRouteListInner, EffectiveRouteMapRouteListInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                EffectiveRouteMapRouteListInner.class,
+                EffectiveRouteMapRouteListInner.class,
+                context);
     }
 
     /**
@@ -2156,8 +2196,9 @@ public final class VirtualHubsClientImpl
      *     connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGetOutboundRoutes(
-        String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters) {
+    public SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
+        beginGetOutboundRoutes(
+            String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters) {
         return this
             .beginGetOutboundRoutesAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters)
             .getSyncPoller();
@@ -2177,11 +2218,12 @@ public final class VirtualHubsClientImpl
      *     connection.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginGetOutboundRoutes(
-        String resourceGroupName,
-        String virtualHubName,
-        GetOutboundRoutesParameters getOutboundRoutesParameters,
-        Context context) {
+    public SyncPoller<PollResult<EffectiveRouteMapRouteListInner>, EffectiveRouteMapRouteListInner>
+        beginGetOutboundRoutes(
+            String resourceGroupName,
+            String virtualHubName,
+            GetOutboundRoutesParameters getOutboundRoutesParameters,
+            Context context) {
         return this
             .beginGetOutboundRoutesAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters, context)
             .getSyncPoller();
@@ -2200,7 +2242,7 @@ public final class VirtualHubsClientImpl
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> getOutboundRoutesAsync(
+    public Mono<EffectiveRouteMapRouteListInner> getOutboundRoutesAsync(
         String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters) {
         return beginGetOutboundRoutesAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters)
             .last()
@@ -2221,7 +2263,7 @@ public final class VirtualHubsClientImpl
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> getOutboundRoutesAsync(
+    private Mono<EffectiveRouteMapRouteListInner> getOutboundRoutesAsync(
         String resourceGroupName,
         String virtualHubName,
         GetOutboundRoutesParameters getOutboundRoutesParameters,
@@ -2240,11 +2282,12 @@ public final class VirtualHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the outbound routes configured for the Virtual Hub on a particular connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getOutboundRoutes(
+    public EffectiveRouteMapRouteListInner getOutboundRoutes(
         String resourceGroupName, String virtualHubName, GetOutboundRoutesParameters getOutboundRoutesParameters) {
-        getOutboundRoutesAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters).block();
+        return getOutboundRoutesAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters).block();
     }
 
     /**
@@ -2257,14 +2300,15 @@ public final class VirtualHubsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the outbound routes configured for the Virtual Hub on a particular connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getOutboundRoutes(
+    public EffectiveRouteMapRouteListInner getOutboundRoutes(
         String resourceGroupName,
         String virtualHubName,
         GetOutboundRoutesParameters getOutboundRoutesParameters,
         Context context) {
-        getOutboundRoutesAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters, context).block();
+        return getOutboundRoutesAsync(resourceGroupName, virtualHubName, getOutboundRoutesParameters, context).block();
     }
 
     /**

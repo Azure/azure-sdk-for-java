@@ -33,7 +33,7 @@ public final class PreconfiguredEndpointsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"description\":\"bywdxsmicc\",\"endpoint\":\"wfscjfn\",\"endpointType\":\"CDN\",\"backend\":\"qujizdvo\"},\"location\":\"ytibyow\",\"tags\":{\"pthjoxo\":\"gyavu\"},\"id\":\"smsks\",\"name\":\"pi\",\"type\":\"lqol\"}]}";
+            "{\"value\":[{\"properties\":{\"description\":\"yklxubyjaffmmfbl\",\"endpoint\":\"cuubgq\",\"endpointType\":\"AzureRegion\",\"backend\":\"a\"},\"location\":\"metttwgd\",\"tags\":{\"rmooizqse\":\"xih\",\"apzhyrpetoge\":\"pxiutc\",\"rqnkkzjcjbtr\":\"joxslhvnhla\"},\"id\":\"aehvvibrxjjstoq\",\"name\":\"eitpkxztmo\",\"type\":\"bklftidgfcwqmpim\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,13 +62,13 @@ public final class PreconfiguredEndpointsListMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<PreconfiguredEndpoint> response =
-            manager.preconfiguredEndpoints().list("onmacjekniz", "hqvcimpevfgmblr", com.azure.core.util.Context.NONE);
+            manager.preconfiguredEndpoints().list("cvhrfsp", "uagrttikteusqc", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ytibyow", response.iterator().next().location());
-        Assertions.assertEquals("gyavu", response.iterator().next().tags().get("pthjoxo"));
-        Assertions.assertEquals("bywdxsmicc", response.iterator().next().description());
-        Assertions.assertEquals("wfscjfn", response.iterator().next().endpoint());
-        Assertions.assertEquals(EndpointType.CDN, response.iterator().next().endpointType());
-        Assertions.assertEquals("qujizdvo", response.iterator().next().backend());
+        Assertions.assertEquals("metttwgd", response.iterator().next().location());
+        Assertions.assertEquals("xih", response.iterator().next().tags().get("rmooizqse"));
+        Assertions.assertEquals("yklxubyjaffmmfbl", response.iterator().next().description());
+        Assertions.assertEquals("cuubgq", response.iterator().next().endpoint());
+        Assertions.assertEquals(EndpointType.AZURE_REGION, response.iterator().next().endpointType());
+        Assertions.assertEquals("a", response.iterator().next().backend());
     }
 }

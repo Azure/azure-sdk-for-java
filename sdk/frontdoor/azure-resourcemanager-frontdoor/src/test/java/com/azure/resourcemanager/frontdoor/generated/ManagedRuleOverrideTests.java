@@ -20,44 +20,48 @@ public final class ManagedRuleOverrideTests {
         ManagedRuleOverride model =
             BinaryData
                 .fromString(
-                    "{\"ruleId\":\"yhgsopbyrqufe\",\"enabledState\":\"Disabled\",\"action\":\"Allow\",\"exclusions\":[{\"matchVariable\":\"RequestCookieNames\",\"selectorMatchOperator\":\"Equals\",\"selector\":\"hlmctlpdngitvgb\"}]}")
+                    "{\"ruleId\":\"bljofxqeof\",\"enabledState\":\"Disabled\",\"action\":\"AnomalyScoring\",\"exclusions\":[{\"matchVariable\":\"RequestHeaderNames\",\"selectorMatchOperator\":\"Equals\",\"selector\":\"asvm\"},{\"matchVariable\":\"RequestCookieNames\",\"selectorMatchOperator\":\"EqualsAny\",\"selector\":\"qulngsntnbybkzgc\"}]}")
                 .toObject(ManagedRuleOverride.class);
-        Assertions.assertEquals("yhgsopbyrqufe", model.ruleId());
+        Assertions.assertEquals("bljofxqeof", model.ruleId());
         Assertions.assertEquals(ManagedRuleEnabledState.DISABLED, model.enabledState());
-        Assertions.assertEquals(ActionType.ALLOW, model.action());
+        Assertions.assertEquals(ActionType.ANOMALY_SCORING, model.action());
         Assertions
             .assertEquals(
-                ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES, model.exclusions().get(0).matchVariable());
+                ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES, model.exclusions().get(0).matchVariable());
         Assertions
             .assertEquals(
                 ManagedRuleExclusionSelectorMatchOperator.EQUALS, model.exclusions().get(0).selectorMatchOperator());
-        Assertions.assertEquals("hlmctlpdngitvgb", model.exclusions().get(0).selector());
+        Assertions.assertEquals("asvm", model.exclusions().get(0).selector());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedRuleOverride model =
             new ManagedRuleOverride()
-                .withRuleId("yhgsopbyrqufe")
+                .withRuleId("bljofxqeof")
                 .withEnabledState(ManagedRuleEnabledState.DISABLED)
-                .withAction(ActionType.ALLOW)
+                .withAction(ActionType.ANOMALY_SCORING)
                 .withExclusions(
                     Arrays
                         .asList(
                             new ManagedRuleExclusion()
-                                .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES)
+                                .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES)
                                 .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.EQUALS)
-                                .withSelector("hlmctlpdngitvgb")));
+                                .withSelector("asvm"),
+                            new ManagedRuleExclusion()
+                                .withMatchVariable(ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES)
+                                .withSelectorMatchOperator(ManagedRuleExclusionSelectorMatchOperator.EQUALS_ANY)
+                                .withSelector("qulngsntnbybkzgc")));
         model = BinaryData.fromObject(model).toObject(ManagedRuleOverride.class);
-        Assertions.assertEquals("yhgsopbyrqufe", model.ruleId());
+        Assertions.assertEquals("bljofxqeof", model.ruleId());
         Assertions.assertEquals(ManagedRuleEnabledState.DISABLED, model.enabledState());
-        Assertions.assertEquals(ActionType.ALLOW, model.action());
+        Assertions.assertEquals(ActionType.ANOMALY_SCORING, model.action());
         Assertions
             .assertEquals(
-                ManagedRuleExclusionMatchVariable.REQUEST_COOKIE_NAMES, model.exclusions().get(0).matchVariable());
+                ManagedRuleExclusionMatchVariable.REQUEST_HEADER_NAMES, model.exclusions().get(0).matchVariable());
         Assertions
             .assertEquals(
                 ManagedRuleExclusionSelectorMatchOperator.EQUALS, model.exclusions().get(0).selectorMatchOperator());
-        Assertions.assertEquals("hlmctlpdngitvgb", model.exclusions().get(0).selector());
+        Assertions.assertEquals("asvm", model.exclusions().get(0).selector());
     }
 }

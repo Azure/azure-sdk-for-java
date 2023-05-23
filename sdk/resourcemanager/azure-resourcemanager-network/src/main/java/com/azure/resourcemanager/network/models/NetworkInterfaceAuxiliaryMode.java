@@ -19,6 +19,9 @@ public final class NetworkInterfaceAuxiliaryMode extends ExpandableStringEnum<Ne
     /** Static value Floating for NetworkInterfaceAuxiliaryMode. */
     public static final NetworkInterfaceAuxiliaryMode FLOATING = fromString("Floating");
 
+    /** Static value AcceleratedConnections for NetworkInterfaceAuxiliaryMode. */
+    public static final NetworkInterfaceAuxiliaryMode ACCELERATED_CONNECTIONS = fromString("AcceleratedConnections");
+
     /**
      * Creates a new instance of NetworkInterfaceAuxiliaryMode value.
      *
