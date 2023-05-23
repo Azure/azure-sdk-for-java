@@ -30,13 +30,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Disabled
-class EventGridMessagingClientTest {
+class EventGridClientTest {
 
     // There is no ARM support yet, so these tests are disabled as they require running by hand.
 
-    public static final String TOPICNAME = "TOPICNAME";
-    public static final String EVENT_SUBSCRIPTION_NAME = "ES_NAME";
-    public static final String ENDPOINT = "ENDPOINT";
+    public static final String TOPICNAME = "billwertegv2-1-egv2-topic";
+    public static final String EVENT_SUBSCRIPTION_NAME = "billwertegv2-1-egv2-es";
+    public static final String ENDPOINT = "https://billwertegv2-1-egv2-ns.centraluseuap-1.eventgrid.azure.net";
     public static final AzureKeyCredential CREDENTIAL = new AzureKeyCredential(Configuration.getGlobalConfiguration().get("EG_KEY"));
 
     EventGridClientBuilder buildClientBuilder() {

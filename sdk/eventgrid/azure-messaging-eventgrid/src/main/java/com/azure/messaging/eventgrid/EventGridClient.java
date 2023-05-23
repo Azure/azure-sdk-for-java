@@ -15,6 +15,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
+import com.azure.messaging.eventgrid.implementation.EventGridClientImpl;
 import com.azure.messaging.eventgrid.models.AcknowledgeOptions;
 import com.azure.messaging.eventgrid.models.AcknowledgeResult;
 import com.azure.messaging.eventgrid.models.PublishResult;
@@ -29,18 +30,6 @@ import java.util.List;
 /** Initializes a new instance of the synchronous EventGridClient type. */
 @ServiceClient(builder = EventGridClientBuilder.class)
 public final class EventGridClient {
-
-    @Generated private final EventGridAsyncClient client;
-
-    /**
-     * Initializes an instance of EventGridClient class.
-     *
-     * @param client the async client.
-     */
-    @Generated
-    EventGridClient(EventGridAsyncClient client) {
-        this.client = client;
-    }
 
     /**
      * Publish Single Cloud Event to namespace topic. In case of success, the server responds with an HTTP 200 status
@@ -89,7 +78,7 @@ public final class EventGridClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> publishCloudEventWithResponse(
             String topicName, BinaryData event, RequestOptions requestOptions) {
-        return this.client.publishCloudEventWithResponse(topicName, event, requestOptions).block();
+        return this.serviceClient.publishCloudEventWithResponse(topicName, event, requestOptions);
     }
 
     /**
@@ -141,7 +130,7 @@ public final class EventGridClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> publishCloudEventsWithResponse(
             String topicName, BinaryData events, RequestOptions requestOptions) {
-        return this.client.publishCloudEventsWithResponse(topicName, events, requestOptions).block();
+        return this.serviceClient.publishCloudEventsWithResponse(topicName, events, requestOptions);
     }
 
     /**
@@ -201,7 +190,7 @@ public final class EventGridClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> receiveCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, RequestOptions requestOptions) {
-        return this.client.receiveCloudEventsWithResponse(topicName, eventSubscriptionName, requestOptions).block();
+        return this.serviceClient.receiveCloudEventsWithResponse(topicName, eventSubscriptionName, requestOptions);
     }
 
     /**
@@ -251,9 +240,8 @@ public final class EventGridClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> acknowledgeCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
-        return this.client
-                .acknowledgeCloudEventsWithResponse(topicName, eventSubscriptionName, lockTokens, requestOptions)
-                .block();
+        return this.serviceClient.acknowledgeCloudEventsWithResponse(
+                topicName, eventSubscriptionName, lockTokens, requestOptions);
     }
 
     /**
@@ -302,9 +290,8 @@ public final class EventGridClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> releaseCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
-        return this.client
-                .releaseCloudEventsWithResponse(topicName, eventSubscriptionName, lockTokens, requestOptions)
-                .block();
+        return this.serviceClient.releaseCloudEventsWithResponse(
+                topicName, eventSubscriptionName, lockTokens, requestOptions);
     }
 
     /**
@@ -351,9 +338,8 @@ public final class EventGridClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> rejectCloudEventsWithResponse(
             String topicName, String eventSubscriptionName, BinaryData lockTokens, RequestOptions requestOptions) {
-        return this.client
-                .rejectCloudEventsWithResponse(topicName, eventSubscriptionName, lockTokens, requestOptions)
-                .block();
+        return this.serviceClient.rejectCloudEventsWithResponse(
+                topicName, eventSubscriptionName, lockTokens, requestOptions);
     }
 
     /**
@@ -546,5 +532,17 @@ public final class EventGridClient {
                         topicName, eventSubscriptionName, BinaryData.fromObject(lockTokens), requestOptions)
                 .getValue()
                 .toObject(RejectResult.class);
+    }
+
+    @Generated private final EventGridClientImpl serviceClient;
+
+    /**
+     * Initializes an instance of EventGridClient class.
+     *
+     * @param serviceClient the service client implementation.
+     */
+    @Generated
+    EventGridClient(EventGridClientImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 }
