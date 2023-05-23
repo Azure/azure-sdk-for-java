@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/e97d47ade97d47ad280215079a64e6fbd51746e3b8",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "1f33893d-67a5-4ce3-89fe-5fcf52c3aa05"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "66874ef7-f003-003c-0a4e-4e3b3f000000",
+      "x-ms-client-request-id" : "1f33893d-67a5-4ce3-89fe-5fcf52c3aa05",
+      "Date" : "Tue, 12 Apr 2022 09:20:02 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/e97d47ade97d47ad280215079a64e6fbd51746e3b8",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "26dbfc88-d2d0-45cf-b44a-96fc094f5a75"
+    },
+    "Response" : {
+      "content-length" : "222",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueAlreadyExists",
+      "retry-after" : "0",
+      "StatusCode" : "409",
+      "x-ms-request-id" : "53f2e194-4003-0074-624e-4e2608000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueAlreadyExists</Code><Message>The specified queue already exists.\nRequestId:53f2e194-4003-0074-624e-4e2608000000\nTime:2022-04-12T09:20:03.7189222Z</Message></Error>",
+      "x-ms-client-request-id" : "26dbfc88-d2d0-45cf-b44a-96fc094f5a75",
+      "Date" : "Tue, 12 Apr 2022 09:20:02 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "e97d47ade97d47ad280700063bb5c4087f3c4ee582", "e97d47ade97d47ad280215079a64e6fbd51746e3b8" ]
+}
