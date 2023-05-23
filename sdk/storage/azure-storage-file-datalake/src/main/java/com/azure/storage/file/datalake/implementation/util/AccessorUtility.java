@@ -25,8 +25,7 @@ public final class AccessorUtility {
      * Accessor interface for {@link PathProperties}
      */
     public interface PathPropertiesAccessor {
-        PathProperties setPathProperties(PathProperties properties, String encryptionScope, String encryptionContext,
-            String owner, String group, String permissions);
+        PathProperties setPathProperties(PathProperties properties, String encryptionScope, String encryptionContext);
     }
 
     /**
