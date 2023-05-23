@@ -278,11 +278,10 @@ public final class JedisCheckpointStore implements CheckpointStore {
         }
 
         if (!isCheckpointValid(checkpoint)) {
-            return Mono.error(addEventHubInformation(LOGGER.atError(), checkpoint.getFullyQualifiedNamespace(),
-                checkpoint.getEventHubName(), checkpoint.getConsumerGroup())
-                .addKeyValue(PARTITION_ID_KEY, checkpoint.getPartitionId())
-                .log(new IllegalArgumentException(
-                    "Checkpoint is either null, or both the offset and the sequence number are null.")));
+            return FluxUtils.monoError(addEventHubInformation(LOGGER.atError(), checkpoint.getFullyQualifiedNamespace(),
+                    checkpoint.getEventHubName(), checkpoint.getConsumerGroup())
+                    .addKeyValue(PARTITION_ID_KEY, checkpoint.getPartitionId()), 
+                new IllegalArgumentException("Checkpoint is either null, or both the offset and the sequence number are null."));
         }
 
         return Mono.fromRunnable(() -> {
@@ -327,10 +326,11 @@ public final class JedisCheckpointStore implements CheckpointStore {
     private static AzureException createClaimPartitionException(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroup, String partitionId, String message) {
 
+        AzureException exception = new AzureException("Unable to claim partition: " + partitionId +  ". " + message);
         addEventHubInformation(LOGGER.atInfo(), fullyQualifiedNamespace, eventHubName, consumerGroup)
             .addKeyValue(PARTITION_ID_KEY, partitionId)
-            .log("Unable to claim partition. " + message);
+            .log("Unable to claim partition. ", exception);
 
-        return new AzureException("Unable to claim partition: " + partitionId +  ". " + message);
+        return exception;
     }
 }
