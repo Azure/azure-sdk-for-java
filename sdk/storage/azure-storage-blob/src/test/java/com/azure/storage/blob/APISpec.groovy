@@ -716,22 +716,6 @@ class APISpec extends StorageSpec {
                 } as Function<Long, Mono<HttpResponse>>)
             }
         }
-
-
-//        @Override
-//        HttpResponse processSync(HttpPipelineCallContext httpPipelineCallContext, HttpPipelineNextSyncPolicy httpPipelineNextSyncPolicy) {
-//            def request = httpPipelineCallContext.httpRequest
-//            def key = request.url.toString()
-//            // Make sure that failure happens once per url.
-//            if (failureTracker.get(key, false)) {
-//                return httpPipelineNextSyncPolicy.processSync()
-//            } else {
-//                failureTracker.put(key, true)
-//                request.getBodyAsBinaryData().toByteBuffer()
-//                request.getBodyAsBinaryData().toBytes()
-//                throw new UncheckedIOException("KABOOM!")
-//            }
-//        }
     }
 
     def getPollingDuration(long liveTestDurationInMillis) {
