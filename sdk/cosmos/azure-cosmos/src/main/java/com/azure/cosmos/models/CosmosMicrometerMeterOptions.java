@@ -56,9 +56,15 @@ public final class CosmosMicrometerMeterOptions {
     /**
      * Sets a flag whether the diagnostic thresholds should be applied for this meter. If enabled
      * a meter will only reflect operations violating diagnostic thresholds. This can be used to reduce
-     * the cardinality of dimensions (the number of time series a meter emits).
+     * the cardinality of dimensions (the number of time series a meter emits). Request-level metrics usually
+     * are used to capture metrics per backend endpoint/replica - a high cardinality dimension. Filtering by
+     * diagnostic thresholds reduces the overhead - but also means request-level metrics can only be used
+     * for debugging purposes - not for monitoring purposes. So, it is important to use the unfiltered
+     * operation-level metrics for health monitoring in this case.
      *
-     * @param isEnabled - a flag indicating whether the diagnostic thresholds should be applied for this meter
+     * @param isEnabled - a flag indicating whether the diagnostic thresholds should be applied for this meter - when
+     *      not specified the default provided in
+     *      {@link CosmosMicrometerMetricsOptions#applyDiagnosticThresholdsForTransportLevelMeters(boolean)} is used.
      * @return current CosmosMeterOptions instance
      */
     public CosmosMicrometerMeterOptions applyDiagnosticThresholds(boolean isEnabled) {

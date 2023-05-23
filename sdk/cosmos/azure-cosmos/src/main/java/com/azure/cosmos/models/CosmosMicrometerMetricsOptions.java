@@ -130,6 +130,10 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      * thresholds are violated. This can be enabled to reduce the cardinality of dimensions (and the number of time
      * series being stored) especially when the partition/replica-level dimensions are enabled and the workload
      * is dealing with containers having a high number of physical partitions.
+     * Request-level metrics usually are used to capture metrics per backend endpoint/replica - a high cardinality
+     * dimension. Filtering by diagnostic thresholds reduces the overhead - but also means request-level metrics
+     * can only be used for debugging purposes - not for monitoring purposes. So, it is important to use the unfiltered
+     * operation-level metrics for health monitoring in this case.
      * By default, no filtering happens and diagnostic thresholds are not applied.
      *
      * @param isEnabled -  a flag indicating whether for transport level (rntbd) meters should only be emitted when
