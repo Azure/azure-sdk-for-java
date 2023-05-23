@@ -74,7 +74,7 @@ public final class AccessTokenCache {
      * @return The Publisher that emits an AccessToken
      */
     public AccessToken getTokenSync(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
-        return this.getToken(tokenRequestContext, checkToForceFetchToken).block();
+        return retrieveTokenSync(tokenRequestContext, checkToForceFetchToken).get();
     }
 
     private Supplier<Mono<? extends AccessToken>> retrieveToken(TokenRequestContext tokenRequestContext,
@@ -157,6 +157,109 @@ public final class AccessTokenCache {
                 }
             } catch (Exception ex) {
                 return Mono.error(ex);
+            }
+        };
+    }
+
+    private synchronized Supplier<AccessToken> retrieveTokenSync(TokenRequestContext tokenRequestContext,
+                                                                boolean checkToForceFetchToken) {
+        return () -> {
+            if (tokenRequestContext == null) {
+                throw LOGGER.logExceptionAsError(
+                    new IllegalArgumentException("The token request context input cannot be null."));
+            }
+            if (wip.compareAndSet(null, Sinks.one())) {
+                OffsetDateTime now = OffsetDateTime.now();
+                Supplier<AccessToken> tokenRefresh;
+                AccessToken fallback;
+
+                // Check if the incoming token request context is different from the cached one. A different
+                // token request context, requires to fetch a new token as the cached one won't work for the
+                // passed in token request context.
+                boolean forceRefresh = (checkToForceFetchToken && checkIfForceRefreshRequired(tokenRequestContext))
+                    || this.tokenRequestContext == null;
+
+                Supplier<AccessToken> tokenSupplier = () ->
+                    tokenCredential.getTokenSync(this.tokenRequestContext);
+
+                if (forceRefresh) {
+                    this.tokenRequestContext = tokenRequestContext;
+                    tokenRefresh = tokenSupplier;
+                    fallback = null;
+                } else if (cache != null && !shouldRefresh.test(cache)) {
+                    // fresh cache & no need to refresh
+                    tokenRefresh = null;
+                    fallback = cache;
+                } else if (cache == null || cache.isExpired()) {
+                    // no token to use
+                    if (now.isAfter(nextTokenRefresh)) {
+                        // refresh immediately
+                        tokenRefresh = tokenSupplier;
+                    } else {
+                        // TODO: Replace with a Scheduled Future.
+                        try {
+                            Thread.sleep(Duration.between(now, nextTokenRefresh).toMillis());
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                        // wait for timeout, then refresh
+                        tokenRefresh = tokenSupplier;
+                    }
+                    // cache doesn't exist or expired, no fallback
+                    fallback = null;
+                } else {
+                    // token available, but close to expiry
+                    if (now.isAfter(nextTokenRefresh)) {
+                        // refresh immediately
+                        tokenRefresh = tokenSupplier;
+                    } else {
+                        // still in timeout, do not refresh
+                        tokenRefresh = null;
+                    }
+                    // cache hasn't expired, ignore refresh error this time
+                    fallback = cache;
+                }
+
+                try {
+                    if (tokenRefresh != null) {
+                        AccessToken token = tokenRefresh.get();
+                        buildTokenRefreshLog(LogLevel.INFORMATIONAL, cache, now)
+                            .log("Acquired a new access token.");
+                        cache = token;
+                        nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                        return token;
+                    } else {
+                        return fallback;
+                    }
+                } catch (Throwable error) {
+                    buildTokenRefreshLog(LogLevel.ERROR, cache, now)
+                        .log("Failed to acquire a new access token.", error);
+                    nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
+                    if (fallback != null) {
+                        return fallback;
+                    }
+                    throw error;
+                } finally {
+                    wip.set(null);
+                }
+
+            } else if (cache != null && !cache.isExpired() && !checkToForceFetchToken) {
+                // another thread might be refreshing the token proactively, but the current token is still valid
+                return cache;
+            } else {
+                // if a force refresh is possible, then exit and retry.
+                if (checkToForceFetchToken) {
+                    return null;
+                }
+                // another async thread is definitely refreshing the expired token
+                Sinks.One<AccessToken> sinksOne = wip.get();
+                if (sinksOne == null) {
+                    // the refreshing thread has finished
+                    return cache;
+                } else {
+                    // wait for refreshing async thread to finish but defer to updated cache in case just missed onNext()
+                    return sinksOne.asMono().switchIfEmpty(Mono.fromSupplier(() -> cache)).block();
+                }
             }
         };
     }
