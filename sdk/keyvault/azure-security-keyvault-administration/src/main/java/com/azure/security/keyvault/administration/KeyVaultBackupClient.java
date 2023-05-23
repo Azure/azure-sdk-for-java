@@ -9,7 +9,6 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
@@ -18,16 +17,16 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.administration.implementation.KeyVaultBackupClientImpl;
+import com.azure.security.keyvault.administration.implementation.KeyVaultBackupClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
-import com.azure.security.keyvault.administration.implementation.models.FullBackupHeaders;
-import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
-import com.azure.security.keyvault.administration.implementation.models.FullRestoreOperationHeaders;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperationParameters;
 import com.azure.security.keyvault.administration.implementation.models.SASTokenParameter;
-import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperation;
-import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationHeaders;
 import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationParameters;
+import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
+import com.azure.security.keyvault.administration.implementation.models.FullBackupResponse;
+import com.azure.security.keyvault.administration.implementation.models.FullRestoreOperationResponse;
+import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationResponse;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
@@ -42,8 +41,8 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.enableSyncRestProxy;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
 import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToLongRunningOperation;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
 import static com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.restoreOperationToSelectiveKeyRestoreOperation;
 
 /**
@@ -113,7 +112,10 @@ public final class KeyVaultBackupClient {
         this.pipeline = httpPipeline;
         this.asyncClient = null;
 
-        clientImpl = new KeyVaultBackupClientImpl(httpPipeline, this.serviceVersion);
+        clientImpl = new KeyVaultBackupClientImplBuilder()
+            .pipeline(httpPipeline)
+            .apiVersion(this.serviceVersion)
+            .buildClient();
     }
 
 
@@ -205,12 +207,14 @@ public final class KeyVaultBackupClient {
      */
     Response<KeyVaultBackupOperation> backupWithResponse(String blobStorageUrl, String sasToken,
                                                                Context context) {
-        SASTokenParameter sasTokenParameter = new SASTokenParameter(blobStorageUrl, sasToken);
+        SASTokenParameter sasTokenParameter = new SASTokenParameter()
+            .setStorageResourceUri(blobStorageUrl)
+            .setToken(sasToken);
         context = enableSyncRestProxy(context);
 
         try {
-            ResponseBase<FullBackupHeaders, FullBackupOperation> backupOperationResponse =
-                clientImpl.fullBackupWithResponse(vaultUrl, sasTokenParameter, context);
+            FullBackupResponse backupOperationResponse = clientImpl.fullBackupWithResponse(vaultUrl, sasTokenParameter,
+                    context);
             return new SimpleResponse<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
                 backupOperationResponse.getHeaders(),
                 (KeyVaultBackupOperation) transformToLongRunningOperation(backupOperationResponse.getValue()));
@@ -366,14 +370,18 @@ public final class KeyVaultBackupClient {
         String folderName = segments[segments.length - 1];
         String containerUrl = folderUrl.substring(0, folderUrl.length() - folderName.length());
 
-        SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl, sasToken);
-        RestoreOperationParameters restoreOperationParameters =
-            new RestoreOperationParameters(sasTokenParameter, folderName);
+        SASTokenParameter sasTokenParameter = new SASTokenParameter()
+            .setStorageResourceUri(containerUrl)
+            .setToken(sasToken);
+
+        RestoreOperationParameters restoreOperationParameters = new RestoreOperationParameters()
+            .setSasTokenParameters(sasTokenParameter)
+            .setFolderToRestore(folderName);
         context = enableSyncRestProxy(context);
 
         try {
-            ResponseBase<FullRestoreOperationHeaders, RestoreOperation> restoreOperationResponse =
-                clientImpl.fullRestoreOperationWithResponse(vaultUrl, restoreOperationParameters, context);
+            FullRestoreOperationResponse restoreOperationResponse = clientImpl.fullRestoreOperationWithResponse(vaultUrl, restoreOperationParameters,
+                    context);
             return new SimpleResponse<>(restoreOperationResponse.getRequest(),
                 restoreOperationResponse.getStatusCode(),
                 restoreOperationResponse.getHeaders(),
@@ -535,14 +543,18 @@ public final class KeyVaultBackupClient {
         String folderName = segments[segments.length - 1];
         String containerUrl = folderUrl.substring(0, folderUrl.length() - folderName.length());
 
-        SASTokenParameter sasTokenParameter = new SASTokenParameter(containerUrl, sasToken);
+        SASTokenParameter sasTokenParameter = new SASTokenParameter()
+            .setStorageResourceUri(containerUrl)
+            .setToken(sasToken);
+
         SelectiveKeyRestoreOperationParameters selectiveKeyRestoreOperationParameters =
-            new SelectiveKeyRestoreOperationParameters(sasTokenParameter, folderName);
+            new SelectiveKeyRestoreOperationParameters()
+                .setSasTokenParameters(sasTokenParameter)
+                .setFolder(folderName);
         context = enableSyncRestProxy(context);
 
         try {
-            ResponseBase<SelectiveKeyRestoreOperationHeaders, SelectiveKeyRestoreOperation> restoreOperationResponse =
-                clientImpl.selectiveKeyRestoreOperationWithResponse(vaultUrl, keyName,
+            SelectiveKeyRestoreOperationResponse restoreOperationResponse = clientImpl.selectiveKeyRestoreOperationWithResponse(vaultUrl, keyName,
                     selectiveKeyRestoreOperationParameters, context);
             return new SimpleResponse<>(restoreOperationResponse.getRequest(),
                 restoreOperationResponse.getStatusCode(),

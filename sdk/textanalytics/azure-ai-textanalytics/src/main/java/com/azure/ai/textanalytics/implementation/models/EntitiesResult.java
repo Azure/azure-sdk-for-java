@@ -15,17 +15,14 @@ public final class EntitiesResult extends PreBuiltResult {
      * Response by document
      */
     @JsonProperty(value = "documents", required = true)
-    private List<EntitiesResultWithDetectedLanguage> documents;
-
-    /** Creates an instance of EntitiesResult class. */
-    public EntitiesResult() {}
+    private List<EntitiesResultDocumentsItem> documents;
 
     /**
      * Get the documents property: Response by document.
      *
      * @return the documents value.
      */
-    public List<EntitiesResultWithDetectedLanguage> getDocuments() {
+    public List<EntitiesResultDocumentsItem> getDocuments() {
         return this.documents;
     }
 
@@ -35,14 +32,14 @@ public final class EntitiesResult extends PreBuiltResult {
      * @param documents the documents value to set.
      * @return the EntitiesResult object itself.
      */
-    public EntitiesResult setDocuments(List<EntitiesResultWithDetectedLanguage> documents) {
+    public EntitiesResult setDocuments(List<EntitiesResultDocumentsItem> documents) {
         this.documents = documents;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public EntitiesResult setErrors(List<InputError> errors) {
+    public EntitiesResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }

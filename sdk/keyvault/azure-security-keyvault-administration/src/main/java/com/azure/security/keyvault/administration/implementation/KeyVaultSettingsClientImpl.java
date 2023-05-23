@@ -80,7 +80,7 @@ public final class KeyVaultSettingsClientImpl {
      *
      * @param apiVersion Api Version.
      */
-    public KeyVaultSettingsClientImpl(String apiVersion) {
+    KeyVaultSettingsClientImpl(String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -95,7 +95,7 @@ public final class KeyVaultSettingsClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param apiVersion Api Version.
      */
-    public KeyVaultSettingsClientImpl(HttpPipeline httpPipeline, String apiVersion) {
+    KeyVaultSettingsClientImpl(HttpPipeline httpPipeline, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), apiVersion);
     }
 
@@ -106,8 +106,7 @@ public final class KeyVaultSettingsClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param apiVersion Api Version.
      */
-    public KeyVaultSettingsClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion) {
+    KeyVaultSettingsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.apiVersion = apiVersion;

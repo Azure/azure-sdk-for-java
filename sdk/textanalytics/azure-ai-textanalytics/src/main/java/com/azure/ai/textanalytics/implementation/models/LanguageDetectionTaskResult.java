@@ -20,9 +20,6 @@ public final class LanguageDetectionTaskResult extends AnalyzeTextTaskResult {
     @JsonProperty(value = "results", required = true)
     private LanguageDetectionResult results;
 
-    /** Creates an instance of LanguageDetectionTaskResult class. */
-    public LanguageDetectionTaskResult() {}
-
     /**
      * Get the results property: The results property.
      *

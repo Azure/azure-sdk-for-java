@@ -35,9 +35,6 @@ public final class ExtractedSummarySentence {
     @JsonProperty(value = "length", required = true)
     private int length;
 
-    /** Creates an instance of ExtractedSummarySentence class. */
-    public ExtractedSummarySentence() {}
-
     /**
      * Get the text property: The extracted sentence text.
      *

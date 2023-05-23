@@ -5,18 +5,15 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Role Assignments filter. */
 @Fluent
-public final class RoleAssignmentFilter implements JsonSerializable<RoleAssignmentFilter> {
+public final class RoleAssignmentFilter {
     /*
      * Returns role assignment of the specific principal.
      */
+    @JsonProperty(value = "principalId")
     private String principalId;
 
     /** Creates an instance of RoleAssignmentFilter class. */
@@ -40,39 +37,5 @@ public final class RoleAssignmentFilter implements JsonSerializable<RoleAssignme
     public RoleAssignmentFilter setPrincipalId(String principalId) {
         this.principalId = principalId;
         return this;
-    }
-
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("principalId", this.principalId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RoleAssignmentFilter from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RoleAssignmentFilter if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the RoleAssignmentFilter.
-     */
-    public static RoleAssignmentFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    RoleAssignmentFilter deserializedRoleAssignmentFilter = new RoleAssignmentFilter();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-
-                        if ("principalId".equals(fieldName)) {
-                            deserializedRoleAssignmentFilter.principalId = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-
-                    return deserializedRoleAssignmentFilter;
-                });
     }
 }

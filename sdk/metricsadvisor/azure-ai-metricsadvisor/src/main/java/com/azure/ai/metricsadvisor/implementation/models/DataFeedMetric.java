@@ -14,95 +14,92 @@ public final class DataFeedMetric {
      * metric id
      */
     @JsonProperty(value = "metricId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metricId;
+    private String id;
 
     /*
      * metric name
      */
     @JsonProperty(value = "metricName", required = true)
-    private String metricName;
+    private String name;
 
     /*
      * metric display name
      */
     @JsonProperty(value = "metricDisplayName")
-    private String metricDisplayName;
+    private String displayName;
 
     /*
      * metric description
      */
     @JsonProperty(value = "metricDescription")
-    private String metricDescription;
-
-    /** Creates an instance of DataFeedMetric class. */
-    public DataFeedMetric() {}
+    private String description;
 
     /**
-     * Get the metricId property: metric id.
+     * Get the id property: metric id.
      *
-     * @return the metricId value.
+     * @return the id value.
      */
-    public String getMetricId() {
-        return this.metricId;
+    public String getId() {
+        return this.id;
     }
 
     /**
-     * Get the metricName property: metric name.
+     * Get the name property: metric name.
      *
-     * @return the metricName value.
+     * @return the name value.
      */
-    public String getMetricName() {
-        return this.metricName;
+    public String getName() {
+        return this.name;
     }
 
     /**
-     * Set the metricName property: metric name.
+     * Set the name property: metric name.
      *
-     * @param metricName the metricName value to set.
+     * @param name the name value to set.
      * @return the DataFeedMetric object itself.
      */
-    public DataFeedMetric setMetricName(String metricName) {
-        this.metricName = metricName;
+    public DataFeedMetric setName(String name) {
+        this.name = name;
         return this;
     }
 
     /**
-     * Get the metricDisplayName property: metric display name.
+     * Get the displayName property: metric display name.
      *
-     * @return the metricDisplayName value.
+     * @return the displayName value.
      */
-    public String getMetricDisplayName() {
-        return this.metricDisplayName;
+    public String getDisplayName() {
+        return this.displayName;
     }
 
     /**
-     * Set the metricDisplayName property: metric display name.
+     * Set the displayName property: metric display name.
      *
-     * @param metricDisplayName the metricDisplayName value to set.
+     * @param displayName the displayName value to set.
      * @return the DataFeedMetric object itself.
      */
-    public DataFeedMetric setMetricDisplayName(String metricDisplayName) {
-        this.metricDisplayName = metricDisplayName;
+    public DataFeedMetric setDisplayName(String displayName) {
+        this.displayName = displayName;
         return this;
     }
 
     /**
-     * Get the metricDescription property: metric description.
+     * Get the description property: metric description.
      *
-     * @return the metricDescription value.
+     * @return the description value.
      */
-    public String getMetricDescription() {
-        return this.metricDescription;
+    public String getDescription() {
+        return this.description;
     }
 
     /**
-     * Set the metricDescription property: metric description.
+     * Set the description property: metric description.
      *
-     * @param metricDescription the metricDescription value to set.
+     * @param description the description value to set.
      * @return the DataFeedMetric object itself.
      */
-    public DataFeedMetric setMetricDescription(String metricDescription) {
-        this.metricDescription = metricDescription;
+    public DataFeedMetric setDescription(String description) {
+        this.description = description;
         return this;
     }
 }

@@ -80,7 +80,7 @@ import static com.azure.storage.blob.specialized.cryptography.CryptographyConsta
 @ServiceClient(builder = EncryptedBlobClientBuilder.class)
 public class EncryptedBlobClient extends BlobClient {
     private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobClient.class);
-    final EncryptedBlobAsyncClient encryptedBlobAsyncClient;
+    private final EncryptedBlobAsyncClient encryptedBlobAsyncClient;
 
     /**
      * Package-private constructor for use by {@link BlobClientBuilder}.

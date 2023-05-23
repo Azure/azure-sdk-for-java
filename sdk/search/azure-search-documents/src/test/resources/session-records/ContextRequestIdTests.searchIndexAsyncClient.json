@@ -1,43 +1,31 @@
 {
-  "Entries": [
-    {
-      "RequestUri": "https://REDACTED/indexes(\u0027index\u0027)/search.stats?api-version=2021-04-30-Preview",
-      "RequestMethod": "GET",
-      "RequestHeaders": {
-        "Accept": "application/json; odata.metadata=minimal",
-        "api-key": "REDACTED",
-        "Content-Length": "0",
-        "Date": "Thu, 09 Mar 2023 19:53:25 GMT",
-        "return-client-request-id": "true",
-        "User-Agent": "azsdk-java-azure-search-documents/11.6.0-beta.6 (17.0.5; Windows 11; 10.0)",
-        "x-ms-client-request-id": "47d8cf0f-9efd-49fd-b604-e24466eddace"
-      },
-      "RequestBody": null,
-      "StatusCode": 404,
-      "ResponseHeaders": {
-        "Cache-Control": "no-cache",
-        "client-request-id": "47d8cf0f-9efd-49fd-b604-e24466eddace",
-        "Content-Language": "en",
-        "Content-Length": "76",
-        "Content-Type": "application/json; charset=utf-8",
-        "Date": "Thu, 09 Mar 2023 19:53:24 GMT",
-        "elapsed-time": "10",
-        "Expires": "-1",
-        "Pragma": "no-cache",
-        "Preference-Applied": "odata.include-annotations=\u0022*\u0022",
-        "request-id": "47d8cf0f-9efd-49fd-b604-e24466eddace",
-        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "x-ms-client-request-id": "47d8cf0f-9efd-49fd-b604-e24466eddace"
-      },
-      "ResponseBody": {
-        "error": {
-          "code": "",
-          "message": "An index named \u0027index\u0027 could not be found."
-        }
-      }
-    }
-  ],
-  "Variables": {
-    "0": "47d8cf0f-9efd-49fd-b604-e24466eddace"
-  }
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('index')/search.stats?api-version=2020-06-30",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2e78e526-fb24-4bd3-a82c-178d67f6d71e"
+    },
+    "Response" : {
+      "content-length" : "76",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "request-id" : "2e78e526-fb24-4bd3-a82c-178d67f6d71e",
+      "StatusCode" : "404",
+      "Date" : "Thu, 27 May 2021 21:06:59 GMT",
+      "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "client-request-id" : "2e78e526-fb24-4bd3-a82c-178d67f6d71e",
+      "elapsed-time" : "11",
+      "OData-Version" : "4.0",
+      "Expires" : "-1",
+      "Body" : "{\"error\":{\"code\":\"\",\"message\":\"An index named 'index' could not be found.\"}}",
+      "Content-Language" : "en",
+      "x-ms-client-request-id" : "2e78e526-fb24-4bd3-a82c-178d67f6d71e",
+      "Preference-Applied" : "odata.include-annotations=\"*\"",
+      "Content-Type" : "application/json; odata.metadata=minimal"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "2e78e526-fb24-4bd3-a82c-178d67f6d71e" ]
 }

@@ -1,0 +1,90 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/8b3d7c638b3d7c63ee7423330223a7b0d4464924bd",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "64cc1a3a-abab-4624-956f-6ea99b1ffc08"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "ea8df1db-5003-009d-1709-41049b000000",
+      "x-ms-client-request-id" : "64cc1a3a-abab-4624-956f-6ea99b1ffc08",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.queue.core.windows.net/8b3d7c638b3d7c63ee7423330223a7b0d4464924bd/messages",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "5b54697d-7629-4a3c-92ac-275ab3160e92",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "90ba11d4-f003-00bb-7609-414c83000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>6e386574-3e4e-4977-8124-72a3aca35a5d</MessageId><InsertionTime>Tue, 04 May 2021 17:18:39 GMT</InsertionTime><ExpirationTime>Tue, 11 May 2021 17:18:39 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAAoMdahglB1wE=</PopReceipt><TimeNextVisible>Tue, 04 May 2021 17:18:39 GMT</TimeNextVisible></QueueMessage></QueueMessagesList>",
+      "x-ms-client-request-id" : "5b54697d-7629-4a3c-92ac-275ab3160e92",
+      "Date" : "Tue, 04 May 2021 17:18:38 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.queue.core.windows.net/8b3d7c638b3d7c63ee7423330223a7b0d4464924bd/messages?numofmessages=1",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6f5606f3-ce90-4cfa-ad60-6eac23b59dd0"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2020-06-12",
+      "Cache-Control" : "no-cache",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "ea4bba5e-6003-0086-4d09-413a98000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><QueueMessagesList><QueueMessage><MessageId>6e386574-3e4e-4977-8124-72a3aca35a5d</MessageId><InsertionTime>Tue, 04 May 2021 17:18:39 GMT</InsertionTime><ExpirationTime>Tue, 11 May 2021 17:18:39 GMT</ExpirationTime><PopReceipt>AgAAAAMAAAAAAAAA/NZJmAlB1wE=</PopReceipt><TimeNextVisible>Tue, 04 May 2021 17:19:09 GMT</TimeNextVisible><DequeueCount>1</DequeueCount><MessageText>test message before update</MessageText></QueueMessage></QueueMessagesList>",
+      "x-ms-client-request-id" : "6f5606f3-ce90-4cfa-ad60-6eac23b59dd0",
+      "Date" : "Tue, 04 May 2021 17:18:39 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.queue.core.windows.net/8b3d7c638b3d7c63ee7423330223a7b0d4464924bd/messages/6e386574-3e4e-4977-8124-72a3aca35a5dRandom?popreceipt=AgAAAAMAAAAAAAAA/NZJmAlB1wE%3D&visibilitytimeout=1",
+    "Headers" : {
+      "x-ms-version" : "2020-06-12",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.10.0-beta.1 (11.0.8; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "7f2a05ab-4896-4ea1-9ecc-d8a4971fbd13",
+      "Content-Type" : "application/xml"
+    },
+    "Response" : {
+      "content-length" : "221",
+      "x-ms-version" : "2020-06-12",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "MessageNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "536624d3-4003-00dc-1709-415c7f000000",
+      "Body" : "﻿<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>MessageNotFound</Code><Message>The specified message does not exist.\nRequestId:536624d3-4003-00dc-1709-415c7f000000\nTime:2021-05-04T17:18:39.8053827Z</Message></Error>",
+      "x-ms-client-request-id" : "7f2a05ab-4896-4ea1-9ecc-d8a4971fbd13",
+      "Date" : "Tue, 04 May 2021 17:18:39 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "8b3d7c638b3d7c63ee7423330223a7b0d4464924bd" ]
+}

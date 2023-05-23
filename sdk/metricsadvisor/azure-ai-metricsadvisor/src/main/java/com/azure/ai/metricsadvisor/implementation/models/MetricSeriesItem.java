@@ -24,9 +24,6 @@ public final class MetricSeriesItem {
     @JsonProperty(value = "dimension", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, String> dimension;
 
-    /** Creates an instance of MetricSeriesItem class. */
-    public MetricSeriesItem() {}
-
     /**
      * Get the metricId property: metric unique id.
      *

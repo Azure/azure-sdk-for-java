@@ -62,10 +62,6 @@ public final class BlobBatchAsyncClient {
         this.containerScoped = containerScoped;
     }
 
-    AzureBlobStorageImpl getClient() {
-        return client;
-    }
-
     /**
      * Gets a {@link BlobBatch} used to configure a batching operation to send to Azure Storage blobs.
      *

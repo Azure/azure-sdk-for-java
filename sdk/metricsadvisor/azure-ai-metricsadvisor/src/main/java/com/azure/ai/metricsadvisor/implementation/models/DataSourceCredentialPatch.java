@@ -37,9 +37,6 @@ public class DataSourceCredentialPatch {
     @JsonProperty(value = "dataSourceCredentialDescription")
     private String dataSourceCredentialDescription;
 
-    /** Creates an instance of DataSourceCredentialPatch class. */
-    public DataSourceCredentialPatch() {}
-
     /**
      * Get the dataSourceCredentialName property: Name of data source credential.
      *

@@ -28,9 +28,6 @@ public final class LanguageInput {
     @JsonProperty(value = "countryHint")
     private String countryHint;
 
-    /** Creates an instance of LanguageInput class. */
-    public LanguageInput() {}
-
     /**
      * Get the id property: Unique, non-empty document identifier.
      *

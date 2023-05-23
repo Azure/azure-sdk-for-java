@@ -21,9 +21,6 @@ public final class SentimentLROResult extends AnalyzeTextLROResult {
     @JsonProperty(value = "results", required = true)
     private SentimentResponse results;
 
-    /** Creates an instance of SentimentLROResult class. */
-    public SentimentLROResult() {}
-
     /**
      * Get the results property: The results property.
      *

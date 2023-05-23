@@ -7,8 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.util.Collection;
-
 /**
  * Gets the healthcare entity category inferred by the text analytics service's healthcare entity recognition model.
  * The list of available categories is described at
@@ -103,10 +101,5 @@ public final class HealthcareEntityCategory extends ExpandableStringEnum<Healthc
     @JsonCreator
     public static HealthcareEntityCategory fromString(String name) {
         return fromString(name, HealthcareEntityCategory.class);
-    }
-
-    /** @return known HealthcareEntityCategory values. */
-    public static Collection<HealthcareEntityCategory> values() {
-        return values(HealthcareEntityCategory.class);
     }
 }

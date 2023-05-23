@@ -22,9 +22,6 @@ public final class SqlSourceParameter {
     @JsonProperty(value = "query", required = true)
     private String query;
 
-    /** Creates an instance of SqlSourceParameter class. */
-    public SqlSourceParameter() {}
-
     /**
      * Get the connectionString property: The connection string of this database.
      *

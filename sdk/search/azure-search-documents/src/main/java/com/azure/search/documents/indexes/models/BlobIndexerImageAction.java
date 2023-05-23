@@ -7,41 +7,20 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Determines how to process embedded images and image files in Azure blob storage. Setting the "imageAction"
- * configuration to any value other than "none" requires that a skillset also be attached to that indexer.
- */
+/** Defines values for BlobIndexerImageAction. */
 public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndexerImageAction> {
-    /** Ignores embedded images or image files in the data set. This is the default. */
+    /** Static value none for BlobIndexerImageAction. */
     public static final BlobIndexerImageAction NONE = fromString("none");
 
-    /**
-     * Extracts text from images (for example, the word "STOP" from a traffic stop sign), and embeds it into the content
-     * field. This action requires that "dataToExtract" is set to "contentAndMetadata". A normalized image refers to
-     * additional processing resulting in uniform image output, sized and rotated to promote consistent rendering when
-     * you include images in visual search results. This information is generated for each image when you use this
-     * option.
-     */
+    /** Static value generateNormalizedImages for BlobIndexerImageAction. */
     public static final BlobIndexerImageAction GENERATE_NORMALIZED_IMAGES = fromString("generateNormalizedImages");
 
-    /**
-     * Extracts text from images (for example, the word "STOP" from a traffic stop sign), and embeds it into the content
-     * field, but treats PDF files differently in that each page will be rendered as an image and normalized
-     * accordingly, instead of extracting embedded images. Non-PDF file types will be treated the same as if
-     * "generateNormalizedImages" was set.
-     */
+    /** Static value generateNormalizedImagePerPage for BlobIndexerImageAction. */
     public static final BlobIndexerImageAction GENERATE_NORMALIZED_IMAGE_PER_PAGE =
             fromString("generateNormalizedImagePerPage");
-
-    /**
-     * Creates a new instance of BlobIndexerImageAction value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public BlobIndexerImageAction() {}
 
     /**
      * Creates or finds a BlobIndexerImageAction from its string representation.
@@ -49,6 +28,7 @@ public final class BlobIndexerImageAction extends ExpandableStringEnum<BlobIndex
      * @param name a name to look for.
      * @return the corresponding BlobIndexerImageAction.
      */
+    @JsonCreator
     public static BlobIndexerImageAction fromString(String name) {
         return fromString(name, BlobIndexerImageAction.class);
     }

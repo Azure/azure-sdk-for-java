@@ -5,44 +5,11 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CustomLabelClassificationResultDocumentsItem model. */
 @Fluent
 public final class CustomLabelClassificationResultDocumentsItem extends ClassificationDocumentResult {
-    /*
-     * If 'language' is set to 'auto' for the document in the request this field will contain a 2 letter ISO 639-1
-     * representation of the language detected for this document.
-     */
-    @JsonProperty(value = "detectedLanguage")
-    private DetectedLanguage detectedLanguage;
-
-    /** Creates an instance of CustomLabelClassificationResultDocumentsItem class. */
-    public CustomLabelClassificationResultDocumentsItem() {}
-
-    /**
-     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
-     *
-     * @return the detectedLanguage value.
-     */
-    public DetectedLanguage getDetectedLanguage() {
-        return this.detectedLanguage;
-    }
-
-    /**
-     * Set the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
-     *
-     * @param detectedLanguage the detectedLanguage value to set.
-     * @return the CustomLabelClassificationResultDocumentsItem object itself.
-     */
-    public CustomLabelClassificationResultDocumentsItem setDetectedLanguage(DetectedLanguage detectedLanguage) {
-        this.detectedLanguage = detectedLanguage;
-        return this;
-    }
-
     /** {@inheritDoc} */
     @Override
     public CustomLabelClassificationResultDocumentsItem setClassProperty(List<ClassificationResult> classProperty) {

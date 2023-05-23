@@ -20,9 +20,6 @@ public final class EntityLinkingTaskResult extends AnalyzeTextTaskResult {
     @JsonProperty(value = "results", required = true)
     private EntityLinkingResult results;
 
-    /** Creates an instance of EntityLinkingTaskResult class. */
-    public EntityLinkingTaskResult() {}
-
     /**
      * Get the results property: The results property.
      *

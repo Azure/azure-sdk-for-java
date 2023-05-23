@@ -40,9 +40,6 @@ public final class AzureDataLakeStorageGen2ParameterPatch {
     @JsonProperty(value = "fileTemplate")
     private String fileTemplate;
 
-    /** Creates an instance of AzureDataLakeStorageGen2ParameterPatch class. */
-    public AzureDataLakeStorageGen2ParameterPatch() {}
-
     /**
      * Get the accountName property: The account name of this Azure Data Lake.
      *

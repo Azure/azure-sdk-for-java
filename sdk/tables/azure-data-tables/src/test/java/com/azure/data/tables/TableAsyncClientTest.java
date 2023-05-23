@@ -115,7 +115,7 @@ public class TableAsyncClientTest extends TableClientTestBase {
         TokenCredential credential = null;
         if (interceptorManager.isPlaybackMode()) {
             credential = new MockTokenCredential();
-        } else {
+        } else if (interceptorManager.isRecordMode()) {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
             credential = new ClientSecretCredentialBuilder()
@@ -1196,36 +1196,6 @@ public class TableAsyncClientTest extends TableClientTestBase {
                     assertEquals(permissions, accessPolicy.getPermissions());
                 }
             })
-            .expectComplete()
-            .verify();
-    }
-
-    @Test
-    public void allowsCreationOfEntityWithEmptyStringPrimaryKey() {
-        Assumptions.assumeFalse(IS_COSMOS_TEST,
-            "Empty row or partition keys are not supported on Cosmos endpoints.");
-        String entityName = testResourceNamer.randomName("name", 10);
-        TableEntity entity = new TableEntity("", "");
-        entity.addProperty("Name", entityName);
-        StepVerifier.create(tableClient.createEntityWithResponse(entity))
-            .assertNext(response -> assertEquals(204, response.getStatusCode()))
-            .expectComplete()
-            .verify();
-    }
-
-    @Test
-    public void allowListEntitiesWithEmptyPrimaryKey() {
-        Assumptions.assumeFalse(IS_COSMOS_TEST,
-            "Empty row or partition keys are not supported on Cosmos endpoints.");
-        TableEntity entity = new TableEntity("", "");
-        String entityName = testResourceNamer.randomName("name", 10);
-        entity.addProperty("Name", entityName);
-        tableClient.createEntity(entity).block();
-        ListEntitiesOptions options = new ListEntitiesOptions();
-        options.setFilter("PartitionKey eq '' and RowKey eq ''");
-        StepVerifier.create(tableClient.listEntities(options))
-            .assertNext(en -> assertEquals(entityName, en.getProperties().get("Name")))
-            .expectNextCount(0)
             .expectComplete()
             .verify();
     }

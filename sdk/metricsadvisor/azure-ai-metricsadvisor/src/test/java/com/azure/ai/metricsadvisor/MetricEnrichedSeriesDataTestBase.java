@@ -7,8 +7,6 @@ import com.azure.ai.metricsadvisor.models.DimensionKey;
 import com.azure.ai.metricsadvisor.models.MetricEnrichedSeriesData;
 import com.azure.core.http.HttpClient;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
@@ -17,8 +15,6 @@ import java.util.List;
 import static com.azure.ai.metricsadvisor.AnomalyAlertTestBase.DETECTION_CONFIGURATION_ID;
 
 public abstract class MetricEnrichedSeriesDataTestBase extends MetricsAdvisorClientTestBase {
-    @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     public abstract void getEnrichedSeriesData(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     // Pre-configured test resource.

@@ -32,7 +32,6 @@ public final class SearchErrorException extends HttpResponseException {
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
     @Override
     public SearchError getValue() {
         return (SearchError) super.getValue();

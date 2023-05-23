@@ -7,8 +7,6 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import java.util.Collection;
-
 /**
  * Defines values for {@link TextSentiment}.
  */
@@ -43,10 +41,5 @@ public final class TextSentiment extends ExpandableStringEnum<TextSentiment> {
     @JsonCreator
     public static TextSentiment fromString(String name) {
         return fromString(name, TextSentiment.class);
-    }
-
-    /** @return known TextSentiment values. */
-    public static Collection<TextSentiment> values() {
-        return values(TextSentiment.class);
     }
 }

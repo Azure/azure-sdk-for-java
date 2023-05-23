@@ -9,7 +9,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Entity model. */
 @Fluent
-public class Entity {
+public final class Entity {
     /*
      * Entity text as appears in the request.
      */
@@ -45,9 +45,6 @@ public class Entity {
      */
     @JsonProperty(value = "confidenceScore", required = true)
     private double confidenceScore;
-
-    /** Creates an instance of Entity class. */
-    public Entity() {}
 
     /**
      * Get the text property: Entity text as appears in the request.

@@ -15,17 +15,14 @@ public final class ExtractiveSummarizationResult extends PreBuiltResult {
      * Response by document
      */
     @JsonProperty(value = "documents", required = true)
-    private List<ExtractedSummaryDocumentResultWithDetectedLanguage> documents;
-
-    /** Creates an instance of ExtractiveSummarizationResult class. */
-    public ExtractiveSummarizationResult() {}
+    private List<ExtractiveSummarizationResultDocumentsItem> documents;
 
     /**
      * Get the documents property: Response by document.
      *
      * @return the documents value.
      */
-    public List<ExtractedSummaryDocumentResultWithDetectedLanguage> getDocuments() {
+    public List<ExtractiveSummarizationResultDocumentsItem> getDocuments() {
         return this.documents;
     }
 
@@ -35,15 +32,14 @@ public final class ExtractiveSummarizationResult extends PreBuiltResult {
      * @param documents the documents value to set.
      * @return the ExtractiveSummarizationResult object itself.
      */
-    public ExtractiveSummarizationResult setDocuments(
-            List<ExtractedSummaryDocumentResultWithDetectedLanguage> documents) {
+    public ExtractiveSummarizationResult setDocuments(List<ExtractiveSummarizationResultDocumentsItem> documents) {
         this.documents = documents;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ExtractiveSummarizationResult setErrors(List<InputError> errors) {
+    public ExtractiveSummarizationResult setErrors(List<DocumentError> errors) {
         super.setErrors(errors);
         return this;
     }
