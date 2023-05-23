@@ -5,38 +5,38 @@
 package com.azure.resourcemanager.elastic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.elastic.models.UserApiKeyResponseProperties;
+import com.azure.resourcemanager.elastic.models.ElasticVersionListProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The User Api Key created for the Organization associated with the User Email Id that was passed in the request. */
+/** Elastic Version List Format. */
 @Fluent
-public final class UserApiKeyResponseInner {
+public final class ElasticVersionListFormatInner {
     /*
-     * The properties property.
+     * Elastic Version Properties
      */
     @JsonProperty(value = "properties")
-    private UserApiKeyResponseProperties properties;
+    private ElasticVersionListProperties properties;
 
-    /** Creates an instance of UserApiKeyResponseInner class. */
-    public UserApiKeyResponseInner() {
+    /** Creates an instance of ElasticVersionListFormatInner class. */
+    public ElasticVersionListFormatInner() {
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: Elastic Version Properties.
      *
      * @return the properties value.
      */
-    public UserApiKeyResponseProperties properties() {
+    public ElasticVersionListProperties properties() {
         return this.properties;
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: Elastic Version Properties.
      *
      * @param properties the properties value to set.
-     * @return the UserApiKeyResponseInner object itself.
+     * @return the ElasticVersionListFormatInner object itself.
      */
-    public UserApiKeyResponseInner withProperties(UserApiKeyResponseProperties properties) {
+    public ElasticVersionListFormatInner withProperties(ElasticVersionListProperties properties) {
         this.properties = properties;
         return this;
     }
