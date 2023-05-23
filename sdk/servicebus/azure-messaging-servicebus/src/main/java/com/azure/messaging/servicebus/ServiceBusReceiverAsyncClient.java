@@ -1738,17 +1738,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     /**
      * Begin the recurring lock renewal of the given message.
      *
-     * @param messageContext the message to keep renewing.
+     * @param message the message to keep renewing.
      * @return {@link Disposable} that when disposed of, results in stopping the recurring renewal.
      */
-    Disposable beginLockRenewal(ServiceBusMessageContext messageContext) {
+    Disposable beginLockRenewal(ServiceBusReceivedMessage message) {
         if (isSessionEnabled) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("Renewing message lock is an invalid operation when working with sessions."));
         }
         final Duration maxRenewalDuration = receiverOptions.getMaxLockRenewDuration();
         Objects.requireNonNull(maxRenewalDuration, "'receivingOptions.maxAutoLockRenewDuration' is required for recurring lock renewal.");
 
-        final ServiceBusReceivedMessage message = messageContext.getMessage();
         if (message == null) {
             return Disposables.disposed();
         }

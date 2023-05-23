@@ -316,37 +316,30 @@ public final class NonSessionProcessor {
             }
 
             private void handleMessage(ServiceBusReceivedMessage message) {
-                final ServiceBusMessageContext messageContext = new ServiceBusMessageContext(message);
-                final Throwable error = messageContext.getThrowable();
-                if (error != null) {
-                    notifyError(error);
-                    return;
-                }
                 final Disposable lockRenewDisposable;
                 if (enableAutoLockRenew) {
-                    lockRenewDisposable = client.beginLockRenewal(messageContext);
+                    lockRenewDisposable = client.beginLockRenewal(message);
                 } else {
                     lockRenewDisposable = Disposables.disposed();
                 }
-                final boolean success = notifyMessage(messageContext);
+                final boolean success = notifyMessage(message);
                 if (enableAutoDisposition) {
                     if (success) {
-                        complete(messageContext);
+                        complete(message);
                     } else {
-                        abandon(messageContext);
+                        abandon(message);
                     }
                 }
                 lockRenewDisposable.dispose();
             }
 
-            private boolean notifyMessage(ServiceBusMessageContext messageContext) {
-                final ServiceBusReceivedMessage message = messageContext.getMessage();
+            private boolean notifyMessage(ServiceBusReceivedMessage message) {
                 final Context span = instrumentation.instrumentProcess("ServiceBus.process", message, Context.NONE);
                 final AutoCloseable scope  = tracer.makeSpanCurrent(span);
 
                 Throwable error = null;
                 try {
-                    processMessage.accept(new ServiceBusReceivedMessageContext(client, messageContext));
+                    processMessage.accept(new ServiceBusReceivedMessageContext(client, new ServiceBusMessageContext(message)));
                 } catch (Exception e) {
                     error = e;
                 }
@@ -369,17 +362,17 @@ public final class NonSessionProcessor {
                 }
             }
 
-            private void complete(ServiceBusMessageContext messageContext) {
+            private void complete(ServiceBusReceivedMessage message) {
                 try {
-                    client.complete(messageContext.getMessage()).block();
+                    client.complete(message).block();
                 } catch (Exception e) {
                     logger.atVerbose().log("Failed to complete message", e);
                 }
             }
 
-            private void abandon(ServiceBusMessageContext messageContext) {
+            private void abandon(ServiceBusReceivedMessage message) {
                 try {
-                    client.abandon(messageContext.getMessage()).block();
+                    client.abandon(message).block();
                 } catch (Exception e) {
                     logger.atVerbose().log("Failed to abandon message", e);
                 }
