@@ -1,14 +1,27 @@
 # Release History
 
-## 10.2.0-beta.1 (Unreleased)
+## 10.2.0 (2023-05-23)
 
-### Features Added
+### Features
+
+- Added new customer enum type `ContainerType`.
+    - This property determines the container technology to be used.
+    - Possible values: docker_compatible, cri_compatible.
+- Added boolean property `enableAutomaticUpgrade` to the `VMExtension` model to determine whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available.
+- Added boolean property `enableAcceleratedNetworking` to the `NetworkConfiguration` model to determine whether this pool should enable accelerated networking.
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Changed property `type` in `ContainerConfiguration` from string type to enum type `ContainerType`.
+- Remove the following methods in `JobOperations`.
+   - `getAllJobsLifetimeStatistics()`.
+   - `getAllJobsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors)`.
+- Remove the following methods in `PoolOperations`.
+    - `getAllPoolsLifetimeStatistics()`.
+    - `getAllPoolsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors)`.
 
 ### Other Changes
+
 
 ## 10.1.0 (2022-11-15)
 

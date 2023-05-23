@@ -23,6 +23,7 @@ import java.util.LinkedList;
 public class BatchClient {
 
     private final BatchServiceClient protocolLayer;
+    @Deprecated
     private final CertificateOperations certificateOperations;
     private final JobOperations jobOperations;
     private final TaskOperations taskOperations;
@@ -104,9 +105,11 @@ public class BatchClient {
 
     /**
      * Gets a {@link CertificateOperations} object for performing certificate-related operations on the associated account.
+     * Warning: This operation is deprecated and will be removed after February, 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
      *
      * @return An instance of the {@link CertificateOperations} class.
      */
+    @Deprecated
     public CertificateOperations certificateOperations() {
         return certificateOperations;
     }
