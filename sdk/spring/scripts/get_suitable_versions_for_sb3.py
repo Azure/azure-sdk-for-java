@@ -20,7 +20,7 @@ import os
 import argparse
 import requests
 from log import log
-from sync_external_dependencies import version_greater_than
+from version_util import version_greater_than
 from replace_util import change_to_repo_root_dir
 
 EXTERNAL_DEPENDENCIES_FILE = 'eng/versioning/external_dependencies.txt'
