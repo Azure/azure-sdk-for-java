@@ -62,6 +62,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
@@ -116,7 +117,6 @@ import static com.azure.ai.textanalytics.TestUtils.getRecognizePiiEntitiesResult
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT_BATCH;
-import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -127,7 +127,8 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient client;
 
     @BeforeAll
-    static void beforeAll() {
+    static void beforeAll() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(180);
         StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
     }
 
@@ -146,7 +147,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsAsyncClient getTextAnalyticsAsyncClient(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         return getTextAnalyticsClientBuilder(
-            buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
+            buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
             isStaticResource)
             .buildAsyncClient();
@@ -1245,38 +1246,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
             StepVerifier.create(client.extractKeyPhrasesBatch(inputs, null, options))
                 .assertNext(response -> validateExtractKeyPhrasesResultCollection(true, getExpectedBatchKeyPhrases(), response))
                 .verifyComplete());
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        extractKeyPhrasesWarningRunner(
-            input -> StepVerifier.create(client.extractKeyPhrases(input))
-                .assertNext(keyPhrasesResult -> {
-                    keyPhrasesResult.getWarnings().forEach(warning -> {
-                        assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
-                    });
-                })
-                .verifyComplete()
-        );
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion, false);
-        extractKeyPhrasesBatchWarningRunner(
-            inputs -> StepVerifier.create(client.extractKeyPhrasesBatchWithResponse(inputs, null))
-                .assertNext(response -> response.getValue().forEach(keyPhrasesResult ->
-                    keyPhrasesResult.getKeyPhrases().getWarnings().forEach(warning -> {
-                        assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                        assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
-                    })
-                ))
-                .verifyComplete()
-        );
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -11,10 +11,9 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.AsyncPollResponse;
-import com.azure.core.util.polling.SyncPoller;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.certificates.models.CertificateContact;
@@ -65,8 +64,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
     private void createCertificateAsyncClient(HttpClient httpClient, CertificateServiceVersion serviceVersion,
                                               String testTenantId) {
-        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(httpClient == null
-            ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
+        HttpPipeline httpPipeline = getHttpPipeline(buildAsyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient), testTenantId);
         CertificateClientImpl implClient = spy(new CertificateClientImpl(getEndpoint(), httpPipeline, serviceVersion));
 
         if (interceptorManager.isPlaybackMode()) {
@@ -501,20 +500,25 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         cancelCertificateOperationRunner((certName) -> {
-            // Had to use a sync poller as the async version of this test was very flaky.
-            // TODO (vcolin7): Figure out the best way to cancel an operation consistently.
-            SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
-                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault()).getSyncPoller();
+            PollerFlux<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
+                certificateAsyncClient.beginCreateCertificate(certName, CertificatePolicy.getDefault())
+                    .setPollInterval(Duration.ofMillis(250));
 
-            certPoller.poll();
-            certPoller.cancelOperation();
-            certPoller.waitUntil(LongRunningOperationStatus.USER_CANCELLED);
+            StepVerifier.create(certPoller
+                    .takeUntil(asyncPollResponse ->
+                        asyncPollResponse.getStatus() == LongRunningOperationStatus.IN_PROGRESS)
+                    .flatMap(AsyncPollResponse::cancelOperation))
+                .assertNext(certificateOperation ->
+                    assertTrue(certificateOperation.getCancellationRequested()))
+                .verifyComplete();
 
-            KeyVaultCertificateWithPolicy certificate = certPoller.getFinalResult();
-
-            assertFalse(certificate.getProperties().isEnabled());
-
-            certPoller.waitForCompletion();
+            StepVerifier.create(certPoller
+                    .takeUntil(asyncPollResponse ->
+                        asyncPollResponse.getStatus() == LongRunningOperationStatus.USER_CANCELLED)
+                    .flatMap(AsyncPollResponse::getFinalResult))
+                .assertNext(certificate ->
+                    assertFalse(certificate.getProperties().isEnabled()))
+                .verifyComplete();
         });
     }
 

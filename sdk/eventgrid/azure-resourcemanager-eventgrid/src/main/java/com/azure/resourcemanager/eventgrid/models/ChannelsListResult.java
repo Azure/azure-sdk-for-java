@@ -24,6 +24,10 @@ public final class ChannelsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ChannelsListResult class. */
+    public ChannelsListResult() {
+    }
+
     /**
      * Get the value property: A collection of Channels.
      *

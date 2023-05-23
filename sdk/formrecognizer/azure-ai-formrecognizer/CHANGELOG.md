@@ -1,7 +1,47 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
+## 4.1.0-beta.3 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 4.1.0-beta.2 (2023-05-10)
+### Bugs Fixed
+- Document Table cell now returns correct values for bounding boxes.
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+
+## 4.0.7 (2023-05-10)
+
+### Bugs Fixed
+- Document Table cell now returns correct values for bounding boxes.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+
+## 4.0.6 (2023-04-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+
+## 4.1.0-beta.1 (2023-04-12)
 ### Features Added
 - Added support for analyzing new document types
 - Added support for AzureBlobList source type when building document models
@@ -20,14 +60,15 @@
 - Added properties `annotations`, `images`, `formulas`, and `barcodes` to `DocumentPage`.
 - Added models `DocumentAnnotation`, `DocumentImage`, `DocumentFormula`, and `DocumentBarcode`
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 #### Known Bug
-- `com.azure.core.exception.HttpResponseException: Deserialization Failed` error when using the `beginClasifyDocument` 
+- `com.azure.core.exception.HttpResponseException: Deserialization Failed` error when using the `beginClassifyDocument` 
 method on DocumentAnalysisAsyncClient and DocumentAnalysisClient.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
 
 ## 4.0.5 (2023-03-16)
 

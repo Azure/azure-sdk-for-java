@@ -11,20 +11,19 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class VMSizeProperties {
     /*
-     * Specifies the number of vCPUs available for the VM. <br><br> When this property is not specified in the request
-     * body the default behavior is to set it to the value of vCPUs available for that VM size exposed in api response
-     * of [List all available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) .
+     * Specifies the number of vCPUs available for the VM. When this property is not specified in the request body the
+     * default behavior is to set it to the value of vCPUs available for that VM size exposed in api response of [List
+     * all available virtual machine sizes in a
+     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      */
     @JsonProperty(value = "vCPUsAvailable")
     private Integer vCpusAvailable;
 
     /*
-     * Specifies the vCPU to physical core ratio. <br><br> When this property is not specified in the request body the
-     * default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response of [List all
-     * available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) <br><br> Setting this property to
-     * 1 also means that hyper-threading is disabled.
+     * Specifies the vCPU to physical core ratio. When this property is not specified in the request body the default
+     * behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response of [List all available
+     * virtual machine sizes in a region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+     * **Setting this property to 1 also means that hyper-threading is disabled.**
      */
     @JsonProperty(value = "vCPUsPerCore")
     private Integer vCpusPerCore;
@@ -34,10 +33,10 @@ public final class VMSizeProperties {
     }
 
     /**
-     * Get the vCpusAvailable property: Specifies the number of vCPUs available for the VM. &lt;br&gt;&lt;br&gt; When
-     * this property is not specified in the request body the default behavior is to set it to the value of vCPUs
-     * available for that VM size exposed in api response of [List all available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) .
+     * Get the vCpusAvailable property: Specifies the number of vCPUs available for the VM. When this property is not
+     * specified in the request body the default behavior is to set it to the value of vCPUs available for that VM size
+     * exposed in api response of [List all available virtual machine sizes in a
+     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      *
      * @return the vCpusAvailable value.
      */
@@ -46,10 +45,10 @@ public final class VMSizeProperties {
     }
 
     /**
-     * Set the vCpusAvailable property: Specifies the number of vCPUs available for the VM. &lt;br&gt;&lt;br&gt; When
-     * this property is not specified in the request body the default behavior is to set it to the value of vCPUs
-     * available for that VM size exposed in api response of [List all available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) .
+     * Set the vCpusAvailable property: Specifies the number of vCPUs available for the VM. When this property is not
+     * specified in the request body the default behavior is to set it to the value of vCPUs available for that VM size
+     * exposed in api response of [List all available virtual machine sizes in a
+     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      *
      * @param vCpusAvailable the vCpusAvailable value to set.
      * @return the VMSizeProperties object itself.
@@ -60,11 +59,11 @@ public final class VMSizeProperties {
     }
 
     /**
-     * Get the vCpusPerCore property: Specifies the vCPU to physical core ratio. &lt;br&gt;&lt;br&gt; When this property
-     * is not specified in the request body the default behavior is set to the value of vCPUsPerCore for the VM Size
-     * exposed in api response of [List all available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) &lt;br&gt;&lt;br&gt; Setting this
-     * property to 1 also means that hyper-threading is disabled.
+     * Get the vCpusPerCore property: Specifies the vCPU to physical core ratio. When this property is not specified in
+     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response
+     * of [List all available virtual machine sizes in a
+     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list). **Setting this property to 1 also
+     * means that hyper-threading is disabled.**.
      *
      * @return the vCpusPerCore value.
      */
@@ -73,11 +72,11 @@ public final class VMSizeProperties {
     }
 
     /**
-     * Set the vCpusPerCore property: Specifies the vCPU to physical core ratio. &lt;br&gt;&lt;br&gt; When this property
-     * is not specified in the request body the default behavior is set to the value of vCPUsPerCore for the VM Size
-     * exposed in api response of [List all available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) &lt;br&gt;&lt;br&gt; Setting this
-     * property to 1 also means that hyper-threading is disabled.
+     * Set the vCpusPerCore property: Specifies the vCPU to physical core ratio. When this property is not specified in
+     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response
+     * of [List all available virtual machine sizes in a
+     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list). **Setting this property to 1 also
+     * means that hyper-threading is disabled.**.
      *
      * @param vCpusPerCore the vCpusPerCore value to set.
      * @return the VMSizeProperties object itself.

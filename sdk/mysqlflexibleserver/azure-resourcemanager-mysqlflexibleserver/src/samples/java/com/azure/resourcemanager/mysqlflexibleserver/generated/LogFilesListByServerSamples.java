@@ -7,7 +7,7 @@ package com.azure.resourcemanager.mysqlflexibleserver.generated;
 /** Samples for LogFiles ListByServer. */
 public final class LogFilesListByServerSamples {
     /*
-     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/preview/2021-12-01-preview/examples/LogFilesListByServer.json
+     * x-ms-original-file: specification/mysql/resource-manager/Microsoft.DBforMySQL/LogFiles/preview/2021-12-01-preview/examples/LogFilesListByServer.json
      */
     /**
      * Sample code: List all server log files for a server.

@@ -22,6 +22,10 @@ public final class RouteErrorRange {
     @JsonProperty(value = "end")
     private RouteErrorPosition end;
 
+    /** Creates an instance of RouteErrorRange class. */
+    public RouteErrorRange() {
+    }
+
     /**
      * Get the start property: Start where the route error happened.
      *

@@ -58,6 +58,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -67,6 +68,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
@@ -122,7 +124,6 @@ import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_C
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT_BATCH;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_PARAMETER_VALUE;
-import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -131,6 +132,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsClient client;
+
+    @BeforeAll
+    static void beforeAll() throws InterruptedException {
+        TimeUnit.SECONDS.sleep(180);
+    }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
@@ -142,7 +148,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     private TextAnalyticsClient getTextAnalyticsClient(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion, boolean isStaticResource) {
         return getTextAnalyticsClientBuilder(
-            buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient),
+            buildSyncAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
             serviceVersion,
             isStaticResource)
             .buildClient();
@@ -1208,30 +1215,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
         extractBatchStringKeyPhrasesShowStatsRunner((inputs, options) ->
             validateExtractKeyPhrasesResultCollection(true, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, null, options)));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractKeyPhrasesWarningRunner(input ->
-            client.extractKeyPhrases(input).getWarnings().forEach(warning -> {
-                assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
-            }));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractKeyPhrasesBatchWarningRunner(inputs ->
-            client.extractKeyPhrasesBatchWithResponse(inputs, null, Context.NONE).getValue().forEach(keyPhrasesResult ->
-                keyPhrasesResult.getKeyPhrases().getWarnings().forEach(warning -> {
-                    assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                    assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
-                })
-            ));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

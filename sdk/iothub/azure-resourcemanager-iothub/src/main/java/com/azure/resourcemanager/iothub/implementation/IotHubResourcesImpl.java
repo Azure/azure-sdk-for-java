@@ -52,15 +52,6 @@ public final class IotHubResourcesImpl implements IotHubResources {
         this.serviceManager = serviceManager;
     }
 
-    public IotHubDescription getByResourceGroup(String resourceGroupName, String resourceName) {
-        IotHubDescriptionInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new IotHubDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IotHubDescription> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<IotHubDescriptionInner> inner =
@@ -71,6 +62,15 @@ public final class IotHubResourcesImpl implements IotHubResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IotHubDescriptionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IotHubDescription getByResourceGroup(String resourceGroupName, String resourceName) {
+        IotHubDescriptionInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new IotHubDescriptionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -115,15 +115,6 @@ public final class IotHubResourcesImpl implements IotHubResources {
         return Utils.mapPage(inner, inner1 -> new IotHubDescriptionImpl(inner1, this.manager()));
     }
 
-    public RegistryStatistics getStats(String resourceGroupName, String resourceName) {
-        RegistryStatisticsInner inner = this.serviceClient().getStats(resourceGroupName, resourceName);
-        if (inner != null) {
-            return new RegistryStatisticsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<RegistryStatistics> getStatsWithResponse(
         String resourceGroupName, String resourceName, Context context) {
         Response<RegistryStatisticsInner> inner =
@@ -134,6 +125,15 @@ public final class IotHubResourcesImpl implements IotHubResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new RegistryStatisticsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public RegistryStatistics getStats(String resourceGroupName, String resourceName) {
+        RegistryStatisticsInner inner = this.serviceClient().getStats(resourceGroupName, resourceName);
+        if (inner != null) {
+            return new RegistryStatisticsImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -168,17 +168,6 @@ public final class IotHubResourcesImpl implements IotHubResources {
         return Utils.mapPage(inner, inner1 -> new EventHubConsumerGroupInfoImpl(inner1, this.manager()));
     }
 
-    public EventHubConsumerGroupInfo getEventHubConsumerGroup(
-        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
-        EventHubConsumerGroupInfoInner inner =
-            this.serviceClient().getEventHubConsumerGroup(resourceGroupName, resourceName, eventHubEndpointName, name);
-        if (inner != null) {
-            return new EventHubConsumerGroupInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<EventHubConsumerGroupInfo> getEventHubConsumerGroupWithResponse(
         String resourceGroupName, String resourceName, String eventHubEndpointName, String name, Context context) {
         Response<EventHubConsumerGroupInfoInner> inner =
@@ -197,9 +186,15 @@ public final class IotHubResourcesImpl implements IotHubResources {
         }
     }
 
-    public void deleteEventHubConsumerGroup(
+    public EventHubConsumerGroupInfo getEventHubConsumerGroup(
         String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
-        this.serviceClient().deleteEventHubConsumerGroup(resourceGroupName, resourceName, eventHubEndpointName, name);
+        EventHubConsumerGroupInfoInner inner =
+            this.serviceClient().getEventHubConsumerGroup(resourceGroupName, resourceName, eventHubEndpointName, name);
+        if (inner != null) {
+            return new EventHubConsumerGroupInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteEventHubConsumerGroupWithResponse(
@@ -208,6 +203,11 @@ public final class IotHubResourcesImpl implements IotHubResources {
             .serviceClient()
             .deleteEventHubConsumerGroupWithResponse(
                 resourceGroupName, resourceName, eventHubEndpointName, name, context);
+    }
+
+    public void deleteEventHubConsumerGroup(
+        String resourceGroupName, String resourceName, String eventHubEndpointName, String name) {
+        this.serviceClient().deleteEventHubConsumerGroup(resourceGroupName, resourceName, eventHubEndpointName, name);
     }
 
     public PagedIterable<JobResponse> listJobs(String resourceGroupName, String resourceName) {
@@ -220,15 +220,6 @@ public final class IotHubResourcesImpl implements IotHubResources {
         return Utils.mapPage(inner, inner1 -> new JobResponseImpl(inner1, this.manager()));
     }
 
-    public JobResponse getJob(String resourceGroupName, String resourceName, String jobId) {
-        JobResponseInner inner = this.serviceClient().getJob(resourceGroupName, resourceName, jobId);
-        if (inner != null) {
-            return new JobResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<JobResponse> getJobWithResponse(
         String resourceGroupName, String resourceName, String jobId, Context context) {
         Response<JobResponseInner> inner =
@@ -239,6 +230,15 @@ public final class IotHubResourcesImpl implements IotHubResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new JobResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JobResponse getJob(String resourceGroupName, String resourceName, String jobId) {
+        JobResponseInner inner = this.serviceClient().getJob(resourceGroupName, resourceName, jobId);
+        if (inner != null) {
+            return new JobResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -270,15 +270,6 @@ public final class IotHubResourcesImpl implements IotHubResources {
         return Utils.mapPage(inner, inner1 -> new EndpointHealthDataImpl(inner1, this.manager()));
     }
 
-    public IotHubNameAvailabilityInfo checkNameAvailability(OperationInputs operationInputs) {
-        IotHubNameAvailabilityInfoInner inner = this.serviceClient().checkNameAvailability(operationInputs);
-        if (inner != null) {
-            return new IotHubNameAvailabilityInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IotHubNameAvailabilityInfo> checkNameAvailabilityWithResponse(
         OperationInputs operationInputs, Context context) {
         Response<IotHubNameAvailabilityInfoInner> inner =
@@ -294,10 +285,10 @@ public final class IotHubResourcesImpl implements IotHubResources {
         }
     }
 
-    public TestAllRoutesResult testAllRoutes(String iotHubName, String resourceGroupName, TestAllRoutesInput input) {
-        TestAllRoutesResultInner inner = this.serviceClient().testAllRoutes(iotHubName, resourceGroupName, input);
+    public IotHubNameAvailabilityInfo checkNameAvailability(OperationInputs operationInputs) {
+        IotHubNameAvailabilityInfoInner inner = this.serviceClient().checkNameAvailability(operationInputs);
         if (inner != null) {
-            return new TestAllRoutesResultImpl(inner, this.manager());
+            return new IotHubNameAvailabilityInfoImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -318,10 +309,10 @@ public final class IotHubResourcesImpl implements IotHubResources {
         }
     }
 
-    public TestRouteResult testRoute(String iotHubName, String resourceGroupName, TestRouteInput input) {
-        TestRouteResultInner inner = this.serviceClient().testRoute(iotHubName, resourceGroupName, input);
+    public TestAllRoutesResult testAllRoutes(String iotHubName, String resourceGroupName, TestAllRoutesInput input) {
+        TestAllRoutesResultInner inner = this.serviceClient().testAllRoutes(iotHubName, resourceGroupName, input);
         if (inner != null) {
-            return new TestRouteResultImpl(inner, this.manager());
+            return new TestAllRoutesResultImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -342,6 +333,15 @@ public final class IotHubResourcesImpl implements IotHubResources {
         }
     }
 
+    public TestRouteResult testRoute(String iotHubName, String resourceGroupName, TestRouteInput input) {
+        TestRouteResultInner inner = this.serviceClient().testRoute(iotHubName, resourceGroupName, input);
+        if (inner != null) {
+            return new TestRouteResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
     public PagedIterable<SharedAccessSignatureAuthorizationRule> listKeys(
         String resourceGroupName, String resourceName) {
         PagedIterable<SharedAccessSignatureAuthorizationRuleInner> inner =
@@ -354,17 +354,6 @@ public final class IotHubResourcesImpl implements IotHubResources {
         PagedIterable<SharedAccessSignatureAuthorizationRuleInner> inner =
             this.serviceClient().listKeys(resourceGroupName, resourceName, context);
         return Utils.mapPage(inner, inner1 -> new SharedAccessSignatureAuthorizationRuleImpl(inner1, this.manager()));
-    }
-
-    public SharedAccessSignatureAuthorizationRule getKeysForKeyName(
-        String resourceGroupName, String resourceName, String keyName) {
-        SharedAccessSignatureAuthorizationRuleInner inner =
-            this.serviceClient().getKeysForKeyName(resourceGroupName, resourceName, keyName);
-        if (inner != null) {
-            return new SharedAccessSignatureAuthorizationRuleImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<SharedAccessSignatureAuthorizationRule> getKeysForKeyNameWithResponse(
@@ -382,12 +371,12 @@ public final class IotHubResourcesImpl implements IotHubResources {
         }
     }
 
-    public JobResponse exportDevices(
-        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters) {
-        JobResponseInner inner =
-            this.serviceClient().exportDevices(resourceGroupName, resourceName, exportDevicesParameters);
+    public SharedAccessSignatureAuthorizationRule getKeysForKeyName(
+        String resourceGroupName, String resourceName, String keyName) {
+        SharedAccessSignatureAuthorizationRuleInner inner =
+            this.serviceClient().getKeysForKeyName(resourceGroupName, resourceName, keyName);
         if (inner != null) {
-            return new JobResponseImpl(inner, this.manager());
+            return new SharedAccessSignatureAuthorizationRuleImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -410,10 +399,10 @@ public final class IotHubResourcesImpl implements IotHubResources {
         }
     }
 
-    public JobResponse importDevices(
-        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters) {
+    public JobResponse exportDevices(
+        String resourceGroupName, String resourceName, ExportDevicesRequest exportDevicesParameters) {
         JobResponseInner inner =
-            this.serviceClient().importDevices(resourceGroupName, resourceName, importDevicesParameters);
+            this.serviceClient().exportDevices(resourceGroupName, resourceName, exportDevicesParameters);
         if (inner != null) {
             return new JobResponseImpl(inner, this.manager());
         } else {
@@ -433,6 +422,17 @@ public final class IotHubResourcesImpl implements IotHubResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new JobResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public JobResponse importDevices(
+        String resourceGroupName, String resourceName, ImportDevicesRequest importDevicesParameters) {
+        JobResponseInner inner =
+            this.serviceClient().importDevices(resourceGroupName, resourceName, importDevicesParameters);
+        if (inner != null) {
+            return new JobResponseImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -4,6 +4,7 @@
 package com.azure.core.util.polling;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
@@ -42,7 +43,7 @@ public class DefaultPollingStrategyTests {
         Supplier<Mono<Response<TestPollResult>>> activationOperation = () -> Mono.fromCallable(() -> {
             activationCallCount[0]++;
             return new SimpleResponse<>(new HttpRequest(HttpMethod.POST, "http://localhost"), 200,
-                new HttpHeaders().set("Location", mockPollUrl), new TestPollResult("InProgress"));
+                new HttpHeaders().set(HttpHeaderName.LOCATION, mockPollUrl), new TestPollResult("InProgress"));
         });
 
         HttpRequest pollRequest = new HttpRequest(HttpMethod.GET, mockPollUrl);
@@ -51,7 +52,7 @@ public class DefaultPollingStrategyTests {
         HttpClient httpClient = getHttpClient(mockPollUrl, finalResultUrl, pollRequest, lastContext);
 
         // PollingStrategy with context = Context.NONE
-        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofSeconds(1),
+        PollerFlux<TestPollResult, TestPollResult> pollerFlux = PollerFlux.create(Duration.ofMillis(1),
             activationOperation::get, new DefaultPollingStrategy<>(createPipeline(httpClient), null, null),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
@@ -63,7 +64,7 @@ public class DefaultPollingStrategyTests {
 
         // PollingStrategy with context
         final Context context = new Context("key", "value");
-        pollerFlux = PollerFlux.create(Duration.ofSeconds(1), activationOperation::get,
+        pollerFlux = PollerFlux.create(Duration.ofMillis(1), activationOperation::get,
             new DefaultPollingStrategy<>(createPipeline(httpClient), null, context), POLL_RESULT_TYPE_REFERENCE,
             POLL_RESULT_TYPE_REFERENCE);
 
@@ -73,7 +74,7 @@ public class DefaultPollingStrategyTests {
             .verifyComplete();
         Assertions.assertEquals("value", lastContext.get().getData("key").orElse(null));
 
-        pollerFlux = PollerFlux.create(Duration.ofSeconds(1), activationOperation::get,
+        pollerFlux = PollerFlux.create(Duration.ofMillis(1), activationOperation::get,
             new DefaultPollingStrategy<>(createPipeline(httpClient), null, Context.NONE), POLL_RESULT_TYPE_REFERENCE,
             POLL_RESULT_TYPE_REFERENCE);
 
@@ -87,7 +88,7 @@ public class DefaultPollingStrategyTests {
     }
 
     private static HttpClient getHttpClient(String mockPollUrl, String finalResultUrl, HttpRequest pollRequest, AtomicReference<Context> lastContext) {
-        HttpClient httpClient = new HttpClient() {
+        return new HttpClient() {
             @Override
             public Mono<HttpResponse> send(HttpRequest request) {
                 return send(request, Context.NONE);
@@ -98,7 +99,7 @@ public class DefaultPollingStrategyTests {
                 lastContext.set(context);
                 if (mockPollUrl.equals(request.getUrl().toString())) {
                     return Mono.just(new MockHttpResponse(pollRequest, 200,
-                        new HttpHeaders().set("Location", finalResultUrl),
+                        new HttpHeaders().set(HttpHeaderName.LOCATION, finalResultUrl),
                         new TestPollResult("Succeeded")));
                 } else if (finalResultUrl.equals(request.getUrl().toString())) {
                     return Mono.just(new MockHttpResponse(pollRequest, 200, new HttpHeaders(),
@@ -108,7 +109,6 @@ public class DefaultPollingStrategyTests {
                 }
             }
         };
-        return httpClient;
     }
 
     static HttpPipeline createPipeline(HttpClient httpClient) {

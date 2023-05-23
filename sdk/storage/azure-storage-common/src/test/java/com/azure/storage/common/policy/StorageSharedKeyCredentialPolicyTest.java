@@ -16,6 +16,7 @@ import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.Context;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
@@ -25,11 +26,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class StorageSharedKeyCredentialPolicyTest {
     private static final HttpResponse MOCK_HTTP_RESPONSE = new MockHttpResponse(null, 200, new HttpHeaders());
-    private static final String AUTH_VALUE = "SharedKey testAccountName:Y9lrhsriyJJkgV0NIdadqakc8++4nW0mwzg5Mrbq9Iw=";
 
     @SyncAsyncTest
     public void sharedKeyCredAddsAuthHeader() throws MalformedURLException {
-        StorageSharedKeyCredential storageSharedKeyCredential = new StorageSharedKeyCredential("testAccountName", "testAccountKey");
+        StorageSharedKeyCredential storageSharedKeyCredential =
+            new StorageSharedKeyCredential("testAccountName", "testAccountKey");
+
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
                 @Override
@@ -39,7 +41,11 @@ public class StorageSharedKeyCredentialPolicyTest {
             })
             .policies(new StorageSharedKeyCredentialPolicy(storageSharedKeyCredential),
                 (context, next) -> {
-                    assertEquals(AUTH_VALUE, context.getHttpRequest().getHeaders().get(HttpHeaderName.AUTHORIZATION).getValue());
+                    String expectedSignature = storageSharedKeyCredential.generateAuthorizationHeader(context.getHttpRequest().getUrl(),
+                        context.getHttpRequest().getHttpMethod().toString(),
+                        context.getHttpRequest().getHeaders(),
+                        Boolean.TRUE.equals(context.getData(Constants.STORAGE_LOG_STRING_TO_SIGN).orElse(false)));
+                    assertEquals(expectedSignature, context.getHttpRequest().getHeaders().get(HttpHeaderName.AUTHORIZATION).getValue());
                     return next.process();
                 })
             .build();

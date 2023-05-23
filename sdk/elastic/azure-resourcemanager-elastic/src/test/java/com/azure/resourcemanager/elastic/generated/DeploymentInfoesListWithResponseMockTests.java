@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.elastic.ElasticManager;
 import com.azure.resourcemanager.elastic.models.DeploymentInfoResponse;
 import java.nio.ByteBuffer;
@@ -31,7 +30,7 @@ public final class DeploymentInfoesListWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"status\":\"Unhealthy\",\"version\":\"sbj\",\"memoryCapacity\":\"zq\",\"diskCapacity\":\"xywpmueefjzwfqkq\"}";
+            "{\"status\":\"Unhealthy\",\"version\":\"vfaxkffeiith\",\"memoryCapacity\":\"m\",\"diskCapacity\":\"yvshxmz\",\"deploymentUrl\":\"bzoggigrx\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"vjxxjnsp\"},\"marketplaceName\":\"ptkoenkoukn\",\"marketplaceResourceId\":\"dwtiukbldngkp\"}}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -60,6 +59,9 @@ public final class DeploymentInfoesListWithResponseMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DeploymentInfoResponse response =
-            manager.deploymentInfoes().listWithResponse("qnermclfplphoxu", "crpab", Context.NONE).getValue();
+            manager
+                .deploymentInfoes()
+                .listWithResponse("hocohslkev", "eggzfb", com.azure.core.util.Context.NONE)
+                .getValue();
     }
 }

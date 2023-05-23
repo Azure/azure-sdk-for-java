@@ -72,6 +72,6 @@ public class WorkloadIdentityCredentialBuilder extends AadCredentialBuilderBase<
         ValidationUtil.validate(this.getClass().getSimpleName(), LOGGER, "Client ID", clientId,
             "Tenant ID", tenantId, "Service Token File Path", tokenFilePath);
 
-        return new WorkloadIdentityCredential(clientId, tenantId, tokenFilePath, identityClientOptions.clone());
+        return new WorkloadIdentityCredential(tenantId, clientId, tokenFilePath, identityClientOptions.clone());
     }
 }

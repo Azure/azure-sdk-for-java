@@ -13,7 +13,7 @@ import java.util.Objects;
  * The options for creating a call.
  */
 @Fluent
-public class StartRecordingOptions {
+public final class StartRecordingOptions {
     /**
      * Either a {@link GroupCallLocator} or {@link ServerCallLocator} for locating the call.
      */
@@ -28,6 +28,8 @@ public class StartRecordingOptions {
     private RecordingFormat recordingFormat;
 
     private List<CommunicationIdentifier> audioChannelParticipantOrdering;
+
+    private List<ChannelAffinity> channelAffinity;
 
     private ExternalStorage externalStorage;
 
@@ -175,6 +177,30 @@ public class StartRecordingOptions {
      */
     public StartRecordingOptions setExternalStorage(ExternalStorage externalStorage) {
         this.externalStorage = externalStorage;
+        return this;
+    }
+
+    /**
+     * Get the channelAffinity property: The channel affinity of call recording When 'recordingChannelType' is set to
+     * 'unmixed', if channelAffinity is not specified, 'channel' will be automatically assigned. Channel-Participant
+     * mapping details can be found in the metadata of the recording. ///.
+     *
+     * @return the channelAffinity value.
+     */
+    public List<ChannelAffinity> getChannelAffinity() {
+        return this.channelAffinity;
+    }
+
+    /**
+     * Set the channelAffinity property: The channel affinity of call recording When 'recordingChannelType' is set to
+     * 'unmixed', if channelAffinity is not specified, 'channel' will be automatically assigned. Channel-Participant
+     * mapping details can be found in the metadata of the recording. ///.
+     *
+     * @param channelAffinity the channelAffinity value to set.
+     * @return the StartRecordingOptions object itself.
+     */
+    public StartRecordingOptions setChannelAffinity(List<ChannelAffinity> channelAffinity) {
+        this.channelAffinity = channelAffinity;
         return this;
     }
 }

@@ -26,6 +26,15 @@ public final class RevisionProvisioningState extends ExpandableStringEnum<Revisi
     public static final RevisionProvisioningState DEPROVISIONED = fromString("Deprovisioned");
 
     /**
+     * Creates a new instance of RevisionProvisioningState value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public RevisionProvisioningState() {
+    }
+
+    /**
      * Creates or finds a RevisionProvisioningState from its string representation.
      *
      * @param name a name to look for.

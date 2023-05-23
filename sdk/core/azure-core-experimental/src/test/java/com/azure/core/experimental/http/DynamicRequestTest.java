@@ -4,6 +4,7 @@
 package com.azure.core.experimental.http;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -47,8 +48,8 @@ public class DynamicRequestTest {
             assertEquals(HttpMethod.POST, request.getHttpMethod());
             assertEquals(2, request.getHeaders().getSize());
             assertEquals(String.valueOf(jsonRequestBody.getBytes().length),
-                request.getHeaders().get("Content-Length").getValue());
-            assertEquals("application/json", request.getHeaders().get("Content-Type").getValue());
+                request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH).getValue());
+            assertEquals("application/json", request.getHeaders().get(HttpHeaderName.CONTENT_TYPE).getValue());
             assertEquals(jsonRequestBody,
                 new String(FluxUtil.collectBytesInByteBufferStream(request.getBody()).block()));
         });
@@ -56,7 +57,7 @@ public class DynamicRequestTest {
             new HttpPipelineBuilder().httpClient(httpClient).build());
         dynamicRequest.setUrl("https://example.com/testPostRequest")
             .setHttpMethod(HttpMethod.POST)
-            .setHeaders(new HttpHeaders().set("Content-Type", "application/json"))
+            .setHeaders(new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json"))
             .setBody(jsonRequestBody)
             .send();
     }

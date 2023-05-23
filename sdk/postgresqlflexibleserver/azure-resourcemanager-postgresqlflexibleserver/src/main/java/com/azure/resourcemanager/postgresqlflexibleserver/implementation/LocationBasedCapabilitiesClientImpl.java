@@ -193,7 +193,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @return capabilities at specified location in a given subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CapabilityPropertiesInner> executeAsync(String locationName) {
+    public PagedFlux<CapabilityPropertiesInner> executeAsync(String locationName) {
         return new PagedFlux<>(
             () -> executeSinglePageAsync(locationName), nextLink -> executeNextSinglePageAsync(nextLink));
     }

@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("IsNullOrUndefined")
 @Fluent
 public final class IsNullOrUndefinedAdvancedFilter extends AdvancedFilter {
+    /** Creates an instance of IsNullOrUndefinedAdvancedFilter class. */
+    public IsNullOrUndefinedAdvancedFilter() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public IsNullOrUndefinedAdvancedFilter withKey(String key) {

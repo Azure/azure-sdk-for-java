@@ -9,24 +9,25 @@ import com.azure.resourcemanager.elastic.models.ElasticMonitorResourceUpdatePara
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ElasticMonitorResourceUpdateParametersTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ElasticMonitorResourceUpdateParameters model =
             BinaryData
-                .fromString("{\"tags\":{\"ehzzvypyqrim\":\"t\",\"hc\":\"inpvswjdkirsoodq\"}}")
+                .fromString(
+                    "{\"tags\":{\"pspwgcuertu\":\"duqkt\",\"bmdg\":\"kdosvqw\",\"dgmb\":\"bjf\",\"tq\":\"bexppb\"}}")
                 .toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("t", model.tags().get("ehzzvypyqrim"));
+        Assertions.assertEquals("duqkt", model.tags().get("pspwgcuertu"));
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ElasticMonitorResourceUpdateParameters model =
-            new ElasticMonitorResourceUpdateParameters().withTags(mapOf("ehzzvypyqrim", "t", "hc", "inpvswjdkirsoodq"));
+            new ElasticMonitorResourceUpdateParameters()
+                .withTags(mapOf("pspwgcuertu", "duqkt", "bmdg", "kdosvqw", "dgmb", "bjf", "tq", "bexppb"));
         model = BinaryData.fromObject(model).toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("t", model.tags().get("ehzzvypyqrim"));
+        Assertions.assertEquals("duqkt", model.tags().get("pspwgcuertu"));
     }
 
     @SuppressWarnings("unchecked")

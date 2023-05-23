@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.EnvironmentTypeListResult;
-import org.junit.jupiter.api.Test;
 
 public final class EnvironmentTypeListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         EnvironmentTypeListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"RolloutInProgress\"},\"tags\":{\"onpc\":\"xc\"},\"id\":\"ocohslkevleg\",\"name\":\"zfbuhf\",\"type\":\"vfaxkffeiith\"}],\"nextLink\":\"m\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"tags\":{\"xbezyiuokktwh\":\"ozmyzydagfu\",\"o\":\"dxwzywqsmbsurexi\",\"fksymddystki\":\"yocf\",\"yudxorrqnbp\":\"uxh\"},\"id\":\"zvyifqrvkdvj\",\"name\":\"llr\",\"type\":\"vvdfwatkpnpul\"},{\"properties\":{\"provisioningState\":\"Creating\"},\"tags\":{\"okacspk\":\"wtruwiqzbqjvsovm\",\"jmflbvvnch\":\"lhzdobp\",\"ajiwkuo\":\"kcciwwzjuqkhr\",\"sauuimj\":\"oskg\"},\"id\":\"xieduugidyjrr\",\"name\":\"byao\",\"type\":\"v\"}],\"nextLink\":\"csonpclhoco\"}")
                 .toObject(EnvironmentTypeListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         EnvironmentTypeListResult model = new EnvironmentTypeListResult();
         model = BinaryData.fromObject(model).toObject(EnvironmentTypeListResult.class);
     }

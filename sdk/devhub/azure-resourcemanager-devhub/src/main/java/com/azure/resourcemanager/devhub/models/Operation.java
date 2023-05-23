@@ -47,6 +47,10 @@ public final class Operation {
     @JsonProperty(value = "actionType", access = JsonProperty.Access.WRITE_ONLY)
     private ActionType actionType;
 
+    /** Creates an instance of Operation class. */
+    public Operation() {
+    }
+
     /**
      * Get the name property: The name of the operation, as per Resource-Based Access Control (RBAC). Examples:
      * "Microsoft.Compute/virtualMachines/write", "Microsoft.Compute/virtualMachines/capture/action".

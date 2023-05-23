@@ -60,6 +60,6 @@ public final class TasksUpdateSubscriptionLevelTaskStateWithResponseMockTests {
         manager
             .tasks()
             .updateSubscriptionLevelTaskStateWithResponse(
-                "greohtwhlpuzjp", "eezn", TaskUpdateActionType.START, com.azure.core.util.Context.NONE);
+                "xcjzlquze", "okjxebjvb", TaskUpdateActionType.START, com.azure.core.util.Context.NONE);
     }
 }

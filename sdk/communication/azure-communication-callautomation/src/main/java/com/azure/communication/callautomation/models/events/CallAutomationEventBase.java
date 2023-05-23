@@ -20,8 +20,7 @@ public abstract class CallAutomationEventBase {
     private final String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation.
      */
     @JsonProperty(value = "correlationId")
     private final String correlationId;
@@ -58,8 +57,7 @@ public abstract class CallAutomationEventBase {
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Get the correlationId property: Correlation ID for event to call correlation.
      *
      * @return the correlationId value.
      */

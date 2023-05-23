@@ -14,18 +14,20 @@ public final class AutomationActionEventHubTests {
         AutomationActionEventHub model =
             BinaryData
                 .fromString(
-                    "{\"actionType\":\"EventHub\",\"eventHubResourceId\":\"brlbpgs\",\"sasPolicyName\":\"agnchjhgemuowaky\",\"connectionString\":\"lhjym\"}")
+                    "{\"actionType\":\"EventHub\",\"eventHubResourceId\":\"gvpyigdaqqilzdc\",\"sasPolicyName\":\"wjoe\",\"connectionString\":\"ngucaifpaurww\"}")
                 .toObject(AutomationActionEventHub.class);
-        Assertions.assertEquals("brlbpgs", model.eventHubResourceId());
-        Assertions.assertEquals("lhjym", model.connectionString());
+        Assertions.assertEquals("gvpyigdaqqilzdc", model.eventHubResourceId());
+        Assertions.assertEquals("ngucaifpaurww", model.connectionString());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AutomationActionEventHub model =
-            new AutomationActionEventHub().withEventHubResourceId("brlbpgs").withConnectionString("lhjym");
+            new AutomationActionEventHub()
+                .withEventHubResourceId("gvpyigdaqqilzdc")
+                .withConnectionString("ngucaifpaurww");
         model = BinaryData.fromObject(model).toObject(AutomationActionEventHub.class);
-        Assertions.assertEquals("brlbpgs", model.eventHubResourceId());
-        Assertions.assertEquals("lhjym", model.connectionString());
+        Assertions.assertEquals("gvpyigdaqqilzdc", model.eventHubResourceId());
+        Assertions.assertEquals("ngucaifpaurww", model.connectionString());
     }
 }

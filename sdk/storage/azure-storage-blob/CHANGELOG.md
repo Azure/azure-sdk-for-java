@@ -1,15 +1,31 @@
 # Release History
 
-## 12.22.0-beta.2 (Unreleased)
+## 12.23.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added new method `StorageAccountInfo.isHierarchicalNamespaceEnabled()` to determine whether storage account has hierarchical namespace enabled.  
+- Added support for 2023-01-03 service version.
+- Content length limit for `AppendBlobClient.appendBlock()` raised from 4 MiB to 100 MiB.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.22.1 (2023-05-15)
+
+### Bugs Fixed
+Fixed bug in `BlobBaseClient.downloadToFile()` and `BlobBaseClient.downloadToFileWithResponse()` where incorrect data could be written to the file in some circumstances if the SDK experienced a network error when using `azure-core-http-netty`'s `HttpClient` implementation.
+
+## 12.22.0 (2023-04-13)
+
+### Features Added
+- Added new method `StorageAccountInfo.isHierarchicalNamespaceEnabled()` to determine whether storage account has hierarchical namespace enabled.  
+- Added support for 2022-11-02 service version.
+- Added support for reading and writing a block blob via SeekableByteChannel.
+
+### Bugs Fixed
+- Fixed bug for when `FindBlobsOptions.setMaxResultsPerPage(Integer)` was set and `.byPage()` was called on `BlobServiceAsyncClient.findBlobsByTags(FindBlobsOptions)`, number of results being returned was greater than the specified max results.
 
 ## 12.22.0-beta.1 (2023-03-28)
 

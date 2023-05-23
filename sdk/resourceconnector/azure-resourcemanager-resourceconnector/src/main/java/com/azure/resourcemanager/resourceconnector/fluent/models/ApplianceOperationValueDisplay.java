@@ -34,6 +34,10 @@ public final class ApplianceOperationValueDisplay {
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
+    /** Creates an instance of ApplianceOperationValueDisplay class. */
+    public ApplianceOperationValueDisplay() {
+    }
+
     /**
      * Get the description property: The description of the operation.
      *

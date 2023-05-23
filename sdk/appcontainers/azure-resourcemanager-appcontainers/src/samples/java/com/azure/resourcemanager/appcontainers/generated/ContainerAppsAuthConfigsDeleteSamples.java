@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerAppsAuthConfigs Delete. */
 public final class ContainerAppsAuthConfigsDeleteSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/AuthConfigs_Delete.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/AuthConfigs_Delete.json
      */
     /**
      * Sample code: Delete Container App AuthConfig.
@@ -20,6 +18,6 @@ public final class ContainerAppsAuthConfigsDeleteSamples {
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager
             .containerAppsAuthConfigs()
-            .deleteWithResponse("workerapps-rg-xj", "testcanadacentral", "current", Context.NONE);
+            .deleteWithResponse("workerapps-rg-xj", "testcanadacentral", "current", com.azure.core.util.Context.NONE);
     }
 }

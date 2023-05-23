@@ -39,32 +39,18 @@ public interface FrontDoorManagementClient {
     Duration getDefaultPollInterval();
 
     /**
-     * Gets the NetworkExperimentProfilesClient object to access its operations.
+     * Gets the PoliciesClient object to access its operations.
      *
-     * @return the NetworkExperimentProfilesClient object.
+     * @return the PoliciesClient object.
      */
-    NetworkExperimentProfilesClient getNetworkExperimentProfiles();
+    PoliciesClient getPolicies();
 
     /**
-     * Gets the PreconfiguredEndpointsClient object to access its operations.
+     * Gets the ManagedRuleSetsClient object to access its operations.
      *
-     * @return the PreconfiguredEndpointsClient object.
+     * @return the ManagedRuleSetsClient object.
      */
-    PreconfiguredEndpointsClient getPreconfiguredEndpoints();
-
-    /**
-     * Gets the ExperimentsClient object to access its operations.
-     *
-     * @return the ExperimentsClient object.
-     */
-    ExperimentsClient getExperiments();
-
-    /**
-     * Gets the ReportsClient object to access its operations.
-     *
-     * @return the ReportsClient object.
-     */
-    ReportsClient getReports();
+    ManagedRuleSetsClient getManagedRuleSets();
 
     /**
      * Gets the FrontDoorNameAvailabilitiesClient object to access its operations.
@@ -109,16 +95,30 @@ public interface FrontDoorManagementClient {
     RulesEnginesClient getRulesEngines();
 
     /**
-     * Gets the PoliciesClient object to access its operations.
+     * Gets the NetworkExperimentProfilesClient object to access its operations.
      *
-     * @return the PoliciesClient object.
+     * @return the NetworkExperimentProfilesClient object.
      */
-    PoliciesClient getPolicies();
+    NetworkExperimentProfilesClient getNetworkExperimentProfiles();
 
     /**
-     * Gets the ManagedRuleSetsClient object to access its operations.
+     * Gets the PreconfiguredEndpointsClient object to access its operations.
      *
-     * @return the ManagedRuleSetsClient object.
+     * @return the PreconfiguredEndpointsClient object.
      */
-    ManagedRuleSetsClient getManagedRuleSets();
+    PreconfiguredEndpointsClient getPreconfiguredEndpoints();
+
+    /**
+     * Gets the ExperimentsClient object to access its operations.
+     *
+     * @return the ExperimentsClient object.
+     */
+    ExperimentsClient getExperiments();
+
+    /**
+     * Gets the ReportsClient object to access its operations.
+     *
+     * @return the ReportsClient object.
+     */
+    ReportsClient getReports();
 }

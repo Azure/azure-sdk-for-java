@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.kubernetesconfiguration.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FluxConfigOperationStatus Get. */
 public final class FluxConfigOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-03-01/examples/GetFluxConfigurationAsyncOperationStatus.json
+     * x-ms-original-file: specification/kubernetesconfiguration/resource-manager/Microsoft.KubernetesConfiguration/stable/2022-11-01/examples/GetFluxConfigurationAsyncOperationStatus.json
      */
     /**
      * Sample code: FluxConfigurationAsyncOperationStatus Get.
@@ -27,6 +25,6 @@ public final class FluxConfigOperationStatusGetSamples {
                 "clusterName1",
                 "srs-fluxconfig",
                 "99999999-9999-9999-9999-999999999999",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -12,7 +12,7 @@ public final class DataLocationToServiceLocationMapTests {
     public void testDeserialize() throws Exception {
         DataLocationToServiceLocationMap model =
             BinaryData
-                .fromString("{\"dataLocation\":\"mpukgriw\",\"serviceLocation\":\"zlfbxzpuzycispnq\"}")
+                .fromString("{\"dataLocation\":\"vplwzbhv\",\"serviceLocation\":\"u\"}")
                 .toObject(DataLocationToServiceLocationMap.class);
     }
 

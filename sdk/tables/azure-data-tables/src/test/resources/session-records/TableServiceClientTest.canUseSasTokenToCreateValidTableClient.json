@@ -1,55 +1,84 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.table.core.windows.net/Tables",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "77531008-08c5-4bca-92b9-e7983dc2864f",
-      "Content-Type" : "application/json;odata=nometadata"
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/Tables",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json;odata=minimalmetadata",
+        "Authorization": "Sanitized",
+        "Content-Length": "30",
+        "Content-Type": "application/json;odata=nometadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 14 Apr 2023 20:22:55 GMT",
+        "Prefer": "return-no-content",
+        "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
+        "x-ms-client-request-id": "1291da7c-17f5-4e0c-a7ae-bfe5a398ee92",
+        "x-ms-version": "2020-12-06"
+      },
+      "RequestBody": {
+        "TableName": "test397583911a"
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "DataServiceId": "https://REDACTED/Tables(\u0027test397583911a\u0027)",
+        "Date": "Fri, 14 Apr 2023 20:22:55 GMT",
+        "Location": "https://REDACTED/Tables(\u0027test397583911a\u0027)",
+        "Preference-Applied": "return-no-content",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "1291da7c-17f5-4e0c-a7ae-bfe5a398ee92",
+        "x-ms-request-id": "87171552-9002-0036-180e-6f7333000000",
+        "x-ms-version": "2020-12-06"
+      },
+      "ResponseBody": null
     },
-    "Response" : {
-      "content-length" : "0",
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "retry-after" : "0",
-      "StatusCode" : "204",
-      "Date" : "Thu, 10 Jun 2021 04:28:27 GMT",
-      "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/Tables('test479760f164')",
-      "x-ms-request-id" : "9f6a50b0-1002-0063-3fb1-5d9844000000",
-      "x-ms-client-request-id" : "77531008-08c5-4bca-92b9-e7983dc2864f",
-      "Preference-Applied" : "return-no-content",
-      "Location" : "https://tablesstoragetests.table.core.windows.net/Tables('test479760f164')"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.table.core.windows.net/test479760f164?sv=2019-02-02&ss=t&srt=o&se=2021-12-12T00%3A00%3A00Z&sp=a&spr=https&sig=REDACTED",
-    "Headers" : {
-      "x-ms-version" : "2019-02-02",
-      "User-Agent" : "azsdk-java-azure-data-tables/12.0.0-beta.8 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d891a39e-e344-4e7a-b0a8-c178dc1dddf4",
-      "Content-Type" : "application/json;odata=nometadata"
-    },
-    "Response" : {
-      "content-length" : "0",
-      "x-ms-version" : "2019-02-02",
-      "Server" : "Windows-Azure-Table/1.0 Microsoft-HTTPAPI/2.0",
-      "X-Content-Type-Options" : "nosniff",
-      "retry-after" : "0",
-      "StatusCode" : "204",
-      "Date" : "Thu, 10 Jun 2021 04:28:28 GMT",
-      "Cache-Control" : "no-cache",
-      "DataServiceId" : "https://tablesstoragetests.table.core.windows.net/test479760f164(PartitionKey='partitionkey089675',RowKey='rowkey7576518ea')",
-      "eTag" : "W/datetime'2021-06-10T04%3A28%3A28.2893159Z'",
-      "x-ms-request-id" : "e2036042-9002-0014-76b1-5d1d05000000",
-      "x-ms-client-request-id" : "d891a39e-e344-4e7a-b0a8-c178dc1dddf4",
-      "Preference-Applied" : "return-no-content",
-      "Location" : "https://tablesstoragetests.table.core.windows.net/test479760f164(PartitionKey='partitionkey089675',RowKey='rowkey7576518ea')"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "test479760f164", "partitionkey089675", "rowkey7576518ea" ]
+    {
+      "RequestUri": "https://REDACTED/test397583911a?REDACTED",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json;odata=minimalmetadata",
+        "Content-Length": "64",
+        "Content-Type": "application/json;odata=nometadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 14 Apr 2023 20:22:55 GMT",
+        "Prefer": "return-no-content",
+        "User-Agent": "azsdk-java-azure-data-tables/12.4.0-beta.1 (17.0.6; Linux; 5.4.0-1105-azure)",
+        "x-ms-client-request-id": "c183bf35-d576-4a63-932e-b0a973b4ccdf",
+        "x-ms-version": "2020-12-06"
+      },
+      "RequestBody": {
+        "RowKey": "rowkey72681eb83",
+        "PartitionKey": "partitionkey857169"
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "DataServiceId": "https://REDACTED/test397583911a(PartitionKey=\u0027partitionkey857169\u0027,RowKey=\u0027rowkey72681eb83\u0027)",
+        "Date": "Fri, 14 Apr 2023 20:22:55 GMT",
+        "ETag": "W/\u0022datetime\u00272023-04-14T20%3A22%3A55.5534937Z\u0027\u0022",
+        "Location": "https://REDACTED/test397583911a(PartitionKey=\u0027partitionkey857169\u0027,RowKey=\u0027rowkey72681eb83\u0027)",
+        "Preference-Applied": "return-no-content",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "c183bf35-d576-4a63-932e-b0a973b4ccdf",
+        "x-ms-request-id": "8717156b-9002-0036-2f0e-6f7333000000",
+        "x-ms-version": "2020-12-06"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "test397583911a",
+    "1": "partitionkey857169",
+    "2": "rowkey72681eb83"
+  }
 }

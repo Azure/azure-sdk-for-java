@@ -230,9 +230,9 @@ public class Transforms {
                         .map(innerDocumentCell -> {
                             DocumentTableCell documentTableCell = new DocumentTableCell();
                             DocumentTableCellHelper.setBoundingRegions(documentTableCell,
-                                toBoundingRegions(innerDocumentTable.getBoundingRegions()));
+                                toBoundingRegions(innerDocumentCell.getBoundingRegions()));
                             DocumentTableCellHelper.setSpans(documentTableCell,
-                                toDocumentSpans(innerDocumentTable.getSpans()));
+                                toDocumentSpans(innerDocumentCell.getSpans()));
                             DocumentTableCellHelper.setContent(documentTableCell, innerDocumentCell.getContent());
                             DocumentTableCellHelper.setColumnIndex(documentTableCell,
                                 innerDocumentCell.getColumnIndex());
@@ -345,10 +345,8 @@ public class Transforms {
 
     public static BuildDocumentClassifierRequest getBuildDocumentClassifierRequest(String classifierId,
                                                                                    String description, Map<String, com.azure.ai.formrecognizer.documentanalysis.implementation.models.ClassifierDocumentTypeDetails> docTypes) {
-        BuildDocumentClassifierRequest buildDocumentClassifierRequest
-            = new BuildDocumentClassifierRequest(classifierId, docTypes)
-            .setDescription(description);
-        return buildDocumentClassifierRequest;
+        return new BuildDocumentClassifierRequest(classifierId, docTypes)
+        .setDescription(description);
     }
 
     /**
@@ -365,14 +363,13 @@ public class Transforms {
     }
 
     public static HttpResponseException getHttpResponseException(ErrorResponseException throwable) {
-        ErrorResponseException errorResponseException = throwable;
         com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error = null;
-        if (errorResponseException.getValue() != null && errorResponseException.getValue().getError() != null) {
-            error = (errorResponseException.getValue().getError());
+        if (throwable.getValue() != null && throwable.getValue().getError() != null) {
+            error = (throwable.getValue().getError());
         }
         return new HttpResponseException(
-            errorResponseException.getMessage(),
-            errorResponseException.getResponse(),
+            throwable.getMessage(),
+            throwable.getResponse(),
             toResponseError(error)
         );
     }
@@ -780,14 +777,12 @@ public class Transforms {
     }
 
     public static CopyAuthorization getInnerCopyAuthorization(DocumentModelCopyAuthorization target) {
-        CopyAuthorization copyRequest
-            = new CopyAuthorization(target.getTargetResourceId(),
-            target.getTargetModelLocation(),
-            target.getTargetModelId(),
-            target.getTargetResourceRegion(),
-            target.getAccessToken(),
-            target.getExpiresOn());
-        return copyRequest;
+        return new CopyAuthorization(target.getTargetResourceId(),
+        target.getTargetResourceRegion(),
+        target.getTargetModelId(),
+        target.getTargetModelLocation(),
+        target.getAccessToken(),
+        target.getExpiresOn());
     }
 
     private static ResponseError toResponseError(com.azure.ai.formrecognizer.documentanalysis.implementation.models.Error error) {

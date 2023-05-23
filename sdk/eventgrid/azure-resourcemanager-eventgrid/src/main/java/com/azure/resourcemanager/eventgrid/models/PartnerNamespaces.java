@@ -11,19 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of PartnerNamespaces. */
 public interface PartnerNamespaces {
     /**
-     * Get properties of a partner namespace.
+     * Get a partner namespace.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner namespace.
-     */
-    PartnerNamespace getByResourceGroup(String resourceGroupName, String partnerNamespaceName);
-
-    /**
-     * Get properties of a partner namespace.
+     * <p>Get properties of a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -37,7 +27,23 @@ public interface PartnerNamespaces {
         String resourceGroupName, String partnerNamespaceName, Context context);
 
     /**
-     * Delete existing partner namespace.
+     * Get a partner namespace.
+     *
+     * <p>Get properties of a partner namespace.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a partner namespace.
+     */
+    PartnerNamespace getByResourceGroup(String resourceGroupName, String partnerNamespaceName);
+
+    /**
+     * Delete a partner namespace.
+     *
+     * <p>Delete existing partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -48,7 +54,9 @@ public interface PartnerNamespaces {
     void deleteByResourceGroup(String resourceGroupName, String partnerNamespaceName);
 
     /**
-     * Delete existing partner namespace.
+     * Delete a partner namespace.
+     *
+     * <p>Delete existing partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -60,7 +68,9 @@ public interface PartnerNamespaces {
     void delete(String resourceGroupName, String partnerNamespaceName, Context context);
 
     /**
-     * List all the partner namespaces under an Azure subscription.
+     * List partner namespaces under an Azure subscription.
+     *
+     * <p>List all the partner namespaces under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -69,7 +79,9 @@ public interface PartnerNamespaces {
     PagedIterable<PartnerNamespace> list();
 
     /**
-     * List all the partner namespaces under an Azure subscription.
+     * List partner namespaces under an Azure subscription.
+     *
+     * <p>List all the partner namespaces under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -88,7 +100,9 @@ public interface PartnerNamespaces {
     PagedIterable<PartnerNamespace> list(String filter, Integer top, Context context);
 
     /**
-     * List all the partner namespaces under a resource group.
+     * List partner namespaces under a resource group.
+     *
+     * <p>List all the partner namespaces under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +113,9 @@ public interface PartnerNamespaces {
     PagedIterable<PartnerNamespace> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the partner namespaces under a resource group.
+     * List partner namespaces under a resource group.
+     *
+     * <p>List all the partner namespaces under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -120,19 +136,9 @@ public interface PartnerNamespaces {
         String resourceGroupName, String filter, Integer top, Context context);
 
     /**
-     * List the two keys used to publish to a partner namespace.
+     * List keys for a partner namespace.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerNamespaceName Name of the partner namespace.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the partner namespace.
-     */
-    PartnerNamespaceSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String partnerNamespaceName);
-
-    /**
-     * List the two keys used to publish to a partner namespace.
+     * <p>List the two keys used to publish to a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -146,23 +152,23 @@ public interface PartnerNamespaces {
         String resourceGroupName, String partnerNamespaceName, Context context);
 
     /**
-     * Regenerate a shared access key for a partner namespace.
+     * List keys for a partner namespace.
+     *
+     * <p>List the two keys used to publish to a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
-     * @param regenerateKeyRequest Request body to regenerate key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return shared access keys of the partner namespace.
      */
-    PartnerNamespaceSharedAccessKeys regenerateKey(
-        String resourceGroupName,
-        String partnerNamespaceName,
-        PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest);
+    PartnerNamespaceSharedAccessKeys listSharedAccessKeys(String resourceGroupName, String partnerNamespaceName);
 
     /**
-     * Regenerate a shared access key for a partner namespace.
+     * Regenerate key for a partner namespace.
+     *
+     * <p>Regenerate a shared access key for a partner namespace.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerNamespaceName Name of the partner namespace.
@@ -180,7 +186,27 @@ public interface PartnerNamespaces {
         Context context);
 
     /**
-     * Get properties of a partner namespace.
+     * Regenerate key for a partner namespace.
+     *
+     * <p>Regenerate a shared access key for a partner namespace.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerNamespaceName Name of the partner namespace.
+     * @param regenerateKeyRequest Request body to regenerate key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the partner namespace.
+     */
+    PartnerNamespaceSharedAccessKeys regenerateKey(
+        String resourceGroupName,
+        String partnerNamespaceName,
+        PartnerNamespaceRegenerateKeyRequest regenerateKeyRequest);
+
+    /**
+     * Get a partner namespace.
+     *
+     * <p>Get properties of a partner namespace.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -191,7 +217,9 @@ public interface PartnerNamespaces {
     PartnerNamespace getById(String id);
 
     /**
-     * Get properties of a partner namespace.
+     * Get a partner namespace.
+     *
+     * <p>Get properties of a partner namespace.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
@@ -203,7 +231,9 @@ public interface PartnerNamespaces {
     Response<PartnerNamespace> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete existing partner namespace.
+     * Delete a partner namespace.
+     *
+     * <p>Delete existing partner namespace.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,7 +243,9 @@ public interface PartnerNamespaces {
     void deleteById(String id);
 
     /**
-     * Delete existing partner namespace.
+     * Delete a partner namespace.
+     *
+     * <p>Delete existing partner namespace.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

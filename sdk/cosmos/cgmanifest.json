@@ -55,6 +55,16 @@
       "Component": {
         "Type": "Maven",
         "Maven": {
+          "ArtifactId": "commons-math3",
+          "GroupId": "org.apache.commons",
+          "Version": "3.6.1"
+        }
+      }
+    },
+    {
+      "Component": {
+        "Type": "Maven",
+        "Maven": {
           "ArtifactId": "java-uuid-generator",
           "GroupId": "com.fasterxml.uuid",
           "Version": "4.0.1"

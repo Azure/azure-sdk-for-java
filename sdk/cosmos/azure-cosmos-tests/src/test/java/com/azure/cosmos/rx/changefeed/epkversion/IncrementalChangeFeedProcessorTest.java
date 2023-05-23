@@ -27,6 +27,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.models.ThroughputResponse;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -615,7 +616,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         }
     }
 
-    @Test(groups = { "simple" }, timeOut = 1600 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
     public void readFeedDocumentsAfterSplit() throws InterruptedException {
         CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
         CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
@@ -800,6 +801,148 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
         } finally {
             System.out.println("Start to delete FeedCollectionForSplit");
+            safeDeleteCollection(createdFeedCollectionForSplit);
+            safeDeleteCollection(createdLeaseCollection);
+
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = 160 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void readFeedDocumentsAfterSplit_maxScaleCount() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollectionForSplit = createFeedCollection(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(2 * LEASE_COLLECTION_THROUGHPUT);
+
+        ChangeFeedProcessor changeFeedProcessor1;
+        ChangeFeedProcessor changeFeedProcessor2;
+        String changeFeedProcessor1HostName = RandomStringUtils.randomAlphabetic(6);
+        String changeFeedProcessor2HostName = RandomStringUtils.randomAlphabetic(6);
+
+        try {
+            // Set up the maxScaleCount to be equal to the current partition count
+            int partitionCountBeforeSplit = createdFeedCollectionForSplit.getFeedRanges().block().size();
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, JsonNode> receivedDocuments = new ConcurrentHashMap<>();
+
+            // generate a first batch of documents
+            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+
+            changeFeedProcessor1 = new ChangeFeedProcessorBuilder()
+                .hostName(changeFeedProcessor1HostName)
+                .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments))
+                .feedContainer(createdFeedCollectionForSplit)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeasePrefix("TEST")
+                    .setStartFromBeginning(true)
+                    .setMaxItemCount(10)
+                    .setLeaseAcquireInterval(Duration.ofSeconds(1))
+                    .setMaxScaleCount(partitionCountBeforeSplit) // set to match the partition count
+                    .setLeaseRenewInterval(Duration.ofSeconds(2))
+                )
+                .buildChangeFeedProcessor();
+
+            changeFeedProcessor1
+                .start()
+                .subscribeOn(Schedulers.boundedElastic())
+                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .onErrorResume(throwable -> {
+                    logger.error("Change feed processor did not start in the expected time", throwable);
+                    return Mono.error(throwable);
+                })
+                .block();
+
+            // Wait for the feed processor to receive and process the second batch of documents.
+            waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+
+            // increase throughput to force a single partition collection to go through a split
+            createdFeedCollectionForSplit
+                .readThroughput()
+                .subscribeOn(Schedulers.boundedElastic())
+                .flatMap(currentThroughput ->
+                    createdFeedCollectionForSplit
+                        .replaceThroughput(ThroughputProperties.createManualThroughput(FEED_COLLECTION_THROUGHPUT_FOR_SPLIT))
+                        .subscribeOn(Schedulers.boundedElastic())
+                )
+                .block();
+
+            // wait for the split to finish
+            ThroughputResponse throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
+            while (true) {
+                assert throughputResponse != null;
+                if (!throughputResponse.isReplacePending()) {
+                    break;
+                }
+                logger.info("Waiting for split to complete");
+                Thread.sleep(10 * 1000);
+                throughputResponse = createdFeedCollectionForSplit.readThroughput().block();
+            }
+
+            // generate the second batch of documents
+            setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollectionForSplit, FEED_COUNT);
+
+            // wait for the change feed processor to receive some documents
+            Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            String leaseQuery = "select * from c where not contains(c.id, \"info\")";
+            List<JsonNode> leaseDocuments =
+                createdLeaseCollection
+                    .queryItems(leaseQuery, JsonNode.class)
+                    .byPage()
+                    .blockFirst()
+                    .getResults();
+
+            long host1Leases = leaseDocuments.stream().filter(lease -> lease.get("Owner").asText().equals(changeFeedProcessor1HostName)).count();
+            assertThat(host1Leases).isEqualTo(partitionCountBeforeSplit);
+
+            // now starts a new change feed processor
+            changeFeedProcessor2 = new ChangeFeedProcessorBuilder()
+                .hostName(changeFeedProcessor2HostName)
+                .handleLatestVersionChanges(changeFeedProcessorHandler(receivedDocuments))
+                .feedContainer(createdFeedCollectionForSplit)
+                .leaseContainer(createdLeaseCollection)
+                .options(new ChangeFeedProcessorOptions()
+                    .setLeasePrefix("TEST")
+                    .setStartFromBeginning(true)
+                    .setMaxItemCount(10)
+                    .setLeaseAcquireInterval(Duration.ofSeconds(1))
+                    .setMaxScaleCount(partitionCountBeforeSplit) // set to match the partition count
+                    .setLeaseRenewInterval(Duration.ofSeconds(2))
+                )
+                .buildChangeFeedProcessor();
+
+            changeFeedProcessor2
+                .start()
+                .subscribeOn(Schedulers.boundedElastic())
+                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .onErrorResume(throwable -> {
+                    logger.error("Change feed processor did not start in the expected time", throwable);
+                    return Mono.error(throwable);
+                })
+                .subscribe();
+
+            // Wait for the feed processor to receive and process the second batch of documents.
+            waitToReceiveDocuments(receivedDocuments, 2 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT*2);
+
+            changeFeedProcessor1
+                .stop()
+                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .onErrorResume(throwable -> {
+                    logger.error("Change feed processor1 did not stop in the expected time", throwable);
+                    return Mono.empty();
+                })
+                .block();
+            changeFeedProcessor2
+                .stop()
+                .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .onErrorResume(throwable -> {
+                    logger.error("Change feed processor2 did not stop in the expected time", throwable);
+                    return Mono.empty();
+                })
+                .block();
+
+        } finally {
             safeDeleteCollection(createdFeedCollectionForSplit);
             safeDeleteCollection(createdLeaseCollection);
 

@@ -18,7 +18,7 @@ public final class ManagedServiceIdentityTests {
         ManagedServiceIdentity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"22344daa-b3dd-4871-a36a-d87329d7986e\",\"tenantId\":\"16bf6317-f9b6-4a61-9cf6-7456b48948f6\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"t\":{\"principalId\":\"5fa19924-3de4-47a7-b9c4-9328b71f5f21\",\"clientId\":\"e177acc9-ba17-48b1-a55c-2b6bdc7b7d26\"},\"zzvypyqrimzinp\":{\"principalId\":\"2d1bab91-f616-4374-a992-3ba8e0b0a973\",\"clientId\":\"578e4597-1acb-4521-8b85-f56d5236689e\"}}}")
+                    "{\"principalId\":\"ed20690c-0d99-4300-bd3f-e89837be9fd9\",\"tenantId\":\"07795c14-51aa-4339-8acf-2795ce44c27e\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"t\":{\"principalId\":\"043c8a2a-aab2-4c2d-8beb-1803d690866b\",\"clientId\":\"307e5b23-1b85-4b79-bd0a-0d69d7d7813a\"},\"zzvypyqrimzinp\":{\"principalId\":\"ad3f8f30-f7c2-427b-bca6-ad05c8cbe214\",\"clientId\":\"780adc1c-eea6-4973-bb5a-d44abed6a269\"}}}")
                 .toObject(ManagedServiceIdentity.class);
         Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.type());
     }

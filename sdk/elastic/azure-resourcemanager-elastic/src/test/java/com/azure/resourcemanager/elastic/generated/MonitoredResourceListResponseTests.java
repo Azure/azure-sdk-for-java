@@ -10,42 +10,37 @@ import com.azure.resourcemanager.elastic.models.MonitoredResourceListResponse;
 import com.azure.resourcemanager.elastic.models.SendingLogs;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MonitoredResourceListResponseTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         MonitoredResourceListResponse model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"id\":\"hjtckwhd\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"iy\"},{\"id\":\"jxsqwpgrjbz\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"jxvsnbyxqabn\"}],\"nextLink\":\"cpc\"}")
+                    "{\"value\":[{\"id\":\"fpfpsalgbquxigj\",\"sendingLogs\":\"False\",\"reasonForLogsStatus\":\"jaoyfhrtx\"}],\"nextLink\":\"n\"}")
                 .toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("hjtckwhd", model.value().get(0).id());
+        Assertions.assertEquals("fpfpsalgbquxigj", model.value().get(0).id());
         Assertions.assertEquals(SendingLogs.FALSE, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("iy", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("cpc", model.nextLink());
+        Assertions.assertEquals("jaoyfhrtx", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("n", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         MonitoredResourceListResponse model =
             new MonitoredResourceListResponse()
                 .withValue(
                     Arrays
                         .asList(
                             new MonitoredResourceInner()
-                                .withId("hjtckwhd")
+                                .withId("fpfpsalgbquxigj")
                                 .withSendingLogs(SendingLogs.FALSE)
-                                .withReasonForLogsStatus("iy"),
-                            new MonitoredResourceInner()
-                                .withId("jxsqwpgrjbz")
-                                .withSendingLogs(SendingLogs.FALSE)
-                                .withReasonForLogsStatus("jxvsnbyxqabn")))
-                .withNextLink("cpc");
+                                .withReasonForLogsStatus("jaoyfhrtx")))
+                .withNextLink("n");
         model = BinaryData.fromObject(model).toObject(MonitoredResourceListResponse.class);
-        Assertions.assertEquals("hjtckwhd", model.value().get(0).id());
+        Assertions.assertEquals("fpfpsalgbquxigj", model.value().get(0).id());
         Assertions.assertEquals(SendingLogs.FALSE, model.value().get(0).sendingLogs());
-        Assertions.assertEquals("iy", model.value().get(0).reasonForLogsStatus());
-        Assertions.assertEquals("cpc", model.nextLink());
+        Assertions.assertEquals("jaoyfhrtx", model.value().get(0).reasonForLogsStatus());
+        Assertions.assertEquals("n", model.nextLink());
     }
 }

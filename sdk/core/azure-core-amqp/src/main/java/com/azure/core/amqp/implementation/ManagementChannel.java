@@ -12,6 +12,7 @@ import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
 import com.azure.core.amqp.models.DeliveryOutcome;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.publisher.Mono;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.amqp.implementation.AmqpLoggingUtils.addKeyValueIfNotNull;
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ERROR_CONDITION_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.ERROR_DESCRIPTION_KEY;
@@ -114,11 +116,11 @@ public class ManagementChannel implements AmqpManagementNode {
 
         final String statusDescription = RequestResponseUtils.getStatusDescription(response);
 
-        logger.atWarning()
-            .addKeyValue("status", statusCode)
-            .addKeyValue(ERROR_DESCRIPTION_KEY, statusDescription)
-            .addKeyValue(ERROR_CONDITION_KEY, errorCondition)
-            .log("Operation not successful.");
+        LoggingEventBuilder log = logger.atWarning().addKeyValue("status", statusCode);
+
+        addKeyValueIfNotNull(log, ERROR_DESCRIPTION_KEY, statusDescription);
+        addKeyValueIfNotNull(log, ERROR_CONDITION_KEY, errorCondition);
+        log.log("Operation not successful.");
 
         final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription, errorContext);
         sink.error(throwable);

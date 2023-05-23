@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ContainerAppsSourceControls Get. */
 public final class ContainerAppsSourceControlsGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/SourceControls_Get.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/SourceControls_Get.json
      */
     /**
      * Sample code: Get Container App's SourceControl.
@@ -20,6 +18,6 @@ public final class ContainerAppsSourceControlsGetSamples {
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
         manager
             .containerAppsSourceControls()
-            .getWithResponse("workerapps-rg-xj", "testcanadacentral", "current", Context.NONE);
+            .getWithResponse("workerapps-rg-xj", "testcanadacentral", "current", com.azure.core.util.Context.NONE);
     }
 }

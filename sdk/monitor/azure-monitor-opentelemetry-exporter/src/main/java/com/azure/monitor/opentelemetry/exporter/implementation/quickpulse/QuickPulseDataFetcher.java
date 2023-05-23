@@ -98,16 +98,20 @@ class QuickPulseDataFetcher {
             if (!sendQueue.offer(request)) {
                 logger.verbose("Quick Pulse send queue is full");
             }
-        } catch (ThreadDeath td) {
-            throw td;
         } catch (Throwable e) {
+            if (e instanceof Error) {
+                throw (Error) e;
+            }
+
             try {
                 try (MDC.MDCCloseable ignored = QUICK_PULSE_SEND_ERROR.makeActive()) {
                     logger.error("Quick Pulse failed to prepare data for send", e);
                 }
-            } catch (ThreadDeath td) {
-                throw td;
             } catch (Throwable t2) {
+                if (t2 instanceof Error) {
+                    throw (Error) t2;
+                }
+
                 // chomp
             }
         }

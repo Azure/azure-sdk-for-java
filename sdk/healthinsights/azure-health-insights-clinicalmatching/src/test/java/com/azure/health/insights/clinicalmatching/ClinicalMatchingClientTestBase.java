@@ -14,7 +14,7 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 
-import java.nio.file.Paths;
+import java.io.File;
 import java.util.function.Consumer;
 
 
@@ -64,7 +64,13 @@ public class ClinicalMatchingClientTestBase extends TestBase {
     }
 
     private BinaryData getTMRequest() {
-        BinaryData requestBody = BinaryData.fromFile(Paths.get("target/test-classes/session-records/ClinicalMatchingClientTest.request.json"));
-        return requestBody;
+        File requestFile = new File(ClinicalMatchingClientTestBase.class.getResource("/ClinicalMatchingClientTest.request.json").getPath());
+        try {
+            BinaryData requestBody = BinaryData.fromFile(requestFile.toPath());
+            return requestBody;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

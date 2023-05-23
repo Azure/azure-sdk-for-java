@@ -1,14 +1,24 @@
 # Release History
 
-## 2.26.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.27.0-beta.1 (Unreleased)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Redis version 4.0 is retiring. Please see https://aka.ms/RedisVersionRetirementTimelines for more information.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-04-01`.
+
+## 2.26.0 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.25.0 (2023-03-24)
 

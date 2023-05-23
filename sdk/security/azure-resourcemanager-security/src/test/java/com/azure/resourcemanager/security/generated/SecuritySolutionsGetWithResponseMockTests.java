@@ -33,7 +33,7 @@ public final class SecuritySolutionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"securityFamily\":\"Va\",\"provisioningState\":\"Failed\",\"template\":\"umspbfsfeqbbew\",\"protectionStatus\":\"cuq\"},\"location\":\"yyxmzrmtmvwituw\",\"id\":\"yyjshcybwfuppo\",\"name\":\"prcmvouujxdiik\",\"type\":\"oxrezsvavlrxik\"}";
+            "{\"properties\":{\"securityFamily\":\"Ngfw\",\"provisioningState\":\"Updating\",\"template\":\"bzkuastaxklpr\",\"protectionStatus\":\"ulhgltoiz\"},\"location\":\"vscksgfyys\",\"id\":\"yekgafxc\",\"name\":\"vfcck\",\"type\":\"rtwletyves\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +64,12 @@ public final class SecuritySolutionsGetWithResponseMockTests {
         SecuritySolution response =
             manager
                 .securitySolutions()
-                .getWithResponse("ali", "rycgnwplrrbph", "tsbbibtic", com.azure.core.util.Context.NONE)
+                .getWithResponse("ucumlddauqml", "feothxu", "rigrjdljlkq", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals(SecurityFamily.VA, response.securityFamily());
-        Assertions.assertEquals(ProvisioningState.FAILED, response.provisioningState());
-        Assertions.assertEquals("umspbfsfeqbbew", response.template());
-        Assertions.assertEquals("cuq", response.protectionStatus());
+        Assertions.assertEquals(SecurityFamily.NGFW, response.securityFamily());
+        Assertions.assertEquals(ProvisioningState.UPDATING, response.provisioningState());
+        Assertions.assertEquals("bzkuastaxklpr", response.template());
+        Assertions.assertEquals("ulhgltoiz", response.protectionStatus());
     }
 }
