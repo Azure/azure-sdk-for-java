@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingDeserializationHelper.parseFeatureFlagValue;
-import static com.azure.data.appconfiguration.implementation.ConfigurationSettingSerializationHelper.writeFeatureFlagConfigurationSetting;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonDeserializer.readFeatureFlagConfigurationSettingValue;
+import static com.azure.data.appconfiguration.implementation.ConfigurationSettingJsonSerializer.writeFeatureFlagConfigurationSetting;
 
 /**
  * {@link FeatureFlagConfigurationSetting} allows you to customize your own feature flags to dynamically administer a
@@ -71,7 +71,7 @@ public final class FeatureFlagConfigurationSetting extends ConfigurationSetting 
     public FeatureFlagConfigurationSetting setValue(String value) {
         super.setValue(value);
         // update strongly-typed properties.
-        final FeatureFlagConfigurationSetting updatedSetting = parseFeatureFlagValue(value);
+        final FeatureFlagConfigurationSetting updatedSetting = readFeatureFlagConfigurationSettingValue(value);
         this.featureId = updatedSetting.getFeatureId();
         this.description = updatedSetting.getDescription();
         this.isEnabled = updatedSetting.isEnabled();

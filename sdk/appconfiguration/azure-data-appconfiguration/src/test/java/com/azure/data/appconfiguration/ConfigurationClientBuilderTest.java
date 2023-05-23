@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -14,7 +15,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.TimeoutPolicy;
-import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.TestBase;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -41,7 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class ConfigurationClientBuilderTest extends TestProxyTestBase {
+public class ConfigurationClientBuilderTest extends TestBase {
     private static final String AZURE_APPCONFIG_CONNECTION_STRING = "AZURE_APPCONFIG_CONNECTION_STRING";
     private static final String DEFAULT_DOMAIN_NAME = ".azconfig.io";
     private static final String NAMESPACE_NAME = "dummyNamespaceName";
@@ -188,15 +189,11 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
             .connectionString(connectionString)
             .retryPolicy(new RetryPolicy())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
-            .serviceVersion(null);
+            .serviceVersion(null)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient);
 
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        }
-        if (interceptorManager.isRecordMode()) {
-            clientBuilder
-                .httpClient(httpClient)
-                .addPolicy(interceptorManager.getRecordPolicy());
+        if (!interceptorManager.isPlaybackMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         }
 
         ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
@@ -216,22 +213,21 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
             .connectionString(connectionString)
             .retryPolicy(new RetryPolicy())
             .configuration(Configuration.getGlobalConfiguration())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .pipeline(new HttpPipelineBuilder().build());
 
-        if (interceptorManager.isRecordMode()) {
-            clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .httpClient(HttpClient.createDefault());
+        if (!interceptorManager.isPlaybackMode()) {
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+
+            assertThrows(HttpResponseException.class,
+                () -> clientBuilder.buildClient().setConfigurationSetting(key, null, value));
         }
+        HttpClient defaultHttpClient = interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient()
+            : HttpClient.createDefault();
 
-        if (interceptorManager.isPlaybackMode()) {
-            clientBuilder.httpClient(interceptorManager.getPlaybackClient());
-        }
+        clientBuilder.pipeline(null).httpClient(defaultHttpClient);
 
-        ConfigurationSetting addedSetting = clientBuilder
-            .buildClient()
-            .setConfigurationSetting(key, null, value);
-
+        ConfigurationSetting addedSetting = clientBuilder.buildClient().setConfigurationSetting(key, null, value);
         assertEquals(addedSetting.getKey(), key);
         assertEquals(addedSetting.getValue(), value);
     }
@@ -276,8 +272,8 @@ public class ConfigurationClientBuilderTest extends TestProxyTestBase {
                                                                           .connectionString(FAKE_CONNECTION_STRING);
         ConfigurationClient client = configurationClientBuilder.buildClient();
         final ConfigurationAsyncClient asyncClient = configurationClientBuilder.buildAsyncClient();
-        assertEquals("https://localhost:8080", client.getEndpoint());
-        assertEquals("https://localhost:8080", asyncClient.getEndpoint());
+        assertEquals("http://localhost:8080", client.getEndpoint());
+        assertEquals("http://localhost:8080", asyncClient.getEndpoint());
     }
 
     private static URI getURI(String endpointFormat, String namespace, String domainName) {
