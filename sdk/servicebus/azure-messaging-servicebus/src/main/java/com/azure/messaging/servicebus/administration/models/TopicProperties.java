@@ -15,9 +15,9 @@ import com.azure.messaging.servicebus.administration.implementation.models.Topic
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
 
@@ -114,10 +114,14 @@ public final class TopicProperties {
     TopicProperties(TopicDescriptionImpl topic) {
         Objects.requireNonNull(topic, "'options' cannot be null.");
         this.accessedAt = topic.getAccessedAt();
-        this.authorizationRules = topic.getAuthorizationRules()
-            .stream()
-            .map(SharedAccessAuthorizationRule::new)
-            .collect(Collectors.toList());
+        if (topic.getAuthorizationRules() == null) {
+            this.authorizationRules = new ArrayList<>();
+        } else {
+            this.authorizationRules = new ArrayList<>(topic.getAuthorizationRules().size());
+            for (AuthorizationRuleImpl authorizationRule : topic.getAuthorizationRules()) {
+                this.authorizationRules.add(new SharedAccessAuthorizationRule(authorizationRule));
+            }
+        }
         this.autoDeleteOnIdle = topic.getAutoDeleteOnIdle();
         this.createdAt = topic.getCreatedAt();
         this.defaultMessageTimeToLive = topic.getDefaultMessageTimeToLive();

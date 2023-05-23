@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -71,10 +72,17 @@ public final class NamespacePropertiesEntryContentImpl implements XmlSerializabl
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("NamespacePropertiesEntryContent");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName =
+                CoreUtils.isNullOrEmpty(rootElementName) ? "NamespacePropertiesEntryContent" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringAttribute("type", this.type);
-        xmlWriter.writeXml(this.namespaceProperties);
+        xmlWriter.writeXml(this.namespaceProperties, "NamespaceInfo");
         return xmlWriter.writeEndElement();
     }
 
@@ -87,9 +95,24 @@ public final class NamespacePropertiesEntryContentImpl implements XmlSerializabl
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      */
     public static NamespacePropertiesEntryContentImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of NamespacePropertiesEntryContent from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of NamespacePropertiesEntryContent if the XmlReader was pointing to an instance of it, or
+     *     null if it was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     */
+    public static NamespacePropertiesEntryContentImpl fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName =
+                CoreUtils.isNullOrEmpty(rootElementName) ? "NamespacePropertiesEntryContent" : rootElementName;
         return xmlReader.readObject(
-                "NamespacePropertiesEntryContent",
                 "http://www.w3.org/2005/Atom",
+                finalRootElementName,
                 reader -> {
                     String type = reader.getStringAttribute(null, "type");
                     NamespaceProperties namespaceProperties = null;
@@ -99,7 +122,7 @@ public final class NamespacePropertiesEntryContentImpl implements XmlSerializabl
                         if ("NamespaceInfo".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            namespaceProperties = NamespaceProperties.fromXml(reader);
+                            namespaceProperties = NamespaceProperties.fromXml(reader, "NamespaceInfo");
                         } else {
                             reader.skipElement();
                         }

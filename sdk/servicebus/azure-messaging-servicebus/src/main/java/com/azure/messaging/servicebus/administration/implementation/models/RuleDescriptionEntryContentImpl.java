@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -70,10 +71,16 @@ public final class RuleDescriptionEntryContentImpl implements XmlSerializable<Ru
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("RuleDescriptionEntryContent");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "RuleDescriptionEntryContent" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringAttribute("type", this.type);
-        xmlWriter.writeXml(this.ruleDescription);
+        xmlWriter.writeXml(this.ruleDescription, "RuleDescription");
         return xmlWriter.writeEndElement();
     }
 
@@ -86,9 +93,24 @@ public final class RuleDescriptionEntryContentImpl implements XmlSerializable<Ru
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      */
     public static RuleDescriptionEntryContentImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of RuleDescriptionEntryContent from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of RuleDescriptionEntryContent if the XmlReader was pointing to an instance of it, or null if
+     *     it was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     */
+    public static RuleDescriptionEntryContentImpl fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName =
+                CoreUtils.isNullOrEmpty(rootElementName) ? "RuleDescriptionEntryContent" : rootElementName;
         return xmlReader.readObject(
-                "RuleDescriptionEntryContent",
                 "http://www.w3.org/2005/Atom",
+                finalRootElementName,
                 reader -> {
                     String type = reader.getStringAttribute(null, "type");
                     RuleDescriptionImpl ruleDescription = null;
@@ -98,7 +120,7 @@ public final class RuleDescriptionEntryContentImpl implements XmlSerializable<Ru
                         if ("RuleDescription".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            ruleDescription = RuleDescriptionImpl.fromXml(reader);
+                            ruleDescription = RuleDescriptionImpl.fromXml(reader, "RuleDescription");
                         } else {
                             reader.skipElement();
                         }

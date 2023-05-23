@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -45,7 +46,13 @@ public final class ResponseAuthorImpl implements XmlSerializable<ResponseAuthorI
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("author");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "author" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringElement("http://www.w3.org/2005/Atom", "name", this.name);
         return xmlWriter.writeEndElement();
@@ -59,9 +66,21 @@ public final class ResponseAuthorImpl implements XmlSerializable<ResponseAuthorI
      *     pointing to XML null.
      */
     public static ResponseAuthorImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of ResponseAuthor from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of ResponseAuthor if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static ResponseAuthorImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "author" : rootElementName;
         return xmlReader.readObject(
-                "author",
                 "http://www.w3.org/2005/Atom",
+                finalRootElementName,
                 reader -> {
                     String name = null;
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {

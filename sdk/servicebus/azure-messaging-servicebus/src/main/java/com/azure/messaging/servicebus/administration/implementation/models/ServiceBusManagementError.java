@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -70,7 +71,13 @@ public final class ServiceBusManagementError implements XmlSerializable<ServiceB
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("ServiceBusManagementError");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "ServiceBusManagementError" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNumberElement("Code", this.code);
         xmlWriter.writeStringElement("Detail", this.detail);
         return xmlWriter.writeEndElement();
@@ -84,8 +91,22 @@ public final class ServiceBusManagementError implements XmlSerializable<ServiceB
      *     it was pointing to XML null.
      */
     public static ServiceBusManagementError fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of ServiceBusManagementError from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of ServiceBusManagementError if the XmlReader was pointing to an instance of it, or null if
+     *     it was pointing to XML null.
+     */
+    public static ServiceBusManagementError fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName =
+                CoreUtils.isNullOrEmpty(rootElementName) ? "ServiceBusManagementError" : rootElementName;
         return xmlReader.readObject(
-                "ServiceBusManagementError",
+                finalRootElementName,
                 reader -> {
                     Integer code = null;
                     String detail = null;

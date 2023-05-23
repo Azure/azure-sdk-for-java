@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -41,20 +42,31 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
 
         @Override
         public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+            return toXml(xmlWriter, null);
+        }
+
+        @Override
+        public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Parameters" : rootElementName;
             xmlWriter.writeStartElement(
-                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Parameters");
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", rootElementName);
             if (items != null) {
                 for (KeyValueImpl element : items) {
-                    xmlWriter.writeXml(element);
+                    xmlWriter.writeXml(element, "KeyValueOfstringanyType");
                 }
             }
             return xmlWriter.writeEndElement();
         }
 
         public static ParametersWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
+            return fromXml(xmlReader, null);
+        }
+
+        public static ParametersWrapper fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Parameters" : rootElementName;
             return xmlReader.readObject(
                     "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
-                    "Parameters",
+                    rootElementName,
                     reader -> {
                         List<KeyValueImpl> items = null;
 
@@ -174,7 +186,15 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("SqlRuleAction");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
+        xmlWriter.writeNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         xmlWriter.writeStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type", TYPE);
         xmlWriter.writeStringElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
@@ -201,8 +221,22 @@ public final class SqlRuleActionImpl extends RuleActionImpl {
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      */
     public static SqlRuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of SqlRuleAction from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of SqlRuleAction if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     */
+    public static SqlRuleActionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
         return xmlReader.readObject(
-                "SqlRuleAction",
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     String type = reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
                     if (!"SqlRuleAction".equals(type)) {

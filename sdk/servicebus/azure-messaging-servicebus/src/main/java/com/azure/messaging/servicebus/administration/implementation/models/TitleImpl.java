@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlWriter;
@@ -68,7 +69,13 @@ public final class TitleImpl implements XmlSerializable<TitleImpl> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("title");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "title" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringAttribute("http://www.w3.org/2005/Atom", "type", this.type);
         xmlWriter.writeString(this.content);
@@ -83,9 +90,21 @@ public final class TitleImpl implements XmlSerializable<TitleImpl> {
      *     XML null.
      */
     public static TitleImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of Title from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of Title if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     *     XML null.
+     */
+    public static TitleImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "title" : rootElementName;
         return xmlReader.readObject(
-                "title",
                 "http://www.w3.org/2005/Atom",
+                finalRootElementName,
                 reader -> {
                     String type = reader.getStringAttribute("http://www.w3.org/2005/Atom", "type");
                     String content = reader.getStringElement();

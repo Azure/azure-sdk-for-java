@@ -5,8 +5,10 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import javax.xml.stream.XMLStreamException;
 
@@ -68,7 +70,13 @@ public final class ResponseLinkImpl implements XmlSerializable<ResponseLinkImpl>
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("link");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "link" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringAttribute("href", this.href);
         xmlWriter.writeStringAttribute("rel", this.rel);
@@ -83,12 +91,27 @@ public final class ResponseLinkImpl implements XmlSerializable<ResponseLinkImpl>
      *     pointing to XML null.
      */
     public static ResponseLinkImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of ResponseLink from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of ResponseLink if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static ResponseLinkImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "link" : rootElementName;
         return xmlReader.readObject(
-                "link",
                 "http://www.w3.org/2005/Atom",
+                finalRootElementName,
                 reader -> {
                     String href = reader.getStringAttribute(null, "href");
                     String rel = reader.getStringAttribute(null, "rel");
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        reader.skipElement();
+                    }
                     ResponseLinkImpl deserializedResponseLink = new ResponseLinkImpl();
                     deserializedResponseLink.href = href;
                     deserializedResponseLink.rel = rel;

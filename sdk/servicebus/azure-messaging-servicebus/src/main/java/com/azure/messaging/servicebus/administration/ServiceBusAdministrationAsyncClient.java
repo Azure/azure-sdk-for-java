@@ -53,8 +53,11 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionProperti
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
+import com.azure.xml.XmlProviders;
+import com.azure.xml.XmlReader;
 import reactor.core.publisher.Mono;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -2200,27 +2203,34 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return The corresponding HTTP response with convenience properties set.
      */
     private Response<QueueProperties> deserializeQueue(Response<Object> response) {
-        final QueueDescriptionEntryImpl entry = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
+        String responseBody = response.getValue().toString();
 
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent().getQueueDescription() == null) {
-            final TopicDescriptionEntryImpl entryTopic = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
-            if (entryTopic != null && entryTopic.getContent() != null && entryTopic.getContent().getTopicDescription() != null) {
-                LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
+        try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+            QueueDescriptionEntryImpl entry = QueueDescriptionEntryImpl.fromXml(xmlReader);
+            // This was an empty response (ie. 204).
+            if (entry == null) {
+                return new SimpleResponse<>(response, null);
+            } else if (entry.getContent() == null) {
+                LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
+                return new SimpleResponse<>(response, null);
             }
+
+            final QueueProperties result = EntityHelper.toModel(entry.getContent().getQueueDescription());
+            final String queueName = entry.getTitle().getContent();
+            EntityHelper.setQueueName(result, queueName);
+
+            return new SimpleResponse<>(response, result);
+        } catch (IllegalStateException ex) {
+            try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+                TopicDescriptionEntryImpl entryTopic = TopicDescriptionEntryImpl.fromXml(xmlReader);
+                LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
+                return new SimpleResponse<>(response, null);
+            } catch (XMLStreamException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
         }
-
-        final QueueProperties result = EntityHelper.toModel(entry.getContent().getQueueDescription());
-        final String queueName = entry.getTitle().getContent();
-        EntityHelper.setQueueName(result, queueName);
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
     }
 
     /**

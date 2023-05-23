@@ -3,8 +3,9 @@
 
 package com.azure.xml;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
 
 public class ResponseLink implements XmlSerializable<ResponseLink> {
     private String href;
@@ -52,7 +53,12 @@ public class ResponseLink implements XmlSerializable<ResponseLink> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartSelfClosingElement("link");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        xmlWriter.writeStartSelfClosingElement(getRootElementName(rootElementName, "link"));
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringAttribute("rel", rel);
         xmlWriter.writeStringAttribute("href", href);
@@ -61,30 +67,20 @@ public class ResponseLink implements XmlSerializable<ResponseLink> {
     }
 
     public static ResponseLink fromXml(XmlReader xmlReader) throws XMLStreamException {
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            xmlReader.nextElement();
-        }
+        return fromXml(xmlReader, null);
+    }
 
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
-        }
+    public static ResponseLink fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        return xmlReader.readObject("http://www.w3.org/2005/Atom", getRootElementName(rootElementName, "link"),
+            reader -> {
+                String rel = xmlReader.getStringAttribute(null, "rel");
+                String href = xmlReader.getStringAttribute(null, "href");
 
-        QName qName = xmlReader.getElementName();
-        if (!"link".equals(qName.getLocalPart())
-            || !"http://www.w3.org/2005/Atom".equals(qName.getNamespaceURI())) {
-            throw new IllegalStateException("Expected XML element to be 'link' in namespace "
-                + "'http://www.w3.org/2005/Atom' but it was: "
-                + "{'" + qName.getNamespaceURI() + "'}'" + qName.getLocalPart() + "'.");
-        }
+                while (xmlReader.currentToken() != XmlToken.END_ELEMENT) {
+                    xmlReader.skipElement();
+                }
 
-        String rel = xmlReader.getStringAttribute(null, "rel");
-        String href = xmlReader.getStringAttribute(null, "href");
-
-        while (xmlReader.currentToken() != XmlToken.END_ELEMENT) {
-            xmlReader.nextElement();
-        }
-
-        return new ResponseLink().setHref(href).setRel(rel);
+                return new ResponseLink().setHref(href).setRel(rel);
+            });
     }
 }

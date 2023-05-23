@@ -14,8 +14,8 @@ import com.azure.messaging.servicebus.administration.implementation.models.Queue
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.azure.messaging.servicebus.implementation.MessageUtils.toPrimitive;
 
@@ -92,9 +92,14 @@ public final class QueueProperties {
      */
     QueueProperties(QueueDescriptionImpl description) {
         this.description = description;
-        this.authorizationRules = description.getAuthorizationRules().stream()
-            .map(SharedAccessAuthorizationRule::new)
-            .collect(Collectors.toList());
+        if (description.getAuthorizationRules() == null) {
+            this.authorizationRules = new ArrayList<>();
+        } else {
+            this.authorizationRules = new ArrayList<>(description.getAuthorizationRules().size());
+            for (AuthorizationRuleImpl authorizationRule : description.getAuthorizationRules()) {
+                this.authorizationRules.add(new SharedAccessAuthorizationRule(authorizationRule));
+            }
+        }
     }
 
     /**

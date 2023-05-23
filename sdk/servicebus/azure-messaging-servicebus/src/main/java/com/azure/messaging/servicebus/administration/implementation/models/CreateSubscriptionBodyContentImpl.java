@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -71,10 +72,16 @@ public final class CreateSubscriptionBodyContentImpl implements XmlSerializable<
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("CreateSubscriptionBodyContent");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "CreateSubscriptionBodyContent" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringAttribute("type", this.type);
-        xmlWriter.writeXml(this.subscriptionDescription);
+        xmlWriter.writeXml(this.subscriptionDescription, "SubscriptionDescription");
         return xmlWriter.writeEndElement();
     }
 
@@ -86,9 +93,23 @@ public final class CreateSubscriptionBodyContentImpl implements XmlSerializable<
      *     if it was pointing to XML null.
      */
     public static CreateSubscriptionBodyContentImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of CreateSubscriptionBodyContent from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of CreateSubscriptionBodyContent if the XmlReader was pointing to an instance of it, or null
+     *     if it was pointing to XML null.
+     */
+    public static CreateSubscriptionBodyContentImpl fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName =
+                CoreUtils.isNullOrEmpty(rootElementName) ? "CreateSubscriptionBodyContent" : rootElementName;
         return xmlReader.readObject(
-                "CreateSubscriptionBodyContent",
                 "http://www.w3.org/2005/Atom",
+                finalRootElementName,
                 reader -> {
                     String type = reader.getStringAttribute(null, "type");
                     SubscriptionDescriptionImpl subscriptionDescription = null;
@@ -98,7 +119,8 @@ public final class CreateSubscriptionBodyContentImpl implements XmlSerializable<
                         if ("SubscriptionDescription".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            subscriptionDescription = SubscriptionDescriptionImpl.fromXml(reader);
+                            subscriptionDescription =
+                                    SubscriptionDescriptionImpl.fromXml(reader, "SubscriptionDescription");
                         } else {
                             reader.skipElement();
                         }

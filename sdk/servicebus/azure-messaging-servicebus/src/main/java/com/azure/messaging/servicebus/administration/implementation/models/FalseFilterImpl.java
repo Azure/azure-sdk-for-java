@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
@@ -53,7 +54,15 @@ public final class FalseFilterImpl extends SqlFilterImpl {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("FalseFilter");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Filter" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
+        xmlWriter.writeNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         xmlWriter.writeStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type", TYPE);
         xmlWriter.writeStringElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
@@ -80,8 +89,22 @@ public final class FalseFilterImpl extends SqlFilterImpl {
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      */
     public static FalseFilterImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of FalseFilter from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of FalseFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
+     *     to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     */
+    public static FalseFilterImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Filter" : rootElementName;
         return xmlReader.readObject(
-                "FalseFilter",
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     String type = reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
                     if (!"FalseFilter".equals(type)) {

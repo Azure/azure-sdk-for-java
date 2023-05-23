@@ -60,8 +60,6 @@ public class AdministrationClientCustomization extends Customization {
 
         ClassCustomization queueDescription = implementationModels.getClass("QueueDescription");
 
-        queueDescription = addAuthorizationRulesConstructor(queueDescription, logger);
-
         for (ClassCustomization classCustomization : implementationModels.listClasses()) {
             final String className = classCustomization.getClassName();
 
@@ -139,44 +137,6 @@ public class AdministrationClientCustomization extends Customization {
             }
 
             annotationExpression.addPair(NAMESPACE_KEY, new StringLiteralExpr("http://www.w3.org/2001/XMLSchema-instance"));
-        });
-    }
-
-    /**
-     * Adds the no argument AuthorizationRulesWrapper constructor.
-     */
-    private ClassCustomization addAuthorizationRulesConstructor(ClassCustomization classCustomization, Logger logger) {
-        final String authorizationWrapper = "AuthorizationRulesWrapper";
-
-        logger.info("{}: Adding constructor to: {}", classCustomization.getClassName(), authorizationWrapper);
-
-        return classCustomization.customizeAst(compilationUnit -> {
-            final List<ClassOrInterfaceDeclaration> allClasses =
-                compilationUnit.getLocalDeclarationFromClassname(authorizationWrapper);
-
-            if (allClasses.isEmpty()) {
-                logger.warn("{}: Unable to find any classes with '{}'.", classCustomization.getClassName(),
-                    authorizationWrapper);
-                return;
-            } else if (allClasses.size() != 1) {
-                final String matches = allClasses.stream().map(NodeWithSimpleName::getNameAsString)
-                    .collect(Collectors.joining(", "));
-
-                logger.warn("{}: Found more than one class ending with '{}'. [{}]", classCustomization.getClassName(),
-                    authorizationWrapper, matches);
-                return;
-            }
-
-            final NormalAnnotationExpr jsonCreatorAnnotation =
-                new NormalAnnotationExpr(new Name("JsonCreator"), new NodeList<>());
-
-            final ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration(authorizationWrapper);
-            constructorDeclaration.addAnnotation(jsonCreatorAnnotation);
-            constructorDeclaration.setModifiers(Modifier.Keyword.PRIVATE);
-            constructorDeclaration.getBody().addStatement("this.items = java.util.Collections.emptyList();");
-
-            final ClassOrInterfaceDeclaration declaration = allClasses.get(0);
-            declaration.getMembers().add(constructorDeclaration);
         });
     }
 

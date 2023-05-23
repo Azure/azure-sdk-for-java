@@ -5,16 +5,18 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
 /** Description of a Service Bus subscription resource. */
 @Fluent
@@ -532,7 +534,13 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("SubscriptionDescription");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SubscriptionDescription" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
         xmlWriter.writeStringElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
@@ -554,7 +562,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "DeadLetteringOnFilterEvaluationExceptions",
                 this.deadLetteringOnFilterEvaluationExceptions);
-        xmlWriter.writeXml(this.defaultRuleDescription);
+        xmlWriter.writeXml(this.defaultRuleDescription, "RuleDescription");
         xmlWriter.writeNumberElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "MessageCount",
@@ -585,7 +593,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "AccessedAt",
                 Objects.toString(this.accessedAt, null));
-        xmlWriter.writeXml(this.messageCountDetails);
+        xmlWriter.writeXml(this.messageCountDetails, "CountDetails");
         xmlWriter.writeStringElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "UserMetadata",
@@ -613,9 +621,23 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      *     was pointing to XML null.
      */
     public static SubscriptionDescriptionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of SubscriptionDescription from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of SubscriptionDescription if the XmlReader was pointing to an instance of it, or null if it
+     *     was pointing to XML null.
+     */
+    public static SubscriptionDescriptionImpl fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName =
+                CoreUtils.isNullOrEmpty(rootElementName) ? "SubscriptionDescription" : rootElementName;
         return xmlReader.readObject(
-                "SubscriptionDescription",
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     Duration lockDuration = null;
                     Boolean requiresSession = null;
@@ -663,7 +685,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                         } else if ("RuleDescription".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            defaultRuleDescription = RuleDescriptionImpl.fromXml(reader);
+                            defaultRuleDescription = RuleDescriptionImpl.fromXml(reader, "RuleDescription");
                         } else if ("MessageCount".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
@@ -699,7 +721,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                         } else if ("CountDetails".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            messageCountDetails = MessageCountDetailsImpl.fromXml(reader);
+                            messageCountDetails = MessageCountDetailsImpl.fromXml(reader, "CountDetails");
                         } else if ("UserMetadata".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {

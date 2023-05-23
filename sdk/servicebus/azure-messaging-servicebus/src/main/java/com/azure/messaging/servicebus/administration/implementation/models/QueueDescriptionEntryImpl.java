@@ -5,14 +5,16 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-import java.time.OffsetDateTime;
-import java.util.Objects;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /** Represents an entry in the feed when querying queues. */
 @Fluent
@@ -222,17 +224,24 @@ public final class QueueDescriptionEntryImpl implements XmlSerializable<QueueDes
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("entry");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "entry" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
+        xmlWriter.writeNamespace("xml", "null");
         xmlWriter.writeStringAttribute("base", this.base);
         xmlWriter.writeStringElement("http://www.w3.org/2005/Atom", "id", this.id);
-        xmlWriter.writeXml(this.title);
+        xmlWriter.writeXml(this.title, "title");
         xmlWriter.writeStringElement(
                 "http://www.w3.org/2005/Atom", "published", Objects.toString(this.published, null));
         xmlWriter.writeStringElement("http://www.w3.org/2005/Atom", "updated", Objects.toString(this.updated, null));
-        xmlWriter.writeXml(this.author);
-        xmlWriter.writeXml(this.link);
-        xmlWriter.writeXml(this.content);
+        xmlWriter.writeXml(this.author, "author");
+        xmlWriter.writeXml(this.link, "link");
+        xmlWriter.writeXml(this.content, "content");
         return xmlWriter.writeEndElement();
     }
 
@@ -244,9 +253,22 @@ public final class QueueDescriptionEntryImpl implements XmlSerializable<QueueDes
      *     was pointing to XML null.
      */
     public static QueueDescriptionEntryImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of QueueDescriptionEntry from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of QueueDescriptionEntry if the XmlReader was pointing to an instance of it, or null if it
+     *     was pointing to XML null.
+     */
+    public static QueueDescriptionEntryImpl fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "entry" : rootElementName;
         return xmlReader.readObject(
-                "entry",
                 "http://www.w3.org/2005/Atom",
+                finalRootElementName,
                 reader -> {
                     String base = reader.getStringAttribute(null, "base");
                     String id = null;
@@ -264,7 +286,7 @@ public final class QueueDescriptionEntryImpl implements XmlSerializable<QueueDes
                             id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader);
+                            title = TitleImpl.fromXml(reader, "title");
                         } else if ("published".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
                             published = reader.getNullableElement(OffsetDateTime::parse);
@@ -273,13 +295,13 @@ public final class QueueDescriptionEntryImpl implements XmlSerializable<QueueDes
                             updated = reader.getNullableElement(OffsetDateTime::parse);
                         } else if ("author".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            author = ResponseAuthorImpl.fromXml(reader);
+                            author = ResponseAuthorImpl.fromXml(reader, "author");
                         } else if ("link".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            link = ResponseLinkImpl.fromXml(reader);
+                            link = ResponseLinkImpl.fromXml(reader, "link");
                         } else if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = QueueDescriptionEntryContentImpl.fromXml(reader);
+                            content = QueueDescriptionEntryContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }

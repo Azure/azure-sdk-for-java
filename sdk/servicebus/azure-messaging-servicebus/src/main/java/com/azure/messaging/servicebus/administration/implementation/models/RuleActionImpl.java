@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlWriter;
@@ -18,8 +19,15 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("Action");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
+        xmlWriter.writeNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         xmlWriter.writeStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type", "RuleAction");
         return xmlWriter.writeEndElement();
     }
@@ -33,18 +41,31 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      */
     public static RuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of RuleAction from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of RuleAction if the XmlReader was pointing to an instance of it, or null if it was pointing
+     *     to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     */
+    public static RuleActionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
         return xmlReader.readObject(
-                "Action",
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     // Get the XML discriminator attribute.
                     String discriminatorValue =
                             reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
                     // Use the discriminator value to determine which subtype should be deserialized.
                     if ("SqlRuleAction".equals(discriminatorValue)) {
-                        return SqlRuleActionImpl.fromXml(reader);
+                        return SqlRuleActionImpl.fromXml(reader, finalRootElementName);
                     } else if ("EmptyRuleAction".equals(discriminatorValue)) {
-                        return EmptyRuleActionImpl.fromXml(reader);
+                        return EmptyRuleActionImpl.fromXml(reader, finalRootElementName);
                     } else {
                         throw new IllegalStateException(
                                 "Discriminator field 'type' didn't match one of the expected values 'SqlRuleAction', or 'EmptyRuleAction'. It was: '"

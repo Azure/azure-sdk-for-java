@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -145,8 +146,15 @@ public final class MessageCountDetailsImpl implements XmlSerializable<MessageCou
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("CountDetails");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "CountDetails" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
+        xmlWriter.writeNamespace("d2p1", "http://schemas.microsoft.com/netservices/2011/06/servicebus");
         xmlWriter.writeNumberElement(
                 "http://schemas.microsoft.com/netservices/2011/06/servicebus",
                 "ActiveMessageCount",
@@ -178,9 +186,22 @@ public final class MessageCountDetailsImpl implements XmlSerializable<MessageCou
      *     pointing to XML null.
      */
     public static MessageCountDetailsImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of MessageCountDetails from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of MessageCountDetails if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static MessageCountDetailsImpl fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "CountDetails" : rootElementName;
         return xmlReader.readObject(
-                "CountDetails",
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     Integer activeMessageCount = null;
                     Integer deadLetterMessageCount = null;

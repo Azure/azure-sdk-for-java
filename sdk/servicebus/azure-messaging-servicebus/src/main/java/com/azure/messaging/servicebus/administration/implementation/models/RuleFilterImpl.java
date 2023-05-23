@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlWriter;
@@ -18,8 +19,15 @@ public class RuleFilterImpl implements XmlSerializable<RuleFilterImpl> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("Filter");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Filter" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
+        xmlWriter.writeNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         xmlWriter.writeStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type", "RuleFilter");
         return xmlWriter.writeEndElement();
     }
@@ -33,22 +41,35 @@ public class RuleFilterImpl implements XmlSerializable<RuleFilterImpl> {
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      */
     public static RuleFilterImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of RuleFilter from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of RuleFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
+     *     to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     */
+    public static RuleFilterImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Filter" : rootElementName;
         return xmlReader.readObject(
-                "Filter",
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     // Get the XML discriminator attribute.
                     String discriminatorValue =
                             reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
                     // Use the discriminator value to determine which subtype should be deserialized.
                     if ("CorrelationFilter".equals(discriminatorValue)) {
-                        return CorrelationFilterImpl.fromXml(reader);
+                        return CorrelationFilterImpl.fromXml(reader, finalRootElementName);
                     } else if ("SqlFilter".equals(discriminatorValue)) {
-                        return SqlFilterImpl.fromXmlKnownDiscriminator(reader);
+                        return SqlFilterImpl.fromXmlKnownDiscriminator(reader, finalRootElementName);
                     } else if ("TrueFilter".equals(discriminatorValue)) {
-                        return TrueFilterImpl.fromXml(reader);
+                        return TrueFilterImpl.fromXml(reader, finalRootElementName);
                     } else if ("FalseFilter".equals(discriminatorValue)) {
-                        return FalseFilterImpl.fromXml(reader);
+                        return FalseFilterImpl.fromXml(reader, finalRootElementName);
                     } else {
                         throw new IllegalStateException(
                                 "Discriminator field 'type' didn't match one of the expected values 'CorrelationFilter', 'SqlFilter', 'TrueFilter', or 'FalseFilter'. It was: '"

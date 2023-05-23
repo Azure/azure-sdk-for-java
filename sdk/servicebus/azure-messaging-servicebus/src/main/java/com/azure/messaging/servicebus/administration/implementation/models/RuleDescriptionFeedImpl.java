@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -150,19 +151,25 @@ public final class RuleDescriptionFeedImpl implements XmlSerializable<RuleDescri
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("feed");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "feed" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringElement("http://www.w3.org/2005/Atom", "id", this.id);
-        xmlWriter.writeXml(this.title);
+        xmlWriter.writeXml(this.title, "title");
         xmlWriter.writeStringElement("http://www.w3.org/2005/Atom", "updated", Objects.toString(this.updated, null));
         if (this.link != null) {
             for (ResponseLinkImpl element : this.link) {
-                xmlWriter.writeXml(element);
+                xmlWriter.writeXml(element, "link");
             }
         }
         if (this.entry != null) {
             for (RuleDescriptionEntryImpl element : this.entry) {
-                xmlWriter.writeXml(element);
+                xmlWriter.writeXml(element, "entry");
             }
         }
         return xmlWriter.writeEndElement();
@@ -176,9 +183,22 @@ public final class RuleDescriptionFeedImpl implements XmlSerializable<RuleDescri
      *     pointing to XML null.
      */
     public static RuleDescriptionFeedImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of RuleDescriptionFeed from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of RuleDescriptionFeed if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static RuleDescriptionFeedImpl fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "feed" : rootElementName;
         return xmlReader.readObject(
-                "feed",
                 "http://www.w3.org/2005/Atom",
+                finalRootElementName,
                 reader -> {
                     String id = null;
                     TitleImpl title = null;
@@ -193,7 +213,7 @@ public final class RuleDescriptionFeedImpl implements XmlSerializable<RuleDescri
                             id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader);
+                            title = TitleImpl.fromXml(reader, "title");
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
                             updated = reader.getNullableElement(OffsetDateTime::parse);
@@ -201,12 +221,12 @@ public final class RuleDescriptionFeedImpl implements XmlSerializable<RuleDescri
                             if (link == null) {
                                 link = new LinkedList<>();
                             }
-                            link.add(ResponseLinkImpl.fromXml(reader));
+                            link.add(ResponseLinkImpl.fromXml(reader, "link"));
                         } else if ("entry".equals(elementName.getLocalPart())) {
                             if (entry == null) {
                                 entry = new LinkedList<>();
                             }
-                            entry.add(RuleDescriptionEntryImpl.fromXml(reader));
+                            entry.add(RuleDescriptionEntryImpl.fromXml(reader, "entry"));
                         } else {
                             reader.skipElement();
                         }

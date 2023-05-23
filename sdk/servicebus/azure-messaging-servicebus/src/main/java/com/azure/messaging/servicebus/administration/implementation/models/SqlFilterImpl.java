@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -41,20 +42,31 @@ public class SqlFilterImpl extends RuleFilterImpl {
 
         @Override
         public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+            return toXml(xmlWriter, null);
+        }
+
+        @Override
+        public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Parameters" : rootElementName;
             xmlWriter.writeStartElement(
-                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Parameters");
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", rootElementName);
             if (items != null) {
                 for (KeyValueImpl element : items) {
-                    xmlWriter.writeXml(element);
+                    xmlWriter.writeXml(element, "KeyValueOfstringanyType");
                 }
             }
             return xmlWriter.writeEndElement();
         }
 
         public static ParametersWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
+            return fromXml(xmlReader, null);
+        }
+
+        public static ParametersWrapper fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Parameters" : rootElementName;
             return xmlReader.readObject(
                     "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
-                    "Parameters",
+                    rootElementName,
                     reader -> {
                         List<KeyValueImpl> items = null;
 
@@ -183,7 +195,15 @@ public class SqlFilterImpl extends RuleFilterImpl {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("SqlFilter");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Filter" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
+        xmlWriter.writeNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         xmlWriter.writeStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type", TYPE);
         xmlWriter.writeStringElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
@@ -210,19 +230,33 @@ public class SqlFilterImpl extends RuleFilterImpl {
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      */
     public static SqlFilterImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of SqlFilter from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of SqlFilter if the XmlReader was pointing to an instance of it, or null if it was pointing
+     *     to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     */
+    public static SqlFilterImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Filter" : rootElementName;
         return xmlReader.readObject(
-                "SqlFilter",
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     // Get the XML discriminator attribute.
                     String discriminatorValue =
                             reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
                     // Use the discriminator value to determine which subtype should be deserialized.
                     if (discriminatorValue == null || "SqlFilter".equals(discriminatorValue)) {
-                        return fromXmlKnownDiscriminator(reader);
+                        return fromXmlKnownDiscriminator(reader, finalRootElementName);
                     } else if ("TrueFilter".equals(discriminatorValue)) {
-                        return TrueFilterImpl.fromXml(reader);
+                        return TrueFilterImpl.fromXml(reader, finalRootElementName);
                     } else if ("FalseFilter".equals(discriminatorValue)) {
-                        return FalseFilterImpl.fromXml(reader);
+                        return FalseFilterImpl.fromXml(reader, finalRootElementName);
                     } else {
                         throw new IllegalStateException(
                                 "Discriminator field 'type' didn't match one of the expected values 'SqlFilter', 'TrueFilter', or 'FalseFilter'. It was: '"
@@ -232,9 +266,16 @@ public class SqlFilterImpl extends RuleFilterImpl {
                 });
     }
 
-    static SqlFilterImpl fromXmlKnownDiscriminator(XmlReader xmlReader) throws XMLStreamException {
+    public static SqlFilterImpl fromXmlKnownDiscriminator(XmlReader xmlReader) throws XMLStreamException {
+        return fromXmlKnownDiscriminator(xmlReader, null);
+    }
+
+    static SqlFilterImpl fromXmlKnownDiscriminator(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Filter" : rootElementName;
         return xmlReader.readObject(
-                "SqlFilter",
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     String type = reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
                     if (!"SqlFilter".equals(type)) {

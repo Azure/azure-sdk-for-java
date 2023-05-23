@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -70,7 +71,13 @@ public final class KeyValueImpl implements XmlSerializable<KeyValueImpl> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("KeyValueOfstringanyType");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "KeyValueOfstringanyType" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
         xmlWriter.writeStringElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "Key", this.key);
@@ -87,9 +94,22 @@ public final class KeyValueImpl implements XmlSerializable<KeyValueImpl> {
      *     XML null.
      */
     public static KeyValueImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of KeyValue from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of KeyValue if the XmlReader was pointing to an instance of it, or null if it was pointing to
+     *     XML null.
+     */
+    public static KeyValueImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName =
+                CoreUtils.isNullOrEmpty(rootElementName) ? "KeyValueOfstringanyType" : rootElementName;
         return xmlReader.readObject(
-                "KeyValueOfstringanyType",
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     String key = null;
                     String value = null;

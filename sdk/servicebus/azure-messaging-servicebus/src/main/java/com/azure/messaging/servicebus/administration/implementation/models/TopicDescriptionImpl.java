@@ -5,18 +5,20 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
 /** Description of a Service Bus topic resource. */
 @Fluent
@@ -73,20 +75,32 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
 
         @Override
         public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+            return toXml(xmlWriter, null);
+        }
+
+        @Override
+        public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "AuthorizationRules" : rootElementName;
             xmlWriter.writeStartElement(
-                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", "AuthorizationRules");
+                    "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect", rootElementName);
             if (items != null) {
                 for (AuthorizationRuleImpl element : items) {
-                    xmlWriter.writeXml(element);
+                    xmlWriter.writeXml(element, "AuthorizationRule");
                 }
             }
             return xmlWriter.writeEndElement();
         }
 
         public static AuthorizationRulesWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
+            return fromXml(xmlReader, null);
+        }
+
+        public static AuthorizationRulesWrapper fromXml(XmlReader xmlReader, String rootElementName)
+                throws XMLStreamException {
+            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "AuthorizationRules" : rootElementName;
             return xmlReader.readObject(
                     "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
-                    "AuthorizationRules",
+                    rootElementName,
                     reader -> {
                         List<AuthorizationRuleImpl> items = null;
 
@@ -681,7 +695,13 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("TopicDescription");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "TopicDescription" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
         xmlWriter.writeStringElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
@@ -734,7 +754,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "SupportOrdering",
                 this.supportOrdering);
-        xmlWriter.writeXml(this.messageCountDetails);
+        xmlWriter.writeXml(this.messageCountDetails, "CountDetails");
         xmlWriter.writeNumberElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "SubscriptionCount",
@@ -778,9 +798,21 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
      *     pointing to XML null.
      */
     public static TopicDescriptionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of TopicDescription from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of TopicDescription if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static TopicDescriptionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "TopicDescription" : rootElementName;
         return xmlReader.readObject(
-                "TopicDescription",
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     Duration defaultMessageTimeToLive = null;
                     Long maxSizeInMegabytes = null;
@@ -867,7 +899,7 @@ public final class TopicDescriptionImpl implements XmlSerializable<TopicDescript
                         } else if ("CountDetails".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            messageCountDetails = MessageCountDetailsImpl.fromXml(reader);
+                            messageCountDetails = MessageCountDetailsImpl.fromXml(reader, "CountDetails");
                         } else if ("SubscriptionCount".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {

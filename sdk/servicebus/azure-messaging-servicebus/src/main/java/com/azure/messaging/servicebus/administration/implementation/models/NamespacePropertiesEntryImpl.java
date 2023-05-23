@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -172,14 +173,20 @@ public final class NamespacePropertiesEntryImpl implements XmlSerializable<Names
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("entry");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "entry" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
         xmlWriter.writeStringElement("http://www.w3.org/2005/Atom", "id", this.id);
-        xmlWriter.writeXml(this.title);
+        xmlWriter.writeXml(this.title, "title");
         xmlWriter.writeStringElement("http://www.w3.org/2005/Atom", "updated", Objects.toString(this.updated, null));
-        xmlWriter.writeXml(this.author);
-        xmlWriter.writeXml(this.link);
-        xmlWriter.writeXml(this.content);
+        xmlWriter.writeXml(this.author, "author");
+        xmlWriter.writeXml(this.link, "link");
+        xmlWriter.writeXml(this.content, "content");
         return xmlWriter.writeEndElement();
     }
 
@@ -192,9 +199,23 @@ public final class NamespacePropertiesEntryImpl implements XmlSerializable<Names
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
      */
     public static NamespacePropertiesEntryImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of NamespacePropertiesEntry from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of NamespacePropertiesEntry if the XmlReader was pointing to an instance of it, or null if it
+     *     was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     */
+    public static NamespacePropertiesEntryImpl fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "entry" : rootElementName;
         return xmlReader.readObject(
-                "entry",
                 "http://www.w3.org/2005/Atom",
+                finalRootElementName,
                 reader -> {
                     String id = null;
                     TitleImpl title = null;
@@ -210,19 +231,19 @@ public final class NamespacePropertiesEntryImpl implements XmlSerializable<Names
                             id = reader.getStringElement();
                         } else if ("title".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            title = TitleImpl.fromXml(reader);
+                            title = TitleImpl.fromXml(reader, "title");
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
                             updated = reader.getNullableElement(OffsetDateTime::parse);
                         } else if ("author".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            author = ResponseAuthorImpl.fromXml(reader);
+                            author = ResponseAuthorImpl.fromXml(reader, "author");
                         } else if ("link".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            link = ResponseLinkImpl.fromXml(reader);
+                            link = ResponseLinkImpl.fromXml(reader, "link");
                         } else if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = NamespacePropertiesEntryContentImpl.fromXml(reader);
+                            content = NamespacePropertiesEntryContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }

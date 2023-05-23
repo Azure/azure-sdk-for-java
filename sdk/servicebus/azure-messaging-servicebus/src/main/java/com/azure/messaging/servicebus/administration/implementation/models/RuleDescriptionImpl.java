@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -122,10 +123,16 @@ public final class RuleDescriptionImpl implements XmlSerializable<RuleDescriptio
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("RuleDescription");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "RuleDescription" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
-        xmlWriter.writeXml(this.filter);
-        xmlWriter.writeXml(this.action);
+        xmlWriter.writeXml(this.filter, "Filter");
+        xmlWriter.writeXml(this.action, "Action");
         xmlWriter.writeStringElement(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
                 "CreatedAt",
@@ -143,9 +150,21 @@ public final class RuleDescriptionImpl implements XmlSerializable<RuleDescriptio
      *     pointing to XML null.
      */
     public static RuleDescriptionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of RuleDescription from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of RuleDescription if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     */
+    public static RuleDescriptionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "RuleDescription" : rootElementName;
         return xmlReader.readObject(
-                "RuleDescription",
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     RuleFilterImpl filter = null;
                     RuleActionImpl action = null;
@@ -157,11 +176,11 @@ public final class RuleDescriptionImpl implements XmlSerializable<RuleDescriptio
                         if ("Filter".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            filter = RuleFilterImpl.fromXml(reader);
+                            filter = RuleFilterImpl.fromXml(reader, "Filter");
                         } else if ("Action".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            action = RuleActionImpl.fromXml(reader);
+                            action = RuleActionImpl.fromXml(reader, "Action");
                         } else if ("CreatedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {

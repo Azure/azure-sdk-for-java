@@ -111,7 +111,7 @@ public final class ServiceBusAdministrationClientBuilder implements
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
-    private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
+    private static final ServiceBusManagementSerializer SERIALIZER = new ServiceBusManagementSerializer();
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -155,7 +155,7 @@ public final class ServiceBusAdministrationClientBuilder implements
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
         final ServiceBusManagementClientImpl client = getServiceBusManagementClient();
 
-        return new ServiceBusAdministrationAsyncClient(client, serializer);
+        return new ServiceBusAdministrationAsyncClient(client, SERIALIZER);
     }
 
     private ServiceBusManagementClientImpl getServiceBusManagementClient() {
@@ -167,13 +167,12 @@ public final class ServiceBusAdministrationClientBuilder implements
             ? ServiceBusServiceVersion.getLatest()
             : serviceVersion;
         final HttpPipeline httpPipeline = createPipeline();
-        final ServiceBusManagementClientImpl client = new ServiceBusManagementClientImplBuilder()
+        return new ServiceBusManagementClientImplBuilder()
             .pipeline(httpPipeline)
-            .serializerAdapter(serializer)
+            .serializerAdapter(SERIALIZER)
             .endpoint(endpoint)
             .apiVersion(apiVersion.getVersion())
             .buildClient();
-        return client;
     }
 
     /**
@@ -194,7 +193,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationClient buildClient() {
-        return new ServiceBusAdministrationClient(getServiceBusManagementClient(), serializer);
+        return new ServiceBusAdministrationClient(getServiceBusManagementClient(), SERIALIZER);
     }
 
     /**

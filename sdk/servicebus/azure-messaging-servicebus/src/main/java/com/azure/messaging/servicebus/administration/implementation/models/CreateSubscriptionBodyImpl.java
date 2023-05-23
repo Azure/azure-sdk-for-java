@@ -5,6 +5,7 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -45,9 +46,15 @@ public final class CreateSubscriptionBodyImpl implements XmlSerializable<CreateS
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("entry");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "entry" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
         xmlWriter.writeNamespace("http://www.w3.org/2005/Atom");
-        xmlWriter.writeXml(this.content);
+        xmlWriter.writeXml(this.content, "content");
         return xmlWriter.writeEndElement();
     }
 
@@ -59,9 +66,22 @@ public final class CreateSubscriptionBodyImpl implements XmlSerializable<CreateS
      *     was pointing to XML null.
      */
     public static CreateSubscriptionBodyImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of CreateSubscriptionBody from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of CreateSubscriptionBody if the XmlReader was pointing to an instance of it, or null if it
+     *     was pointing to XML null.
+     */
+    public static CreateSubscriptionBodyImpl fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "entry" : rootElementName;
         return xmlReader.readObject(
-                "entry",
                 "http://www.w3.org/2005/Atom",
+                finalRootElementName,
                 reader -> {
                     CreateSubscriptionBodyContentImpl content = null;
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
@@ -69,7 +89,7 @@ public final class CreateSubscriptionBodyImpl implements XmlSerializable<CreateS
 
                         if ("content".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            content = CreateSubscriptionBodyContentImpl.fromXml(reader);
+                            content = CreateSubscriptionBodyContentImpl.fromXml(reader, "content");
                         } else {
                             reader.skipElement();
                         }

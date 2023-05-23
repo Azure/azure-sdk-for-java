@@ -5,7 +5,9 @@
 package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
+import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
 import javax.xml.stream.XMLStreamException;
 
@@ -22,7 +24,15 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("EmptyRuleAction");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeNamespace("http://schemas.microsoft.com/netservices/2010/10/servicebus/connect");
+        xmlWriter.writeNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
         xmlWriter.writeStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type", TYPE);
         return xmlWriter.writeEndElement();
     }
@@ -36,8 +46,22 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      */
     public static EmptyRuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of EmptyRuleAction from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of EmptyRuleAction if the XmlReader was pointing to an instance of it, or null if it was
+     *     pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     */
+    public static EmptyRuleActionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
         return xmlReader.readObject(
-                "EmptyRuleAction",
+                "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
+                finalRootElementName,
                 reader -> {
                     String type = reader.getStringAttribute("http://www.w3.org/2001/XMLSchema-instance", "type");
                     if (!"EmptyRuleAction".equals(type)) {
@@ -45,6 +69,9 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
                                 "'type' was expected to be non-null and equal to 'EmptyRuleAction'. The found 'type' was '"
                                         + type
                                         + "'.");
+                    }
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        reader.skipElement();
                     }
                     EmptyRuleActionImpl deserializedEmptyRuleActionImpl = new EmptyRuleActionImpl();
 
