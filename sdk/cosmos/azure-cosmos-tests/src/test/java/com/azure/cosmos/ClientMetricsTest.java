@@ -50,6 +50,7 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.Timer;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.testng.SkipException;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
@@ -94,6 +95,10 @@ public class ClientMetricsTest extends BatchTestBase {
     }
 
     public void beforeTest(CosmosMetricCategory... metricCategories) {
+        beforeTest(null, metricCategories);
+    }
+
+    public void beforeTest(CosmosDiagnosticsThresholds thresholds, CosmosMetricCategory... metricCategories) {
         assertThat(this.client).isNull();
         assertThat(this.meterRegistry).isNull();
 
@@ -102,8 +107,16 @@ public class ClientMetricsTest extends BatchTestBase {
         this.inputMetricsOptions = new CosmosMicrometerMetricsOptions()
             .meterRegistry(this.meterRegistry)
             .setMetricCategories(metricCategories);
+
+
         this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
             .metricsOptions(this.inputMetricsOptions);
+
+
+        if (thresholds != null) {
+            this.inputClientTelemetryConfig.diagnosticsThresholds(thresholds);
+            this.inputMetricsOptions.applyDiagnosticThresholdsForTransportLevelMeters(true);
+        }
 
         this.client = getClientBuilder()
             .clientTelemetryConfig(inputClientTelemetryConfig)
@@ -351,6 +364,54 @@ public class ClientMetricsTest extends BatchTestBase {
         } finally {
             this.afterTest();
         }
+    }
+
+    private void runReadItemTestWithThresholds(
+        CosmosDiagnosticsThresholds thresholds,
+        boolean expectRequestMetrics
+    ) {
+        this.beforeTest(thresholds, CosmosMetricCategory.DEFAULT);
+        try {
+
+            if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+                throw new SkipException("Test case only relevant for direct model.");
+            }
+
+            InternalObjectNode properties = getDocumentDefinition(UUID.randomUUID().toString());
+            container.createItem(properties);
+
+            CosmosItemResponse<InternalObjectNode> readResponse1 = container.readItem(properties.getId(),
+                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(properties, "mypk")),
+                new CosmosItemRequestOptions(),
+                InternalObjectNode.class);
+            validateItemResponse(properties, readResponse1);
+
+            CosmosDiagnosticsThresholds maxThresholds = new CosmosDiagnosticsThresholds()
+                .setPointOperationLatencyThreshold(Duration.ofDays(1));
+
+            Tag operationTag = Tag.of(TagName.OperationStatusCode.toString(), "200");
+            Tag requestTag = Tag.of(TagName.RequestStatusCode.toString(), "200/0");
+            this.assertMetrics("cosmos.client.op.latency", true, operationTag);
+            this.assertMetrics("cosmos.client.op.calls", true, operationTag);
+            this.assertMetrics("cosmos.client.req.rntbd.latency", expectRequestMetrics, requestTag);
+            this.assertMetrics("cosmos.client.req.rntbd.backendLatency", expectRequestMetrics, requestTag);
+            this.assertMetrics("cosmos.client.req.rntbd.requests", expectRequestMetrics, requestTag);
+            Meter reportedRntbdRequestCharge =
+                this.assertMetrics("cosmos.client.req.rntbd.RUs", expectRequestMetrics, requestTag);
+        } finally {
+            this.afterTest();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readItemWithThresholdsApplied() throws Exception {
+        CosmosDiagnosticsThresholds maxThresholds = new CosmosDiagnosticsThresholds()
+            .setPointOperationLatencyThreshold(Duration.ofDays(1));
+        CosmosDiagnosticsThresholds minThresholds = new CosmosDiagnosticsThresholds()
+            .setPointOperationLatencyThreshold(Duration.ZERO);
+
+        runReadItemTestWithThresholds(maxThresholds, false);
+        runReadItemTestWithThresholds(minThresholds, true);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
