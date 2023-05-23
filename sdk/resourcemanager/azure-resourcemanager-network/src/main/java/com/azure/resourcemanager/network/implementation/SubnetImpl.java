@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.Delegation;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
@@ -100,6 +101,15 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     @Override
     public String id() {
         return this.innerModel().id();
+    }
+
+    @Override
+    public String natGatewayId() {
+        SubResource natGateway = this.innerModel().natGateway();
+        if (natGateway == null) {
+            return null;
+        }
+        return natGateway.id();
     }
 
     // Fluent setters
@@ -320,6 +330,16 @@ class SubnetImpl extends ChildResourceImpl<SubnetInner, NetworkImpl, Network>
     @Override
     public SubnetImpl disableNetworkPoliciesOnPrivateLinkService() {
         innerModel().withPrivateLinkServiceNetworkPolicies(VirtualNetworkPrivateLinkServiceNetworkPolicies.DISABLED);
+        return this;
+    }
+
+    @Override
+    public SubnetImpl withExistingNatGateway(String resourceId) {
+        if (resourceId == null) {
+            this.innerModel().withNatGateway(null);
+        } else {
+            this.innerModel().withNatGateway(new SubResource().withId(resourceId));
+        }
         return this;
     }
 }

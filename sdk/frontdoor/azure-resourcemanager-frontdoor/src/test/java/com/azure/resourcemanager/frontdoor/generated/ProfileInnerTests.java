@@ -17,11 +17,11 @@ public final class ProfileInnerTests {
         ProfileInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"resourceState\":\"Enabling\",\"enabledState\":\"Disabled\"},\"etag\":\"abifpikxwczbys\",\"location\":\"npqxuh\",\"tags\":{\"rtfw\":\"qniwbybrkxvdumj\"},\"id\":\"ukxgaud\",\"name\":\"cs\",\"type\":\"h\"}")
+                    "{\"properties\":{\"resourceState\":\"Disabled\",\"enabledState\":\"Disabled\"},\"etag\":\"ztzp\",\"location\":\"fn\",\"tags\":{\"zfeqztppri\":\"wyfzqwhxxbuyqa\",\"bqwcsdbnwdcf\":\"lxorjaltolmncws\",\"jcanvxbvtvudut\":\"ucqdpfuvglsb\",\"xqtvcofu\":\"cormr\"},\"id\":\"f\",\"name\":\"vkg\",\"type\":\"u\"}")
                 .toObject(ProfileInner.class);
-        Assertions.assertEquals("npqxuh", model.location());
-        Assertions.assertEquals("qniwbybrkxvdumj", model.tags().get("rtfw"));
-        Assertions.assertEquals("abifpikxwczbys", model.etag());
+        Assertions.assertEquals("fn", model.location());
+        Assertions.assertEquals("wyfzqwhxxbuyqa", model.tags().get("zfeqztppri"));
+        Assertions.assertEquals("ztzp", model.etag());
         Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 
@@ -29,14 +29,23 @@ public final class ProfileInnerTests {
     public void testSerialize() throws Exception {
         ProfileInner model =
             new ProfileInner()
-                .withLocation("npqxuh")
-                .withTags(mapOf("rtfw", "qniwbybrkxvdumj"))
-                .withEtag("abifpikxwczbys")
+                .withLocation("fn")
+                .withTags(
+                    mapOf(
+                        "zfeqztppri",
+                        "wyfzqwhxxbuyqa",
+                        "bqwcsdbnwdcf",
+                        "lxorjaltolmncws",
+                        "jcanvxbvtvudut",
+                        "ucqdpfuvglsb",
+                        "xqtvcofu",
+                        "cormr"))
+                .withEtag("ztzp")
                 .withEnabledState(State.DISABLED);
         model = BinaryData.fromObject(model).toObject(ProfileInner.class);
-        Assertions.assertEquals("npqxuh", model.location());
-        Assertions.assertEquals("qniwbybrkxvdumj", model.tags().get("rtfw"));
-        Assertions.assertEquals("abifpikxwczbys", model.etag());
+        Assertions.assertEquals("fn", model.location());
+        Assertions.assertEquals("wyfzqwhxxbuyqa", model.tags().get("zfeqztppri"));
+        Assertions.assertEquals("ztzp", model.etag());
         Assertions.assertEquals(State.DISABLED, model.enabledState());
     }
 

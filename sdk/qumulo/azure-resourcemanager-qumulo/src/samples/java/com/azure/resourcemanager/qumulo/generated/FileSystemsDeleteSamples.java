@@ -7,7 +7,7 @@ package com.azure.resourcemanager.qumulo.generated;
 /** Samples for FileSystems Delete. */
 public final class FileSystemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Delete_MaximumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Delete_MaximumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Delete_MaximumSet_Gen.
@@ -19,7 +19,7 @@ public final class FileSystemsDeleteSamples {
     }
 
     /*
-     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/preview/2022-10-12-preview/examples/FileSystems_Delete_MinimumSet_Gen.json
+     * x-ms-original-file: specification/liftrqumulo/resource-manager/Qumulo.Storage/stable/2022-10-12/examples/FileSystems_Delete_MinimumSet_Gen.json
      */
     /**
      * Sample code: FileSystems_Delete_MinimumSet_Gen.

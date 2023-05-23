@@ -33,9 +33,10 @@ public interface ScheduledAction {
     String type();
 
     /**
-     * Gets the etag property: Resource Etag. For update calls, eTag is mandatory. Fetch the resource's eTag by doing a
-     * 'GET' call first and then including the latest eTag as part of the request body or 'If-Match' header while
-     * performing the update. For create calls, eTag is not required.
+     * Gets the etag property: Resource Etag. For update calls, eTag is optional and can be specified to achieve
+     * optimistic concurrency. Fetch the resource's eTag by doing a 'GET' call first and then including the latest eTag
+     * as part of the request body or 'If-Match' header while performing the update. For create calls, eTag is not
+     * required.
      *
      * @return the etag value.
      */
@@ -178,7 +179,8 @@ public interface ScheduledAction {
                 DefinitionStages.WithSchedule,
                 DefinitionStages.WithScope,
                 DefinitionStages.WithStatus,
-                DefinitionStages.WithViewId {
+                DefinitionStages.WithViewId,
+                DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              *
@@ -316,6 +318,18 @@ public interface ScheduledAction {
              */
             WithCreate withViewId(String viewId);
         }
+        /** The stage of the ScheduledAction definition allowing to specify ifMatch. */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity. Optional when
+             * updating an entity and can be specified to achieve optimistic concurrency..
+             *
+             * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity
+             *     and can be specified to achieve optimistic concurrency.
+             * @return the next definition stage.
+             */
+            WithCreate withIfMatch(String ifMatch);
+        }
     }
     /**
      * Begins update for the ScheduledAction resource.
@@ -334,7 +348,8 @@ public interface ScheduledAction {
             UpdateStages.WithSchedule,
             UpdateStages.WithScope,
             UpdateStages.WithStatus,
-            UpdateStages.WithViewId {
+            UpdateStages.WithViewId,
+            UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          *
@@ -473,6 +488,18 @@ public interface ScheduledAction {
              * @return the next definition stage.
              */
             Update withViewId(String viewId);
+        }
+        /** The stage of the ScheduledAction update allowing to specify ifMatch. */
+        interface WithIfMatch {
+            /**
+             * Specifies the ifMatch property: ETag of the Entity. Not required when creating an entity. Optional when
+             * updating an entity and can be specified to achieve optimistic concurrency..
+             *
+             * @param ifMatch ETag of the Entity. Not required when creating an entity. Optional when updating an entity
+             *     and can be specified to achieve optimistic concurrency.
+             * @return the next definition stage.
+             */
+            Update withIfMatch(String ifMatch);
         }
     }
     /**

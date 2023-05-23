@@ -16,33 +16,33 @@ public final class FrontendEndpointInnerTests {
         FrontendEndpointInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"resourceState\":\"Disabling\",\"customHttpsProvisioningState\":\"Enabling\",\"customHttpsProvisioningSubstate\":\"DeletingCertificate\",\"customHttpsConfiguration\":{\"certificateSource\":\"FrontDoor\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.0\"},\"hostName\":\"okdwb\",\"sessionAffinityEnabledState\":\"Disabled\",\"sessionAffinityTtlSeconds\":83276112,\"webApplicationFirewallPolicyLink\":{\"id\":\"mrv\"}},\"name\":\"ztvbtqgsfr\",\"type\":\"yzkoowtlmngu\",\"id\":\"wqaldsyu\"}")
+                    "{\"properties\":{\"resourceState\":\"Disabled\",\"customHttpsProvisioningState\":\"Failed\",\"customHttpsProvisioningSubstate\":\"CertificateDeployed\",\"customHttpsConfiguration\":{\"certificateSource\":\"FrontDoor\",\"protocolType\":\"ServerNameIndication\",\"minimumTlsVersion\":\"1.0\"},\"hostName\":\"iexpbtgiwbwo\",\"sessionAffinityEnabledState\":\"Enabled\",\"sessionAffinityTtlSeconds\":1338594793,\"webApplicationFirewallPolicyLink\":{\"id\":\"tdtkcn\"}},\"name\":\"wbpokulpiujwaasi\",\"type\":\"i\",\"id\":\"byuqerpqlp\"}")
                 .toObject(FrontendEndpointInner.class);
-        Assertions.assertEquals("wqaldsyu", model.id());
-        Assertions.assertEquals("ztvbtqgsfr", model.name());
-        Assertions.assertEquals("okdwb", model.hostname());
-        Assertions.assertEquals(SessionAffinityEnabledState.DISABLED, model.sessionAffinityEnabledState());
-        Assertions.assertEquals(83276112, model.sessionAffinityTtlSeconds());
-        Assertions.assertEquals("mrv", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals("byuqerpqlp", model.id());
+        Assertions.assertEquals("wbpokulpiujwaasi", model.name());
+        Assertions.assertEquals("iexpbtgiwbwo", model.hostname());
+        Assertions.assertEquals(SessionAffinityEnabledState.ENABLED, model.sessionAffinityEnabledState());
+        Assertions.assertEquals(1338594793, model.sessionAffinityTtlSeconds());
+        Assertions.assertEquals("tdtkcn", model.webApplicationFirewallPolicyLink().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FrontendEndpointInner model =
             new FrontendEndpointInner()
-                .withId("wqaldsyu")
-                .withName("ztvbtqgsfr")
-                .withHostname("okdwb")
-                .withSessionAffinityEnabledState(SessionAffinityEnabledState.DISABLED)
-                .withSessionAffinityTtlSeconds(83276112)
+                .withId("byuqerpqlp")
+                .withName("wbpokulpiujwaasi")
+                .withHostname("iexpbtgiwbwo")
+                .withSessionAffinityEnabledState(SessionAffinityEnabledState.ENABLED)
+                .withSessionAffinityTtlSeconds(1338594793)
                 .withWebApplicationFirewallPolicyLink(
-                    new FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink().withId("mrv"));
+                    new FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink().withId("tdtkcn"));
         model = BinaryData.fromObject(model).toObject(FrontendEndpointInner.class);
-        Assertions.assertEquals("wqaldsyu", model.id());
-        Assertions.assertEquals("ztvbtqgsfr", model.name());
-        Assertions.assertEquals("okdwb", model.hostname());
-        Assertions.assertEquals(SessionAffinityEnabledState.DISABLED, model.sessionAffinityEnabledState());
-        Assertions.assertEquals(83276112, model.sessionAffinityTtlSeconds());
-        Assertions.assertEquals("mrv", model.webApplicationFirewallPolicyLink().id());
+        Assertions.assertEquals("byuqerpqlp", model.id());
+        Assertions.assertEquals("wbpokulpiujwaasi", model.name());
+        Assertions.assertEquals("iexpbtgiwbwo", model.hostname());
+        Assertions.assertEquals(SessionAffinityEnabledState.ENABLED, model.sessionAffinityEnabledState());
+        Assertions.assertEquals(1338594793, model.sessionAffinityTtlSeconds());
+        Assertions.assertEquals("tdtkcn", model.webApplicationFirewallPolicyLink().id());
     }
 }

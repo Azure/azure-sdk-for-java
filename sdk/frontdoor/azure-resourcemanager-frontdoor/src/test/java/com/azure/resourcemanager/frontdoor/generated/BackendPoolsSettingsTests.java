@@ -14,10 +14,10 @@ public final class BackendPoolsSettingsTests {
     public void testDeserialize() throws Exception {
         BackendPoolsSettings model =
             BinaryData
-                .fromString("{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":1101350352}")
+                .fromString("{\"enforceCertificateNameCheck\":\"Enabled\",\"sendRecvTimeoutSeconds\":254804801}")
                 .toObject(BackendPoolsSettings.class);
         Assertions.assertEquals(EnforceCertificateNameCheckEnabledState.ENABLED, model.enforceCertificateNameCheck());
-        Assertions.assertEquals(1101350352, model.sendRecvTimeoutSeconds());
+        Assertions.assertEquals(254804801, model.sendRecvTimeoutSeconds());
     }
 
     @org.junit.jupiter.api.Test
@@ -25,9 +25,9 @@ public final class BackendPoolsSettingsTests {
         BackendPoolsSettings model =
             new BackendPoolsSettings()
                 .withEnforceCertificateNameCheck(EnforceCertificateNameCheckEnabledState.ENABLED)
-                .withSendRecvTimeoutSeconds(1101350352);
+                .withSendRecvTimeoutSeconds(254804801);
         model = BinaryData.fromObject(model).toObject(BackendPoolsSettings.class);
         Assertions.assertEquals(EnforceCertificateNameCheckEnabledState.ENABLED, model.enforceCertificateNameCheck());
-        Assertions.assertEquals(1101350352, model.sendRecvTimeoutSeconds());
+        Assertions.assertEquals(254804801, model.sendRecvTimeoutSeconds());
     }
 }
