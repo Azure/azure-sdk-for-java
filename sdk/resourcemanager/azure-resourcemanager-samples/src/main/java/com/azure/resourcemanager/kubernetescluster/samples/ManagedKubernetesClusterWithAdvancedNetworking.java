@@ -84,7 +84,6 @@ public class ManagedKubernetesClusterWithAdvancedNetworking {
                     .withNetworkPlugin(NetworkPlugin.AZURE)
                     .withServiceCidr("10.0.0.0/16")
                     .withDnsServiceIP("10.0.0.10")
-                    .withDockerBridgeCidr("172.17.0.1/16")
                     .attach()
                 .create();
 
