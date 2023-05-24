@@ -6,6 +6,7 @@ package com.azure.core.http.rest;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.PageRetrieverSync;
 
+import java.util.ArrayList;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -233,7 +234,10 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
         return new PagedResponseBase<String, S>(pagedResponse.getRequest(),
             pagedResponse.getStatusCode(),
             pagedResponse.getHeaders(),
-            pagedResponse.getValue().stream().map(mapper).collect(Collectors.toList()),
+            pagedResponse.getValue()
+                .stream()
+                .map(mapper)
+                .collect(Collectors.toCollection(() -> new ArrayList<>(pagedResponse.getValue().size()))),
             pagedResponse.getContinuationToken(),
             null);
     }
