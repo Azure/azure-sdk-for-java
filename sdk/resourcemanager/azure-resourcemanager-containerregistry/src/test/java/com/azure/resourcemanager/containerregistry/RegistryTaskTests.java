@@ -7,7 +7,6 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.BaseImageTriggerType;
 import com.azure.resourcemanager.containerregistry.models.DefaultAction;
-import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
 import com.azure.resourcemanager.containerregistry.models.OS;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
@@ -1402,9 +1401,10 @@ public class RegistryTaskTests extends RegistryTest {
 
         Assertions.assertEquals(SkuTier.PREMIUM, registryWithDefaultNetworkRules.sku().tier());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, registryWithDefaultNetworkRules.publicNetworkAccess());
-        Assertions.assertEquals(true, registryWithDefaultNetworkRules.canAccessFromTrustedServices());
+        Assertions.assertTrue(registryWithDefaultNetworkRules.canAccessFromTrustedServices());
         Assertions.assertEquals(DefaultAction.ALLOW, registryWithDefaultNetworkRules.networkRuleSet().defaultAction());
-        Assertions.assertEquals(true, registryWithDefaultNetworkRules.canAccessDedicatedDataPoints());
+        Assertions.assertFalse(registryWithDefaultNetworkRules.isDedicatedDataPointsEnabled());
+        Assertions.assertEquals(0, registryWithDefaultNetworkRules.dedicatedDataPointsHostNames().size());
 
         // create registry with custom network rule settings
         final String acrName2 = generateRandomResourceName("acr", 10);
@@ -1418,16 +1418,16 @@ public class RegistryTaskTests extends RegistryTest {
             .withPremiumSku()
             .withAccessFromSelectedNetworks()
             .withAccessFromIpAddressRange(cdir)
-            .withAccessToDedicatedDataPoints()
+            .enableDedicatedDataPoints()
             .withAccessFromTrustedServices()
             .create();
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, registry.publicNetworkAccess());
-        Assertions.assertEquals(DefaultAction.DENY, networkRuleSet.defaultAction());
 
         NetworkRuleSet networkRuleSet = registry.networkRuleSet();
+        Assertions.assertEquals(DefaultAction.DENY, networkRuleSet.defaultAction());
         Assertions.assertEquals(1, networkRuleSet.ipRules().size());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, registry.publicNetworkAccess());
 
-        Assertions.assertTrue(registry.canAccessDedicatedDataPoints());
+        Assertions.assertTrue(registry.isDedicatedDataPointsEnabled());
         Assertions.assertTrue(registry.canAccessFromTrustedServices());
 
         registry.update()
@@ -1439,16 +1439,17 @@ public class RegistryTaskTests extends RegistryTest {
 
         // revoke access from a certain IP
         registry.update()
-            .withoutIpAddressAccess(ipAddress)
+            .withoutAccessFromIpAddress(ipAddress)
             .apply();
         networkRuleSet = registry.networkRuleSet();
         Assertions.assertEquals(1, networkRuleSet.ipRules().size());
 
         // disable dedicated endpoint
         registry.update()
-            .withoutAccessToDedicatedDataPoints()
+            .disableDedicatedDataPoints()
             .apply();
-        Assertions.assertFalse(registry.canAccessDedicatedDataPoints());
+        Assertions.assertFalse(registry.isDedicatedDataPointsEnabled());
+        Assertions.assertEquals(0, registry.dedicatedDataPointsHostNames().size());
 
         // deny access from trusted services
         registry.update()
