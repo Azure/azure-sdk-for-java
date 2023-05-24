@@ -250,6 +250,23 @@
         },
         {
           "regex": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old" : "field com.mysql.cj.conf.PropertyKey.*",
+          "new" : "field com.mysql.cj.conf.PropertyKey.*",
+          "justification" : "Fix enum constants reordered."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
+          "justification" : "Fix method removed."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
+          "justification" : "Fix method removed."
+        },
+        {
+          "regex": true,
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.messaging\\.servicebus\\.administration\\.models.*",
           "justification": "Removing Jackson annotations from Service Bus Administration in transition to stream-style."

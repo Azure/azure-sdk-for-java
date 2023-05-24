@@ -75,9 +75,9 @@ public class EventProcessorWithOptions extends EventHubsScenario {
         final String storageConnStr = options.getStorageConnectionString();
         final String containerName = options.getStorageContainerName();
         final String eventHubConnStr = options.getEventhubsConnectionString();
-        final String eventHub = options.getEventhubsEventHubName();
+        final String eventHub = options.getEventHubsEventHubName();
         final String consumerGroup = options.getEventHubsConsumerGroup();
-        final String writeEventHub = options.getSecondEventhubsEventHubName();
+        final String writeEventHub = options.getSecondEventHubsEventHubName();
 
         // Config producer
         EventHubProducerClient producerClient = new EventHubClientBuilder()

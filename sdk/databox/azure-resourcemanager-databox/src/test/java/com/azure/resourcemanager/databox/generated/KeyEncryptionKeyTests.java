@@ -17,31 +17,31 @@ public final class KeyEncryptionKeyTests {
         KeyEncryptionKey model =
             BinaryData
                 .fromString(
-                    "{\"kekType\":\"MicrosoftManaged\",\"identityProperties\":{\"type\":\"hmenevfyexfwhybc\",\"userAssigned\":{\"resourceId\":\"yvdcsitynnaa\"}},\"kekUrl\":\"ectehf\",\"kekVaultResourceID\":\"scjeypv\"}")
+                    "{\"kekType\":\"CustomerManaged\",\"identityProperties\":{\"type\":\"ruwiqzbqjvsov\",\"userAssigned\":{\"resourceId\":\"kacspkw\"}},\"kekUrl\":\"zdobpxjmflbvvnch\",\"kekVaultResourceID\":\"cciw\"}")
                 .toObject(KeyEncryptionKey.class);
-        Assertions.assertEquals(KekType.MICROSOFT_MANAGED, model.kekType());
-        Assertions.assertEquals("hmenevfyexfwhybc", model.identityProperties().type());
-        Assertions.assertEquals("yvdcsitynnaa", model.identityProperties().userAssigned().resourceId());
-        Assertions.assertEquals("ectehf", model.kekUrl());
-        Assertions.assertEquals("scjeypv", model.kekVaultResourceId());
+        Assertions.assertEquals(KekType.CUSTOMER_MANAGED, model.kekType());
+        Assertions.assertEquals("ruwiqzbqjvsov", model.identityProperties().type());
+        Assertions.assertEquals("kacspkw", model.identityProperties().userAssigned().resourceId());
+        Assertions.assertEquals("zdobpxjmflbvvnch", model.kekUrl());
+        Assertions.assertEquals("cciw", model.kekVaultResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         KeyEncryptionKey model =
             new KeyEncryptionKey()
-                .withKekType(KekType.MICROSOFT_MANAGED)
+                .withKekType(KekType.CUSTOMER_MANAGED)
                 .withIdentityProperties(
                     new IdentityProperties()
-                        .withType("hmenevfyexfwhybc")
-                        .withUserAssigned(new UserAssignedProperties().withResourceId("yvdcsitynnaa")))
-                .withKekUrl("ectehf")
-                .withKekVaultResourceId("scjeypv");
+                        .withType("ruwiqzbqjvsov")
+                        .withUserAssigned(new UserAssignedProperties().withResourceId("kacspkw")))
+                .withKekUrl("zdobpxjmflbvvnch")
+                .withKekVaultResourceId("cciw");
         model = BinaryData.fromObject(model).toObject(KeyEncryptionKey.class);
-        Assertions.assertEquals(KekType.MICROSOFT_MANAGED, model.kekType());
-        Assertions.assertEquals("hmenevfyexfwhybc", model.identityProperties().type());
-        Assertions.assertEquals("yvdcsitynnaa", model.identityProperties().userAssigned().resourceId());
-        Assertions.assertEquals("ectehf", model.kekUrl());
-        Assertions.assertEquals("scjeypv", model.kekVaultResourceId());
+        Assertions.assertEquals(KekType.CUSTOMER_MANAGED, model.kekType());
+        Assertions.assertEquals("ruwiqzbqjvsov", model.identityProperties().type());
+        Assertions.assertEquals("kacspkw", model.identityProperties().userAssigned().resourceId());
+        Assertions.assertEquals("zdobpxjmflbvvnch", model.kekUrl());
+        Assertions.assertEquals("cciw", model.kekVaultResourceId());
     }
 }

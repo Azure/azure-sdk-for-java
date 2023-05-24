@@ -10,6 +10,8 @@ import com.azure.resourcemanager.databox.models.CloudError;
 import com.azure.resourcemanager.databox.models.JobDeliveryInfo;
 import com.azure.resourcemanager.databox.models.JobDeliveryType;
 import com.azure.resourcemanager.databox.models.JobDetails;
+import com.azure.resourcemanager.databox.models.ReverseShippingDetailsEditStatus;
+import com.azure.resourcemanager.databox.models.ReverseTransportPreferenceEditStatus;
 import com.azure.resourcemanager.databox.models.StageName;
 import com.azure.resourcemanager.databox.models.TransferType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -41,6 +43,18 @@ public final class JobProperties {
      */
     @JsonProperty(value = "isShippingAddressEditable", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isShippingAddressEditable;
+
+    /*
+     * The Editable status for Reverse Shipping Address and Contact Info
+     */
+    @JsonProperty(value = "reverseShippingDetailsUpdate", access = JsonProperty.Access.WRITE_ONLY)
+    private ReverseShippingDetailsEditStatus reverseShippingDetailsUpdate;
+
+    /*
+     * The Editable status for Reverse Transport preferences
+     */
+    @JsonProperty(value = "reverseTransportPreferenceUpdate", access = JsonProperty.Access.WRITE_ONLY)
+    private ReverseTransportPreferenceEditStatus reverseTransportPreferenceUpdate;
 
     /*
      * Is Prepare To Ship Enabled on this job
@@ -145,6 +159,24 @@ public final class JobProperties {
      */
     public Boolean isShippingAddressEditable() {
         return this.isShippingAddressEditable;
+    }
+
+    /**
+     * Get the reverseShippingDetailsUpdate property: The Editable status for Reverse Shipping Address and Contact Info.
+     *
+     * @return the reverseShippingDetailsUpdate value.
+     */
+    public ReverseShippingDetailsEditStatus reverseShippingDetailsUpdate() {
+        return this.reverseShippingDetailsUpdate;
+    }
+
+    /**
+     * Get the reverseTransportPreferenceUpdate property: The Editable status for Reverse Transport preferences.
+     *
+     * @return the reverseTransportPreferenceUpdate value.
+     */
+    public ReverseTransportPreferenceEditStatus reverseTransportPreferenceUpdate() {
+        return this.reverseTransportPreferenceUpdate;
     }
 
     /**

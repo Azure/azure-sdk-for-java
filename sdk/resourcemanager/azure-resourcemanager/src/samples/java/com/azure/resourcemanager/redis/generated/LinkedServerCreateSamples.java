@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.models.RedisLinkedServerCreateParameters;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
 
 /** Samples for LinkedServer Create. */
 public final class LinkedServerCreateSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheLinkedServer_Create.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheLinkedServer_Create.json
      */
     /**
      * Sample code: LinkedServer_Create.
@@ -33,6 +32,6 @@ public final class LinkedServerCreateSamples {
                         "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/Redis/cache2")
                     .withLinkedRedisCacheLocation("West US")
                     .withServerRole(ReplicationRole.SECONDARY),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

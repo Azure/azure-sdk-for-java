@@ -15,23 +15,23 @@ public final class MarketplaceSaaSInfoTests {
         MarketplaceSaaSInfo model =
             BinaryData
                 .fromString(
-                    "{\"marketplaceSubscription\":{\"id\":\"g\"},\"marketplaceName\":\"tnwu\",\"marketplaceResourceId\":\"gazxuf\"}")
+                    "{\"marketplaceSubscription\":{\"id\":\"fidfvzw\"},\"marketplaceName\":\"uht\",\"marketplaceResourceId\":\"wisdkft\"}")
                 .toObject(MarketplaceSaaSInfo.class);
-        Assertions.assertEquals("g", model.marketplaceSubscription().id());
-        Assertions.assertEquals("tnwu", model.marketplaceName());
-        Assertions.assertEquals("gazxuf", model.marketplaceResourceId());
+        Assertions.assertEquals("fidfvzw", model.marketplaceSubscription().id());
+        Assertions.assertEquals("uht", model.marketplaceName());
+        Assertions.assertEquals("wisdkft", model.marketplaceResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         MarketplaceSaaSInfo model =
             new MarketplaceSaaSInfo()
-                .withMarketplaceSubscription(new MarketplaceSaaSInfoMarketplaceSubscription().withId("g"))
-                .withMarketplaceName("tnwu")
-                .withMarketplaceResourceId("gazxuf");
+                .withMarketplaceSubscription(new MarketplaceSaaSInfoMarketplaceSubscription().withId("fidfvzw"))
+                .withMarketplaceName("uht")
+                .withMarketplaceResourceId("wisdkft");
         model = BinaryData.fromObject(model).toObject(MarketplaceSaaSInfo.class);
-        Assertions.assertEquals("g", model.marketplaceSubscription().id());
-        Assertions.assertEquals("tnwu", model.marketplaceName());
-        Assertions.assertEquals("gazxuf", model.marketplaceResourceId());
+        Assertions.assertEquals("fidfvzw", model.marketplaceSubscription().id());
+        Assertions.assertEquals("uht", model.marketplaceName());
+        Assertions.assertEquals("wisdkft", model.marketplaceResourceId());
     }
 }

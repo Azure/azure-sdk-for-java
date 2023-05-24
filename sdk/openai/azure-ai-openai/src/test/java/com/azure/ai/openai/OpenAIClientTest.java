@@ -58,6 +58,16 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getCompletionsFromSinglePromptRunner((deploymentId, prompts) -> {
+            Completions completions = client.getCompletions(deploymentId, prompts);
+            assertCompletions(new int[]{0}, null, null, completions);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
@@ -129,15 +139,4 @@ public class OpenAIClientTest extends OpenAIClientTestBase {
             assertEmbeddings(resultEmbeddings);
         });
     }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIClient(httpClient, serviceVersion);
-        getCompletionsFromSinglePromptRunner((deploymentId, prompts) -> {
-            Completions completions = client.getCompletions(deploymentId, prompts);
-            assertCompletions(new int[]{0}, null, null, completions);
-        });
-    }
-
 }
