@@ -93,8 +93,10 @@ public class HttpURLConnectionHttpClient implements HttpClient {
     }
 
     private static void setBodyOnRequest(HttpRequest request, HttpURLConnection connection,
-        ProgressReporter progressReporter) {
+                                         ProgressReporter progressReporter) {
         try {
+            BinaryData n = request.getBodyAsBinaryData();
+            System.out.println(n.toString());
             BinaryData body = request.getBodyAsBinaryData();
             if (body != null) {
                 connection.setDoOutput(true);
