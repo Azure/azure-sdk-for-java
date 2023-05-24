@@ -8,9 +8,12 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.time.Duration;
 import java.util.Objects;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * This <b>synchronous</b> session receiver client is used to acquire session locks from a queue or topic and create
@@ -58,6 +61,7 @@ import java.util.Objects;
  */
 @ServiceClient(builder = ServiceBusClientBuilder.class)
 public final class ServiceBusSessionReceiverClient implements AutoCloseable {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionReceiverClient.class);
     private final ServiceBusSessionReceiverAsyncClient sessionAsyncClient;
     private final boolean isPrefetchDisabled;
     private final Duration operationTimeout;
@@ -76,12 +80,14 @@ public final class ServiceBusSessionReceiverClient implements AutoCloseable {
      * @return A {@link ServiceBusReceiverClient} that is tied to the available session.
      *
      * @throws UnsupportedOperationException if the queue or topic subscription is not session-enabled.
-     * @throws AmqpException if the operation times out. The timeout duration is the tryTimeout
+     * @throws AmqpException if the operation could not obtain a new session.
+     * @throws IllegalStateException if the operation times out. The timeout duration is the tryTimeout
      *      of when you build this client with the {@link ServiceBusClientBuilder#retryOptions(AmqpRetryOptions)}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceBusReceiverClient acceptNextSession() {
         return sessionAsyncClient.acceptNextSession()
+            .switchIfEmpty(monoError(LOGGER, new AmqpException(true, "Could not obtain a new session.", null)))
             .map(asyncClient -> new ServiceBusReceiverClient(asyncClient, isPrefetchDisabled, operationTimeout))
             .block(operationTimeout);
     }

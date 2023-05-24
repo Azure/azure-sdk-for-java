@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,7 @@ import java.time.Duration;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
@@ -83,5 +85,18 @@ class ServiceBusSessionReceiverClientTest {
 
         assertThrows(IllegalStateException.class,
             () -> sessionClient.acceptNextSession());
+    }
+
+    @Test
+    void acceptNextSessionEmpty() {
+        when(sessionAsyncClient.acceptNextSession()).thenReturn(Mono.empty());
+        ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
+            false,
+            Duration.ofMillis(50));
+
+        AmqpException exception = assertThrows(AmqpException.class,
+            () -> sessionClient.acceptNextSession());
+
+        assertTrue(exception.isTransient());
     }
 }
