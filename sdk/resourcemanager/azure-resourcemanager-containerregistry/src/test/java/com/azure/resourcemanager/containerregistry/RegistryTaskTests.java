@@ -1409,8 +1409,8 @@ public class RegistryTaskTests extends RegistryTest {
         // create registry with custom network rule settings
         final String acrName2 = generateRandomResourceName("acr", 10);
 
-        String ipAddress = "10.0.0.1";
-        String cdir = "10.0.1.0/24";
+        String ipAddress = "3.80.0.1";
+        String cdir = "3.80.0.0/12";
         Registry registry = registryManager.containerRegistries()
             .define(acrName2)
             .withRegion(Region.US_EAST)

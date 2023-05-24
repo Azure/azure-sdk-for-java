@@ -4,10 +4,16 @@
 package com.azure.resourcemanager.containerregistry.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
+import com.azure.resourcemanager.containerregistry.models.Action;
+import com.azure.resourcemanager.containerregistry.models.DefaultAction;
+import com.azure.resourcemanager.containerregistry.models.IpRule;
+import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
+import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
@@ -18,11 +24,19 @@ import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
 import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Predicate;
 
 /** Implementation for Registry and its create and update interfaces. */
 public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner, RegistryImpl, ContainerRegistryManager>
@@ -189,6 +203,27 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
+    public boolean canAccessFromTrustedServices() {
+        return this.innerModel().networkRuleBypassOptions() == NetworkRuleBypassOptions.AZURE_SERVICES;
+    }
+
+    @Override
+    public NetworkRuleSet networkRuleSet() {
+        return this.innerModel().networkRuleSet();
+    }
+
+    @Override
+    public boolean isDedicatedDataPointsEnabled() {
+        return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().dataEndpointEnabled());
+    }
+
+    @Override
+    public List<String> dedicatedDataPointsHostNames() {
+        return this.innerModel().dataEndpointHostNames() == null
+            ? Collections.emptyList() : Collections.unmodifiableList(this.innerModel().dataEndpointHostNames());
+    }
+
+    @Override
     public RegistryTaskRun.DefinitionStages.BlankFromRegistry scheduleRun() {
         return new RegistryTaskRunImpl(this.manager(), new RunInner())
             .withExistingRegistry(this.resourceGroupName(), this.name());
@@ -243,5 +278,164 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
             updateParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         }
         return this;
+    }
+
+    @Override
+    public RegistryImpl withAccessFromSelectedNetworks() {
+        ensureNetworkRuleSet();
+        if (isInCreateMode()) {
+            this.innerModel().networkRuleSet().withDefaultAction(DefaultAction.DENY);
+        } else {
+            updateParameters.networkRuleSet().withDefaultAction(DefaultAction.DENY);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withAccessFromAllNetworks() {
+        ensureNetworkRuleSet();
+        if (isInCreateMode()) {
+            this.innerModel().networkRuleSet().withDefaultAction(DefaultAction.ALLOW);
+        } else {
+            updateParameters.networkRuleSet().withDefaultAction(DefaultAction.ALLOW);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withAccessFromIpAddressRange(String ipAddressCidr) {
+        ensureNetworkRuleSet();
+        if (this.innerModel().networkRuleSet().ipRules()
+            .stream().noneMatch(ipRule -> Objects.equals(ipRule.ipAddressOrRange(), ipAddressCidr))) {
+            this.innerModel().networkRuleSet().ipRules().add(new IpRule().withAction(Action.ALLOW).withIpAddressOrRange(ipAddressCidr));
+        }
+        if (!isInCreateMode()) {
+            updateParameters.networkRuleSet().withIpRules(this.innerModel().networkRuleSet().ipRules());
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withoutAccessFromIpAddressRange(String ipAddressCidr) {
+        if (this.innerModel().networkRuleSet() == null) {
+            return this;
+        }
+        ensureNetworkRuleSet();
+        this.innerModel().networkRuleSet().ipRules().removeIf(ipRule -> Objects.equals(ipRule.ipAddressOrRange(), ipAddressCidr));
+        if (!isInCreateMode()) {
+            updateParameters.networkRuleSet().withIpRules(this.innerModel().networkRuleSet().ipRules());
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withAccessFromIpAddress(String ipAddress) {
+        return withAccessFromIpAddressRange(ipAddress);
+    }
+
+    @Override
+    public RegistryImpl withoutAccessFromIpAddress(String ipAddress) {
+        return withoutAccessFromIpAddressRange(ipAddress);
+    }
+
+    @Override
+    public RegistryImpl withAccessFromTrustedServices() {
+        if (isInCreateMode()) {
+            this.innerModel().withNetworkRuleBypassOptions(NetworkRuleBypassOptions.AZURE_SERVICES);
+        } else {
+            updateParameters.withNetworkRuleBypassOptions(NetworkRuleBypassOptions.AZURE_SERVICES);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl withoutAccessFromTrustedServices() {
+        if (isInCreateMode()) {
+            this.innerModel().withNetworkRuleBypassOptions(NetworkRuleBypassOptions.NONE);
+        } else {
+            updateParameters.withNetworkRuleBypassOptions(NetworkRuleBypassOptions.NONE);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl enableDedicatedDataPoints() {
+        if (isInCreateMode()) {
+            this.innerModel().withDataEndpointEnabled(true);
+        } else {
+            updateParameters.withDataEndpointEnabled(true);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl disableDedicatedDataPoints() {
+        if (isInCreateMode()) {
+            this.innerModel().withDataEndpointEnabled(false);
+        } else {
+            updateParameters.withDataEndpointEnabled(false);
+        }
+        return this;
+    }
+
+    @Override
+    public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections() {
+        // TODO (caoxiaofei, 2023-05-24 16:30)
+        throw new UnsupportedOperationException("method [listPrivateEndpointConnections] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+    }
+
+    @Override
+    public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
+        // TODO (caoxiaofei, 2023-05-24 16:30)
+        throw new UnsupportedOperationException("method [listPrivateEndpointConnectionsAsync] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+    }
+
+    @Override
+    public PagedIterable<PrivateLinkResource> listPrivateLinkResources() {
+        // TODO (caoxiaofei, 2023-05-24 16:30)
+        throw new UnsupportedOperationException("method [listPrivateLinkResources] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+    }
+
+    @Override
+    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
+        // TODO (caoxiaofei, 2023-05-24 16:30)
+        throw new UnsupportedOperationException("method [listPrivateLinkResourcesAsync] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+    }
+
+    @Override
+    public void approvePrivateEndpointConnection(String privateEndpointConnectionName) {
+        // TODO (caoxiaofei, 2023-05-24 16:30)
+        throw new UnsupportedOperationException("method [approvePrivateEndpointConnection] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+    }
+
+    @Override
+    public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        // TODO (caoxiaofei, 2023-05-24 16:30)
+        throw new UnsupportedOperationException("method [approvePrivateEndpointConnectionAsync] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+    }
+
+    @Override
+    public void rejectPrivateEndpointConnection(String privateEndpointConnectionName) {
+        // TODO (caoxiaofei, 2023-05-24 16:30)
+        throw new UnsupportedOperationException("method [rejectPrivateEndpointConnection] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+    }
+
+    @Override
+    public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
+        // TODO (caoxiaofei, 2023-05-24 16:30)
+        throw new UnsupportedOperationException("method [rejectPrivateEndpointConnectionAsync] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+    }
+
+    private void ensureNetworkRuleSet() {
+        if (this.isInCreateMode()) {
+            if (this.innerModel().networkRuleSet() == null) {
+                this.innerModel().withNetworkRuleSet(new NetworkRuleSet());
+                this.innerModel().networkRuleSet().withIpRules(new ArrayList<>());
+            }
+        } else {
+            if (updateParameters.networkRuleSet() == null) {
+                updateParameters.withNetworkRuleSet(this.innerModel().networkRuleSet());
+            }
+        }
     }
 }
