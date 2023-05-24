@@ -380,7 +380,7 @@ public interface KubernetesCluster
                  * @return the next stage of the definition
                  * @deprecated The property has no effect since 2019
                  */
-                @Deprecated()
+                @Deprecated
                 WithAttach<ParentT> withDockerBridgeCidr(String dockerBridgeCidr);
             }
 
