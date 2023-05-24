@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Fluent
 public final class CollectTonesResult extends RecognizeResult {
     /*
-     * The tones property.
+     * The tones' property.
      */
     @JsonProperty(value = "tones")
     private List<DtmfTone> dtmfTones;

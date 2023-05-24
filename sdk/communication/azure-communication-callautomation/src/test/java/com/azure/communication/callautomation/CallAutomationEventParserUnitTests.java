@@ -5,7 +5,6 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.events.*;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
@@ -167,18 +166,6 @@ public class CallAutomationEventParserUnitTests {
         PlayCanceled playCanceled = (PlayCanceled) event;
         assertNotNull(playCanceled);
         assertEquals("serverCallId", playCanceled.getServerCallId());
-    }
-    @Test
-    public void parseRecognizeCompletedWithChoiceEvent() {
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(EVENT_RECOGNIZE_CHOICE).get(0);
-        assertNotNull(event);
-        RecognizeCompleted recognizeCompleted = (RecognizeCompleted) event;
-        assertNotNull(recognizeCompleted);
-        Optional<RecognizeResult> choiceResult = recognizeCompleted.getRecognizeResult();
-        assertInstanceOf(ChoiceResult.class, choiceResult.get());
-        assertEquals("serverCallId", recognizeCompleted.getServerCallId());
-        assertEquals(200, recognizeCompleted.getResultInformation().getCode());
-        assertEquals(Recognize.SPEECH_OPTION_MATCHED, recognizeCompleted.getReasonCode());
     }
 
     @Test

@@ -13,24 +13,18 @@ import com.azure.communication.callautomation.implementation.models.PlayOptionsI
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
-import com.azure.communication.callautomation.implementation.models.RecognizeChoiceInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
 import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
-import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationIdentifier;
@@ -145,15 +139,6 @@ public final class CallMediaAsync {
                 RecognizeRequest recognizeRequest = getRecognizeRequestFromDtmfConfiguration(recognizeOptions);
                 return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
 
-            } else if (recognizeOptions instanceof CallMediaRecognizeChoiceOptions) {
-                RecognizeRequest recognizeRequest = getRecognizeRequestFromChoiceConfiguration(recognizeOptions);
-                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
-            } else if (recognizeOptions instanceof CallMediaRecognizeSpeechOptions) {
-                RecognizeRequest recognizeRequest = getRecognizeRequestFromSpeechConfiguration(recognizeOptions);
-                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
-            } else if (recognizeOptions instanceof CallMediaRecognizeSpeechOrDtmfOptions) {
-                RecognizeRequest recognizeRequest = getRecognizeRequestFromSpeechOrDtmfConfiguration(recognizeOptions);
-                return contentsInternal.recognizeWithResponseAsync(callConnectionId, recognizeRequest, context);
             } else {
                 return monoError(logger, new UnsupportedOperationException(recognizeOptions.getClass().getName()));
             }
@@ -293,26 +278,6 @@ public final class CallMediaAsync {
         return playSourceInternal;
     }
 
-    private List<RecognizeChoiceInternal> convertListRecognizeChoiceInternal(List<RecognizeChoice> recognizeChoices) {
-        return recognizeChoices.stream()
-            .map(this::convertRecognizeChoiceInternal)
-            .collect(Collectors.toList());
-    }
-
-    private RecognizeChoiceInternal convertRecognizeChoiceInternal(RecognizeChoice recognizeChoice) {
-        RecognizeChoiceInternal internalRecognizeChoice = new RecognizeChoiceInternal();
-        if (recognizeChoice.getLabel() != null) {
-            internalRecognizeChoice.setLabel(recognizeChoice.getLabel());
-        }
-        if (recognizeChoice.getPhrases() != null) {
-            internalRecognizeChoice.setPhrases(recognizeChoice.getPhrases());
-        }
-        if (recognizeChoice.getTone() != null) {
-            internalRecognizeChoice.setTone(convertDtmfToneInternal(recognizeChoice.getTone()));
-        }
-        return internalRecognizeChoice;
-    }
-
     private DtmfToneInternal convertDtmfToneInternal(DtmfTone dtmfTone) {
         return DtmfToneInternal.fromString(dtmfTone.toString());
     }
@@ -345,97 +310,6 @@ public final class CallMediaAsync {
         RecognizeRequest recognizeRequest = new RecognizeRequest()
             .setRecognizeInputType(RecognizeInputTypeInternal.fromString(recognizeOptions.getRecognizeInputType().toString()))
             .setInterruptCallMediaOperation(recognizeOptions.isInterruptCallMediaOperation())
-            .setPlayPrompt(playSourceInternal)
-            .setRecognizeOptions(recognizeOptionsInternal)
-            .setOperationContext(recognizeOptions.getOperationContext());
-
-        return recognizeRequest;
-    }
-
-    private RecognizeRequest getRecognizeRequestFromChoiceConfiguration(CallMediaRecognizeOptions recognizeOptions) {
-        CallMediaRecognizeChoiceOptions choiceRecognizeOptions = (CallMediaRecognizeChoiceOptions) recognizeOptions;
-
-        RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
-            .setChoices(convertListRecognizeChoiceInternal(choiceRecognizeOptions.getRecognizeChoices()))
-            .setInterruptPrompt(choiceRecognizeOptions.isInterruptPrompt())
-            .setTargetParticipant(CommunicationIdentifierConverter.convert(choiceRecognizeOptions.getTargetParticipant()));
-
-        recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) choiceRecognizeOptions.getInitialSilenceTimeout().getSeconds());
-
-        if (choiceRecognizeOptions.getSpeechLanguage() != null) {
-            if (!choiceRecognizeOptions.getSpeechLanguage().isEmpty()) {
-                recognizeOptionsInternal.setSpeechLanguage(choiceRecognizeOptions.getSpeechLanguage());
-            }
-        }
-
-        PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
-
-        RecognizeRequest recognizeRequest = new RecognizeRequest()
-            .setRecognizeInputType(RecognizeInputTypeInternal.fromString(choiceRecognizeOptions.getRecognizeInputType().toString()))
-            .setInterruptCallMediaOperation(choiceRecognizeOptions.isInterruptCallMediaOperation())
-            .setPlayPrompt(playSourceInternal)
-            .setRecognizeOptions(recognizeOptionsInternal)
-            .setOperationContext(recognizeOptions.getOperationContext());
-
-        return recognizeRequest;
-    }
-
-    private RecognizeRequest getRecognizeRequestFromSpeechConfiguration(CallMediaRecognizeOptions recognizeOptions) {
-        CallMediaRecognizeSpeechOptions speechRecognizeOptions = (CallMediaRecognizeSpeechOptions) recognizeOptions;
-
-        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechRecognizeOptions.getEndSilenceTimeoutInMs().toMillis());
-
-        RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
-            .setSpeechOptions(speechOptionsInternal)
-            .setInterruptPrompt(speechRecognizeOptions.isInterruptPrompt())
-            .setTargetParticipant(CommunicationIdentifierConverter.convert(speechRecognizeOptions.getTargetParticipant()));
-
-        recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechRecognizeOptions.getInitialSilenceTimeout().getSeconds());
-
-        PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
-
-        RecognizeRequest recognizeRequest = new RecognizeRequest()
-            .setRecognizeInputType(RecognizeInputTypeInternal.fromString(speechRecognizeOptions.getRecognizeInputType().toString()))
-            .setInterruptCallMediaOperation(speechRecognizeOptions.isInterruptCallMediaOperation())
-            .setPlayPrompt(playSourceInternal)
-            .setRecognizeOptions(recognizeOptionsInternal)
-            .setOperationContext(recognizeOptions.getOperationContext());
-
-        return recognizeRequest;
-    }
-
-    private RecognizeRequest getRecognizeRequestFromSpeechOrDtmfConfiguration(CallMediaRecognizeOptions recognizeOptions) {
-        CallMediaRecognizeSpeechOrDtmfOptions speechOrDtmfRecognizeOptions = (CallMediaRecognizeSpeechOrDtmfOptions) recognizeOptions;
-
-        DtmfOptionsInternal dtmfOptionsInternal = new DtmfOptionsInternal();
-        dtmfOptionsInternal.setInterToneTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInterToneTimeout().getSeconds());
-
-        if (speechOrDtmfRecognizeOptions.getMaxTonesToCollect() != null) {
-            dtmfOptionsInternal.setMaxTonesToCollect(speechOrDtmfRecognizeOptions.getMaxTonesToCollect());
-        }
-
-        if (speechOrDtmfRecognizeOptions.getStopTones() != null) {
-            List<DtmfToneInternal> dtmfTones = speechOrDtmfRecognizeOptions.getStopTones().stream()
-                                        .map(this::convertDtmfToneInternal)
-                                        .collect(Collectors.toList());
-            dtmfOptionsInternal.setStopTones(dtmfTones);
-        }
-
-        SpeechOptionsInternal speechOptionsInternal = new SpeechOptionsInternal().setEndSilenceTimeoutInMs(speechOrDtmfRecognizeOptions.getEndSilenceTimeoutInMs().toMillis());
-
-        RecognizeOptionsInternal recognizeOptionsInternal = new RecognizeOptionsInternal()
-            .setSpeechOptions(speechOptionsInternal)
-            .setDtmfOptions(dtmfOptionsInternal)
-            .setInterruptPrompt(speechOrDtmfRecognizeOptions.isInterruptPrompt())
-            .setTargetParticipant(CommunicationIdentifierConverter.convert(speechOrDtmfRecognizeOptions.getTargetParticipant()));
-
-        recognizeOptionsInternal.setInitialSilenceTimeoutInSeconds((int) speechOrDtmfRecognizeOptions.getInitialSilenceTimeout().getSeconds());
-
-        PlaySourceInternal playSourceInternal = getPlaySourceInternalFromRecognizeOptions(recognizeOptions);
-
-        RecognizeRequest recognizeRequest = new RecognizeRequest()
-            .setRecognizeInputType(RecognizeInputTypeInternal.fromString(speechOrDtmfRecognizeOptions.getRecognizeInputType().toString()))
-            .setInterruptCallMediaOperation(speechOrDtmfRecognizeOptions.isInterruptCallMediaOperation())
             .setPlayPrompt(playSourceInternal)
             .setRecognizeOptions(recognizeOptionsInternal)
             .setOperationContext(recognizeOptions.getOperationContext());
