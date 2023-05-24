@@ -9,6 +9,8 @@
 ### Bugs Fixed
 
 - Fixes issue where credential from Azure Spring global properties was being overridden.
+- Fixes bug where Http Response wasn't checked before trying to use response.
+- Fixes Tracing info for ContainerApp
 
 ### Other Changes
 

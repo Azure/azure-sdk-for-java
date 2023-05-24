@@ -10,7 +10,7 @@ import com.azure.resourcemanager.databox.models.RegionConfigurationRequest;
 /** Samples for Service RegionConfigurationByResourceGroup. */
 public final class ServiceRegionConfigurationByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/RegionConfigurationByResourceGroup.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/RegionConfigurationByResourceGroup.json
      */
     /**
      * Sample code: RegionConfigurationByResourceGroup.
@@ -21,7 +21,7 @@ public final class ServiceRegionConfigurationByResourceGroupSamples {
         manager
             .services()
             .regionConfigurationByResourceGroupWithResponse(
-                "SdkRg4981",
+                "YourResourceGroupName",
                 "westus",
                 new RegionConfigurationRequest()
                     .withScheduleAvailabilityRequest(
