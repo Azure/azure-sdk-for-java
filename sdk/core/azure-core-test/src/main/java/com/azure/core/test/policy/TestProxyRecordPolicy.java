@@ -70,7 +70,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void startRecording(File recordFile) {
         // subpath removes nodes "src/test/resources/session-records"
-        String assetJsonPath = recordFile.toPath().subpath(0, 3) + "\\assets.json";
+        String assetJsonPath = null;
         HttpRequest request = null;
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
