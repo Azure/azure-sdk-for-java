@@ -6,12 +6,9 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.GenderType;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognizeInputType;
-import com.azure.communication.callautomation.models.SsmlSource;
-import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,8 +26,6 @@ public class CallMediaAsyncUnitTests {
 
     private CallMediaAsync callMedia;
     private FileSource playFileSource;
-    private TextSource playTextSource;
-    private SsmlSource playSsmlSource;
     private PlayOptions playOptions;
     private PlayToAllOptions playToAllOptions;
 
@@ -45,15 +40,6 @@ public class CallMediaAsyncUnitTests {
         playFileSource = new FileSource();
         playFileSource.setPlaySourceId("playFileSourceId");
         playFileSource.setUrl("filePath");
-
-        playTextSource = new TextSource();
-        playTextSource.setPlaySourceId("playTextSourceId");
-        playTextSource.setVoiceGender(GenderType.MALE);
-        playTextSource.setSourceLocale("en-US");
-        playTextSource.setVoiceName("LULU");
-
-        playSsmlSource = new SsmlSource();
-        playSsmlSource.setSsmlText("<speak></speak>");
     }
 
     @Test
@@ -75,50 +61,6 @@ public class CallMediaAsyncUnitTests {
             .setOperationContext("operationContext");
         StepVerifier.create(
                 callMedia.playToAllWithResponse(playToAllOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void playTextWithResponseTest() {
-        playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-            callMedia.playWithResponse(playOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void playTextToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playTextSource)
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-            callMedia.playToAllWithResponse(playToAllOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void playSsmlWithResponseTest() {
-        playOptions = new PlayOptions(playSsmlSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-            callMedia.playWithResponse(playOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void playSsmlToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playSsmlSource)
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-            callMedia.playToAllWithResponse(playToAllOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
@@ -152,30 +94,6 @@ public class CallMediaAsyncUnitTests {
         recognizeOptions.setStopTones(stopDtmfTones);
         recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
         recognizeOptions.setPlayPrompt(new FileSource().setUrl("abc"));
-        recognizeOptions.setInterruptCallMediaOperation(true);
-        recognizeOptions.setStopCurrentOperations(true);
-        recognizeOptions.setOperationContext("operationContext");
-        recognizeOptions.setInterruptPrompt(true);
-        recognizeOptions.setInitialSilenceTimeout(Duration.ofSeconds(4));
-
-        StepVerifier.create(
-                callMedia.startRecognizingWithResponse(recognizeOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void recognizeWithResponseWithTextSourceDtmfOptions() {
-        CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
-
-        recognizeOptions.setInterToneTimeout(Duration.ofSeconds(3));
-        List<DtmfTone> stopDtmfTones = new ArrayList<>();
-        stopDtmfTones.add(DtmfTone.ZERO);
-        stopDtmfTones.add(DtmfTone.ONE);
-        stopDtmfTones.add(DtmfTone.TWO);
-        recognizeOptions.setRecognizeInputType(RecognizeInputType.DTMF);
-        recognizeOptions.setStopTones(stopDtmfTones);
-        recognizeOptions.setPlayPrompt(new TextSource().setText("Test dmtf option with text source."));
         recognizeOptions.setInterruptCallMediaOperation(true);
         recognizeOptions.setStopCurrentOperations(true);
         recognizeOptions.setOperationContext("operationContext");

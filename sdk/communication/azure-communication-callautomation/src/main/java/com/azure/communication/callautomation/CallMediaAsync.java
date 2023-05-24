@@ -8,7 +8,6 @@ import com.azure.communication.callautomation.implementation.converters.Communic
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
-import com.azure.communication.callautomation.implementation.models.GenderTypeInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
@@ -16,8 +15,6 @@ import com.azure.communication.callautomation.implementation.models.PlaySourceTy
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
-import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
@@ -25,8 +22,6 @@ import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.SsmlSource;
-import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -207,10 +202,6 @@ public final class CallMediaAsync {
         PlaySourceInternal playSourceInternal = new PlaySourceInternal();
         if (options.getPlaySource() instanceof FileSource) {
             playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) options.getPlaySource());
-        } else if (options.getPlaySource() instanceof TextSource) {
-            playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) options.getPlaySource());
-        } else if (options.getPlaySource() instanceof SsmlSource) {
-            playSourceInternal = getPlaySourceInternalFromSsmlSource((SsmlSource) options.getPlaySource());
         }
 
         if (playSourceInternal.getSourceType() != null) {
@@ -240,40 +231,10 @@ public final class CallMediaAsync {
         return playSourceInternal;
     }
 
-    private PlaySourceInternal getPlaySourceInternalFromTextSource(TextSource playSource) {
-        TextSourceInternal textSourceInternal = new TextSourceInternal().setText(playSource.getText());
-        if (playSource.getVoiceGender() != null) {
-            textSourceInternal.setVoiceGender(GenderTypeInternal.fromString(playSource.getVoiceGender().toString()));
-        }
-        if (playSource.getSourceLocale() != null) {
-            textSourceInternal.setSourceLocale(playSource.getSourceLocale());
-        }
-        if (playSource.getVoiceName() != null) {
-            textSourceInternal.setVoiceName(playSource.getVoiceName());
-        }
-
-        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
-            .setSourceType(PlaySourceTypeInternal.TEXT)
-            .setTextSource(textSourceInternal)
-            .setPlaySourceId(playSource.getPlaySourceId());
-        return playSourceInternal;
-    }
-
-    private PlaySourceInternal getPlaySourceInternalFromSsmlSource(SsmlSource playSource) {
-        SsmlSourceInternal ssmlSourceInternal = new SsmlSourceInternal().setSsmlText(playSource.getSsmlText());
-        PlaySourceInternal playSourceInternal = new PlaySourceInternal()
-            .setSourceType(PlaySourceTypeInternal.SSML)
-            .setSsmlSource(ssmlSourceInternal)
-            .setPlaySourceId(playSource.getPlaySourceId());
-        return playSourceInternal;
-    }
-
     private PlaySourceInternal convertPlaySourceToPlaySourceInternal(PlaySource playSource) {
         PlaySourceInternal playSourceInternal = new PlaySourceInternal();
         if (playSource instanceof FileSource) {
             playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) playSource);
-        } else if (playSource instanceof TextSource) {
-            playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) playSource);
         }
         return playSourceInternal;
     }

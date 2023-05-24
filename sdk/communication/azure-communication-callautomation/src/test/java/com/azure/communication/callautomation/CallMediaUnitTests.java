@@ -5,10 +5,8 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.GenderType;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -27,7 +25,6 @@ public class CallMediaUnitTests {
     private FileSource playFileSource;
     private PlayOptions playOptions;
     private PlayToAllOptions playToAllOptions;
-    private TextSource playTextSource;
 
     @BeforeEach
     public void setup() {
@@ -40,12 +37,6 @@ public class CallMediaUnitTests {
         playFileSource = new FileSource();
         playFileSource.setPlaySourceId("playTextSourceId");
         playFileSource.setUrl("filePath");
-
-        playTextSource = new TextSource();
-        playTextSource.setPlaySourceId("playTextSourceId");
-        playTextSource.setVoiceGender(GenderType.MALE);
-        playTextSource.setSourceLocale("en-US");
-        playTextSource.setVoiceName("LULU");
     }
 
     @Test
@@ -60,24 +51,6 @@ public class CallMediaUnitTests {
     @Test
     public void playFileToAllWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playFileSource)
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
-        assertEquals(response.getStatusCode(), 202);
-    }
-
-    @Test
-    public void playTextWithResponseTest() {
-        playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
-        assertEquals(response.getStatusCode(), 202);
-    }
-
-    @Test
-    public void playTextToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playTextSource)
             .setLoop(false)
             .setOperationContext("operationContext");
         Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
