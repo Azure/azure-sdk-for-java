@@ -1,0 +1,305 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgacr46691?api-version=2022-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "28c21578-dcd9-44b4-ad0b-2308d7b3815b",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1199",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "Date" : "Wed, 24 May 2023 08:57:21 GMT",
+      "x-ms-correlation-request-id" : "4faaaf9c-93cc-4532-8ce5-6031457079c5",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085721Z:4faaaf9c-93cc-4532-8ce5-6031457079c5",
+      "Expires" : "-1",
+      "Content-Length" : "217",
+      "x-ms-request-id" : "4faaaf9c-93cc-4532-8ce5-6031457079c5",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691\",\"name\":\"rgacr46691\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr01335d?api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "2373e336-bab7-43df-a9fd-93589ebf0963",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2022-12-01",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1198",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 24 May 2023 08:57:33 GMT",
+      "x-ms-correlation-request-id" : "0e8cb40f-b937-4664-8819-ccd85d197610",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085734Z:0e8cb40f-b937-4664-8819-ccd85d197610",
+      "Expires" : "-1",
+      "Content-Length" : "1451",
+      "x-ms-request-id" : "0e8cb40f-b937-4664-8819-ccd85d197610",
+      "Body" : "{\"sku\":{\"name\":\"Premium\",\"tier\":\"Premium\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr01335d\",\"name\":\"acr01335d\",\"location\":\"eastus\",\"tags\":{},\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2023-05-24T08:57:25.1892983+00:00\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-05-24T08:57:25.1892983+00:00\"},\"properties\":{\"loginServer\":\"acr01335d.azurecr.io\",\"creationDate\":\"2023-05-24T08:57:25.1892983Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":false,\"networkRuleSet\":{\"defaultAction\":\"Allow\",\"ipRules\":[]},\"policies\":{\"quarantinePolicy\":{\"status\":\"disabled\"},\"trustPolicy\":{\"type\":\"Notary\",\"status\":\"disabled\"},\"retentionPolicy\":{\"days\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:32.7903526+00:00\",\"status\":\"disabled\"},\"exportPolicy\":{\"status\":\"enabled\"},\"azureADAuthenticationAsArmPolicy\":{\"status\":\"enabled\"},\"softDeletePolicy\":{\"retentionDays\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:32.7903526+00:00\",\"status\":\"disabled\"}},\"encryption\":{\"status\":\"disabled\"},\"dataEndpointEnabled\":false,\"dataEndpointHostNames\":[],\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"networkRuleBypassOptions\":\"AzureServices\",\"zoneRedundancy\":\"Disabled\",\"anonymousPullEnabled\":false}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgacr46691?api-version=2022-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "199f553e-6cda-4ec9-9798-0147b92ca55e",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1197",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 24 May 2023 08:57:35 GMT",
+      "x-ms-correlation-request-id" : "ad2cff0d-c310-45be-ae1f-6cfc1a2a16c0",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085736Z:ad2cff0d-c310-45be-ae1f-6cfc1a2a16c0",
+      "Expires" : "-1",
+      "Content-Length" : "217",
+      "x-ms-request-id" : "ad2cff0d-c310-45be-ae1f-6cfc1a2a16c0",
+      "Body" : "{\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691\",\"name\":\"rgacr46691\",\"type\":\"Microsoft.Resources/resourceGroups\",\"location\":\"eastus\",\"properties\":{\"provisioningState\":\"Succeeded\"}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b?api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "81e9c7bb-3793-4083-bd92-1fc904c5da9c",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2022-12-01",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1196",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 24 May 2023 08:57:52 GMT",
+      "x-ms-correlation-request-id" : "a44978a5-ae4d-470a-aa84-011e8f8dd3a1",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085753Z:a44978a5-ae4d-470a-aa84-011e8f8dd3a1",
+      "Expires" : "-1",
+      "Content-Length" : "1523",
+      "x-ms-request-id" : "a44978a5-ae4d-470a-aa84-011e8f8dd3a1",
+      "Body" : "{\"sku\":{\"name\":\"Premium\",\"tier\":\"Premium\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b\",\"name\":\"acr48717b\",\"location\":\"eastus\",\"tags\":{},\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2023-05-24T08:57:37.8299491+00:00\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-05-24T08:57:37.8299491+00:00\"},\"properties\":{\"loginServer\":\"acr48717b.azurecr.io\",\"creationDate\":\"2023-05-24T08:57:37.8299491Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":false,\"networkRuleSet\":{\"defaultAction\":\"Deny\",\"ipRules\":[{\"action\":\"Allow\",\"value\":\"3.80.0.0/12\"}]},\"policies\":{\"quarantinePolicy\":{\"status\":\"disabled\"},\"trustPolicy\":{\"type\":\"Notary\",\"status\":\"disabled\"},\"retentionPolicy\":{\"days\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"},\"exportPolicy\":{\"status\":\"enabled\"},\"azureADAuthenticationAsArmPolicy\":{\"status\":\"enabled\"},\"softDeletePolicy\":{\"retentionDays\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"}},\"encryption\":{\"status\":\"disabled\"},\"dataEndpointEnabled\":true,\"dataEndpointHostNames\":[\"acr48717b.eastus.data.azurecr.io\"],\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"networkRuleBypassOptions\":\"AzureServices\",\"zoneRedundancy\":\"Disabled\",\"anonymousPullEnabled\":false}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b?api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "c44fe650-6b88-4ea3-8560-cde002cda7d2",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2022-12-01",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1195",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 24 May 2023 08:57:54 GMT",
+      "x-ms-correlation-request-id" : "27b2c951-c070-4f20-b77a-55fb6e0011b9",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085755Z:27b2c951-c070-4f20-b77a-55fb6e0011b9",
+      "Expires" : "-1",
+      "Content-Length" : "1561",
+      "x-ms-request-id" : "27b2c951-c070-4f20-b77a-55fb6e0011b9",
+      "Body" : "{\"sku\":{\"name\":\"Premium\",\"tier\":\"Premium\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b\",\"name\":\"acr48717b\",\"location\":\"eastus\",\"tags\":{},\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2023-05-24T08:57:37.8299491+00:00\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-05-24T08:57:54.2206741+00:00\"},\"properties\":{\"loginServer\":\"acr48717b.azurecr.io\",\"creationDate\":\"2023-05-24T08:57:37.8299491Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":false,\"networkRuleSet\":{\"defaultAction\":\"Deny\",\"ipRules\":[{\"action\":\"Allow\",\"value\":\"3.80.0.0/12\"},{\"action\":\"Allow\",\"value\":\"3.80.0.1\"}]},\"policies\":{\"quarantinePolicy\":{\"status\":\"disabled\"},\"trustPolicy\":{\"type\":\"Notary\",\"status\":\"disabled\"},\"retentionPolicy\":{\"days\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"},\"exportPolicy\":{\"status\":\"enabled\"},\"azureADAuthenticationAsArmPolicy\":{\"status\":\"enabled\"},\"softDeletePolicy\":{\"retentionDays\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"}},\"encryption\":{\"status\":\"disabled\"},\"dataEndpointEnabled\":true,\"dataEndpointHostNames\":[\"acr48717b.eastus.data.azurecr.io\"],\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"networkRuleBypassOptions\":\"AzureServices\",\"zoneRedundancy\":\"Disabled\",\"anonymousPullEnabled\":false}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b?api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "84a3b3ec-6699-45ab-bfb2-6444f1bcaa63",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2022-12-01",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1194",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 24 May 2023 08:57:56 GMT",
+      "x-ms-correlation-request-id" : "5d4b6d5f-6316-42ba-912e-9392f177efc4",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085757Z:5d4b6d5f-6316-42ba-912e-9392f177efc4",
+      "Expires" : "-1",
+      "Content-Length" : "1523",
+      "x-ms-request-id" : "5d4b6d5f-6316-42ba-912e-9392f177efc4",
+      "Body" : "{\"sku\":{\"name\":\"Premium\",\"tier\":\"Premium\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b\",\"name\":\"acr48717b\",\"location\":\"eastus\",\"tags\":{},\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2023-05-24T08:57:37.8299491+00:00\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-05-24T08:57:56.3456766+00:00\"},\"properties\":{\"loginServer\":\"acr48717b.azurecr.io\",\"creationDate\":\"2023-05-24T08:57:37.8299491Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":false,\"networkRuleSet\":{\"defaultAction\":\"Deny\",\"ipRules\":[{\"action\":\"Allow\",\"value\":\"3.80.0.0/12\"}]},\"policies\":{\"quarantinePolicy\":{\"status\":\"disabled\"},\"trustPolicy\":{\"type\":\"Notary\",\"status\":\"disabled\"},\"retentionPolicy\":{\"days\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"},\"exportPolicy\":{\"status\":\"enabled\"},\"azureADAuthenticationAsArmPolicy\":{\"status\":\"enabled\"},\"softDeletePolicy\":{\"retentionDays\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"}},\"encryption\":{\"status\":\"disabled\"},\"dataEndpointEnabled\":true,\"dataEndpointHostNames\":[\"acr48717b.eastus.data.azurecr.io\"],\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"networkRuleBypassOptions\":\"AzureServices\",\"zoneRedundancy\":\"Disabled\",\"anonymousPullEnabled\":false}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b?api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "5fb032eb-1191-4715-b4cf-2b2ec9d5c136",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2022-12-01",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1193",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 24 May 2023 08:57:59 GMT",
+      "x-ms-correlation-request-id" : "af88c7f8-b980-45b5-988c-a12f8fd6df1f",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085800Z:af88c7f8-b980-45b5-988c-a12f8fd6df1f",
+      "Expires" : "-1",
+      "Content-Length" : "1490",
+      "x-ms-request-id" : "af88c7f8-b980-45b5-988c-a12f8fd6df1f",
+      "Body" : "{\"sku\":{\"name\":\"Premium\",\"tier\":\"Premium\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b\",\"name\":\"acr48717b\",\"location\":\"eastus\",\"tags\":{},\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2023-05-24T08:57:37.8299491+00:00\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-05-24T08:57:58.4550663+00:00\"},\"properties\":{\"loginServer\":\"acr48717b.azurecr.io\",\"creationDate\":\"2023-05-24T08:57:37.8299491Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":false,\"networkRuleSet\":{\"defaultAction\":\"Deny\",\"ipRules\":[{\"action\":\"Allow\",\"value\":\"3.80.0.0/12\"}]},\"policies\":{\"quarantinePolicy\":{\"status\":\"disabled\"},\"trustPolicy\":{\"type\":\"Notary\",\"status\":\"disabled\"},\"retentionPolicy\":{\"days\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"},\"exportPolicy\":{\"status\":\"enabled\"},\"azureADAuthenticationAsArmPolicy\":{\"status\":\"enabled\"},\"softDeletePolicy\":{\"retentionDays\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"}},\"encryption\":{\"status\":\"disabled\"},\"dataEndpointEnabled\":false,\"dataEndpointHostNames\":[],\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"networkRuleBypassOptions\":\"AzureServices\",\"zoneRedundancy\":\"Disabled\",\"anonymousPullEnabled\":false}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b?api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "09c82a63-f1a0-4ec2-b5ef-36214d674cd8",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2022-12-01",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1192",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 24 May 2023 08:58:01 GMT",
+      "x-ms-correlation-request-id" : "d519f447-ea58-47c7-9c3c-6fe2bcbb496c",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085802Z:d519f447-ea58-47c7-9c3c-6fe2bcbb496c",
+      "Expires" : "-1",
+      "Content-Length" : "1481",
+      "x-ms-request-id" : "d519f447-ea58-47c7-9c3c-6fe2bcbb496c",
+      "Body" : "{\"sku\":{\"name\":\"Premium\",\"tier\":\"Premium\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b\",\"name\":\"acr48717b\",\"location\":\"eastus\",\"tags\":{},\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2023-05-24T08:57:37.8299491+00:00\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-05-24T08:58:01.6113354+00:00\"},\"properties\":{\"loginServer\":\"acr48717b.azurecr.io\",\"creationDate\":\"2023-05-24T08:57:37.8299491Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":false,\"networkRuleSet\":{\"defaultAction\":\"Deny\",\"ipRules\":[{\"action\":\"Allow\",\"value\":\"3.80.0.0/12\"}]},\"policies\":{\"quarantinePolicy\":{\"status\":\"disabled\"},\"trustPolicy\":{\"type\":\"Notary\",\"status\":\"disabled\"},\"retentionPolicy\":{\"days\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"},\"exportPolicy\":{\"status\":\"enabled\"},\"azureADAuthenticationAsArmPolicy\":{\"status\":\"enabled\"},\"softDeletePolicy\":{\"retentionDays\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"}},\"encryption\":{\"status\":\"disabled\"},\"dataEndpointEnabled\":false,\"dataEndpointHostNames\":[],\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"networkRuleBypassOptions\":\"None\",\"zoneRedundancy\":\"Disabled\",\"anonymousPullEnabled\":false}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b?api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "d52e379f-bf61-484d-99b5-56b933f57a16",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2022-12-01",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1191",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 24 May 2023 08:58:04 GMT",
+      "x-ms-correlation-request-id" : "0d71b1c8-b303-48fd-929a-1fc7e54785c2",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085804Z:0d71b1c8-b303-48fd-929a-1fc7e54785c2",
+      "Expires" : "-1",
+      "Content-Length" : "1482",
+      "x-ms-request-id" : "0d71b1c8-b303-48fd-929a-1fc7e54785c2",
+      "Body" : "{\"sku\":{\"name\":\"Premium\",\"tier\":\"Premium\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b\",\"name\":\"acr48717b\",\"location\":\"eastus\",\"tags\":{},\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2023-05-24T08:57:37.8299491+00:00\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-05-24T08:58:03.7988011+00:00\"},\"properties\":{\"loginServer\":\"acr48717b.azurecr.io\",\"creationDate\":\"2023-05-24T08:57:37.8299491Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":false,\"networkRuleSet\":{\"defaultAction\":\"Allow\",\"ipRules\":[{\"action\":\"Allow\",\"value\":\"3.80.0.0/12\"}]},\"policies\":{\"quarantinePolicy\":{\"status\":\"disabled\"},\"trustPolicy\":{\"type\":\"Notary\",\"status\":\"disabled\"},\"retentionPolicy\":{\"days\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"},\"exportPolicy\":{\"status\":\"enabled\"},\"azureADAuthenticationAsArmPolicy\":{\"status\":\"enabled\"},\"softDeletePolicy\":{\"retentionDays\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"}},\"encryption\":{\"status\":\"disabled\"},\"dataEndpointEnabled\":false,\"dataEndpointHostNames\":[],\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"networkRuleBypassOptions\":\"None\",\"zoneRedundancy\":\"Disabled\",\"anonymousPullEnabled\":false}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b?api-version=2022-12-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "0de44c0d-3b73-4c1c-a7a8-2643e4c3e9d1",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "Server" : "Microsoft-HTTPAPI/2.0",
+      "api-supported-versions" : "2022-12-01",
+      "X-Content-Type-Options" : "nosniff",
+      "x-ms-ratelimit-remaining-subscription-writes" : "1190",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Wed, 24 May 2023 08:58:07 GMT",
+      "x-ms-correlation-request-id" : "5a69ba3f-cf58-43b9-a2d0-1eefdc1a9670",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085807Z:5a69ba3f-cf58-43b9-a2d0-1eefdc1a9670",
+      "Expires" : "-1",
+      "Content-Length" : "1483",
+      "x-ms-request-id" : "5a69ba3f-cf58-43b9-a2d0-1eefdc1a9670",
+      "Body" : "{\"sku\":{\"name\":\"Premium\",\"tier\":\"Premium\"},\"type\":\"Microsoft.ContainerRegistry/registries\",\"id\":\"/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr46691/providers/Microsoft.ContainerRegistry/registries/acr48717b\",\"name\":\"acr48717b\",\"location\":\"eastus\",\"tags\":{},\"systemData\":{\"createdBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"createdByType\":\"Application\",\"createdAt\":\"2023-05-24T08:57:37.8299491+00:00\",\"lastModifiedBy\":\"dbdd69d2-7304-468d-9011-390c26eb054e\",\"lastModifiedByType\":\"Application\",\"lastModifiedAt\":\"2023-05-24T08:58:05.9238883+00:00\"},\"properties\":{\"loginServer\":\"acr48717b.azurecr.io\",\"creationDate\":\"2023-05-24T08:57:37.8299491Z\",\"provisioningState\":\"Succeeded\",\"adminUserEnabled\":false,\"networkRuleSet\":{\"defaultAction\":\"Allow\",\"ipRules\":[{\"action\":\"Allow\",\"value\":\"3.80.0.0/12\"}]},\"policies\":{\"quarantinePolicy\":{\"status\":\"disabled\"},\"trustPolicy\":{\"type\":\"Notary\",\"status\":\"disabled\"},\"retentionPolicy\":{\"days\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"},\"exportPolicy\":{\"status\":\"enabled\"},\"azureADAuthenticationAsArmPolicy\":{\"status\":\"enabled\"},\"softDeletePolicy\":{\"retentionDays\":7,\"lastUpdatedTime\":\"2023-05-24T08:57:52.3558147+00:00\",\"status\":\"disabled\"}},\"encryption\":{\"status\":\"disabled\"},\"dataEndpointEnabled\":false,\"dataEndpointHostNames\":[],\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"networkRuleBypassOptions\":\"None\",\"zoneRedundancy\":\"Disabled\",\"anonymousPullEnabled\":false}}",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rgacr46691?api-version=2022-09-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-com.azure.resourcemanager.resources/2.27.0-beta.1 (17.0.3.1; Mac OS X; 13.3.1)",
+      "x-ms-client-request-id" : "70cddc88-6088-435e-82d0-950f47f95a92",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "x-ms-ratelimit-remaining-subscription-deletes" : "14999",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "StatusCode" : "202",
+      "Date" : "Wed, 24 May 2023 08:58:09 GMT",
+      "x-ms-correlation-request-id" : "f8b26613-59ba-4d68-bd25-2f61e6750fb7",
+      "Strict-Transport-Security" : "max-age=31536000; includeSubDomains",
+      "Retry-After" : "0",
+      "Cache-Control" : "no-cache",
+      "x-ms-routing-request-id" : "JAPANEAST:20230524T085809Z:f8b26613-59ba-4d68-bd25-2f61e6750fb7",
+      "Expires" : "-1",
+      "Content-Length" : "0",
+      "x-ms-request-id" : "f8b26613-59ba-4d68-bd25-2f61e6750fb7",
+      "Location" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/operationresults/eyJqb2JJZCI6IlJFU09VUkNFR1JPVVBERUxFVElPTkpPQi1SR0FDUjQ2NjkxLUVBU1RVUyIsImpvYkxvY2F0aW9uIjoiZWFzdHVzIn0?api-version=2022-09-01"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "rgacr46691", "acr01335d", "acr48717b" ]
+}
