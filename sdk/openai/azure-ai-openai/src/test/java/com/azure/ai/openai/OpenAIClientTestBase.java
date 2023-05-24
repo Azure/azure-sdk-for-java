@@ -138,10 +138,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(actual);
         assertInstanceOf(Completions.class, actual);
         assertChoices(index, actual.getChoices());
-//        assertNotNull(actual.getUsage());
+        assertNotNull(actual.getUsage());
     }
 
-    static <T> T assertResponse(Response<BinaryData> actualResponse, Class<T> clazz, int expectedCode) {
+    static <T> T assertResponseAndGetValue(Response<BinaryData> actualResponse, Class<T> clazz, int expectedCode) {
         assertEquals(expectedCode, actualResponse.getStatusCode());
         assertNotNull(actualResponse);
         assertInstanceOf(Response.class, actualResponse);
