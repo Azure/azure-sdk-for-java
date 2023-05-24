@@ -30,29 +30,33 @@ import com.azure.messaging.servicebus.administration.implementation.models.Queue
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.xml.ReadValueCallback;
+import com.azure.xml.XmlProviders;
+import com.azure.xml.XmlReader;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Integration tests for {@link ServiceBusManagementClientImpl}.
  */
 class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientImplIntegrationTests.class);
-    private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
+    private static final ServiceBusManagementSerializer SERIALIZER = new ServiceBusManagementSerializer();
     private final Duration timeout = Duration.ofSeconds(30);
 
     @BeforeAll
@@ -81,7 +85,8 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
         // Act & Assert
         StepVerifier.create(entityClient.getWithResponseAsync(queueName, true, Context.NONE))
             .assertNext(response -> {
-                final QueueDescriptionEntryImpl deserialize = deserialize(response, QueueDescriptionEntryImpl.class);
+                final QueueDescriptionEntryImpl deserialize = deserialize(response, QueueDescriptionEntryImpl::fromXml,
+                    QueueDescriptionEntryImpl.class);
                 assertNotNull(deserialize);
                 assertNotNull(deserialize.getContent());
 
@@ -116,18 +121,8 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
 
         // Act & Assert
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE))
-            .assertNext(response -> {
-                Object body = response.getValue();
-                QueueDescriptionEntryImpl deserialize = null;
-                try {
-                    deserialize = new ServiceBusManagementSerializer()
-                        .deserialize(String.valueOf(body), QueueDescriptionEntryImpl.class);
-                } catch (IOException e) {
-                    fail("An exception was thrown. " + e);
-                }
-
-                assertNotNull(deserialize);
-            })
+            .assertNext(response -> assertNotNull(assertDoesNotThrow(() -> deserialize(response,
+                QueueDescriptionEntryImpl::fromXml, QueueDescriptionEntryImpl.class))))
             .verifyComplete();
     }
 
@@ -182,7 +177,8 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
         final Response<Object> response = entityClient.getWithResponseAsync(queueName, true, Context.NONE)
             .block(Duration.ofSeconds(30));
         assertNotNull(response);
-        final QueueDescriptionEntryImpl deserialize = deserialize(response, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl deserialize = deserialize(response, QueueDescriptionEntryImpl::fromXml,
+            QueueDescriptionEntryImpl.class);
         final QueueDescriptionImpl properties = deserialize.getContent().getQueueDescription();
 
         final int maxDeliveryCount = properties.getMaxDeliveryCount();
@@ -202,7 +198,8 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
         // Act & Assert
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, updated, "*", Context.NONE))
             .assertNext(update -> {
-                final QueueDescriptionEntryImpl updatedProperties = deserialize(update, QueueDescriptionEntryImpl.class);
+                final QueueDescriptionEntryImpl updatedProperties = deserialize(update,
+                    QueueDescriptionEntryImpl::fromXml, QueueDescriptionEntryImpl.class);
                 assertNotNull(updatedProperties);
             }).verifyComplete();
     }
@@ -220,15 +217,8 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
         // Act & Assert
         StepVerifier.create(managementClient.listEntitiesWithResponseAsync(entityType, 0, 100, Context.NONE))
             .assertNext(response -> {
-                Object body = response.getValue();
-                QueueDescriptionFeedImpl deserialize = null;
-                try {
-                    deserialize = new ServiceBusManagementSerializer()
-                        .deserialize(String.valueOf(body), QueueDescriptionFeedImpl.class);
-                } catch (IOException e) {
-                    fail("An exception was thrown. " + e);
-                }
-
+                QueueDescriptionFeedImpl deserialize = deserialize(response, QueueDescriptionFeedImpl::fromXml,
+                    QueueDescriptionFeedImpl.class);
                 assertNotNull(deserialize);
                 assertNotNull(deserialize.getEntry());
                 assertTrue(deserialize.getEntry().size() > 2);
@@ -263,27 +253,27 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
             .build();
 
         return new ServiceBusManagementClientImplBuilder()
-            .serializerAdapter(serializer)
             .endpoint(properties.getEndpoint().getHost())
+            .serializerAdapter(SERIALIZER)
             .apiVersion(ServiceBusServiceVersion.getLatest().getVersion())
             .pipeline(pipeline)
             .buildClient();
     }
 
-    private <T> T deserialize(Response<Object> response, Class<T> clazz) {
+    private <T> T deserialize(Response<Object> response, ReadValueCallback<XmlReader, T> deserializer, Class<T> type) {
         final Object body = response.getValue();
         final String contents = String.valueOf(body);
-        final T deserialize;
-        try {
-            deserialize = serializer.deserialize(contents, clazz);
-        } catch (IOException e) {
+        T deserialize;
+        try (XmlReader xmlReader = XmlProviders.createReader(contents)) {
+            deserialize = deserializer.read(xmlReader);
+        } catch (IOException | XMLStreamException | IllegalStateException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
-                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
+                "Exception while deserializing. Body: [%s]. Class: %s", contents, type), e));
         }
 
         if (deserialize == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'deserialize' should not be null. Body: [%s]. Class: [%s]", contents, clazz)));
+                "'deserialize' should not be null. Body: [%s]. Class: [%s]", contents, type)));
         }
 
         return deserialize;

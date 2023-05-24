@@ -25,7 +25,6 @@ import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
@@ -52,7 +51,6 @@ import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.time.Duration;
@@ -151,20 +149,16 @@ public final class ServiceBusAdministrationAsyncClient {
 
     private final ServiceBusManagementClientImpl managementClient;
     private final EntitiesImpl entityClient;
-    private final ServiceBusManagementSerializer serializer;
     private final RulesImpl rulesClient;
 
     /**
      * Creates a new instance with the given management client and serializer.
      *
      * @param managementClient Client to make management calls.
-     * @param serializer Serializer to deserialize ATOM XML responses.
      *
      * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
      */
-    ServiceBusAdministrationAsyncClient(ServiceBusManagementClientImpl managementClient,
-        ServiceBusManagementSerializer serializer) {
-        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+    ServiceBusAdministrationAsyncClient(ServiceBusManagementClientImpl managementClient) {
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
         this.rulesClient = managementClient.getRules();
@@ -2155,40 +2149,6 @@ public final class ServiceBusAdministrationAsyncClient {
         }
     }
 
-    private <T> T deserialize(Object object, Class<T> clazz) {
-        if (object == null) {
-            return null;
-        }
-
-        final String contents = String.valueOf(object);
-        if (contents.isEmpty()) {
-            return null;
-        }
-
-        try {
-            return serializer.deserialize(contents, clazz);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
-                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
-        }
-    }
-
-    /**
-     * Given an HTTP response, will deserialize it into a strongly typed Response object.
-     *
-     * @param response HTTP response to deserialize response body from.
-     * @param clazz Class to deserialize response type into.
-     * @param <T> Class type to deserialize response into.
-     *
-     * @return A Response with a strongly typed response value.
-     */
-    private <T> Response<T> deserialize(Response<Object> response, Class<T> clazz) {
-        final T deserialize = deserialize(response.getValue(), clazz);
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            deserialize);
-    }
-
     /**
      * Helper method that invokes the service method, extracts the data and translates it to a PagedResponse.
      *
@@ -2201,7 +2161,8 @@ public final class ServiceBusAdministrationAsyncClient {
         return managementClient.listEntitiesWithResponseAsync(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
             .flatMap(response -> {
-                final Response<QueueDescriptionFeedImpl> feedResponse = deserialize(response, QueueDescriptionFeedImpl.class);
+                final Response<QueueDescriptionFeedImpl> feedResponse = EntityHelper.deserializeQueueFeed(response,
+                    LOGGER);
                 final QueueDescriptionFeedImpl feed = feedResponse.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
@@ -2295,7 +2256,8 @@ public final class ServiceBusAdministrationAsyncClient {
         return managementClient.listEntitiesWithResponseAsync(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS, context)
             .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
             .flatMap(response -> {
-                final Response<TopicDescriptionFeedImpl> feedResponse = deserialize(response, TopicDescriptionFeedImpl.class);
+                final Response<TopicDescriptionFeedImpl> feedResponse = EntityHelper.deserializeTopicFeed(response,
+                    LOGGER);
                 final TopicDescriptionFeedImpl feed = feedResponse.getValue();
                 if (feed == null) {
                     LOGGER.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,

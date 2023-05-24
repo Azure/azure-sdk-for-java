@@ -155,7 +155,7 @@ public final class ServiceBusAdministrationClientBuilder implements
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
         final ServiceBusManagementClientImpl client = getServiceBusManagementClient();
 
-        return new ServiceBusAdministrationAsyncClient(client, SERIALIZER);
+        return new ServiceBusAdministrationAsyncClient(client);
     }
 
     private ServiceBusManagementClientImpl getServiceBusManagementClient() {
@@ -193,7 +193,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationClient buildClient() {
-        return new ServiceBusAdministrationClient(getServiceBusManagementClient(), SERIALIZER);
+        return new ServiceBusAdministrationClient(getServiceBusManagementClient());
     }
 
     /**

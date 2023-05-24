@@ -18,12 +18,12 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.implementation.RulesImpl;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateRuleBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
@@ -48,7 +48,6 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.time.Duration;
@@ -132,19 +131,15 @@ public final class ServiceBusAdministrationClient {
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
     private final ServiceBusManagementClientImpl managementClient;
     private final EntitiesImpl entityClient;
-    private final ServiceBusManagementSerializer serializer;
     private final RulesImpl rulesClient;
 
     /**
      * Creates a new instance with the given client.
      *
      * @param managementClient Client to make management calls.
-     * @param serializer Serializer to deserialize ATOM XML responses.
      * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
      */
-    ServiceBusAdministrationClient(ServiceBusManagementClientImpl managementClient,
-        ServiceBusManagementSerializer serializer) {
-        this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
+    ServiceBusAdministrationClient(ServiceBusManagementClientImpl managementClient) {
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
         this.rulesClient = managementClient.getRules();
@@ -1178,13 +1173,12 @@ public final class ServiceBusAdministrationClient {
     }
 
     private PagedResponse<QueueProperties> listQueues(int skip, Context context) {
-        final Response<Object> response =
-            managementClient.listEntitiesWithResponse(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
-                enableSyncContext(context));
-        final QueueDescriptionFeedImpl feed = deserialize(response.getValue(), QueueDescriptionFeedImpl.class);
+        final Response<Object> response = managementClient.listEntitiesWithResponse(QUEUES_ENTITY_TYPE, skip,
+            NUMBER_OF_ELEMENTS, enableSyncContext(context));
+
+        final QueueDescriptionFeedImpl feed = EntityHelper.deserializeQueueFeed(response, LOGGER).getValue();
         if (feed == null) {
-            LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
-                NUMBER_OF_ELEMENTS);
+            LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip, NUMBER_OF_ELEMENTS);
             return null;
         }
 
@@ -1357,7 +1351,7 @@ public final class ServiceBusAdministrationClient {
         return new PagedIterable<>(
             () -> listTopics(0, context),
             continuationToken -> {
-                if (continuationToken == null || continuationToken.isEmpty()) {
+                if (CoreUtils.isNullOrEmpty(continuationToken)) {
                     return null;
                 }
 
@@ -1371,7 +1365,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response =
             managementClient.listEntitiesWithResponse(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context));
-        final TopicDescriptionFeedImpl feed = deserialize(response.getValue(), TopicDescriptionFeedImpl.class);
+        final TopicDescriptionFeedImpl feed = EntityHelper.deserializeTopicFeed(response, LOGGER).getValue();
         if (feed == null) {
             LOGGER.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,
                 NUMBER_OF_ELEMENTS);
@@ -1730,23 +1724,5 @@ public final class ServiceBusAdministrationClient {
 
     private static Context enableSyncContext(Context context) {
         return getContext(context).addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
-    }
-
-    private <T> T deserialize(Object object, Class<T> clazz) {
-        if (object == null) {
-            return null;
-        }
-
-        final String contents = String.valueOf(object);
-        if (contents.isEmpty()) {
-            return null;
-        }
-
-        try {
-            return serializer.deserialize(contents, clazz);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
-                "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
-        }
     }
 }

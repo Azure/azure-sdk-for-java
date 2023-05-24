@@ -1042,6 +1042,36 @@ public final class EntityHelper {
     }
 
     /**
+     * Converts a Response into its corresponding {@link QueueDescriptionFeedImpl} then mapped into {@link
+     * QueueProperties}.
+     *
+     * @param response HTTP Response to deserialize.
+     * @param logger The ClientLogger logging errors and warnings.
+     * @return The corresponding HTTP response with convenience properties set.
+     */
+    public static Response<QueueDescriptionFeedImpl> deserializeQueueFeed(Response<Object> response,
+        ClientLogger logger) {
+        String responseBody = response.getValue().toString();
+
+        try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+            QueueDescriptionFeedImpl entry = QueueDescriptionFeedImpl.fromXml(xmlReader);
+            return new SimpleResponse<>(response, entry);
+        } catch (IllegalStateException ex) {
+            try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+                TopicDescriptionFeedImpl entryTopic = TopicDescriptionFeedImpl.fromXml(xmlReader);
+                logger.warning("'{}' is not a queue feed, it is a topic feed.", entryTopic.getTitle());
+                return new SimpleResponse<>(response, null);
+            } catch (IllegalStateException ignored) {
+                return new SimpleResponse<>(response, null);
+            } catch (XMLStreamException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * Converts a Response into its corresponding {@link QueueDescriptionEntryImpl} then mapped into {@link
      * QueueProperties}.
      *
@@ -1071,6 +1101,36 @@ public final class EntityHelper {
             try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
                 TopicDescriptionEntryImpl entryTopic = TopicDescriptionEntryImpl.fromXml(xmlReader);
                 logger.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
+                return new SimpleResponse<>(response, null);
+            } catch (IllegalStateException ignored) {
+                return new SimpleResponse<>(response, null);
+            } catch (XMLStreamException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Converts a Response into its corresponding {@link TopicDescriptionFeedImpl} then mapped into {@link
+     * QueueProperties}.
+     *
+     * @param response HTTP Response to deserialize.
+     * @param logger The ClientLogger logging errors and warnings.
+     * @return The corresponding HTTP response with convenience properties set.
+     */
+    public static Response<TopicDescriptionFeedImpl> deserializeTopicFeed(Response<Object> response,
+        ClientLogger logger) {
+        String responseBody = response.getValue().toString();
+
+        try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+            TopicDescriptionFeedImpl entry = TopicDescriptionFeedImpl.fromXml(xmlReader);
+            return new SimpleResponse<>(response, entry);
+        } catch (IllegalStateException ex) {
+            try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+                QueueDescriptionFeedImpl entryTopic = QueueDescriptionFeedImpl.fromXml(xmlReader);
+                logger.warning("'{}' is not a topic feed, it is a queue feed.", entryTopic.getTitle());
                 return new SimpleResponse<>(response, null);
             } catch (IllegalStateException ignored) {
                 return new SimpleResponse<>(response, null);
