@@ -279,7 +279,7 @@ public final class QueueServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<QueueItem> listQueues() {
-        return listQueues(null, (Duration)null, Context.NONE);
+        return listQueues(null, (Duration) null, Context.NONE);
     }
 
     /**
@@ -354,7 +354,7 @@ public final class QueueServiceClient {
             (nextMarker, pageSize) -> this.azureQueueStorage.getServices().listQueuesSegmentSinglePage(
                 prefix, nextMarker, pageSize == null ? maxResultsPerPage : pageSize, include, null, null, finalContext);
 
-            return new PagedIterable<>(pageSize -> retriever.apply(marker, pageSize), retriever);
+        return new PagedIterable<>(pageSize -> retriever.apply(marker, pageSize), retriever);
     }
 
     /**
