@@ -60,17 +60,12 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        HttpURLConnection connection = null;
         try {
-            connection = (HttpURLConnection) request.getUrl().openConnection();
+            HttpURLConnection connection = (HttpURLConnection) request.getUrl().openConnection();
             createConnection(connection, request, context);
             return Mono.just(createHttpResponse(connection, request));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
         }
     }
     private void createConnection(HttpURLConnection connection, HttpRequest request, Context context) throws IOException {
@@ -148,11 +143,9 @@ public class HttpURLConnectionHttpClient implements HttpClient {
             this.connection = connection;
             try {
                 if (connection.getResponseCode() >= 100 && connection.getResponseCode() < 400) {
-                    InputStream inputStream = connection.getInputStream();
-                    body = readResponseBytes(inputStream);
+                    body = readResponseBytes(connection);
                 } else {
-                    InputStream inputStream = connection.getErrorStream();
-                    body = readResponseBytes(inputStream);
+                    body = readResponseBytes(connection);
                 }
             } catch (IOException e) {
                 // Handle connection exception and retrieve error information
@@ -170,17 +163,23 @@ public class HttpURLConnectionHttpClient implements HttpClient {
             }
         }
 
-        private static byte[] readResponseBytes(InputStream inputStream) throws IOException {
-            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[8192];
-            int bytesRead;
-            while ((bytesRead = bufferedInputStream.read(buffer)) != -1) {
-                byteArrayOutputStream.write(buffer, 0, bytesRead);
+        private static byte[] readResponseBytes(HttpURLConnection connection) throws IOException {
+            try (InputStream stream = connection.getInputStream()) {
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(stream);
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                byte[] buffer = new byte[8192];
+                int bytesRead;
+                while ((bytesRead = bufferedInputStream.read(buffer)) != -1) {
+                    byteArrayOutputStream.write(buffer, 0, bytesRead);
+                }
+                bufferedInputStream.close();
+                byteArrayOutputStream.close();
+                return byteArrayOutputStream.toByteArray();
+            } finally {
+                if (connection != null) {
+                    connection.disconnect();
+                }
             }
-            bufferedInputStream.close();
-            byteArrayOutputStream.close();
-            return byteArrayOutputStream.toByteArray();
         }
 
         @Override
