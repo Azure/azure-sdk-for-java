@@ -25,6 +25,7 @@ generate-client-as-impl: true
 generate-client-interfaces: false
 service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
+enable-sync-stack: true
 context-client-method-parameter: true
 default-http-exception-type: com.azure.storage.file.share.models.ShareStorageException
 models-subpackage: implementation.models
