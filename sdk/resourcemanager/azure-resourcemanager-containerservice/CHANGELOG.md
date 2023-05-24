@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- The property `dockerBridgeCidr` has no effect since 2019.
+- The property `dockerBridgeCidr` in class `KubernetesCluster` has no effect since 2019.
 
 #### Dependency Updates
 
