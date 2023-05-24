@@ -108,7 +108,6 @@ public class ClientMetricsTest extends BatchTestBase {
             .meterRegistry(this.meterRegistry)
             .setMetricCategories(metricCategories);
 
-
         this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
             .metricsOptions(this.inputMetricsOptions);
 

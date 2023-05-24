@@ -452,6 +452,7 @@ public final class ClientTelemetryMetrics {
                             cosmosAsyncClient,
                             requestStatistics.getDuration(), requestStatistics.getGatewayStatistics());
                         recordAddressResolutionStatistics(
+                            diagnosticsContext,
                             cosmosAsyncClient,
                             requestStatistics.getAddressResolutionStatistics());
                     }
@@ -1005,6 +1006,7 @@ public final class ClientTelemetryMetrics {
         }
 
         private void recordAddressResolutionStatistics(
+            CosmosDiagnosticsContext ctx,
             CosmosAsyncClient client,
             Map<String, ClientSideRequestStatistics.AddressResolutionStatistics> addressResolutionStatisticsMap) {
 
@@ -1043,7 +1045,8 @@ public final class ClientTelemetryMetrics {
                 CosmosMeterOptions latencyOptions = clientAccessor.getMeterOptions(
                     client,
                     CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_LATENCY);
-                if (latencyOptions.isEnabled()) {
+                if (latencyOptions.isEnabled() &&
+                    (!latencyOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                     Timer addressResolutionLatencyMeter = Timer
                         .builder(latencyOptions.getMeterName().toString())
                         .description("Address resolution latency")
@@ -1058,7 +1061,8 @@ public final class ClientTelemetryMetrics {
                 CosmosMeterOptions reqOptions = clientAccessor.getMeterOptions(
                     client,
                     CosmosMetricName.DIRECT_ADDRESS_RESOLUTION_REQUESTS);
-                if (reqOptions.isEnabled()) {
+                if (reqOptions.isEnabled() &&
+                    (!reqOptions.isDiagnosticThresholdsFilteringEnabled() || ctx.isThresholdViolated())) {
                     Counter requestCounter = Counter
                         .builder(reqOptions.getMeterName().toString())
                         .baseUnit("requests")
