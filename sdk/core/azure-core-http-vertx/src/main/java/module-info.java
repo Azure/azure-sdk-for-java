@@ -8,6 +8,8 @@ module com.azure.core.http.vertx {
 
     requires io.netty.buffer;
     requires io.vertx.core;
+    requires io.vertx.reactivestreams;
+    requires org.reactivestreams;
 
     exports com.azure.core.http.vertx;
 
