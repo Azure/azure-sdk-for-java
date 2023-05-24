@@ -81,28 +81,25 @@ public class TestProxyPlaybackClient implements HttpClient {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        LinkedList<String> strings = new LinkedList<>();
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             checkForTestProxyErrors(response);
             xRecordingId = response.getHeaderValue(X_RECORDING_ID);
             addProxySanitization(this.sanitizers);
             addMatcherRequests(this.matchers);
             String body = response.getBodyAsString().block();
-            if (body != null) {
-                // The test proxy stores variables in a map with no guaranteed order.
-                // The Java implementation of recording did not use a map, but relied on the order
-                // of the variables as they were stored. Our scheme instead sets an increasing integer
-                // the key. See TestProxyRecordPolicy.serializeVariables.
-                // This deserializes the map returned from the test proxy and creates an ordered list
-                // based on the key.
-                List<Map.Entry<String, String>> toSort;
-                toSort = new ArrayList<>(
-                    SERIALIZER.<Map<String, String>>deserialize(body, Map.class, SerializerEncoding.JSON).entrySet());
-                toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
-                for (Map.Entry<String, String> stringStringEntry : toSort) {
-                    String value = stringStringEntry.getValue();
-                    strings.add(value);
-                }
+            // The test proxy stores variables in a map with no guaranteed order.
+            // The Java implementation of recording did not use a map, but relied on the order
+            // of the variables as they were stored. Our scheme instead sets an increasing integer
+            // the key. See TestProxyRecordPolicy.serializeVariables.
+            // This deserializes the map returned from the test proxy and creates an ordered list
+            // based on the key.
+            List<Map.Entry<String, String>> toSort;
+            toSort = new ArrayList<>(SERIALIZER.<Map<String, String>>deserialize(body, Map.class, SerializerEncoding.JSON).entrySet());
+            toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
+            LinkedList<String> strings = new LinkedList<>();
+            for (Map.Entry<String, String> stringStringEntry : toSort) {
+                String value = stringStringEntry.getValue();
+                strings.add(value);
             }
             return strings;
         } catch (IOException e) {
