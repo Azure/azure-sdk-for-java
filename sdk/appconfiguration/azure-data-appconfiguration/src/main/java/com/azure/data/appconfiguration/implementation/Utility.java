@@ -6,6 +6,7 @@ package com.azure.data.appconfiguration.implementation;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.implementation.models.KeyValue;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.data.appconfiguration.models.ConfigurationSettingSnapshot;
 import com.azure.data.appconfiguration.models.SettingFields;
 import reactor.core.publisher.Mono;
 
@@ -88,6 +89,10 @@ public class Utility {
      */
     public static String getEtag(boolean isEtagRequired, ConfigurationSetting setting) {
         return isEtagRequired ? getETagValue(setting.getETag()) : null;
+    }
+
+    public static String getEtagSnapshot(boolean isEtagRequired, ConfigurationSettingSnapshot snapshot) {
+        return isEtagRequired ? getETagValue(snapshot.getEtag()) : null;
     }
 
     /*

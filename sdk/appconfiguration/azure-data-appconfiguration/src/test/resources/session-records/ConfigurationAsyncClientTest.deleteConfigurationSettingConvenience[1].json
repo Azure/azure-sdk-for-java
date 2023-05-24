@@ -1,23 +1,23 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED/kv/key12003846540?api-version=1.0",
+      "RequestUri": "https://REDACTED/kv/key82292137029?api-version=2022-11-01-preview",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/vnd.microsoft.azconfig.kv\u002Bjson",
         "Authorization": "Sanitized",
         "Content-Length": "67",
         "Content-Type": "application/json",
-        "Date": "Wed, 5 Apr 2023 02:25:37 GMT",
+        "Date": "Thu, 11 May 2023 00:51:41 GMT",
         "If-None-Match": "*",
         "Sync-Token": "",
-        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "74afb8aa-f7e2-41ee-af6e-29e15ffc33fd",
-        "x-ms-content-sha256": "dZRo8sRDQf1CpCv28hQielR5r4AvpcLAQi7IlxuD0YM=",
+        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "cb45a198-d625-48d6-8cdb-50d08f9c6dc3",
+        "x-ms-content-sha256": "m1SN1K39cfzOin073ZzvJ1U0VXHmp6Vq\u002BQn51sEu9qk=",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "key": "key12003846540",
+        "key": "key82292137029",
         "value": "myValue",
         "tags": {},
         "locked": false
@@ -26,43 +26,43 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate, Operation-Location, Retry-After",
         "Connection": "keep-alive",
         "Content-Type": "application/vnd.microsoft.appconfig.kv\u002Bjson; charset=utf-8",
-        "Date": "Wed, 05 Apr 2023 02:25:38 GMT",
-        "ETag": "\u00227X52Za4c3yFFANbpIiw_TKqoshjPEfQ4RSzxwdSKSh8\u0022",
-        "Last-Modified": "Wed, 05 Apr 2023 02:25:38 GMT",
+        "Date": "Thu, 11 May 2023 00:51:39 GMT",
+        "ETag": "\u0022qCvL1Cnf7rfA9r4MeSzGF2DErMgtVi_53h3YitvtDgs\u0022",
+        "Last-Modified": "Thu, 11 May 2023 00:51:39 GMT",
         "Server": "openresty/1.21.4.1",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjE4;sn=4281218",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2NzA4;sn=1386708",
         "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "74afb8aa-f7e2-41ee-af6e-29e15ffc33fd",
-        "x-ms-correlation-request-id": "a8a882bb-0454-4c47-80d7-03ca14fbc51b",
-        "x-ms-request-id": "a8a882bb-0454-4c47-80d7-03ca14fbc51b"
+        "x-ms-client-request-id": "cb45a198-d625-48d6-8cdb-50d08f9c6dc3",
+        "x-ms-correlation-request-id": "67eddb3f-2b9e-4e9a-94db-f99533677ffb",
+        "x-ms-request-id": "67eddb3f-2b9e-4e9a-94db-f99533677ffb"
       },
       "ResponseBody": {
-        "etag": "7X52Za4c3yFFANbpIiw_TKqoshjPEfQ4RSzxwdSKSh8",
-        "key": "key12003846540",
+        "etag": "qCvL1Cnf7rfA9r4MeSzGF2DErMgtVi_53h3YitvtDgs",
+        "key": "key82292137029",
         "label": null,
         "content_type": null,
         "value": "myValue",
         "tags": {},
         "locked": false,
-        "last_modified": "2023-04-05T02:25:38\u002B00:00"
+        "last_modified": "2023-05-11T00:51:39\u002B00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/kv/key12003846540?api-version=1.0",
+      "RequestUri": "https://REDACTED/kv/key82292137029?api-version=2022-11-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/vnd.microsoft.azconfig.kv\u002Bjson",
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "Content-Type": "application/json",
-        "Date": "Wed, 5 Apr 2023 02:25:38 GMT",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjE4",
-        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "f1c5532a-8257-4c44-9165-8c82d49be719",
+        "Date": "Thu, 11 May 2023 00:51:41 GMT",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2NzA4",
+        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "93ab5956-bb44-4dfb-aade-77bc3ac6b4d6",
         "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
         "x-ms-return-client-request-id": "true"
       },
@@ -71,43 +71,43 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate, Operation-Location, Retry-After",
         "Connection": "keep-alive",
         "Content-Type": "application/vnd.microsoft.appconfig.kv\u002Bjson; charset=utf-8",
-        "Date": "Wed, 05 Apr 2023 02:25:39 GMT",
-        "ETag": "\u00227X52Za4c3yFFANbpIiw_TKqoshjPEfQ4RSzxwdSKSh8\u0022",
-        "Last-Modified": "Wed, 05 Apr 2023 02:25:38 GMT",
+        "Date": "Thu, 11 May 2023 00:51:39 GMT",
+        "ETag": "\u0022qCvL1Cnf7rfA9r4MeSzGF2DErMgtVi_53h3YitvtDgs\u0022",
+        "Last-Modified": "Thu, 11 May 2023 00:51:39 GMT",
         "Server": "openresty/1.21.4.1",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjIz;sn=4281223",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2NzEy;sn=1386712",
         "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "f1c5532a-8257-4c44-9165-8c82d49be719",
-        "x-ms-correlation-request-id": "b9b041ad-0069-4d45-954a-26cfd46dd0f9",
-        "x-ms-request-id": "b9b041ad-0069-4d45-954a-26cfd46dd0f9"
+        "x-ms-client-request-id": "93ab5956-bb44-4dfb-aade-77bc3ac6b4d6",
+        "x-ms-correlation-request-id": "4f5aff4e-823a-480b-8652-83effc9ece41",
+        "x-ms-request-id": "4f5aff4e-823a-480b-8652-83effc9ece41"
       },
       "ResponseBody": {
-        "etag": "7X52Za4c3yFFANbpIiw_TKqoshjPEfQ4RSzxwdSKSh8",
-        "key": "key12003846540",
+        "etag": "qCvL1Cnf7rfA9r4MeSzGF2DErMgtVi_53h3YitvtDgs",
+        "key": "key82292137029",
         "label": null,
         "content_type": null,
         "value": "myValue",
         "tags": {},
         "locked": false,
-        "last_modified": "2023-04-05T02:25:38\u002B00:00"
+        "last_modified": "2023-05-11T00:51:39\u002B00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/kv/key12003846540?api-version=1.0",
+      "RequestUri": "https://REDACTED/kv/key82292137029?api-version=2022-11-01-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/vnd.microsoft.azconfig.kv\u002Bjson",
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "Content-Type": "application/json",
-        "Date": "Wed, 5 Apr 2023 02:25:38 GMT",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjIz",
-        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "a65bdbe2-7e88-4000-83ba-5f9eeb50e519",
+        "Date": "Thu, 11 May 2023 00:51:41 GMT",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2NzEy",
+        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "22e3de48-117d-4644-afe7-8ab462926b5a",
         "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
         "x-ms-return-client-request-id": "true"
       },
@@ -116,43 +116,43 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate, Operation-Location, Retry-After",
         "Connection": "keep-alive",
         "Content-Type": "application/vnd.microsoft.appconfig.kv\u002Bjson; charset=utf-8",
-        "Date": "Wed, 05 Apr 2023 02:25:39 GMT",
-        "ETag": "\u00227X52Za4c3yFFANbpIiw_TKqoshjPEfQ4RSzxwdSKSh8\u0022",
-        "Last-Modified": "Wed, 05 Apr 2023 02:25:38 GMT",
+        "Date": "Thu, 11 May 2023 00:51:40 GMT",
+        "ETag": "\u0022qCvL1Cnf7rfA9r4MeSzGF2DErMgtVi_53h3YitvtDgs\u0022",
+        "Last-Modified": "Thu, 11 May 2023 00:51:39 GMT",
         "Server": "openresty/1.21.4.1",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjI4;sn=4281228",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2NzU4;sn=1386758",
         "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "a65bdbe2-7e88-4000-83ba-5f9eeb50e519",
-        "x-ms-correlation-request-id": "4bdeb7d4-83e0-449b-814e-65798557fbdd",
-        "x-ms-request-id": "4bdeb7d4-83e0-449b-814e-65798557fbdd"
+        "x-ms-client-request-id": "22e3de48-117d-4644-afe7-8ab462926b5a",
+        "x-ms-correlation-request-id": "402501e2-0211-4e75-ba4a-1d69181b3b94",
+        "x-ms-request-id": "402501e2-0211-4e75-ba4a-1d69181b3b94"
       },
       "ResponseBody": {
-        "etag": "7X52Za4c3yFFANbpIiw_TKqoshjPEfQ4RSzxwdSKSh8",
-        "key": "key12003846540",
+        "etag": "qCvL1Cnf7rfA9r4MeSzGF2DErMgtVi_53h3YitvtDgs",
+        "key": "key82292137029",
         "label": null,
         "content_type": null,
         "value": "myValue",
         "tags": {},
         "locked": false,
-        "last_modified": "2023-04-05T02:25:38\u002B00:00"
+        "last_modified": "2023-05-11T00:51:39\u002B00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/kv/key12003846540?api-version=1.0",
+      "RequestUri": "https://REDACTED/kv/key82292137029?api-version=2022-11-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/vnd.microsoft.azconfig.kv\u002Bjson",
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "Content-Type": "application/json",
-        "Date": "Wed, 5 Apr 2023 02:25:38 GMT",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjI4",
-        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "26981e78-7f13-4955-8c4f-6e80cd4318c2",
+        "Date": "Thu, 11 May 2023 00:51:41 GMT",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2NzU4",
+        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "0a5c930d-cdef-479e-8ff9-ea4f22043485",
         "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
         "x-ms-return-client-request-id": "true"
       },
@@ -161,38 +161,38 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate, Operation-Location, Retry-After",
         "Connection": "keep-alive",
         "Content-Length": "0",
-        "Date": "Wed, 05 Apr 2023 02:25:39 GMT",
+        "Date": "Thu, 11 May 2023 00:51:40 GMT",
         "Server": "openresty/1.21.4.1",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjM0;sn=4281234",
-        "x-ms-client-request-id": "26981e78-7f13-4955-8c4f-6e80cd4318c2",
-        "x-ms-correlation-request-id": "3ef98d42-7daa-4659-aab1-d8ab06ea3782",
-        "x-ms-request-id": "3ef98d42-7daa-4659-aab1-d8ab06ea3782"
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzcx;sn=1386771",
+        "x-ms-client-request-id": "0a5c930d-cdef-479e-8ff9-ea4f22043485",
+        "x-ms-correlation-request-id": "d8b0ec28-94cc-4860-a419-6c513b83bf8a",
+        "x-ms-request-id": "d8b0ec28-94cc-4860-a419-6c513b83bf8a"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/kv/key12003846540?label=660f3ae570479a\u0026api-version=1.0",
+      "RequestUri": "https://REDACTED/kv/key82292137029?label=1d51883e981718\u0026api-version=2022-11-01-preview",
       "RequestMethod": "PUT",
       "RequestHeaders": {
         "Accept": "application/vnd.microsoft.azconfig.kv\u002Bjson",
         "Authorization": "Sanitized",
         "Content-Length": "92",
         "Content-Type": "application/json",
-        "Date": "Wed, 5 Apr 2023 02:25:38 GMT",
+        "Date": "Thu, 11 May 2023 00:51:41 GMT",
         "If-None-Match": "*",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjM0",
-        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "58ed4a27-6e1e-4639-9042-a839476e04a5",
-        "x-ms-content-sha256": "WzLsPeBvt72nIrWCJgPsTkLcAD25Ey8/4Lgi8q9HVb4=",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzcx",
+        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "db208337-a50c-4a01-8921-6fc3d10a563c",
+        "x-ms-content-sha256": "iwamk0\u002B\u002BmTVJ6c1/dPmE23qbj3vSR36q5c6Gq/qtVIs=",
         "x-ms-return-client-request-id": "true"
       },
       "RequestBody": {
-        "key": "key12003846540",
-        "label": "660f3ae570479a",
+        "key": "key82292137029",
+        "label": "1d51883e981718",
         "value": "myValue",
         "tags": {},
         "locked": false
@@ -201,43 +201,43 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate, Operation-Location, Retry-After",
         "Connection": "keep-alive",
         "Content-Type": "application/vnd.microsoft.appconfig.kv\u002Bjson; charset=utf-8",
-        "Date": "Wed, 05 Apr 2023 02:25:39 GMT",
-        "ETag": "\u0022ektq0RJWCzmqMa8Wy1d2zITuU8PCg1n0a_Jq54m0Trs\u0022",
-        "Last-Modified": "Wed, 05 Apr 2023 02:25:39 GMT",
+        "Date": "Thu, 11 May 2023 00:51:40 GMT",
+        "ETag": "\u0022BmGTiLMyU-kgXou8OB7CdX0a6fLpkWM_GTtWHY0szoI\u0022",
+        "Last-Modified": "Thu, 11 May 2023 00:51:40 GMT",
         "Server": "openresty/1.21.4.1",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjM5;sn=4281239",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzc2;sn=1386776",
         "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "58ed4a27-6e1e-4639-9042-a839476e04a5",
-        "x-ms-correlation-request-id": "95d62e1b-0653-45d1-8a9c-908fc6ecd215",
-        "x-ms-request-id": "95d62e1b-0653-45d1-8a9c-908fc6ecd215"
+        "x-ms-client-request-id": "db208337-a50c-4a01-8921-6fc3d10a563c",
+        "x-ms-correlation-request-id": "b3da115f-4d8b-4f65-99f5-08a992fbd49a",
+        "x-ms-request-id": "b3da115f-4d8b-4f65-99f5-08a992fbd49a"
       },
       "ResponseBody": {
-        "etag": "ektq0RJWCzmqMa8Wy1d2zITuU8PCg1n0a_Jq54m0Trs",
-        "key": "key12003846540",
-        "label": "660f3ae570479a",
+        "etag": "BmGTiLMyU-kgXou8OB7CdX0a6fLpkWM_GTtWHY0szoI",
+        "key": "key82292137029",
+        "label": "1d51883e981718",
         "content_type": null,
         "value": "myValue",
         "tags": {},
         "locked": false,
-        "last_modified": "2023-04-05T02:25:39\u002B00:00"
+        "last_modified": "2023-05-11T00:51:40\u002B00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/kv/key12003846540?label=660f3ae570479a\u0026api-version=1.0",
+      "RequestUri": "https://REDACTED/kv/key82292137029?label=1d51883e981718\u0026api-version=2022-11-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/vnd.microsoft.azconfig.kv\u002Bjson",
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "Content-Type": "application/json",
-        "Date": "Wed, 5 Apr 2023 02:25:38 GMT",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjM5",
-        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "80823d93-18fb-40eb-a9cd-92e4c06cef26",
+        "Date": "Thu, 11 May 2023 00:51:41 GMT",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzc2",
+        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "8e24c574-a7bb-4c1b-94b6-67422eee6354",
         "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
         "x-ms-return-client-request-id": "true"
       },
@@ -246,43 +246,43 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate, Operation-Location, Retry-After",
         "Connection": "keep-alive",
         "Content-Type": "application/vnd.microsoft.appconfig.kv\u002Bjson; charset=utf-8",
-        "Date": "Wed, 05 Apr 2023 02:25:39 GMT",
-        "ETag": "\u0022ektq0RJWCzmqMa8Wy1d2zITuU8PCg1n0a_Jq54m0Trs\u0022",
-        "Last-Modified": "Wed, 05 Apr 2023 02:25:39 GMT",
+        "Date": "Thu, 11 May 2023 00:51:40 GMT",
+        "ETag": "\u0022BmGTiLMyU-kgXou8OB7CdX0a6fLpkWM_GTtWHY0szoI\u0022",
+        "Last-Modified": "Thu, 11 May 2023 00:51:40 GMT",
         "Server": "openresty/1.21.4.1",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjQz;sn=4281243",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzgx;sn=1386781",
         "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "80823d93-18fb-40eb-a9cd-92e4c06cef26",
-        "x-ms-correlation-request-id": "32b84a3d-342a-43f1-bf8c-1a0124714dc8",
-        "x-ms-request-id": "32b84a3d-342a-43f1-bf8c-1a0124714dc8"
+        "x-ms-client-request-id": "8e24c574-a7bb-4c1b-94b6-67422eee6354",
+        "x-ms-correlation-request-id": "46df888c-90f8-4cba-849d-5f1fb64d42b8",
+        "x-ms-request-id": "46df888c-90f8-4cba-849d-5f1fb64d42b8"
       },
       "ResponseBody": {
-        "etag": "ektq0RJWCzmqMa8Wy1d2zITuU8PCg1n0a_Jq54m0Trs",
-        "key": "key12003846540",
-        "label": "660f3ae570479a",
+        "etag": "BmGTiLMyU-kgXou8OB7CdX0a6fLpkWM_GTtWHY0szoI",
+        "key": "key82292137029",
+        "label": "1d51883e981718",
         "content_type": null,
         "value": "myValue",
         "tags": {},
         "locked": false,
-        "last_modified": "2023-04-05T02:25:39\u002B00:00"
+        "last_modified": "2023-05-11T00:51:40\u002B00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/kv/key12003846540?label=660f3ae570479a\u0026api-version=1.0",
+      "RequestUri": "https://REDACTED/kv/key82292137029?label=1d51883e981718\u0026api-version=2022-11-01-preview",
       "RequestMethod": "DELETE",
       "RequestHeaders": {
         "Accept": "application/vnd.microsoft.azconfig.kv\u002Bjson",
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "Content-Type": "application/json",
-        "Date": "Wed, 5 Apr 2023 02:25:38 GMT",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjQz",
-        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "3b394abd-cf59-4dd1-81b1-539dccd5af21",
+        "Date": "Thu, 11 May 2023 00:51:41 GMT",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzgx",
+        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "46a6c01c-06dd-45fd-89d5-8ed350273900",
         "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
         "x-ms-return-client-request-id": "true"
       },
@@ -291,43 +291,43 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate, Operation-Location, Retry-After",
         "Connection": "keep-alive",
         "Content-Type": "application/vnd.microsoft.appconfig.kv\u002Bjson; charset=utf-8",
-        "Date": "Wed, 05 Apr 2023 02:25:39 GMT",
-        "ETag": "\u0022ektq0RJWCzmqMa8Wy1d2zITuU8PCg1n0a_Jq54m0Trs\u0022",
-        "Last-Modified": "Wed, 05 Apr 2023 02:25:39 GMT",
+        "Date": "Thu, 11 May 2023 00:51:40 GMT",
+        "ETag": "\u0022BmGTiLMyU-kgXou8OB7CdX0a6fLpkWM_GTtWHY0szoI\u0022",
+        "Last-Modified": "Thu, 11 May 2023 00:51:40 GMT",
         "Server": "openresty/1.21.4.1",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjQ5;sn=4281249",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzg2;sn=1386786",
         "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "3b394abd-cf59-4dd1-81b1-539dccd5af21",
-        "x-ms-correlation-request-id": "03d91ed7-7819-4377-9578-7c8fceba8f4b",
-        "x-ms-request-id": "03d91ed7-7819-4377-9578-7c8fceba8f4b"
+        "x-ms-client-request-id": "46a6c01c-06dd-45fd-89d5-8ed350273900",
+        "x-ms-correlation-request-id": "7bf3aed8-8da2-4318-8204-694e6a655513",
+        "x-ms-request-id": "7bf3aed8-8da2-4318-8204-694e6a655513"
       },
       "ResponseBody": {
-        "etag": "ektq0RJWCzmqMa8Wy1d2zITuU8PCg1n0a_Jq54m0Trs",
-        "key": "key12003846540",
-        "label": "660f3ae570479a",
+        "etag": "BmGTiLMyU-kgXou8OB7CdX0a6fLpkWM_GTtWHY0szoI",
+        "key": "key82292137029",
+        "label": "1d51883e981718",
         "content_type": null,
         "value": "myValue",
         "tags": {},
         "locked": false,
-        "last_modified": "2023-04-05T02:25:39\u002B00:00"
+        "last_modified": "2023-05-11T00:51:40\u002B00:00"
       }
     },
     {
-      "RequestUri": "https://REDACTED/kv/key12003846540?label=660f3ae570479a\u0026api-version=1.0",
+      "RequestUri": "https://REDACTED/kv/key82292137029?label=1d51883e981718\u0026api-version=2022-11-01-preview",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/vnd.microsoft.azconfig.kv\u002Bjson",
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "Content-Type": "application/json",
-        "Date": "Wed, 5 Apr 2023 02:25:38 GMT",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjQ5",
-        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "cbb4c649-c7a3-4dce-8aa5-3fe8c24e4dd6",
+        "Date": "Thu, 11 May 2023 00:51:42 GMT",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzg2",
+        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "0caab220-bd15-4477-a4ee-506021e81488",
         "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
         "x-ms-return-client-request-id": "true"
       },
@@ -336,31 +336,31 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate, Operation-Location, Retry-After",
         "Connection": "keep-alive",
         "Content-Length": "0",
-        "Date": "Wed, 05 Apr 2023 02:25:39 GMT",
+        "Date": "Thu, 11 May 2023 00:51:40 GMT",
         "Server": "openresty/1.21.4.1",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjUy;sn=4281252",
-        "x-ms-client-request-id": "cbb4c649-c7a3-4dce-8aa5-3fe8c24e4dd6",
-        "x-ms-correlation-request-id": "5b5670f2-e883-4d82-aec8-2c30ad4ea860",
-        "x-ms-request-id": "5b5670f2-e883-4d82-aec8-2c30ad4ea860"
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzg4;sn=1386788",
+        "x-ms-client-request-id": "0caab220-bd15-4477-a4ee-506021e81488",
+        "x-ms-correlation-request-id": "3504bf9b-421c-4f8b-88bb-dd88282dd595",
+        "x-ms-request-id": "3504bf9b-421c-4f8b-88bb-dd88282dd595"
       },
       "ResponseBody": null
     },
     {
-      "RequestUri": "https://REDACTED/kv?key=key12003%2A\u0026api-version=1.0\u0026$Select=",
+      "RequestUri": "https://REDACTED/kv?key=key82292%2A\u0026api-version=2022-11-01-preview\u0026$Select=",
       "RequestMethod": "GET",
       "RequestHeaders": {
         "Accept": "application/vnd.microsoft.azconfig.kv\u002Bjson",
         "Authorization": "Sanitized",
         "Content-Length": "0",
         "Content-Type": "application/json",
-        "Date": "Wed, 5 Apr 2023 02:25:38 GMT",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjUy",
-        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (17.0.1; Windows 11; 10.0)",
-        "x-ms-client-request-id": "f9d2e9af-fe94-419a-9b67-3cb95c4ebe57",
+        "Date": "Thu, 11 May 2023 00:51:42 GMT",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzg4",
+        "User-Agent": "azsdk-java-azure-data-appconfiguration/1.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
+        "x-ms-client-request-id": "acc159ca-f0bf-4ca2-a92f-ad87b09699ff",
         "x-ms-content-sha256": "47DEQpj8HBSa\u002B/TImW\u002B5JCeuQeRkm5NMpJWZG3hSuFU=",
         "x-ms-return-client-request-id": "true"
       },
@@ -369,17 +369,17 @@
       "ResponseHeaders": {
         "Access-Control-Allow-Credentials": "true",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate",
+        "Access-Control-Expose-Headers": "DNT, X-CustomHeader, Keep-Alive, User-Agent, X-Requested-With, If-Modified-Since, Cache-Control, Content-Type, Authorization, x-ms-client-request-id, x-ms-useragent, x-ms-content-sha256, x-ms-date, host, Accept, Accept-Datetime, Date, If-Match, If-None-Match, Sync-Token, x-ms-return-client-request-id, ETag, Last-Modified, Link, Memento-Datetime, retry-after-ms, x-ms-request-id, x-ms-client-session-id, x-ms-effective-locale, WWW-Authenticate, traceparent, tracestate, Operation-Location, Retry-After",
         "Connection": "keep-alive",
         "Content-Type": "application/vnd.microsoft.appconfig.kvset\u002Bjson; charset=utf-8",
-        "Date": "Wed, 05 Apr 2023 02:25:39 GMT",
+        "Date": "Thu, 11 May 2023 00:51:40 GMT",
         "Server": "openresty/1.21.4.1",
         "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
-        "Sync-Token": "zAJw6V16=MjoyMCM0MjgxMjU3;sn=4281257",
+        "Sync-Token": "zAJw6V16=MjY6NSMxMzg2Nzkx;sn=1386791",
         "Transfer-Encoding": "chunked",
-        "x-ms-client-request-id": "f9d2e9af-fe94-419a-9b67-3cb95c4ebe57",
-        "x-ms-correlation-request-id": "11ee73dc-65c3-4e21-a250-ec334388e762",
-        "x-ms-request-id": "11ee73dc-65c3-4e21-a250-ec334388e762"
+        "x-ms-client-request-id": "acc159ca-f0bf-4ca2-a92f-ad87b09699ff",
+        "x-ms-correlation-request-id": "d17ea50a-9f74-48f0-993a-822452a9d2d2",
+        "x-ms-request-id": "d17ea50a-9f74-48f0-993a-822452a9d2d2"
       },
       "ResponseBody": {
         "items": []
@@ -387,9 +387,9 @@
     }
   ],
   "Variables": {
-    "0": "key12003",
-    "1": "660f3ae5",
-    "2": "key12003846540",
-    "3": "660f3ae570479a"
+    "0": "key82292",
+    "1": "1d51883e",
+    "2": "key82292137029",
+    "3": "1d51883e981718"
   }
 }

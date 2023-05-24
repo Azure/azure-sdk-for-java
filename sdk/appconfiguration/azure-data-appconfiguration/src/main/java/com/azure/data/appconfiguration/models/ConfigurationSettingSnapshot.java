@@ -36,9 +36,9 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
     private final List<SnapshotSettingFilter> filters;
 
     /*
-     * The composition type describes how the key-values within the snapshot are composed. The 'all' composition type
-     * includes all key-values. The 'group_by_key' composition type ensures there are no two key-values containing the
-     * same key.
+     * The composition type describes how the key-values within the snapshot are composed. The 'key' composition type
+     * ensures there are no two key-values containing the same key. The 'key_label' composition type ensures there are
+     * no two key-values containing the same key and label.
      */
     private CompositionType compositionType;
 
@@ -117,8 +117,8 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
 
     /**
      * Get the compositionType property: The composition type describes how the key-values within the snapshot are
-     * composed. The 'all' composition type includes all key-values. The 'group_by_key' composition type ensures there
-     * are no two key-values containing the same key.
+     * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
+     * composition type ensures there are no two key-values containing the same key and label.
      *
      * @return the compositionType value.
      */
@@ -128,8 +128,8 @@ public final class ConfigurationSettingSnapshot implements JsonSerializable<Conf
 
     /**
      * Set the compositionType property: The composition type describes how the key-values within the snapshot are
-     * composed. The 'all' composition type includes all key-values. The 'group_by_key' composition type ensures there
-     * are no two key-values containing the same key.
+     * composed. The 'key' composition type ensures there are no two key-values containing the same key. The 'key_label'
+     * composition type ensures there are no two key-values containing the same key and label.
      *
      * @param compositionType the compositionType value to set.
      * @return the ConfigurationSettingSnapshot object itself.
