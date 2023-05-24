@@ -213,10 +213,6 @@ public final class CallAutomationAsyncClient {
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setOperationContext(createCallOptions.getOperationContext());
 
-        if (createCallOptions.getAzureCognitiveServicesUrl() != null && !createCallOptions.getAzureCognitiveServicesUrl().isEmpty()) {
-            request.setAzureCognitiveServicesEndpointUrl(createCallOptions.getAzureCognitiveServicesUrl());
-        }
-
         return request;
     }
 
@@ -231,10 +227,6 @@ public final class CallAutomationAsyncClient {
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
-
-        if (createCallGroupOptions.getAzureCognitiveServicesUrl() != null && !createCallGroupOptions.getAzureCognitiveServicesUrl().isEmpty()) {
-            request.setAzureCognitiveServicesEndpointUrl(createCallGroupOptions.getAzureCognitiveServicesUrl());
-        }
 
         return request;
     }
@@ -277,10 +269,6 @@ public final class CallAutomationAsyncClient {
                 .setCallbackUri(answerCallOptions.getCallbackUrl())
                 .setAnsweredByIdentifier(sourceIdentity)
                 .setOperationContext(answerCallOptions.getOperationContext());
-
-            if (answerCallOptions.getAzureCognitiveServicesUrl() != null && !answerCallOptions.getAzureCognitiveServicesUrl().isEmpty()) {
-                request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesUrl());
-            }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
                     request,
