@@ -38,7 +38,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsRunner((deploymentId, prompt) -> {
             Completions resultCompletions = client.getCompletions(deploymentId, new CompletionsOptions(prompt));
-            assertCompletions(new int[]{0}, null, null, resultCompletions);
+            assertCompletions(new int[]{0}, resultCompletions);
         });
     }
 
@@ -64,7 +64,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsFromSinglePromptRunner((deploymentId, prompts) -> {
             Completions completions = client.getCompletions(deploymentId, prompts);
-            assertCompletions(new int[]{0}, null, null, completions);
+            assertCompletions(new int[]{0}, completions);
         });
     }
 
@@ -77,7 +77,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions());
             assertEquals(200, response.getStatusCode());
             Completions resultCompletions = response.getValue().toObject(Completions.class);
-            assertCompletions(new int[]{0}, null, null, resultCompletions);
+            assertCompletions(new int[]{0}, resultCompletions);
         });
     }
 

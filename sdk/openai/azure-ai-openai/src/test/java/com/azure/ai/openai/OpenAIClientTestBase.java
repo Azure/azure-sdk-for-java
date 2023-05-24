@@ -10,8 +10,6 @@ import com.azure.ai.openai.models.ChatMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
 import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsFinishReason;
-import com.azure.ai.openai.models.CompletionsLogProbabilityModel;
 import com.azure.ai.openai.models.EmbeddingItem;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
@@ -20,8 +18,10 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 
@@ -31,9 +31,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 
 import static com.azure.ai.openai.TestUtils.FAKE_API_KEY;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
@@ -86,6 +84,18 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     @Test
     public abstract void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
+    @Test
+    public abstract void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void getChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void getEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
+    @Test
+    public abstract void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+
     void getCompletionsRunner(BiConsumer<String, List<String>> testRunner) {
         String deploymentId = "text-davinci-003";
         List<String> prompt = new ArrayList<>();
@@ -99,42 +109,20 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept(deploymentId, prompt);
     }
 
-    static void assertCompletions(int[] index, CompletionsLogProbabilityModel[] logprobs,
-        CompletionsFinishReason[] finishReason, Completions actual) {
-        assertNotNull(actual.getId());
-        assertChoices(index, logprobs, finishReason, actual.getChoices());
-        assertNotNull(actual.getUsage());
-    }
-
-    static void assertChoices(int[] index, CompletionsLogProbabilityModel[] logprobs,
-        CompletionsFinishReason[] finishReason, List<Choice> actual) {
-        assertEquals(index.length, actual.size());
-
-        for (int i = 0; i < actual.size(); i++) {
-            assertChoice(index[i], null, null, actual.get(i));
-        }
-    }
-
-    static void assertChoice(int index, CompletionsLogProbabilityModel logprobs,
-                             CompletionsFinishReason finishReason, Choice actual) {
-        assertNotNull(actual.getText());
-        assertEquals(index, actual.getIndex());
-
-        // TODO: add more assertions for the additional properties
-    }
-
-    @Test
-    public abstract void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
-    @Test
-    public abstract void getChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
     void getChatCompletionsRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
         testRunner.accept("gpt-35-turbo", getChatMessages());
     }
 
     void getChatCompletionsForNonAzureRunner(BiConsumer<String, List<ChatMessage>> testRunner) {
         testRunner.accept("gpt-3.5-turbo", getChatMessages());
+    }
+
+    void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        testRunner.accept("embedding", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
+    }
+
+    void getEmbeddingNonAzureRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
+        testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
 
     private List<ChatMessage> getChatMessages() {
@@ -144,6 +132,37 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
         return chatMessages;
+    }
+
+    static void assertCompletions(int[] index, Completions actual) {
+        assertNotNull(actual);
+        assertInstanceOf(Completions.class, actual);
+        assertChoices(index, actual.getChoices());
+//        assertNotNull(actual.getUsage());
+    }
+
+    static <T> T assertResponse(Response<BinaryData> actualResponse, Class<T> clazz, int expectedCode) {
+        assertEquals(expectedCode, actualResponse.getStatusCode());
+        assertNotNull(actualResponse);
+        assertInstanceOf(Response.class, actualResponse);
+        assertNotNull(actualResponse.getValue());
+        T object = actualResponse.getValue().toObject(clazz);
+        assertInstanceOf(clazz, object);
+        return object;
+    }
+
+    static void assertChoices(int[] index, List<Choice> actual) {
+        assertEquals(index.length, actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            assertChoice(index[i], actual.get(i));
+        }
+    }
+
+    static void assertChoice(int index, Choice actual) {
+        assertNotNull(actual.getText());
+        assertEquals(index, actual.getIndex());
+
+        // TODO: add more assertions for the additional properties
     }
 
     static void assertChatCompletions(int[] indexArray, ChatRole[] chatRoleArray, ChatCompletions actual) {
@@ -167,20 +186,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(actual.getMessage().getContent());
         // TODO: verify if the finish reason is "stop" or "stopped"
 //        assertEquals(CompletionsFinishReason.STOPPED, actual.getFinishReason());
-    }
-
-    @Test
-    public abstract void getEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
-    @Test
-    public abstract void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
-
-    void getEmbeddingRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        testRunner.accept("embedding", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
-    }
-
-    void getEmbeddingNonAzureRunner(BiConsumer<String, EmbeddingsOptions> testRunner) {
-        testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
 
     static void assertEmbeddings(Embeddings actual) {

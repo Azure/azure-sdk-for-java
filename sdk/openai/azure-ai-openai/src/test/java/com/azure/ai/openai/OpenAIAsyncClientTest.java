@@ -38,7 +38,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletions(deploymentId, new CompletionsOptions(prompt)))
                 .assertNext(resultCompletions -> {
-                    assertCompletions(new int[]{0}, null, null, resultCompletions);
+                    assertCompletions(new int[]{0}, resultCompletions);
                 })
                 .verifyComplete();
         });
@@ -67,7 +67,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         getCompletionsFromSinglePromptRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletions(deploymentId, prompt))
                 .assertNext(resultCompletions -> {
-                    assertCompletions(new int[]{0}, null, null, resultCompletions);
+                    assertCompletions(new int[]{0}, resultCompletions);
                 })
                 .verifyComplete();
         });
@@ -84,7 +84,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .assertNext(response -> {
                     assertEquals(200, response.getStatusCode());
                     Completions resultCompletions = response.getValue().toObject(Completions.class);
-                    assertCompletions(new int[]{0}, null, null, resultCompletions);
+                    assertCompletions(new int[]{0}, resultCompletions);
                 })
                 .verifyComplete();
         });

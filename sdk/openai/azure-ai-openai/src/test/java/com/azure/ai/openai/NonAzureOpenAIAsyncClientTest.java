@@ -38,7 +38,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletions(modelId, new CompletionsOptions(prompt)))
                 .assertNext(resultCompletions -> {
-                    assertCompletions(new int[]{0}, null, null, resultCompletions);
+                    assertCompletions(new int[]{0}, resultCompletions);
                 })
                 .verifyComplete();
         });
@@ -68,7 +68,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         getCompletionsFromSinglePromptRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletions(modelId, prompt))
                 .assertNext(resultCompletions -> {
-                    assertCompletions(new int[]{0}, null, null, resultCompletions);
+                    assertCompletions(new int[]{0}, resultCompletions);
                 })
                 .verifyComplete();
         });
@@ -83,9 +83,8 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     BinaryData.fromObject(new CompletionsOptions(prompt)),
                     new RequestOptions()))
                 .assertNext(response -> {
-                    assertEquals(200, response.getStatusCode());
-                    Completions resultCompletions = response.getValue().toObject(Completions.class);
-                    assertCompletions(new int[]{0}, null, null, resultCompletions);
+                    Completions resultCompletions = assertResponse(response, Completions.class, 200);
+                    assertCompletions(new int[]{0}, resultCompletions);
                 })
                 .verifyComplete();
         });
@@ -132,8 +131,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     BinaryData.fromObject(new ChatCompletionsOptions(chatMessages)),
                     new RequestOptions()))
                 .assertNext(response -> {
-                    assertEquals(200, response.getStatusCode());
-                    ChatCompletions resultChatCompletions = response.getValue().toObject(ChatCompletions.class);
+                    ChatCompletions resultChatCompletions = assertResponse(response, ChatCompletions.class, 200);
                     assertChatCompletions(new int[]{0}, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
                 })
                 .verifyComplete();
@@ -160,8 +158,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     BinaryData.fromObject(embeddingsOptions),
                     new RequestOptions()))
                 .assertNext(response -> {
-                    assertEquals(200, response.getStatusCode());
-                    Embeddings resultEmbeddings = response.getValue().toObject(Embeddings.class);
+                    Embeddings resultEmbeddings = assertResponse(response, Embeddings.class, 200);
                     assertEmbeddings(resultEmbeddings);
                 })
                 .verifyComplete();
