@@ -82,8 +82,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     BinaryData.fromObject(new CompletionsOptions(prompt)),
                     new RequestOptions()))
                 .assertNext(response -> {
-                    assertEquals(200, response.getStatusCode());
-                    Completions resultCompletions = response.getValue().toObject(Completions.class);
+                    Completions resultCompletions = assertResponseAndGetValue(response, Completions.class, 200);
                     assertCompletions(new int[]{0}, resultCompletions);
                 })
                 .verifyComplete();
@@ -130,8 +129,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     BinaryData.fromObject(new ChatCompletionsOptions(chatMessages)),
                     new RequestOptions()))
                 .assertNext(response -> {
-                    assertEquals(200, response.getStatusCode());
-                    ChatCompletions resultChatCompletions = response.getValue().toObject(ChatCompletions.class);
+                    ChatCompletions resultChatCompletions = assertResponseAndGetValue(response, ChatCompletions.class, 200);
                     assertChatCompletions(new int[]{0}, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
                 })
                 .verifyComplete();
@@ -158,8 +156,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     BinaryData.fromObject(embeddingsOptions),
                     new RequestOptions()))
                 .assertNext(response -> {
-                    assertEquals(200, response.getStatusCode());
-                    Embeddings resultEmbeddings = response.getValue().toObject(Embeddings.class);
+                    Embeddings resultEmbeddings = assertResponseAndGetValue(response, Embeddings.class, 200);
                     assertEmbeddings(resultEmbeddings);
                 })
                 .verifyComplete();
