@@ -91,6 +91,7 @@ public final class TopicDescriptionEntryContentImpl implements XmlSerializable<T
      * @return An instance of TopicDescriptionEntryContent if the XmlReader was pointing to an instance of it, or null
      *     if it was pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the TopicDescriptionEntryContent.
      */
     public static TopicDescriptionEntryContentImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -100,9 +101,12 @@ public final class TopicDescriptionEntryContentImpl implements XmlSerializable<T
      * Reads an instance of TopicDescriptionEntryContent from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of TopicDescriptionEntryContent if the XmlReader was pointing to an instance of it, or null
      *     if it was pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the TopicDescriptionEntryContent.
      */
     public static TopicDescriptionEntryContentImpl fromXml(XmlReader xmlReader, String rootElementName)
             throws XMLStreamException {

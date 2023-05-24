@@ -93,6 +93,7 @@ public final class NamespacePropertiesEntryContentImpl implements XmlSerializabl
      * @return An instance of NamespacePropertiesEntryContent if the XmlReader was pointing to an instance of it, or
      *     null if it was pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the NamespacePropertiesEntryContent.
      */
     public static NamespacePropertiesEntryContentImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -102,9 +103,12 @@ public final class NamespacePropertiesEntryContentImpl implements XmlSerializabl
      * Reads an instance of NamespacePropertiesEntryContent from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of NamespacePropertiesEntryContent if the XmlReader was pointing to an instance of it, or
      *     null if it was pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the NamespacePropertiesEntryContent.
      */
     public static NamespacePropertiesEntryContentImpl fromXml(XmlReader xmlReader, String rootElementName)
             throws XMLStreamException {

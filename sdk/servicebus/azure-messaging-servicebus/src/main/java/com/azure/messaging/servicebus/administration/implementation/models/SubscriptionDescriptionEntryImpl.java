@@ -6,14 +6,16 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-import java.time.OffsetDateTime;
-import java.util.Objects;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import java.time.OffsetDateTime;
+import java.util.Objects;
 
 /** Represents an entry in the feed when querying subscriptions. */
 @Fluent
@@ -197,6 +199,7 @@ public final class SubscriptionDescriptionEntryImpl implements XmlSerializable<S
      * @param xmlReader The XmlReader being read.
      * @return An instance of SubscriptionDescriptionEntry if the XmlReader was pointing to an instance of it, or null
      *     if it was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the SubscriptionDescriptionEntry.
      */
     public static SubscriptionDescriptionEntryImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -206,8 +209,11 @@ public final class SubscriptionDescriptionEntryImpl implements XmlSerializable<S
      * Reads an instance of SubscriptionDescriptionEntry from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of SubscriptionDescriptionEntry if the XmlReader was pointing to an instance of it, or null
      *     if it was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the SubscriptionDescriptionEntry.
      */
     public static SubscriptionDescriptionEntryImpl fromXml(XmlReader xmlReader, String rootElementName)
             throws XMLStreamException {
@@ -233,10 +239,10 @@ public final class SubscriptionDescriptionEntryImpl implements XmlSerializable<S
                             title = TitleImpl.fromXml(reader, "title");
                         } else if ("published".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            published = reader.getNullableElement(OffsetDateTime::parse);
+                            published = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            updated = reader.getNullableElement(OffsetDateTime::parse);
+                            updated = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("link".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
                             link = ResponseLinkImpl.fromXml(reader, "link");

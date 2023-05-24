@@ -91,6 +91,7 @@ public final class QueueDescriptionEntryContentImpl implements XmlSerializable<Q
      * @return An instance of QueueDescriptionEntryContent if the XmlReader was pointing to an instance of it, or null
      *     if it was pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the QueueDescriptionEntryContent.
      */
     public static QueueDescriptionEntryContentImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -100,9 +101,12 @@ public final class QueueDescriptionEntryContentImpl implements XmlSerializable<Q
      * Reads an instance of QueueDescriptionEntryContent from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of QueueDescriptionEntryContent if the XmlReader was pointing to an instance of it, or null
      *     if it was pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the QueueDescriptionEntryContent.
      */
     public static QueueDescriptionEntryContentImpl fromXml(XmlReader xmlReader, String rootElementName)
             throws XMLStreamException {

@@ -6,17 +6,17 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.models.EntityStatus;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** Description of a Service Bus subscription resource. */
 @Fluent
@@ -619,6 +619,7 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      * @param xmlReader The XmlReader being read.
      * @return An instance of SubscriptionDescription if the XmlReader was pointing to an instance of it, or null if it
      *     was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the SubscriptionDescription.
      */
     public static SubscriptionDescriptionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -628,8 +629,11 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      * Reads an instance of SubscriptionDescription from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of SubscriptionDescription if the XmlReader was pointing to an instance of it, or null if it
      *     was pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the SubscriptionDescription.
      */
     public static SubscriptionDescriptionImpl fromXml(XmlReader xmlReader, String rootElementName)
             throws XMLStreamException {
@@ -709,15 +713,15 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
                         } else if ("CreatedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            createdAt = reader.getNullableElement(OffsetDateTime::parse);
+                            createdAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("UpdatedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            updatedAt = reader.getNullableElement(OffsetDateTime::parse);
+                            updatedAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("AccessedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            accessedAt = reader.getNullableElement(OffsetDateTime::parse);
+                            accessedAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("CountDetails".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {

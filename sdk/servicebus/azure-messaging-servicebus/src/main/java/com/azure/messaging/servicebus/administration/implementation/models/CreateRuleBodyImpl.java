@@ -64,6 +64,7 @@ public final class CreateRuleBodyImpl implements XmlSerializable<CreateRuleBodyI
      * @param xmlReader The XmlReader being read.
      * @return An instance of CreateRuleBody if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the CreateRuleBody.
      */
     public static CreateRuleBodyImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -73,8 +74,11 @@ public final class CreateRuleBodyImpl implements XmlSerializable<CreateRuleBodyI
      * Reads an instance of CreateRuleBody from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of CreateRuleBody if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the CreateRuleBody.
      */
     public static CreateRuleBodyImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "entry" : rootElementName;

@@ -13,6 +13,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyContentImpl;
@@ -50,9 +51,12 @@ import com.azure.messaging.servicebus.administration.models.RuleProperties;
 import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
+import com.azure.xml.XmlProviders;
+import com.azure.xml.XmlReader;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -60,6 +64,13 @@ import java.net.URLDecoder;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.TemporalAccessor;
+import java.time.temporal.TemporalQueries;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -68,6 +79,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 
 /**
  * Used to access internal methods on {@link QueueProperties}.
@@ -1026,5 +1039,160 @@ public final class EntityHelper {
             LOGGER.warning("There should have been a skip parameter for the next page.");
             return new FeedPage<>(response.getStatusCode(), response.getHeaders(), response.getRequest(), entities);
         }
+    }
+
+    /**
+     * Converts a Response into its corresponding {@link QueueDescriptionEntryImpl} then mapped into {@link
+     * QueueProperties}.
+     *
+     * @param response HTTP Response to deserialize.
+     * @param logger The ClientLogger logging errors and warnings.
+     * @return The corresponding HTTP response with convenience properties set.
+     */
+    public static Response<QueueProperties> deserializeQueue(Response<Object> response, ClientLogger logger) {
+        String responseBody = response.getValue().toString();
+
+        try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+            QueueDescriptionEntryImpl entry = QueueDescriptionEntryImpl.fromXml(xmlReader);
+            // This was an empty response (ie. 204).
+            if (entry == null) {
+                return new SimpleResponse<>(response, null);
+            } else if (entry.getContent() == null) {
+                logger.info("entry.getContent() is null. The entity may not exist. {}", entry);
+                return new SimpleResponse<>(response, null);
+            }
+
+            final QueueProperties result = EntityHelper.toModel(entry.getContent().getQueueDescription());
+            final String queueName = entry.getTitle().getContent();
+            EntityHelper.setQueueName(result, queueName);
+
+            return new SimpleResponse<>(response, result);
+        } catch (IllegalStateException ex) {
+            try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+                TopicDescriptionEntryImpl entryTopic = TopicDescriptionEntryImpl.fromXml(xmlReader);
+                logger.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
+                return new SimpleResponse<>(response, null);
+            } catch (IllegalStateException ignored) {
+                return new SimpleResponse<>(response, null);
+            } catch (XMLStreamException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Converts a Response into its corresponding {@link TopicDescriptionEntryImpl} then mapped into {@link
+     * QueueProperties}.
+     *
+     * @param response HTTP Response to deserialize.
+     * @param logger The ClientLogger logging errors and warnings.
+     * @return The corresponding HTTP response with convenience properties set.
+     */
+    public static Response<TopicProperties> deserializeTopic(Response<Object> response, ClientLogger logger) {
+        String responseBody = response.getValue().toString();
+
+        try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+            TopicDescriptionEntryImpl entry = TopicDescriptionEntryImpl.fromXml(xmlReader);
+            // This was an empty response (ie. 204).
+            if (entry == null) {
+                return new SimpleResponse<>(response, null);
+            } else if (entry.getContent() == null) {
+                LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
+                return new SimpleResponse<>(response, null);
+            }
+
+            final TopicProperties result = EntityHelper.toModel(entry.getContent().getTopicDescription());
+            final String topicName = entry.getTitle().getContent();
+            EntityHelper.setTopicName(result, topicName);
+
+            return new SimpleResponse<>(response, result);
+        } catch (IllegalStateException ex) {
+            try (XmlReader xmlReader = XmlProviders.createReader(responseBody)) {
+                QueueDescriptionEntryImpl entryQueue = QueueDescriptionEntryImpl.fromXml(xmlReader);
+                logger.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
+                return new SimpleResponse<>(response, null);
+            } catch (IllegalStateException ignored) {
+                return new SimpleResponse<>(response, null);
+            } catch (XMLStreamException e) {
+                throw new RuntimeException(e);
+            }
+        } catch (XMLStreamException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Checks if the given entity is an absolute URL, if so return it.
+     * Otherwise, construct the URL from the given entity and return that.
+     *
+     * @param entity : entity to forward messages to.
+     * @param endpoint The endpoint.
+     * @param logger The ClientLogger to log errors and warnings.
+     * @return Forward to Entity represented as an absolute URL
+     */
+    public static String getAbsoluteUrlFromEntity(String entity, String endpoint, ClientLogger logger) {
+        // Check if passed entity is an absolute URL
+        try {
+            URL url = new URL(entity);
+            return url.toString();
+        } catch (MalformedURLException ex) {
+            // Entity is not a URL, continue.
+        }
+        UrlBuilder urlBuilder = new UrlBuilder();
+        urlBuilder.setScheme("https");
+        urlBuilder.setHost(endpoint);
+        urlBuilder.setPath(entity);
+
+        try {
+            URL url = urlBuilder.toUrl();
+            return url.toString();
+        } catch (MalformedURLException ex) {
+            // This is not expected.
+            logger.error("Failed to construct URL using the endpoint:'{}' and entity:'{}'",
+                endpoint, entity);
+            logger.logThrowableAsError(ex);
+        }
+        return null;
+    }
+
+    public static String getForwardDlqEntity(String forwardDlqToEntity, Context contextWithHeaders, String endpoint,
+        ClientLogger logger) {
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            return getAbsoluteUrlFromEntity(forwardDlqToEntity, endpoint, logger);
+        }
+        return null;
+    }
+
+    public static String getForwardToEntity(String forwardToEntity, Context contextWithHeaders, String endpoint,
+        ClientLogger logger) {
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            return getAbsoluteUrlFromEntity(forwardToEntity, endpoint, logger);
+        }
+        return null;
+    }
+
+    /**
+     * Attempts to parse an ISO datetime string as best possible. The initial attempt will use
+     * {@link OffsetDateTime#from(TemporalAccessor)} and will fall back to
+     * {@link java.time.LocalDateTime#from(TemporalAccessor)} and apply {@link ZoneOffset#UTC} as the
+     * timezone.
+     *
+     * @param datetimeString The datetime string to parse.
+     * @return The {@link OffsetDateTime} representing the string.
+     * @throws DateTimeParseException If the datetime is neither an ISO offset datetime or ISO local datetime.
+     */
+    public static OffsetDateTime parseOffsetDateTimeBest(String datetimeString) {
+        TemporalAccessor temporal = DateTimeFormatter.ISO_DATE_TIME
+            .parseBest(datetimeString, OffsetDateTime::from, LocalDateTime::from);
+
+        return  (temporal.query(TemporalQueries.offset()) == null)
+            ? LocalDateTime.from(temporal).atOffset(ZoneOffset.UTC)
+            : OffsetDateTime.from(temporal);
     }
 }

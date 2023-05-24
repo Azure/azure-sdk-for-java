@@ -3,9 +3,9 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.messaging.servicebus.TestUtils;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.administration.implementation.models.AuthorizationRuleImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CorrelationFilterImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.EmptyRuleActionImpl;
@@ -43,8 +43,13 @@ import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
 import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
+import com.azure.xml.ReadValueCallback;
+import com.azure.xml.XmlProviders;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.stream.XMLStreamException;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -68,13 +73,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 class ServiceBusManagementSerializerTest {
-    private static final ServiceBusManagementSerializer SERIALIZER = new ServiceBusManagementSerializer();
+    private static <T extends XmlSerializable<T>> T deserialize(String content,
+        ReadValueCallback<XmlReader, T> deserializer) {
+        try (XmlReader xmlReader = XmlProviders.createReader(content)) {
+            return deserializer.read(xmlReader);
+        } catch (IOException | XMLStreamException ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     /**
      * Verify we can deserialize XML request when creating a queue.
      */
     @Test
-    void deserializeCreateQueueDescription() throws IOException {
+    void deserializeCreateQueueDescription() {
         // Arrange
         final String contents = getContents("CreateQueueEntry.xml");
         final AuthorizationRule rule = new SharedAccessAuthorizationRule("test-name",
@@ -97,7 +109,7 @@ class ServiceBusManagementSerializerTest {
         expected.getAuthorizationRules().add(rule);
 
         // Act
-        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry = deserialize(contents, QueueDescriptionEntryImpl::fromXml);
 
         // Assert
         assertNotNull(entry);
@@ -116,7 +128,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize XML from a GET queue request.
      */
     @Test
-    void deserializeQueueDescription() throws IOException {
+    void deserializeQueueDescription() {
         // Arrange
         final String contents = getContents("QueueDescriptionEntry.xml");
         final String queueName = "my-test-queue";
@@ -134,7 +146,7 @@ class ServiceBusManagementSerializerTest {
             .setPartitioningEnabled(true);
 
         // Act
-        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry = deserialize(contents, QueueDescriptionEntryImpl::fromXml);
 
         // Assert
         assertNotNull(entry);
@@ -151,7 +163,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize XML from a GET queue request and create convenience model, {@link QueueRuntimeProperties}.
      */
     @Test
-    void deserializeQueueRuntimeProperties() throws IOException {
+    void deserializeQueueRuntimeProperties() {
         final String contents = getContents("QueueDescriptionEntry.xml");
 
         final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
@@ -167,7 +179,7 @@ class ServiceBusManagementSerializerTest {
             .setTransferDeadLetterMessageCount(123);
 
         // Act
-        final QueueDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final QueueDescriptionEntryImpl entry = deserialize(contents, QueueDescriptionEntryImpl::fromXml);
         final QueueProperties properties = EntityHelper.toModel(entry.getContent().getQueueDescription());
         final QueueRuntimeProperties actual = new QueueRuntimeProperties(properties);
 
@@ -191,12 +203,12 @@ class ServiceBusManagementSerializerTest {
      * jackson 2.10.0 because {@link QueueDescriptionEntryImpl#getTitle()} is a complex object.
      */
     @Test
-    void deserializeQueueDescriptionFeedDoesNotError() throws IOException {
+    void deserializeQueueDescriptionFeedDoesNotError() {
         // Arrange
         final String contents = getContents("QueueDescriptionFeed-Errors.xml");
 
         // Act
-        final QueueDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, QueueDescriptionFeedImpl.class);
+        final QueueDescriptionFeedImpl actual = deserialize(contents, QueueDescriptionFeedImpl::fromXml);
 
         // Assert
         assertNotNull(actual);
@@ -207,7 +219,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize feed XML from a list queues operation that has a paged response.
      */
     @Test
-    void deserializeQueueDescriptionFeedPaged() throws IOException {
+    void deserializeQueueDescriptionFeedPaged() {
         final String contents = getContents("QueueDescriptionFeed-Paged.xml");
         final List<ResponseLinkImpl> responseLinks = Arrays.asList(
             new ResponseLinkImpl().setRel("self")
@@ -271,7 +283,7 @@ class ServiceBusManagementSerializerTest {
             .setEntry(entries);
 
         // Act
-        final QueueDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, QueueDescriptionFeedImpl.class);
+        final QueueDescriptionFeedImpl actual = deserialize(contents, QueueDescriptionFeedImpl::fromXml);
 
         // Assert
         assertEquals(expected.getId(), actual.getId());
@@ -310,7 +322,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize XML from a GET namespace request.
      */
     @Test
-    void deserializeNamespace() throws IOException {
+    void deserializeNamespace() {
         // Arrange
         final String contents = getContents("NamespaceEntry.xml");
         final String name = "ShivangiServiceBus";
@@ -321,7 +333,7 @@ class ServiceBusManagementSerializerTest {
         final NamespaceType namespaceType = NamespaceType.MESSAGING;
 
         // Act
-        final NamespacePropertiesEntryImpl entry = SERIALIZER.deserialize(contents, NamespacePropertiesEntryImpl.class);
+        final NamespacePropertiesEntryImpl entry = deserialize(contents, NamespacePropertiesEntryImpl::fromXml);
 
         // Assert
         assertNotNull(entry);
@@ -343,7 +355,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize XML from a GET subscription request.
      */
     @Test
-    void deserializeSubscription() throws IOException {
+    void deserializeSubscription() {
         // Arrange
         final String contents = getContents("SubscriptionDescriptionEntry.xml");
         final SubscriptionDescriptionImpl expected = new SubscriptionDescriptionImpl()
@@ -357,7 +369,7 @@ class ServiceBusManagementSerializerTest {
             .setAutoDeleteOnIdle(Duration.ofHours(1).plusMinutes(48));
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntryImpl entry = deserialize(contents, SubscriptionDescriptionEntryImpl::fromXml);
 
         // Assert
         assertNotNull(entry);
@@ -372,7 +384,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize XML from a PUT subscription request.
      */
     @Test
-    void deserializeCreateSubscription() throws IOException {
+    void deserializeCreateSubscription() {
         // Arrange
         final String contents = getContents("CreateSubscriptionEntry.xml");
         final String topicName = "topic";
@@ -386,7 +398,7 @@ class ServiceBusManagementSerializerTest {
                 .setMaxDeliveryCount(7));
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntryImpl entry = deserialize(contents, SubscriptionDescriptionEntryImpl::fromXml);
 
         // Assert
         assertNotNull(entry);
@@ -402,7 +414,7 @@ class ServiceBusManagementSerializerTest {
      * SubscriptionRuntimeProperties}.
      */
     @Test
-    void deserializeSubscriptionRuntimeProperties() throws IOException {
+    void deserializeSubscriptionRuntimeProperties() {
         final String contents = getContents("SubscriptionDescriptionEntry.xml");
 
         final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-22T23:47:54.0131447Z");
@@ -417,7 +429,7 @@ class ServiceBusManagementSerializerTest {
             .setTransferDeadLetterMessageCount(2);
 
         // Act
-        final SubscriptionDescriptionEntryImpl entry = SERIALIZER.deserialize(contents, SubscriptionDescriptionEntryImpl.class);
+        final SubscriptionDescriptionEntryImpl entry = deserialize(contents, SubscriptionDescriptionEntryImpl::fromXml);
         final SubscriptionRuntimeProperties actual = new SubscriptionRuntimeProperties(
             EntityHelper.toModel(entry.getContent().getSubscriptionDescription()));
 
@@ -438,7 +450,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize feed XML from a list of subscriptions that has a paged response.
      */
     @Test
-    void deserializeSubscriptionDescriptionFeed() throws IOException {
+    void deserializeSubscriptionDescriptionFeed() {
         // Arrange
         final String contents = getContents("SubscriptionDescriptionFeed.xml");
         final List<ResponseLinkImpl> responseLinks = Collections.singletonList(
@@ -508,7 +520,7 @@ class ServiceBusManagementSerializerTest {
         final int expectedNumberOfEntries = 11;
 
         // Act
-        final SubscriptionDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, SubscriptionDescriptionFeedImpl.class);
+        final SubscriptionDescriptionFeedImpl actual = deserialize(contents, SubscriptionDescriptionFeedImpl::fromXml);
 
         // Assert
         assertEquals(expected.getId(), actual.getId());
@@ -552,7 +564,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize XML from a GET rule.
      */
     @Test
-    void deserializeSqlRule() throws IOException {
+    void deserializeSqlRule() {
         // Arrange
         final String contents = getContents("SqlRuleFilter.xml");
         final RuleDescriptionImpl expectedRule = new RuleDescriptionImpl()
@@ -571,7 +583,7 @@ class ServiceBusManagementSerializerTest {
                 .setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = deserialize(contents, RuleDescriptionEntryImpl::fromXml);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -581,7 +593,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize XML from a GET rule that includes an action.
      */
     @Test
-    void deserializeSqlRuleWithAction() throws IOException {
+    void deserializeSqlRuleWithAction() {
         // Arrange
         final String contents = getContents("SqlRuleFilterWithAction.xml");
         final RuleDescriptionImpl expectedRule = new RuleDescriptionImpl()
@@ -602,7 +614,7 @@ class ServiceBusManagementSerializerTest {
                 .setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = deserialize(contents, RuleDescriptionEntryImpl::fromXml);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -612,7 +624,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize XML from a GET correlation filter rule that includes an action.
      */
     @Test
-    void deserializeCorrelationFilterRule() throws IOException {
+    void deserializeCorrelationFilterRule() {
         // Arrange
         final String contents = getContents("CorrelationRuleFilter.xml");
         final RuleDescriptionImpl expectedRule = new RuleDescriptionImpl()
@@ -630,7 +642,7 @@ class ServiceBusManagementSerializerTest {
                 .setType("application/xml"));
 
         // Act
-        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = deserialize(contents, RuleDescriptionEntryImpl::fromXml);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -640,7 +652,7 @@ class ServiceBusManagementSerializerTest {
      * Verify we can deserialize XML from a GET rule that includes an action.
      */
     @Test
-    void deserializeRulesFeed() throws IOException {
+    void deserializeRulesFeed() {
         // Arrange
         final String contents = getContents("RuleDescriptionFeed.xml");
 
@@ -695,7 +707,7 @@ class ServiceBusManagementSerializerTest {
             .setUpdated(OffsetDateTime.parse("2020-08-28T14:59:16Z"));
 
         // Act
-        final RuleDescriptionFeedImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionFeedImpl.class);
+        final RuleDescriptionFeedImpl actual = deserialize(contents, RuleDescriptionFeedImpl::fromXml);
 
         // Assert
         assertNotNull(actual);
@@ -714,7 +726,7 @@ class ServiceBusManagementSerializerTest {
     }
 
     @Test
-    void deserializeRuleEntry() throws IOException {
+    void deserializeRuleEntry() {
         // Arrange
         final String contents = getContents("CreateRuleEntry.xml");
 
@@ -728,14 +740,14 @@ class ServiceBusManagementSerializerTest {
         final RuleDescriptionEntryImpl expected = new RuleDescriptionEntryImpl().setContent(content);
 
         // Act
-        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = deserialize(contents, RuleDescriptionEntryImpl::fromXml);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
     }
 
     @Test
-    void deserializeRuleEntryResponse() throws IOException {
+    void deserializeRuleEntryResponse() {
         // Arrange
         final String contents = getContents("CreateRuleEntryResponse.xml");
 
@@ -757,7 +769,7 @@ class ServiceBusManagementSerializerTest {
             .setContent(content);
 
         // Act
-        final RuleDescriptionEntryImpl actual = SERIALIZER.deserialize(contents, RuleDescriptionEntryImpl.class);
+        final RuleDescriptionEntryImpl actual = deserialize(contents, RuleDescriptionEntryImpl::fromXml);
 
         // Assert
         assertRuleEntryEquals(expected, actual);
@@ -908,8 +920,8 @@ class ServiceBusManagementSerializerTest {
     }
 
     private static void assertParameters(List<KeyValueImpl> expected, List<KeyValueImpl> actual) {
-        if (expected == null) {
-            assertNull(actual);
+        if (CoreUtils.isNullOrEmpty(expected)) {
+            assertTrue(CoreUtils.isNullOrEmpty(actual));
             return;
         }
 

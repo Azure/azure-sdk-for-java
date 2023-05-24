@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -148,6 +149,7 @@ public final class RuleDescriptionImpl implements XmlSerializable<RuleDescriptio
      * @param xmlReader The XmlReader being read.
      * @return An instance of RuleDescription if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the RuleDescription.
      */
     public static RuleDescriptionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -157,8 +159,11 @@ public final class RuleDescriptionImpl implements XmlSerializable<RuleDescriptio
      * Reads an instance of RuleDescription from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of RuleDescription if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the RuleDescription.
      */
     public static RuleDescriptionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "RuleDescription" : rootElementName;
@@ -184,7 +189,7 @@ public final class RuleDescriptionImpl implements XmlSerializable<RuleDescriptio
                         } else if ("CreatedAt".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            createdAt = reader.getNullableElement(OffsetDateTime::parse);
+                            createdAt = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("Name".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {

@@ -184,6 +184,7 @@ public final class MessageCountDetailsImpl implements XmlSerializable<MessageCou
      * @param xmlReader The XmlReader being read.
      * @return An instance of MessageCountDetails if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the MessageCountDetails.
      */
     public static MessageCountDetailsImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -193,8 +194,11 @@ public final class MessageCountDetailsImpl implements XmlSerializable<MessageCou
      * Reads an instance of MessageCountDetails from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of MessageCountDetails if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the MessageCountDetails.
      */
     public static MessageCountDetailsImpl fromXml(XmlReader xmlReader, String rootElementName)
             throws XMLStreamException {

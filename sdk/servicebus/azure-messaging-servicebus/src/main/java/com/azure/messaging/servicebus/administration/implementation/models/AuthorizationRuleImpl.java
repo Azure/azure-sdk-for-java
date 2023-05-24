@@ -5,6 +5,7 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
@@ -350,6 +351,7 @@ public final class AuthorizationRuleImpl implements XmlSerializable<Authorizatio
      * @param xmlReader The XmlReader being read.
      * @return An instance of AuthorizationRule if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the AuthorizationRule.
      */
     public static AuthorizationRuleImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -359,8 +361,11 @@ public final class AuthorizationRuleImpl implements XmlSerializable<Authorizatio
      * Reads an instance of AuthorizationRule from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of AuthorizationRule if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the AuthorizationRule.
      */
     public static AuthorizationRuleImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "AuthorizationRule" : rootElementName;
@@ -394,11 +399,11 @@ public final class AuthorizationRuleImpl implements XmlSerializable<Authorizatio
                         } else if ("CreatedTime".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            createdTime = reader.getNullableElement(OffsetDateTime::parse);
+                            createdTime = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("ModifiedTime".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {
-                            modifiedTime = reader.getNullableElement(OffsetDateTime::parse);
+                            modifiedTime = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("KeyName".equals(elementName.getLocalPart())
                                 && "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect"
                                         .equals(elementName.getNamespaceURI())) {

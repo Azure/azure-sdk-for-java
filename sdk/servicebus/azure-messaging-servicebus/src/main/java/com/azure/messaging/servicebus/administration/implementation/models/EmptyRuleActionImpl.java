@@ -44,6 +44,7 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
      * @return An instance of EmptyRuleAction if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     * @throws XMLStreamException If an error occurs while reading the EmptyRuleAction.
      */
     public static EmptyRuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -53,9 +54,12 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
      * Reads an instance of EmptyRuleAction from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of EmptyRuleAction if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     * @throws XMLStreamException If an error occurs while reading the EmptyRuleAction.
      */
     public static EmptyRuleActionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;

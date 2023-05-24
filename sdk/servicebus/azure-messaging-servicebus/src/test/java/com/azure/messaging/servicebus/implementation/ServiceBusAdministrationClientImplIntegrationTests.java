@@ -118,10 +118,10 @@ class ServiceBusAdministrationClientImplIntegrationTests extends TestBase {
         StepVerifier.create(entityClient.putWithResponseAsync(queueName, createEntity, null, Context.NONE))
             .assertNext(response -> {
                 Object body = response.getValue();
-                QueueDescriptionImpl deserialize = null;
+                QueueDescriptionEntryImpl deserialize = null;
                 try {
                     deserialize = new ServiceBusManagementSerializer()
-                        .deserialize(String.valueOf(body), QueueDescriptionImpl.class);
+                        .deserialize(String.valueOf(body), QueueDescriptionEntryImpl.class);
                 } catch (IOException e) {
                     fail("An exception was thrown. " + e);
                 }

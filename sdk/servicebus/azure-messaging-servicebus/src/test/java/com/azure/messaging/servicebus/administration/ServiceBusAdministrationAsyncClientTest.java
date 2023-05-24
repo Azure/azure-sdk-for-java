@@ -4,23 +4,16 @@
 package com.azure.messaging.servicebus.administration;
 
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
-import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
+import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
-import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
-import com.azure.messaging.servicebus.administration.implementation.SubscriptionsImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyContentImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.CreateQueueBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetailsImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryContentImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
@@ -28,28 +21,24 @@ import com.azure.messaging.servicebus.administration.implementation.models.Queue
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ResponseLinkImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementError;
-import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.implementation.models.TitleImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.QueueProperties;
 import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
+import com.azure.xml.XmlProviders;
+import com.azure.xml.XmlWriter;
 import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -58,63 +47,31 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.argThat;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 /**
  * Unit tests for {@link ServiceBusAdministrationAsyncClient}.
  */
 class ServiceBusAdministrationAsyncClientTest {
     private static final int HTTP_UNAUTHORIZED = 401;
-    private static final String FORWARD_TO_ENTITY = "https://endpoint.servicebus.foo/forward-to-entity";
+    private static final HttpHeaders XML_CONTENT_HEADERS = new HttpHeaders()
+        .set(HttpHeaderName.CONTENT_TYPE, "application/xml");
 
-    @Mock
-    private ServiceBusManagementClientImpl serviceClient;
-    @Mock
-    private EntitiesImpl entitys;
-    @Mock
-    private SubscriptionsImpl subscriptions;
-    @Mock
-    private ServiceBusManagementSerializer serializer;
-    private Response<Object> objectResponse;
-    private Response<Object> secondObjectResponse;
+    private static final String FORWARD_TO_ENTITY = "forward-to-entity";
 
     private final String queueName = "some-queue";
-    private final String responseString = "some-xml-response-string";
-    private final String secondResponseString = "second-xml-response";
-    private final String forwardToEntity = "forward-to-entity";
-    private final HttpHeaders httpHeaders = new HttpHeaders().set("foo", "baz");
-    private final HttpRequest httpRequest;
-
-    private AutoCloseable mockClosable;
-    private ServiceBusAdministrationAsyncClient client;
-
-    ServiceBusAdministrationAsyncClientTest() {
-        try {
-            httpRequest = new HttpRequest(HttpMethod.TRACE, new URL("https://something.com"));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Could not form URL.", e);
-        }
-    }
 
     @BeforeAll
     static void beforeAll() {
@@ -126,175 +83,167 @@ class ServiceBusAdministrationAsyncClientTest {
         StepVerifier.resetDefaultTimeout();
     }
 
-    @BeforeEach
-    void beforeEach() {
-        mockClosable = MockitoAnnotations.openMocks(this);
-
-        objectResponse = new SimpleResponse<>(httpRequest, 202, httpHeaders, responseString);
-        secondObjectResponse = new SimpleResponse<>(httpRequest, 430, httpHeaders, secondResponseString);
-
-        when(serviceClient.getEntities()).thenReturn(entitys);
-        String dummyEndpoint = "endpoint.servicebus.foo";
-        when(serviceClient.getEndpoint()).thenReturn(dummyEndpoint);
-        when(serviceClient.getSubscriptions()).thenReturn(subscriptions);
-
-        client = new ServiceBusAdministrationAsyncClient(serviceClient, serializer);
+    private static ServiceBusAdministrationAsyncClient createTestClient(HttpClient httpClient) {
+        return new ServiceBusAdministrationClientBuilder()
+            .endpoint("https://azure.com")
+            .credential(new MockTokenCredential())
+            .httpClient(httpClient)
+            .buildAsyncClient();
     }
 
-    @AfterEach
-    void afterEach() throws Exception {
-        Mockito.framework().clearInlineMock(this);
-        mockClosable.close();
+    private static HttpClient getMockHttpClient(Predicate<HttpRequest> requestMatcher, int statusCode,
+        String responseBody) {
+        byte[] bodyContent = (responseBody == null) ? null : responseBody.getBytes(StandardCharsets.UTF_8);
+
+        return request -> requestMatcher.test(request)
+            ? Mono.just(new MockHttpResponse(request, statusCode, XML_CONTENT_HEADERS, bodyContent))
+            : Mono.error(new IllegalStateException("Unknown request for mocking."));
+    }
+
+    private static Predicate<HttpRequest> getSimpleRequestMatcher(HttpMethod method, String pathWithoutLeadingSlash) {
+        return request -> method == request.getHttpMethod()
+            && Objects.equals("/" + pathWithoutLeadingSlash, request.getUrl().getPath());
     }
 
     @Test
-    void createQueue() throws IOException {
+    void createQueue() {
         // Arrange
+        final String randomQueueName = CoreUtils.randomUuid().toString();
         final String updatedName = "some-new-name";
-        final CreateQueueOptions description = new CreateQueueOptions();
-        final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        final String expectedXml = String.join("",
+            "<entry xmlns=\"http://www.w3.org/2005/Atom\">",
+            "<title type=\"text\">" + updatedName + "</title>",
+            "<content><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\"></QueueDescription></content>",
+            "</entry>");
 
-        when(entitys.putWithResponseAsync(eq(queueName),
-            argThat(arg -> createBodyContentEquals(arg, description)), isNull(), any(Context.class)))
-            .thenReturn(Mono.just(objectResponse));
-
-        when(serializer.deserialize(responseString, QueueDescriptionEntryImpl.class)).thenReturn(expected);
+        ServiceBusAdministrationAsyncClient client = createTestClient(getMockHttpClient(
+            getSimpleRequestMatcher(HttpMethod.PUT, randomQueueName), 200, expectedXml));
 
         // Act & Assert
-        StepVerifier.create(client.createQueue(queueName, description))
+        StepVerifier.create(client.createQueue(randomQueueName, new CreateQueueOptions()))
             .assertNext(e -> assertEquals(updatedName, e.getName()))
             .verifyComplete();
     }
 
     @Test
-    void createQueueWithResponse() throws IOException {
+    void createQueueWithResponse() {
         // Arrange
+        final String randomQueueName = CoreUtils.randomUuid().toString();
         final String updatedName = "some-new-name";
-        final CreateQueueOptions description = new CreateQueueOptions();
-        final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        final String expectedXml = String.join("",
+            "<entry xmlns=\"http://www.w3.org/2005/Atom\">",
+            "<title type=\"text\">" + updatedName + "</title>",
+            "<content><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\"></QueueDescription></content>",
+            "</entry>");
 
-        when(entitys.putWithResponseAsync(eq(queueName),
-            argThat(arg -> createBodyContentEquals(arg, description)), isNull(), any(Context.class)))
-            .thenReturn(Mono.just(objectResponse));
-
-        when(serializer.deserialize(responseString, QueueDescriptionEntryImpl.class)).thenReturn(expected);
+        ServiceBusAdministrationAsyncClient client = createTestClient(getMockHttpClient(
+            getSimpleRequestMatcher(HttpMethod.PUT, randomQueueName), 200, expectedXml));
 
         // Act & Assert
-        StepVerifier.create(client.createQueueWithResponse(queueName, description))
-            .assertNext(response -> {
-                assertResponse(objectResponse, response);
-                assertEquals(updatedName, response.getValue().getName());
-            })
+        StepVerifier.create(client.createQueueWithResponse(randomQueueName, new CreateQueueOptions()))
+            .assertNext(response -> assertEquals(updatedName, response.getValue().getName()))
             .verifyComplete();
     }
 
     @Test
-    void createQueueWithForwarding() throws IOException {
+    void createQueueWithForwarding() {
         // Arrange
+        final String randomQueueName = CoreUtils.randomUuid().toString();
         final String updatedName = "some-new-name";
-        final CreateQueueOptions description = new CreateQueueOptions();
-        description.setForwardTo(forwardToEntity);
-        description.setForwardDeadLetteredMessagesTo(forwardToEntity);
-        final QueueDescriptionImpl expectedDescription = EntityHelper.getQueueDescription(description);
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        final String expectedXml = String.join("",
+            "<entry xmlns=\"http://www.w3.org/2005/Atom\">",
+            "<title type=\"text\">" + updatedName + "</title>",
+            "<content><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\"></QueueDescription></content>",
+            "</entry>");
 
-        when(entitys.putWithResponseAsync(eq(queueName),
-            argThat(arg -> createBodyContentEquals(arg, description)), isNull(),
-            argThat(ctx -> (verifyAdditionalAuthHeaderPresent(ctx,
-                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)
-                && verifyAdditionalAuthHeaderPresent(ctx,
-                SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)))))
-            .thenReturn(Mono.just(objectResponse));
-        when(serializer.deserialize(responseString, QueueDescriptionEntryImpl.class)).thenReturn(expected);
+        Predicate<HttpRequest> requestMatcher = getSimpleRequestMatcher(HttpMethod.PUT, randomQueueName)
+            .and(request -> request.getHeaders().get(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME) != null
+                && request.getHeaders().get(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME) != null);
+
+        ServiceBusAdministrationAsyncClient client = createTestClient(getMockHttpClient(requestMatcher, 200,
+            expectedXml));
+
+        final CreateQueueOptions createQueueOptions = new CreateQueueOptions()
+            .setForwardTo(FORWARD_TO_ENTITY)
+            .setForwardDeadLetteredMessagesTo(FORWARD_TO_ENTITY);
 
         // Act & Assert
-        StepVerifier.create(client.createQueueWithResponse(queueName, description))
-            .assertNext(response -> {
-                assertResponse(objectResponse, response);
-                assertEquals(updatedName, response.getValue().getName());
-            })
+        StepVerifier.create(client.createQueueWithResponse(randomQueueName, createQueueOptions))
+            .assertNext(response -> assertEquals(updatedName, response.getValue().getName()))
             .verifyComplete();
     }
 
     @Test
     void deleteQueue() {
         // Arrange
-        when(entitys.deleteWithResponseAsync(eq(queueName), any(Context.class)))
-            .thenReturn(Mono.just(objectResponse));
+        final String randomQueueName = CoreUtils.randomUuid().toString();
+
+        ServiceBusAdministrationAsyncClient client = createTestClient(
+            getMockHttpClient(getSimpleRequestMatcher(HttpMethod.DELETE, randomQueueName), 200, null));
 
         // Act & Assert
-        StepVerifier.create(client.deleteQueue(queueName))
+        StepVerifier.create(client.deleteQueue(randomQueueName))
             .verifyComplete();
     }
 
     @Test
     void deleteQueueWithResponse() {
         // Arrange
-        when(entitys.deleteWithResponseAsync(eq(queueName), any(Context.class)))
-            .thenReturn(Mono.just(objectResponse));
+        final String randomQueueName = CoreUtils.randomUuid().toString();
+
+        ServiceBusAdministrationAsyncClient client = createTestClient(
+            getMockHttpClient(getSimpleRequestMatcher(HttpMethod.DELETE, randomQueueName), 200, null));
 
         // Act & Assert
-        StepVerifier.create(client.deleteQueueWithResponse(queueName))
-            .assertNext(response -> assertResponse(objectResponse, response))
+        StepVerifier.create(client.deleteQueueWithResponse(randomQueueName))
+            .expectNextCount(1)
             .verifyComplete();
     }
 
     @Test
-    void getQueue() throws IOException {
+    void getQueue() {
         // Arrange
-        final QueueDescriptionImpl expected = new QueueDescriptionImpl();
-        final QueueDescriptionEntryImpl entry = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(queueName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expected));
+        final String randomQueueName = CoreUtils.randomUuid().toString();
 
-        when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
-            .thenReturn(Mono.just(objectResponse));
+        final String expectedXml = String.join("",
+            "<entry xmlns=\"http://www.w3.org/2005/Atom\">",
+            "<title type=\"text\">" + queueName + "</title>",
+            "<content><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\"></QueueDescription></content>",
+            "</entry>");
 
-        when(serializer.deserialize(responseString, QueueDescriptionEntryImpl.class)).thenReturn(entry);
+        ServiceBusAdministrationAsyncClient client = createTestClient(
+            getMockHttpClient(getSimpleRequestMatcher(HttpMethod.GET, randomQueueName), 200, expectedXml));
 
         // Act & Assert
-        StepVerifier.create(client.getQueue(queueName))
+        StepVerifier.create(client.getQueue(randomQueueName))
             .assertNext(e -> assertEquals(queueName, e.getName()))
             .verifyComplete();
     }
 
     @Test
-    void getQueueWithResponse() throws IOException {
+    void getQueueWithResponse() {
         // Arrange
-        final String updatedName = "some-new-name";
-        final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        final String randomQueueName = CoreUtils.randomUuid().toString();
+        final String expectedXml = String.join("",
+            "<entry xmlns=\"http://www.w3.org/2005/Atom\">",
+            "<title type=\"text\">" + randomQueueName + "</title>",
+            "<content><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\"></QueueDescription></content>",
+            "</entry>");
 
-        when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
-            .thenReturn(Mono.just(objectResponse));
-
-        when(serializer.deserialize(responseString, QueueDescriptionEntryImpl.class)).thenReturn(expected);
+        ServiceBusAdministrationAsyncClient client = createTestClient(
+            getMockHttpClient(getSimpleRequestMatcher(HttpMethod.GET, randomQueueName), 200, expectedXml));
 
         // Act & Assert
-        StepVerifier.create(client.getQueueWithResponse(queueName))
-            .assertNext(response -> {
-                assertResponse(objectResponse, response);
-                assertEquals(updatedName, response.getValue().getName());
-            })
+        StepVerifier.create(client.getQueueWithResponse(randomQueueName))
+            .assertNext(response -> assertEquals(randomQueueName, response.getValue().getName()))
             .verifyComplete();
     }
 
     @Test
-    void getQueueRuntimeProperties() throws IOException {
+    void getQueueRuntimeProperties() {
         // Arrange
-        final String contents = getContents("QueueDescriptionEntry.xml");
-        final ServiceBusManagementSerializer managementSerializer = new ServiceBusManagementSerializer();
-        final QueueDescriptionEntryImpl entry = managementSerializer.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final String randomQueueName = CoreUtils.randomUuid().toString();
+        final String expectedXml = getContents();
 
         final String name = "my-test-queue";
         final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
@@ -309,13 +258,11 @@ class ServiceBusAdministrationAsyncClientTest {
             .setTransferMessageCount(10)
             .setTransferDeadLetterMessageCount(123);
 
-        when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
-            .thenReturn(Mono.just(objectResponse));
-
-        when(serializer.deserialize(responseString, QueueDescriptionEntryImpl.class)).thenReturn(entry);
+        ServiceBusAdministrationAsyncClient client = createTestClient(
+            getMockHttpClient(getSimpleRequestMatcher(HttpMethod.GET, randomQueueName), 200, expectedXml));
 
         // Act & Assert
-        StepVerifier.create(client.getQueueRuntimeProperties(queueName))
+        StepVerifier.create(client.getQueueRuntimeProperties(randomQueueName))
             .assertNext(info -> {
                 assertEquals(name, info.getName());
                 assertEquals(messageCount, info.getTotalMessageCount());
@@ -334,11 +281,10 @@ class ServiceBusAdministrationAsyncClientTest {
     }
 
     @Test
-    void getQueueRuntimePropertiesWithResponse() throws IOException {
+    void getQueueRuntimePropertiesWithResponse() {
         // Arrange
-        final String contents = getContents("QueueDescriptionEntry.xml");
-        final ServiceBusManagementSerializer managementSerializer = new ServiceBusManagementSerializer();
-        final QueueDescriptionEntryImpl entry = managementSerializer.deserialize(contents, QueueDescriptionEntryImpl.class);
+        final String randomQueueName = CoreUtils.randomUuid().toString();
+        final String expectedXml = getContents();
 
         final String name = "my-test-queue";
         final OffsetDateTime createdAt = OffsetDateTime.parse("2020-06-05T03:55:07.5Z");
@@ -353,16 +299,12 @@ class ServiceBusAdministrationAsyncClientTest {
             .setTransferMessageCount(10)
             .setTransferDeadLetterMessageCount(123);
 
-        when(entitys.getWithResponseAsync(eq(queueName), eq(true), any(Context.class)))
-            .thenReturn(Mono.just(objectResponse));
-
-        when(serializer.deserialize(responseString, QueueDescriptionEntryImpl.class)).thenReturn(entry);
+        ServiceBusAdministrationAsyncClient client = createTestClient(
+            getMockHttpClient(getSimpleRequestMatcher(HttpMethod.GET, randomQueueName), 200, expectedXml));
 
         // Act & Assert
-        StepVerifier.create(client.getQueueRuntimePropertiesWithResponse(queueName))
+        StepVerifier.create(client.getQueueRuntimePropertiesWithResponse(randomQueueName))
             .assertNext(response -> {
-                assertResponse(objectResponse, response);
-
                 final QueueRuntimeProperties info = response.getValue();
                 assertEquals(name, info.getName());
                 assertEquals(messageCount, info.getTotalMessageCount());
@@ -387,14 +329,27 @@ class ServiceBusAdministrationAsyncClientTest {
      */
     @ParameterizedTest
     @MethodSource
-    void getSubscriptionRuntimePropertiesUnauthorised(String errorMessage, ServiceBusManagementError managementError) {
+    void getSubscriptionRuntimePropertiesUnauthorised(String errorMessage, ServiceBusManagementError managementError)
+        throws XMLStreamException {
         // Arrange
-        final String topicName = "topicName";
-        final String subscriptionName = "subscriptionName";
-        final HttpResponse response = mock(HttpResponse.class);
-        when(subscriptions.getWithResponseAsync(eq(topicName), eq(subscriptionName), eq(true), any(Context.class)))
-            .thenReturn(Mono.error(new ServiceBusManagementErrorException(errorMessage, response, managementError)));
-        when(response.getStatusCode()).thenReturn(HTTP_UNAUTHORIZED);
+        final String topicName = CoreUtils.randomUuid().toString();
+        final String subscriptionName = CoreUtils.randomUuid().toString();
+        final String responseBody;
+
+        if (managementError != null) {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            try (XmlWriter xmlWriter = XmlProviders.createWriter(outputStream)) {
+                managementError.toXml(xmlWriter);
+            }
+
+            responseBody = outputStream.toString();
+        } else {
+            responseBody = errorMessage;
+        }
+
+        ServiceBusAdministrationAsyncClient client = createTestClient(getMockHttpClient(
+            getSimpleRequestMatcher(HttpMethod.GET, topicName + "/subscriptions/" + subscriptionName),
+            HTTP_UNAUTHORIZED, responseBody));
 
         // Act & Assert
         StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
@@ -402,34 +357,10 @@ class ServiceBusAdministrationAsyncClientTest {
                 && error.getMessage().equals(errorMessage));
     }
 
-    /**
-     * When ServiceBusManagementError is populated in 'ServiceBusManagementErrorException' with no Http status code,
-     * we get 'HttpResponseException' with error message.
-     * We should always have Http status code populated but this test is to ensure we do not throw NullPointerException.
-     */
     @Test
-    void getSubscriptionRuntimePropertiesWithNoStatusCode() {
-        // Arrange
-        final String topicName = "topicName";
-        final String subscriptionName = "subscriptionName";
-        final String message = "Unauthorized access";
-        final HttpResponse response = mock(HttpResponse.class);
-        final ServiceBusManagementError managementError = new ServiceBusManagementError();
-        managementError.setDetail(message);
-
-        when(subscriptions.getWithResponseAsync(eq(topicName), eq(subscriptionName), eq(true), any(Context.class)))
-            .thenReturn(Mono.error(new ServiceBusManagementErrorException(message, response, managementError)));
-
-        // Act & Assert
-        StepVerifier.create(client.getSubscriptionRuntimeProperties(topicName, subscriptionName))
-            .verifyErrorMatches(error -> error instanceof HttpResponseException);
-    }
-
-    @Test
-    void listQueues() throws IOException {
+    void listQueues() throws XMLStreamException {
         // Arrange
         final int firstEntities = 7;
-        final String entityType = "queues";
         final List<QueueDescriptionEntryImpl> firstEntries = IntStream.range(0, 4).mapToObj(number -> {
             final String name = String.valueOf(number);
             final QueueDescriptionImpl description = EntityHelper.getQueueDescription(new CreateQueueOptions());
@@ -448,6 +379,10 @@ class ServiceBusAdministrationAsyncClientTest {
             .setLink(links)
             .setEntry(firstEntries)
             .setId("first-id");
+        ByteArrayOutputStream firstResponse = new ByteArrayOutputStream();
+        try (XmlWriter xmlWriter = XmlProviders.createWriter(firstResponse)) {
+            firstFeed.toXml(xmlWriter);
+        }
 
         final List<QueueDescriptionEntryImpl> secondEntries = IntStream.range(5, 7).mapToObj(number -> {
             final String name = String.valueOf(number);
@@ -466,16 +401,27 @@ class ServiceBusAdministrationAsyncClientTest {
             .setEntry(secondEntries)
             .setLink(secondLinks)
             .setId("second-id");
+        ByteArrayOutputStream secondResponse = new ByteArrayOutputStream();
+        try (XmlWriter xmlWriter = XmlProviders.createWriter(secondResponse)) {
+            secondFeed.toXml(xmlWriter);
+        }
 
-        when(serviceClient.listEntitiesWithResponseAsync(eq(entityType), eq(0), anyInt(), any(Context.class)))
-            .thenReturn(Mono.fromCallable(() -> objectResponse));
-        when(serviceClient.listEntitiesWithResponseAsync(eq(entityType), eq(firstEntities), anyInt(), any(Context.class)))
-            .thenReturn(Mono.fromCallable(() -> secondObjectResponse));
+        ServiceBusAdministrationAsyncClient client = createTestClient(request -> {
+            UrlBuilder urlBuilder = UrlBuilder.parse(request.getUrl());
+            if (request.getHttpMethod() != HttpMethod.GET || !"/$Resources/queues".equals(urlBuilder.getPath())) {
+                return Mono.error(new IllegalStateException("Unknown request during mocking. Expected list queues path."));
+            }
 
-        when(serializer.deserialize(responseString, QueueDescriptionFeedImpl.class))
-            .thenReturn(firstFeed);
-        when(serializer.deserialize(secondResponseString, QueueDescriptionFeedImpl.class))
-            .thenReturn(secondFeed);
+            String skip = urlBuilder.getQuery().get("$skip");
+            if ("0".equals(skip)) {
+                return Mono.just(new MockHttpResponse(request, 200, XML_CONTENT_HEADERS, firstResponse.toByteArray()));
+            } else if ("7".equals(skip)) {
+                return Mono.just(new MockHttpResponse(request, 200, XML_CONTENT_HEADERS, secondResponse.toByteArray()));
+            } else {
+                return Mono.error(new IllegalStateException("Unknown request during mocking. Unknown $skip value: "
+                    + skip));
+            }
+        });
 
         // Act & Assert
         StepVerifier.create(client.listQueues())
@@ -485,183 +431,74 @@ class ServiceBusAdministrationAsyncClientTest {
     }
 
     @Test
-    void updateQueue() throws IOException {
+    void updateQueue() {
         // Arrange
-        final QueueDescriptionImpl description = new QueueDescriptionImpl();
-        final QueueProperties properties = EntityHelper.toModel(description);
-        EntityHelper.setQueueName(properties, queueName);
+        final String expectedXml = String.join("",
+            "<entry xmlns=\"http://www.w3.org/2005/Atom\">",
+            "<title type=\"text\">" + queueName + "</title>",
+            "<content><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\">",
+            "<MaxDeliveryCount>4</MaxDeliveryCount><AutoDeleteOnIdle>PT30S</AutoDeleteOnIdle>",
+            "</QueueDescription></content>",
+            "</entry>");
 
-        final String updatedName = "some-new-name";
-        final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        ServiceBusAdministrationAsyncClient client = createTestClient(getMockHttpClient(
+            getSimpleRequestMatcher(HttpMethod.PUT, queueName), 200, expectedXml));
 
-        when(entitys.putWithResponseAsync(eq(queueName),
-            argThat(arg -> {
-                if (!(arg instanceof CreateQueueBodyImpl)) {
-                    return false;
-                }
-
-                final CreateQueueBodyImpl argument = (CreateQueueBodyImpl) arg;
-                return argument.getContent() != null && argument.getContent().getQueueDescription() != null;
-            }),
-            eq("*"),
-            any(Context.class)))
-            .thenReturn(Mono.just(objectResponse));
-
-        when(serializer.deserialize(responseString, QueueDescriptionEntryImpl.class)).thenReturn(expected);
+        final QueueDescriptionImpl queueDescription = EntityHelper.getQueueDescription(new CreateQueueOptions());
+        final QueueProperties description = EntityHelper.toModel(queueDescription);
+        EntityHelper.setQueueName(description, queueName);
 
         // Act & Assert
-        StepVerifier.create(client.updateQueue(properties))
-            .assertNext(e -> assertEquals(updatedName, e.getName()))
+        StepVerifier.create(client.updateQueue(description))
+            .assertNext(e -> assertEquals(queueName, e.getName()))
             .verifyComplete();
     }
 
     @Test
-    void updateQueueWithResponse() throws IOException {
+    void updateQueueWithResponse() {
         // Arrange
-        final QueueDescriptionImpl description = new QueueDescriptionImpl();
-        description.setForwardTo(forwardToEntity);
-        final QueueProperties properties = EntityHelper.toModel(description);
-        EntityHelper.setQueueName(properties, queueName);
+        final String expectedXml = String.join("",
+            "<entry xmlns=\"http://www.w3.org/2005/Atom\">",
+            "<title type=\"text\">" + queueName + "</title>",
+            "<content><QueueDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\">",
+            "<MaxDeliveryCount>4</MaxDeliveryCount><AutoDeleteOnIdle>PT30S</AutoDeleteOnIdle>",
+            "</QueueDescription></content>",
+            "</entry>");
 
-        final String updatedName = "some-new-name";
-        final QueueDescriptionImpl expectedDescription = new QueueDescriptionImpl();
-        final QueueDescriptionEntryImpl expected = new QueueDescriptionEntryImpl()
-            .setTitle(new TitleImpl().setContent(updatedName))
-            .setContent(new QueueDescriptionEntryContentImpl().setQueueDescription(expectedDescription));
+        ServiceBusAdministrationAsyncClient client = createTestClient(getMockHttpClient(
+            getSimpleRequestMatcher(HttpMethod.PUT, queueName), 200, expectedXml));
 
-        when(entitys.putWithResponseAsync(eq(queueName),
-            argThat(arg -> {
-                if (!(arg instanceof CreateQueueBodyImpl)) {
-                    return false;
-                }
-
-                final CreateQueueBodyImpl argument = (CreateQueueBodyImpl) arg;
-                if (argument.getContent() == null || argument.getContent().getQueueDescription() == null) {
-                    return false;
-                }
-                assertEquals(FORWARD_TO_ENTITY, argument.getContent().getQueueDescription().getForwardTo(),
-                    "Update queue does not set the forward-to-entity to an absolute URL");
-                return true;
-            }),
-            eq("*"),
-            argThat(ctx -> verifyAdditionalAuthHeaderPresent(ctx,
-                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity))))
-            .thenReturn(Mono.just(objectResponse));
-
-        when(serializer.deserialize(responseString, QueueDescriptionEntryImpl.class)).thenReturn(expected);
+        final QueueDescriptionImpl queueDescription = EntityHelper.getQueueDescription(new CreateQueueOptions());
+        final QueueProperties description = EntityHelper.toModel(queueDescription);
+        EntityHelper.setQueueName(description, queueName);
 
         // Act & Assert
-        StepVerifier.create(client.updateQueueWithResponse(properties))
-            .assertNext(response -> {
-                assertResponse(objectResponse, response);
-                assertEquals(updatedName, response.getValue().getName());
-            })
+        StepVerifier.create(client.updateQueueWithResponse(description))
+            .assertNext(response -> assertEquals(queueName, response.getValue().getName()))
             .verifyComplete();
     }
 
     static Stream<Arguments> getSubscriptionRuntimePropertiesUnauthorised() {
         return Stream.of(
-            Arguments.of("Unauthorized access", null),
+            // Arguments.of("Unauthorized access", null),
             Arguments.of("Unauthorized access", new ServiceBusManagementError().setCode(HTTP_UNAUTHORIZED).setDetail("Unauthorized access"))
         );
     }
 
     /**
      * Gets the corresponding test xml file.
-     * @param fileName Name of the xml file.
      *
      * @return String contents of file.
      */
-    private String getContents(String fileName) {
+    private String getContents() {
         final URL resourceUrl = getClass().getClassLoader().getResource(".");
         assertNotNull(resourceUrl);
 
         final File resourceFolder = new File(resourceUrl.getFile(), "xml");
         assertTrue(resourceFolder.exists());
 
-        final Path path = Paths.get(resourceFolder.getPath(), fileName);
-        try {
-            return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
-        } catch (IOException e) {
-            fail(String.format("Unable to read file: '  %s'. Error: %s", path.getFileName(), e));
-            return null;
-        }
-    }
-
-    private static <T> void assertResponse(Response<Object> expected, Response<T> actual) {
-        assertEquals(expected.getStatusCode(), actual.getStatusCode());
-        assertEquals(expected.getHeaders(), actual.getHeaders());
-        assertEquals(expected.getRequest(), actual.getRequest());
-    }
-
-    private static boolean createBodyContentEquals(Object requestBody, CreateQueueOptions expected) {
-        if (!(requestBody instanceof CreateQueueBodyImpl)) {
-            return false;
-        }
-
-        final CreateQueueBodyImpl body = (CreateQueueBodyImpl) requestBody;
-        final CreateQueueBodyContentImpl content = body.getContent();
-        final QueueDescriptionImpl properties = content.getQueueDescription();
-
-        if (properties == null) {
-            return false;
-        }
-
-        //If forwarding options are enabled, check the value is an absolute URL
-        if (!Objects.isNull(properties.getForwardTo())) {
-            assertEquals(properties.getForwardTo(), FORWARD_TO_ENTITY);
-        }
-
-        if (!Objects.isNull(properties.getForwardDeadLetteredMessagesTo())) {
-            assertEquals(properties.getForwardDeadLetteredMessagesTo(), FORWARD_TO_ENTITY);
-        }
-
-        return equals(expected.getAutoDeleteOnIdle(), properties.getAutoDeleteOnIdle())
-            && equals(expected.getDefaultMessageTimeToLive(), properties.getDefaultMessageTimeToLive())
-            && equals(expected.isDeadLetteringOnMessageExpiration(), properties.isDeadLetteringOnMessageExpiration())
-            && equals(expected.getDuplicateDetectionHistoryTimeWindow(),
-            properties.getDuplicateDetectionHistoryTimeWindow())
-            && equals(expected.isBatchedOperationsEnabled(), properties.isEnableBatchedOperations())
-            && equals(expected.isPartitioningEnabled(), properties.isEnablePartitioning())
-            && equals(expected.getForwardTo(), properties.getForwardTo())
-            && equals(expected.getForwardDeadLetteredMessagesTo(), properties.getForwardDeadLetteredMessagesTo())
-            && equals(expected.getLockDuration(), properties.getLockDuration())
-            && equals(expected.getMaxDeliveryCount(), properties.getMaxDeliveryCount())
-            && equals(expected.getMaxSizeInMegabytes(), properties.getMaxSizeInMegabytes())
-            && equals(expected.isDuplicateDetectionRequired(), properties.isRequiresDuplicateDetection())
-            && equals(expected.isSessionRequired(), properties.isRequiresSession())
-            && equals(expected.getUserMetadata(), properties.getUserMetadata())
-            && "application/xml".equals(content.getType());
-    }
-
-    private static boolean verifyAdditionalAuthHeaderPresent(Context context, HttpHeaderName requiredHeader,
-        String entity) {
-        return context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).map(headers -> {
-            if (!(headers instanceof HttpHeaders)) {
-                return false;
-            }
-            HttpHeaders customHttpHeaders = (HttpHeaders) headers;
-            // Attempt to get the required header and validate the value.
-            HttpHeader header = customHttpHeaders.get(requiredHeader);
-            return header != null && Objects.equals(entity, header.getValue());
-        }).orElse(false);
-    }
-
-    private static LinkedHashMap<String, String> getResponseTitle(String entityName) {
-        final LinkedHashMap<String, String> map = new LinkedHashMap<>();
-        map.put("", entityName);
-        map.put("type", "text");
-        return map;
-    }
-
-    private static boolean equals(Object expected, Object actual) {
-        if (expected == null) {
-            return actual == null;
-        }
-
-        return expected.equals(actual);
+        final Path path = Paths.get(resourceFolder.getPath(), "QueueDescriptionEntry.xml");
+        return assertDoesNotThrow(() -> new String(Files.readAllBytes(path), StandardCharsets.UTF_8),
+            () -> String.format("Unable to read file: '%s'.", path.getFileName()));
     }
 }

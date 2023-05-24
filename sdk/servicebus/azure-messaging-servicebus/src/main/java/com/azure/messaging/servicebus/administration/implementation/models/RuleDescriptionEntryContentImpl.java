@@ -91,6 +91,7 @@ public final class RuleDescriptionEntryContentImpl implements XmlSerializable<Ru
      * @return An instance of RuleDescriptionEntryContent if the XmlReader was pointing to an instance of it, or null if
      *     it was pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the RuleDescriptionEntryContent.
      */
     public static RuleDescriptionEntryContentImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -100,9 +101,12 @@ public final class RuleDescriptionEntryContentImpl implements XmlSerializable<Ru
      * Reads an instance of RuleDescriptionEntryContent from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of RuleDescriptionEntryContent if the XmlReader was pointing to an instance of it, or null if
      *     it was pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the RuleDescriptionEntryContent.
      */
     public static RuleDescriptionEntryContentImpl fromXml(XmlReader xmlReader, String rootElementName)
             throws XMLStreamException {

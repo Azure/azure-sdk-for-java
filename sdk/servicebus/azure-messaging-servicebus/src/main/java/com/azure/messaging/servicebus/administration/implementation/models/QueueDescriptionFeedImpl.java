@@ -6,6 +6,7 @@ package com.azure.messaging.servicebus.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
+import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -181,6 +182,7 @@ public final class QueueDescriptionFeedImpl implements XmlSerializable<QueueDesc
      * @param xmlReader The XmlReader being read.
      * @return An instance of QueueDescriptionFeed if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the QueueDescriptionFeed.
      */
     public static QueueDescriptionFeedImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -190,8 +192,11 @@ public final class QueueDescriptionFeedImpl implements XmlSerializable<QueueDesc
      * Reads an instance of QueueDescriptionFeed from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of QueueDescriptionFeed if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
+     * @throws XMLStreamException If an error occurs while reading the QueueDescriptionFeed.
      */
     public static QueueDescriptionFeedImpl fromXml(XmlReader xmlReader, String rootElementName)
             throws XMLStreamException {
@@ -216,7 +221,7 @@ public final class QueueDescriptionFeedImpl implements XmlSerializable<QueueDesc
                             title = TitleImpl.fromXml(reader, "title");
                         } else if ("updated".equals(elementName.getLocalPart())
                                 && "http://www.w3.org/2005/Atom".equals(elementName.getNamespaceURI())) {
-                            updated = reader.getNullableElement(OffsetDateTime::parse);
+                            updated = reader.getNullableElement(EntityHelper::parseOffsetDateTimeBest);
                         } else if ("link".equals(elementName.getLocalPart())) {
                             if (link == null) {
                                 link = new LinkedList<>();

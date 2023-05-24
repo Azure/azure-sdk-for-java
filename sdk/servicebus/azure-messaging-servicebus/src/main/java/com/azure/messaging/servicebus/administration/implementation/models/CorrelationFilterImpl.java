@@ -10,11 +10,10 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** The CorrelationFilter model. */
 @Fluent
@@ -353,6 +352,7 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
      * @return An instance of CorrelationFilter if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     * @throws XMLStreamException If an error occurs while reading the CorrelationFilter.
      */
     public static CorrelationFilterImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
@@ -362,9 +362,12 @@ public final class CorrelationFilterImpl extends RuleFilterImpl {
      * Reads an instance of CorrelationFilter from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
+     *     cases where the model can deserialize from different root elementnames.
      * @return An instance of CorrelationFilter if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
+     * @throws XMLStreamException If an error occurs while reading the CorrelationFilter.
      */
     public static CorrelationFilterImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Filter" : rootElementName;

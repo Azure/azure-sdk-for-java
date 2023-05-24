@@ -168,3 +168,28 @@ directive:
       $.SqlRuleAction["x-ms-discriminator-value"] = "SqlRuleAction";
       $.EmptyRuleAction["x-ms-discriminator-value"] = "EmptyRuleAction";
 ```
+
+### Fix ServiceBusManagementError XML Definition
+
+`ServiceBusManagementError`'s Swagger definition was missing a root `xml` definition of `name: "Error"`.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.ServiceBusManagementError
+    transform: >
+      $.xml = { "name": "Error" };
+```
+
+### Remove Invalid Prefixes
+
+`QueueDescriptionEntry` and `TopicDescriptionEntry` define a prefix without a namespace.
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      delete $.QueueDescriptionEntry.properties.base.xml.prefix;
+      delete $.TopicDescriptionEntry.properties.base.xml.prefix;
+```

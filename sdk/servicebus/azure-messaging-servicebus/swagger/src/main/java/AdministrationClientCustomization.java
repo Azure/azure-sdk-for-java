@@ -3,25 +3,19 @@
 
 import com.azure.autorest.customization.ClassCustomization;
 import com.azure.autorest.customization.Customization;
+import com.azure.autorest.customization.Editor;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import com.github.javaparser.ast.Modifier;
-import com.github.javaparser.ast.NodeList;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
-import com.github.javaparser.ast.body.ConstructorDeclaration;
 import com.github.javaparser.ast.body.FieldDeclaration;
 import com.github.javaparser.ast.expr.AnnotationExpr;
-import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NormalAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
-import com.github.javaparser.ast.nodeTypes.NodeWithSimpleName;
 import org.slf4j.Logger;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * Customization class for Administration client for Service Bus
@@ -72,7 +66,8 @@ public class AdministrationClientCustomization extends Customization {
                 classCustomization = addAuthorizationRuleXmlNamespace(classCustomization, logger);
             }
 
-            addImplementationToClassName(classCustomization, logger);
+            classCustomization = addImplementationToClassName(classCustomization, logger);
+            replaceOffsetDateTimeParse(classCustomization);
         }
 
         // Change getCreatedTime modifier on NamespaceProperties.
@@ -90,6 +85,22 @@ public class AdministrationClientCustomization extends Customization {
         logger.info("Rename: '{}' -> '{}'", current, renamed);
 
         return classCustomization.rename(renamed);
+    }
+
+    private ClassCustomization replaceOffsetDateTimeParse(ClassCustomization classCustomization) {
+        Editor editor = classCustomization.getEditor();
+        String classFileName = classCustomization.getFileName();
+
+        String originalContent = editor.getFileContent(classFileName);
+        String updatedContent = originalContent.replaceAll("OffsetDateTime::parse",
+            "EntityHelper::parseOffsetDateTimeBest");
+
+        if (!Objects.equals(originalContent, updatedContent)) {
+            editor.replaceFile(classFileName, updatedContent);
+            classCustomization.addImports("com.azure.messaging.servicebus.administration.implementation.EntityHelper");
+        }
+
+        return classCustomization;
     }
 
     /**

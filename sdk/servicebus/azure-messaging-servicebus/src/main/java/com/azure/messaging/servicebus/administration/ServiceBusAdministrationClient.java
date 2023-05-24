@@ -18,8 +18,6 @@ import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.administration.implementation.EntityHelper;
@@ -31,13 +29,11 @@ import com.azure.messaging.servicebus.administration.implementation.models.Creat
 import com.azure.messaging.servicebus.administration.implementation.models.CreateSubscriptionBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.CreateTopicBodyImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntryImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
@@ -55,7 +51,6 @@ import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperti
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
@@ -64,20 +59,17 @@ import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUE
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.NUMBER_OF_ELEMENTS;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.QUEUES_ENTITY_TYPE;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.TOPICS_ENTITY_TYPE;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.addSupplementaryAuthHeader;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.extractPage;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getContext;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateQueueBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateSubscriptionBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getCreateTopicBody;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getQueueProperties;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getQueues;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getRulePropertiesSimpleResponse;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getRules;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptionPropertiesSimpleResponse;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getSubscriptions;
-import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopicProperties;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getTopics;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateRuleBody;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.getUpdateSubscriptionBody;
@@ -86,8 +78,6 @@ import static com.azure.messaging.servicebus.administration.implementation.Entit
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateRuleName;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateSubscriptionName;
 import static com.azure.messaging.servicebus.administration.implementation.EntityHelper.validateTopicName;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 
 /**
  * A <b>synchronous</b> client for managing a Service Bus namespace.
@@ -223,19 +213,20 @@ public final class ServiceBusAdministrationClient {
 
         final Context contextWithHeaders
             = enableSyncContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
-        final String forwardTo = getForwardToEntity(queueOptions.getForwardTo(), contextWithHeaders);
+        final String forwardTo = EntityHelper.getForwardToEntity(queueOptions.getForwardTo(), contextWithHeaders,
+            managementClient.getEndpoint(), LOGGER);
         if (forwardTo != null) {
             queueOptions.setForwardTo(forwardTo);
         }
-        final String forwardDlq
-            = getForwardDlqEntity(queueOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
+        final String forwardDlq = EntityHelper.getForwardDlqEntity(queueOptions.getForwardDeadLetteredMessagesTo(),
+            contextWithHeaders, managementClient.getEndpoint(), LOGGER);
         if (forwardDlq != null) {
             queueOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
         final CreateQueueBodyImpl createEntity =
             getCreateQueueBody(EntityHelper.getQueueDescription(queueOptions));
-        return deserializeQueue(entityClient.putWithResponse(queueName, createEntity, null,
-            contextWithHeaders));
+        return EntityHelper.deserializeQueue(
+            entityClient.putWithResponse(queueName, createEntity, null, contextWithHeaders), LOGGER);
     }
 
     /**
@@ -409,12 +400,14 @@ public final class ServiceBusAdministrationClient {
         context = context == null ? Context.NONE : context;
         final Context contextWithHeaders
             = enableSyncContext(getContext(context).addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
-        final String forwardTo = getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders);
+        final String forwardTo = EntityHelper.getForwardToEntity(subscriptionOptions.getForwardTo(), contextWithHeaders,
+            managementClient.getEndpoint(), LOGGER);
         if (forwardTo != null) {
             subscriptionOptions.setForwardTo(forwardTo);
         }
-        final String forwardDlq
-            = getForwardDlqEntity(subscriptionOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
+        final String forwardDlq = EntityHelper.getForwardDlqEntity(
+            subscriptionOptions.getForwardDeadLetteredMessagesTo(), contextWithHeaders, managementClient.getEndpoint(),
+            LOGGER);
         if (forwardDlq != null) {
             subscriptionOptions.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
@@ -531,8 +524,8 @@ public final class ServiceBusAdministrationClient {
         }
 
         final CreateTopicBodyImpl createEntity = getCreateTopicBody(EntityHelper.getTopicDescription(topicOptions));
-        return deserializeTopic(entityClient.putWithResponse(topicName, createEntity, null,
-            enableSyncContext(context)));
+        return EntityHelper.deserializeTopic(entityClient.putWithResponse(topicName, createEntity, null,
+            enableSyncContext(context)), LOGGER);
     }
 
     /**
@@ -728,8 +721,7 @@ public final class ServiceBusAdministrationClient {
     public Response<QueueProperties> getQueueWithResponse(String queueName, Context context) {
         final Response<QueueProperties> response = getQueueInternal(queueName, context);
         if (response.getValue() == null) {
-            final HttpResponse
-                notFoundResponse = new EntityHelper.EntityNotFoundHttpResponse<>(response);
+            final HttpResponse notFoundResponse = new EntityHelper.EntityNotFoundHttpResponse<>(response);
             throw LOGGER.logExceptionAsError(
                 new ResourceNotFoundException(String.format("Queue '%s' does not exist.", queueName),
                     notFoundResponse));
@@ -741,7 +733,7 @@ public final class ServiceBusAdministrationClient {
         validateQueueName(queueName);
         final Response<Object> response = entityClient.getWithResponse(queueName, true,
             enableSyncContext(context));
-        return deserializeQueue(response);
+        return EntityHelper.deserializeQueue(response, LOGGER);
     }
 
     /**
@@ -1062,7 +1054,7 @@ public final class ServiceBusAdministrationClient {
         validateTopicName(topicName);
         final Response<Object> response = entityClient.getWithResponse(topicName,
             true, enableSyncContext(context));
-        return deserializeTopic(response);
+        return EntityHelper.deserializeTopic(response, LOGGER);
     }
 
     /**
@@ -1472,12 +1464,13 @@ public final class ServiceBusAdministrationClient {
 
         final Context contextWithHeaders
             = enableSyncContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
-        final String forwardTo = getForwardToEntity(queue.getForwardTo(), contextWithHeaders);
+        final String forwardTo = EntityHelper.getForwardToEntity(queue.getForwardTo(), contextWithHeaders,
+            managementClient.getEndpoint(), LOGGER);
         if (forwardTo != null) {
             queue.setForwardTo(forwardTo);
         }
-        final String forwardDlq
-            = getForwardDlqEntity(queue.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
+        final String forwardDlq = EntityHelper.getForwardDlqEntity(queue.getForwardDeadLetteredMessagesTo(),
+            contextWithHeaders, managementClient.getEndpoint(), LOGGER);
         if (forwardDlq != null) {
             queue.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
@@ -1488,7 +1481,7 @@ public final class ServiceBusAdministrationClient {
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
         final Response<Object> response =
             entityClient.putWithResponse(queue.getName(), createEntity, "*", contextWithHeaders);
-        return deserializeQueue(response);
+        return EntityHelper.deserializeQueue(response, LOGGER);
     }
 
 
@@ -1634,12 +1627,13 @@ public final class ServiceBusAdministrationClient {
         final Context contextWithHeaders
             = enableSyncContext(context.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders()));
 
-        final String forwardTo = getForwardToEntity(subscription.getForwardTo(), contextWithHeaders);
+        final String forwardTo = EntityHelper.getForwardToEntity(subscription.getForwardTo(), contextWithHeaders,
+            managementClient.getEndpoint(), LOGGER);
         if (forwardTo != null) {
             subscription.setForwardTo(forwardTo);
         }
-        final String forwardDlq
-            = getForwardDlqEntity(subscription.getForwardDeadLetteredMessagesTo(), contextWithHeaders);
+        final String forwardDlq = EntityHelper.getForwardDlqEntity(subscription.getForwardDeadLetteredMessagesTo(),
+            contextWithHeaders, managementClient.getEndpoint(), LOGGER);
         if (forwardDlq != null) {
             subscription.setForwardDeadLetteredMessagesTo(forwardDlq);
         }
@@ -1731,53 +1725,7 @@ public final class ServiceBusAdministrationClient {
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
         final Response<Object> response = entityClient.putWithResponse(topic.getName(), createEntity, "*",
             enableSyncContext(context));
-        return deserializeTopic(response);
-    }
-
-    private Response<QueueProperties> deserializeQueue(Response<Object> response) {
-        final QueueDescriptionEntryImpl entry = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
-
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.info("entry.getContent() is null. The entity may not exist. {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent().getQueueDescription() == null) {
-            final TopicDescriptionEntryImpl entryTopic = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
-            if (entryTopic != null && entryTopic.getContent() != null
-                && entryTopic.getContent().getTopicDescription() != null) {
-                LOGGER.warning("'{}' is not a queue, it is a topic.", entryTopic.getTitle());
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    null);
-            }
-        }
-
-        final QueueProperties result = getQueueProperties(entry);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
-    }
-
-    private Response<TopicProperties> deserializeTopic(Response<Object> response) {
-        final TopicDescriptionEntryImpl entry = deserialize(response.getValue(), TopicDescriptionEntryImpl.class);
-
-        // This was an empty response (ie. 204).
-        if (entry == null) {
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent() == null) {
-            LOGGER.warning("entry.getContent() is null. There should have been content returned. Entry: {}", entry);
-            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
-        } else if (entry.getContent().getTopicDescription() == null) {
-            final QueueDescriptionEntryImpl entryQueue = deserialize(response.getValue(), QueueDescriptionEntryImpl.class);
-            if (entryQueue != null && entryQueue.getContent() != null
-                && entryQueue.getContent().getQueueDescription() != null) {
-                LOGGER.warning("'{}' is not a topic, it is a queue.", entryQueue.getTitle());
-                return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-                    null);
-            }
-        }
-
-        final TopicProperties result = getTopicProperties(entry);
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
+        return EntityHelper.deserializeTopic(response, LOGGER);
     }
 
     private static Context enableSyncContext(Context context) {
@@ -1800,48 +1748,5 @@ public final class ServiceBusAdministrationClient {
             throw LOGGER.logExceptionAsError(new RuntimeException(String.format(
                 "Exception while deserializing. Body: [%s]. Class: %s", contents, clazz), e));
         }
-    }
-
-    private String getAbsoluteUrlFromEntity(String entity) {
-        // Check if passed entity is an absolute URL
-        try {
-            URL url = new URL(entity);
-            return url.toString();
-        } catch (MalformedURLException ex) {
-            // Entity is not a URL, continue.
-        }
-        UrlBuilder urlBuilder = new UrlBuilder();
-        urlBuilder.setScheme("https");
-        urlBuilder.setHost(managementClient.getEndpoint());
-        urlBuilder.setPath(entity);
-
-        try {
-            URL url = urlBuilder.toUrl();
-            return url.toString();
-        } catch (MalformedURLException ex) {
-            // This is not expected.
-            LOGGER.error("Failed to construct URL using the endpoint:'{}' and entity:'{}'",
-                managementClient.getEndpoint(), entity);
-            LOGGER.logThrowableAsError(ex);
-        }
-        return null;
-    }
-
-    private String getForwardDlqEntity(String forwardDlqToEntity, Context contextWithHeaders) {
-        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
-            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
-                forwardDlqToEntity, contextWithHeaders);
-            return getAbsoluteUrlFromEntity(forwardDlqToEntity);
-        }
-        return null;
-    }
-
-    private String getForwardToEntity(String forwardToEntity, Context contextWithHeaders) {
-        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
-            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
-                forwardToEntity, contextWithHeaders);
-            return getAbsoluteUrlFromEntity(forwardToEntity);
-        }
-        return null;
     }
 }
