@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class OpenAIClientTest extends OpenAIClientTestBase {
+public class OpenAISyncClientTest extends OpenAIClientTestBase {
     private OpenAIClient client;
 
     private OpenAIClient getOpenAIClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
