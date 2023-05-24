@@ -3,6 +3,7 @@
 package com.azure.messaging.eventhubs.checkpointstore.jedis;
 
 import com.azure.core.exception.AzureException;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LoggingEventBuilder;
 import com.azure.core.util.serializer.JsonSerializer;
@@ -278,9 +279,9 @@ public final class JedisCheckpointStore implements CheckpointStore {
         }
 
         if (!isCheckpointValid(checkpoint)) {
-            return FluxUtils.monoError(addEventHubInformation(LOGGER.atError(), checkpoint.getFullyQualifiedNamespace(),
+            return FluxUtil.monoError(addEventHubInformation(LOGGER.atError(), checkpoint.getFullyQualifiedNamespace(),
                     checkpoint.getEventHubName(), checkpoint.getConsumerGroup())
-                    .addKeyValue(PARTITION_ID_KEY, checkpoint.getPartitionId()), 
+                    .addKeyValue(PARTITION_ID_KEY, checkpoint.getPartitionId()),
                 new IllegalArgumentException("Checkpoint is either null, or both the offset and the sequence number are null."));
         }
 
