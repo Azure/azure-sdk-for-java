@@ -134,10 +134,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         return chatMessages;
     }
 
-    static void assertCompletions(int[] index, Completions actual) {
+    static void assertCompletions(int choicesPerPrompt, Completions actual) {
+        assertCompletions(choicesPerPrompt, "stop", actual);
+    }
+
+    static void assertCompletions(int choicesPerPrompt, String expectedFinishReason, Completions actual) {
         assertNotNull(actual);
         assertInstanceOf(Completions.class, actual);
-        assertChoices(index, actual.getChoices());
+        assertChoices(choicesPerPrompt, expectedFinishReason, actual.getChoices());
         assertNotNull(actual.getUsage());
     }
 
@@ -152,18 +156,17 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         return object;
     }
 
-    static void assertChoices(int[] index, List<Choice> actual) {
-        assertEquals(index.length, actual.size());
+    static void assertChoices(int choicesPerPrompt, String expectedFinishReason, List<Choice> actual) {
+        assertEquals(choicesPerPrompt, actual.size());
         for (int i = 0; i < actual.size(); i++) {
-            assertChoice(index[i], actual.get(i));
+            assertChoice(i, expectedFinishReason, actual.get(i));
         }
     }
 
-    static void assertChoice(int index, Choice actual) {
+    static void assertChoice(int index, String expectedFinishReason, Choice actual) {
         assertNotNull(actual.getText());
         assertEquals(index, actual.getIndex());
-
-        // TODO: add more assertions for the additional properties
+        assertEquals(expectedFinishReason, actual.getFinishReason().toString());
     }
 
     static void assertChatCompletions(int[] indexArray, ChatRole[] chatRoleArray, ChatCompletions actual) {

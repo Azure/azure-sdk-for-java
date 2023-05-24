@@ -37,7 +37,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             Completions resultCompletions = client.getCompletions(deploymentId, new CompletionsOptions(prompt));
-            assertCompletions(new int[]{0}, resultCompletions);
+            assertCompletions(1, resultCompletions);
         });
     }
 
@@ -62,7 +62,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsFromSinglePromptRunner((deploymentId, prompts) -> {
             Completions completions = client.getCompletions(deploymentId, prompts);
-            assertCompletions(new int[]{0}, completions);
+            assertCompletions(1, completions);
         });
     }
 
@@ -74,7 +74,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
             Response<BinaryData> response = client.getCompletionsWithResponse(deploymentId,
                 BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions());
             Completions resultCompletions = assertResponseAndGetValue(response, Completions.class, 200);
-            assertCompletions(new int[]{0}, resultCompletions);
+            assertCompletions(1, resultCompletions);
         });
     }
 

@@ -38,7 +38,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletions(modelId, new CompletionsOptions(prompt)))
                 .assertNext(resultCompletions -> {
-                    assertCompletions(new int[]{0}, resultCompletions);
+                    assertCompletions(1, resultCompletions);
                 })
                 .verifyComplete();
         });
@@ -68,7 +68,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         getCompletionsFromSinglePromptRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletions(modelId, prompt))
                 .assertNext(resultCompletions -> {
-                    assertCompletions(new int[]{0}, resultCompletions);
+                    assertCompletions(1, resultCompletions);
                 })
                 .verifyComplete();
         });
@@ -84,7 +84,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     new RequestOptions()))
                 .assertNext(response -> {
                     Completions resultCompletions = assertResponseAndGetValue(response, Completions.class, 200);
-                    assertCompletions(new int[]{0}, resultCompletions);
+                    assertCompletions(1, resultCompletions);
                 })
                 .verifyComplete();
         });
