@@ -6,7 +6,7 @@
 
 - Added new feature, `Configuration Setting Snapshot` to the library. You can create, get,
   update(archive and recover) a snapshot, and list snapshots.
-- Added new APis to support listing configuration settings by given snapshot name and setting 
+- Added new APIs to support listing configuration settings by given snapshot name and setting 
   fields.
 
 ### Breaking Changes
