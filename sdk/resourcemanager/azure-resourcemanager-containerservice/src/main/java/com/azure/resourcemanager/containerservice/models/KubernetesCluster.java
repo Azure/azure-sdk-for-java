@@ -369,7 +369,6 @@ public interface KubernetesCluster
              * Docker bridge network.
              *
              * @param <ParentT> the stage of the network profile definition to return to after attaching this definition
-             * @deprecated The property has no effect since 2019
              */
             interface WithDockerBridgeCidr<ParentT> {
                 /**
@@ -379,8 +378,9 @@ public interface KubernetesCluster
                  * @param dockerBridgeCidr the CIDR notation IP range assigned to the Docker bridge network; it must not
                  *     overlap with any subnet IP ranges or the Kubernetes service address range
                  * @return the next stage of the definition
+                 * @deprecated The property has no effect since 2019
                  */
-                @Deprecated
+                @Deprecated()
                 WithAttach<ParentT> withDockerBridgeCidr(String dockerBridgeCidr);
             }
 
