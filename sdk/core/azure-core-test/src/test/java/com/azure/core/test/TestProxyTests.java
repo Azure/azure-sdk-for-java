@@ -113,7 +113,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Playback")
-    @Disabled("Connection stream closed")
     public void testOrdering() {
         // this proves that regardless of where in your test method you might try and get a variable it works.
         String name = testResourceNamer.randomName("test", 10);
@@ -200,7 +199,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Playback")
-    @Disabled("Connection stream closed")
     public void testPlayback() {
 
         HttpClient client = interceptorManager.getPlaybackClient();
