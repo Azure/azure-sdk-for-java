@@ -27,6 +27,8 @@ public class CallMediaUnitTests {
     private PlayOptions playOptions;
     private PlayToAllOptions playToAllOptions;
     private TextSource playTextSource;
+    private List<PlaySource> playFileSources;
+    private List<PlaySource> playTextSources;
 
     @BeforeEach
     public void setup() {
@@ -36,20 +38,24 @@ public class CallMediaUnitTests {
             );
         callMedia = callConnection.getCallMedia();
 
+        playFileSources = new ArrayList<>();
         playFileSource = new FileSource();
         playFileSource.setPlaySourceId("playTextSourceId");
         playFileSource.setUrl("filePath");
+        playFileSources.add(playFileSource);
 
+        playTextSources = new ArrayList<>();
         playTextSource = new TextSource();
         playTextSource.setPlaySourceId("playTextSourceId");
         playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
+        playTextSources.add(playTextSource);
     }
 
     @Test
     public void playFileWithResponseTest() {
-        playOptions = new PlayOptions(playFileSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
+        playOptions = new PlayOptions(playFileSources, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
             .setOperationContext("operationContext");
         Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
@@ -58,7 +64,7 @@ public class CallMediaUnitTests {
 
     @Test
     public void playFileToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playFileSource)
+        playToAllOptions = new PlayToAllOptions(playFileSources)
             .setLoop(false)
             .setOperationContext("operationContext");
         Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
@@ -67,7 +73,7 @@ public class CallMediaUnitTests {
 
     @Test
     public void playTextWithResponseTest() {
-        playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
+        playOptions = new PlayOptions(playTextSources, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
             .setOperationContext("operationContext");
         Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
@@ -76,7 +82,7 @@ public class CallMediaUnitTests {
 
     @Test
     public void playTextToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playTextSource)
+        playToAllOptions = new PlayToAllOptions(playTextSources)
             .setLoop(false)
             .setOperationContext("operationContext");
         Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);

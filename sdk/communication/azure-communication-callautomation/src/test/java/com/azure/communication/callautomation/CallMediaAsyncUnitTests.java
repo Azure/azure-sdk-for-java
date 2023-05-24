@@ -15,6 +15,7 @@ import com.azure.communication.callautomation.models.GenderType;
 import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.PlayOptions;
+import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.RecognizeInputType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,6 +41,9 @@ public class CallMediaAsyncUnitTests {
     private SsmlSource playSsmlSource;
     private PlayOptions playOptions;
     private PlayToAllOptions playToAllOptions;
+    private List<PlaySource> playFileSources;
+    private List<PlaySource> playTextSources;
+    private List<PlaySource> playSsmlSources;
 
     @BeforeEach
     public void setup() {
@@ -49,23 +53,29 @@ public class CallMediaAsyncUnitTests {
             );
         callMedia = callConnection.getCallMediaAsync();
 
+        playFileSources = new ArrayList<>();
         playFileSource = new FileSource();
         playFileSource.setPlaySourceId("playFileSourceId");
         playFileSource.setUrl("filePath");
+        playFileSources.add(playFileSource);
 
+        playTextSources = new ArrayList<>();
         playTextSource = new TextSource();
         playTextSource.setPlaySourceId("playTextSourceId");
         playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
+        playTextSources.add(playTextSource);
 
+        playSsmlSources = new ArrayList<>();
         playSsmlSource = new SsmlSource();
         playSsmlSource.setSsmlText("<speak></speak>");
+        playSsmlSources.add(playSsmlSource);
     }
 
     @Test
     public void playFileWithResponseTest() {
-        playOptions = new PlayOptions(playFileSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
+        playOptions = new PlayOptions(playFileSources, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
             .setOperationContext("operationContext");
 
@@ -77,7 +87,7 @@ public class CallMediaAsyncUnitTests {
 
     @Test
     public void playFileToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playFileSource)
+        playToAllOptions = new PlayToAllOptions(playFileSources)
             .setLoop(false)
             .setOperationContext("operationContext");
         StepVerifier.create(
@@ -88,7 +98,7 @@ public class CallMediaAsyncUnitTests {
 
     @Test
     public void playTextWithResponseTest() {
-        playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
+        playOptions = new PlayOptions(playTextSources, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
             .setOperationContext("operationContext");
         StepVerifier.create(
@@ -99,7 +109,7 @@ public class CallMediaAsyncUnitTests {
 
     @Test
     public void playTextToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playTextSource)
+        playToAllOptions = new PlayToAllOptions(playTextSources)
             .setLoop(false)
             .setOperationContext("operationContext");
         StepVerifier.create(
@@ -110,7 +120,7 @@ public class CallMediaAsyncUnitTests {
 
     @Test
     public void playSsmlWithResponseTest() {
-        playOptions = new PlayOptions(playSsmlSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
+        playOptions = new PlayOptions(playSsmlSources, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
             .setOperationContext("operationContext");
         StepVerifier.create(
@@ -121,7 +131,7 @@ public class CallMediaAsyncUnitTests {
 
     @Test
     public void playSsmlToAllWithResponseTest() {
-        playToAllOptions = new PlayToAllOptions(playSsmlSource)
+        playToAllOptions = new PlayToAllOptions(playSsmlSources)
             .setLoop(false)
             .setOperationContext("operationContext");
         StepVerifier.create(

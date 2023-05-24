@@ -12,9 +12,9 @@ import java.util.List;
 @Fluent
 public final class PlayOptions {
     /*
-     * A {@link PlaySource} representing the source to play.
+     * A List of {@link PlaySource} representing the sources to play.
      */
-    private final PlaySource playSource;
+    private final List<PlaySource> playSources;
 
     /*
      * The targets to play to
@@ -33,21 +33,21 @@ public final class PlayOptions {
 
     /**
      * Constructor
-     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
      * @param playTo The targets to play to.
      */
-    public PlayOptions(PlaySource playSource, List<CommunicationIdentifier> playTo) {
-        this.playSource = playSource;
+    public PlayOptions(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
+        this.playSources = playSources;
         this.playTo = playTo;
     }
 
     /**
-     * Get the play source.
+     * Get the play sources.
      *
-     * @return the playSource value.
+     * @return the playSources value.
      */
-    public PlaySource getPlaySource() {
-        return this.playSource;
+    public List<PlaySource> getPlaySources() {
+        return this.playSources;
     }
 
     /**
