@@ -70,13 +70,12 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     public void startRecording(File recordFile) {
         // subpath removes nodes "src/test/resources/session-records"
-        String assetJsonPath = null;
+        String assetJsonPath = recordFile.toPath().subpath(0, 3) + "\\assets.json";
         HttpRequest request = null;
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
                 .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
-                    SerializerEncoding.JSON))
-                .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+                    SerializerEncoding.JSON));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
