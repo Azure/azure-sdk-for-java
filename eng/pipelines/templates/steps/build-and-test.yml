@@ -89,6 +89,16 @@ steps:
     # we want to run this when TestFromSource isn't true
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
+  - pwsh: |
+      $files = Get-ChildItem -Path $(Build.SourcesDirectory) -Filter _proxy_log_*.log
+      foreach($file in $files){
+          Write-Host "##[group]$file"
+          cat $file
+          Write-Host "##[endgroup]"
+      }
+    displayName: Dump Test-Proxy Logs
+    condition: succeededOrFailed()
+
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
     displayName: 'Generate pom for aggregate code coverage report'
