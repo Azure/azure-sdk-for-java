@@ -3,7 +3,14 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.*;
+import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.FileSource;
+import com.azure.communication.callautomation.models.GenderType;
+import com.azure.communication.callautomation.models.PlayOptions;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
+import com.azure.communication.callautomation.models.RecognizeChoice;
+import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
@@ -15,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -105,45 +110,6 @@ public class CallMediaUnitTests {
         );
         CallMediaRecognizeChoiceOptions callMediaRecognizeOptions = new CallMediaRecognizeChoiceOptions(new CommunicationUserIdentifier("id"), recognizeChoices);
         Response<Void> response = callMedia.startRecognizingWithResponse(callMediaRecognizeOptions, Context.NONE);
-        assertEquals(response.getStatusCode(), 202);
-    }
-
-    @Test
-    public void startContinuousDtmfRecognitionWithResponseTest() {
-        // override callMedia to mock 200 response code
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMedia();
-        Response<Void> response = callMedia.startContinuousDtmfRecognitionWithResponse(
-            new CommunicationUserIdentifier("id"),
-            "operationContext", Context.NONE
-        );
-        assertEquals(response.getStatusCode(), 200);
-    }
-
-    @Test
-    public void stopContinuousDtmfRecognitionWithResponseTest() {
-        // override callMedia to mock 200 response code
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMedia();
-        Response<Void> response = callMedia.stopContinuousDtmfRecognitionWithResponse(
-            new CommunicationUserIdentifier("id"),
-            "operationContext", Context.NONE
-        );
-        assertEquals(response.getStatusCode(), 200);
-    }
-
-    @Test
-    public void sendDtmfWithResponseTest() {
-        Response<Void> response = callMedia.sendDtmfWithResponse(
-            Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
-            "ctx", Context.NONE
-        );
         assertEquals(response.getStatusCode(), 202);
     }
 

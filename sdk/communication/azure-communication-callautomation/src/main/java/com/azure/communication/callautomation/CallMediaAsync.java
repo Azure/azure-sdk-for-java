@@ -5,15 +5,11 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
-import com.azure.communication.callautomation.implementation.models.ContinuousDtmfRecognitionRequestInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.DtmfToneInternal;
 import com.azure.communication.callautomation.implementation.models.FileSourceInternal;
 import com.azure.communication.callautomation.implementation.models.GenderTypeInternal;
-import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
-import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlayOptionsInternal;
-import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.PlaySourceInternal;
 import com.azure.communication.callautomation.implementation.models.PlaySourceTypeInternal;
@@ -21,28 +17,30 @@ import com.azure.communication.callautomation.implementation.models.RecognizeCho
 import com.azure.communication.callautomation.implementation.models.RecognizeInputTypeInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeOptionsInternal;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
-import com.azure.communication.callautomation.implementation.models.SendDtmfRequestInternal;
-import com.azure.communication.callautomation.models.PlayToAllOptions;
+import com.azure.communication.callautomation.implementation.models.SpeechOptionsInternal;
+import com.azure.communication.callautomation.implementation.models.SsmlSourceInternal;
+import com.azure.communication.callautomation.implementation.models.TextSourceInternal;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
+import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlaySource;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.RecognizeChoice;
-import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.callautomation.models.SsmlSource;
-import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
-import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrDtmfOptions;
+import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.exception.HttpResponseException;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -453,110 +451,4 @@ public final class CallMediaAsync {
         }
         return playSourceInternal;
     }
-
-    /**
-     * Send DTMF tones
-     *
-     * @param tones tones to be sent
-     * @param targetParticipant the target participant
-     * @return Response for successful sendDtmf request.
-     */
-    public Mono<Void> sendDtmf(List<DtmfTone> tones, CommunicationIdentifier targetParticipant) {
-        return sendDtmfWithResponse(tones, targetParticipant, null).then();
-    }
-
-    /**
-     * Send DTMF tones
-     *
-     * @param tones tones to be sent
-     * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
-     * @return Response for successful sendDtmf request.
-     */
-    public Mono<Response<Void>> sendDtmfWithResponse(List<DtmfTone> tones, CommunicationIdentifier targetParticipant, String operationContext) {
-        return withContext(context -> sendDtmfWithResponseInternal(targetParticipant, tones, operationContext, context));
-    }
-
-    Mono<Response<Void>> sendDtmfWithResponseInternal(CommunicationIdentifier targetParticipant, List<DtmfTone> tones, String operationContext, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            SendDtmfRequestInternal requestInternal = new SendDtmfRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setTones(tones.stream()
-                .map(this::convertDtmfToneInternal)
-                .collect(Collectors.toList()))
-                .setOperationContext(operationContext);
-
-            return contentsInternal.sendDtmfWithResponseAsync(callConnectionId, requestInternal, context);
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-
-    /**
-     * Starts continuous Dtmf recognition.
-     *
-     * @param targetParticipant the target participant
-     * @return void
-     */
-    public Mono<Void> startContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
-        return startContinuousDtmfRecognitionWithResponse(targetParticipant, null).then();
-    }
-
-    /**
-     * Starts continuous Dtmf recognition.
-     * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
-     * @return Response for successful start continuous dtmf recognition request.
-     */
-    public Mono<Response<Void>> startContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext) {
-        return withContext(context -> startContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context));
-    }
-
-    Mono<Response<Void>> startContinuousDtmfRecognitionWithResponseInternal(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            ContinuousDtmfRecognitionRequestInternal requestInternal = new ContinuousDtmfRecognitionRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setOperationContext(operationContext);
-
-            return contentsInternal.startContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal, context);
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
-    /**
-     * Stops continuous Dtmf recognition.
-     * @param targetParticipant the target participant
-     * @return void
-     */
-    public Mono<Void> stopContinuousDtmfRecognition(CommunicationIdentifier targetParticipant) {
-        return stopContinuousDtmfRecognitionWithResponse(targetParticipant, null).then();
-    }
-
-    /**
-     * Stops continuous Dtmf recognition.
-     * @param targetParticipant the target participant
-     * @param operationContext operationContext (pass null if not applicable)
-     * @return Response for successful stop continuous dtmf recognition request.
-     */
-    public Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponse(CommunicationIdentifier targetParticipant, String operationContext) {
-        return withContext(context -> stopContinuousDtmfRecognitionWithResponseInternal(targetParticipant, operationContext, context));
-    }
-
-    Mono<Response<Void>> stopContinuousDtmfRecognitionWithResponseInternal(CommunicationIdentifier targetParticipant, String operationContext, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            ContinuousDtmfRecognitionRequestInternal requestInternal = new ContinuousDtmfRecognitionRequestInternal()
-                .setTargetParticipant(CommunicationIdentifierConverter.convert(targetParticipant))
-                .setOperationContext(operationContext);
-
-            return contentsInternal.stopContinuousDtmfRecognitionWithResponseAsync(callConnectionId, requestInternal, context);
-        } catch (RuntimeException e) {
-            return monoError(logger, e);
-        }
-    }
-
 }

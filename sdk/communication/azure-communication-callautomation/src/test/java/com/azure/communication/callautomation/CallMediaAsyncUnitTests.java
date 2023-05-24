@@ -3,8 +3,6 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.PlayToAllOptions;
-import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.CallMediaRecognizeChoiceOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeDtmfOptions;
 import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOptions;
@@ -12,10 +10,12 @@ import com.azure.communication.callautomation.models.CallMediaRecognizeSpeechOrD
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
 import com.azure.communication.callautomation.models.GenderType;
-import com.azure.communication.callautomation.models.TextSource;
-import com.azure.communication.callautomation.models.SsmlSource;
 import com.azure.communication.callautomation.models.PlayOptions;
+import com.azure.communication.callautomation.models.PlayToAllOptions;
+import com.azure.communication.callautomation.models.RecognizeChoice;
 import com.azure.communication.callautomation.models.RecognizeInputType;
+import com.azure.communication.callautomation.models.SsmlSource;
+import com.azure.communication.callautomation.models.TextSource;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,8 +27,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -172,49 +170,6 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
-    public void startContinuousDtmfRecognitionWithResponse() {
-        // override callMedia to mock 200 response code
-        CallConnectionAsync callConnection =
-            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMediaAsync();
-        StepVerifier.create(
-                callMedia.startContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
-                    "operationContext")
-            )
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void stopContinuousDtmfRecognitionWithResponse() {
-        // override callMedia to mock 200 response code
-        CallConnectionAsync callConnection =
-            CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMediaAsync();
-        StepVerifier.create(
-                callMedia.stopContinuousDtmfRecognitionWithResponse(new CommunicationUserIdentifier("id"),
-                    "operationContext")
-            )
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void sendDtmfWithResponse() {
-        StepVerifier.create(
-                callMedia.sendDtmfWithResponse(
-                        Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
-                        "operationContext"
-                )
-            ).consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
     public void recognizeWithResponseWithTextSourceDtmfOptions() {
         CallMediaRecognizeDtmfOptions recognizeOptions = new CallMediaRecognizeDtmfOptions(new CommunicationUserIdentifier("id"), 5);
 
@@ -237,8 +192,6 @@ public class CallMediaAsyncUnitTests {
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
-
-
 
     @Test
     public void recognizeWithResponseWithFileSourceChoiceOptions() {
