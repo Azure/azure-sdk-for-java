@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.BinaryData;
@@ -19,6 +18,7 @@ import com.azure.core.util.ProgressReporter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -38,13 +38,18 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
+        HttpURLConnection connection = null;
         try {
-            HttpURLConnection connection = (HttpURLConnection) request.getUrl().openConnection();
+            connection = (HttpURLConnection) request.getUrl().openConnection();
             createConnection(connection, request, context);
 
             return createHttpResponse(connection, request);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
 
@@ -55,44 +60,26 @@ public class HttpURLConnectionHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
+        HttpURLConnection connection = null;
         try {
-            HttpURLConnection connection = (HttpURLConnection) request.getUrl().openConnection();
+            connection = (HttpURLConnection) request.getUrl().openConnection();
             createConnection(connection, request, context);
-            connection.setRequestMethod(request.getHttpMethod().toString());
-
-            setHeadersOnRequest(request, connection);
-            setBodyOnRequest(request, connection, Contexts.with(context).getHttpRequestProgressReporter());
-            connection.setInstanceFollowRedirects(false);
-            connection.connect();
             return Mono.just(createHttpResponse(connection, request));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
         }
     }
-
     private void createConnection(HttpURLConnection connection, HttpRequest request, Context context) throws IOException {
-        HttpMethod httpMethod = request.getHttpMethod();
+        connection.setRequestMethod(request.getHttpMethod().name());
         setHeadersOnRequest(request, connection);
         setBodyOnRequest(request, connection, Contexts.with(context).getHttpRequestProgressReporter());
         connection.setInstanceFollowRedirects(false);
-
-        if (HttpMethod.GET.equals(httpMethod)) {
-            connection.setInstanceFollowRedirects(true);
-        } else {
-            connection.setInstanceFollowRedirects(false);
-        }
-
-
-        if (HttpMethod.POST.equals(httpMethod) || HttpMethod.PUT.equals(httpMethod)
-            || HttpMethod.PATCH.equals(httpMethod) || HttpMethod.DELETE.equals(httpMethod)) {
-            connection.setDoOutput(true);
-        } else {
-            connection.setDoOutput(false);
-        }
-
-        connection.setRequestMethod(httpMethod.name());
+        connection.connect();
     }
-
 
     private HttpResponse createHttpResponse(HttpURLConnection connection, HttpRequest request) {
 
@@ -184,14 +171,16 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         }
 
         private static byte[] readResponseBytes(InputStream inputStream) throws IOException {
-            try (ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream()) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while (-1 != (bytesRead = inputStream.read(buffer))) {
-                    byteArrayOutputStream.write(buffer, 0, bytesRead);
-                }
-                return byteArrayOutputStream.toByteArray();
+            BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byte[] buffer = new byte[8192];
+            int bytesRead;
+            while ((bytesRead = bufferedInputStream.read(buffer)) != -1) {
+                byteArrayOutputStream.write(buffer, 0, bytesRead);
             }
+            bufferedInputStream.close();
+            byteArrayOutputStream.close();
+            return byteArrayOutputStream.toByteArray();
         }
 
         @Override
@@ -262,6 +251,11 @@ public class HttpURLConnectionHttpClient implements HttpClient {
         @Override
         public HttpResponse buffer() {
             return this;
+        }
+
+        @Override
+        public void close() {
+            connection.disconnect();
         }
     }
 }
