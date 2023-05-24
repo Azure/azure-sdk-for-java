@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.jsonschemavalidator;
+package com.azure.data.schemaregistry.jsonschema;
 
 import com.azure.core.annotation.Immutable;
 

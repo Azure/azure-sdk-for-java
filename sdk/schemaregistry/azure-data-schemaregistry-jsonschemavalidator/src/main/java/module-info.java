@@ -5,10 +5,10 @@ module com.azure.data.schemaregistry.jsonschemavalidator {
     requires transitive com.azure.core;
     requires transitive com.azure.data.schemaregistry;
 
-    exports com.azure.data.schemaregistry.jsonschemavalidator;
+    exports com.azure.data.schemaregistry.jsonschema;
 
-    opens com.azure.data.schemaregistry.jsonschemavalidator to com.fasterxml.jackson.databind, com.azure.core;
-    exports com.azure.data.schemaregistry.jsonschemavalidator.models;
-    opens com.azure.data.schemaregistry.jsonschemavalidator.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.data.schemaregistry.jsonschema to com.fasterxml.jackson.databind, com.azure.core;
+    exports com.azure.data.schemaregistry.jsonschema.models;
+    opens com.azure.data.schemaregistry.jsonschema.models to com.azure.core, com.fasterxml.jackson.databind;
 
 }

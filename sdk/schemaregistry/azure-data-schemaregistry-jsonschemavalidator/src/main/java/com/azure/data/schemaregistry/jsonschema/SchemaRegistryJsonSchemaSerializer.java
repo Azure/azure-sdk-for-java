@@ -1,13 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.schemaregistry.jsonschemavalidator;
+package com.azure.data.schemaregistry.jsonschema;
 
 import com.azure.core.models.MessageContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.jsonschemavalidator.models.SerializationResult;
+import com.azure.data.schemaregistry.jsonschema.models.SerializationResult;
 import reactor.core.publisher.Mono;
 
 import static com.azure.core.util.FluxUtil.monoError;

@@ -1,4 +1,4 @@
-package com.azure.data.schemaregistry.jsonschemavalidator.models;
+package com.azure.data.schemaregistry.jsonschema.models;
 
 public class SerializationResult<T> {
     private final T value;
