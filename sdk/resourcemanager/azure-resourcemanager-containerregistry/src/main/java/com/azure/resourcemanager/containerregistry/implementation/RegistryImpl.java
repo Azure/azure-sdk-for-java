@@ -6,14 +6,19 @@ package com.azure.resourcemanager.containerregistry.implementation;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
+import com.azure.resourcemanager.containerregistry.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.containerregistry.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
 import com.azure.resourcemanager.containerregistry.models.Action;
+import com.azure.resourcemanager.containerregistry.models.ActionsRequired;
+import com.azure.resourcemanager.containerregistry.models.ConnectionStatus;
 import com.azure.resourcemanager.containerregistry.models.DefaultAction;
 import com.azure.resourcemanager.containerregistry.models.IpRule;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleBypassOptions;
 import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
+import com.azure.resourcemanager.containerregistry.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
@@ -24,9 +29,12 @@ import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
 import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
@@ -36,7 +44,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 
 /** Implementation for Registry and its create and update interfaces. */
 public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner, RegistryImpl, ContainerRegistryManager>
@@ -380,50 +387,45 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 
     @Override
     public PagedIterable<PrivateEndpointConnection> listPrivateEndpointConnections() {
-        // TODO (caoxiaofei, 2023-05-24 16:30)
-        throw new UnsupportedOperationException("method [listPrivateEndpointConnections] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+        return new PagedIterable<>(this.listPrivateEndpointConnectionsAsync());
     }
 
     @Override
     public PagedFlux<PrivateEndpointConnection> listPrivateEndpointConnectionsAsync() {
-        // TODO (caoxiaofei, 2023-05-24 16:30)
-        throw new UnsupportedOperationException("method [listPrivateEndpointConnectionsAsync] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
-    }
-
-    @Override
-    public PagedIterable<PrivateLinkResource> listPrivateLinkResources() {
-        // TODO (caoxiaofei, 2023-05-24 16:30)
-        throw new UnsupportedOperationException("method [listPrivateLinkResources] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
-    }
-
-    @Override
-    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
-        // TODO (caoxiaofei, 2023-05-24 16:30)
-        throw new UnsupportedOperationException("method [listPrivateLinkResourcesAsync] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+        return PagedConverter.mapPage(this.manager().serviceClient().getPrivateEndpointConnections()
+            .listAsync(this.resourceGroupName(), this.name()), PrivateEndpointConnectionImpl::new);
     }
 
     @Override
     public void approvePrivateEndpointConnection(String privateEndpointConnectionName) {
-        // TODO (caoxiaofei, 2023-05-24 16:30)
-        throw new UnsupportedOperationException("method [approvePrivateEndpointConnection] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+        approvePrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
     }
 
     @Override
     public Mono<Void> approvePrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        // TODO (caoxiaofei, 2023-05-24 16:30)
-        throw new UnsupportedOperationException("method [approvePrivateEndpointConnectionAsync] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+        return this.manager().serviceClient().getPrivateEndpointConnections()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState()
+                        .withStatus(
+                            ConnectionStatus.APPROVED)))
+            .then();
     }
 
     @Override
     public void rejectPrivateEndpointConnection(String privateEndpointConnectionName) {
-        // TODO (caoxiaofei, 2023-05-24 16:30)
-        throw new UnsupportedOperationException("method [rejectPrivateEndpointConnection] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+        rejectPrivateEndpointConnectionAsync(privateEndpointConnectionName).block();
     }
 
     @Override
     public Mono<Void> rejectPrivateEndpointConnectionAsync(String privateEndpointConnectionName) {
-        // TODO (caoxiaofei, 2023-05-24 16:30)
-        throw new UnsupportedOperationException("method [rejectPrivateEndpointConnectionAsync] not implemented in class [com.azure.resourcemanager.containerregistry.implementation.RegistryImpl]");
+        return this.manager().serviceClient().getPrivateEndpointConnections()
+            .createOrUpdateAsync(this.resourceGroupName(), this.name(), privateEndpointConnectionName,
+                new PrivateEndpointConnectionInner().withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState()
+                        .withStatus(
+                            ConnectionStatus.REJECTED)))
+            .then();
     }
 
     private void ensureNetworkRuleSet() {
@@ -436,6 +438,103 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
             if (updateParameters.networkRuleSet() == null) {
                 updateParameters.withNetworkRuleSet(this.innerModel().networkRuleSet());
             }
+        }
+    }
+
+    @Override
+    public PagedIterable<PrivateLinkResource> listPrivateLinkResources() {
+        return new PagedIterable<>(this.listPrivateLinkResourcesAsync());
+    }
+
+    @Override
+    public PagedFlux<PrivateLinkResource> listPrivateLinkResourcesAsync() {
+        return this.manager().serviceClient().getRegistries()
+            .listPrivateLinkResourcesAsync(this.resourceGroupName(), this.name())
+            .mapPage(PrivateLinkResourceImpl::new);
+    }
+
+    private static final class PrivateLinkResourceImpl implements PrivateLinkResource {
+        private final PrivateLinkResourceInner innerModel;
+
+        private PrivateLinkResourceImpl(PrivateLinkResourceInner innerModel) {
+            this.innerModel = innerModel;
+        }
+
+        @Override
+        public String groupId() {
+            return innerModel.groupId();
+        }
+
+        @Override
+        public List<String> requiredMemberNames() {
+            return Collections.unmodifiableList(innerModel.requiredMembers());
+        }
+
+        @Override
+        public List<String> requiredDnsZoneNames() {
+            return Collections.unmodifiableList(innerModel.requiredZoneNames());
+        }
+    }
+
+    private static final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
+        private final PrivateEndpointConnectionInner innerModel;
+
+        private final PrivateEndpoint privateEndpoint;
+        private final com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState;
+        private final PrivateEndpointConnectionProvisioningState provisioningState;
+
+        private PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerModel) {
+            this.innerModel = innerModel;
+
+            this.privateEndpoint = innerModel.privateEndpoint() == null
+                ? null
+                : new PrivateEndpoint(innerModel.privateEndpoint().id());
+            this.privateLinkServiceConnectionState = innerModel.privateLinkServiceConnectionState() == null
+                ? null
+                : new com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState(
+                innerModel.privateLinkServiceConnectionState().status() == null
+                    ? null
+                    : com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointServiceConnectionStatus
+                    .fromString(innerModel.privateLinkServiceConnectionState().status().toString()),
+                innerModel.privateLinkServiceConnectionState().description(),
+                innerModel.privateLinkServiceConnectionState().actionsRequired() == null
+                    ? ActionsRequired.NONE.toString()
+                    : innerModel.privateLinkServiceConnectionState().actionsRequired().toString());
+            this.provisioningState = innerModel.provisioningState() == null
+                ? null
+                : PrivateEndpointConnectionProvisioningState.fromString(innerModel.provisioningState().toString());
+        }
+
+        @Override
+        public String id() {
+            return innerModel.id();
+        }
+
+        @Override
+        public String name() {
+            return innerModel.name();
+        }
+
+        @Override
+        public String type() {
+            return innerModel.type();
+        }
+
+        @Override
+        public PrivateEndpoint privateEndpoint() {
+            return privateEndpoint;
+        }
+
+        @Override
+        public com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateLinkServiceConnectionState
+            privateLinkServiceConnectionState() {
+            return privateLinkServiceConnectionState;
+        }
+
+        @Override
+        public PrivateEndpointConnectionProvisioningState provisioningState() {
+            return provisioningState;
         }
     }
 }
