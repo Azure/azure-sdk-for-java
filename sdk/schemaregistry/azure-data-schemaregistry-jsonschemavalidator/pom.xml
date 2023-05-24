@@ -15,8 +15,8 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-data-schemaregistry-jsonschemavalidator</artifactId>
-  <version>1.2.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-jsonschemavalidator;current} -->
+  <artifactId>azure-data-schemaregistry-jsonschema</artifactId>
+  <version>1.2.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-jsonschema;current} -->
 
   <name>Microsoft Azure client library for Schema Registry JSON Schema Serializer</name>
   <description>NetworkNT JSON Schema serializer for Azure Schema Registry client library</description>
@@ -41,7 +41,7 @@
       --add-opens com.azure.core/com.azure.core.implementation=ALL-UNNAMED
       --add-opens com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
 
-      --add-opens com.azure.data.schemaregistry.jsonschemavalidator/com.azure.data.schemaregistry.jsonschemavalidator=ALL-UNNAMED
+      --add-opens com.azure.data.schemaregistry.jsonschema/com.azure.data.schemaregistry.jsonschema=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
