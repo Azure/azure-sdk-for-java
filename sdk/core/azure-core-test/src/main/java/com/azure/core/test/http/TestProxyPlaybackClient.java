@@ -4,6 +4,7 @@
 package com.azure.core.test.http;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -77,7 +78,10 @@ public class TestProxyPlaybackClient implements HttpClient {
         String assetJsonPath = recordFile.toPath().subpath(0, 3) + "\\assets.json";
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath), SerializerEncoding.JSON));
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
+                    SerializerEncoding.JSON))
+                .setHeader(HttpHeaderName.ACCEPT, "application/json")
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

@@ -74,7 +74,9 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         HttpRequest request = null;
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath), SerializerEncoding.JSON));
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
+                    SerializerEncoding.JSON))
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
