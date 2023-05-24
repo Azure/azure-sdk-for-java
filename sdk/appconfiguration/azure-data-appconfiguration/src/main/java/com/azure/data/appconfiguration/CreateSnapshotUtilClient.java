@@ -202,7 +202,7 @@ class CreateSnapshotUtilClient {
      *
      * @return The Context.
      */
-    private Context getNotNullContext(Context context) {
+    private static Context getNotNullContext(Context context) {
         return context == null ? Context.NONE : context;
     }
 }
