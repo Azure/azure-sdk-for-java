@@ -96,11 +96,6 @@ class VertxAsyncHttpClient implements HttpClient {
             }));
     }
 
-    @Override
-    public HttpResponse sendSync(HttpRequest request, Context context) {
-        return send(request, context).block();
-    }
-
     private Future<HttpClientResponse> sendBody(MonoSink<HttpResponse> sink, HttpRequest azureRequest,
                                                 ProgressReporter progressReporter, HttpClientRequest vertxRequest) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
@@ -139,7 +134,7 @@ class VertxAsyncHttpClient implements HttpClient {
                     .doOnError(error -> {
                         // If the read stream errors propagate the exception through Reactor and close the active HTTP
                         // connection.
-//                        vertxRequest.connection().close();
+                        vertxRequest.connection().close();
                         sink.error(error);
                     })
                     .subscribeOn(scheduler)
