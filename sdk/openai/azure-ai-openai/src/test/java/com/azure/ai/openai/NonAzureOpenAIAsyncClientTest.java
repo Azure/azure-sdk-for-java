@@ -5,6 +5,7 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.*;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -95,6 +96,21 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .verifyErrorSatisfies(throwable -> {
                     assertInstanceOf(ClientAuthenticationException.class, throwable);
                     assertEquals(401, ((ClientAuthenticationException) throwable).getResponse().getStatusCode());
+                });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsExpiredSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getCompletionsRunner((modelId, prompt) -> {
+            StepVerifier.create(client.getCompletionsWithResponse(modelId,
+                    BinaryData.fromObject(new CompletionsOptions(prompt)),
+                    new RequestOptions()))
+                .verifyErrorSatisfies(throwable -> {
+                    assertInstanceOf(HttpResponseException.class, throwable);
+                    assertEquals(429, ((HttpResponseException) throwable).getResponse().getStatusCode());
                 });
         });
     }

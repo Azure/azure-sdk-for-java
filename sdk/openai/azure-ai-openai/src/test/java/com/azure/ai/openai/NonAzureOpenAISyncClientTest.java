@@ -94,6 +94,18 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsExpiredSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getCompletionsRunner((modelId, prompt) -> {
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () ->  client.getCompletionsWithResponse(modelId,
+                    BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
+            assertEquals(429, exception.getResponse().getStatusCode());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsForNonAzureRunner((deploymentId, chatMessages) -> {
