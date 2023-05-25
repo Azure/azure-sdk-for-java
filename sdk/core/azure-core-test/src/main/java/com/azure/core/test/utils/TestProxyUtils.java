@@ -16,6 +16,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -121,6 +122,26 @@ public class TestProxyUtils {
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * Get the assets json file path if it exists.
+     * @param recordFile the record/playback file
+     * @param testClassPath the test class path
+     * @return the assets json file path if it exists.
+     */
+    public static String getAssetJsonFile(File recordFile, Path testClassPath) {
+        if (assetJsonFileExists(testClassPath)) {
+            // subpath removes nodes "src/test/resources/session-records"
+            return Paths.get(recordFile.toPath().subpath(0, 3).toString(), "assets.json").toString();
+        } else {
+            return null;
+        }
+    }
+
+    private static boolean assetJsonFileExists(Path testClassPath) {
+        return Files.exists(Paths.get(String.valueOf(TestUtils.getRepoRootResolveUntil(testClassPath, "target")),
+            "assets.json"));
     }
 
     /**

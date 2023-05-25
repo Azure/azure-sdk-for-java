@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -32,6 +33,7 @@ import java.util.Queue;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
+import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
@@ -67,15 +69,16 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     /**
      * Starts playback of a test recording.
+     *
      * @param recordFile The name of the file to read.
      * @return A {@link Queue} representing the variables in the recording.
+     * @param testClassPath the test class path
      * @throws UncheckedIOException if an {@link IOException} is thrown.
      * @throws RuntimeException Failed to serialize body payload.
      */
-    public Queue<String> startPlayback(File recordFile) {
+    public Queue<String> startPlayback(File recordFile, Path testClassPath) {
         HttpRequest request = null;
-        // subpath removes nodes "src/test/resources/session-records"
-        String assetJsonPath = recordFile.toPath().subpath(0, 3) + "\\assets.json";
+        String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
                 .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),

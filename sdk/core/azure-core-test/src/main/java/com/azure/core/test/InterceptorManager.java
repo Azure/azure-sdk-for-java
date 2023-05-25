@@ -330,7 +330,7 @@ public class InterceptorManager implements AutoCloseable {
             }
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, skipRecordingRequestBody);
-                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile()));
+                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(), testClassPath));
             }
             return testProxyPlaybackClient;
         } else {
@@ -378,7 +378,7 @@ public class InterceptorManager implements AutoCloseable {
                 throw new IllegalStateException("A recording policy can only be requested in RECORD mode.");
             }
             testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient, skipRecordingRequestBody);
-            testProxyRecordPolicy.startRecording(getTestProxyRecordFile());
+            testProxyRecordPolicy.startRecording(getTestProxyRecordFile(), testClassPath);
         }
         return testProxyRecordPolicy;
     }
