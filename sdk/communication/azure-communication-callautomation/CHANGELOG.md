@@ -17,10 +17,6 @@
 - CallSource has been flattened out.
 - CallInvite model replaces previous models for handling outbound calls.
 
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.0-beta.1 (2022-11-07)
 This is a refresh of Azure Communication Service's Calling-Server library. It is now called Call Automation.
 
