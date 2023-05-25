@@ -29,7 +29,6 @@ public final class CallConnectionProperties {
     private final List<CommunicationIdentifier> targetParticipants;
     private final CallConnectionState callConnectionState;
     private final String callbackUrl;
-    private final String mediaSubscriptionId;
     private final CommunicationUserIdentifier answeredByIdentifier;
     private final String correlationId;
 
@@ -56,7 +55,6 @@ public final class CallConnectionProperties {
         this.targetParticipants = null;
         this.callConnectionState = null;
         this.callbackUrl = null;
-        this.mediaSubscriptionId = null;
         this.answeredByIdentifier = null;
         this.correlationId = null;
     }
@@ -68,15 +66,14 @@ public final class CallConnectionProperties {
      */
     CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
         this.callConnectionId = callConnectionPropertiesInternal.getCallConnectionId();
-        this.sourceIdentity = CommunicationIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceIdentity());
+        this.sourceIdentity = CommunicationIdentifierConverter.convert(callConnectionPropertiesInternal.getSource());
         this.sourceCallerIdNumber = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceCallerIdNumber());
         this.sourceDisplayName = callConnectionPropertiesInternal.getSourceDisplayName();
         this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
         this.targetParticipants = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUrl = callConnectionPropertiesInternal.getCallbackUri();
-        this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
-        this.answeredByIdentifier = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredByIdentifier());
+        this.answeredByIdentifier = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
         this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
     }
 
@@ -153,22 +150,13 @@ public final class CallConnectionProperties {
     }
 
     /**
-     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
-     * @return the mediaSubscriptionId value.
-     */
-    public String getMediaSubscriptionId() {
-        return mediaSubscriptionId;
-    }
-    
-    /**
      *  Get identity that answered the call
      * @return identity that answered the call
      */
     public CommunicationUserIdentifier getAnsweredByIdentifier() {
         return answeredByIdentifier;
     }
-    
+
     /**
      * Get correlationId for the call
      * @return correlationId for the call

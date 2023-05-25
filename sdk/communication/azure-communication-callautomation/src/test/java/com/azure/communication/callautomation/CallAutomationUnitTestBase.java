@@ -54,7 +54,6 @@ public class CallAutomationUnitTestBase {
             .setServerCallId(serverCallId)
             .setCallbackUri(callbackUri)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
-            .setMediaSubscriptionId(mediaSubscriptionId)
             .setSourceDisplayName(callerDisplayName)
             .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))
             );
@@ -69,7 +68,7 @@ public class CallAutomationUnitTestBase {
 
     public static String generateListParticipantsResponse() {
         GetParticipantsResponseInternal getParticipantsResponseInternal = new GetParticipantsResponseInternal()
-            .setValues(new ArrayList<>(Arrays.asList(
+            .setValue(new ArrayList<>(Arrays.asList(
                 ModelGenerator.generateAcsCallParticipantInternal(CALL_CALLER_ID, false),
                 ModelGenerator.generateAcsCallParticipantInternal(CALL_TARGET_ID, true))))
             .setNextLink("");
