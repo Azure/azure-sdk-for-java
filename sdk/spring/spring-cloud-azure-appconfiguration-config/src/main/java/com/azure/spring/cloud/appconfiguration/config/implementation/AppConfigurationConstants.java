@@ -10,7 +10,7 @@ public final class AppConfigurationConstants {
     private AppConfigurationConstants() {
         throw new IllegalStateException("You can not initialize AppConfigurationConstants utility class.");
     }
-	
+    
 	/**
      * App Configurations Feature Flag Content Type
      */
