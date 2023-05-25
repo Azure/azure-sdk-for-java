@@ -4,6 +4,8 @@
 
 - Retries primarily on errors with `429` as status code.
 - Uses an exponential backoff based retry mechanism.
+- Provides the `ThrottlingResourceOptions` which enables application developers to specify max retry attempts
+and the maximum duration within which a throttled request can be retried.
 
 ## Retry frequency behavior
 

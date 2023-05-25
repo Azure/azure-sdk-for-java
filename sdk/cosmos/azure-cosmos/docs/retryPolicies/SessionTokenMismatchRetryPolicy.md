@@ -2,7 +2,7 @@
 
 ## Background
 
-- Retries primarily on errors with `404/1002` scenarios.
+- Retries on errors with `NOT_FOUND`/`READ_SESSION_NOT_AVAILABLE`(404/1002) scenarios.
 - Uses an exponential backoff based retry mechanism.
 - Used by the `ConsistencyWriter` and `ConsistencyReader`.
 
