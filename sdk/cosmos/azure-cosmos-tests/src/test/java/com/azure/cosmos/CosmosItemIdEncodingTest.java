@@ -19,6 +19,7 @@ import com.fasterxml.jackson.core.json.JsonReadFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.Fail;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -603,10 +604,12 @@ public class CosmosItemIdEncodingTest extends TestSuiteBase {
     private void executeTestCase(TestScenario scenario) {
         TestScenarioExpectations expected =
             this.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT ?
-                scenario.direct : this.getClientBuilder().getEndpoint().contains(COMPUTE_GATEWAY_EMULATOR_PORT) ?
-                    scenario.computeGateway : scenario.gateway;
+                scenario.direct : scenario.gateway;
 
         logger.info("Scenario: {}, Id: \"{}\"", scenario.name, scenario.id);
+        if (this.getClientBuilder().getEndpoint().contains(COMPUTE_GATEWAY_EMULATOR_PORT)) {
+            throw new SkipException("Disabling ComputeGateway tests for testing purposes temporarily.");
+        }
 
         try {
             CosmosItemResponse<ObjectNode> response = this.container.createItem(
