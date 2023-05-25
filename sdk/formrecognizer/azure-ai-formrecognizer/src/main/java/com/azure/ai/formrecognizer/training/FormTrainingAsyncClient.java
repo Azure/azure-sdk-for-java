@@ -103,10 +103,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <!-- src_embed readme-sample-createFormTrainingAsyncClientWithAAD -->
  * <pre>
- * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * FormTrainingAsyncClient client = new FormTrainingClientBuilder&#40;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .credential&#40;credential&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-createFormTrainingAsyncClientWithAAD  -->

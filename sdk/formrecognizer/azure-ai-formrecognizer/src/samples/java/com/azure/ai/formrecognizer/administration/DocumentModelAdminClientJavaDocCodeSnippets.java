@@ -45,10 +45,9 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationClientInInitialization() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         DocumentModelAdministrationClient client = new DocumentModelAdministrationClientBuilder()
             .endpoint("{endpoint}")
-            .credential(credential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminClient.initialization
     }

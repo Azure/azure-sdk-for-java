@@ -19,7 +19,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentStyle;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.BinaryData;
@@ -56,10 +55,9 @@ public class DocumentAnalysisClientJavaDocCodeSnippets {
 
     public void useAadAsyncClient() {
         // BEGIN: readme-sample-createDocumentAnalysisAsyncClientWithAAD
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
             .endpoint("{endpoint}")
-            .credential(credential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: readme-sample-createDocumentAnalysisAsyncClientWithAAD
     }

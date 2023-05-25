@@ -70,10 +70,9 @@
  *
  * <!-- src_embed readme-sample-createFormTrainingClientWithAAD -->
  * <pre>
- * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * FormTrainingClient client = new FormTrainingClientBuilder&#40;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .credential&#40;credential&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-createFormTrainingClientWithAAD  -->

@@ -70,10 +70,9 @@
  *
  * <!-- src_embed readme-sample-createDocumentAnalysisClientWithAAD -->
  * <pre>
- * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder&#40;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .credential&#40;credential&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-createDocumentAnalysisClientWithAAD  -->
@@ -144,9 +143,9 @@
  *     &#47;&#47; lines
  *     documentPage.getLines&#40;&#41;.forEach&#40;documentLine -&gt;
  *         System.out.printf&#40;&quot;Line '%s' is within a bounding polygon %s.%n&quot;,
- *         documentLine.getContent&#40;&#41;,
- *         documentLine.getBoundingPolygon&#40;&#41;.stream&#40;&#41;.map&#40;point -&gt; String.format&#40;&quot;[%.2f, %.2f]&quot;, point.getX&#40;&#41;,
- *             point.getY&#40;&#41;&#41;&#41;.collect&#40;Collectors.joining&#40;&quot;, &quot;&#41;&#41;&#41;&#41;;
+ *             documentLine.getContent&#40;&#41;,
+ *             documentLine.getBoundingPolygon&#40;&#41;.stream&#40;&#41;.map&#40;point -&gt; String.format&#40;&quot;[%.2f, %.2f]&quot;, point.getX&#40;&#41;,
+ *                 point.getY&#40;&#41;&#41;&#41;.collect&#40;Collectors.joining&#40;&quot;, &quot;&#41;&#41;&#41;&#41;;
  * &#125;&#41;;
  * </pre>
  * <!-- end readme-sample-prebuiltRead-url -->
@@ -164,7 +163,7 @@
  * SyncPoller&lt;OperationResult, AnalyzeResult&gt; analyzeResultPoller =
  *     documentAnalysisClient.beginAnalyzeDocument&#40;&quot;prebuilt-read&quot;,
  *         BinaryData.fromFile&#40;document.toPath&#40;&#41;,
- *         &#40;int&#41; document.length&#40;&#41;&#41;&#41;;
+ *             &#40;int&#41; document.length&#40;&#41;&#41;&#41;;
  * AnalyzeResult analyzeResult = analyzeResultPoller.getFinalResult&#40;&#41;;
  *
  * System.out.println&#40;&quot;Detected Languages: &quot;&#41;;

@@ -21,7 +21,6 @@ import com.azure.ai.formrecognizer.documentanalysis.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.documentanalysis.models.DocumentTable;
 import com.azure.ai.formrecognizer.documentanalysis.models.OperationResult;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -66,10 +65,9 @@ public class ReadmeSamples {
      */
     public void useAadClient() {
         // BEGIN: readme-sample-createDocumentAnalysisClientWithAAD
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
             .endpoint("{endpoint}")
-            .credential(credential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: readme-sample-createDocumentAnalysisClientWithAAD
     }
@@ -446,11 +444,10 @@ public class ReadmeSamples {
      * Code snippet for getting sync DocumentModelAdministration client using the AzureKeyCredential authentication.
      */
     public void enableLoggingDocumentAnalysisClient() {
-        TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
         // BEGIN: readme-sample-enablehttplogging
         DocumentAnalysisClient client = new DocumentAnalysisClientBuilder()
             .endpoint("{endpoint}")
-            .credential(defaultCredential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
         // END: readme-sample-enablehttplogging

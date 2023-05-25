@@ -84,10 +84,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <!-- src_embed readme-sample-createDocumentAnalysisAsyncClientWithAAD -->
  * <pre>
- * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder&#40;&#41;
  *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
- *     .credential&#40;credential&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end readme-sample-createDocumentAnalysisAsyncClientWithAAD  -->

@@ -181,10 +181,9 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Form Recognizer, see [the associated documentation][aad_authorization].
 
 ```java readme-sample-createDocumentAnalysisClientWithAAD
-TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
     .endpoint("{endpoint}")
-    .credential(credential)
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 

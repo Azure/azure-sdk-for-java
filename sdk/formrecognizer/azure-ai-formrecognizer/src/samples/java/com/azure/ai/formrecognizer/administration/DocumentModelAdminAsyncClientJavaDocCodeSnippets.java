@@ -20,7 +20,6 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Operat
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.polling.AsyncPollResponse;
@@ -43,10 +42,9 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationAsyncClientInitialization() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
             .endpoint("{endpoint}")
-            .credential(credential)
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization
     }
