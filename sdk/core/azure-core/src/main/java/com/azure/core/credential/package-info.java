@@ -18,10 +18,26 @@
  * <p>The library offers several authentication types for authenticating with Azure services. Here are some of the
  * authentication mechanisms supported by the library:</p>
  * <ol>
- *     <li>Shared Access Signature (SAS) Authentication</li>
  *     <li>Azure Active Directory (AAD) Authentication.</li>
- *     <li>API Key Authentication.</li>
+ *     <li>Shared Access Signature (SAS) Authentication</li>
+ *     <li>Key Based Authentication.</li>
  * </ol>
+ *
+ * <h2>Azure Active Directory (AAD) Authentication</h2>
+ *
+ * <p>This type of authentication allows you to authenticate using Azure Active Directory and obtain a token to access
+ * Azure resources. You can authenticate with AAD using client secrets, client certificates, or user credentials.
+ * The library offers {@link com.azure.core.credential.TokenCredential} interface which is accepted as an argument
+ * on the client builders in Azure SDKs where AAD authentication is supported.
+ * You can refer to and include our
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
+ * library in your application as it offers pluggable implementation of
+ * {@link com.azure.core.credential.TokenCredential} for various AAD based authentication mechanism including
+ * service principal, managed identity and more.</p>
+ *
+ * <br/>
+ *
+ * <hr/>
  *
  * <h2>Shared Access Signature (SAS) Authentication</h2>
  *
@@ -34,39 +50,42 @@
  * <p>The following code sample demonstrates the creation of a {@link com.azure.core.credential.AzureSasCredential},
  * using the sas token to configure it.</p>
  *
- * <!-- src_embed com.azure.core.credential.azureNamedKeyCredenialSasKey -->
- * <!-- end com.azure.core.credential.azureNamedKeyCredenialSasKey -->
+ * <!-- src_embed com.azure.core.credential.azureSasCredential -->
+ * <pre>
+ * AzureSasCredential azureSasCredential =
+ *     new AzureSasCredential&#40;&quot;AZURE-SERVICE-SAS-KEY&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.credential.azureSasCredential -->
  *
  * <br/>
  *
  * <hr/>
  *
- * <h2>Azure Active Directory (AAD) Authentication</h2>
+ * <h2>Key Based Authentication</h2>
  *
- * <p>This type of authentication allows you to authenticate using Azure Active Directory and obtain a token to access
- * Azure resources. You can authenticate with AAD using client secrets, client certificates, or user credentials.
- * The library offers {@link com.azure.core.credential.TokenCredential} interface which is accepted as an argument
- * on the client builders in Azure SDKs where AAD authentication is supported. The
- * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
- * offers pluggable implementation of TokenCredential for various AAD based authentication mechanism including
- * service principal, managed identity and more. You can include it in your application.</p>
- *
- * <br/>
- *
- * <hr/>
- *
- * <h2>API Key Authentication</h2>
- *
- * <p>An API key is a unique identifier or token that is associated with a specific user or application. It serves as a
+ * <p>A key is a unique identifier or token that is associated with a specific user or application. It serves as a
  * simple form of authentication to ensure that only authorized clients can access the protected resources or APIs.
  * This authentication is commonly used for accessing certain services, such as Azure Cognitive Services, Azure Search,
  * or Azure Management APIs. Each service may have its own specific way of using API keys, but the general concept
  * remains the same. The library offers {@link com.azure.core.credential.AzureKeyCredential} and
- * {@link com.azure.core.credential.AzureNamedKeyCredential} which can allows you to authenticate using an API key.</p>
+ * {@link com.azure.core.credential.AzureNamedKeyCredential} which can allows you to authenticate using a key.</p>
+ *
+ *
+ * <p><strong>Sample: Azure Key Authentication</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a {@link com.azure.core.credential.AzureKeyCredential},
+ * using the Azure service key to configure it.</p>
+ *
+ * <!-- src_embed com.azure.core.credential.azureKeyCredential -->
+ * <pre>
+ * AzureKeyCredential azureKeyCredential =
+ *     new AzureKeyCredential&#40;&quot;AZURE-SERVICE-KEY&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.credential.azureKeyCredential -->
  *
  * @see com.azure.core.credential.AzureKeyCredential
  * @see com.azure.core.credential.AzureNamedKeyCredential
  * @see com.azure.core.credential.AzureSasCredential
  * @see com.azure.core.credential.TokenCredential
- * */
+ */
 package com.azure.core.credential;
