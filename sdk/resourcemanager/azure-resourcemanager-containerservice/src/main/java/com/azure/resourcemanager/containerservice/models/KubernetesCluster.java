@@ -378,7 +378,9 @@ public interface KubernetesCluster
                  * @param dockerBridgeCidr the CIDR notation IP range assigned to the Docker bridge network; it must not
                  *     overlap with any subnet IP ranges or the Kubernetes service address range
                  * @return the next stage of the definition
+                 * @deprecated The property has no effect since 2019
                  */
+                @Deprecated
                 WithAttach<ParentT> withDockerBridgeCidr(String dockerBridgeCidr);
             }
 
