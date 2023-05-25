@@ -38,11 +38,11 @@ public class AppConfigurationKeyVaultClientFactory {
     public AppConfigurationSecretClientManager getClient(String host) {
         // Check if we already have a client for this key vault, if not we will make
         // one
-    	keyVaultClients.computeIfAbsent(host, key -> 
-    		 new AppConfigurationSecretClientManager(host,
-                    keyVaultClientProvider, keyVaultSecretProvider, secretClientFactory, credentialsConfigured)
+        keyVaultClients.computeIfAbsent(host, key -> 
+    	    new AppConfigurationSecretClientManager(host,keyVaultClientProvider, 
+    	        keyVaultSecretProvider, secretClientFactory, credentialsConfigured)
     	);
-    	return keyVaultClients.get(host);
+        return keyVaultClients.get(host);
     }
 
     public boolean isConfigured() {

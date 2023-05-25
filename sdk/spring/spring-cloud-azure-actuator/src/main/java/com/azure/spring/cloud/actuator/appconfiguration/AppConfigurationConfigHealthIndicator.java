@@ -30,7 +30,7 @@ public final class AppConfigurationConfigHealthIndicator implements HealthIndica
 
         for (String store : refresh.getAppConfigurationStoresHealth().keySet()) {
             if (AppConfigurationStoreHealth.DOWN
-            		== refresh.getAppConfigurationStoresHealth().get(store)) {
+                == refresh.getAppConfigurationStoresHealth().get(store)) {
                 healthy = false;
                 healthBuilder.withDetail(store, AppConfigurationStoreHealth.DOWN.toString());
             } else if (AppConfigurationStoreHealth.NOT_LOADED

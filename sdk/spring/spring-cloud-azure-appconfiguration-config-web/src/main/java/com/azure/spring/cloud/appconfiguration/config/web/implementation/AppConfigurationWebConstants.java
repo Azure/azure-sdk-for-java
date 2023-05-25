@@ -8,7 +8,7 @@ package com.azure.spring.cloud.appconfiguration.config.web.implementation;
 public final class AppConfigurationWebConstants {
 
     private AppConfigurationWebConstants() {
-    	throw new IllegalStateException("You can not initialize AppConfigurationWebConstants utility class.");
+        throw new IllegalStateException("You can not initialize AppConfigurationWebConstants utility class.");
     }
 	
 	/**

@@ -37,7 +37,7 @@ public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
         } catch (ResourceNotFoundException e) {
             builder.up();
         } catch (Exception e) {
-        	throw e;
+            throw e;
         }
     }
 

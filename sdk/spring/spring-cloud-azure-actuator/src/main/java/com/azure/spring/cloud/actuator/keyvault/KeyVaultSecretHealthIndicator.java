@@ -35,9 +35,9 @@ public class KeyVaultSecretHealthIndicator extends AbstractHealthIndicator {
                 .block(timeout);
             builder.up();
         } catch (ResourceNotFoundException e) {
-        	builder.up();
+            builder.up();
         } catch (Exception e) {
-        	throw e;
+            throw e;
         }
     }
 
