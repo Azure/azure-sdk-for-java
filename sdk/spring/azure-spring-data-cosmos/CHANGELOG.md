@@ -1,12 +1,16 @@
 ## Release History
 
-### 3.35.0-beta.1 (Unreleased)
+### 3.36.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+
+#### Other Changes
+
+### 3.35.0 (2023-05-25)
 
 #### Other Changes
 * The module `azure-spring-data-cosmos` was moved from sdk/cosmos to sdk/spring - See [PR 33905](https://github.com/Azure/azure-sdk-for-java/pull/33905)
