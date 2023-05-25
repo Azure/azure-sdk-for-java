@@ -1406,6 +1406,13 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertFalse(registryWithDefaultNetworkRules.isDedicatedDataPointsEnabled());
         Assertions.assertEquals(0, registryWithDefaultNetworkRules.dedicatedDataPointsHostNames().size());
 
+        registryWithDefaultNetworkRules.update()
+            .disablePublicNetworkAccess()
+            .apply();
+
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, registryWithDefaultNetworkRules.publicNetworkAccess());
+        Assertions.assertTrue(registryWithDefaultNetworkRules.canAccessFromTrustedServices());
+
         // create registry with custom network rule settings
         final String acrName2 = generateRandomResourceName("acr", 10);
 
