@@ -10,11 +10,12 @@ public final class AppConfigurationWebConstants {
     private AppConfigurationWebConstants() {
         throw new IllegalStateException("You can not initialize AppConfigurationWebConstants utility class.");
     }
-    
-	/**
+
+    /**
      * Validation Code Key value
      */
     public static final String VALIDATION_CODE_KEY = "validationCode";
+    
     /**
      * Validation Topic for push refresh.
      */

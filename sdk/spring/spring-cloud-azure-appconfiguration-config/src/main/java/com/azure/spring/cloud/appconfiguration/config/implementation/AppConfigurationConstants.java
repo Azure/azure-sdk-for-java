@@ -11,7 +11,7 @@ public final class AppConfigurationConstants {
         throw new IllegalStateException("You can not initialize AppConfigurationConstants utility class.");
     }
     
-	/**
+    /**
      * App Configurations Feature Flag Content Type
      */
     public static final String FEATURE_FLAG_CONTENT_TYPE = "application/vnd.microsoft.appconfig.ff+json;charset=utf-8";
