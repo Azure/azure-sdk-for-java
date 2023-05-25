@@ -36,7 +36,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -158,7 +157,7 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
@@ -183,7 +182,7 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
@@ -208,7 +207,7 @@ public final class CallAutomationAsyncClient {
         CreateCallRequestInternal request = new CreateCallRequestInternal()
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallOptions.getCallInvite().getSourceCallerIdNumber()))
             .setSourceDisplayName(createCallOptions.getCallInvite().getSourceDisplayName())
-            .setSourceIdentity(sourceIdentity)
+            .setSource(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setOperationContext(createCallOptions.getOperationContext());
@@ -223,7 +222,7 @@ public final class CallAutomationAsyncClient {
         CreateCallRequestInternal request = new CreateCallRequestInternal()
             .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(createCallGroupOptions.getSourceCallIdNumber()))
             .setSourceDisplayName(createCallGroupOptions.getSourceDisplayName())
-            .setSourceIdentity(sourceIdentity)
+            .setSource(sourceIdentity)
             .setTargets(targetsModel)
             .setCallbackUri(createCallGroupOptions.getCallbackUrl())
             .setOperationContext(createCallGroupOptions.getOperationContext());
@@ -267,13 +266,13 @@ public final class CallAutomationAsyncClient {
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
                 .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                 .setCallbackUri(answerCallOptions.getCallbackUrl())
-                .setAnsweredByIdentifier(sourceIdentity)
+                .setAnsweredBy(sourceIdentity)
                 .setOperationContext(answerCallOptions.getOperationContext());
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
@@ -329,7 +328,7 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -376,7 +375,7 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

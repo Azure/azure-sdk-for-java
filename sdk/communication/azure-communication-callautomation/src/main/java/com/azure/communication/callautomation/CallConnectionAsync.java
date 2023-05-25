@@ -7,7 +7,6 @@ import com.azure.communication.callautomation.implementation.CallConnectionsImpl
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
-import com.azure.communication.callautomation.implementation.accesshelpers.ListParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TransferCallResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
@@ -21,7 +20,6 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
@@ -33,10 +31,10 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
@@ -141,7 +139,7 @@ public final class CallConnectionAsync {
             return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(
                     callConnectionId,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context)
                 : callConnectionInternal.hangupCallWithResponseAsync(callConnectionId, context));
         } catch (RuntimeException ex) {
@@ -193,34 +191,28 @@ public final class CallConnectionAsync {
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Result of getting all participants in the call.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ListParticipantsResult> listParticipants() {
-        return listParticipantsWithResponse().flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Get all participants.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with result of getting all participants in the call.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ListParticipantsResult>> listParticipantsWithResponse() {
-        return withContext(this::listParticipantsWithResponseInternal);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<CallParticipant> listParticipants() {
+        try {
+            return new PagedFlux<>(
+                () -> withContext(context ->  this.callConnectionInternal.getParticipantsSinglePageAsync(
+                        callConnectionId, context)),
+                nextLink -> withContext(context -> this.callConnectionInternal.getParticipantsNextSinglePageAsync(
+                        nextLink, context)))
+                .mapPage(CallParticipantConverter::convert);
+        } catch (RuntimeException ex) {
+            return new PagedFlux<>(() -> monoError(logger, ex));
+        }
     }
 
-    Mono<Response<ListParticipantsResult>> listParticipantsWithResponseInternal(Context context) {
+    PagedFlux<CallParticipant> listParticipantsWithContext(Context context) {
         try {
-            context = context == null ? Context.NONE : context;
-
-            return callConnectionInternal.getParticipantsWithResponseAsync(callConnectionId, context)
-                .map(response -> new SimpleResponse<>(response,
-                    ListParticipantsResponseConstructorProxy.create(response.getValue())));
+            final Context serviceContext = context == null ? Context.NONE : context;
+            return callConnectionInternal.getParticipantsAsync(callConnectionId, serviceContext).mapPage(CallParticipantConverter::convert);
         } catch (RuntimeException ex) {
-            return monoError(logger, ex);
+            return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
@@ -237,11 +229,11 @@ public final class CallConnectionAsync {
     public Mono<TransferCallResult> transferCallToParticipant(CommunicationIdentifier targetParticipant) {
 
         if (targetParticipant instanceof CommunicationUserIdentifier) {
-            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((CommunicationUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((CommunicationUserIdentifier) targetParticipant)).flatMap(FluxUtil::toMono);
         } else if (targetParticipant instanceof PhoneNumberIdentifier) {
-            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((PhoneNumberIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((PhoneNumberIdentifier) targetParticipant)).flatMap(FluxUtil::toMono);
         } else if (targetParticipant instanceof MicrosoftTeamsUserIdentifier) {
-            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((MicrosoftTeamsUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
+            return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((MicrosoftTeamsUserIdentifier) targetParticipant)).flatMap(FluxUtil::toMono);
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException("targetParticipant type is invalid."));
         }
@@ -274,7 +266,7 @@ public final class CallConnectionAsync {
                     callConnectionId,
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context).map(response -> new SimpleResponse<>(response, TransferCallResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -325,7 +317,7 @@ public final class CallConnectionAsync {
                     callConnectionId,
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context
             ).map(response -> new SimpleResponse<>(response, AddParticipantResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
@@ -371,7 +363,7 @@ public final class CallConnectionAsync {
                     callConnectionId,
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context).map(response -> new SimpleResponse<>(response, RemoveParticipantResponseConstructorProxy.create(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
