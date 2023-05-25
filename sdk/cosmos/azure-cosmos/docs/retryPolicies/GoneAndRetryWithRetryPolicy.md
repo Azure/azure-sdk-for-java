@@ -16,7 +16,6 @@
 
 ## Status code specific retry frequency for `GoneException`
 
-
 | Status Code / Sub-status Code | Retry Window | Default Retry Window | Backoff multiplier | Max backoff | Max retries |
 |:------------------------------|--------------|----------------------|--------------------|-------------|-------------|
 | 410/*                         | N/A          | 30 s                 | 2                  | 15 s        | N/A         |
