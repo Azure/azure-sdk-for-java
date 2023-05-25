@@ -4,7 +4,9 @@
 package com.azure.core.http.vertx;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
@@ -12,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -31,6 +34,8 @@ import java.util.Objects;
  * {@link HttpClient} implementation for the Vert.x {@link io.vertx.core.http.HttpClient}.
  */
 class VertxAsyncHttpClient implements HttpClient {
+
+    private static final ClientLogger LOGGER = new ClientLogger(VertxAsyncHttpClient.class);
     private final Scheduler scheduler;
     final io.vertx.core.http.HttpClient client;
 
@@ -67,24 +72,29 @@ class VertxAsyncHttpClient implements HttpClient {
             }
 
             HttpClientRequest vertxHttpRequest = requestResult.result();
-            vertxHttpRequest.exceptionHandler(sink::error);
 
-            request.getHeaders().stream()
-                .forEach(header -> vertxHttpRequest.putHeader(header.getName(), header.getValuesList()));
 
-            if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
+            // Assign Azure HTTP request to be a Vert.X HTTP request type before sending request out.
+            HttpHeaders headers = request.getHeaders();
+            if (headers == null || headers.get(HttpHeaderName.CONTENT_LENGTH) == null) {
                 vertxHttpRequest.setChunked(true);
             }
 
+            for (HttpHeader header : headers) {
+                vertxHttpRequest.putHeader(header.getName(), header.getValuesList());
+            }
+
+
+            // Setup callback handler
             vertxHttpRequest.response(event -> {
                 if (event.succeeded()) {
                     HttpClientResponse vertxHttpResponse = event.result();
-                    vertxHttpResponse.exceptionHandler(sink::error);
 
                     // TODO (alzimmer)
                     // For now Vertx will always use a buffered response until reliability issues when using streaming
                     // can be resolved.
                     vertxHttpResponse.body(bodyEvent -> {
+
                         if (bodyEvent.succeeded()) {
                             sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyEvent.result()));
                         } else {
@@ -92,7 +102,9 @@ class VertxAsyncHttpClient implements HttpClient {
                         }
                     });
                 } else {
-                    sink.error(event.cause());
+                    Throwable cause = event.cause();
+                    LOGGER.error("-----------=================What Cause it ============ "  + cause);
+                    sink.error(cause);
                 }
             });
 
