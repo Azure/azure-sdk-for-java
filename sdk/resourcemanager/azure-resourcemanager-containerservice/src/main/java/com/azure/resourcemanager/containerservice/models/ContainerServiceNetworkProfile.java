@@ -64,13 +64,6 @@ public final class ContainerServiceNetworkProfile {
     private String dnsServiceIp;
 
     /*
-     * A CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or
-     * the Kubernetes service address range.
-     */
-    @JsonProperty(value = "dockerBridgeCidr")
-    private String dockerBridgeCidr;
-
-    /*
      * The outbound (egress) routing method.
      *
      * This can only be set at cluster creation time and cannot be changed later. For more information see [egress
@@ -296,28 +289,6 @@ public final class ContainerServiceNetworkProfile {
      */
     public ContainerServiceNetworkProfile withDnsServiceIp(String dnsServiceIp) {
         this.dnsServiceIp = dnsServiceIp;
-        return this;
-    }
-
-    /**
-     * Get the dockerBridgeCidr property: A CIDR notation IP range assigned to the Docker bridge network. It must not
-     * overlap with any Subnet IP ranges or the Kubernetes service address range.
-     *
-     * @return the dockerBridgeCidr value.
-     */
-    public String dockerBridgeCidr() {
-        return this.dockerBridgeCidr;
-    }
-
-    /**
-     * Set the dockerBridgeCidr property: A CIDR notation IP range assigned to the Docker bridge network. It must not
-     * overlap with any Subnet IP ranges or the Kubernetes service address range.
-     *
-     * @param dockerBridgeCidr the dockerBridgeCidr value to set.
-     * @return the ContainerServiceNetworkProfile object itself.
-     */
-    public ContainerServiceNetworkProfile withDockerBridgeCidr(String dockerBridgeCidr) {
-        this.dockerBridgeCidr = dockerBridgeCidr;
         return this;
     }
 
