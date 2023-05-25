@@ -91,7 +91,7 @@ public class VertxAsyncHttpClientBuilderTests {
                 .assertNext(response -> assertEquals(200, response.getStatusCode()))
                 .verifyComplete();
 
-            assertEquals(100000, options.getConnectTimeout());
+            assertEquals(10000, options.getConnectTimeout());
             assertEquals(60, options.getIdleTimeout());
             assertEquals(60, options.getReadIdleTimeout());
             assertEquals(60, options.getWriteIdleTimeout());

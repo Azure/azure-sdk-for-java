@@ -83,7 +83,6 @@ class VertxAsyncHttpClient implements HttpClient {
                     vertxRequest.setChunked(true);
                 }
 
-
                 return vertxRequest;
             })
             .flatMap(vertxRequest -> sendBody(sink, request, progressReporter, vertxRequest))
@@ -140,7 +139,7 @@ class VertxAsyncHttpClient implements HttpClient {
                     .doOnError(error -> {
                         // If the read stream errors propagate the exception through Reactor and close the active HTTP
                         // connection.
-                        vertxRequest.connection().close();
+//                        vertxRequest.connection().close();
                         sink.error(error);
                     })
                     .subscribeOn(scheduler)
