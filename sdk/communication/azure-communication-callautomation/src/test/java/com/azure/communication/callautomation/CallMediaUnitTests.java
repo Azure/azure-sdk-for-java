@@ -37,11 +37,11 @@ public class CallMediaUnitTests {
         callMedia = callConnection.getCallMedia();
 
         playFileSource = new FileSource();
-        playFileSource.setPlaySourceId("playTextSourceId");
+        playFileSource.setPlaySourceCacheId("playTextSourceId");
         playFileSource.setUrl("filePath");
 
         playTextSource = new TextSource();
-        playTextSource.setPlaySourceId("playTextSourceId");
+        playTextSource.setPlaySourceCacheId("playTextSourceId");
         playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");

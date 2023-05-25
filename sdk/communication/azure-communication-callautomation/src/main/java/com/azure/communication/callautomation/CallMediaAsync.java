@@ -291,7 +291,7 @@ public final class CallMediaAsync {
         PlaySourceInternal playSourceInternal = new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.FILE)
             .setFileSource(fileSourceInternal)
-            .setPlaySourceCacheId(playSource.getPlaySourceId());
+            .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
         return playSourceInternal;
     }
 
@@ -310,7 +310,7 @@ public final class CallMediaAsync {
         PlaySourceInternal playSourceInternal = new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.TEXT)
             .setTextSource(textSourceInternal)
-            .setPlaySourceCacheId(playSource.getPlaySourceId());
+            .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
         return playSourceInternal;
     }
 
@@ -319,7 +319,7 @@ public final class CallMediaAsync {
         PlaySourceInternal playSourceInternal = new PlaySourceInternal()
             .setSourceType(PlaySourceTypeInternal.SSML)
             .setSsmlSource(ssmlSourceInternal)
-            .setPlaySourceCacheId(playSource.getPlaySourceId());
+            .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
         return playSourceInternal;
     }
 

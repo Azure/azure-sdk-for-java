@@ -50,11 +50,11 @@ public class CallMediaAsyncUnitTests {
         callMedia = callConnection.getCallMediaAsync();
 
         playFileSource = new FileSource();
-        playFileSource.setPlaySourceId("playFileSourceId");
+        playFileSource.setPlaySourceCacheId("playFileSourceId");
         playFileSource.setUrl("filePath");
 
         playTextSource = new TextSource();
-        playTextSource.setPlaySourceId("playTextSourceId");
+        playTextSource.setPlaySourceCacheId("playTextSourceId");
         playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
