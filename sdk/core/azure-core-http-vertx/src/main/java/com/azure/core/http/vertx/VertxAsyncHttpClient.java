@@ -17,12 +17,15 @@ import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpClosedException;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.retry.Retry;
+import reactor.util.retry.RetrySpec;
 
 import java.nio.ByteBuffer;
 import java.util.Objects;
@@ -60,7 +63,7 @@ class VertxAsyncHttpClient implements HttpClient {
             .setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
             .setAbsoluteURI(request.getUrl());
 
-        return Mono.create(sink -> client.request(options, requestResult -> {
+        Mono<HttpResponse> httpResponseMono = Mono.create(sink -> client.request(options, requestResult -> {
             if (requestResult.failed()) {
                 sink.error(requestResult.cause());
                 return;
@@ -116,10 +119,13 @@ class VertxAsyncHttpClient implements HttpClient {
                         sink::error, vertxHttpRequest::end);
             }
         }));
-    }
 
-    @Override
-    public HttpResponse sendSync(HttpRequest request, Context context) {
-        return send(request, context).block();
+        // retry on HttpClosedException
+        RetrySpec retrySpec = Retry
+            .max(1)
+            .filter(throwable -> throwable instanceof HttpClosedException)
+            .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure());
+
+        return httpResponseMono.retryWhen(retrySpec);
     }
 }
