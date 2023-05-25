@@ -169,27 +169,34 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(expectedFinishReason, actual.getFinishReason().toString());
     }
 
-    static void assertChatCompletions(int[] indexArray, ChatRole[] chatRoleArray, ChatCompletions actual) {
+    static void assertChatCompletions(int choiceCount, ChatRole[] chatRoleArray, ChatCompletions actual) {
         List<ChatChoice> choices = actual.getChoices();
         assertNotNull(choices);
         assertTrue(choices.size() > 0);
-        assertChatChoices(indexArray, chatRoleArray, choices);
+        assertChatChoices(choiceCount, "stop", chatRoleArray, choices);
         assertNotNull(actual.getUsage());
     }
 
-    static void assertChatChoices(int[] indexArray, ChatRole[] chatRoleArray, List<ChatChoice> actual) {
-        assertEquals(indexArray.length, actual.size());
+    static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole[] chatRoleArray, ChatCompletions actual) {
+        List<ChatChoice> choices = actual.getChoices();
+        assertNotNull(choices);
+        assertTrue(choices.size() > 0);
+        assertChatChoices(choiceCount, expectedFinishReason, chatRoleArray, choices);
+        assertNotNull(actual.getUsage());
+    }
+
+    static void assertChatChoices(int choiceCount, String expectedFinishReason, ChatRole[] chatRoleArray, List<ChatChoice> actual) {
+        assertEquals(choiceCount, actual.size());
         for (int i = 0; i < actual.size(); i++) {
-            assertChatChoice(indexArray[i], chatRoleArray[i], actual.get(i));
+            assertChatChoice(i, expectedFinishReason, chatRoleArray[i], actual.get(i));
         }
     }
 
-    static void assertChatChoice(int index, ChatRole chatRole, ChatChoice actual) {
+    static void assertChatChoice(int index, String expectedFinishReason, ChatRole chatRole, ChatChoice actual) {
         assertEquals(index, actual.getIndex());
         assertEquals(chatRole, actual.getMessage().getRole());
         assertNotNull(actual.getMessage().getContent());
-        // TODO: verify if the finish reason is "stop" or "stopped"
-//        assertEquals(CompletionsFinishReason.STOPPED, actual.getFinishReason());
+        assertEquals(expectedFinishReason, actual.getFinishReason().toString());
     }
 
     static void assertEmbeddings(Embeddings actual) {
