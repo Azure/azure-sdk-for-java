@@ -34,7 +34,7 @@ import java.util.Objects;
 
 
 /**
- * The CertificateClient provides synchronous methods to manage {@link KeyVaultCertificate certifcates} in the
+ * The {@link CertificateClient} provides synchronous methods to manage {@link KeyVaultCertificate certifcates} in the
  * Azure Key Vault. The client supports creating, retrieving, updating, merging, deleting, purging, backing up,
  * restoring and listing the {@link KeyVaultCertificate certificates}. The client also supports listing
  * {@link DeletedCertificate deleted certificates} for a soft-delete enabled Azure Key Vault.
@@ -81,7 +81,7 @@ import java.util.Objects;
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously create a certificate in the Azure KeyVault,
- * using the {@link CertificateClient#beginCreateCertificate(String, CertificatePolicy)}.</p>
+ * using the {@link CertificateClient#beginCreateCertificate(String, CertificatePolicy)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
  * <pre>
@@ -95,6 +95,8 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
  *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link CertificateAsyncClient}.</p>
+ *
  * <br/>
  *
  * <hr/>
@@ -104,7 +106,7 @@ import java.util.Objects;
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously retrieve a certificate from the Azure KeyVault, using
- * the {@link CertificateClient#getCertificate(String)}.</p>
+ * the {@link CertificateClient#getCertificate(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string -->
  * <pre>
@@ -112,6 +114,8 @@ import java.util.Objects;
  * System.out.printf&#40;&quot;Received policy with subject name %s%n&quot;, policy.getSubject&#40;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string -->
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link CertificateAsyncClient}.</p>
  *
  * <br/>
  *
@@ -122,7 +126,7 @@ import java.util.Objects;
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously delete a certificate from the Azure
- * KeyVault, using the {@link CertificateClient#beginDeleteCertificate(String)}.</p>
+ * KeyVault, using the {@link CertificateClient#beginDeleteCertificate(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
  * <pre>
@@ -135,6 +139,8 @@ import java.util.Objects;
  * deleteCertPoller.waitForCompletion&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link CertificateAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.certificates
  * @see CertificateClientBuilder

@@ -107,7 +107,7 @@
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously create a certificate in the Azure KeyVault,
- * using the {@link com.azure.security.keyvault.certificates.CertificateClient#beginCreateCertificate(java.lang.String, com.azure.security.keyvault.certificates.models.CertificatePolicy)}.</p>
+ * using the {@link com.azure.security.keyvault.certificates.CertificateClient#beginCreateCertificate(java.lang.String, com.azure.security.keyvault.certificates.models.CertificatePolicy)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
  * <pre>
@@ -121,22 +121,8 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously create a certificate in the Azuer KeyVault,
- * using the {@link com.azure.security.keyvault.certificates.CertificateAsyncClient#beginCreateCertificate(java.lang.String, com.azure.security.keyvault.certificates.models.CertificatePolicy)}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
- * <pre>
- * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
- * certificateAsyncClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;
- *     .subscribe&#40;pollResponse -&gt; &#123;
- *         System.out.println&#40;&quot;---------------------------------------------------------------------------------&quot;&#41;;
- *         System.out.println&#40;pollResponse.getStatus&#40;&#41;&#41;;
- *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
- *         System.out.println&#40;pollResponse.getValue&#40;&#41;.getStatusDetails&#40;&#41;&#41;;
- *     &#125;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient}.</p>
  *
  * <br/>
  *
@@ -158,19 +144,8 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.getCertificatePolicy#string -->
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously retrieve a certificate from the Azure KeyVault, using
- * the {@link com.azure.security.keyvault.certificates.CertificateAsyncClient#getCertificate(java.lang.String)}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String -->
- * <pre>
- * certificateAsyncClient.getCertificate&#40;&quot;certificateName&quot;&#41;
- *     .contextWrite&#40;Context.of&#40;key1, value1, key2, value2&#41;&#41;
- *     .subscribe&#40;certificateResponse -&gt;
- *         System.out.printf&#40;&quot;Certificate is returned with name %s and secretId %s %n&quot;,
- *             certificateResponse.getProperties&#40;&#41;.getName&#40;&#41;, certificateResponse.getSecretId&#40;&#41;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.getCertificate#String -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient}.</p>
  *
  * <br/>
  *
@@ -183,7 +158,7 @@
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously delete a certificate from the Azure
- * KeyVault, using the {@link com.azure.security.keyvault.certificates.CertificateClient#beginDeleteCertificate(java.lang.String)}.</p>
+ * KeyVault, using the {@link com.azure.security.keyvault.certificates.CertificateClient#beginDeleteCertificate(java.lang.String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
  * <pre>
@@ -197,20 +172,8 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously delete a certificate from the Azure
- * KeyVault, using the {@link com.azure.security.keyvault.certificates.CertificateAsyncClient#beginDeleteCertificate(java.lang.String)}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String -->
- * <pre>
- * certificateAsyncClient.beginDeleteCertificate&#40;&quot;certificateName&quot;&#41;
- *     .subscribe&#40;pollResponse -&gt; &#123;
- *         System.out.println&#40;&quot;Delete Status: &quot; + pollResponse.getStatus&#40;&#41;.toString&#40;&#41;&#41;;
- *         System.out.println&#40;&quot;Delete Certificate Name: &quot; + pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
- *         System.out.println&#40;&quot;Certificate Delete Date: &quot; + pollResponse.getValue&#40;&#41;.getDeletedOn&#40;&#41;.toString&#40;&#41;&#41;;
- *     &#125;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.beginDeleteCertificate#String -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.security.keyvault.certificates.CertificateAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.certificates.CertificateClient
  * @see com.azure.security.keyvault.certificates.CertificateAsyncClient
