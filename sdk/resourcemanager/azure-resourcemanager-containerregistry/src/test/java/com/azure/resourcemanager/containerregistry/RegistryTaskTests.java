@@ -1403,8 +1403,8 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, registryWithDefaultNetworkRules.publicNetworkAccess());
         Assertions.assertTrue(registryWithDefaultNetworkRules.canAccessFromTrustedServices());
         Assertions.assertEquals(DefaultAction.ALLOW, registryWithDefaultNetworkRules.networkRuleSet().defaultAction());
-        Assertions.assertFalse(registryWithDefaultNetworkRules.isDedicatedDataPointsEnabled());
-        Assertions.assertEquals(0, registryWithDefaultNetworkRules.dedicatedDataPointsHostNames().size());
+        Assertions.assertFalse(registryWithDefaultNetworkRules.isDedicatedDataEndpointsEnabled());
+        Assertions.assertEquals(0, registryWithDefaultNetworkRules.dedicatedDataEndpointsHostNames().size());
 
         registryWithDefaultNetworkRules.update()
             .disablePublicNetworkAccess()
@@ -1425,7 +1425,7 @@ public class RegistryTaskTests extends RegistryTest {
             .withPremiumSku()
             .withAccessFromSelectedNetworks()
             .withAccessFromIpAddressRange(cdir)
-            .enableDedicatedDataPoints()
+            .enableDedicatedDataEndpoints()
             .withAccessFromTrustedServices()
             .create();
 
@@ -1434,7 +1434,7 @@ public class RegistryTaskTests extends RegistryTest {
         Assertions.assertEquals(1, networkRuleSet.ipRules().size());
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, registry.publicNetworkAccess());
 
-        Assertions.assertTrue(registry.isDedicatedDataPointsEnabled());
+        Assertions.assertTrue(registry.isDedicatedDataEndpointsEnabled());
         Assertions.assertTrue(registry.canAccessFromTrustedServices());
 
         registry.update()
@@ -1455,10 +1455,10 @@ public class RegistryTaskTests extends RegistryTest {
 
         // disable dedicated endpoint
         registry.update()
-            .disableDedicatedDataPoints()
+            .disableDedicatedDataEndpoints()
             .apply();
-        Assertions.assertFalse(registry.isDedicatedDataPointsEnabled());
-        Assertions.assertEquals(0, registry.dedicatedDataPointsHostNames().size());
+        Assertions.assertFalse(registry.isDedicatedDataEndpointsEnabled());
+        Assertions.assertEquals(0, registry.dedicatedDataEndpointsHostNames().size());
 
         // deny access from trusted services
         registry.update()

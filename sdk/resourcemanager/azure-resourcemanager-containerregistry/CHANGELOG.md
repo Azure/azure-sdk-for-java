@@ -1,20 +1,14 @@
 # Release History
 
-## 2.27.0-beta.1 (Unreleased)
+## 2.27.0 (2023-05-25)
 
 ### Features Added
 
 - Supported private endpoint connection in `Registry`.
-- Supported `enableDedicatedDataPoints` in `Registry`.
+- Supported `enableDedicatedDataEndpoints` in `Registry`.
 - Supported `withAccessFromTrustedServices` in `Registry`.
 - Supported `withAccessFromSelectedNetworks` and `withAccessFromAllNetworks` in `Registry`.
 - Supported `withAccessFromIpAddress` and `withAccessFromIpAddressRange` in `Registry`.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
 
 ## 2.26.0 (2023-04-21)
 

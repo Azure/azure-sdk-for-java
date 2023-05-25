@@ -220,12 +220,12 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
-    public boolean isDedicatedDataPointsEnabled() {
+    public boolean isDedicatedDataEndpointsEnabled() {
         return ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().dataEndpointEnabled());
     }
 
     @Override
-    public List<String> dedicatedDataPointsHostNames() {
+    public List<String> dedicatedDataEndpointsHostNames() {
         return this.innerModel().dataEndpointHostNames() == null
             ? Collections.emptyList() : Collections.unmodifiableList(this.innerModel().dataEndpointHostNames());
     }
@@ -366,7 +366,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
-    public RegistryImpl enableDedicatedDataPoints() {
+    public RegistryImpl enableDedicatedDataEndpoints() {
         if (isInCreateMode()) {
             this.innerModel().withDataEndpointEnabled(true);
         } else {
@@ -376,7 +376,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
-    public RegistryImpl disableDedicatedDataPoints() {
+    public RegistryImpl disableDedicatedDataEndpoints() {
         if (isInCreateMode()) {
             this.innerModel().withDataEndpointEnabled(false);
         } else {
