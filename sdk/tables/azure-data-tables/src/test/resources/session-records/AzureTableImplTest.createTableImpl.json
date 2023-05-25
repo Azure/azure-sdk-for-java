@@ -1,0 +1,116 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/Tables",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "30",
+        "Content-Type": "application/json;odata=nometadata",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 14 Apr 2023 20:34:55 GMT",
+        "Prefer": "return-no-content",
+        "User-Agent": "ReactorNetty/dev",
+        "x-ms-client-request-id": "baee5455-b42d-46c8-be0b-66b19c1624f4",
+        "x-ms-version": "2020-12-06"
+      },
+      "RequestBody": {
+        "TableName": "test299838fd91"
+      },
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "DataServiceId": "https://REDACTED/Tables(\u0027test299838fd91\u0027)",
+        "Date": "Fri, 14 Apr 2023 20:34:55 GMT",
+        "Location": "https://REDACTED/Tables(\u0027test299838fd91\u0027)",
+        "Preference-Applied": "return-no-content",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "baee5455-b42d-46c8-be0b-66b19c1624f4",
+        "x-ms-request-id": "b2f2b0a4-b002-002a-0610-6fab24000000",
+        "x-ms-version": "2020-12-06"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/Tables?REDACTED",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "DataServiceVersion": "3.0",
+        "Date": "Fri, 14 Apr 2023 20:34:56 GMT",
+        "User-Agent": "ReactorNetty/dev",
+        "x-ms-client-request-id": "e71352c2-0046-4192-8c03-e1b2d7584f23",
+        "x-ms-version": "2020-12-06"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "x-ms-client-request-id",
+        "Cache-Control": "no-cache",
+        "Content-Type": "application/json; odata=minimalmetadata; streaming=true; charset=utf-8",
+        "Date": "Fri, 14 Apr 2023 20:34:55 GMT",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "Transfer-Encoding": "chunked",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "e71352c2-0046-4192-8c03-e1b2d7584f23",
+        "x-ms-request-id": "b2f2b0b6-b002-002a-1710-6fab24000000",
+        "x-ms-version": "2020-12-06"
+      },
+      "ResponseBody": {
+        "odata.metadata": "https://REDACTED/$metadata#Tables",
+        "value": [
+          {
+            "TableName": "test299838fd91"
+          }
+        ]
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/Tables(\u0027test299838fd91\u0027)",
+      "RequestMethod": "DELETE",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Date": "Fri, 14 Apr 2023 20:34:56 GMT",
+        "User-Agent": "ReactorNetty/dev",
+        "x-ms-client-request-id": "b3df41b2-79de-4f04-869c-cf9d0c3aa59b",
+        "x-ms-version": "2020-12-06"
+      },
+      "RequestBody": null,
+      "StatusCode": 204,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Date": "Fri, 14 Apr 2023 20:34:55 GMT",
+        "Server": [
+          "Windows-Azure-Table/1.0",
+          "Microsoft-HTTPAPI/2.0"
+        ],
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-client-request-id": "b3df41b2-79de-4f04-869c-cf9d0c3aa59b",
+        "x-ms-request-id": "b2f2b0c4-b002-002a-2510-6fab24000000",
+        "x-ms-version": "2020-12-06"
+      },
+      "ResponseBody": null
+    }
+  ],
+  "Variables": {
+    "0": "test299838fd91",
+    "1": "baee5455-b42d-46c8-be0b-66b19c1624f4",
+    "2": "e71352c2-0046-4192-8c03-e1b2d7584f23",
+    "3": "b3df41b2-79de-4f04-869c-cf9d0c3aa59b"
+  }
+}

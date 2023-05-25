@@ -1,0 +1,165 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/certificates/issuers/testissuer5598119d48?api-version=7.4",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "97",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 02:52:01 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://vault.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "1c208b9f-b429-44a9-b1ec-37af1b151615"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Unauthorized",
+          "message": "AKV10000: Request is missing a Bearer or PoP token."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/certificates/issuers/testissuer5598119d48?api-version=7.4",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "273",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": {
+        "provider": "Test",
+        "credentials": {
+          "account_id": "issuerAccountId",
+          "pwd": "fakePasswordPlaceholder"
+        },
+        "org_details": {
+          "id": "orgId",
+          "admin_details": [
+            {
+              "first_name": "first",
+              "last_name": "last",
+              "email": "first.last@hotmail.com",
+              "phone": "000-000-0000"
+            }
+          ]
+        },
+        "attributes": {
+          "enabled": true
+        }
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "380",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 02:52:02 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "f48b06a2-bad3-4e8d-84cf-6707785ef502"
+      },
+      "ResponseBody": {
+        "id": "https://azkvrecordtests.vault.azure.net/certificates/issuers/testissuer5598119d48",
+        "provider": "Test",
+        "credentials": {
+          "account_id": "issuerAccountId"
+        },
+        "org_details": {
+          "id": "orgId",
+          "zip": 0,
+          "admin_details": [
+            {
+              "first_name": "first",
+              "last_name": "last",
+              "email": "first.last@hotmail.com",
+              "phone": "000-000-0000"
+            }
+          ]
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1681267922,
+          "updated": 1681267922
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/certificates/issuers/testissuer5598119d48?api-version=7.4",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "380",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 02:52:01 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "b1c3d942-e3dd-4836-9232-0c3cc81a0510"
+      },
+      "ResponseBody": {
+        "id": "https://azkvrecordtests.vault.azure.net/certificates/issuers/testissuer5598119d48",
+        "provider": "Test",
+        "credentials": {
+          "account_id": "issuerAccountId"
+        },
+        "org_details": {
+          "id": "orgId",
+          "zip": 0,
+          "admin_details": [
+            {
+              "first_name": "first",
+              "last_name": "last",
+              "email": "first.last@hotmail.com",
+              "phone": "000-000-0000"
+            }
+          ]
+        },
+        "attributes": {
+          "enabled": true,
+          "created": 1681267922,
+          "updated": 1681267922
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "testissuer5598119d48"
+  }
+}

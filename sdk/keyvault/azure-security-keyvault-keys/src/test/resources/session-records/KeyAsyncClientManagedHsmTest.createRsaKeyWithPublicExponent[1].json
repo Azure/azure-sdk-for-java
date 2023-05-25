@@ -1,0 +1,100 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/keys/testrsakey718891e/create?api-version=7.4",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "bc2dda60-d8e0-11ed-bed5-000d3a602e9a",
+        "x-ms-server-latency": "1"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/testrsakey718891e/create?api-version=7.4",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "122",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": {
+        "kty": "RSA-HSM",
+        "key_size": 2048,
+        "attributes": {
+          "nbf": 949237199,
+          "exp": 2527113600
+        },
+        "tags": {
+          "foo": "baz"
+        },
+        "public_exponent": 3
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "780",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
+        "x-ms-keyvault-region": "northcentralus",
+        "x-ms-request-id": "bc547c4c-d8e0-11ed-8380-000d3a602e9a",
+        "x-ms-server-latency": "1364"
+      },
+      "ResponseBody": {
+        "attributes": {
+          "created": 1681269526,
+          "enabled": true,
+          "exp": 2527113600,
+          "exportable": false,
+          "nbf": 949237199,
+          "recoverableDays": 7,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "updated": 1681269526
+        },
+        "key": {
+          "e": "Aw",
+          "key_ops": [
+            "wrapKey",
+            "decrypt",
+            "encrypt",
+            "unwrapKey",
+            "sign",
+            "verify"
+          ],
+          "kid": "https://azkvrecordtestshsm.managedhsm.azure.net/keys/testrsakey718891e/e8d18b5a69b046b88cc525a52838d236",
+          "kty": "RSA-HSM",
+          "n": "kBEKPleJ7g9RKPxE6INXuaFVv9mIBYC1TZbZ5XeTu-Safa-i2wdpFL4B_o-mB7dgI_eadPhGZoxF5iCaMpLc7Z0SoNx3B_I-On6yzH467_8wz1-Dm6HQzZGWa4rESfnAvj_BpTZCFKSXfcZWI06WbLfxCK-hlZdoCfRN57GsCgX70RLbw25FOoi1IsBfh741CMsEnbCYLhbMjFUbtm017r3D9l8GmzhHGieVVVbmsO8UlVXGwu7i5dTYxo2WEBwhoLKsuI6iren_oLlAzrMavB1cJZjWGcSYLuHu-XRIXKR5clAvTyK_5-x9BoVqWoyzfp1hQSrkomrDSJ0Bt17D8w"
+        },
+        "tags": {
+          "foo": "baz"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "testrsakey718891e"
+  }
+}

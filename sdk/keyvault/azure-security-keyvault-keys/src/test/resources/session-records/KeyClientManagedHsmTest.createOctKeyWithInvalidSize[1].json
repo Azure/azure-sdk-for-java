@@ -1,0 +1,75 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/keys/testoctkey99092f7/create?api-version=7.4",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "0",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.microsoftonline.com/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://managedhsm.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "bc6d7b5c-d8e0-11ed-a30d-000d3a612dea",
+        "x-ms-server-latency": "1"
+      },
+      "ResponseBody": null
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/testoctkey99092f7/create?api-version=7.4",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "120",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": {
+        "kty": "oct-HSM",
+        "key_size": 64,
+        "attributes": {
+          "nbf": 949237199,
+          "exp": 2527113600
+        },
+        "tags": {
+          "foo": "baz"
+        },
+        "public_exponent": 0
+      },
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "120",
+        "Content-Security-Policy": "default-src \u0027self\u0027",
+        "Content-Type": "application/json; charset=utf-8",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "x-ms-request-id": "bc9628c2-d8e0-11ed-a717-0022488d0014",
+        "x-ms-server-latency": "15"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "BadParameter",
+          "message": "Invalid key size: \u002764\u0027 (Activity ID: bc9628c2-d8e0-11ed-a717-0022488d0014)"
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "testoctkey99092f7"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/v1/workspaces/d2d0e126-fa1e-4b0a-b647-250cdd471e68/query",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "application/json",
+        "Authorization": "Sanitized",
+        "Content-Length": "58",
+        "Content-Type": "application/json",
+        "Date": "Tue, 18 Apr 2023 18:45:05 GMT",
+        "Prefer": "wait=5",
+        "User-Agent": "azsdk-java-azure-monitor-query/1.2.0-beta.1 (17.0.2; Windows 11; 10.0)",
+        "x-ms-client-request-id": "c2bf8543-7cec-425e-a980-c3d2a1febd20"
+      },
+      "RequestBody": {
+        "query": "range x from 1 to 1000000006959 step 1 | count"
+      },
+      "StatusCode": 504,
+      "ResponseHeaders": {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Expose-Headers": "Retry-After,Age,WWW-Authenticate,x-resource-identities,x-ms-status-location",
+        "Connection": "keep-alive",
+        "Content-Length": "189",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Tue, 18 Apr 2023 18:45:22 GMT",
+        "Preference-Applied": "wait=10",
+        "Strict-Transport-Security": "max-age=15724800; includeSubDomains",
+        "Vary": "Accept-Encoding",
+        "Via": "1.1 draft-oms-666995cb46-b6l6p",
+        "X-Content-Type-Options": "nosniff"
+      },
+      "ResponseBody": {
+        "error": {
+          "message": "Gateway timeout",
+          "code": "GatewayTimeout",
+          "correlationId": "51d6eae9-e6a9-44b8-b0c6-5364204e2ee9",
+          "innererror": {
+            "code": "GatewayTimeout",
+            "message": "ADX query timed out"
+          }
+        }
+      }
+    }
+  ],
+  "Variables": {}
+}

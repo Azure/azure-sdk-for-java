@@ -1,0 +1,265 @@
+{
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/keys/testkey396652a76/create?api-version=7.4",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 401,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "97",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 03:21:15 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "WWW-Authenticate": "Bearer authorization=\u0022https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\u0022, resource=\u0022https://vault.azure.net\u0022",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "b8c29ec8-9262-4da4-aa8b-ef4885fe8f9c"
+      },
+      "ResponseBody": {
+        "error": {
+          "code": "Unauthorized",
+          "message": "AKV10000: Request is missing a Bearer or PoP token."
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/testkey396652a76/create?api-version=7.4",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "65",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": {
+        "kty": "RSA",
+        "attributes": {
+          "exp": 2537049600
+        },
+        "public_exponent": 0
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "732",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 03:21:16 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "81f4be21-df0b-44fe-b064-129b865b0d87"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://azkvrecordtests.vault.azure.net/keys/testkey396652a76/2cee9a6b2ed54fbfb75ac6f32184ccbb",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "2i5lQoKfjgPoMkBTUMzl4QCM9JjKCtt2BmNDjSeM7LRbRlDI4TKdUyhM2egq4CIt4fvUK3p4L_rFduy1QBn4_sf6uc67b36gtkTNoH2pWS_ojmn5scX1x0rDlVl3YqLCXUk3ruGSOC3DsVwNXkvBE0ah-FMRVHaimzsHUO4LlRbhTSNA_WDlUoS1_crl94MtXcJDP0X_RsTBNIfaUxBfO0AkbfTR-ek5k6pIHSL-3xytxcb5W9TGpBlvHLPGFc9HO-CfWakW1CV_hDmVMsN1pRT8RbkrP8xl8O598lrBT4mY0ztz2_g7Xh1sYfkLYa6C9Pt7hr4ttiQhlJhG-v9dCQ",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "exp": 2537049600,
+          "created": 1681269677,
+          "updated": 1681269677,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7,
+          "exportable": false
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/testkey396652a76/create?api-version=7.4",
+      "RequestMethod": "POST",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "65",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": {
+        "kty": "RSA",
+        "attributes": {
+          "exp": 2537049600
+        },
+        "public_exponent": 0
+      },
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "732",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 03:21:17 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "ff2570c7-b354-4119-b921-dd2da5d65c03"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://azkvrecordtests.vault.azure.net/keys/testkey396652a76/3dd6e729bbb14567ab30a0e510e9212d",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "xI48Av7-j3BOu3MyowHnvc4rtvUf2-RA0_8vbsnUoPAZtiKBagtemk_AxDfQ3p2JWXQwQHGJrlQndshaU3E1I7Us-GAc6dmB8IpmnC7qNxVvPeRT45cLNdRdmaY3476NsDn8liNNO0h2nt0LfyOndop9c7Xh0k4w69EMdTSFIxAQmzEy2w5-eCUu2t76KAdmqX3MUT_VoybWnPm5tqH4Lie3noNWYKXs5nS3f02Oe9BsK1q7sDQ2Xbu-pEqk9t4Vg0t0ajD-zK_V8L1h7NetT9G4Cj3jCAiGNblwru_FR-6TM_DTnuSbGXZkrMagI7ijBLef0_GvMENgF3vAPHQWNQ",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "exp": 2537049600,
+          "created": 1681269677,
+          "updated": 1681269677,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7,
+          "exportable": false
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/testkey396652a76/2cee9a6b2ed54fbfb75ac6f32184ccbb?api-version=7.4",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "732",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 03:21:17 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "7917f3fd-f816-4720-b6b6-64007576bcc0"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://azkvrecordtests.vault.azure.net/keys/testkey396652a76/2cee9a6b2ed54fbfb75ac6f32184ccbb",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "2i5lQoKfjgPoMkBTUMzl4QCM9JjKCtt2BmNDjSeM7LRbRlDI4TKdUyhM2egq4CIt4fvUK3p4L_rFduy1QBn4_sf6uc67b36gtkTNoH2pWS_ojmn5scX1x0rDlVl3YqLCXUk3ruGSOC3DsVwNXkvBE0ah-FMRVHaimzsHUO4LlRbhTSNA_WDlUoS1_crl94MtXcJDP0X_RsTBNIfaUxBfO0AkbfTR-ek5k6pIHSL-3xytxcb5W9TGpBlvHLPGFc9HO-CfWakW1CV_hDmVMsN1pRT8RbkrP8xl8O598lrBT4mY0ztz2_g7Xh1sYfkLYa6C9Pt7hr4ttiQhlJhG-v9dCQ",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "exp": 2537049600,
+          "created": 1681269677,
+          "updated": 1681269677,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7,
+          "exportable": false
+        }
+      }
+    },
+    {
+      "RequestUri": "https://REDACTED/keys/testkey396652a76/3dd6e729bbb14567ab30a0e510e9212d?api-version=7.4",
+      "RequestMethod": "GET",
+      "RequestHeaders": {
+        "Accept": "*/*",
+        "Accept-Language": "en-US",
+        "Authorization": "Sanitized",
+        "Content-Length": "0",
+        "Content-Type": "application/json",
+        "User-Agent": "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
+      },
+      "RequestBody": null,
+      "StatusCode": 200,
+      "ResponseHeaders": {
+        "Cache-Control": "no-cache",
+        "Content-Length": "732",
+        "Content-Type": "application/json; charset=utf-8",
+        "Date": "Wed, 12 Apr 2023 03:21:17 GMT",
+        "Expires": "-1",
+        "Pragma": "no-cache",
+        "Strict-Transport-Security": "max-age=31536000;includeSubDomains",
+        "X-Content-Type-Options": "nosniff",
+        "x-ms-keyvault-network-info": "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+        "x-ms-keyvault-region": "westus",
+        "x-ms-keyvault-service-version": "1.9.749.1",
+        "x-ms-request-id": "ef8acc6e-2741-4d38-9899-358f12c5cfe1"
+      },
+      "ResponseBody": {
+        "key": {
+          "kid": "https://azkvrecordtests.vault.azure.net/keys/testkey396652a76/3dd6e729bbb14567ab30a0e510e9212d",
+          "kty": "RSA",
+          "key_ops": [
+            "encrypt",
+            "decrypt",
+            "sign",
+            "verify",
+            "wrapKey",
+            "unwrapKey"
+          ],
+          "n": "xI48Av7-j3BOu3MyowHnvc4rtvUf2-RA0_8vbsnUoPAZtiKBagtemk_AxDfQ3p2JWXQwQHGJrlQndshaU3E1I7Us-GAc6dmB8IpmnC7qNxVvPeRT45cLNdRdmaY3476NsDn8liNNO0h2nt0LfyOndop9c7Xh0k4w69EMdTSFIxAQmzEy2w5-eCUu2t76KAdmqX3MUT_VoybWnPm5tqH4Lie3noNWYKXs5nS3f02Oe9BsK1q7sDQ2Xbu-pEqk9t4Vg0t0ajD-zK_V8L1h7NetT9G4Cj3jCAiGNblwru_FR-6TM_DTnuSbGXZkrMagI7ijBLef0_GvMENgF3vAPHQWNQ",
+          "e": "AQAB"
+        },
+        "attributes": {
+          "enabled": true,
+          "exp": 2537049600,
+          "created": 1681269677,
+          "updated": 1681269677,
+          "recoveryLevel": "CustomizedRecoverable\u002BPurgeable",
+          "recoverableDays": 7,
+          "exportable": false
+        }
+      }
+    }
+  ],
+  "Variables": {
+    "0": "testkey396652a76"
+  }
+}
