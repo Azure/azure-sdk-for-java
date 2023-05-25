@@ -47,7 +47,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
  *     Azure Identity documentation"</a>.</p>
  *
- * <p><strong>Construct the async client</strong></p>
+ * <p><strong>Construct the asynchronous client</strong></p>
+ *
  * <!-- src_embed com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
  * <pre>
  * SecretAsyncClient secretAsyncClient = new SecretClientBuilder&#40;&#41;
@@ -62,12 +63,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <hr/>
  *
  * <h2>Create a Secret</h2>
- * The {@link com.azure.security.keyvault.secrets.SecretAsyncClient} can be used to create a secret in
- * the Azure KeyVault.
+ * The {@link SecretAsyncClient} can be used to create a secret in the Azure KeyVault.
  *
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to create and store a secret in the key vault, using the
- * {@link com.azure.security.keyvault.secrets.SecretAsyncClient#setSecret(String, String)} API.</p>
+ * {@link SecretAsyncClient#setSecret(String, String)} API.</p>
  *
  * <!-- src_embed com.azure.keyvault.secrets.SecretClient.setSecret#string-string -->
  * <pre>
@@ -78,20 +78,18 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.keyvault.secrets.SecretClient.setSecret#string-string -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to
- * {@link com.azure.security.keyvault.secrets.SecretClient}.</p>
+ * <p><strong>Note:</strong> For synchronous sample, refer to {@link SecretClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
  * <h2>Get a Secret</h2>
- * The {@link com.azure.security.keyvault.secrets.SecretAsyncClient} can be used to retrieve a secret from the
- * Azure KeyVault.
+ * The {@link SecretAsyncClient} can be used to retrieve a secret from the Azure KeyVault.
  *
  * <p><strong>Asynchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously retrieve a previously stored secret from the Azure
- * KeyVault, using the {@link com.azure.security.keyvault.secrets.SecretAsyncClient#getSecret(String)} API.</p>
+ * KeyVault, using the {@link SecretAsyncClient#getSecret(String)} API.</p>
  *
  * <!-- src_embed com.azure.keyvault.secrets.SecretClient.getSecret#string -->
  * <pre>
@@ -102,20 +100,18 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.keyvault.secrets.SecretClient.getSecret#string -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to
- * {@link com.azure.security.keyvault.secrets.SecretClient}.</p>
+ * <p><strong>Note:</strong> For synchronous sample, refer to {@link SecretClient}.</p>
  *
  * <br/>
  *
  * <hr/>
  *
  * <h2>Delete Secret</h2>
- * The {@link com.azure.security.keyvault.secrets.SecretAsyncClient} can be used to delete a secret from the
- * Azure KeyVault.
+ * The {@link SecretAsyncClient} can be used to delete a secret from the Azure KeyVault.
  *
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to delete a secret from the Azure KeyVault, using the
- * {@link com.azure.security.keyvault.secrets.SecretAsyncClient#beginDeleteSecret(String)} API.</p>
+ * {@link SecretAsyncClient#beginDeleteSecret(String)} API.</p>
  *
  * <!-- src_embed com.azure.keyvault.secrets.SecretClient.deleteSecret#String -->
  * <pre>
@@ -128,8 +124,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.keyvault.secrets.SecretClient.deleteSecret#String -->
  *
- * <p><strong>Note:</strong> For synchronous sample, refer to
- * {@link com.azure.security.keyvault.secrets.SecretClient}.</p>
+ * <p><strong>Note:</strong> For synchronous sample, refer to {@link SecretClient}.</p>
  *
  * @see SecretClientBuilder
  * @see PollerFlux
