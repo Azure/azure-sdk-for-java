@@ -5,7 +5,7 @@
 ### Features Added
 
 - Supported private endpoint connection in `Registry`.
-- Supported `enableDedicatedDataPoints` in `Registry`.
+- Supported `enableDedicatedDataEndpoints` in `Registry`.
 - Supported `withAccessFromTrustedServices` in `Registry`.
 - Supported `withAccessFromSelectedNetworks` and `withAccessFromAllNetworks` in `Registry`.
 - Supported `withAccessFromIpAddress` and `withAccessFromIpAddressRange` in `Registry`.

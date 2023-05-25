@@ -104,10 +104,10 @@ public interface Registry
     NetworkRuleSet networkRuleSet();
 
     /** @return whether the container registries dedicated data points can be accessed from public network */
-    boolean isDedicatedDataPointsEnabled();
+    boolean isDedicatedDataEndpointsEnabled();
 
-    /** @return list of host names that will serve data when canAccessDedicatedDataPoints is true */
-    List<String> dedicatedDataPointsHostNames();
+    /** @return list of host names that will serve data when isDedicatedDataEndpointsEnabled is true */
+    List<String> dedicatedDataEndpointsHostNames();
 
     /**
      * Begins the definition of the task run.
@@ -227,7 +227,7 @@ public interface Registry
         /**
          * The stage of the container registry definition allowing to configure dedicated data points.
          */
-        interface WithDedicatedDataPoints {
+        interface WithDedicatedDataEndpoints {
             /**
              * Enables dedicated data points for the container registry.
              *
@@ -236,7 +236,7 @@ public interface Registry
              *      Enable dedicated data endpoints
              *      </a>
              */
-            WithCreate enableDedicatedDataPoints();
+            WithCreate enableDedicatedDataEndpoints();
         }
 
         /**
@@ -248,7 +248,7 @@ public interface Registry
             WithAdminUserEnabled,
             WithWebhook,
             WithPublicNetworkAccess,
-            WithDedicatedDataPoints,
+            WithDedicatedDataEndpoints,
             Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -260,7 +260,7 @@ public interface Registry
             UpdateStages.WithAdminUserEnabled,
             UpdateStages.WithSku,
             UpdateStages.WithWebhook,
-            UpdateStages.WithDedicatedDataPoints,
+            UpdateStages.WithDedicatedDataEndpoints,
             UpdateStages.WithPublicNetworkAccess {
     }
 
@@ -422,7 +422,7 @@ public interface Registry
         /**
          * The stage of the container registry definition allowing to configure dedicated data points.
          */
-        interface WithDedicatedDataPoints {
+        interface WithDedicatedDataEndpoints {
             /**
              * Enables dedicated data points for the container registry.
              *
@@ -431,14 +431,14 @@ public interface Registry
              *      Enable dedicated data endpoints
              *      </a>
              */
-            Update enableDedicatedDataPoints();
+            Update enableDedicatedDataEndpoints();
 
             /**
              * Disables dedicated data points for the container registry.
              *
              * @return the next stage of the definition
              */
-            Update disableDedicatedDataPoints();
+            Update disableDedicatedDataEndpoints();
         }
     }
 }
