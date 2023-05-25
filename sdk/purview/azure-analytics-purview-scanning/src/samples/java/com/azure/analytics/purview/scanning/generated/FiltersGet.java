@@ -13,12 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class FiltersGet {
     public static void main(String[] args) {
-        FiltersClient client =
+        FiltersClient filtersClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildFiltersClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.filtersget.filtersget
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.getWithResponse("myDataSource", "myScanName", requestOptions);
+        Response<BinaryData> response = filtersClient.getWithResponse("myDataSource", "myScanName", requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.filtersget.filtersget
     }
 }

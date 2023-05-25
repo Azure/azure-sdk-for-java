@@ -37,11 +37,11 @@ public class CallMediaUnitTests {
         callMedia = callConnection.getCallMedia();
 
         playFileSource = new FileSource();
-        playFileSource.setPlaySourceId("playTextSourceId");
+        playFileSource.setPlaySourceCacheId("playTextSourceId");
         playFileSource.setUrl("filePath");
 
         playTextSource = new TextSource();
-        playTextSource.setPlaySourceId("playTextSourceId");
+        playTextSource.setPlaySourceCacheId("playTextSourceId");
         playTextSource.setVoiceGender(GenderType.MALE);
         playTextSource.setSourceLocale("en-US");
         playTextSource.setVoiceName("LULU");
@@ -141,8 +141,7 @@ public class CallMediaUnitTests {
     @Test
     public void sendDtmfWithResponseTest() {
         Response<Void> response = callMedia.sendDtmfWithResponse(
-            new CommunicationUserIdentifier("id"),
-            Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()),
+            Stream.of(DtmfTone.ONE, DtmfTone.TWO, DtmfTone.THREE).collect(Collectors.toList()), new CommunicationUserIdentifier("id"),
             "ctx", Context.NONE
         );
         assertEquals(response.getStatusCode(), 202);

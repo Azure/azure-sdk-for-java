@@ -17,6 +17,15 @@ public final class AccessMode extends ExpandableStringEnum<AccessMode> {
     public static final AccessMode READ_WRITE = fromString("ReadWrite");
 
     /**
+     * Creates a new instance of AccessMode value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AccessMode() {
+    }
+
+    /**
      * Creates or finds a AccessMode from its string representation.
      *
      * @param name a name to look for.

@@ -40,7 +40,7 @@ public class TransactionalBatchAsyncContainerTest extends BatchTestBase {
 
     @AfterClass(groups = {"simple"}, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
-        safeCloseAsync(this.batchClient);
+        safeClose(this.batchClient);
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)

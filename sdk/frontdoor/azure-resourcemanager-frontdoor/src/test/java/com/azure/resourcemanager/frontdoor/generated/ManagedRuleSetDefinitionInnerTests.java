@@ -16,21 +16,21 @@ public final class ManagedRuleSetDefinitionInnerTests {
         ManagedRuleSetDefinitionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"pij\",\"ruleSetId\":\"rxfrddhc\",\"ruleSetType\":\"tizzronasxif\",\"ruleSetVersion\":\"zq\",\"ruleGroups\":[{\"ruleGroupName\":\"tw\",\"description\":\"gogczhonnxkrlgny\",\"rules\":[]},{\"ruleGroupName\":\"ssxkkgthr\",\"description\":\"hxjbdhqxvc\",\"rules\":[]},{\"ruleGroupName\":\"rpdsof\",\"description\":\"hrnsvbu\",\"rules\":[]}]},\"location\":\"dvzyybycnun\",\"tags\":{\"ikyzirtxdy\":\"rtkfawnopq\",\"ejnt\":\"x\"},\"id\":\"sewgioilqukr\",\"name\":\"dxtqmieoxo\",\"type\":\"ggufhyaomtb\"}")
+                    "{\"properties\":{\"provisioningState\":\"ujysvle\",\"ruleSetId\":\"vfqawrlyxwjkcpr\",\"ruleSetType\":\"wbxgjvt\",\"ruleSetVersion\":\"p\",\"ruleGroups\":[{\"ruleGroupName\":\"dnrujqguhmuouqfp\",\"description\":\"zw\",\"rules\":[]},{\"ruleGroupName\":\"uitnwuiz\",\"description\":\"zxufiz\",\"rules\":[]}]},\"location\":\"kyfi\",\"tags\":{\"zwdzuh\":\"idf\",\"wxmnteiwao\":\"ymwisdkft\"},\"id\":\"vkmijcmmxdcuf\",\"name\":\"fsrpymzidnse\",\"type\":\"cxtbzsg\"}")
                 .toObject(ManagedRuleSetDefinitionInner.class);
-        Assertions.assertEquals("dvzyybycnun", model.location());
-        Assertions.assertEquals("rtkfawnopq", model.tags().get("ikyzirtxdy"));
+        Assertions.assertEquals("kyfi", model.location());
+        Assertions.assertEquals("idf", model.tags().get("zwdzuh"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ManagedRuleSetDefinitionInner model =
             new ManagedRuleSetDefinitionInner()
-                .withLocation("dvzyybycnun")
-                .withTags(mapOf("ikyzirtxdy", "rtkfawnopq", "ejnt", "x"));
+                .withLocation("kyfi")
+                .withTags(mapOf("zwdzuh", "idf", "wxmnteiwao", "ymwisdkft"));
         model = BinaryData.fromObject(model).toObject(ManagedRuleSetDefinitionInner.class);
-        Assertions.assertEquals("dvzyybycnun", model.location());
-        Assertions.assertEquals("rtkfawnopq", model.tags().get("ikyzirtxdy"));
+        Assertions.assertEquals("kyfi", model.location());
+        Assertions.assertEquals("idf", model.tags().get("zwdzuh"));
     }
 
     @SuppressWarnings("unchecked")

@@ -107,7 +107,7 @@ public class TableClientTest extends TableClientTestBase {
         TokenCredential credential = null;
         if (interceptorManager.isPlaybackMode()) {
             credential = new MockTokenCredential();
-        } else if (interceptorManager.isRecordMode()) {
+        } else {
         // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
         // contained in the response the server provides to a first "naive" unauthenticated request.
             credential = new ClientSecretCredentialBuilder()
@@ -1156,6 +1156,8 @@ public class TableClientTest extends TableClientTestBase {
 
     @Test
     public void allowsCreationOfEntityWithEmptyStringPrimaryKey() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Empty row or partition keys are not supported on Cosmos endpoints.");
         Assertions.assertDoesNotThrow(() -> {
             TableEntity entity = new TableEntity("", "");
             tableClient.createEntity(entity);
@@ -1164,6 +1166,8 @@ public class TableClientTest extends TableClientTestBase {
 
     @Test
     public void allowListEntitiesWithEmptyPrimaryKey() {
+        Assumptions.assumeFalse(IS_COSMOS_TEST,
+            "Empty row or partition keys are not supported on Cosmos endpoints.");
         TableEntity entity = new TableEntity("", "");
         String entityName = testResourceNamer.randomName("name", 10);
         entity.addProperty("Name", entityName);

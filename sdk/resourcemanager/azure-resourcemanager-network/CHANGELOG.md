@@ -1,14 +1,20 @@
 # Release History
 
-## 2.27.0-beta.1 (Unreleased)
+## 2.27.0 (2023-05-25)
 
 ### Features Added
 
+- Supported `withNatGateway` in `Subnet`.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed `DRAIN` from class `LoadBalancerBackendAddressAdminState`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-11-01`.
 
 ## 2.26.0 (2023-04-21)
 

@@ -87,6 +87,13 @@ public interface FrontDoor {
     List<RulesEngine> rulesEngines();
 
     /**
+     * Gets the extendedProperties property: Key-Value pair representing additional properties for frontdoor.
+     *
+     * @return the extendedProperties value.
+     */
+    Map<String, String> extendedProperties();
+
+    /**
      * Gets the friendlyName property: A friendly name for the frontDoor.
      *
      * @return the friendlyName value.

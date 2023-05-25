@@ -19,8 +19,8 @@ public final class PlaySourceInternal {
     /*
      * Defines the identifier to be used for caching related media
      */
-    @JsonProperty(value = "playSourceId")
-    private String playSourceId;
+    @JsonProperty(value = "playSourceCacheId")
+    private String playSourceCacheId;
 
     /*
      * Defines the file source info to be used for play
@@ -62,22 +62,22 @@ public final class PlaySourceInternal {
     }
 
     /**
-     * Get the playSourceId property: Defines the identifier to be used for caching related media.
+     * Get the playSourceCacheId property: Defines the identifier to be used for caching related media.
      *
-     * @return the playSourceId value.
+     * @return the playSourceCacheId value.
      */
-    public String getPlaySourceId() {
-        return this.playSourceId;
+    public String getPlaySourceCacheId() {
+        return this.playSourceCacheId;
     }
 
     /**
-     * Set the playSourceId property: Defines the identifier to be used for caching related media.
+     * Set the playSourceCacheId property: Defines the identifier to be used for caching related media.
      *
-     * @param playSourceId the playSourceId value to set.
+     * @param playSourceCacheId the playSourceCacheId value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySourceInternal setPlaySourceId(String playSourceId) {
-        this.playSourceId = playSourceId;
+    public PlaySourceInternal setPlaySourceCacheId(String playSourceCacheId) {
+        this.playSourceCacheId = playSourceCacheId;
         return this;
     }
 

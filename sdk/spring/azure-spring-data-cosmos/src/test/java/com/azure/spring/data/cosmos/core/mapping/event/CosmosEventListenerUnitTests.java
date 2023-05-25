@@ -39,7 +39,7 @@ public class CosmosEventListenerUnitTests {
         contactListener.onApplicationEvent(new AfterLoadEvent<>(NullNode.getInstance(), Person.class, "container-1"));
 
         assertThat(personListener.invokedOnAfterLoad).isTrue();
-        assertThat(contactListener.invokedOnAfterLoad).isTrue();
+        assertThat(contactListener.invokedOnAfterLoad).isFalse();
     }
 
     @Test

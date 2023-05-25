@@ -49,16 +49,19 @@ public class TestProxyPlaybackClient implements HttpClient {
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
 
     private final List<TestProxyRequestMatcher> matchers = new ArrayList<>();
+    private final boolean skipRecordingRequestBody;
 
     /**
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
      *
      * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
+     * @param skipRecordingRequestBody Flag indicating to skip recording request bodies, so to set a custom matcher to skip comparing bodies when run in playback.
      */
-    public TestProxyPlaybackClient(HttpClient httpClient) {
+    public TestProxyPlaybackClient(HttpClient httpClient, boolean skipRecordingRequestBody) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
         this.proxyUrl = TestProxyUtils.getProxyUrl();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
+        this.skipRecordingRequestBody = skipRecordingRequestBody;
     }
 
     /**
@@ -181,11 +184,14 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         if (isPlayingBack()) {
-            getMatcherRequests(matchers, proxyUrl)
-                .forEach(request -> {
-                    request.setHeader(X_RECORDING_ID, xRecordingId);
-                    client.sendSync(request, Context.NONE);
-                });
+            List<HttpRequest> matcherRequests = getMatcherRequests(matchers, proxyUrl);
+            if (skipRecordingRequestBody) {
+                matcherRequests.add(TestProxyUtils.setCompareBodiesMatcher());
+            }
+            matcherRequests.forEach(request -> {
+                request.setHeader(X_RECORDING_ID, xRecordingId);
+                client.sendSync(request, Context.NONE);
+            });
         } else {
             this.matchers.addAll(matchers);
         }

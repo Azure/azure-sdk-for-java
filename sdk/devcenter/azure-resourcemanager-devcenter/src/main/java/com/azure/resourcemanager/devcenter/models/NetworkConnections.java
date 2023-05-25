@@ -183,6 +183,36 @@ public interface NetworkConnections {
     void runHealthChecks(String resourceGroupName, String networkConnectionName, Context context);
 
     /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String networkConnectionName);
+
+    /**
+     * Lists the endpoints that agents may call as part of Dev Box service administration. These FQDNs should be allowed
+     * for outbound access in order for the Dev Box service to function.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return values returned by the List operation as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<OutboundEnvironmentEndpoint> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String networkConnectionName, Integer top, Context context);
+
+    /**
      * Gets a network connection resource.
      *
      * @param id the resource ID.

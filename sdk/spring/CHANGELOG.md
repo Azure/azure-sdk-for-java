@@ -1,4 +1,6 @@
 # Release History
+# (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.11 and Spring Cloud dependencies version to 2021.0.7
 
 ## 4.8.0-beta.1 (unreleased)
 
@@ -13,6 +15,12 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Breaking Changes
 - Deprecated `SERVICE_BUS_SCOPE_AZURE_GERMANY` [#34682](https://github.com/Azure/azure-sdk-for-java/pull/34682).
+
+### Spring Cloud Azure Actuator Autoconfigure
+This section includes changes in `spring-cloud-azure-actuator-autoconfigure` module.
+
+#### Bugs Fixed
+- Make `spring-cloud-azure-appconfiguration-config-web` optional [#34980](https://github.com/Azure/azure-sdk-for-java/pull/34980).
 
 ## 5.1.0 (2023-04-26)
 - This release is compatible with Spring Boot 3.0.0-3.0.5. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
