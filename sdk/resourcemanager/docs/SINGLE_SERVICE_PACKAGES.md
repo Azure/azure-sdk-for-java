@@ -1129,10 +1129,10 @@ service
 
 <br/>
 <details>
-<summary> ngfw </summary>
+<summary> paloaltonetworks-ngfw </summary>
 
 * package-2022-08-29-preview
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-ngfw/1.0.0-beta.1)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-paloaltonetworks-ngfw/1.0.0-beta.1)
 </details>
 
 <br/>
