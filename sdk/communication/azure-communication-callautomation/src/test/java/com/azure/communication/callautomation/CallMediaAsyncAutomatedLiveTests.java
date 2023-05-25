@@ -9,7 +9,6 @@ import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.PlaySource;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
@@ -104,9 +103,7 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
 
             // play media to all participants
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
-            List<PlaySource> playSources = new ArrayList<>();
-            playSources.add(new FileSource().setUrl(MEDIA_SOURCE));
-            callMediaAsync.playToAll(playSources).block();
+            callMediaAsync.playToAll(new FileSource().setUrl(MEDIA_SOURCE)).block();
             PlayCompleted playCompleted = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(playCompleted);
         } catch (Exception ex) {

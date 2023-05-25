@@ -41,6 +41,19 @@ public final class CallMedia {
     }
 
     /**
+     * Play
+     *
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @param playTo the targets to play to.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
+        callMediaAsync.play(playSource, playTo).block();
+    }
+
+    /**
      * Play to all participants
      *
      * @param playSources A List of {@link PlaySource} representing the sources to play.
@@ -50,6 +63,18 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void playToAll(List<PlaySource> playSources) {
         callMediaAsync.playToAll(playSources).block();
+    }
+
+    /**
+     * Play to all participants
+     *
+     * @param playSource A {@link PlaySource} representing the source to play.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void playToAll(PlaySource playSource) {
+        callMediaAsync.playToAll(playSource).block();
     }
 
     /**

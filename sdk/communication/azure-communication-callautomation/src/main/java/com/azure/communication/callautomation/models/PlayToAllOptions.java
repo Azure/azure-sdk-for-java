@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.azure.core.annotation.Fluent;
@@ -31,6 +32,15 @@ public final class PlayToAllOptions {
      */
     public PlayToAllOptions(List<PlaySource> playSources) {
         this.playSources = playSources;
+    }
+
+    /**
+     * Constructor
+     * @param playSource A {@link PlaySource} representing the source to play.
+     */
+    public PlayToAllOptions(PlaySource playSource) {
+        this.playSources = new ArrayList<>();
+        this.playSources.add(playSource);
     }
 
     /**
