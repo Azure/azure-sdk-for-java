@@ -32,6 +32,7 @@ import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -56,6 +57,21 @@ public final class CallMediaAsync {
     /**
      * Play
      *
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @param playTo the targets to play to
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Void for successful play request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> play(List<PlaySource> playSources, List<CommunicationIdentifier> playTo) {
+        PlayOptions options = new PlayOptions(playSources, playTo);
+        return playWithResponse(options).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Play
+     *
      * @param playSource A {@link PlaySource} representing the source to play.
      * @param playTo the targets to play to
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -66,6 +82,20 @@ public final class CallMediaAsync {
     public Mono<Void> play(PlaySource playSource, List<CommunicationIdentifier> playTo) {
         PlayOptions options = new PlayOptions(playSource, playTo);
         return playWithResponse(options).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Play to all participants
+     *
+     * @param playSources A List of {@link PlaySource} representing the sources to play.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Void for successful playAll request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> playToAll(List<PlaySource> playSources) {
+        PlayToAllOptions options = new PlayToAllOptions(playSources);
+        return playToAllWithResponse(options).flatMap(FluxUtil::toMono);
     }
 
     /**
@@ -188,7 +218,7 @@ public final class CallMediaAsync {
 
     Mono<Response<Void>> playToAllWithResponseInternal(PlayToAllOptions options, Context context) {
         try {
-            PlayOptions playOptions = new PlayOptions(options.getPlaySource(), Collections.emptyList());
+            PlayOptions playOptions = new PlayOptions(options.getPlaySources(), Collections.emptyList());
             playOptions.setLoop(options.isLoop());
             playOptions.setOperationContext(options.getOperationContext());
 
@@ -199,14 +229,22 @@ public final class CallMediaAsync {
     }
 
     PlayRequest getPlayRequest(PlayOptions options) {
-        PlaySourceInternal playSourceInternal = new PlaySourceInternal();
-        if (options.getPlaySource() instanceof FileSource) {
-            playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) options.getPlaySource());
+        List<PlaySourceInternal> playSourcesInternal = new ArrayList<>();
+        for (PlaySource source: options.getPlaySources()) {
+            PlaySourceInternal playSourceInternal = null;
+            if (source instanceof FileSource) {
+                playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) source);
+            }
+            if (playSourceInternal != null && playSourceInternal.getKind() != null) {
+                playSourcesInternal.add(playSourceInternal);
+            } else {
+                throw logger.logExceptionAsError(new IllegalArgumentException(source.getClass().getCanonicalName()));
+            }
         }
 
-        if (playSourceInternal.getSourceType() != null) {
+        if (!playSourcesInternal.isEmpty()) {
             PlayRequest request = new PlayRequest()
-                .setPlaySourceInfo(playSourceInternal)
+                .setPlaySources(playSourcesInternal)
                 .setPlayTo(
                     options.getPlayTo()
                         .stream()
@@ -219,15 +257,15 @@ public final class CallMediaAsync {
             return request;
         }
 
-        throw logger.logExceptionAsError(new IllegalArgumentException(options.getPlaySource().getClass().getCanonicalName()));
+        throw logger.logExceptionAsError(new IllegalArgumentException(options.getPlaySources().getClass().getCanonicalName()));
     }
 
     private PlaySourceInternal getPlaySourceInternalFromFileSource(FileSource playSource) {
         FileSourceInternal fileSourceInternal = new FileSourceInternal().setUri(playSource.getUrl());
         PlaySourceInternal playSourceInternal = new PlaySourceInternal()
-            .setSourceType(PlaySourceTypeInternal.FILE)
-            .setFileSource(fileSourceInternal)
-            .setPlaySourceId(playSource.getPlaySourceId());
+            .setKind(PlaySourceTypeInternal.FILE)
+            .setFile(fileSourceInternal)
+            .setPlaySourceCacheId(playSource.getPlaySourceCacheId());
         return playSourceInternal;
     }
 

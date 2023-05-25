@@ -38,7 +38,7 @@ public class CallMediaAsyncUnitTests {
         callMedia = callConnection.getCallMediaAsync();
 
         playFileSource = new FileSource();
-        playFileSource.setPlaySourceId("playFileSourceId");
+        playFileSource.setPlaySourceCacheId("playFileSourceId");
         playFileSource.setUrl("filePath");
     }
 
