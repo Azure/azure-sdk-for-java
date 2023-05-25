@@ -73,7 +73,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getCompletionsRunner((deploymentId, prompt) -> {
             Response<BinaryData> response = client.getCompletionsWithResponse(deploymentId,
                 BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions());
-            Completions resultCompletions = assertResponseAndGetValue(response, Completions.class, 200);
+            Completions resultCompletions = assertAndGetValueFromResponse(response, Completions.class, 200);
             assertCompletions(1, resultCompletions);
         });
     }
@@ -110,7 +110,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             Response<BinaryData> response = client.getChatCompletionsWithResponse(deploymentId,
                 BinaryData.fromObject(new ChatCompletionsOptions(chatMessages)), new RequestOptions());
-            ChatCompletions resultChatCompletions = assertResponseAndGetValue(response, ChatCompletions.class, 200);
+            ChatCompletions resultChatCompletions = assertAndGetValueFromResponse(response, ChatCompletions.class, 200);
             assertChatCompletions(1, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
         });
     }
@@ -132,7 +132,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             Response<BinaryData> response = client.getEmbeddingsWithResponse(deploymentId,
                 BinaryData.fromObject(embeddingsOptions), new RequestOptions());
-            Embeddings resultEmbeddings = assertResponseAndGetValue(response, Embeddings.class, 200);
+            Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
             assertEmbeddings(resultEmbeddings);
         });
     }

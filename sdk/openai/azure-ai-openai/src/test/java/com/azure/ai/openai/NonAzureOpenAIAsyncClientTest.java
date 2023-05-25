@@ -5,19 +5,16 @@ package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.*;
 import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
-import static reactor.test.StepVerifierExtensionsKt.verifyError;
 
 public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     private OpenAIAsyncClient client;
@@ -80,7 +77,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     BinaryData.fromObject(new CompletionsOptions(prompt)),
                     new RequestOptions()))
                 .assertNext(response -> {
-                    Completions resultCompletions = assertResponseAndGetValue(response, Completions.class, 200);
+                    Completions resultCompletions = assertAndGetValueFromResponse(response, Completions.class, 200);
                     assertCompletions(1, resultCompletions);
                 })
                 .verifyComplete();
@@ -163,7 +160,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     BinaryData.fromObject(new ChatCompletionsOptions(chatMessages)),
                     new RequestOptions()))
                 .assertNext(response -> {
-                    ChatCompletions resultChatCompletions = assertResponseAndGetValue(response, ChatCompletions.class, 200);
+                    ChatCompletions resultChatCompletions = assertAndGetValueFromResponse(response, ChatCompletions.class, 200);
                     assertChatCompletions(1, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
                 })
                 .verifyComplete();
@@ -190,7 +187,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
                     BinaryData.fromObject(embeddingsOptions),
                     new RequestOptions()))
                 .assertNext(response -> {
-                    Embeddings resultEmbeddings = assertResponseAndGetValue(response, Embeddings.class, 200);
+                    Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
                     assertEmbeddings(resultEmbeddings);
                 })
                 .verifyComplete();

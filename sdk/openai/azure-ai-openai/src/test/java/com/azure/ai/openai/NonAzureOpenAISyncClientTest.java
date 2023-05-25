@@ -19,7 +19,6 @@ import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.test.StepVerifier;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
@@ -76,7 +75,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         getCompletionsRunner((deploymentId, prompt) -> {
             Response<BinaryData> response = client.getCompletionsWithResponse(deploymentId,
                 BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions());
-            Completions resultCompletions = assertResponseAndGetValue(response, Completions.class, 200);
+            Completions resultCompletions = assertAndGetValueFromResponse(response, Completions.class, 200);
             assertCompletions(1, resultCompletions);
         });
     }
@@ -126,7 +125,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         getChatCompletionsForNonAzureRunner((deploymentId, chatMessages) -> {
             Response<BinaryData> response = client.getChatCompletionsWithResponse(deploymentId,
                 BinaryData.fromObject(new ChatCompletionsOptions(chatMessages)), new RequestOptions());
-            ChatCompletions resultChatCompletions = assertResponseAndGetValue(response, ChatCompletions.class, 200);
+            ChatCompletions resultChatCompletions = assertAndGetValueFromResponse(response, ChatCompletions.class, 200);
             assertChatCompletions(1, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
         });
     }
@@ -148,7 +147,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         getEmbeddingNonAzureRunner((deploymentId, embeddingsOptions) -> {
             Response<BinaryData> response = client.getEmbeddingsWithResponse(deploymentId,
                 BinaryData.fromObject(embeddingsOptions), new RequestOptions());
-            Embeddings resultEmbeddings = assertResponseAndGetValue(response, Embeddings.class, 200);
+            Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
             assertEmbeddings(resultEmbeddings);
         });
     }

@@ -15,7 +15,6 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -147,7 +146,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(actual.getUsage());
     }
 
-    static <T> T assertResponseAndGetValue(Response<BinaryData> actualResponse, Class<T> clazz, int expectedCode) {
+    static <T> T assertAndGetValueFromResponse(Response<BinaryData> actualResponse, Class<T> clazz, int expectedCode) {
         assertNotNull(actualResponse);
         assertEquals(expectedCode, actualResponse.getStatusCode());
         assertInstanceOf(Response.class, actualResponse);
