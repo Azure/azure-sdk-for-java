@@ -9,6 +9,8 @@ import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.Embeddings;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -17,11 +19,10 @@ import com.azure.core.util.IterableStream;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     private OpenAIClient client;
@@ -77,6 +78,18 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions());
             Completions resultCompletions = assertResponseAndGetValue(response, Completions.class, 200);
             assertCompletions(1, resultCompletions);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsBadSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getCompletionsRunner((modelId, prompt) -> {
+            HttpResponseException exception = assertThrows(HttpResponseException.class,
+                () ->  client.getCompletionsWithResponse(modelId,
+                    BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
+            assertTrue(isExpectedThrowable(exception, ClientAuthenticationException.class, 401));
         });
     }
 

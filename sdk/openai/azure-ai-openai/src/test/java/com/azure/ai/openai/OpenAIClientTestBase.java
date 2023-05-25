@@ -15,6 +15,8 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.NonAzureOpenAIKeyCredential;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -149,11 +151,21 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(actualResponse);
         assertEquals(expectedCode, actualResponse.getStatusCode());
         assertInstanceOf(Response.class, actualResponse);
-        assertNotNull(actualResponse.getValue());
-        T object = actualResponse.getValue().toObject(clazz);
+        BinaryData binaryData = actualResponse.getValue();
+        assertNotNull(binaryData);
+        T object = binaryData.toObject(clazz);
         assertNotNull(object);
         assertInstanceOf(clazz, object);
         return object;
+    }
+
+    static <E extends HttpResponseException> boolean isExpectedThrowable(
+        Throwable throwable,
+        Class<E> errorClazz,
+        int expectedCode) {
+        HttpResponseException httpError = (HttpResponseException) throwable;
+        assertEquals(expectedCode, httpError.getResponse().getStatusCode());
+        return errorClazz.isInstance(throwable);
     }
 
     static void assertChoices(int choicesPerPrompt, String expectedFinishReason, List<Choice> actual) {
