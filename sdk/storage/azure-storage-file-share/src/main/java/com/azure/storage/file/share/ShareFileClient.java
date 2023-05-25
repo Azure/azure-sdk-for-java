@@ -6,17 +6,24 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
@@ -78,14 +85,36 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
 @ServiceClient(builder = ShareFileClientBuilder.class)
 public class ShareFileClient {
     private final ShareFileAsyncClient shareFileAsyncClient;
+    private static final ClientLogger LOGGER = new ClientLogger(ShareFileClient.class);
+    static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
+    static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
+
+    private final AzureFileStorageImpl azureFileStorageClient;
+    private final String shareName;
+    private final String filePath;
+    private final String snapshot;
+    private final String accountName;
+    private final ShareServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareFileClient that wraps a ShareFileAsyncClient and requests.
      *
      * @param shareFileAsyncClient ShareFileAsyncClient that is used to send requests
      */
-    ShareFileClient(ShareFileAsyncClient shareFileAsyncClient) {
+    ShareFileClient(ShareFileAsyncClient shareFileAsyncClient, AzureFileStorageImpl azureFileStorageClient,
+        String shareName, String filePath, String snapshot, String accountName, ShareServiceVersion serviceVersion,
+        AzureSasCredential sasToken) {
         this.shareFileAsyncClient = shareFileAsyncClient;
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
+        Objects.requireNonNull(filePath, "'filePath' cannot be null.");
+        this.shareName = shareName;
+        this.filePath = filePath;
+        this.snapshot = snapshot;
+        this.azureFileStorageClient = azureFileStorageClient;
+        this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -94,7 +123,7 @@ public class ShareFileClient {
      * @return the URL of the storage account
      */
     public String getAccountUrl() {
-        return shareFileAsyncClient.getAccountUrl();
+        return this.accountName;
     }
 
     /**
@@ -103,7 +132,12 @@ public class ShareFileClient {
      * @return the URL of the storage file client.
      */
     public String getFileUrl() {
-        return shareFileAsyncClient.getFileUrl();
+        StringBuilder fileUrlstring = new StringBuilder(azureFileStorageClient.getUrl()).append("/")
+            .append(shareName).append("/").append(filePath);
+        if (snapshot != null) {
+            fileUrlstring.append("?sharesnapshot=").append(snapshot);
+        }
+        return fileUrlstring.toString();
     }
 
     /**
@@ -112,7 +146,7 @@ public class ShareFileClient {
      * @return the service version the client is using.
      */
     public ShareServiceVersion getServiceVersion() {
-        return shareFileAsyncClient.getServiceVersion();
+        return this.serviceVersion;
     }
 
     /**
@@ -2376,7 +2410,18 @@ public class ShareFileClient {
         Context context) {
         Mono<Response<ShareFileAsyncClient>> mono = shareFileAsyncClient.renameWithResponse(options, context);
         Response<ShareFileAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(mono, timeout);
-        return new SimpleResponse<>(response, new ShareFileClient(response.getValue()));
+
+        ShareFileClient destinationFileClient = getFileClient(options.getDestinationPath());
+        return new SimpleResponse<>(response, destinationFileClient);
+    }
+
+    ShareFileClient getFileClient(String destinationPath) {
+        if (CoreUtils.isNullOrEmpty(destinationPath)) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'destinationPath' can not be set to null"));
+        }
+
+        return new ShareFileClient(shareFileAsyncClient, this.azureFileStorageClient, getShareName(), destinationPath, null,
+            this.getAccountName(), this.getServiceVersion(), this.getSasToken());
     }
 
     /**
@@ -2405,7 +2450,7 @@ public class ShareFileClient {
      * share.
      */
     public String getShareSnapshotId() {
-        return shareFileAsyncClient.getShareSnapshotId();
+        return snapshot;
     }
 
     /**
@@ -2423,7 +2468,7 @@ public class ShareFileClient {
      * @return The share name of the file.
      */
     public String getShareName() {
-        return this.shareFileAsyncClient.getShareName();
+        return this.shareName;
     }
 
     /**
@@ -2441,7 +2486,7 @@ public class ShareFileClient {
      * @return The path of the file.
      */
     public String getFilePath() {
-        return this.shareFileAsyncClient.getFilePath();
+        return this.filePath;
     }
 
 
@@ -2451,7 +2496,7 @@ public class ShareFileClient {
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
-        return this.shareFileAsyncClient.getAccountName();
+        return this.accountName;
     }
 
     /**
@@ -2460,7 +2505,11 @@ public class ShareFileClient {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return this.shareFileAsyncClient.getHttpPipeline();
+        return this.azureFileStorageClient.getHttpPipeline();
+    }
+
+    AzureSasCredential getSasToken() {
+        return sasToken;
     }
 
     /**
@@ -2487,7 +2536,7 @@ public class ShareFileClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues) {
-        return this.shareFileAsyncClient.generateSas(shareServiceSasSignatureValues);
+        return generateSas(shareServiceSasSignatureValues, Context.NONE);
     }
 
     /**
@@ -2516,7 +2565,8 @@ public class ShareFileClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
-        return this.shareFileAsyncClient.generateSas(shareServiceSasSignatureValues, context);
+        return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
+            .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 }
 
