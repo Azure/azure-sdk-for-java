@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for PrivateEndpointConnections List. */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheListPrivateEndpointConnections.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheListPrivateEndpointConnections.json
      */
     /**
      * Sample code: RedisCacheListPrivateEndpointConnection.
@@ -22,6 +20,6 @@ public final class PrivateEndpointConnectionsListSamples {
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .list("rgtest01", "cachetest01", Context.NONE);
+            .list("rgtest01", "cachetest01", com.azure.core.util.Context.NONE);
     }
 }

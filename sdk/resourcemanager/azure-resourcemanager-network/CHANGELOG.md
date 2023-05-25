@@ -2,6 +2,10 @@
 
 ## 2.27.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported `withNatGateway` in `Subnet`.
+
 ### Breaking Changes
 
 - Removed `DRAIN` from class `LoadBalancerBackendAddressAdminState`.

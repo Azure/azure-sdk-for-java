@@ -57,6 +57,12 @@ public final class SkuProperties {
     @JsonProperty(value = "requiredFeature", access = JsonProperty.Access.WRITE_ONLY)
     private String requiredFeature;
 
+    /*
+     * List of all the Countries in the SKU specific commerce boundary
+     */
+    @JsonProperty(value = "countriesWithinCommerceBoundary", access = JsonProperty.Access.WRITE_ONLY)
+    private List<String> countriesWithinCommerceBoundary;
+
     /** Creates an instance of SkuProperties class. */
     public SkuProperties() {
     }
@@ -122,6 +128,16 @@ public final class SkuProperties {
      */
     public String requiredFeature() {
         return this.requiredFeature;
+    }
+
+    /**
+     * Get the countriesWithinCommerceBoundary property: List of all the Countries in the SKU specific commerce
+     * boundary.
+     *
+     * @return the countriesWithinCommerceBoundary value.
+     */
+    public List<String> countriesWithinCommerceBoundary() {
+        return this.countriesWithinCommerceBoundary;
     }
 
     /**
