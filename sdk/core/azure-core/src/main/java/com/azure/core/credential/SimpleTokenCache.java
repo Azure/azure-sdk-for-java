@@ -48,7 +48,7 @@ import java.util.function.Supplier;
  * <!-- end com.azure.core.credential.simpleTokenCache -->
  *
  * @see com.azure.core.credential
- * @see com.azure.core.credential.TokenCredential;
+ * @see com.azure.core.credential.TokenCredential
  */
 public class SimpleTokenCache {
     // The delay after a refresh to attempt another token refresh
