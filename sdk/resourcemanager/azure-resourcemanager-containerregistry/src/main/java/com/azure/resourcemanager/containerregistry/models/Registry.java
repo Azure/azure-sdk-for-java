@@ -375,7 +375,7 @@ public interface Registry
             Update withAccessFromIpAddressRange(String ipAddressCidr);
 
             /**
-             * Specifies that access to the container registry from the specific ip range should be denied.
+             * Remove the allowed ip address range.
              *
              * @param ipAddressCidr the ip address range expressed in cidr format
              * @return the next stage of the definition
@@ -391,7 +391,7 @@ public interface Registry
             Update withAccessFromIpAddress(String ipAddress);
 
             /**
-             * Specifies that access to the container registry from the specific ip address should be denied.
+             * Remove the allowed ip address.
              *
              * @param ipAddress the ip address
              * @return the next stage of the definition
@@ -399,7 +399,8 @@ public interface Registry
             Update withoutAccessFromIpAddress(String ipAddress);
 
             /**
-             * Specifies that access to the container registry from trusted services should be allowed.
+             * Specifies that access to the container registry from trusted services should be allowed regardless of whether
+             * public network access is disabled.
              *
              * @return the next stage of the definition
              * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/allow-access-trusted-services#trusted-services">
@@ -409,7 +410,7 @@ public interface Registry
             Update withAccessFromTrustedServices();
 
             /**
-             * Specifies that access to the container registry from trusted services should be denied when public network access is denied.
+             * Specifies that access to the container registry from trusted services should be denied when public network access is disabled.
              * When public network access is allowed, trusted services will still have access to the container registry
              * regardless of this configuration.
              *

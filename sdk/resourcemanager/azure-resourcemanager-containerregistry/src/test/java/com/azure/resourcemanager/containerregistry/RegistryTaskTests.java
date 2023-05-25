@@ -1432,6 +1432,8 @@ public class RegistryTaskTests extends RegistryTest {
 
         registry.update()
             .withAccessFromIpAddress(ipAddress)
+            // with same ip address range as before, test deduplication ability
+            .withAccessFromIpAddressRange(cdir)
             .apply();
 
         networkRuleSet = registry.networkRuleSet();
