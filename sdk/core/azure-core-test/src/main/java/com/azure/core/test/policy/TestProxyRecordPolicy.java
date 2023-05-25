@@ -69,10 +69,13 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @throws RuntimeException Failed to serialize body payload.
      */
     public void startRecording(File recordFile) {
+        // subpath removes nodes "src/test/resources/session-records"
+        String assetJsonPath = recordFile.toPath().subpath(0, 3) + "\\assets.json";
         HttpRequest request = null;
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString()), SerializerEncoding.JSON));
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
+                    SerializerEncoding.JSON));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

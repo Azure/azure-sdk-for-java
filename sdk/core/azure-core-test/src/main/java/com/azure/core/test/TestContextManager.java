@@ -6,6 +6,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
 
 import java.lang.reflect.Method;
+import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -23,6 +24,7 @@ public class TestContextManager {
 
     private Integer testIteration;
     private final boolean skipRecordingRequestBody;
+    private final Path testClassPath;
 
     /**
      * Constructs a {@link TestContextManager} based on the test method.
@@ -31,7 +33,7 @@ public class TestContextManager {
      * @param testMode The {@link TestMode} the test is running in.
      */
     public TestContextManager(Method testMethod, TestMode testMode) {
-        this(testMethod, testMode, false, false);
+        this(testMethod, testMode, false, false, null);
     }
 
     /**
@@ -42,8 +44,9 @@ public class TestContextManager {
      * @param enableTestProxy True if the external test proxy is in use.
      * @param recordWithoutRequestBodyClassAnnotation flag indicating if {@code RecordWithoutRequestBody} annotation
      * present on test class.
+     * @param testClassPath the test class path
      */
-    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy, boolean recordWithoutRequestBodyClassAnnotation) {
+    public TestContextManager(Method testMethod, TestMode testMode, boolean enableTestProxy, boolean recordWithoutRequestBodyClassAnnotation, Path testClassPath) {
         this.testName = testMethod.getName();
         this.className = testMethod.getDeclaringClass().getSimpleName();
         this.testMode = testMode;
@@ -61,7 +64,7 @@ public class TestContextManager {
             this.doNotRecord = false;
             skipInPlayback = false;
         }
-
+        this.testClassPath = testClassPath;
         this.testRan = !(skipInPlayback && testMode == TestMode.PLAYBACK);
         assumeTrue(testRan, "Test does not allow playback and was ran in 'TestMode.PLAYBACK'");
     }
@@ -73,6 +76,15 @@ public class TestContextManager {
      */
     public String getTestName() {
         return testName;
+    }
+
+    /**
+     * Returns the path of the class to which the test belongs.
+     *
+     * @return The file path of the test class.
+     */
+    Path getTestClassPath() {
+        return testClassPath;
     }
 
     /**

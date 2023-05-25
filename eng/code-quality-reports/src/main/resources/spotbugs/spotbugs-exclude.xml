@@ -2631,5 +2631,10 @@
     <Field name="recordingFile"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
+  <Match>
+    <Class name="com.azure.core.test.models.RecordFilePayload"/>
+    <Field name="assetFile"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
 
 </FindBugsFilter>

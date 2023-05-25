@@ -73,9 +73,12 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public Queue<String> startPlayback(File recordFile) {
         HttpRequest request = null;
+        // subpath removes nodes "src/test/resources/session-records"
+        String assetJsonPath = recordFile.toPath().subpath(0, 3) + "\\assets.json";
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString()), SerializerEncoding.JSON));
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
+                    SerializerEncoding.JSON));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -100,7 +103,6 @@ public class TestProxyPlaybackClient implements HttpClient {
                 strings.add(value);
             }
             return strings;
-
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

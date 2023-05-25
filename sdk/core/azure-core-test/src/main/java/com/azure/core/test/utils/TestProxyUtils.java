@@ -194,12 +194,13 @@ public class TestProxyUtils {
 
     /**
      * Finds the test proxy version in the source tree.
+     * @param testClassPath the test class path
      * @return The version string to use.
      * @throws RuntimeException The eng folder could not be located in the repo.
      * @throws UncheckedIOException The version file could not be read properly.
      */
-    public static String getTestProxyVersion() {
-        Path rootPath = TestUtils.getRepoRoot();
+    public static String getTestProxyVersion(Path testClassPath) {
+        Path rootPath = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
         Path versionFile =  Paths.get("eng", "common", "testproxy", "target_version.txt");
         rootPath = rootPath.resolve(versionFile);
         try {
