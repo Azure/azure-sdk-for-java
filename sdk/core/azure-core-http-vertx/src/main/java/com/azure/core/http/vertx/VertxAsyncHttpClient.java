@@ -15,7 +15,6 @@ import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import io.netty.buffer.Unpooled;
-import io.vertx.core.AsyncResult;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClientRequest;
@@ -135,6 +134,7 @@ class VertxAsyncHttpClient implements HttpClient {
     }
 
     private static void emitErrorSignal(MonoSink<HttpResponse> sink, Throwable error, String message) {
+        System.out.println("Error sending request " + message + ": " + error.getMessage());
         LOGGER.log(LogLevel.ERROR, () -> "Error sending request " + message + ": " + error.getMessage(), error);
         sink.error(error);
     }
