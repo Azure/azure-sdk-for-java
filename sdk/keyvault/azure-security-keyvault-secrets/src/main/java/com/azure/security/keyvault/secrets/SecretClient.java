@@ -89,7 +89,7 @@ import com.azure.security.keyvault.secrets.models.SecretProperties;
  * </pre>
  * <!-- end com.azure.security.keyvault.SecretClient.getSecret#string -->
  *
- * <p><strong>Note:</strong> For asynchronous sample, refer to {@link .SecretAsyncClient}.</p>
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link SecretAsyncClient}.</p>
  *
  * <br/>
  *

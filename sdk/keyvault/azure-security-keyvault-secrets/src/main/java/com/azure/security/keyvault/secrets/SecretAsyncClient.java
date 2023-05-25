@@ -45,7 +45,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * managed identity</a> for authentication in production environments.
  * You can find more information on different ways of authenticating and their corresponding credential types in the
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">
- *     Azure Identity documentation"</a>.</p>
+ * Azure Identity documentation"</a>.</p>
  *
  * <p><strong>Construct the asynchronous client</strong></p>
  *

@@ -30,7 +30,7 @@
  * initialized a key, you can interact with the primary resource types in Key Vault.</p>
  *
  * <p>What is an Azure KeyVault Key ?</p>
- * <p>Azure Key Vault supports multiple key types (`RSA` & `EC`) and algorithms, and enables the use of
+ * <p>Azure Key Vault supports multiple key types (RSA and EC) and algorithms, and enables the use of
  * Hardware Security Modules (HSM) for high value keys. In addition to the key material, the following attributes may
  * be specified:</p>
  *

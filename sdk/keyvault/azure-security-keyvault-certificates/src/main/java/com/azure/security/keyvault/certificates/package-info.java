@@ -33,22 +33,22 @@
  * <p><strong>Key Concepts:</strong></p>
  *
  * <p>What is a Certificate Client?</p>
+ *
  * <p>The certificate client performs the interactions with the Azure Key Vault service for getting, setting, updating,
  * deleting, and listing certificates and its versions. Asynchronous (`CertificateAsyncClient`) and synchronous (`CertificateClient`) clients
  * exist in the SDK allowing for the selection of a client based on an application's use case. Once you have
  * initialized a certificate, you can interact with the primary resource types in Key Vault.</p>
  *
- * <p>What is an Azure KeyVault Key ?</p>
- * <p>Azure Key Vault supports multiple certificate types (`RSA` & `EC`) and algorithms, and enables the use of
- * Hardware Security Modules (HSM) for high value certificates. In addition to the certificate material, the following attributes may
- * be specified:</p>
+ * <p>What is an Azure KeyVault Certificate ?</p>
+ *
+ * <p>Azure Key Vault supports certificates with secret content types (`PKCS12` and `PEM`). The certificate can be
+ * backed by keys in Azure Key Vault of types (`EC` and `RSA`). In addition to the certificate policy, the following
+ * attributes may be specified:.</p>
  *
  * <ol>
- *     <li>enabled: Specifies whether the certificate is enabled and usable for cryptographic operations.</li>
- *     <li>notBefore: Identifies the time before which the certificate must not be used for cryptographic operations.</li>
- *     <li>expires: Identifies the expiration time on or after which the certificate MUST NOT be used for cryptographic operations.</li>
- *     <li>created: Indicates when this version of the certificate was created.</li>
- *     <li>updated: Indicates when this version of the certificate was updated.</li>
+ * <li>enabled: Specifies whether the certificate is enabled and usable.</li>
+ * <li>created: Indicates when this version of the certificate was created.</li>
+ * <li>updated: Indicates when this version of the certificate was updated.</li>
  * </ol>
  *
  * <h2>Getting Started</h2>
@@ -179,4 +179,4 @@
  * @see com.azure.security.keyvault.certificates.CertificateAsyncClient
  * @see com.azure.security.keyvault.certificates.CertificateClientBuilder
  */
-package com.azure.security.certificatevault.certificates;
+package com.azure.security.keyvault.certificates;
