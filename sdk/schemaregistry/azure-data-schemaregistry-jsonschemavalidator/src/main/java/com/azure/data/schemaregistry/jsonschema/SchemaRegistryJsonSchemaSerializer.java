@@ -7,10 +7,7 @@ import com.azure.core.models.MessageContent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
-import com.azure.data.schemaregistry.jsonschema.models.SerializationResult;
 import reactor.core.publisher.Mono;
-
-import static com.azure.core.util.FluxUtil.monoError;
 
 public final class SchemaRegistryJsonSchemaSerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryJsonSchemaSerializer.class);
@@ -19,48 +16,65 @@ public final class SchemaRegistryJsonSchemaSerializer {
         SerializerOptions serializerOptions) {
     }
 
+    /**
+     * Serializes the object into a message.  Tries to infer the schema definition based on the object.  If no schema
+     * cannot be inferred, no validation is performed.
+     *
+     * @param object Object to serialize.
+     * @param typeReference Type reference of message to create.
+     * @param <T> Type of message to serialize.
+     *
+     * @return The object serialized into a message content.  If the inferred schema definition does not exist or the
+     *     object does not match the existing schema definition, an exception is thrown.
+     */
     public <T extends MessageContent> T serialize(Object object, TypeReference<T> typeReference) {
         return serializeAsync(object, typeReference).block();
     }
 
-    public <T extends MessageContent> SerializationResult<T> serializeWithValidation(
-        Object object, TypeReference<T> typeReference, String schemaId) {
-        return serializeWithValidationAsync(object, typeReference, schemaId).block();
-    }
-
+    /**
+     * Serializes the object into a message.  Tries to infer the schema definition based on the object.  If no schema
+     * cannot be inferred, no validation is performed.
+     *
+     * @param object Object to serialize.
+     * @param typeReference Type reference of message to create.
+     * @param <T> Type of message to serialize.
+     *
+     * @return The object serialized into a message content.  If the inferred schema definition does not exist or the
+     *     object does not match the existing schema definition, an exception is thrown.
+     */
     public <T extends MessageContent> Mono<T> serializeAsync(Object object,
         TypeReference<T> typeReference) {
 
         return Mono.empty();
     }
 
-    public <T extends MessageContent> Mono<SerializationResult<T>> serializeWithValidationAsync(
-        Object object, TypeReference<T> typeReference, String schemaId) {
-
-        if (object == null) {
-            return monoError(logger, new NullPointerException(
-                "Null object, behavior should be defined in concrete serializer implementation."));
-        } else if (typeReference == null) {
-            return monoError(logger, new NullPointerException("'typeReference' cannot be null."));
-        }
-
-        return Mono.empty();
-    }
-
+    /**
+     * Deserializes a message into its object.  If there is a schema defined in {@link MessageContent#getContentType()},
+     * it will fetch  the schema and validate.
+     *
+     * @param message Message to deserialize.
+     * @param typeReference Type reference of object.
+     * @param <T> Type of object to deserialize.
+     *
+     * @return The message deserialized into its object.  If the schema definition is defined but does not exist or the
+     *     object does not match the existing schema definition, an exception is thrown.
+     */
     public <T> T deserialize(MessageContent message, TypeReference<T> typeReference) {
         return deserializeAsync(message, typeReference).block();
     }
 
-    public <T> SerializationResult<T> deserializeWithValidation(MessageContent message, TypeReference<T> typeReference) {
-        return deserializeWithValidationAsync(message, typeReference).block();
-    }
-
+    /**
+     * Deserializes a message into its object.  If there is a schema defined in {@link MessageContent#getContentType()},
+     * it will fetch  the schema and validate.
+     *
+     * @param message Message to deserialize.
+     * @param typeReference Type reference of object.
+     * @param <T> Type of object to deserialize.
+     *
+     * @return Mono that completes when the message deserialized into its object.  If the schema definition is defined
+     *     but does not exist or the object does not match the existing schema definition, an exception is thrown.
+     */
     public <T> Mono<T> deserializeAsync(MessageContent message, TypeReference<T> typeReference) {
-        return Mono.empty();
-    }
-
-    public <T> Mono<SerializationResult<T>> deserializeWithValidationAsync(MessageContent message,
-        TypeReference<T> typeReference) {
         return Mono.empty();
     }
 }
