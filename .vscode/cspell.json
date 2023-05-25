@@ -15,6 +15,7 @@
     "eng/**",
     "**/sdk/**/target/**",
     "**/session-records/**",
+    "**/sdk/**/**/assets.json",
     "**/chromedriver",
     ".gitignore",
     "*.jar",
