@@ -14,8 +14,8 @@ public final class PlayRequest {
     /*
      * The source of the audio to be played.
      */
-    @JsonProperty(value = "playSources", required = true)
-    private List<PlaySourceInternal> playSources;
+    @JsonProperty(value = "playSourceInfo", required = true)
+    private PlaySourceInternal playSourceInfo;
 
     /*
      * The list of call participants play provided audio to.
@@ -37,22 +37,22 @@ public final class PlayRequest {
     private String operationContext;
 
     /**
-     * Get the playSources property: The source of the audio to be played.
+     * Get the playSourceInfo property: The source of the audio to be played.
      *
-     * @return the playSources value.
+     * @return the playSourceInfo value.
      */
-    public List<PlaySourceInternal> getPlaySources() {
-        return this.playSources;
+    public PlaySourceInternal getPlaySourceInfo() {
+        return this.playSourceInfo;
     }
 
     /**
-     * Set the playSources property: The source of the audio to be played.
+     * Set the playSourceInfo property: The source of the audio to be played.
      *
-     * @param playSources the playSources value to set.
+     * @param playSourceInfo the playSourceInfo value to set.
      * @return the PlayRequest object itself.
      */
-    public PlayRequest setPlaySources(List<PlaySourceInternal> playSources) {
-        this.playSources = playSources;
+    public PlayRequest setPlaySourceInfo(PlaySourceInternal playSourceInfo) {
+        this.playSourceInfo = playSourceInfo;
         return this;
     }
 
