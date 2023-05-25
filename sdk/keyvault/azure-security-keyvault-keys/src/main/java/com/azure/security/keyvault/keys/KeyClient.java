@@ -42,7 +42,7 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * <h2>Getting Started</h2>
  *
  * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
- * {@link com.azure.security.keyvault.keys.KeyClient} class, a vault url and a credential object.</p>
+ * {@link KeyClient} class, a vault url and a credential object.</p>
  *
  * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
  * which is appropriate for most scenarios, including local development and production environments. Additionally,
@@ -55,8 +55,8 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  *
  * <p><strong>Sample: Construct Synchronous Key Client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a {@link com.azure.security.keyvault.keys.KeyClient},
- * using the {@link com.azure.security.keyvault.keys.KeyClientBuilder} to configure it.</p>
+ * <p>The following code sample demonstrates the creation of a {@link KeyClient}, using the {@link KeyClientBuilder}
+ * to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.instantiation -->
  * <pre>
@@ -72,12 +72,11 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * <hr/>
  *
  * <h2>Create a Cryptographic Key</h2>
- * The {@link com.azure.security.keyvault.keys.KeyClient} or
- * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to create a key in the Azure KeyVault.
+ * The {@link KeyClient} can be used to create a key in the Azure KeyVault.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously create a cryptographic key in the key vault,
- * using the {@link com.azure.security.keyvault.keys.KeyClient#createKey(java.lang.String, com.azure.security.keyvault.keys.models.KeyType)}.</p>
+ * using the {@link KeyClient#createKey(String, KeyType)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
  * <pre>
@@ -86,18 +85,18 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
  *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link KeyAsyncClient}.</p>
+ *
  * <br/>
  *
  * <hr/>
  *
  * <h2>Get a Cryptographic Key</h2>
- * The {@link com.azure.security.keyvault.keys.KeyClient} or
- * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to retrieve a key from the
- * Azure KeyVault.
+ * The {@link KeyClient} can be used to retrieve a key from the Azure KeyVault.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously retrieve a key from the Azure KeyVault, using
- * the {@link com.azure.security.keyvault.keys.KeyClient#getKey(java.lang.String)}.</p>
+ * the {@link KeyClient#getKey(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKey#String -->
  * <pre>
@@ -108,17 +107,18 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.getKey#String -->
  *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link KeyAsyncClient}.</p>
+ *
  * <br/>
  *
  * <hr/>
  *
  * <h2>Delete Key</h2>
- * The {@link com.azure.security.keyvault.keys.KeyClient} or
- * {@link com.azure.security.keyvault.keys.KeyAsyncClient} can be used to delete a key from the Azure KeyVault.
+ * The {@link KeyClient} can be used to delete a key from the Azure KeyVault.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously delete a key from the Azure
- * KeyVault, using the {@link com.azure.security.keyvault.keys.KeyClient#beginDeleteKey(java.lang.String)}.</p>
+ * KeyVault, using the {@link KeyClient#beginDeleteKey(String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
  * <pre>
@@ -136,6 +136,8 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * &#47;&#47; Key is deleted
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link KeyAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.keys
  * @see KeyClientBuilder

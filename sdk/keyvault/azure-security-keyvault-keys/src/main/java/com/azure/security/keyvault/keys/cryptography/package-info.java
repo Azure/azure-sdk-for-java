@@ -89,7 +89,7 @@
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously encrypt data using the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient#encrypt(com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])}.</p>
+ * {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient#encrypt(com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
  * <pre>
@@ -103,22 +103,8 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously encrypt data using the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient#encrypt(com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte -->
- * <pre>
- * byte[] plaintext = new byte[100];
- * new Random&#40;0x1234567L&#41;.nextBytes&#40;plaintext&#41;;
- *
- * cryptographyAsyncClient.encrypt&#40;EncryptionAlgorithm.RSA_OAEP, plaintext&#41;
- *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
- *     .subscribe&#40;encryptResult -&gt;
- *         System.out.printf&#40;&quot;Received encrypted content of length: %d, with algorithm: %s.%n&quot;,
- *             encryptResult.getCipherText&#40;&#41;.length, encryptResult.getAlgorithm&#40;&#41;.toString&#40;&#41;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient}.</p>
  *
  * <br/>
  *
@@ -130,7 +116,7 @@
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously decrypt data using the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient#decrypt(com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])}.</p>
+ * {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient#decrypt(com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
  * <pre>
@@ -143,21 +129,8 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously decrypt data using the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient#decrypt(com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
- * <pre>
- * byte[] ciphertext = new byte[100];
- * new Random&#40;0x1234567L&#41;.nextBytes&#40;ciphertext&#41;;
- *
- * cryptographyAsyncClient.decrypt&#40;EncryptionAlgorithm.RSA_OAEP, ciphertext&#41;
- *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
- *     .subscribe&#40;decryptResult -&gt;
- *         System.out.printf&#40;&quot;Received decrypted content of length: %d%n&quot;, decryptResult.getPlainText&#40;&#41;.length&#41;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.keys.cryptography.CryptographyClient
  * @see com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient

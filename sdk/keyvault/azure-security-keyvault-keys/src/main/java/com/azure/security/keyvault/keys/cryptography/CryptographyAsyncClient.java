@@ -53,8 +53,7 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  * <h2>Getting Started</h2>
  *
  * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient} class, a vault url and a
- * credential object.</p>
+ * {@link CryptographyAsyncClient} class, a vault url and a credential object.</p>
  *
  * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
  * which is appropriate for most scenarios, including local development and production environments. Additionally,
@@ -67,9 +66,8 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  *
  * <p><strong>Sample: Construct Asynchronous Cryptography Client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient}, using the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder} to configure it.</p>
+ * <p>The following code sample demonstrates the creation of a {@link CryptographyAsyncClient}, using the
+ * {@link CryptographyClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation -->
  * <pre>
@@ -94,12 +92,11 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  * <hr/>
  *
  * <h2>Encrypt Data</h2>
- * The {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient} or
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient} can be used to encrypt data.
+ * The {@link CryptographyAsyncClient} can be used to encrypt data.
  *
  * <p><strong>Asynchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to asynchronously encrypt data using the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient#encrypt(com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])}.</p>
+ * {@link CryptographyAsyncClient#encrypt(EncryptionAlgorithm, byte[])} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte -->
  * <pre>
@@ -114,17 +111,19 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.encrypt#EncryptionAlgorithm-byte -->
  *
+ * <p><strong>Note:</strong> For synchronous sample, refer to {@link CryptographyClient}.</p>
+ *
  * <br/>
  *
  * <hr/>
  *
  * <h2>Decrypt Data</h2>
- * The {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient} or
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient} can be used to decrypt data.
+ * The {@link CryptographyAsyncClient} can be used to decrypt data.
  *
  * <p><strong>Asynchronous Code Sample:</strong></p>
+ *
  * <p>The following code sample demonstrates how to asynchronously decrypt data using the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient#decrypt(com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])}.</p>
+ * {@link CryptographyAsyncClient#decrypt(EncryptionAlgorithm, byte[])} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
  * <pre>
@@ -137,6 +136,8 @@ import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
  *         System.out.printf&#40;&quot;Received decrypted content of length: %d%n&quot;, decryptResult.getPlainText&#40;&#41;.length&#41;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.decrypt#EncryptionAlgorithm-byte -->
+ *
+ * <p><strong>Note:</strong> For synchronous sample, refer to {@link CryptographyClient}.</p>
  *
  * @see com.azure.security.keyvault.keys.cryptography
  * @see CryptographyClientBuilder

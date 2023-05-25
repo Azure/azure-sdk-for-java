@@ -95,7 +95,7 @@
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously create a cryptographic key in the key vault,
- * using the {@link com.azure.security.keyvault.keys.KeyClient#createKey(java.lang.String, com.azure.security.keyvault.keys.models.KeyType)}.</p>
+ * using the {@link com.azure.security.keyvault.keys.KeyClient#createKey(java.lang.String, com.azure.security.keyvault.keys.models.KeyType)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
  * <pre>
@@ -104,19 +104,8 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.createKey#String-KeyType -->
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously create a cryptographic key in the key vault,
- * using the {@link com.azure.security.keyvault.keys.KeyAsyncClient#createKey(java.lang.String, com.azure.security.keyvault.keys.models.KeyType)}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createKey#String-KeyType -->
- * <pre>
- * keyAsyncClient.createKey&#40;&quot;keyName&quot;, KeyType.EC&#41;
- *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
- *     .subscribe&#40;key -&gt;
- *         System.out.printf&#40;&quot;Created key with name: %s and id: %s %n&quot;, key.getName&#40;&#41;,
- *             key.getId&#40;&#41;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createKey#String-KeyType -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.security.keyvault.keys.KeyAsyncClient}.</p>
  *
  * <br/>
  *
@@ -129,7 +118,7 @@
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously retrieve a key from the Azure KeyVault, using
- * the {@link com.azure.security.keyvault.keys.KeyClient#getKey(java.lang.String)}.</p>
+ * the {@link com.azure.security.keyvault.keys.KeyClient#getKey(java.lang.String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKey#String -->
  * <pre>
@@ -140,19 +129,8 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.getKey#String -->
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously retrieve a key from the Azure KeyVault, using
- * the {@link com.azure.security.keyvault.keys.KeyAsyncClient#getKey(java.lang.String)}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String -->
- * <pre>
- * keyAsyncClient.getKey&#40;&quot;keyName&quot;&#41;
- *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
- *     .subscribe&#40;key -&gt;
- *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, key.getName&#40;&#41;,
- *             key.getId&#40;&#41;&#41;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.security.keyvault.keys.KeyAsyncClient}.</p>
  *
  * <br/>
  *
@@ -164,7 +142,7 @@
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously delete a key from the Azure
- * KeyVault, using the {@link com.azure.security.keyvault.keys.KeyClient#beginDeleteKey(java.lang.String)}.</p>
+ * KeyVault, using the {@link com.azure.security.keyvault.keys.KeyClient#beginDeleteKey(java.lang.String)} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
  * <pre>
@@ -183,20 +161,8 @@
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.KeyClient.deleteKey#String -->
  *
- * <p><strong>Asynchronous Code Sample:</strong></p>
- * <p>The following code sample demonstrates how to asynchronously delete a key from the Azure
- * KeyVault, using the {@link com.azure.security.keyvault.keys.KeyAsyncClient#beginDeleteKey(java.lang.String)}.</p>
- *
- * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String -->
- * <pre>
- * keyAsyncClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;
- *     .subscribe&#40;pollResponse -&gt; &#123;
- *         System.out.printf&#40;&quot;Deletion status: %s%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
- *         System.out.printf&#40;&quot;Key name: %s%n&quot;, pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
- *         System.out.printf&#40;&quot;Key delete date: %s%n&quot;, pollResponse.getValue&#40;&#41;.getDeletedOn&#40;&#41;&#41;;
- *     &#125;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String -->
+ * <p><strong>Note:</strong> For asynchronous sample, refer to
+ * {@link com.azure.security.keyvault.keys.KeyAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.keys.KeyClient
  * @see com.azure.security.keyvault.keys.KeyAsyncClient

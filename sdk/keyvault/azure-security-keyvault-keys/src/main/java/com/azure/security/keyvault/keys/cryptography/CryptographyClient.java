@@ -34,8 +34,7 @@ import reactor.core.publisher.Mono;
  * <h2>Getting Started</h2>
  *
  * <p>In order to interact with the Azure Key Vault service, you will need to create an instance of the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient} class, a vault url and a
- * credential object.</p>
+ * {@link CryptographyClient} class, a vault url and a credential object.</p>
  *
  * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
  * which is appropriate for most scenarios, including local development and production environments. Additionally,
@@ -48,9 +47,8 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Sample: Construct Synchronous Cryptography Client</strong></p>
  *
- * <p>The following code sample demonstrates the creation of a
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient},
- * using the {@link com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder} to configure it.</p>
+ * <p>The following code sample demonstrates the creation of a {@link CryptographyClient}, using the
+ * {@link CryptographyClientBuilder} to configure it.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
  * <pre>
@@ -75,11 +73,12 @@ import reactor.core.publisher.Mono;
  * <hr/>
  *
  * <h2>Encrypt Data</h2>
- * The {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient} can be used to encrypt data.
+ * The {@link CryptographyClient} can be used to encrypt data.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously encrypt data using the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient#encrypt(com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])}.</p>
+ * {@link CryptographyClient#encrypt(EncryptionAlgorithm, byte[])} API.
+ * </p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
  * <pre>
@@ -93,16 +92,18 @@ import reactor.core.publisher.Mono;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
  *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link CryptographyAsyncClient}.</p>
+ *
  * <br/>
  *
  * <hr/>
  *
  * <h2>Decrypt Data</h2>
- * The {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient} can be used to decrypt data.
+ * The {@link CryptographyClient} can be used to decrypt data.
  *
  * <p><strong>Synchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously decrypt data using the
- * {@link com.azure.security.keyvault.keys.cryptography.CryptographyClient#decrypt(com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])}.</p>
+ * {@link CryptographyClient#decrypt(EncryptionAlgorithm, byte[])} API.</p>
  *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
  * <pre>
@@ -114,6 +115,8 @@ import reactor.core.publisher.Mono;
  * System.out.printf&#40;&quot;Received decrypted content of length: %d.%n&quot;, decryptResult.getPlainText&#40;&#41;.length&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
+ *
+ * <p><strong>Note:</strong> For asynchronous sample, refer to {@link CryptographyAsyncClient}.</p>
  *
  * @see com.azure.security.keyvault.keys.cryptography
  * @see CryptographyClientBuilder
