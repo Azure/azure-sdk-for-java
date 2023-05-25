@@ -158,15 +158,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         return object;
     }
 
-    static <E extends HttpResponseException> boolean isExpectedThrowable(
-        Throwable throwable,
-        Class<E> errorClazz,
-        int expectedCode) {
-        HttpResponseException httpError = (HttpResponseException) throwable;
-        assertEquals(expectedCode, httpError.getResponse().getStatusCode());
-        return errorClazz.isInstance(throwable);
-    }
-
     static void assertChoices(int choicesPerPrompt, String expectedFinishReason, List<Choice> actual) {
         assertEquals(choicesPerPrompt, actual.size());
         for (int i = 0; i < actual.size(); i++) {

@@ -92,9 +92,10 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)),
                     new RequestOptions()))
-                .expectErrorMatches(throwable ->
-                    isExpectedThrowable(throwable, ClientAuthenticationException.class, 401))
-                .verify();
+                .verifyErrorSatisfies(throwable -> {
+                    assertInstanceOf(ClientAuthenticationException.class, throwable);
+                    assertEquals(401, ((ClientAuthenticationException) throwable).getResponse().getStatusCode());
+                });
         });
     }
 

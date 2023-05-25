@@ -85,10 +85,10 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void getCompletionsBadSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
-            HttpResponseException exception = assertThrows(HttpResponseException.class,
+            ClientAuthenticationException exception = assertThrows(ClientAuthenticationException.class,
                 () ->  client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
-            assertTrue(isExpectedThrowable(exception, ClientAuthenticationException.class, 401));
+            assertEquals(401, exception.getResponse().getStatusCode());
         });
     }
 
