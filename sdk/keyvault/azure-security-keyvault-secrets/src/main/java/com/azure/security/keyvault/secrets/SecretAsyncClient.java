@@ -57,6 +57,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.security.keyvault.secrets.SecretAsyncClient.instantiation -->
  *
+ * <br/>
+ *
  * <hr/>
  *
  * <h2>Create a Secret</h2>
@@ -65,7 +67,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to create and store a secret in the key vault, using the
- * {@link com.azure.security.keyvault.secrets.SecretAsyncClient}.</p>
+ * {@link com.azure.security.keyvault.secrets.SecretAsyncClient#setSecret(String, String)} API.</p>
  *
  * <!-- src_embed com.azure.keyvault.secrets.SecretClient.setSecret#string-string -->
  * <pre>
@@ -76,6 +78,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.keyvault.secrets.SecretClient.setSecret#string-string -->
  *
+ * <p><strong>Note:</strong> For synchronous sample, refer to
+ * {@link com.azure.security.keyvault.secrets.SecretClient}.</p>
+ *
+ * <br/>
+ *
  * <hr/>
  *
  * <h2>Get a Secret</h2>
@@ -84,7 +91,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Asynchronous Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to synchronously retrieve a previously stored secret from the Azure
- * KeyVault, using the {@link com.azure.security.keyvault.secrets.SecretAsyncClient}.</p>
+ * KeyVault, using the {@link com.azure.security.keyvault.secrets.SecretAsyncClient#getSecret(String)} API.</p>
  *
  * <!-- src_embed com.azure.keyvault.secrets.SecretClient.getSecret#string -->
  * <pre>
@@ -95,6 +102,11 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end com.azure.keyvault.secrets.SecretClient.getSecret#string -->
  *
+ * <p><strong>Note:</strong> For synchronous sample, refer to
+ * {@link com.azure.security.keyvault.secrets.SecretClient}.</p>
+ *
+ * <br/>
+ *
  * <hr/>
  *
  * <h2>Delete Secret</h2>
@@ -103,7 +115,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Code Sample:</strong></p>
  * <p>The following code sample demonstrates how to delete a secret from the Azure KeyVault, using the
- * {@link com.azure.security.keyvault.secrets.SecretAsyncClient}.</p>
+ * {@link com.azure.security.keyvault.secrets.SecretAsyncClient#beginDeleteSecret(String)} API.</p>
  *
  * <!-- src_embed com.azure.keyvault.secrets.SecretClient.deleteSecret#String -->
  * <pre>
@@ -115,6 +127,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     &#125;&#41;;
  * </pre>
  * <!-- end com.azure.keyvault.secrets.SecretClient.deleteSecret#String -->
+ *
+ * <p><strong>Note:</strong> For synchronous sample, refer to
+ * {@link com.azure.security.keyvault.secrets.SecretClient}.</p>
  *
  * @see SecretClientBuilder
  * @see PollerFlux
