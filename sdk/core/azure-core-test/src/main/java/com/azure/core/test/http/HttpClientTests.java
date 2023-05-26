@@ -443,7 +443,7 @@ public abstract class HttpClientTests {
             .assertNext(responseBytes -> assertArrayEquals(expectedResponseBody, responseBytes))
             .verifyComplete();
 
-        assertEquals(expectedResponseBody.length, progress.intValue());
+        assertEquals(expectedResponseBody.length, progress.intValue(), "Progress reporter length does not match with response body length");
     }
 
     /**
