@@ -266,8 +266,13 @@ public final class CallAutomationAsyncClient {
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
                 .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                 .setCallbackUri(answerCallOptions.getCallbackUrl())
-                .setAnsweredBy(sourceIdentity)
                 .setOperationContext(answerCallOptions.getOperationContext());
+
+            if (answerCallOptions.getAnsweredByIdentifier() != null) {
+                request.setAnsweredBy(CommunicationUserIdentifierConverter.convert(answerCallOptions.getAnsweredByIdentifier()));
+            } else {
+                request.setAnsweredBy(sourceIdentity);
+            }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
                     request,
