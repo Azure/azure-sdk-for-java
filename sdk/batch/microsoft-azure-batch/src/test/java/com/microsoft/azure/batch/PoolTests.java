@@ -110,7 +110,7 @@ public class PoolTests extends BatchIntegrationTestBase {
             Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long) pool.currentLowPriorityNodes());
             Assert.assertNotNull("CurrentNodeCommunicationMode should be defined for pool with more than one target dedicated node", pool.currentNodeCommunicationMode());
             Assert.assertEquals(NodeCommunicationMode.DEFAULT, pool.targetNodeCommunicationMode());
-            Assert.assertNotNull("Should have option on whether to use accelerated networking",pool.networkConfiguration().enableAcceleratedNetworking());
+            Assert.assertTrue(pool.networkConfiguration().enableAcceleratedNetworking());
 
             List<ComputeNode> computeNodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
             List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).endpointConfiguration().inboundEndpoints();
@@ -242,7 +242,7 @@ public class PoolTests extends BatchIntegrationTestBase {
             for(ComputeNode node : computeNodes){
                 NodeVMExtension nodeVMExtension = batchClient.protocolLayer().computeNodeExtensions().get(poolId, node.id(), VM_EXTENSION_NAME);
                 Assert.assertNotNull(nodeVMExtension);
-                Assert.assertNotNull("Should have the option on whether to enable vm extension auto upgrade",nodeVMExtension.vmExtension().enableAutomaticUpgrade());
+                Assert.assertTrue(nodeVMExtension.vmExtension().enableAutomaticUpgrade());
             }
 
             // DELETE
