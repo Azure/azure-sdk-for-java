@@ -1,3 +1,16 @@
+-------
+Index
+-------
+1. [GoneAndRetryWithRetryPolicy](#goneandretrywithretrypolicy)
+2. [ClearingSessionContainerClientRetryPolicy](#clearingsessioncontainerclientretrypolicy)
+3. [InvalidPartitionExceptionRetryPolicy](#invalidpartitionexceptionretrypolicy)
+4. [PartitionKeyMismatchRetryPolicy](#partitionkeymismatchretrypolicy)
+5. [PartitionKeyRangeGoneRetryPolicy](#partitionkeyrangegoneretrypolicy)
+6. [RenameCollectionAwareClientRetryPolicy](#renamecollectionawareclientretrypolicy)
+7. [WebExceptionRetryPolicy](#webexceptionretrypolicy)
+8. [SessionTokenMismatchRetryPolicy](#sessiontokenmismatchretrypolicy)
+9. [OpenConnectionsAndInitCachesRetryPolicy](#openconnectionsandinitcachesretrypolicy)
+
 # GoneAndRetryWithRetryPolicy
 
 ## Background
