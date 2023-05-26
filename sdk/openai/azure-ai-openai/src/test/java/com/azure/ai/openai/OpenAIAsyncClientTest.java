@@ -143,7 +143,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             StepVerifier.create(client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages)))
                 .assertNext(resultChatCompletions -> {
                     assertNotNull(resultChatCompletions.getUsage());
-                    assertChatCompletions(1, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
+                    assertChatCompletions(1, resultChatCompletions);
                 })
                 .verifyComplete();
         });
@@ -176,7 +176,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     new RequestOptions()))
                 .assertNext(response -> {
                     ChatCompletions resultChatCompletions = assertAndGetValueFromResponse(response, ChatCompletions.class, 200);
-                    assertChatCompletions(1, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
+                    assertChatCompletions(1, resultChatCompletions);
                 })
                 .verifyComplete();
         });

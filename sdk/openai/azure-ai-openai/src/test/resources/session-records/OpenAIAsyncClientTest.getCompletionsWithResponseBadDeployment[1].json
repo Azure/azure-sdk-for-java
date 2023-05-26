@@ -1,7 +1,7 @@
 {
   "Entries": [
     {
-      "RequestUri": "https://REDACTED//openai/deployments/BAD_DEPLOYMENT_ID/completions?api-version=2023-03-15-preview",
+      "RequestUri": "https://REDACTED/openai/deployments/BAD_DEPLOYMENT_ID/completions?api-version=2023-03-15-preview",
       "RequestMethod": "POST",
       "RequestHeaders": {
         "Accept": "application/json",

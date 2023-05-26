@@ -138,7 +138,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsForNonAzureRunner((deploymentId, chatMessages) -> {
             ChatCompletions resultChatCompletions = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages));
-            assertChatCompletions(1, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
+            assertChatCompletions(1, resultChatCompletions);
         });
     }
 
@@ -166,7 +166,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             Response<BinaryData> response = client.getChatCompletionsWithResponse(deploymentId,
                 BinaryData.fromObject(new ChatCompletionsOptions(chatMessages)), new RequestOptions());
             ChatCompletions resultChatCompletions = assertAndGetValueFromResponse(response, ChatCompletions.class, 200);
-            assertChatCompletions(1, new ChatRole[]{ChatRole.ASSISTANT}, resultChatCompletions);
+            assertChatCompletions(1, resultChatCompletions);
         });
     }
 

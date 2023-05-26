@@ -171,26 +171,26 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertEquals(expectedFinishReason, actual.getFinishReason().toString());
     }
 
-    static void assertChatCompletions(int choiceCount, ChatRole[] chatRoleArray, ChatCompletions actual) {
+    static void assertChatCompletions(int choiceCount, ChatCompletions actual) {
         List<ChatChoice> choices = actual.getChoices();
         assertNotNull(choices);
         assertTrue(choices.size() > 0);
-        assertChatChoices(choiceCount, "stop", chatRoleArray, choices);
+        assertChatChoices(choiceCount, "stop", ChatRole.ASSISTANT, choices);
         assertNotNull(actual.getUsage());
     }
 
-    static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole[] chatRoleArray, ChatCompletions actual) {
+    static void assertChatCompletions(int choiceCount, String expectedFinishReason, ChatRole chatRole, ChatCompletions actual) {
         List<ChatChoice> choices = actual.getChoices();
         assertNotNull(choices);
         assertTrue(choices.size() > 0);
-        assertChatChoices(choiceCount, expectedFinishReason, chatRoleArray, choices);
+        assertChatChoices(choiceCount, expectedFinishReason, chatRole, choices);
         assertNotNull(actual.getUsage());
     }
 
-    static void assertChatChoices(int choiceCount, String expectedFinishReason, ChatRole[] chatRoleArray, List<ChatChoice> actual) {
+    static void assertChatChoices(int choiceCount, String expectedFinishReason, ChatRole chatRole, List<ChatChoice> actual) {
         assertEquals(choiceCount, actual.size());
         for (int i = 0; i < actual.size(); i++) {
-            assertChatChoice(i, expectedFinishReason, chatRoleArray[i], actual.get(i));
+            assertChatChoice(i, expectedFinishReason, chatRole, actual.get(i));
         }
     }
 
