@@ -153,7 +153,7 @@
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-sql_2.12</artifactId>
-      <version>3.4.0</version> <!-- {x-version-update;cosmos-spark_3-3_org.apache.spark:spark-sql_2.12;external_dependency} -->
+      <version>3.4.0</version> <!-- {x-version-update;cosmos-spark_3-4_org.apache.spark:spark-sql_2.12;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
@@ -165,7 +165,7 @@
     <dependency>
       <groupId>org.apache.spark</groupId>
       <artifactId>spark-hive_2.12</artifactId>
-      <version>3.4.0</version> <!-- {x-version-update;cosmos-spark_3-3_org.apache.spark:spark-hive_2.12;external_dependency} -->
+      <version>3.4.0</version> <!-- {x-version-update;cosmos-spark_3-4_org.apache.spark:spark-hive_2.12;external_dependency} -->
       <exclusions>
         <exclusion>
           <groupId>io.netty</groupId>
