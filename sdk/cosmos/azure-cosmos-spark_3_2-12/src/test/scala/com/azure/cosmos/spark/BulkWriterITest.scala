@@ -55,6 +55,49 @@ class BulkWriterITest extends IntegrationSpec with CosmosClient with AutoCleanab
     }
   }
 
+
+  "Bulk Writer" can "upsert items and throw the ones with empty id causing 400" in  {
+    val container = getContainer
+    val containerProperties = container.read().block().getProperties
+    val partitionKeyDefinition = containerProperties.getPartitionKeyDefinition
+
+    val writeConfig = CosmosWriteConfig(ItemWriteStrategy.ItemOverwrite, 5, bulkEnabled = true, bulkMaxPendingOperations = Some(900))
+
+    val bulkWriter = new BulkWriter(container, partitionKeyDefinition, writeConfig, DiagnosticsConfig(Option.empty, false, None))
+
+    val items = mutable.Map[String, ObjectNode]()
+    for(i <- 0 until 4) {
+      var item = objectMapper.createObjectNode()
+      if (i == 1 || i == 3) {
+          item = getItem("")
+      } else {
+          item = getItem(UUID.randomUUID().toString)
+      }
+      val id = item.get("id").textValue()
+      items += (id -> item)
+      bulkWriter.scheduleWrite(new PartitionKey(item.get("id").textValue()), item)
+    }
+
+    val thrown = intercept[CosmosException] {
+        bulkWriter.flushAndClose()
+    }
+
+    // Verify 2 items were ingested in the CosmosDB
+    // Only the items that had the id field populated
+    // were successfully ingested, and the other were
+    // thrown as exceptions.
+    val allItems = readAllItems()
+    allItems should have size 2
+    for(itemFromDB <- allItems) {
+      items.contains(itemFromDB.get("id").textValue()) shouldBe true
+      val expectedItem = items(itemFromDB.get("id").textValue())
+      secondObjectNodeHasAllFieldsOfFirstObjectNode(expectedItem, itemFromDB) shouldEqual true
+    }
+
+    // verify that thrown is not null
+    thrown should not be null
+  }
+
   "Bulk Writer" can "upsert item with empty id causing 400" in  {
     val container = getContainer
     val containerProperties = container.read().block().getProperties

@@ -5,7 +5,7 @@ package com.azure.cosmos.spark
 // scalastyle:off underscore.import
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models._
-import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, bulkWriterBoundedElastic, getThreadInfo}
+import com.azure.cosmos.spark.BulkWriter.{BulkOperationFailedException, MultipleBulkOperationFailedExceptions, bulkWriterBoundedElastic, getThreadInfo}
 import com.azure.cosmos.spark.diagnostics.DefaultDiagnostics
 import com.azure.cosmos._
 import reactor.core.scheduler.Scheduler
@@ -75,6 +75,7 @@ class BulkWriter(container: CosmosAsyncContainer,
   private val pendingTasksCompleted = lock.newCondition
   private val activeTasks = new AtomicInteger(0)
   private val errorCaptureFirstException = new AtomicReference[Throwable]()
+  private val errorCaptureExceptionList = new java.util.ArrayList[Throwable]()
   private val bulkInputEmitter: Sinks.Many[models.CosmosItemOperation] = Sinks.many().unicast().onBackpressureBuffer()
 
   // TODO: fabianm - remove this later
@@ -161,8 +162,8 @@ class BulkWriter(container: CosmosAsyncContainer,
                     s"${context.partitionKeyValue}], encountered , attemptNumber=${context.attemptNumber}, " +
                     s"exceptionMessage=${resp.getException.getMessage}, " +
                   s"Context: ${operationContext.toString} ${getThreadInfo}", resp.getException)
-                captureIfFirstFailure(resp.getException)
-                cancelWork()
+                captureFailures(resp.getException)
+//                cancelWork()
             }
           } else if (Option(itemResponse).isEmpty || !itemResponse.isSuccessStatusCode) {
             handleNonSuccessfulStatusCode(context, itemOperation, itemResponse, isGettingRetried, None)
@@ -190,8 +191,8 @@ class BulkWriter(container: CosmosAsyncContainer,
           // so we know which operations failed and which ones can be retried.
           // TODO: moderakh discuss the bulk API in the core SDK.
           // this is currently a kill scenario.
-          captureIfFirstFailure(ex)
-          cancelWork()
+          captureFailures(ex)
+//          cancelWork()
           markTaskCompletion()
         }
       )
@@ -200,7 +201,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
   override def scheduleWrite(partitionKeyValue: PartitionKey, objectNode: ObjectNode): Unit = {
     Preconditions.checkState(!closed.get())
-    throwIfCapturedExceptionExists()
+//    throwIfCapturedExceptionExists()
 
     var acquisitionAttempt = 0
     val activeOperationsSemaphoreTimeout = 10
@@ -217,7 +218,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     while (!semaphore.tryAcquire(activeOperationsSemaphoreTimeout, TimeUnit.MINUTES)) {
       log.logDebug(s"Not able to acquire semaphore, Context: ${operationContext.toString} ${getThreadInfo}")
       if (subscriptionDisposable.isDisposed) {
-        captureIfFirstFailure(
+        captureFailures(
           new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already"));
       }
 
@@ -391,13 +392,15 @@ class BulkWriter(container: CosmosAsyncContainer,
 
       val exceptionToBeThrown = responseException match {
         case Some(e) =>
-          new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, e)
+          new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, e,
+              context.itemId, context.partitionKeyValue)
         case None =>
-          new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, null)
+          new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, message, null,
+              context.itemId, context.partitionKeyValue)
       }
 
-      captureIfFirstFailure(exceptionToBeThrown)
-      cancelWork()
+      captureFailures(exceptionToBeThrown)
+//      cancelWork()
     }
   }
   //scalastyle:on method.length
@@ -410,6 +413,14 @@ class BulkWriter(container: CosmosAsyncContainer,
         s"Context: ${operationContext.toString} ${getThreadInfo}")
       throw errorSnapshot
     }
+  }
+
+  private[this] def throwIfCapturedExceptionsListNotEmpty(): Unit = {
+      val errorsList = errorCaptureExceptionList
+      if (errorsList.size() > 0) {
+          log.logError(s"exceptions occurred: ")
+          throw new MultipleBulkOperationFailedExceptions(errorsList.asScala.toList)
+      }
   }
 
   private[this] def getActiveOperationsLog(activeOperationsSnapshot: mutable.Set[models.CosmosItemOperation]): String = {
@@ -457,7 +468,7 @@ class BulkWriter(container: CosmosAsyncContainer,
 
     if (numberOfIntervalsWithIdenticalActiveOperationSnapshots.get >= BulkWriter.maxAllowedMinutesWithoutAnyProgress) {
 
-      captureIfFirstFailure(
+      captureFailures(
         new IllegalStateException(
           s"Stale bulk ingestion identified in ${operationName} - the following active operations have not been " +
             s"completed (first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
@@ -466,7 +477,7 @@ class BulkWriter(container: CosmosAsyncContainer,
       cancelWork()
     }
 
-    throwIfCapturedExceptionExists()
+    throwIfCapturedExceptionsListNotEmpty()
   }
 
   // the caller has to ensure that after invoking this method scheduleWrite doesn't get invoked
@@ -487,7 +498,7 @@ class BulkWriter(container: CosmosAsyncContainer,
           try {
             val numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
             var activeTasksSnapshot = activeTasks.get()
-            while (activeTasksSnapshot > 0 && errorCaptureFirstException.get == null) {
+            while (activeTasksSnapshot > 0) {
               log.logInfo(
                 s"Waiting for pending activeTasks $activeTasksSnapshot, " +
                   s"Context: ${operationContext.toString} ${getThreadInfo}")
@@ -531,7 +542,7 @@ class BulkWriter(container: CosmosAsyncContainer,
                 s"Context: ${operationContext.toString} ${getThreadInfo}")
           }
 
-          throwIfCapturedExceptionExists()
+          throwIfCapturedExceptionsListNotEmpty()
 
           assume(activeTasks.get() == 0)
           assume(activeOperations.isEmpty)
@@ -576,7 +587,19 @@ class BulkWriter(container: CosmosAsyncContainer,
     }
   }
 
-  private def cancelWork(): Unit = {
+  private def captureFailures(throwable: Throwable): Unit = {
+    log.logError(s"capture failure, Context: {${operationContext.toString}} ${getThreadInfo}", throwable)
+    lock.lock()
+    try {
+        errorCaptureExceptionList.add(throwable)
+        pendingTasksCompleted.signal()
+    } finally {
+        lock.unlock()
+    }
+  }
+
+
+    private def cancelWork(): Unit = {
     log.logInfo(s"cancelling remaining unprocessed tasks ${activeTasks.get}, " +
       s"Context: ${operationContext.toString}")
     subscriptionDisposable.dispose()
@@ -629,7 +652,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     log.logError(s"Abort, Context: ${operationContext.toString} ${getThreadInfo}")
     // signal an exception that will be thrown for any pending work/flushAndClose if no other exception has
     // been registered
-    captureIfFirstFailure(
+      captureFailures(
       new IllegalStateException(s"The Spark task was aborted, Context: ${operationContext.toString}"))
     cancelWork()
   }
@@ -698,9 +721,22 @@ private object BulkWriter {
     s"Thread[Name: ${t.getName}, Group: $group, IsDaemon: ${t.isDaemon} Id: ${t.getId}]"
   }
 
-  private class BulkOperationFailedException(statusCode: Int, subStatusCode: Int, message:String, cause: Throwable)
+  private class BulkOperationFailedException(statusCode: Int, subStatusCode: Int, message:String, cause: Throwable,
+                                   id: String, partitionKey: PartitionKey)
     extends CosmosException(statusCode, message, null, cause) {
-      BridgeInternal.setSubStatusCode(this, subStatusCode)
+    val itemId = id
+    val partitionKeyValue = partitionKey
+    BridgeInternal.setSubStatusCode(this, subStatusCode)
+  }
+
+  private class MultipleBulkOperationFailedExceptions(exceptions: List[Throwable]) extends
+      CosmosException(0, "Multiple bulk operation failures") {
+      def getExceptions: List[Throwable] = exceptions
+
+      override def getMessage: String = {
+          val exceptionMessages = exceptions.toArray.map(_.asInstanceOf[BulkOperationFailedException].getMessage)
+          s"Multiple bulk operation failed: ${exceptionMessages.mkString(", ")}"
+      }
   }
 }
 
