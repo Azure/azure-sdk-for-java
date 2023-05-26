@@ -109,6 +109,18 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getCompletionsRunner((modelId, prompt) -> {
+            CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
+            completionsOptions.setMaxTokens(3);
+            Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
+            assertCompletions(1,"length", resultCompletions);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
