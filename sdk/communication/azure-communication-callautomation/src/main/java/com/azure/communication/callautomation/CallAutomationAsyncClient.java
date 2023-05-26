@@ -323,7 +323,6 @@ public final class CallAutomationAsyncClient {
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
                 .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                 .setCallbackUri(answerCallOptions.getCallbackUrl())
-                .setAnsweredByIdentifier(sourceIdentity)
                 .setOperationContext(answerCallOptions.getOperationContext());
 
             if (answerCallOptions.getMediaStreamingConfiguration() != null) {
@@ -335,6 +334,12 @@ public final class CallAutomationAsyncClient {
 
             if (answerCallOptions.getAzureCognitiveServicesUrl() != null && !answerCallOptions.getAzureCognitiveServicesUrl().isEmpty()) {
                 request.setAzureCognitiveServicesEndpointUrl(answerCallOptions.getAzureCognitiveServicesUrl());
+            }
+
+            if (answerCallOptions.getAnsweredByIdentifier() != null) {
+                request.setAnsweredByIdentifier(CommunicationUserIdentifierConverter.convert(answerCallOptions.getAnsweredByIdentifier()));
+            } else {
+                request.setAnsweredByIdentifier(sourceIdentity);
             }
 
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(

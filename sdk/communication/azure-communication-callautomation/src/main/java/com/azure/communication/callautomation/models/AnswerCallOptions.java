@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -29,11 +30,16 @@ public final class AnswerCallOptions {
      * The endpoint URL of the Azure Cognitive Services resource attached
      */
     private String azureCognitiveServicesUrl;
-    
+
     /**
      * The operational context
      */
     private String operationContext;
+
+    /**
+     * The identifier of the call automation entity which answers the call.
+     */
+    private CommunicationUserIdentifier answeredByIdentifier;
 
     /**
      * Constructor
@@ -82,7 +88,7 @@ public final class AnswerCallOptions {
     public MediaStreamingOptions getMediaStreamingConfiguration() {
         return mediaStreamingOptions;
     }
-    
+
     /**
      * Get the operationContext.
      *
@@ -114,7 +120,16 @@ public final class AnswerCallOptions {
         this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
         return this;
     }
-    
+
+    /**
+     * Get the identifier of the call automation entity which answers the call.
+     *
+     * @return the operationContext
+     */
+    public CommunicationUserIdentifier getAnsweredByIdentifier() {
+        return answeredByIdentifier;
+    }
+
      /**
      * Set the operationContext.
      *
@@ -123,6 +138,17 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setOperationContext(String operationContext) {
         this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the operationContext.
+     *
+     * @param answeredByIdentifier the identifier of the call automation entity which answers the call.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setAnsweredByIdentifier(CommunicationUserIdentifier answeredByIdentifier) {
+        this.answeredByIdentifier = answeredByIdentifier;
         return this;
     }
 }
