@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.availabilitystrategy.AvailabilityStrategy;
 import com.azure.cosmos.implementation.OperationCancelledException;
 
 import java.time.Duration;
@@ -13,6 +14,7 @@ import java.time.Duration;
 public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     private boolean isEnabled = true;
     private final Duration endToEndOperationTimeout;
+    private AvailabilityStrategy availabilityStrategy;
 
     /**
      * Create a builder for {@link CosmosEndToEndOperationLatencyPolicyConfig} with end to end operation timeout
@@ -29,7 +31,7 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
     public CosmosEndToEndOperationLatencyPolicyConfig build() {
-        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout);
+        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout, availabilityStrategy);
     }
 
     /**
@@ -42,6 +44,18 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     public CosmosEndToEndOperationLatencyPolicyConfigBuilder enable(
         boolean isEnabled) {
         this.isEnabled = isEnabled;
+        return this;
+    }
+
+    /**
+     * Sets the availability strategy to be used for the policy.
+     *
+     * @param availabilityStrategy the availability strategy to be used for the policy
+     * @return current CosmosEndToEndOperationConfigBuilder
+     */
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder setAvailabilityStrategy(
+        AvailabilityStrategy availabilityStrategy) {
+        this.availabilityStrategy = availabilityStrategy;
         return this;
     }
 

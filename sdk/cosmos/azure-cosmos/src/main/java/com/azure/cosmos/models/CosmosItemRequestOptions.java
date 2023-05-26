@@ -41,6 +41,7 @@ public class CosmosItemRequestOptions {
     private Boolean nonIdempotentWriteRetriesEnabled;
     private boolean useTrackingIds;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    private List<String> excludeRegions;
 
     /**
      * copy constructor
@@ -62,6 +63,7 @@ public class CosmosItemRequestOptions {
         nonIdempotentWriteRetriesEnabled = options.nonIdempotentWriteRetriesEnabled;
         useTrackingIds = options.useTrackingIds;
         endToEndOperationLatencyPolicyConfig = options.endToEndOperationLatencyPolicyConfig;
+        excludeRegions = options.excludeRegions;
         if (options.customOptions != null) {
             this.customOptions = new HashMap<>(options.customOptions);
         }
@@ -375,6 +377,17 @@ public class CosmosItemRequestOptions {
     }
 
     /**
+     * List of regions to be excluded for the request/retries. Example "East US" or "East US, West US"
+     * These regions will be excluded from the preferred regions list
+     * @param excludeRegions list of regions
+     * @return the @link(CosmosItemRequestOptions)
+     */
+    public CosmosItemRequestOptions setExcludeRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+    /**
      * Gets the partition key
      *
      * @return the partition key
@@ -510,6 +523,10 @@ public class CosmosItemRequestOptions {
 
     OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return this.operationContextAndListenerTuple;
+    }
+
+    List<String> getExcludeRegions() {
+        return excludeRegions;
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////

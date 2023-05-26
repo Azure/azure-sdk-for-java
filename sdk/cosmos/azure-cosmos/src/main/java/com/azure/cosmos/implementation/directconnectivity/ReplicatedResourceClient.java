@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.availabilitystrategy.AvailabilityStrategy;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -98,6 +99,7 @@ public class ReplicatedResourceClient {
         } else {
             this.speculativeProcessor = null;
         }
+
     }
 
     public void enableThroughputControl(ThroughputControlStore throughputControlStore) {
@@ -158,23 +160,26 @@ public class ReplicatedResourceClient {
 
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
         CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
+        AvailabilityStrategy strategy = config.getAvailabilityStrategy();
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
         List<RxDocumentServiceRequest> requests = new ArrayList<>();
 
-        if (speculativeProcessor.shouldIncludeOriginalRequestRegion()) {
+        strategy.getEffectiveRetryRegions(request.requestContext.getPreferredRegions(),
+            request.requestContext.getExcludeRegions())
+            .forEach(s -> {
+                if (getLocationIndex(s) != null) {
+                    RxDocumentServiceRequest newRequest = request.clone();
+                    newRequest.requestContext.locationIndexToRoute = getLocationIndex(s);
+                    requests.add(newRequest);
+                    // TODO: Change this to use the threshold values from the strategy
+                    monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
+                    .delaySubscription(speculativeProcessor.getThreshold(config).plus(speculativeProcessor.getThresholdStepDuration(config, monoList.size() - 1))));
+                }
+            });
+
+        if (monoList.isEmpty() || speculativeProcessor.shouldIncludeOriginalRequestRegion()) {
             monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
             requests.add(request);
-        }
-
-        for (URI endpoint : speculativeProcessor.getRegionsToSpeculate(config, this.transportClient
-            .getGlobalEndpointManager().getReadEndpoints())) {
-            if (request.requestContext.locationEndpointToRoute != endpoint) {
-                RxDocumentServiceRequest newRequest = request.clone();
-                newRequest.requestContext.routeToLocation(endpoint);
-                requests.add(newRequest);
-                monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
-                    .delaySubscription(speculativeProcessor.getThreshold(config).plus(speculativeProcessor.getThresholdStepDuration(config, monoList.size() - 1))));
-            }
         }
 
         return Mono.firstWithValue(monoList).map(storeResponse ->
@@ -191,16 +196,26 @@ public class ReplicatedResourceClient {
             });
     }
 
+    private Integer getLocationIndex(String s) {
+        // return the index of the region in the preferred regions list
+        return null;
+    }
+
     private boolean shouldSpeculate(RxDocumentServiceRequest request) {
         if (speculativeProcessor == null) {
             return false;
         }
-        if (!request.isReadOnlyRequest() && request.getResourceType() != ResourceType.Document) {
+        if (request.getResourceType() != ResourceType.Document) {
+            return false;
+        }
+
+        if (!request.isReadOnlyRequest()
+            || (request.getOperationType().isWriteOperation() && !request.getNonIdempotentWriteRetriesEnabled())) {
             return false;
         }
 
         CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
-        return config != null && config.isEnabled();
+        return config != null && config.isEnabled() && config.getAvailabilityStrategy() != null;
     }
 
     private Mono<StoreResponse> getStoreResponseMono(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
