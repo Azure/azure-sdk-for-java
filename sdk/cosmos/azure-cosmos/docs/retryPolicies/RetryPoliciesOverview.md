@@ -2,7 +2,12 @@
 
 ## Background
 
-- Triggered on `GoneException`, `PartitionIsMigratingException`, `PartitionKeyRangeIsSplittinException` and `RetryWithException` type exceptions.
+- Triggered on the following exceptions:
+  - `GoneException`
+  - `PartitionIsMigratingException`
+  - `PartitionKeyRangeIsSplittinException`
+  - On certain `InvalidPartitionException` scenarios.
+  - `RetryWithException`
 - Uses an exponential backoff-based retry mechanism.
 
 ## Status code specific forceRefresh behavior
@@ -16,10 +21,10 @@
 
 ## Status code specific retry frequency for `GoneException`
 
-| Status Code / Sub-status Code | Retry Window                    | Default Retry Window | Backoff multiplier | Max backoff | Max retries |
-|:------------------------------|---------------------------------|----------------------|--------------------|-------------|-------------|
-| 410/*                         | 60s for Strong / 30s for others | 30s                  | 2                  | 15 s        | N/A         |
-| 410/21001                     | 60s for Strong / 30s for others | 30s                  | 2                  | 15 s        | 2           |
+| Status Code / Sub-status Code | Retry Window                                          | Default Retry Window | Backoff multiplier | Max backoff | Max retries |
+|:------------------------------|-------------------------------------------------------|----------------------|--------------------|-------------|-------------|
+| 410/21002;410/21003;410/21004 | 60s if account-consistency is Strong / 30s for others | 30s                  | 2                  | 15 s        | N/A         |
+| 410/21001                     | 60s if account-consistency is Strong / 30s for others | 30s                  | 2                  | 15 s        | 2           |
 
 ## Status code specific retry frequency for `RetryWithException`
 
