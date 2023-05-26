@@ -13,7 +13,6 @@ import com.azure.core.util.Contexts;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.logging.LogLevel;
 import io.netty.buffer.Unpooled;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
@@ -27,7 +26,6 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
-import reactor.util.Logger;
 import reactor.util.retry.Retry;
 import reactor.util.retry.RetrySpec;
 
