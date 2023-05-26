@@ -429,7 +429,8 @@ public class ShareFileAsyncClient {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+//        validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = smbProperties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
@@ -444,7 +445,7 @@ public class ShareFileAsyncClient {
             .createWithResponseAsync(shareName, filePath, maxSize, fileAttributes, null, metadata, filePermission,
                 filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, requestConditions.getLeaseId(),
                 httpHeaders, context)
-            .map(ShareFileAsyncClient::createFileInfoResponse);
+            .map(ModelHelper::createFileInfoResponse);
     }
 
     /**
@@ -1482,7 +1483,7 @@ public class ShareFileAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getFiles()
             .getPropertiesWithResponseAsync(shareName, filePath, snapshot, null, requestConditions.getLeaseId(), context)
-            .map(ShareFileAsyncClient::getPropertiesResponse);
+            .map(ModelHelper::getPropertiesResponse);
     }
 
     /**

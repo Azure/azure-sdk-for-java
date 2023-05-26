@@ -3,34 +3,30 @@
 
 package com.azure.storage.file.share.implementation.util;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.FileConstants;
+import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
-import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
-import com.azure.storage.file.share.implementation.models.FileProperty;
-import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
-import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
-import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
-import com.azure.storage.file.share.implementation.models.ShareItemInternal;
-import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
-import com.azure.storage.file.share.implementation.models.StringEncoded;
+import com.azure.storage.file.share.implementation.models.*;
+import com.azure.storage.file.share.models.*;
 import com.azure.storage.file.share.models.HandleItem;
-import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
-import com.azure.storage.file.share.models.ShareFileItemProperties;
-import com.azure.storage.file.share.models.ShareItem;
-import com.azure.storage.file.share.models.ShareProperties;
-import com.azure.storage.file.share.models.ShareProtocols;
-import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
@@ -239,5 +235,86 @@ public class ModelHelper {
         } else {
             return stringEncoded.getContent();
         }
+    }
+
+    /**
+     * Verifies that the file permission and file permission key are not both set and if the file permission is set,
+     * the file permission is of valid length.
+     * @param filePermission The file permission.
+     * @param filePermissionKey The file permission key.
+     * @throws IllegalArgumentException for invalid file permission or file permission keys.
+     */
+    public static void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
+        if (filePermission != null && filePermissionKey != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));
+        }
+
+        if (filePermission != null) {
+            StorageImplUtils.assertInBounds("filePermission",
+                filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
+        }
+    }
+
+    public static boolean checkDoesNotExistStatusCode(Throwable t) {
+        // ShareStorageException
+        return (t instanceof ShareStorageException
+            && ((ShareStorageException) t).getStatusCode() == 404
+            && (((ShareStorageException) t).getErrorCode() == ShareErrorCode.RESOURCE_NOT_FOUND
+            || ((ShareStorageException) t).getErrorCode() == ShareErrorCode.SHARE_NOT_FOUND))
+
+            /* HttpResponseException - file get properties is a head request so a body is not returned. Error
+             conversion logic does not properly handle errors that don't return XML. */
+            || (t instanceof HttpResponseException
+            && ((HttpResponseException) t).getResponse().getStatusCode() == 404
+            && (((HttpResponseException) t).getResponse().getHeaderValue("x-ms-error-code")
+            .equals(ShareErrorCode.RESOURCE_NOT_FOUND.toString())
+            || (((HttpResponseException) t).getResponse().getHeaderValue("x-ms-error-code")
+            .equals(ShareErrorCode.SHARE_NOT_FOUND.toString()))));
+    }
+
+    public static Response<ShareFileInfo> createFileInfoResponse(ResponseBase<FilesCreateHeaders, Void> response) {
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
+        ShareFileInfo shareFileInfo = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
+        return new SimpleResponse<>(response, shareFileInfo);
+    }
+
+    public static Response<ShareFileProperties> getPropertiesResponse(
+        final ResponseBase<FilesGetPropertiesHeaders, Void> response) {
+        FilesGetPropertiesHeaders headers = response.getDeserializedHeaders();
+        String eTag = headers.getETag();
+        OffsetDateTime lastModified = headers.getLastModified();
+        Map<String, String> metadata = headers.getXMsMeta();
+        String fileType = headers.getXMsType();
+        Long contentLength = headers.getContentLength();
+        String contentType = headers.getContentType();
+        byte[] contentMD5;
+        try {
+            contentMD5 = headers.getContentMD5();
+        } catch (NullPointerException e) {
+            contentMD5 = null;
+        }
+        String contentEncoding = headers.getContentEncoding();
+        String cacheControl = headers.getCacheControl();
+        String contentDisposition = headers.getContentDisposition();
+        LeaseStatusType leaseStatusType = headers.getXMsLeaseStatus();
+        LeaseStateType leaseStateType = headers.getXMsLeaseState();
+        LeaseDurationType leaseDurationType = headers.getXMsLeaseDuration();
+        OffsetDateTime copyCompletionTime = headers.getXMsCopyCompletionTime();
+        String copyStatusDescription = headers.getXMsCopyStatusDescription();
+        String copyId = headers.getXMsCopyId();
+        String copyProgress = headers.getXMsCopyProgress();
+        String copySource = headers.getXMsCopySource();
+        CopyStatusType copyStatus = headers.getXMsCopyStatus();
+        Boolean isServerEncrypted = headers.isXMsServerEncrypted();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
+        ShareFileProperties shareFileProperties = new ShareFileProperties(eTag, lastModified, metadata, fileType,
+            contentLength, contentType, contentMD5, contentEncoding, cacheControl, contentDisposition,
+            leaseStatusType, leaseStateType, leaseDurationType, copyCompletionTime, copyStatusDescription, copyId,
+            copyProgress, copySource, copyStatus, isServerEncrypted, smbProperties);
+        return new SimpleResponse<>(response, shareFileProperties);
     }
 }

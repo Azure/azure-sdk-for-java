@@ -10,6 +10,7 @@ import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
@@ -23,6 +24,9 @@ import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.HandleItem;
@@ -54,11 +58,18 @@ import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.channels.SeekableByteChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
@@ -265,6 +276,18 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> existsWithResponse(Duration timeout, Context context) {
+//        Context finalContext = context == null ? Context.NONE : context;
+//        try {
+//            Supplier<Response<Void>> operation = () ->
+//                this.azureFileStorageClient.getFiles().createWithResponse(queueName, null, metadata, null, finalContext);
+//
+//            return timeout != null
+//                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+//        } catch (RuntimeException e) {
+//            throw LOGGER.logExceptionAsError(e);
+//        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+//            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+//        }
         Mono<Response<Boolean>> response = shareFileAsyncClient.existsWithResponse(context);
 
         return blockWithOptionalTimeout(response, timeout);
@@ -405,10 +428,44 @@ public class ShareFileClient {
     public Response<ShareFileInfo> createWithResponse(long maxSize, ShareFileHttpHeaders httpHeaders,
         FileSmbProperties smbProperties, String filePermission, Map<String, String> metadata,
         ShareRequestConditions requestConditions, Duration timeout, Context context) {
-        Mono<Response<ShareFileInfo>> response = shareFileAsyncClient
-            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
-                context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareRequestConditions finalRequestConditions = requestConditions == null
+            ? new ShareRequestConditions() : requestConditions;
+        smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
+
+        // Checks that file permission and file permission key are valid
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+
+        // If file permission and file permission key are both not set then set default value
+        String finalFilePermission = smbProperties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
+        String filePermissionKey = smbProperties.getFilePermissionKey();
+
+        String fileAttributes = smbProperties.setNtfsFileAttributes(FileConstants.FILE_ATTRIBUTES_NONE);
+        String fileCreationTime = smbProperties.setFileCreationTime(FileConstants.FILE_TIME_NOW);
+        String fileLastWriteTime = smbProperties.setFileLastWriteTime(FileConstants.FILE_TIME_NOW);
+        String fileChangeTime = smbProperties.getFileChangeTimeString();
+        try {
+            Supplier<ResponseBase<FilesCreateHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getFiles().createWithResponse(shareName, filePath, maxSize, fileAttributes,
+                    null, metadata, finalFilePermission, filePermissionKey, fileCreationTime, fileLastWriteTime,
+                    fileChangeTime, finalRequestConditions.getLeaseId(),
+                    httpHeaders, finalContext);
+
+            ResponseBase<FilesCreateHeaders, Void> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return ModelHelper.createFileInfoResponse(response);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+
+//        Mono<Response<ShareFileInfo>> response = shareFileAsyncClient
+//            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
+//                context);
+//        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -1168,9 +1225,25 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileProperties> getPropertiesWithResponse(ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Mono<Response<ShareFileProperties>> response = shareFileAsyncClient.getPropertiesWithResponse(requestConditions,
-            context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        try {
+            Supplier<ResponseBase<FilesGetPropertiesHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getFiles().getPropertiesWithResponse(shareName, filePath, snapshot,
+                    null, requestConditions.getLeaseId(), finalContext);
+
+            ResponseBase<FilesGetPropertiesHeaders, Void> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return ModelHelper.getPropertiesResponse(response);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+//        Mono<Response<ShareFileProperties>> response = shareFileAsyncClient.getPropertiesWithResponse(requestConditions,
+//            context);
+//        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**

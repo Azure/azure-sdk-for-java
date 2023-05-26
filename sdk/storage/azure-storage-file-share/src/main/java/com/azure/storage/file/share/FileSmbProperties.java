@@ -214,7 +214,7 @@ public class FileSmbProperties {
      *
      * @param httpHeaders The headers to construct FileSmbProperties from
      */
-    FileSmbProperties(HttpHeaders httpHeaders) {
+    public FileSmbProperties(HttpHeaders httpHeaders) {
         this.filePermissionKey = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_PERMISSION_KEY);
         String attributes = httpHeaders.getValue(FileConstants.HeaderConstants.FILE_ATTRIBUTES);
         this.ntfsFileAttributes = attributes == null ? null : NtfsFileAttributes.toAttributes(attributes);
