@@ -110,8 +110,13 @@ class VertxAsyncHttpClient implements HttpClient {
                 vertxHttpRequest.end();
             } else {
                 if (progressReporter != null) {
-                    // use this to reset progress report if the request is retried.
-                    requestBody = FluxUtil.addProgressReporting(requestBody, progressReporter);
+                    // reset progress report if the request is retried.
+                    progressReporter.reset();
+
+                    requestBody = requestBody.map(buffer -> {
+                        progressReporter.reportProgress(buffer.remaining());
+                        return buffer;
+                    });
                 }
 
                 FluxUtil.collectBytesFromNetworkResponse(requestBody, request.getHeaders())
@@ -123,7 +128,7 @@ class VertxAsyncHttpClient implements HttpClient {
 
         // retry on HttpClosedException
         RetrySpec retrySpec = Retry
-            .max(1)
+            .max(2)
             .filter(throwable -> throwable instanceof HttpClosedException)
             .onRetryExhaustedThrow((ignoredSpec, signal) -> signal.failure());
 
