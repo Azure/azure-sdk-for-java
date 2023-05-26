@@ -103,7 +103,7 @@
     <dependency>
       <groupId>org.apache.kafka</groupId>
       <artifactId>kafka-clients</artifactId>
-      <version>3.3.2</version> <!-- {x-version-update;org.apache.kafka:kafka-clients;external_dependency} -->
+      <version>3.4.0</version> <!-- {x-version-update;org.apache.kafka:kafka-clients;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -178,7 +178,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.kafka:kafka-clients:[3.3.2]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
+                <include>org.apache.kafka:kafka-clients:[3.4.0]</include> <!-- {x-include-update;org.apache.kafka:kafka-clients;external_dependency} -->
                 <include>org.postgresql:postgresql:[42.5.4]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
