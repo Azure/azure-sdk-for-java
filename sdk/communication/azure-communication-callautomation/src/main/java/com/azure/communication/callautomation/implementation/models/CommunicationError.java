@@ -8,41 +8,41 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CommunicationError model. */
+/** The Communication Services error. */
 @Fluent
 public final class CommunicationError {
     /*
-     * The code property.
+     * The error code.
      */
-    @JsonProperty(value = "code")
+    @JsonProperty(value = "code", required = true)
     private String code;
 
     /*
-     * The message property.
+     * The error message.
      */
-    @JsonProperty(value = "message")
+    @JsonProperty(value = "message", required = true)
     private String message;
 
     /*
-     * The target property.
+     * The error target.
      */
-    @JsonProperty(value = "target")
+    @JsonProperty(value = "target", access = JsonProperty.Access.WRITE_ONLY)
     private String target;
 
     /*
-     * The details property.
+     * Further details about specific errors that led to this error.
      */
-    @JsonProperty(value = "details")
+    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<CommunicationError> details;
 
     /*
-     * The innererror property.
+     * The inner error if any.
      */
-    @JsonProperty(value = "innererror")
-    private CommunicationError innererror;
+    @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
+    private CommunicationError innerError;
 
     /**
-     * Get the code property: The code property.
+     * Get the code property: The error code.
      *
      * @return the code value.
      */
@@ -51,7 +51,7 @@ public final class CommunicationError {
     }
 
     /**
-     * Set the code property: The code property.
+     * Set the code property: The error code.
      *
      * @param code the code value to set.
      * @return the CommunicationError object itself.
@@ -62,7 +62,7 @@ public final class CommunicationError {
     }
 
     /**
-     * Get the message property: The message property.
+     * Get the message property: The error message.
      *
      * @return the message value.
      */
@@ -71,7 +71,7 @@ public final class CommunicationError {
     }
 
     /**
-     * Set the message property: The message property.
+     * Set the message property: The error message.
      *
      * @param message the message value to set.
      * @return the CommunicationError object itself.
@@ -82,7 +82,7 @@ public final class CommunicationError {
     }
 
     /**
-     * Get the target property: The target property.
+     * Get the target property: The error target.
      *
      * @return the target value.
      */
@@ -91,18 +91,7 @@ public final class CommunicationError {
     }
 
     /**
-     * Set the target property: The target property.
-     *
-     * @param target the target value to set.
-     * @return the CommunicationError object itself.
-     */
-    public CommunicationError setTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    /**
-     * Get the details property: The details property.
+     * Get the details property: Further details about specific errors that led to this error.
      *
      * @return the details value.
      */
@@ -111,33 +100,11 @@ public final class CommunicationError {
     }
 
     /**
-     * Set the details property: The details property.
+     * Get the innerError property: The inner error if any.
      *
-     * @param details the details value to set.
-     * @return the CommunicationError object itself.
+     * @return the innerError value.
      */
-    public CommunicationError setDetails(List<CommunicationError> details) {
-        this.details = details;
-        return this;
-    }
-
-    /**
-     * Get the innererror property: The innererror property.
-     *
-     * @return the innererror value.
-     */
-    public CommunicationError getInnererror() {
-        return this.innererror;
-    }
-
-    /**
-     * Set the innererror property: The innererror property.
-     *
-     * @param innererror the innererror value to set.
-     * @return the CommunicationError object itself.
-     */
-    public CommunicationError setInnererror(CommunicationError innererror) {
-        this.innererror = innererror;
-        return this;
+    public CommunicationError getInnerError() {
+        return this.innerError;
     }
 }

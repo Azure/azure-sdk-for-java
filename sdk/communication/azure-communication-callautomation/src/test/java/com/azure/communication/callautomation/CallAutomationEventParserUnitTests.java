@@ -3,22 +3,29 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.events.*;
-import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
+import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
+import com.azure.communication.callautomation.models.events.PlayCanceled;
+import com.azure.communication.callautomation.models.events.PlayCompleted;
+import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.ReasonCode;
 import com.azure.communication.callautomation.models.events.ReasonCode.Recognize;
-
+import com.azure.communication.callautomation.models.events.RecognizeCanceled;
+import com.azure.communication.callautomation.models.events.RecognizeCompleted;
+import com.azure.communication.callautomation.models.events.RecognizeFailed;
+import com.azure.communication.callautomation.models.events.RecordingStateChanged;
+import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
+import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class CallAutomationEventParserUnitTests {
     static final String EVENT_PARTICIPANT_UPDATED = "{\"id\":\"61069ef9-5ca9-457f-ac36-e2bb5e8400ca\",\"source\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\",\"type\":\"Microsoft.Communication.ParticipantsUpdated\",\"data\":{\"participants\":[{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff6-dd51-54b7-a43a0d001998\"}}, \"isMuted\": false},{\"identifier\": {\"rawId\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\",\"kind\":\"communicationUser\",\"communicationUser\":{\"id\":\"8:acs:816df1ca-971b-44d7-b8b1-8fba90748500_00000013-2ff7-1579-99bf-a43a0d0010bc\"}}, \"isMuted\": false}],\"type\":\"participantsUpdated\",\"callConnectionId\":\"401f3500-62bd-46a9-8c09-9e1b06caca01\",\"correlationId\":\"ebd8bf1f-0794-494f-bdda-913042c06ef7\"},\"time\":\"2022-08-12T03:35:07.9129474+00:00\",\"specversion\":\"1.0\",\"datacontenttype\":\"application/json\",\"subject\":\"calling/callConnections/401f3500-62bd-46a9-8c09-9e1b06caca01/ParticipantsUpdated\"}";
@@ -168,18 +175,6 @@ public class CallAutomationEventParserUnitTests {
         assertNotNull(playCanceled);
         assertEquals("serverCallId", playCanceled.getServerCallId());
     }
-    @Test
-    public void parseRecognizeCompletedWithChoiceEvent() {
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(EVENT_RECOGNIZE_CHOICE).get(0);
-        assertNotNull(event);
-        RecognizeCompleted recognizeCompleted = (RecognizeCompleted) event;
-        assertNotNull(recognizeCompleted);
-        Optional<RecognizeResult> choiceResult = recognizeCompleted.getRecognizeResult();
-        assertInstanceOf(ChoiceResult.class, choiceResult.get());
-        assertEquals("serverCallId", recognizeCompleted.getServerCallId());
-        assertEquals(200, recognizeCompleted.getResultInformation().getCode());
-        assertEquals(Recognize.SPEECH_OPTION_MATCHED, recognizeCompleted.getReasonCode());
-    }
 
     @Test
     public void parseRecognizeCompletedWithDtmfEvent() {
@@ -321,237 +316,5 @@ public class CallAutomationEventParserUnitTests {
         assertEquals("serverCallId", removeParticipantFailed.getServerCallId());
         assertEquals("callConnectionId", removeParticipantFailed.getCallConnectionId());
         assertEquals("rawId", removeParticipantFailed.getParticipant().getRawId());
-    }
-
-    @Test
-    public void parseContinuousDtmfRecognitionToneReceivedEvent() {
-
-        String receivedEvent = "[\n"
-            + "   {\n"
-            + "      \"id\":\"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
-            + "      \"source\":\"calling/callConnections/callConnectionId/ContinuousDtmfRecognitionToneReceived\",\n"
-            + "      \"type\":\"Microsoft.Communication.ContinuousDtmfRecognitionToneReceived\",\n"
-            + "      \"specversion\":\"1.0\",\n"
-            + "      \"data\":{\n"
-            + "         \"eventSource\":\"calling/callConnections/callConnectionId/ContinuousDtmfRecognitionToneReceived\",\n"
-            + "         \"resultInformation\":{\n"
-            + "            \"code\":200,\n"
-            + "            \"subCode\":0,\n"
-            + "            \"message\":\"DTMF tone received successfully.\"\n"
-            + "         },\n"
-            + "         \"type\":\"ContinuousDtmfRecognitionToneReceived\",\n"
-            + "         \"toneInfo\":{\n"
-            + "            \"sequenceId\":1,\n"
-            + "            \"tone\":\"eight\",\n"
-            + "            \"participantId\":\"267e33a9-c28e-4ecf-a33e-b3abd9526e32\"\n"
-            + "         },\n"
-            + "         \"callConnectionId\":\"callConnectionId\",\n"
-            + "         \"serverCallId\":\"serverCallId\",\n"
-            + "         \"correlationId\":\"correlationId\",\n"
-            + "         \"operationContext\":\"context\",\n"
-            + "         \"time\":\"2022-08-12T03:13:25.0252763+00:00\",\n"
-            + "         \"specversion\":\"1.0\",\n"
-            + "         \"datacontenttype\":\"application/json\",\n"
-            + "         \"subject\":\"calling/callConnections/callConnectionId/ContinuousDtmfRecognitionToneReceived\"\n"
-            + "      }\n"
-            + "   }\n"
-            + "]";
-
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
-
-        assertNotNull(event);
-
-        ContinuousDtmfRecognitionToneReceived continuousDtmfRecognitionToneReceived = (ContinuousDtmfRecognitionToneReceived) event;
-
-        assertNotNull(continuousDtmfRecognitionToneReceived);
-        assertEquals("serverCallId", continuousDtmfRecognitionToneReceived.getServerCallId());
-        assertEquals("callConnectionId", continuousDtmfRecognitionToneReceived.getCallConnectionId());
-        assertEquals("eight", continuousDtmfRecognitionToneReceived.getToneInfo().getTone().toString());
-        assertEquals(1, continuousDtmfRecognitionToneReceived.getToneInfo().getSequenceId());
-        assertEquals("correlationId", continuousDtmfRecognitionToneReceived.getCorrelationId());
-        assertEquals(200, continuousDtmfRecognitionToneReceived.getResultInformation().getCode());
-        assertEquals(0, continuousDtmfRecognitionToneReceived.getResultInformation().getSubCode());
-        assertEquals("context", continuousDtmfRecognitionToneReceived.getOperationContext());
-        assertEquals("DTMF tone received successfully.", continuousDtmfRecognitionToneReceived.getResultInformation().getMessage());
-    }
-
-    @Test
-    public void parseContinuousDtmfRecognitionToneFailedEvent() {
-
-        String receivedEvent = "[\n"
-            + "   {\n"
-            + "      \"id\":\"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
-            + "      \"source\":\"calling/callConnections/callConnectionId/ContinuousDtmfRecognitionToneFailed\",\n"
-            + "      \"type\":\"Microsoft.Communication.ContinuousDtmfRecognitionToneFailed\",\n"
-            + "      \"specversion\":\"1.0\",\n"
-            + "      \"data\":{\n"
-            + "         \"eventSource\":\"calling/callConnections/callConnectionId/ContinuousDtmfRecognitionToneFailed\",\n"
-            + "         \"resultInformation\":{\n"
-            + "            \"code\":400,\n"
-            + "            \"subCode\":12323,\n"
-            + "            \"message\":\"Continuous DTMF tone Couldn't be received successfully.\"\n"
-            + "         },\n"
-            + "         \"type\":\"ContinuousDtmfRecognitionToneFailed\",\n"
-            + "         \"callConnectionId\":\"callConnectionId\",\n"
-            + "         \"serverCallId\":\"serverCallId\",\n"
-            + "         \"correlationId\":\"correlationId\",\n"
-            + "         \"operationContext\":\"context\",\n"
-            + "         \"time\":\"2022-08-12T03:13:25.0252763+00:00\",\n"
-            + "         \"specversion\":\"1.0\",\n"
-            + "         \"datacontenttype\":\"application/json\",\n"
-            + "         \"subject\":\"calling/callConnections/callConnectionId/ContinuousDtmfRecognitionToneFailed\"\n"
-            + "      }\n"
-            + "   }\n"
-            + "]";
-
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
-
-        assertNotNull(event);
-
-        ContinuousDtmfRecognitionToneFailed continuousDtmfRecognitionToneFailed = (ContinuousDtmfRecognitionToneFailed) event;
-
-        assertNotNull(continuousDtmfRecognitionToneFailed);
-        assertEquals("serverCallId", continuousDtmfRecognitionToneFailed.getServerCallId());
-        assertEquals("callConnectionId", continuousDtmfRecognitionToneFailed.getCallConnectionId());
-        assertEquals("correlationId", continuousDtmfRecognitionToneFailed.getCorrelationId());
-        assertEquals(400, continuousDtmfRecognitionToneFailed.getResultInformation().getCode());
-        assertEquals(12323, continuousDtmfRecognitionToneFailed.getResultInformation().getSubCode());
-        assertEquals("context", continuousDtmfRecognitionToneFailed.getOperationContext());
-        assertEquals("Continuous DTMF tone Couldn't be received successfully.", continuousDtmfRecognitionToneFailed.getResultInformation().getMessage());
-    }
-
-    @Test
-    public void parseContinuousDtmfRecognitionStoppedEvent() {
-
-        String receivedEvent = "[\n"
-            + "   {\n"
-            + "      \"id\":\"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
-            + "      \"source\":\"calling/callConnections/callConnectionId/ContinuousDtmfRecognitionStopped\",\n"
-            + "      \"type\":\"Microsoft.Communication.ContinuousDtmfRecognitionStopped\",\n"
-            + "      \"specversion\":\"1.0\",\n"
-            + "      \"data\":{\n"
-            + "         \"eventSource\":\"calling/callConnections/callConnectionId/ContinuousDtmfRecognitionStopped\",\n"
-            + "         \"resultInformation\":{\n"
-            + "            \"code\":200,\n"
-            + "            \"subCode\":0,\n"
-            + "            \"message\":\"Continuous DTMF Recognition stopped successfully.\"\n"
-            + "         },\n"
-            + "         \"type\":\"ContinuousDtmfRecognitionStopped\",\n"
-            + "         \"callConnectionId\":\"callConnectionId\",\n"
-            + "         \"serverCallId\":\"serverCallId\",\n"
-            + "         \"correlationId\":\"correlationId\",\n"
-            + "         \"operationContext\":\"context\",\n"
-            + "         \"time\":\"2022-08-12T03:13:25.0252763+00:00\",\n"
-            + "         \"specversion\":\"1.0\",\n"
-            + "         \"datacontenttype\":\"application/json\",\n"
-            + "         \"subject\":\"calling/callConnections/callConnectionId/ContinuousDtmfRecognitionStopped\"\n"
-            + "      }\n"
-            + "   }\n"
-            + "]";
-
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
-
-        assertNotNull(event);
-
-        ContinuousDtmfRecognitionStopped continuousDtmfRecognitionStopped = (ContinuousDtmfRecognitionStopped) event;
-
-        assertNotNull(continuousDtmfRecognitionStopped);
-        assertEquals("serverCallId", continuousDtmfRecognitionStopped.getServerCallId());
-        assertEquals("callConnectionId", continuousDtmfRecognitionStopped.getCallConnectionId());
-        assertEquals("correlationId", continuousDtmfRecognitionStopped.getCorrelationId());
-        assertEquals(200, continuousDtmfRecognitionStopped.getResultInformation().getCode());
-        assertEquals(0, continuousDtmfRecognitionStopped.getResultInformation().getSubCode());
-        assertEquals("context", continuousDtmfRecognitionStopped.getOperationContext());
-        assertEquals("Continuous DTMF Recognition stopped successfully.", continuousDtmfRecognitionStopped.getResultInformation().getMessage());
-    }
-
-    @Test
-    public void parseSendDtmfCompletedEvent() {
-
-        String receivedEvent = "[\n"
-            + "   {\n"
-            + "      \"id\":\"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
-            + "      \"source\":\"calling/callConnections/callConnectionId/SendDtmfCompleted\",\n"
-            + "      \"type\":\"Microsoft.Communication.SendDtmfCompleted\",\n"
-            + "      \"specversion\":\"1.0\",\n"
-            + "      \"data\":{\n"
-            + "         \"eventSource\":\"calling/callConnections/callConnectionId/SendDtmfCompleted\",\n"
-            + "         \"resultInformation\":{\n"
-            + "            \"code\":200,\n"
-            + "            \"subCode\":0,\n"
-            + "            \"message\":\"Send DTMF completed successfully.\"\n"
-            + "         },\n"
-            + "         \"type\":\"SendDtmfCompleted\",\n"
-            + "         \"callConnectionId\":\"callConnectionId\",\n"
-            + "         \"serverCallId\":\"serverCallId\",\n"
-            + "         \"correlationId\":\"correlationId\",\n"
-            + "         \"operationContext\":\"context\",\n"
-            + "         \"time\":\"2022-08-12T03:13:25.0252763+00:00\",\n"
-            + "         \"specversion\":\"1.0\",\n"
-            + "         \"datacontenttype\":\"application/json\",\n"
-            + "         \"subject\":\"calling/callConnections/callConnectionId/SendDtmfCompleted\"\n"
-            + "      }\n"
-            + "   }\n"
-            + "]";
-
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
-
-        assertNotNull(event);
-
-        SendDtmfCompleted sendDtmfCompleted = (SendDtmfCompleted) event;
-
-        assertNotNull(sendDtmfCompleted);
-        assertEquals("serverCallId", sendDtmfCompleted.getServerCallId());
-        assertEquals("callConnectionId", sendDtmfCompleted.getCallConnectionId());
-        assertEquals("correlationId", sendDtmfCompleted.getCorrelationId());
-        assertEquals(200, sendDtmfCompleted.getResultInformation().getCode());
-        assertEquals(0, sendDtmfCompleted.getResultInformation().getSubCode());
-        assertEquals("context", sendDtmfCompleted.getOperationContext());
-        assertEquals("Send DTMF completed successfully.", sendDtmfCompleted.getResultInformation().getMessage());
-    }
-
-    @Test
-    public void parseSendDtmfFailedEvent() {
-
-        String receivedEvent = "[\n"
-            + "   {\n"
-            + "      \"id\":\"704a7a96-4d74-4ebe-9cd0-b7cc39c3d7b1\",\n"
-            + "      \"source\":\"calling/callConnections/callConnectionId/SendDtmfFailed\",\n"
-            + "      \"type\":\"Microsoft.Communication.SendDtmfFailed\",\n"
-            + "      \"specversion\":\"1.0\",\n"
-            + "      \"data\":{\n"
-            + "         \"eventSource\":\"calling/callConnections/callConnectionId/SendDtmfFailed\",\n"
-            + "         \"resultInformation\":{\n"
-            + "            \"code\":200,\n"
-            + "            \"subCode\":0,\n"
-            + "            \"message\":\"Send DTMF couldn't be completed successfully.\"\n"
-            + "         },\n"
-            + "         \"type\":\"SendDtmfFailed\",\n"
-            + "         \"callConnectionId\":\"callConnectionId\",\n"
-            + "         \"serverCallId\":\"serverCallId\",\n"
-            + "         \"correlationId\":\"correlationId\",\n"
-            + "         \"operationContext\":\"context\",\n"
-            + "         \"time\":\"2022-08-12T03:13:25.0252763+00:00\",\n"
-            + "         \"specversion\":\"1.0\",\n"
-            + "         \"datacontenttype\":\"application/json\",\n"
-            + "         \"subject\":\"calling/callConnections/callConnectionId/SendDtmfFailed\"\n"
-            + "      }\n"
-            + "   }\n"
-            + "]";
-
-        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
-
-        assertNotNull(event);
-
-        SendDtmfFailed sendDtmfFailed = (SendDtmfFailed) event;
-
-        assertNotNull(sendDtmfFailed);
-        assertEquals("serverCallId", sendDtmfFailed.getServerCallId());
-        assertEquals("callConnectionId", sendDtmfFailed.getCallConnectionId());
-        assertEquals("correlationId", sendDtmfFailed.getCorrelationId());
-        assertEquals(200, sendDtmfFailed.getResultInformation().getCode());
-        assertEquals(0, sendDtmfFailed.getResultInformation().getSubCode());
-        assertEquals("context", sendDtmfFailed.getOperationContext());
-        assertEquals("Send DTMF couldn't be completed successfully.", sendDtmfFailed.getResultInformation().getMessage());
     }
 }
