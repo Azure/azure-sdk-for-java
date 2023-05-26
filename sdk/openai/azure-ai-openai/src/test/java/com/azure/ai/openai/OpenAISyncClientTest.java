@@ -4,6 +4,8 @@
 package com.azure.ai.openai;
 
 import com.azure.ai.openai.models.*;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -69,6 +71,19 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
                 BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions());
             Completions resultCompletions = assertAndGetValueFromResponse(response, Completions.class, 200);
             assertCompletions(1, resultCompletions);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsWithResponseBadDeployment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getCompletionsRunner((_deploymentId, prompt) -> {
+            String deploymentId = "BAD_DEPLOYMENT_ID";
+            ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
+                () -> client.getCompletionsWithResponse(deploymentId,
+                BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
+            assertEquals(404, exception.getResponse().getStatusCode());
         });
     }
 
