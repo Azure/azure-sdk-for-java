@@ -19,4 +19,8 @@ public abstract class AvailabilityStrategy {
     int numberOfRegionsToTry;
 
     public abstract List<String> getEffectiveRetryRegions(List<String> preferredRegions, List<String> excludeRegions);
+
+    public int getNumberOfRegionsToTry() {
+        return numberOfRegionsToTry;
+    }
 }

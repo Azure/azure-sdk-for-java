@@ -3,15 +3,13 @@
 
 package com.azure.cosmos.availabilitystrategy;
 
-import com.azure.cosmos.implementation.Configs;
-
 import java.time.Duration;
 import java.util.List;
 
 /**
  * The type Threshold based retry availability strategy.
  */
-public class ThresholdBasedRetryAvailabilityStrategy extends AvailabilityStrategy{
+public class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy{
     private static final Duration DEFAULT_THRESHOLD_IN_MILLISECONDS = Duration.ofMillis(500);
     private static final Duration DEFAULT_THRESHOLD_STEP_IN_MILLISECONDS = Duration.ofMillis(100);
     private Duration threshold;
@@ -20,7 +18,7 @@ public class ThresholdBasedRetryAvailabilityStrategy extends AvailabilityStrateg
     /**
      * Instantiates a new Threshold based retry availability strategy.
      */
-    public ThresholdBasedRetryAvailabilityStrategy() {
+    public ThresholdBasedAvailabilityStrategy() {
         this.threshold = DEFAULT_THRESHOLD_IN_MILLISECONDS;
         this.thresholdStep = DEFAULT_THRESHOLD_STEP_IN_MILLISECONDS;
     }
@@ -28,12 +26,14 @@ public class ThresholdBasedRetryAvailabilityStrategy extends AvailabilityStrateg
     /**
      * Instantiates a new Threshold based retry availability strategy.
      *
-     * @param threshold     the threshold
-     * @param thresholdStep the threshold step
+     * @param threshold            the threshold
+     * @param thresholdStep        the threshold step
+     * @param numberOfRegionsToTry the number of regions to retry
      */
-    public ThresholdBasedRetryAvailabilityStrategy(Duration threshold, Duration thresholdStep) {
+    public ThresholdBasedAvailabilityStrategy(Duration threshold, Duration thresholdStep, int numberOfRegionsToTry) {
         this.threshold = threshold;
         this.thresholdStep = thresholdStep;
+        this.numberOfRegionsToTry = numberOfRegionsToTry;
     }
 
     /**
@@ -77,4 +77,5 @@ public class ThresholdBasedRetryAvailabilityStrategy extends AvailabilityStrateg
         preferredRegions.removeAll(excludeRegions); // remove all mutates the original list
         return preferredRegions.subList(0, this.numberOfRegionsToTry);
     }
+
 }
