@@ -57,7 +57,7 @@ pr:
       - sdk/cosmos/azure-cosmos-spark_3-1_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-2_2-12/
       - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
-      - sdk/cosmos/azure-cosmos-spark_3-3_2-12/
+      - sdk/cosmos/azure-cosmos-spark_3-4_2-12/
       - sdk/cosmos/faq/
     exclude:
       - sdk/cosmos/pom.xml
@@ -138,6 +138,13 @@ extends:
         skipPublishDocGithubIo: true
         skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_azurecosmosspark33 }}
+      - name: azure-cosmos-spark_3-4_2-12
+        groupId: com.azure.cosmos.spark
+        safeName: azurecosmosspark34
+        uberJar: true
+        skipPublishDocGithubIo: true
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_azurecosmosspark34 }}        
       - name: azure-cosmos-test
         groupId: com.azure
         safeName: azurecosmostest
