@@ -86,7 +86,8 @@
 - `RenameCollectionAwareClientRetryPolicy` executes collection resolution / session token clearance from the `sessionContainer` at most once.
 
 ## Usage
-- 
+- Plugged in with most operations defined in `RxDocumentClientImpl`.
+- Used with the `ClientRetryPolicy`.
 
 # WebExceptionRetryPolicy
 
@@ -104,6 +105,10 @@
 |--------------|-----------------|--------------------|-------------|-------------|
 | 30s          | 1s              | 2                  | 1 s         | N/A         |
 
+## Usage
+- Used when making requests in the gateway connectivity mode.
+- Used by fault injection when performing address resolution requests.
+
 # ResourceThrottleRetryPolicy
 
 ## Background
@@ -119,6 +124,13 @@
 |:------------------------------|-------------------------------|-----------------------------|------------------------|-----------------------------|
 | 429/*                         | User specified (Default: 30s) | User specified (Default: 1) | Part of exception body | User specified (Default: 9) |
 
+## Usage
+- Used internally by other retry policies such as:
+  - `ClientRetryPolicy`
+  - `FaultInjectionRuleProcessorRetryPolicy`
+  - `OpenConnectionAndInitCachesRetryPolicy`
+  - `BulkOperationRetryPolicy`
+
 # SessionTokenMismatchRetryPolicy
 
 ## Background
@@ -133,4 +145,5 @@
 | 404/1002                      | `NOT_FOUND`/`READ_SESSION_NOT_AVAILABLE` | Default: 5s  | Default: 50ms   | 2                  | Default: 5ms    | N/A         |
 
 ## Usage
-- Used by the `ConsistencyWriter` and `ConsistencyReader`.
+- Used by `ConsistencyReader` when the targeted consistency level is Session consistency.
+- Used by `ConsistencyWriter`.
