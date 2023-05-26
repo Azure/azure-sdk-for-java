@@ -68,6 +68,7 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -925,10 +926,15 @@ public class CosmosAsyncContainer {
                 client.getEffectiveDiagnosticsThresholds(queryOptionsAccessor.getDiagnosticsThresholds(options)));
 
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
+            ImplementationBridgeHelpers
+                .CosmosQueryRequestOptionsHelper
+                .getCosmosQueryRequestOptionsAccessor()
+                .setCancelledRequestDiagnosticsTracker(options, new ArrayList<>());
 
-                return getDatabase().getDocClientWrapper()
-                             .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, options, classType)
-                             .map(response -> prepareFeedResponse(response, false));
+            return getDatabase()
+                        .getDocClientWrapper()
+                        .queryDocuments(CosmosAsyncContainer.this.getLink(), sqlQuerySpec, options, classType)
+                        .map(response -> prepareFeedResponse(response, false));
         });
 
         return pagedFluxOptionsFluxFunction;
