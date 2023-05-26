@@ -3,12 +3,7 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.*;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
@@ -101,6 +96,26 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
                 () ->  client.getCompletionsWithResponse(modelId,
                     BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
             assertEquals(429, exception.getResponse().getStatusCode());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        getCompletionsRunner((modelId, prompt) -> {
+            CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
+            completionsOptions.setMaxTokens(1024);
+            completionsOptions.setN(3);
+            completionsOptions.setLogprobs(1);
+
+            Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
+
+            CompletionsUsage usage = resultCompletions.getUsage();
+            assertCompletions(completionsOptions.getN() * completionsOptions.getPrompt().size(), resultCompletions);
+            assertNotNull(usage);
+            assertTrue(usage.getTotalTokens() > 0);
+            assertEquals(usage.getCompletionTokens() + usage.getPromptTokens(), usage.getTotalTokens());
         });
     }
 

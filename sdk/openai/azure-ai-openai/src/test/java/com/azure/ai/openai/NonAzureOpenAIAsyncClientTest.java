@@ -115,26 +115,26 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         });
     }
 
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-//    public void getCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-//        client = getNonAzureOpenAIAsyncClient(httpClient);
-//        getCompletionsRunner((modelId, prompt) -> {
-//            CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
-//            completionsOptions.setMaxTokens(1024);
-//            completionsOptions.setN(3);
-//            completionsOptions.setLogprobs(1);
-//            StepVerifier.create(client.getCompletions(modelId, completionsOptions))
-//                .assertNext(resultCompletions -> {
-//                    CompletionsUsage usage = resultCompletions.getUsage();
-//                    assertCompletions(completionsOptions.getN() * completionsOptions.getPrompt().size(), resultCompletions);
-//                    assertNotNull(usage);
-//                    assertTrue(usage.getTotalTokens() > 0);
-//                    assertEquals(usage.getCompletionTokens() + usage.getPromptTokens(), usage.getTotalTokens());
-//                })
-//                .verifyComplete();
-//        });
-//    }
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        getCompletionsRunner((modelId, prompt) -> {
+            CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
+            completionsOptions.setMaxTokens(1024);
+            completionsOptions.setN(3);
+            completionsOptions.setLogprobs(1);
+            StepVerifier.create(client.getCompletions(modelId, completionsOptions))
+                .assertNext(resultCompletions -> {
+                    CompletionsUsage usage = resultCompletions.getUsage();
+                    assertCompletions(completionsOptions.getN() * completionsOptions.getPrompt().size(), resultCompletions);
+                    assertNotNull(usage);
+                    assertTrue(usage.getTotalTokens() > 0);
+                    assertEquals(usage.getCompletionTokens() + usage.getPromptTokens(), usage.getTotalTokens());
+                })
+                .verifyComplete();
+        });
+    }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")

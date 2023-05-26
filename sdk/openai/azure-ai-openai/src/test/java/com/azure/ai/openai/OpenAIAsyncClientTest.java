@@ -3,12 +3,7 @@
 
 package com.azure.ai.openai;
 
-import com.azure.ai.openai.models.ChatCompletions;
-import com.azure.ai.openai.models.ChatCompletionsOptions;
-import com.azure.ai.openai.models.ChatRole;
-import com.azure.ai.openai.models.Completions;
-import com.azure.ai.openai.models.CompletionsOptions;
-import com.azure.ai.openai.models.Embeddings;
+import com.azure.ai.openai.models.*;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
@@ -17,9 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     private OpenAIAsyncClient client;
@@ -84,6 +77,27 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                 .assertNext(response -> {
                     Completions resultCompletions = assertAndGetValueFromResponse(response, Completions.class, 200);
                     assertCompletions(1, resultCompletions);
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void getCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getCompletionsRunner((modelId, prompt) -> {
+            CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
+            completionsOptions.setMaxTokens(1024);
+            completionsOptions.setN(3);
+            completionsOptions.setLogprobs(1);
+            StepVerifier.create(client.getCompletions(modelId, completionsOptions))
+                .assertNext(resultCompletions -> {
+                    CompletionsUsage usage = resultCompletions.getUsage();
+                    assertCompletions(completionsOptions.getN() * completionsOptions.getPrompt().size(), resultCompletions);
+                    assertNotNull(usage);
+                    assertTrue(usage.getTotalTokens() > 0);
+                    assertEquals(usage.getCompletionTokens() + usage.getPromptTokens(), usage.getTotalTokens());
                 })
                 .verifyComplete();
         });
