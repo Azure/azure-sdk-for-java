@@ -9,7 +9,6 @@
 ### Bugs Fixed
 
 ### Other Changes
-- Migrate test recordings to assets repo.
 
 ## 4.6.2 (2023-05-23)
 
