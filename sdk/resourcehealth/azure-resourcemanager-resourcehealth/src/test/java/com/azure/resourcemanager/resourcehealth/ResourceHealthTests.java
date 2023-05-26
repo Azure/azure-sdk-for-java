@@ -104,7 +104,8 @@ public class ResourceHealthTests extends TestBase {
                 vmAvailabilityStatus = resourceHealthManager.availabilityStatuses().getByResource(virtualMachine.id());
             }
 
-//            historyEvents = resourceHealthManager.availabilityStatuses().list(virtualMachine.id(), null, "recommendedactions", Context.NONE);
+            historyEvents = resourceHealthManager.availabilityStatuses().list(virtualMachine.id(), null, "recommendedactions", Context.NONE);
+            Assertions.assertTrue(historyEvents.stream().count() > 0);
 //            Assertions.assertTrue(
 //                historyEvents
 //                    .stream()
