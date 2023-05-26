@@ -8,7 +8,6 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * The options for creating a group call.
@@ -39,19 +38,6 @@ public final class CreateGroupCallOptions {
      * PhoneNumber for call source when making PSTN call
      */
     private PhoneNumberIdentifier sourceCallIdNumber;
-
-    /**
-     * Custom Context for PSTN targets
-     */
-    private Map<String, String> sipHeaders;
-
-    /**
-     * Custom Context for Voip targets
-     */
-    private Map<String, String> voipHeaders;
-
-
-
 
     /**
      * Constructor
@@ -110,22 +96,6 @@ public final class CreateGroupCallOptions {
     }
 
     /**
-     * Get Custom Context for PSTN targets
-     * @return Custom Context for PSTN targets
-     */
-    public Map<String, String> getSipHeaders() {
-        return sipHeaders;
-    }
-
-    /**
-     *  Get Custom Context for Voip targets
-     * @return Custom Context for Voip targets
-     */
-    public Map<String, String> getVoipHeaders() {
-        return voipHeaders;
-    }
-
-    /**
      * Set the operationContext: A customer set value used to track the answering of a call.
      *
      * @param operationContext A customer set value used to track the answering of a call.
@@ -155,28 +125,5 @@ public final class CreateGroupCallOptions {
         this.sourceCallIdNumber = sourceCallIdNumber;
         return this;
     }
-
-
-    /**
-     * Set Custom Context for PSTN targets
-     * @param sipHeaders collection of Custom Context for PSTN targets
-     * @return the CreateGroupCallOptions object itself
-     */
-    public CreateGroupCallOptions setSipHeaders(Map<String, String> sipHeaders) {
-        this.sipHeaders = sipHeaders;
-        return this;
-    }
-
-
-    /**
-     * Set Custom Context for Voip targets
-     * @param voipHeaders collection of Custom Context for Voip targets
-     * @return the CreateGroupCallOptions object itself
-     */
-    public CreateGroupCallOptions setVoipHeaders(Map<String, String> voipHeaders) {
-        this.voipHeaders = voipHeaders;
-        return this;
-    }
-
 
 }
