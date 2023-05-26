@@ -23,6 +23,15 @@ public final class AvailabilityStateValues extends ExpandableStringEnum<Availabi
     public static final AvailabilityStateValues UNKNOWN = fromString("Unknown");
 
     /**
+     * Creates a new instance of AvailabilityStateValues value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AvailabilityStateValues() {
+    }
+
+    /**
      * Creates or finds a AvailabilityStateValues from its string representation.
      *
      * @param name a name to look for.
