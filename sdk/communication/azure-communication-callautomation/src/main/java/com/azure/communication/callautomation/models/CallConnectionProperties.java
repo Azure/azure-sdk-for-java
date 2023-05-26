@@ -23,13 +23,13 @@ import java.util.stream.Collectors;
 public final class CallConnectionProperties {
     private final String callConnectionId;
     private final String serverCallId;
-    private final CommunicationIdentifier sourceIdentity;
+    private final CommunicationIdentifier source;
     private final PhoneNumberIdentifier sourceCallerIdNumber;
     private final String sourceDisplayName;
     private final List<CommunicationIdentifier> targetParticipants;
     private final CallConnectionState callConnectionState;
     private final String callbackUrl;
-    private final CommunicationUserIdentifier answeredByIdentifier;
+    private final CommunicationUserIdentifier answeredBy;
     private final String correlationId;
 
     static {
@@ -48,14 +48,14 @@ public final class CallConnectionProperties {
      */
     public CallConnectionProperties() {
         this.callConnectionId = null;
-        this.sourceIdentity = null;
+        this.source = null;
         this.sourceCallerIdNumber = null;
         this.sourceDisplayName = null;
         this.serverCallId = null;
         this.targetParticipants = null;
         this.callConnectionState = null;
         this.callbackUrl = null;
-        this.answeredByIdentifier = null;
+        this.answeredBy = null;
         this.correlationId = null;
     }
 
@@ -66,14 +66,14 @@ public final class CallConnectionProperties {
      */
     CallConnectionProperties(CallConnectionPropertiesInternal callConnectionPropertiesInternal) {
         this.callConnectionId = callConnectionPropertiesInternal.getCallConnectionId();
-        this.sourceIdentity = CommunicationIdentifierConverter.convert(callConnectionPropertiesInternal.getSource());
+        this.source = CommunicationIdentifierConverter.convert(callConnectionPropertiesInternal.getSource());
         this.sourceCallerIdNumber = PhoneNumberIdentifierConverter.convert(callConnectionPropertiesInternal.getSourceCallerIdNumber());
         this.sourceDisplayName = callConnectionPropertiesInternal.getSourceDisplayName();
         this.serverCallId = callConnectionPropertiesInternal.getServerCallId();
         this.targetParticipants = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUrl = callConnectionPropertiesInternal.getCallbackUri();
-        this.answeredByIdentifier = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
+        this.answeredBy = CommunicationUserIdentifierConverter.convert(callConnectionPropertiesInternal.getAnsweredBy());
         this.correlationId = callConnectionPropertiesInternal.getCorrelationId();
     }
 
@@ -91,8 +91,8 @@ public final class CallConnectionProperties {
      *
      * @return sourceIdentity value.
      */
-    public CommunicationIdentifier getSourceIdentity() {
-        return sourceIdentity;
+    public CommunicationIdentifier getSource() {
+        return source;
     }
 
     /**
@@ -153,8 +153,8 @@ public final class CallConnectionProperties {
      *  Get identity that answered the call
      * @return identity that answered the call
      */
-    public CommunicationUserIdentifier getAnsweredByIdentifier() {
-        return answeredByIdentifier;
+    public CommunicationUserIdentifier getAnsweredBy() {
+        return answeredBy;
     }
 
     /**
