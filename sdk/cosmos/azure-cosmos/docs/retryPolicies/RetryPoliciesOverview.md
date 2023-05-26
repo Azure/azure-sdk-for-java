@@ -23,9 +23,9 @@
 
 ## Status code specific retry frequency for `RetryWithException`
 
-| Status Code / Sub-status Code | Retry Window                    | Default Retry Window | Initial backoff | Backoff multiplier | Max backoff | Max retries |
-|:------------------------------|---------------------------------|----------------------|-----------------|--------------------|-------------|-------------|
-| 449/*                         | 60s for Strong / 30s for others | 30s                  | 10 ms           | 2                  | 1 s         | N/A         |
+| Status Code / Sub-status Code | Retry Window                    | Default Retry Window | Initial backoff                            | Backoff multiplier | Max backoff | Max retries |
+|:------------------------------|---------------------------------|----------------------|--------------------------------------------|--------------------|-------------|-------------|
+| 449/*                         | 60s for Strong / 30s for others | 30s                  | 10ms  + Some integral salt from 0ms to 5ms | 2                  | 1 s         | N/A         |
 
 ## Usage
 - Used with every request sent in the direct connectivity mode. It is plugged with a request in the `ReplicatedResourceClient` class.
@@ -120,7 +120,7 @@
 
 ## Retry frequency
 
-| Status Code / Sub-status Code | Retry Window                  | Backoff multiplier          | Retry delay            | Max retries                 |
+| Status Code / Sub-status Code | Retry Window / Wait time      | Backoff multiplier          | Retry delay            | Max retries                 |
 |:------------------------------|-------------------------------|-----------------------------|------------------------|-----------------------------|
 | 429/*                         | User specified (Default: 30s) | User specified (Default: 1) | Part of exception body | User specified (Default: 9) |
 
@@ -140,10 +140,20 @@
 
 ## Retry frequency behavior
 
-| Status Code / Sub-status Code | Error name                               | Retry Window | Maximum Backoff | Backoff multiplier | Initial backoff | Max retries |
-|:------------------------------|------------------------------------------|--------------|-----------------|--------------------|-----------------|-------------|
-| 404/1002                      | `NOT_FOUND`/`READ_SESSION_NOT_AVAILABLE` | Default: 5s  | Default: 50ms   | 2                  | Default: 5ms    | N/A         |
+| Status Code / Sub-status Code | Error name                               | Retry Window / Wait time | Maximum Backoff | Backoff multiplier | Initial backoff | Max retries |
+|:------------------------------|------------------------------------------|--------------------------|-----------------|--------------------|-----------------|-------------|
+| 404/1002                      | `NOT_FOUND`/`READ_SESSION_NOT_AVAILABLE` | Default: 5s              | Default: 50ms   | 2                  | Default: 5ms    | N/A         |
 
 ## Usage
 - Used by `ConsistencyReader` when the targeted consistency level is Session consistency.
 - Used by `ConsistencyWriter`.
+
+# OpenConnectionsAndInitCachesRetryPolicy
+
+## Background
+- Triggered in the case of network-related failures which has resulted in a `GATEWAY_ENDPOINT_READ_TIMEOUT`.
+- Triggered upto twice for fetching addresses after which retries happen in a throttled manner using the 
+encapsulated `ResourceThrottleRetryPolicy` instance.
+
+## Usage
+- Used in the open connections / connection warm up flow to fetch addresses from the gateway.
