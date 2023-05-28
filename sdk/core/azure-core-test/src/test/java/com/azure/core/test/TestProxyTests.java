@@ -19,6 +19,7 @@ import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
+import com.azure.core.test.utils.TestProxyDownloader;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
@@ -29,7 +30,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
@@ -38,10 +38,12 @@ import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -237,7 +239,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
-    @Disabled("Enable once working locating remote json file")
     public void testRecordWithRedaction() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
@@ -315,7 +316,6 @@ public class TestProxyTests extends TestProxyTestBase {
 
     @Test
     @Tag("Record")
-    @Disabled("Enable once working locating remote json file")
     public void testBodyRegexRedactRecord() {
         HttpURLConnectionHttpClient client = new HttpURLConnectionHttpClient();
 
@@ -414,14 +414,47 @@ public class TestProxyTests extends TestProxyTestBase {
     }
 
     private RecordedTestProxyData readDataFromFile() {
-        String filePath = Paths.get(TestUtils.getRecordFolder().getPath(), this.testContextManager.getTestPlaybackRecordingName()) + ".json";
-
-        File recordFile = new File(filePath);
-        try (BufferedReader reader = Files.newBufferedReader(recordFile.toPath())) {
+        try {
+            File recordFile = new File(locateAssetJsonFilePath());
+            BufferedReader reader = Files.newBufferedReader(recordFile.toPath());
             return RECORD_MAPPER.readValue(reader, RecordedTestProxyData.class);
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }
+    }
+
+    private String locateAssetJsonFilePath() throws IOException {
+        String commandLine = Paths.get(TestProxyDownloader.getProxyDirectory().toString(),
+            TestProxyUtils.getProxyProcessName()).toString();
+        Path engRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "eng");
+        String targetRepoRoot = TestUtils.getRepoRootResolveUntil(getTestClassPath(), "target").toString();
+        ProcessBuilder builder = new ProcessBuilder(commandLine,
+            "config",
+            "locate",
+            "-a",
+            "sdk\\core\\azure-core-test\\assets.json",
+            "--storage-location",
+            engRepoRoot.toString());
+        Map<String, String> environment = builder.environment();
+        environment.put("LOGGING__LOGLEVEL", "Information");
+        environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
+        environment.put("LOGGING__LOGLEVEL__DEFAULT", "Information");
+        Process process = builder.start();
+        BufferedReader reader =
+            new BufferedReader(new InputStreamReader(process.getInputStream()));
+        StringBuilder stringBuilder = new StringBuilder();
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (line.contains("azure-sdk-for-java")) {
+                stringBuilder.append(line);
+            }
+        }
+        String filePath = stringBuilder.toString();
+        String recordingName = testContextManager.getTestPlaybackRecordingName() + ".json";
+        String relativePath =
+            engRepoRoot.relativize(Paths.get(targetRepoRoot, "src/test/resources/session-records", recordingName))
+                .toString();
+        return Paths.get(filePath, relativePath).toString();
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
