@@ -50,6 +50,8 @@ def format_version(version, str_list):
     for i in str_list:
         if version.find(i):
             version = version.partition(i)[0]
+        # if version.find("-M"):
+        #     version = version.partition(i)[0] + version.partition(i)[1]
     return version
 
 
