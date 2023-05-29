@@ -72,32 +72,34 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
                 update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
                 update_root_pom(sdk_root, service)
 
+            # compile
             compile_package(sdk_root, GROUP_ID, module)
 
-            artifacts = [
-                '{0}/pom.xml'.format(sdk_folder)
-            ]
-            artifacts += [
-                jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
-            ]
-            result = 'succeeded' if succeeded else 'failed'
+        # output
+        artifacts = [
+            '{0}/pom.xml'.format(sdk_folder)
+        ]
+        artifacts += [
+            jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
+        ]
+        result = 'succeeded' if succeeded else 'failed'
 
-            packages.append({
-                'packageName': module,
-                'path': [
-                    sdk_folder,
-                    CI_FILE_FORMAT.format(service),
-                    POM_FILE_FORMAT.format(service),
-                    'eng/versioning',
-                    'pom.xml'
-                ],
-                'typespecProject': [tsp_project],
-                'packageFolder': sdk_folder,
-                'artifacts': artifacts,
-                'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
-                'language': 'Java',
-                'result': result,
-            })
+        packages.append({
+            'packageName': module,
+            'path': [
+                sdk_folder,
+                CI_FILE_FORMAT.format(service),
+                POM_FILE_FORMAT.format(service),
+                'eng/versioning',
+                'pom.xml'
+            ],
+            'typespecProject': [tsp_project],
+            'packageFolder': sdk_folder,
+            'artifacts': artifacts,
+            'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
+            'language': 'Java',
+            'result': result,
+        })
 
     return packages
 
