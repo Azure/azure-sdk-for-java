@@ -100,6 +100,7 @@ if ( $configuration["repo"] -and $configuration["commit"]) {
     $specCloneDir = GetSpecCloneDir $projectName
     $gitRemoteValue = GetGitRemoteValue $configuration["repo"]
 
+    Write-Host "from tsplocation.yaml 'repo' is:"$configuration["repo"]
     Write-Host "Setting up sparse clone for $projectName at $specCloneDir"
 
     Push-Location $specCloneDir.Path
