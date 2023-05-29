@@ -28,6 +28,12 @@ public final class FrontDoorResourceState extends ExpandableStringEnum<FrontDoor
     /** Static value Deleting for FrontDoorResourceState. */
     public static final FrontDoorResourceState DELETING = fromString("Deleting");
 
+    /** Static value Migrating for FrontDoorResourceState. */
+    public static final FrontDoorResourceState MIGRATING = fromString("Migrating");
+
+    /** Static value Migrated for FrontDoorResourceState. */
+    public static final FrontDoorResourceState MIGRATED = fromString("Migrated");
+
     /**
      * Creates a new instance of FrontDoorResourceState value.
      *

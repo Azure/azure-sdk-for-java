@@ -32,6 +32,18 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
     private Status status;
 
     /*
+     * The startTime of the operation.
+     */
+    @JsonProperty(value = "startTime")
+    private String startTime;
+
+    /*
+     * The endTime of the operation.
+     */
+    @JsonProperty(value = "endTime")
+    private String endTime;
+
+    /*
      * The type of the long running operation.
      */
     @JsonProperty(value = "type")
@@ -110,6 +122,46 @@ public final class GenerateDetailedCostReportOperationStatusesInner {
      */
     public GenerateDetailedCostReportOperationStatusesInner withStatus(Status status) {
         this.status = status;
+        return this;
+    }
+
+    /**
+     * Get the startTime property: The startTime of the operation.
+     *
+     * @return the startTime value.
+     */
+    public String startTime() {
+        return this.startTime;
+    }
+
+    /**
+     * Set the startTime property: The startTime of the operation.
+     *
+     * @param startTime the startTime value to set.
+     * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
+     */
+    public GenerateDetailedCostReportOperationStatusesInner withStartTime(String startTime) {
+        this.startTime = startTime;
+        return this;
+    }
+
+    /**
+     * Get the endTime property: The endTime of the operation.
+     *
+     * @return the endTime value.
+     */
+    public String endTime() {
+        return this.endTime;
+    }
+
+    /**
+     * Set the endTime property: The endTime of the operation.
+     *
+     * @param endTime the endTime value to set.
+     * @return the GenerateDetailedCostReportOperationStatusesInner object itself.
+     */
+    public GenerateDetailedCostReportOperationStatusesInner withEndTime(String endTime) {
+        this.endTime = endTime;
         return this;
     }
 

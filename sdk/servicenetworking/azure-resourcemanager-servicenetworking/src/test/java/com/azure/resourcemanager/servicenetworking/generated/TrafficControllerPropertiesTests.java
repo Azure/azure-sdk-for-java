@@ -6,20 +6,19 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.fluent.models.TrafficControllerProperties;
-import org.junit.jupiter.api.Test;
 
 public final class TrafficControllerPropertiesTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         TrafficControllerProperties model =
             BinaryData
                 .fromString(
-                    "{\"configurationEndpoints\":[\"eqfpj\",\"jlxofpdvhpfxxyp\",\"ninmayhuyb\"],\"frontends\":[{\"id\":\"odepoogin\"},{\"id\":\"vamih\"}],\"associations\":[{\"id\":\"narxzxtheotus\"},{\"id\":\"vyevcciqi\"},{\"id\":\"nhungbw\"}],\"provisioningState\":\"Failed\"}")
+                    "{\"configurationEndpoints\":[\"eqfpj\",\"jlxofpdvhpfxxyp\",\"ninmayhuyb\"],\"frontends\":[{\"id\":\"odepoogin\"},{\"id\":\"vamih\"}],\"associations\":[{\"id\":\"narxzxtheotus\"},{\"id\":\"vyevcciqi\"},{\"id\":\"nhungbw\"}],\"provisioningState\":\"Updating\"}")
                 .toObject(TrafficControllerProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         TrafficControllerProperties model = new TrafficControllerProperties();
         model = BinaryData.fromObject(model).toObject(TrafficControllerProperties.class);
     }

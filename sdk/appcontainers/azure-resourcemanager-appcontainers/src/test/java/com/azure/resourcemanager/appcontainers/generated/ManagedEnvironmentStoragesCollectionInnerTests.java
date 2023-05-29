@@ -9,31 +9,24 @@ import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentS
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentStoragesCollectionInner;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironmentStorageProperties;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedEnvironmentStoragesCollectionInnerTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ManagedEnvironmentStoragesCollectionInner model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{},\"id\":\"ob\",\"name\":\"lftidgfcwqmpim\",\"type\":\"qxzhem\"},{\"properties\":{},\"id\":\"hujswtwkozzwcul\",\"name\":\"bawpfajnjwltlwt\",\"type\":\"j\"},{\"properties\":{},\"id\":\"alhsnvkc\",\"name\":\"mxzrpoa\",\"type\":\"mlnwiaaomylweazu\"},{\"properties\":{},\"id\":\"thwwn\",\"name\":\"jhlfzswpchwahf\",\"type\":\"ousnfepgfewe\"}]}")
+                    "{\"value\":[{\"properties\":{},\"id\":\"if\",\"name\":\"zhmkdasvflyh\",\"type\":\"xcudchxgsr\"}]}")
                 .toObject(ManagedEnvironmentStoragesCollectionInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ManagedEnvironmentStoragesCollectionInner model =
             new ManagedEnvironmentStoragesCollectionInner()
                 .withValue(
                     Arrays
                         .asList(
-                            new ManagedEnvironmentStorageInner()
-                                .withProperties(new ManagedEnvironmentStorageProperties()),
-                            new ManagedEnvironmentStorageInner()
-                                .withProperties(new ManagedEnvironmentStorageProperties()),
-                            new ManagedEnvironmentStorageInner()
-                                .withProperties(new ManagedEnvironmentStorageProperties()),
                             new ManagedEnvironmentStorageInner()
                                 .withProperties(new ManagedEnvironmentStorageProperties())));
         model = BinaryData.fromObject(model).toObject(ManagedEnvironmentStoragesCollectionInner.class);

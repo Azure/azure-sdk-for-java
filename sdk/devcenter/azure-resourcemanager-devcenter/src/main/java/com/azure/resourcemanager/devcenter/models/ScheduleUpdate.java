@@ -142,7 +142,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
      *
      * @return the state value.
      */
-    public EnableStatus state() {
+    public ScheduleEnableStatus state() {
         return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
@@ -152,7 +152,7 @@ public final class ScheduleUpdate extends TrackedResourceUpdate {
      * @param state the state value to set.
      * @return the ScheduleUpdate object itself.
      */
-    public ScheduleUpdate withState(EnableStatus state) {
+    public ScheduleUpdate withState(ScheduleEnableStatus state) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ScheduleUpdateProperties();
         }

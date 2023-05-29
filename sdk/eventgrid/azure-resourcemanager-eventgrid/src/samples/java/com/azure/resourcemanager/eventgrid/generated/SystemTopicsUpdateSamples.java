@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.SystemTopic;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,7 +11,7 @@ import java.util.Map;
 /** Samples for SystemTopics Update. */
 public final class SystemTopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/SystemTopics_Update.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/SystemTopics_Update.json
      */
     /**
      * Sample code: SystemTopics_Update.
@@ -23,7 +22,7 @@ public final class SystemTopicsUpdateSamples {
         SystemTopic resource =
             manager
                 .systemTopics()
-                .getByResourceGroupWithResponse("examplerg", "exampleSystemTopic1", Context.NONE)
+                .getByResourceGroupWithResponse("examplerg", "exampleSystemTopic1", com.azure.core.util.Context.NONE)
                 .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }

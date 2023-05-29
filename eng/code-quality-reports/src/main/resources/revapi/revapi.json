@@ -246,6 +246,12 @@
           "justification": "Break by service. 'id' is previously not used in runtime. And customer unlikely to use this class as subclass of 'SubResource'."
         },
         {
+          "code": "java.class.nowFinal",
+          "old": "class com.azure.resourcemanager.network.models.ManagedServiceIdentity",
+          "new": "class com.azure.resourcemanager.network.models.ManagedServiceIdentity",
+          "justification": "Make the class final. User is unlikely to inherit from this class."
+        },
+        {
           "ignore": true,
           "code": "java.field.constantValueChanged",
           "old": "field com.azure.messaging.eventgrid.SystemEventNames.SERVICE_BUS_DEADLETTER_MESSAGES_AVAILABLE_WITH_NO_LISTENER",
@@ -274,6 +280,23 @@
           "code": "java\\.annotation\\.removed",
           "old": ".*? com\\.azure\\.security\\.keyvault\\.administration\\.models.*",
           "justification": "Removing Jackson annotations from KeyVault Administration in transition to stream-style."
+        },
+        {
+          "regex": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old" : "field com.mysql.cj.conf.PropertyKey.*",
+          "new" : "field com.mysql.cj.conf.PropertyKey.*",
+          "justification" : "Fix enum constants reordered."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method int com.mysql.cj.protocol.ServerSession::getOldStatusFlags()",
+          "justification" : "Fix method removed."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
+          "justification" : "Fix method removed."
         }
       ]
     }

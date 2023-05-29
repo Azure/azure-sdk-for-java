@@ -13,12 +13,14 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class DataSourcesDelete {
     public static void main(String[] args) {
-        DataSourcesClient client =
+        DataSourcesClient dataSourcesClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildDataSourcesClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.datasourcesdelete.datasourcesdelete
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.deleteWithResponse("myDataSource", requestOptions);
+        Response<BinaryData> response = dataSourcesClient.deleteWithResponse("myDataSource", requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.datasourcesdelete.datasourcesdelete
     }
 }

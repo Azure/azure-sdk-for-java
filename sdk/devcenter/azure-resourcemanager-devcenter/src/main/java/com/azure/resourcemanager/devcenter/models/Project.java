@@ -62,7 +62,7 @@ public interface Project {
     ProvisioningState provisioningState();
 
     /**
-     * Gets the devCenterUri property: The URI of the resource.
+     * Gets the devCenterUri property: The URI of the Dev Center resource this project is associated with.
      *
      * @return the devCenterUri value.
      */
@@ -81,6 +81,14 @@ public interface Project {
      * @return the description value.
      */
     String description();
+
+    /**
+     * Gets the maxDevBoxesPerUser property: When specified, limits the maximum number of Dev Boxes a single user can
+     * create across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
+     *
+     * @return the maxDevBoxesPerUser value.
+     */
+    Integer maxDevBoxesPerUser();
 
     /**
      * Gets the region of the resource.
@@ -155,7 +163,10 @@ public interface Project {
          * created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTags, DefinitionStages.WithDevCenterId, DefinitionStages.WithDescription {
+            extends DefinitionStages.WithTags,
+                DefinitionStages.WithDevCenterId,
+                DefinitionStages.WithDescription,
+                DefinitionStages.WithMaxDevBoxesPerUser {
             /**
              * Executes the create request.
              *
@@ -201,6 +212,19 @@ public interface Project {
              */
             WithCreate withDescription(String description);
         }
+        /** The stage of the Project definition allowing to specify maxDevBoxesPerUser. */
+        interface WithMaxDevBoxesPerUser {
+            /**
+             * Specifies the maxDevBoxesPerUser property: When specified, limits the maximum number of Dev Boxes a
+             * single user can create across all pools in the project. This will have no effect on existing Dev Boxes
+             * when reduced..
+             *
+             * @param maxDevBoxesPerUser When specified, limits the maximum number of Dev Boxes a single user can create
+             *     across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
+             * @return the next definition stage.
+             */
+            WithCreate withMaxDevBoxesPerUser(Integer maxDevBoxesPerUser);
+        }
     }
     /**
      * Begins update for the Project resource.
@@ -210,7 +234,11 @@ public interface Project {
     Project.Update update();
 
     /** The template for Project update. */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithDevCenterId, UpdateStages.WithDescription {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithDevCenterId,
+            UpdateStages.WithDescription,
+            UpdateStages.WithMaxDevBoxesPerUser {
         /**
          * Executes the update request.
          *
@@ -257,6 +285,19 @@ public interface Project {
              * @return the next definition stage.
              */
             Update withDescription(String description);
+        }
+        /** The stage of the Project update allowing to specify maxDevBoxesPerUser. */
+        interface WithMaxDevBoxesPerUser {
+            /**
+             * Specifies the maxDevBoxesPerUser property: When specified, limits the maximum number of Dev Boxes a
+             * single user can create across all pools in the project. This will have no effect on existing Dev Boxes
+             * when reduced..
+             *
+             * @param maxDevBoxesPerUser When specified, limits the maximum number of Dev Boxes a single user can create
+             *     across all pools in the project. This will have no effect on existing Dev Boxes when reduced.
+             * @return the next definition stage.
+             */
+            Update withMaxDevBoxesPerUser(Integer maxDevBoxesPerUser);
         }
     }
     /**

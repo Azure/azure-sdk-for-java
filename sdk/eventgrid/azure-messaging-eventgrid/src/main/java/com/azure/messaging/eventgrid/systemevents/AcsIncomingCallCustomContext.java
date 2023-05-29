@@ -12,12 +12,6 @@ import java.util.Map;
 @Fluent
 public final class AcsIncomingCallCustomContext {
     /*
-     * Custom Headers for incoming call
-     */
-    @JsonProperty(value = "customHeaders")
-    private String customHeaders;
-
-    /*
      * Sip Headers for incoming call
      */
     @JsonProperty(value = "sipHeaders")
@@ -31,26 +25,6 @@ public final class AcsIncomingCallCustomContext {
 
     /** Creates an instance of AcsIncomingCallCustomContext class. */
     public AcsIncomingCallCustomContext() {}
-
-    /**
-     * Get the customHeaders property: Custom Headers for incoming call.
-     *
-     * @return the customHeaders value.
-     */
-    public String getCustomHeaders() {
-        return this.customHeaders;
-    }
-
-    /**
-     * Set the customHeaders property: Custom Headers for incoming call.
-     *
-     * @param customHeaders the customHeaders value to set.
-     * @return the AcsIncomingCallCustomContext object itself.
-     */
-    public AcsIncomingCallCustomContext setCustomHeaders(String customHeaders) {
-        this.customHeaders = customHeaders;
-        return this;
-    }
 
     /**
      * Get the sipHeaders property: Sip Headers for incoming call.

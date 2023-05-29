@@ -13,7 +13,7 @@ public final class JobStagesTests {
         JobStages model =
             BinaryData
                 .fromString(
-                    "{\"stageName\":\"Completed\",\"displayName\":\"ro\",\"stageStatus\":\"SucceededWithWarnings\",\"stageTime\":\"2021-08-27T09:45:25Z\",\"jobStageDetails\":\"dataehzzvypyqrim\"}")
+                    "{\"stageName\":\"Failed_IssueReportedAtCustomer\",\"displayName\":\"od\",\"stageStatus\":\"WaitingForCustomerActionForCleanUp\",\"stageTime\":\"2021-03-03T09:41:38Z\",\"jobStageDetails\":\"datanohjt\"}")
                 .toObject(JobStages.class);
     }
 

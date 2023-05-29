@@ -62,8 +62,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
     public interface LoadBalancerLoadBalancingRulesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/loadBalancers/{loadBalancerName}/loadBalancingRules")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/loadBalancingRules")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LoadBalancerLoadBalancingRuleListResult>> list(
@@ -77,8 +76,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/loadBalancers/{loadBalancerName}/loadBalancingRules/{loadBalancingRuleName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/loadBalancingRules/{loadBalancingRuleName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LoadBalancingRuleInner>> get(
@@ -136,7 +134,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -197,7 +195,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -327,7 +325,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -385,7 +383,7 @@ public final class LoadBalancerLoadBalancingRulesClientImpl implements LoadBalan
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

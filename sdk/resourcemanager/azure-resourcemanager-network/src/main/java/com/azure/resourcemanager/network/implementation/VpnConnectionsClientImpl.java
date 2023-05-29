@@ -69,8 +69,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
     public interface VpnConnectionsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
-                + "/{gatewayName}/vpnConnections/{connectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VpnConnectionInner>> get(
@@ -85,8 +84,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
-                + "/{gatewayName}/vpnConnections/{connectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -102,8 +100,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
-                + "/{gatewayName}/vpnConnections/{connectionName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{connectionName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -118,8 +115,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
-                + "/{gatewayName}/vpnConnections/{vpnConnectionName}/startpacketcapture")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{vpnConnectionName}/startpacketcapture")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> startPacketCapture(
@@ -135,8 +131,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
-                + "/{gatewayName}/vpnConnections/{vpnConnectionName}/stoppacketcapture")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections/{vpnConnectionName}/stoppacketcapture")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> stopPacketCapture(
@@ -152,8 +147,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways"
-                + "/{gatewayName}/vpnConnections")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/vpnGateways/{gatewayName}/vpnConnections")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ListVpnConnectionsResult>> listByVpnGateway(
@@ -212,7 +206,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -267,7 +261,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -380,7 +374,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         } else {
             vpnConnectionParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -448,7 +442,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         } else {
             vpnConnectionParameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -702,7 +696,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -757,7 +751,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (connectionName == null) {
             return Mono.error(new IllegalArgumentException("Parameter connectionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -965,7 +959,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1031,7 +1025,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1327,7 +1321,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1392,7 +1386,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (parameters != null) {
             parameters.validate();
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1670,7 +1664,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1730,7 +1724,7 @@ public final class VpnConnectionsClientImpl implements VpnConnectionsClient {
         if (gatewayName == null) {
             return Mono.error(new IllegalArgumentException("Parameter gatewayName is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-01";
+        final String apiVersion = "2022-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

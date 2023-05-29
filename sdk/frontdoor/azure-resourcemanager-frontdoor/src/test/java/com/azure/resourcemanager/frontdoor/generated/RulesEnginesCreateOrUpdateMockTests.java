@@ -31,7 +31,7 @@ public final class RulesEnginesCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"resourceState\":\"Creating\",\"rules\":[]},\"id\":\"boyjathwt\",\"name\":\"olbaemwmdx\",\"type\":\"ebwjscjpahlxvea\"}";
+            "{\"properties\":{\"resourceState\":\"Enabling\",\"rules\":[]},\"id\":\"gzulwmmrqzzr\",\"name\":\"jvpglydzgk\",\"type\":\"vqeevtoep\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +62,8 @@ public final class RulesEnginesCreateOrUpdateMockTests {
         RulesEngine response =
             manager
                 .rulesEngines()
-                .define("zhajoylhjlmuo")
-                .withExistingFrontDoor("zmizakakan", "jpdn")
+                .define("flvestmjlxrrilo")
+                .withExistingFrontDoor("eqvldspast", "bkkd")
                 .withRules(Arrays.asList())
                 .create();
     }

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for EventSubscriptions ListRegionalBySubscriptionForTopicType. */
 public final class EventSubscriptionsListRegionalBySubscriptionForTopicTypeSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/EventSubscriptions_ListRegionalBySubscriptionForTopicType.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_ListRegionalBySubscriptionForTopicType.json
      */
     /**
      * Sample code: EventSubscriptions_ListRegionalBySubscriptionForTopicType.
@@ -21,6 +19,6 @@ public final class EventSubscriptionsListRegionalBySubscriptionForTopicTypeSampl
         manager
             .eventSubscriptions()
             .listRegionalBySubscriptionForTopicType(
-                "westus2", "Microsoft.EventHub.namespaces", null, null, Context.NONE);
+                "westus2", "Microsoft.EventHub.namespaces", null, null, com.azure.core.util.Context.NONE);
     }
 }

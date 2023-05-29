@@ -76,5 +76,3 @@ extends:
         groupId: com.azure
         safeName: azurespringdatacosmos
         releaseInBatch: false
-    MatrixFilters:
-      - JavaTestVersion=^(?!1.8|1.11).*

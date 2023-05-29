@@ -1,18 +1,44 @@
 ## Release History
 
-### 4.45.0-beta.1 (Unreleased)
+### 4.46.0-beta.1 (Unreleased)
 
 #### Features Added
-* Added configurability for minimum connection pool size for all containers through a system property - `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
-* Added `CosmosContainerProactiveInitConfigBuilder:setAggressiveWarmupDuration(Duration aggressiveWarmupDuration)` public API to switch between aggressively opening connections
-  in a blocking manner to defensively opening connections in a non-blocking manner after `aggressiveWarmupDuration` has elapsed - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
+* Added the capability to filter request-level metrics based on diagnostic thresholds. Request-level metrics usually are used to capture metrics per backend endpoint/replica - a high cardinality dimension. Filtering by diagnostic thresholds reduces the overhead - but also means request-level metrics can only be used for debugging purposes - not for monitoring purposes. So, it is important to use the unfiltered operation-level metrics for health monitoring in this case. - See [PR 35114](https://github.com/Azure/azure-sdk-for-java/pull/35114)
 
 #### Breaking Changes
 
 #### Bugs Fixed
-* Fixed `IllegalArgumentException` in changeFeedProcessor when `maxScaleCount` is configured - See [PR 34618](https://github.com/Azure/azure-sdk-for-java/pull/34618)
 
 #### Other Changes
+
+### 4.45.1 (2023-05-19)
+
+#### Bugs Fixed
+* Fixed an issue where status code & sub-status code `408/20008` will always be populated in the CosmosDiagnostics in case of `RNTBD` request failures - See [PR 34999](https://github.com/Azure/azure-sdk-for-java/pull/34999)
+* Fixed `readMany` API bug to enable swallowing of `404 Not Found` exceptions for 404/0 scenarios when `readMany` performs point-reads internally - See [PR 34966](https://github.com/Azure/azure-sdk-for-java/pull/34966)
+
+### 4.45.0 (2023-05-12)
+
+#### Features Added
+* Added support for priority based throttling - See [PR 34121](https://github.com/Azure/azure-sdk-for-java/pull/34121)
+* Added configurability for minimum connection pool size for all containers through a system property - `COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT` - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
+* Added `CosmosContainerProactiveInitConfigBuilder:setAggressiveWarmupDuration(Duration aggressiveWarmupDuration)` public API to switch between aggressively opening connections
+  in a blocking manner to defensively opening connections in a non-blocking manner after `aggressiveWarmupDuration` has elapsed - See [PR 33983](https://github.com/Azure/azure-sdk-for-java/pull/33983).
+* Added end to end timeout policy for item operations. Requests will be cancelled if they have not finished before the configured timeout - See [PR 34554](https://github.com/Azure/azure-sdk-for-java/pull/34554).
+* Added capability to sample diagnostics dynamically (without need to reinitialize the app or the Cosmos Client instance). - See [PR 34915](https://github.com/Azure/azure-sdk-for-java/pull/34915). 
+
+#### Bugs Fixed
+* Fixed `IllegalArgumentException` in changeFeedProcessor when `maxScaleCount` is configured - See [PR 34618](https://github.com/Azure/azure-sdk-for-java/pull/34618)
+* Removed custom user agent suffix from client telemetry - See [PR 34866](https://github.com/Azure/azure-sdk-for-java/pull/34866)
+* Fixed an issue where `userAgentSuffix` is not being used in `CosmosDiagnostics` - See [PR 34863](https://github.com/Azure/azure-sdk-for-java/pull/34863)
+* Enabled proactive connection management to only reopen closed / reset connections to those endpoints used by containers which
+  were part of the connection warm up flow - See [PR 34892](https://github.com/Azure/azure-sdk-for-java/pull/34892)
+
+#### Other Changes
+* Disabled initialization of client telemetry background threads if client telemetry is disabled - See [PR 34889](https://github.com/Azure/azure-sdk-for-java/pull/34889)
+* Removed synchronized locking on generating random UUIDs - See [PR 34879](https://github.com/Azure/azure-sdk-for-java/pull/34879)
+* Capture diagnostics for cancelled `RNTBD` requests - See [PR 34912](https://github.com/Azure/azure-sdk-for-java/pull/34912)
+* Added support for threshold based speculative processing - See [PR 34686](https://github.com/Azure/azure-sdk-for-java/pull/34686)
 
 ### 4.44.0 (2023-04-21)
 

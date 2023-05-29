@@ -52,8 +52,7 @@ public final class RegisteredIdentitiesClientImpl implements RegisteredIdentitie
     public interface RegisteredIdentitiesService {
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
         @Delete(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/registeredIdentities/{identityName}")
+            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/registeredIdentities/{identityName}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(

@@ -20,8 +20,13 @@ public final class ManifestMediaType extends ExpandableStringEnum<ManifestMediaT
      */
     public static final ManifestMediaType OCI_IMAGE_MANIFEST = fromString("application/vnd.oci.image.manifest.v1+json");
 
+    /**
+     * Constructs ManifestMediaType object.
+     *
+     * @deprecated use {@link ManifestMediaType#fromString(String)} instead.
+     */
     @Deprecated
-    ManifestMediaType() {
+    public ManifestMediaType() {
     }
 
     /**

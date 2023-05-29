@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ImageListResult;
-import org.junit.jupiter.api.Test;
 
 public final class ImageListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ImageListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"tbzaqsqsycbkbfk\",\"publisher\":\"kdkexxp\",\"offer\":\"fmxa\",\"sku\":\"fjpgddtocjjxhvp\",\"provisioningState\":\"Creating\"},\"id\":\"hd\",\"name\":\"xibqeojnx\",\"type\":\"bzv\"},{\"properties\":{\"description\":\"t\",\"publisher\":\"deicbtwnpzao\",\"offer\":\"uhrhcffcyddgl\",\"sku\":\"t\",\"provisioningState\":\"Accepted\"},\"id\":\"pyeicxm\",\"name\":\"ciwqvhk\",\"type\":\"ixuigdtopbobj\"},{\"properties\":{\"description\":\"m\",\"publisher\":\"u\",\"offer\":\"a\",\"sku\":\"rzayv\",\"provisioningState\":\"TransientFailure\"},\"id\":\"dfgiot\",\"name\":\"ftutqxlngxlefgu\",\"type\":\"nxkrx\"},{\"properties\":{\"description\":\"i\",\"publisher\":\"thz\",\"offer\":\"qdrabhjybigehoqf\",\"sku\":\"wska\",\"provisioningState\":\"TransientFailure\"},\"id\":\"lcuiywgqywgndr\",\"name\":\"ynhz\",\"type\":\"pphrcgynco\"}],\"nextLink\":\"ecfvmm\"}")
+                    "{\"value\":[{\"properties\":{\"description\":\"rlovmclwhijcoej\",\"publisher\":\"bzaqsqsycbkbfk\",\"offer\":\"kdkexxp\",\"sku\":\"fmxa\",\"provisioningState\":\"Creating\",\"hibernateSupport\":\"Disabled\"},\"id\":\"dtocj\",\"name\":\"xhvpmoue\",\"type\":\"hd\"},{\"properties\":{\"description\":\"bqe\",\"publisher\":\"nxqbzvddn\",\"offer\":\"ndei\",\"sku\":\"twnpzaoqvuhrhcf\",\"provisioningState\":\"Created\",\"hibernateSupport\":\"Disabled\"},\"id\":\"mjthjqkwp\",\"name\":\"eicxmqciwqvhkhi\",\"type\":\"uigdtopbobjog\"}],\"nextLink\":\"e\"}")
                 .toObject(ImageListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageListResult model = new ImageListResult();
         model = BinaryData.fromObject(model).toObject(ImageListResult.class);
     }

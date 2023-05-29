@@ -30,7 +30,7 @@
   <Match>
     <Or>
       <Class name="~com\.microsoft\.azure\.keyvault\.extensions\.KeyVaultKey\$[\w]+"/>
-	  <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryTracer$Getter"/>
+      <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryTracer$Getter"/>
     </Or>
     <Bug pattern="NP_PARAMETER_MUST_BE_NONNULL_BUT_MARKED_AS_NULLABLE"/>
   </Match>
@@ -2330,7 +2330,13 @@
 
   <!-- The predictable randomness doesn't expose any crucial detail in this case. -->
   <Match>
-    <Class name="com.azure.core.http.policy.ExponentialBackoff"/>
+    <Or>
+      <Class name="com.azure.core.http.policy.ExponentialBackoff"/>
+      <And>
+        <Class name="com.azure.core.util.CoreUtils"/>
+        <Method name="randomUuid"/>
+      </And>
+    </Or>
     <Bug pattern="PREDICTABLE_RANDOM"/>
   </Match>
 
@@ -2376,12 +2382,12 @@
   <!-- The DispositionWork doesn't need to be serializable -->
   <Match>
     <Class
-        name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
+      name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
     <Bug pattern="SE_NO_SERIALVERSIONID"/>
   </Match>
   <Match>
     <Class
-        name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
+      name="~com\.azure\.core\.amqp\.implementation\.handler\.ReceiverUnsettledDeliveries\$DispositionWork"/>
     <Or>
       <Field name="desiredState"/>
       <Field name="mono"/>
@@ -2610,6 +2616,11 @@
   <Match>
     <Class name="com.azure.core.test.models.RecordFilePayload"/>
     <Field name="recordingFile"/>
+    <Bug pattern="URF_UNREAD_FIELD"/>
+  </Match>
+  <Match>
+    <Class name="com.azure.core.test.models.RecordFilePayload"/>
+    <Field name="assetFile"/>
     <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 

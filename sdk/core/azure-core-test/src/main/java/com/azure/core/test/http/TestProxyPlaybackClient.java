@@ -4,6 +4,7 @@
 package com.azure.core.test.http;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -31,6 +33,7 @@ import java.util.Queue;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
+import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
@@ -49,30 +52,39 @@ public class TestProxyPlaybackClient implements HttpClient {
     private final List<TestProxySanitizer> sanitizers = new ArrayList<>();
 
     private final List<TestProxyRequestMatcher> matchers = new ArrayList<>();
+    private final boolean skipRecordingRequestBody;
 
     /**
      * Create an instance of {@link TestProxyPlaybackClient} with a list of custom sanitizers.
      *
      * @param httpClient The {@link HttpClient} to use. If none is passed {@link HttpURLConnectionHttpClient} is the default.
+     * @param skipRecordingRequestBody Flag indicating to skip recording request bodies, so to set a custom matcher to skip comparing bodies when run in playback.
      */
-    public TestProxyPlaybackClient(HttpClient httpClient) {
+    public TestProxyPlaybackClient(HttpClient httpClient, boolean skipRecordingRequestBody) {
         this.client = (httpClient == null ? new HttpURLConnectionHttpClient() : httpClient);
         this.proxyUrl = TestProxyUtils.getProxyUrl();
         this.sanitizers.addAll(DEFAULT_SANITIZERS);
+        this.skipRecordingRequestBody = skipRecordingRequestBody;
     }
 
     /**
      * Starts playback of a test recording.
+     *
      * @param recordFile The name of the file to read.
      * @return A {@link Queue} representing the variables in the recording.
+     * @param testClassPath the test class path
      * @throws UncheckedIOException if an {@link IOException} is thrown.
      * @throws RuntimeException Failed to serialize body payload.
      */
-    public Queue<String> startPlayback(File recordFile) {
+    public Queue<String> startPlayback(File recordFile, Path testClassPath) {
         HttpRequest request = null;
+        String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString()), SerializerEncoding.JSON));
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
+                    SerializerEncoding.JSON))
+                .setHeader(HttpHeaderName.ACCEPT, "application/json")
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -97,7 +109,6 @@ public class TestProxyPlaybackClient implements HttpClient {
                 strings.add(value);
             }
             return strings;
-
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
@@ -181,11 +192,14 @@ public class TestProxyPlaybackClient implements HttpClient {
      */
     public void addMatcherRequests(List<TestProxyRequestMatcher> matchers) {
         if (isPlayingBack()) {
-            getMatcherRequests(matchers, proxyUrl)
-                .forEach(request -> {
-                    request.setHeader(X_RECORDING_ID, xRecordingId);
-                    client.sendSync(request, Context.NONE);
-                });
+            List<HttpRequest> matcherRequests = getMatcherRequests(matchers, proxyUrl);
+            if (skipRecordingRequestBody) {
+                matcherRequests.add(TestProxyUtils.setCompareBodiesMatcher());
+            }
+            matcherRequests.forEach(request -> {
+                request.setHeader(X_RECORDING_ID, xRecordingId);
+                client.sendSync(request, Context.NONE);
+            });
         } else {
             this.matchers.addAll(matchers);
         }
