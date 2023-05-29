@@ -32,117 +32,74 @@ def sdk_automation_cadl(config: dict) -> List[dict]:
     if 'relatedTypeSpecProjectFolder' not in config:
         return packages
 
-    cadl_projects = config['relatedTypeSpecProjectFolder']
-    if isinstance(cadl_projects, str):
-        cadl_projects = [cadl_projects]
+    head_sha = config['headSha']
+    repo_url = config['repoHttpsUrl']
 
-    for cadl_project in cadl_projects:
-        cadl_dir = os.path.join(spec_root, cadl_project)
+    tsp_projects = config['relatedTypeSpecProjectFolder']
+    if isinstance(tsp_projects, str):
+        tsp_projects = [tsp_projects]
 
-        sdk_folder = get_cadl_sdk_folder(os.path.join(cadl_dir, 'tspconfig.yaml'))
-        if not sdk_folder:
-            # fallback to cadl file
-            sdk_folder = get_cadl_sdk_folder(os.path.join(cadl_dir, 'cadl-project.yaml'))
-        if not sdk_folder:
-            logging.warning('[Skip] "options.@azure-tools/typespec-java.emitter-output-dir" '
-                            'or "parameters.service-directory-name.default" not found '
-                            'in tspconfig.yaml or cadl-project.yaml')
-        else:
+    for tsp_project in tsp_projects:
+        tsp_dir = os.path.join(spec_root, tsp_project)
+
+        succeeded = False
+        try:
+            subprocess.run(f'pwsh eng/common/scripts/TypeSpec-Project-Process.ps {tsp_dir} {head_sha} {repo_url}',
+                           shell=True, check=True)
+            succeeded = True
+        except subprocess.CalledProcessError:
+            logging.warning('[Skip] Failed to generate code')
+
+        if succeeded:
+            # get sdk_folder via tsp-location.yaml
+            cmd = ['git', 'status', '--porcelain', '*/tsp-location.yaml']
+            logging.info('Command line: ' + ' '.join(cmd))
+            output = subprocess.check_output(cmd, cwd=sdk_root)
+            tsp_location_path = output.splitlines()[0].strip()[3:]
+            sdk_folder = os.path.dirname(tsp_location_path)
+
             sdk_folder_abspath = os.path.join(sdk_root, sdk_folder)
             require_sdk_integration = not os.path.exists(os.path.join(sdk_folder_abspath, 'src'))
 
-            service = None
-            module = None
+            # parse service and module
             match = re.match(r'sdk/(.*)/(.*)', sdk_folder)
-            if match:
-                service = match.group(1)
-                module = match.group(2)
+            service = match.group(1)
+            module = match.group(2)
 
-            if not module:
-                logging.warning('[Skip] "emitter-output-dir" not match format '
-                                '{java-sdk-folder}/sdk/{service-directory-name}/<module>')
-            else:
-                # cadl
-                succeeded = False
-                pwd = os.getcwd()
-                os.chdir(cadl_dir)
-                try:
-                    # copy "eng/emitter-package.json" to "package.json" in current project
-                    shutil.copyfile(os.path.join(sdk_root, 'eng', 'emitter-package.json'),
-                                    os.path.join(cadl_dir, 'package.json'))
+            # TODO (weidxu): move to typespec-java
+            if require_sdk_integration:
+                set_or_default_version(sdk_root, GROUP_ID, module)
+                update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
+                update_root_pom(sdk_root, service)
 
-                    # install dependencies
-                    subprocess.run('npm install', shell=True, check=True)
+            compile_package(sdk_root, GROUP_ID, module)
 
-                    # check client.cadl
-                    cadl_source = '.'
-                    if os.path.exists(os.path.join(cadl_dir, 'client.tsp')):
-                        cadl_source = 'client.tsp'
-                    if cadl_source == '.' and os.path.exists(os.path.join(cadl_dir, 'client.cadl')):
-                        # fallback to cadl file
-                        cadl_source = 'client.cadl'
+            artifacts = [
+                '{0}/pom.xml'.format(sdk_folder)
+            ]
+            artifacts += [
+                jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
+            ]
+            result = 'succeeded' if succeeded else 'failed'
 
-                    # generate Java project
-                    command = 'npx tsp compile {0} --emit=@azure-tools/typespec-java --arg="java-sdk-folder={1}"'\
-                        .format(cadl_source, sdk_root)
-                    logging.info(command)
-                    subprocess.run(command, shell=True, check=True)
-
-                    succeeded = True
-                except subprocess.CalledProcessError:
-                    logging.warning('[Skip] Failed to generate code')
-                finally:
-                    os.chdir(pwd)
-
-                if succeeded:
-                    if require_sdk_integration:
-                        set_or_default_version(sdk_root, GROUP_ID, module)
-                        update_service_ci_and_pom(sdk_root, service, GROUP_ID, module)
-                        update_root_pom(sdk_root, service)
-
-                    compile_package(sdk_root, GROUP_ID, module)
-
-                artifacts = [
-                    '{0}/pom.xml'.format(sdk_folder)
-                ]
-                artifacts += [
-                    jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
-                ]
-                result = 'succeeded' if succeeded else 'failed'
-
-                packages.append({
-                    'packageName': module,
-                    'path': [
-                        sdk_folder,
-                        CI_FILE_FORMAT.format(service),
-                        POM_FILE_FORMAT.format(service),
-                        'eng/versioning',
-                        'pom.xml'
-                    ],
-                    'typespecProject': [cadl_project],
-                    'packageFolder': sdk_folder,
-                    'artifacts': artifacts,
-                    'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
-                    'language': 'Java',
-                    'result': result,
-                })
+            packages.append({
+                'packageName': module,
+                'path': [
+                    sdk_folder,
+                    CI_FILE_FORMAT.format(service),
+                    POM_FILE_FORMAT.format(service),
+                    'eng/versioning',
+                    'pom.xml'
+                ],
+                'typespecProject': [tsp_project],
+                'packageFolder': sdk_folder,
+                'artifacts': artifacts,
+                'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
+                'language': 'Java',
+                'result': result,
+            })
 
     return packages
-
-
-def get_cadl_sdk_folder(project_filename: str) -> Optional[str]:
-    sdk_folder: Optional[str] = None
-    if os.path.exists(project_filename):
-        with open(project_filename, 'r', encoding='utf-8') as f_in:
-            project_yaml = yaml.safe_load(f_in)
-            if 'parameters' in project_yaml and 'service-directory-name' in project_yaml['parameters'] \
-                    and 'options' in project_yaml and '@azure-tools/typespec-java' in project_yaml['options']:
-                service: str = project_yaml['parameters']['service-directory-name']['default']
-                sdk_folder = project_yaml['options']['@azure-tools/typespec-java']['emitter-output-dir']
-                sdk_folder = sdk_folder.replace(
-                    r'{java-sdk-folder}/sdk/{service-directory-name}/',
-                    'sdk/{0}/'.format(service))
-    return sdk_folder
 
 
 def get_or_update_sdk_readme(config: dict, readme_file_path: str) -> Optional[str]:
