@@ -23,7 +23,7 @@ DPG_ARGUMENTS = '--sdk-integration --generate-samples --generate-tests'
 YAML_BLOCK_REGEX = r'```\s?(?:yaml|YAML).*?\n(.*?)```'
 
 
-def sdk_automation_cadl(config: dict) -> List[dict]:
+def sdk_automation_typespec(config: dict) -> List[dict]:
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
     sdk_root = os.path.abspath(os.path.join(base_dir, SDK_ROOT))
     spec_root = os.path.abspath(config['specFolder'])
