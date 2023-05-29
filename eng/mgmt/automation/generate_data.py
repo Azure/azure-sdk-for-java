@@ -57,7 +57,8 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
             cmd = ['git', 'status', '--porcelain', '*/tsp-location.yaml']
             logging.info('Command line: ' + ' '.join(cmd))
             output = subprocess.check_output(cmd, cwd=sdk_root)
-            tsp_location_path = output.splitlines()[0].strip()[3:]
+            output_str = str(output, 'utf-8')
+            tsp_location_path = output_str.splitlines()[0].strip()[3:]
             sdk_folder = os.path.dirname(tsp_location_path)
 
             sdk_folder_abspath = os.path.join(sdk_root, sdk_folder)
