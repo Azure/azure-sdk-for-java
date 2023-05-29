@@ -33,6 +33,7 @@ function CopySpecToProjectIfNeeded([string]$specCloneRoot, [string]$mainSpecDir,
 function UpdateSparseCheckoutFile([string]$mainSpecDir, [string[]]$specAdditionalSubDirectories) {
     AddSparseCheckoutPath $mainSpecDir
     foreach ($subDir in $specAdditionalSubDirectories) {
+        Write-Host "Adding $subDir to sparse checkout"
         AddSparseCheckoutPath $subDir
     }
 }
@@ -104,9 +105,13 @@ if ( $configuration["repo"] -and $configuration["commit"]) {
     Push-Location $specCloneDir.Path
     try {
         if (!(Test-Path ".git")) {
+            Write-Host "Initializing sparse clone for repo: $gitRemoteValue"
             InitializeSparseGitClone $gitRemoteValue
+            Write-Host "Updating sparse checkout file with directory:$specSubDirectory"
+            UpdateSparseCheckoutFile $specSubDirectory $configuration["additionalDirectories"]
         }
-        UpdateSparseCheckoutFile $specSubDirectory $configuration["additionalDirectories"]
+        $commit = $configuration["commit"]
+        Write-Host "git checkout commit: $commit"
         git checkout $configuration["commit"]
         if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }
