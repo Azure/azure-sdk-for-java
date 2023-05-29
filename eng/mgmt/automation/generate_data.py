@@ -44,7 +44,7 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
 
         succeeded = False
         try:
-            cmd = ['pwsh', 'eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
+            cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
             check_call(cmd, sdk_root)
             succeeded = True
         except subprocess.CalledProcessError as error:
