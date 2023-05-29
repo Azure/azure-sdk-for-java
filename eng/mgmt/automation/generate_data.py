@@ -44,8 +44,9 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
 
         succeeded = False
         try:
-            subprocess.run(f'pwsh eng/common/scripts/TypeSpec-Project-Process.ps1 {tsp_dir} {head_sha} {repo_url}',
-                           shell=True, check=True, cwd=sdk_root)
+            cmd = ['pwsh', 'eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
+            logging.info('Command line: ' + ' '.join(cmd))
+            subprocess.check_output(cmd, shell=True, cwd=sdk_root)
             succeeded = True
         except subprocess.CalledProcessError:
             logging.warning('[Skip] Failed to generate code')
