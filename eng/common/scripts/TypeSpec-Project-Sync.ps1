@@ -44,6 +44,7 @@ function GetGitRemoteValue([string]$repo) {
     try {
         $gitRemotes = (git remote -v)
         foreach ($remote in $gitRemotes) {
+            Write-Host "Checking remote $remote"
             if ($remote.StartsWith("origin")) {
                 if ($remote -match 'https://github.com/\S+') {
                     $result = "https://github.com/$repo.git"
@@ -60,7 +61,7 @@ function GetGitRemoteValue([string]$repo) {
     finally {
         Pop-Location
     }
-
+    Write-Host "Found git remote $result"
     return $result
 }
 
