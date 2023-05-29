@@ -1247,10 +1247,24 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Reads an item.
+     * Reads an item by itemId.
+     * <br/>
+     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
+     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain an item response with the read item.
+     * <p>Usage example:</p>
+     * <pre>{@code
+     *           cosmosItemResponseMono.subscribe(
+     *                 response -> {
+     *                     T item = response.getItem();
+     *                 },
+     *                 throwable -> {
+     *                     logger.warn("Read item error", throwable);
+     *                 }
+     *                 )
+     * }</pre>
      *
      * @param <T> the type parameter.
      * @param itemId the item id.
@@ -1263,15 +1277,28 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Reads an item using a configured {@link CosmosItemRequestOptions}.
+     * Reads an item by itemId using a configured {@link CosmosItemRequestOptions}.
+     * <br/>
+     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
+     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a Cosmos item response with the read item.
-     *
+     * <p>Usage example:</p>
+     * <pre>{@code
+     *           cosmosItemResponseMono.subscribe(
+     *                 response -> {
+     *                     T item = response.getItem();
+     *                 },
+     *                 throwable -> {
+     *                     logger.warn("Read item error", throwable);
+     *                 }
+     *                 )
+     * }</pre>
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param options the request {@link CosmosItemRequestOptions}.
+     * @param options the request (Optional) {@link CosmosItemRequestOptions}.
      * @param itemType the item type.
      * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
