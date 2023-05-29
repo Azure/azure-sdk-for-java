@@ -45,14 +45,15 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
         succeeded = False
         try:
             cmd = ['pwsh', 'eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
-            logging.info('Command line: ' + ' '.join(cmd))
-            subprocess.check_call(cmd, shell=True, cwd=sdk_root)
+            check_call(cmd, sdk_root)
             succeeded = True
-        except subprocess.CalledProcessError:
-            logging.warning('[Skip] Failed to generate code')
+        except subprocess.CalledProcessError as error:
+            logging.error(f'TypeSpec-Project-Process.ps1 fail: {error}')
 
         if succeeded:
             # get sdk_folder via tsp-location.yaml
+            cmd = ['git', 'add', '.']
+            check_call(cmd, sdk_root)
             cmd = ['git', 'status', '--porcelain', '*/tsp-location.yaml']
             logging.info('Command line: ' + ' '.join(cmd))
             output = subprocess.check_output(cmd, cwd=sdk_root)
@@ -74,7 +75,7 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
                 update_root_pom(sdk_root, service)
 
             # compile
-            compile_package(sdk_root, GROUP_ID, module)
+            succeeded = compile_package(sdk_root, GROUP_ID, module)
 
         # output
         artifacts = [
@@ -103,6 +104,11 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
         })
 
     return packages
+
+
+def check_call(cmd: List[str], work_dir: str):
+    logging.info('Command line: ' + ' '.join(cmd))
+    subprocess.check_call(cmd, cwd=work_dir)
 
 
 def get_or_update_sdk_readme(config: dict, readme_file_path: str) -> Optional[str]:
