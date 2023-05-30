@@ -36,14 +36,14 @@ Index
 
 | Status Code / Sub-status Code | Retry Window                                          | Default Retry Window | Backoff multiplier | Max backoff | Max retries |
 |:------------------------------|-------------------------------------------------------|----------------------|--------------------|-------------|-------------|
-| 410/21002;410/21003;410/21004 | 60s if account-consistency is Strong / 30s for others | 30s                  | 2                  | 15 s        | N/A         |
-| 410/21001                     | 60s if account-consistency is Strong / 30s for others | 30s                  | 2                  | 15 s        | 2           |
+| 410/21002;410/21003;410/21004 | 60s if account-consistency is Strong / 30s for others | 30s                  | 2                  | 15s         | N/A         |
+| 410/21001                     | 60s if account-consistency is Strong / 30s for others | 30s                  | 2                  | 15s         | 2           |
 
 ## Status code specific retry frequency for `RetryWithException`
 
 | Status Code / Sub-status Code | Retry Window                    | Default Retry Window | Initial backoff                            | Backoff multiplier | Max backoff | Max retries |
 |:------------------------------|---------------------------------|----------------------|--------------------------------------------|--------------------|-------------|-------------|
-| 449/*                         | 60s for Strong / 30s for others | 30s                  | 10ms  + Some integral salt from 0ms to 5ms | 2                  | 1 s         | N/A         |
+| 449/*                         | 60s for Strong / 30s for others | 30s                  | 10ms  + Some integral salt from 0ms to 5ms | 2                  | 1s          | N/A         |
 
 ## Usage
 - Used with every request sent in the direct connectivity mode. It is plugged with a request in the `ReplicatedResourceClient` class.
@@ -121,7 +121,7 @@ Index
 ## Retry frequency
 | Retry Window | Initial backoff | Backoff multiplier | Max backoff | Max retries |
 |--------------|-----------------|--------------------|-------------|-------------|
-| 30s          | 1s              | 2                  | 1 s         | N/A         |
+| 30s          | 1s              | 2                  | 1s          | N/A         |
 
 ## Usage
 - Used when making requests in the gateway connectivity mode.
