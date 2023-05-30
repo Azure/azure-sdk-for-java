@@ -16,7 +16,7 @@ public final class ComputedProperty {
     /**
      * Instantiates a new Computed properties.
      */
-    public ComputedProperty() {
+    ComputedProperty() {
         this.jsonSerializable = new JsonSerializable();
     }
 

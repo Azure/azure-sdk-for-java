@@ -1,6 +1,9 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.clienttelemetry.AzureVMMetadata;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
