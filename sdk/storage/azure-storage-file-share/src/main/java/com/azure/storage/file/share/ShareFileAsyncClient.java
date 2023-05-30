@@ -260,7 +260,7 @@ public class ShareFileAsyncClient {
     Mono<Response<Boolean>> existsWithResponse(Context context) {
         return this.getPropertiesWithResponse(null, context)
             .map(cp -> (Response<Boolean>) new SimpleResponse<>(cp, true))
-            .onErrorResume(this::checkDoesNotExistStatusCode,
+            .onErrorResume(ModelHelper::checkDoesNotExistStatusCode,
                 t -> {
                     HttpResponse response = t instanceof ShareStorageException
                         ? ((ShareStorageException) t).getResponse()
@@ -1692,7 +1692,7 @@ public class ShareFileAsyncClient {
             .setHttpHeadersWithResponseAsync(shareName, filePath, fileAttributes, null, newFileSize, filePermission,
                 filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, requestConditions.getLeaseId(),
                 httpHeaders, context)
-            .map(ShareFileAsyncClient::setPropertiesResponse);
+            .map(ModelHelper::setPropertiesResponse);
     }
 
     /**
@@ -1827,7 +1827,7 @@ public class ShareFileAsyncClient {
             return azureFileStorageClient.getFiles()
                 .setMetadataWithResponseAsync(shareName, filePath, null, metadata,
                     requestConditions.getLeaseId(), context)
-                .map(ShareFileAsyncClient::setMetadataResponse);
+                .map(ModelHelper::setMetadataResponse);
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }

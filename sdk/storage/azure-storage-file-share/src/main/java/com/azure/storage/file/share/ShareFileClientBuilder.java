@@ -257,7 +257,8 @@ public class ShareFileClientBuilder implements
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public ShareDirectoryClient buildDirectoryClient() {
-        return new ShareDirectoryClient(this.buildDirectoryAsyncClient());
+        return new ShareDirectoryClient(this.buildDirectoryAsyncClient(), constructImpl(getServiceVersion()), shareName, resourcePath,
+            shareSnapshot, accountName, getServiceVersion(), sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
     /**
@@ -299,7 +300,8 @@ public class ShareFileClientBuilder implements
      * @throws IllegalStateException If multiple credentials have been specified.
      */
     public ShareFileClient buildFileClient() {
-        return new ShareFileClient(this.buildFileAsyncClient());
+        return new ShareFileClient(this.buildFileAsyncClient(), constructImpl(getServiceVersion()), shareName, resourcePath, shareSnapshot,
+            accountName, getServiceVersion(), sasToken != null ? new AzureSasCredential(sasToken) : azureSasCredential);
     }
 
     /**

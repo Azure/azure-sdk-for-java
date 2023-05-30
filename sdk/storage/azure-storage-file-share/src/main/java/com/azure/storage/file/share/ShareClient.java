@@ -6,13 +6,16 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareInfo;
@@ -37,6 +40,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -65,8 +69,24 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
 @ServiceClient(builder = ShareClientBuilder.class)
 public class ShareClient {
     private final ShareAsyncClient client;
+    private static final ClientLogger LOGGER = new ClientLogger(ShareClient.class);
 
-    ShareClient(ShareAsyncClient client) {
+    private final AzureFileStorageImpl azureFileStorageClient;
+    private final String shareName;
+    private final String snapshot;
+    private final String accountName;
+    private final ShareServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
+
+    ShareClient(ShareAsyncClient client, AzureFileStorageImpl azureFileStorageClient, String shareName, String snapshot,
+                String accountName, ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
+        this.shareName = shareName;
+        this.snapshot = snapshot;
+        this.accountName = accountName;
+        this.azureFileStorageClient = azureFileStorageClient;
+        this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
         this.client = client;
     }
 
@@ -119,7 +139,7 @@ public class ShareClient {
      * @return a {@link ShareDirectoryClient} that interacts with the directory in the share
      */
     public ShareDirectoryClient getDirectoryClient(String directoryName) {
-        return new ShareDirectoryClient(client.getDirectoryClient(directoryName));
+        return new ShareDirectoryClient(client.getDirectoryClient(directoryName), azureFileStorageClient, shareName, directoryName, snapshot, accountName, serviceVersion, sasToken);
     }
 
     /**
@@ -132,7 +152,8 @@ public class ShareClient {
      * @return a {@link ShareFileClient} that interacts with the file in the share
      */
     public ShareFileClient getFileClient(String filePath) {
-        return new ShareFileClient(client.getFileClient(filePath));
+        return new ShareFileClient(client.getFileClient(filePath), azureFileStorageClient, shareName, filePath, snapshot, accountName,
+            serviceVersion, sasToken);
     }
 
 
@@ -143,7 +164,7 @@ public class ShareClient {
      * @return a {@link ShareClient} used to interact with the specific snapshot.
      */
     public ShareClient getSnapshotClient(String snapshot) {
-        return new ShareClient(client.getSnapshotClient(snapshot));
+        return new ShareClient(client, azureFileStorageClient, shareName, snapshot, accountName, serviceVersion, sasToken);
     }
 
     /**

@@ -6,14 +6,17 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.common.sas.AccountSasSignatureValues;
+import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.models.ShareCorsRule;
 import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ListSharesOptions;
@@ -50,14 +53,24 @@ import java.util.Map;
 @ServiceClient(builder = ShareServiceClientBuilder.class)
 public final class ShareServiceClient {
     private final ShareServiceAsyncClient shareServiceAsyncClient;
+    private static final ClientLogger LOGGER = new ClientLogger(ShareServiceClient.class);
+    private final AzureFileStorageImpl azureFileStorageClient;
+    private final String accountName;
+    private final ShareServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareServiceClient that wraps a ShareServiceAsyncClient and blocks requests.
      *
      * @param client ShareServiceAsyncClient that is used to send requests
      */
-    ShareServiceClient(ShareServiceAsyncClient client) {
+    ShareServiceClient(ShareServiceAsyncClient client, AzureFileStorageImpl azureFileStorage, String accountName,
+                       ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
         this.shareServiceAsyncClient = client;
+        this.azureFileStorageClient = azureFileStorage;
+        this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -89,7 +102,7 @@ public final class ShareServiceClient {
      * @return a ShareClient that interacts with the specified share
      */
     public ShareClient getShareClient(String shareName) {
-        return new ShareClient(shareServiceAsyncClient.getShareAsyncClient(shareName));
+        return new ShareClient(shareServiceAsyncClient.getShareAsyncClient(shareName), azureFileStorageClient, shareName, null, accountName, serviceVersion, sasToken);
     }
 
     /**

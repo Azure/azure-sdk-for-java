@@ -16,9 +16,34 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.FileConstants;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
-import com.azure.storage.file.share.implementation.models.*;
-import com.azure.storage.file.share.models.*;
+import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.FileProperty;
+import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
+import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
+import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
+import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
+import com.azure.storage.file.share.implementation.models.ShareItemInternal;
+import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.implementation.models.StringEncoded;
+import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.models.LeaseDurationType;
+import com.azure.storage.file.share.models.LeaseStateType;
+import com.azure.storage.file.share.models.LeaseStatusType;
+import com.azure.storage.file.share.models.ShareErrorCode;
+import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
+import com.azure.storage.file.share.models.ShareFileInfo;
+import com.azure.storage.file.share.models.ShareFileItemProperties;
+import com.azure.storage.file.share.models.ShareFileMetadataInfo;
+import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareItem;
+import com.azure.storage.file.share.models.ShareProperties;
+import com.azure.storage.file.share.models.ShareProtocols;
+import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
+import com.azure.storage.file.share.models.ShareStorageException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -316,5 +341,23 @@ public class ModelHelper {
             leaseStatusType, leaseStateType, leaseDurationType, copyCompletionTime, copyStatusDescription, copyId,
             copyProgress, copySource, copyStatus, isServerEncrypted, smbProperties);
         return new SimpleResponse<>(response, shareFileProperties);
+    }
+
+    public static Response<ShareFileInfo> setPropertiesResponse(
+        final ResponseBase<FilesSetHttpHeadersHeaders, Void> response) {
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
+        ShareFileInfo shareFileInfo = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
+        return new SimpleResponse<>(response, shareFileInfo);
+    }
+
+    public static Response<ShareFileMetadataInfo> setMetadataResponse(
+        final ResponseBase<FilesSetMetadataHeaders, Void> response) {
+        String eTag = response.getDeserializedHeaders().getETag();
+        Boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
+        ShareFileMetadataInfo shareFileMetadataInfo = new ShareFileMetadataInfo(eTag, isServerEncrypted);
+        return new SimpleResponse<>(response, shareFileMetadataInfo);
     }
 }

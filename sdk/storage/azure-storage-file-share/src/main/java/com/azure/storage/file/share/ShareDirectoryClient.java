@@ -6,13 +6,16 @@ package com.azure.storage.file.share;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareDirectoryProperties;
@@ -31,6 +34,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
@@ -60,14 +64,33 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
 public class ShareDirectoryClient {
 
     private final ShareDirectoryAsyncClient shareDirectoryAsyncClient;
+    private static final ClientLogger LOGGER = new ClientLogger(ShareDirectoryClient.class);
+
+    private final AzureFileStorageImpl azureFileStorageClient;
+    private final String shareName;
+    private final String directoryPath;
+    private final String snapshot;
+    private final String accountName;
+    private final ShareServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
 
     /**
      * Creates a ShareDirectoryClient that wraps a ShareDirectoryAsyncClient and blocks requests.
      *
      * @param shareDirectoryAsyncClient ShareDirectoryAsyncClient that is used to send requests
      */
-    ShareDirectoryClient(ShareDirectoryAsyncClient shareDirectoryAsyncClient) {
+    ShareDirectoryClient(ShareDirectoryAsyncClient shareDirectoryAsyncClient, AzureFileStorageImpl azureFileStorageClient, String shareName, String directoryPath,
+                         String snapshot, String accountName, ShareServiceVersion serviceVersion, AzureSasCredential sasToken) {
         this.shareDirectoryAsyncClient = shareDirectoryAsyncClient;
+        Objects.requireNonNull(shareName, "'shareName' cannot be null.");
+        Objects.requireNonNull(directoryPath);
+        this.shareName = shareName;
+        this.directoryPath = directoryPath;
+        this.snapshot = snapshot;
+        this.azureFileStorageClient = azureFileStorageClient;
+        this.accountName = accountName;
+        this.serviceVersion = serviceVersion;
+        this.sasToken = sasToken;
     }
 
     /**
@@ -98,7 +121,7 @@ public class ShareDirectoryClient {
      * @return a ShareFileClient that interacts with the specified share
      */
     public ShareFileClient getFileClient(String fileName) {
-        return new ShareFileClient(shareDirectoryAsyncClient.getFileClient(fileName));
+        return new ShareFileClient(shareDirectoryAsyncClient.getFileClient(fileName), azureFileStorageClient, shareName, fileName, snapshot, accountName, serviceVersion, sasToken);
     }
 
     /**
@@ -111,7 +134,7 @@ public class ShareDirectoryClient {
      * @return a ShareDirectoryClient that interacts with the specified directory
      */
     public ShareDirectoryClient getSubdirectoryClient(String subdirectoryName) {
-        return new ShareDirectoryClient(shareDirectoryAsyncClient.getSubdirectoryClient(subdirectoryName));
+        return new ShareDirectoryClient(shareDirectoryAsyncClient.getSubdirectoryClient(subdirectoryName), azureFileStorageClient, shareName, directoryPath, snapshot, accountName, serviceVersion, sasToken);
     }
 
     /**
@@ -905,7 +928,7 @@ public class ShareDirectoryClient {
         Context context) {
         Mono<Response<ShareDirectoryAsyncClient>> mono = shareDirectoryAsyncClient.renameWithResponse(options, context);
         Response<ShareDirectoryAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(mono, timeout);
-        return new SimpleResponse<>(response, new ShareDirectoryClient(response.getValue()));
+        return new SimpleResponse<>(response, new ShareDirectoryClient(response.getValue(), azureFileStorageClient, shareName, directoryPath, snapshot, accountName, serviceVersion, sasToken));
     }
 
     /**
