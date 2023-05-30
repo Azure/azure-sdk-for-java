@@ -49,7 +49,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             IterableStream<Completions> resultCompletions = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
-            assertTrue(resultCompletions.stream().toList().size() > 1);
+            assertTrue(resultCompletions.stream().toArray().length > 1);
             resultCompletions.forEach(OpenAIClientTestBase::assertCompletionsStream);
         });
     }
