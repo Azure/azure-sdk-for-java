@@ -13,14 +13,14 @@ import javax.xml.stream.XMLStreamException;
 
 /** The EmptyRuleAction model. */
 @Immutable
-public final class EmptyRuleActionImpl extends RuleActionImpl {
+public final class EmptyRuleAction extends RuleActionImpl {
     /*
      * The type property.
      */
     private static final String TYPE = "EmptyRuleAction";
 
     /** Creates an instance of EmptyRuleAction class. */
-    public EmptyRuleActionImpl() {}
+    public EmptyRuleAction() {}
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -46,7 +46,7 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      * @throws XMLStreamException If an error occurs while reading the EmptyRuleAction.
      */
-    public static EmptyRuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
+    public static EmptyRuleAction fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
 
@@ -54,14 +54,14 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
      * Reads an instance of EmptyRuleAction from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
-     *     cases where the model can deserialize from different root elementnames.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     *     cases where the model can deserialize from different root element names.
      * @return An instance of EmptyRuleAction if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      * @throws XMLStreamException If an error occurs while reading the EmptyRuleAction.
      */
-    public static EmptyRuleActionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+    public static EmptyRuleAction fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
         return xmlReader.readObject(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
@@ -77,9 +77,9 @@ public final class EmptyRuleActionImpl extends RuleActionImpl {
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         reader.skipElement();
                     }
-                    EmptyRuleActionImpl deserializedEmptyRuleActionImpl = new EmptyRuleActionImpl();
+                    EmptyRuleAction deserializedEmptyRuleAction = new EmptyRuleAction();
 
-                    return deserializedEmptyRuleActionImpl;
+                    return deserializedEmptyRuleAction;
                 });
     }
 }

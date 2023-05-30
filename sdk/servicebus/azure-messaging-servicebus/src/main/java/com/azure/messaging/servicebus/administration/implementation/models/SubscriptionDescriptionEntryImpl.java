@@ -11,11 +11,10 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** Represents an entry in the feed when querying subscriptions. */
 @Fluent
@@ -209,8 +208,8 @@ public final class SubscriptionDescriptionEntryImpl implements XmlSerializable<S
      * Reads an instance of SubscriptionDescriptionEntry from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
-     *     cases where the model can deserialize from different root elementnames.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     *     cases where the model can deserialize from different root element names.
      * @return An instance of SubscriptionDescriptionEntry if the XmlReader was pointing to an instance of it, or null
      *     if it was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the SubscriptionDescriptionEntry.

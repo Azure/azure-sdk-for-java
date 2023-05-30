@@ -629,8 +629,8 @@ public final class SubscriptionDescriptionImpl implements XmlSerializable<Subscr
      * Reads an instance of SubscriptionDescription from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
-     *     cases where the model can deserialize from different root elementnames.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     *     cases where the model can deserialize from different root element names.
      * @return An instance of SubscriptionDescription if the XmlReader was pointing to an instance of it, or null if it
      *     was pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the SubscriptionDescription.

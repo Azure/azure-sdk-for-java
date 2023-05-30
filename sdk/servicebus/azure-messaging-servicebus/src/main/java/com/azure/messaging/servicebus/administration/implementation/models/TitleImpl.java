@@ -98,8 +98,8 @@ public final class TitleImpl implements XmlSerializable<TitleImpl> {
      * Reads an instance of Title from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
-     *     cases where the model can deserialize from different root elementnames.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     *     cases where the model can deserialize from different root element names.
      * @return An instance of Title if the XmlReader was pointing to an instance of it, or null if it was pointing to
      *     XML null.
      * @throws XMLStreamException If an error occurs while reading the Title.

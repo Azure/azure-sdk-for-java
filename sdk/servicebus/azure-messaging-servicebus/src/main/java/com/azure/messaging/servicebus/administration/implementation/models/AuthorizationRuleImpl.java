@@ -11,12 +11,13 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
+
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
 
 /** Authorization rule of an entity. */
 @Fluent
@@ -361,8 +362,8 @@ public final class AuthorizationRuleImpl implements XmlSerializable<Authorizatio
      * Reads an instance of AuthorizationRule from the XmlReader.
      *
      * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default definedby the model. Used to support
-     *     cases where the model can deserialize from different root elementnames.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     *     cases where the model can deserialize from different root element names.
      * @return An instance of AuthorizationRule if the XmlReader was pointing to an instance of it, or null if it was
      *     pointing to XML null.
      * @throws XMLStreamException If an error occurs while reading the AuthorizationRule.
