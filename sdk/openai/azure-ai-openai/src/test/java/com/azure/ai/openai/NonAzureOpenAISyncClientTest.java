@@ -21,7 +21,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     private OpenAIClient client;
