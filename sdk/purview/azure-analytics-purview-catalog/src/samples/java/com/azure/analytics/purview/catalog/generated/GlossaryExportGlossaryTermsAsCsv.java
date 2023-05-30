@@ -10,8 +10,6 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 
 public class GlossaryExportGlossaryTermsAsCsv {
     public static void main(String[] args) {
@@ -25,7 +23,7 @@ public class GlossaryExportGlossaryTermsAsCsv {
                 BinaryData.fromString(
                         "[\"1ec7ed72-f188-4bfe-bab9-bb9b5475381e\",\"7869f462-33d4-4ec9-9901-b9f25a25e6df\"]");
         RequestOptions requestOptions = new RequestOptions().addQueryParam("includeTermHierarchy", "true");
-        Response<Flux<ByteBuffer>> response =
+        Response<BinaryData> response =
                 glossaryClient.exportGlossaryTermsAsCsvWithResponse(
                         "ed27f06c-dcfc-4e60-be27-7be65060108f", termGuids, requestOptions);
         // END:com.azure.analytics.purview.catalog.generated.glossaryexportglossarytermsascsv.glossaryexportglossarytermsascsv

@@ -63,10 +63,12 @@ class AvailabilitySetImpl
 
     @Override
     public Set<String> virtualMachineIds() {
-        if (idOfVMsInSet == null) {
+        if (idOfVMsInSet == null && this.innerModel().virtualMachines() != null) {
             idOfVMsInSet = new HashSet<>();
             for (SubResource resource : this.innerModel().virtualMachines()) {
-                idOfVMsInSet.add(resource.id());
+                if (resource != null) {
+                    idOfVMsInSet.add(resource.id());
+                }
             }
         }
         return Collections.unmodifiableSet(idOfVMsInSet);

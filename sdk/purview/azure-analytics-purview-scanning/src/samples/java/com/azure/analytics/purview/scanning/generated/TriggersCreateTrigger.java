@@ -13,15 +13,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class TriggersCreateTrigger {
     public static void main(String[] args) {
-        TriggersClient client =
+        TriggersClient triggersClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildTriggersClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.triggerscreatetrigger.triggerscreatetrigger
         BinaryData body =
                 BinaryData.fromString(
                         "{\"properties\":{\"recurrence\":{\"endTime\":\"2021-02-25T00:00:00.000Z\",\"frequency\":\"Month\",\"interval\":1,\"schedule\":{\"hours\":[23],\"minutes\":[56],\"monthDays\":[10]},\"startTime\":\"2021-02-12T14:59:00.416Z\"},\"recurrenceInterval\":null,\"scanLevel\":\"Incremental\"}}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = client.createTriggerWithResponse("DataSource1", "Scan1", body, requestOptions);
+        Response<BinaryData> response =
+                triggersClient.createTriggerWithResponse("DataSource1", "Scan1", body, requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.triggerscreatetrigger.triggerscreatetrigger
     }
 }

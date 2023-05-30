@@ -56,6 +56,6 @@ public final class NetworkExperimentProfilesDeleteMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.networkExperimentProfiles().delete("xtdr", "futacoebjvewzc", com.azure.core.util.Context.NONE);
+        manager.networkExperimentProfiles().delete("roud", "spave", com.azure.core.util.Context.NONE);
     }
 }
