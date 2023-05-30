@@ -37,7 +37,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletions(deploymentId, new CompletionsOptions(prompt)))
@@ -50,7 +50,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)))
@@ -65,7 +65,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsFromSinglePromptRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletions(deploymentId, prompt))
@@ -78,7 +78,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(deploymentId,
@@ -94,7 +94,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsWithResponseBadDeployment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsWithResponseBadDeployment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((_deploymentId, prompt) -> {
             String deploymentId = "BAD_DEPLOYMENT_ID";
@@ -109,7 +109,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
@@ -130,7 +130,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
@@ -144,7 +144,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages)))
@@ -158,7 +158,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)))
@@ -173,7 +173,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsWithResponse(deploymentId,
@@ -189,7 +189,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             StepVerifier.create(client.getEmbeddings(deploymentId, embeddingsOptions))
@@ -200,7 +200,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             StepVerifier.create(client.getEmbeddingsWithResponse(deploymentId,

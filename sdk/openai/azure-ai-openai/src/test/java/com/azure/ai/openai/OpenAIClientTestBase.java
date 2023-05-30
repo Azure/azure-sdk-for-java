@@ -83,22 +83,22 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
 
     @Test
-    public abstract void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void testGetCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
-    public abstract void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void testGetCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
-    public abstract void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void testGetChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
-    public abstract void getChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
-    public abstract void getEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void testGetEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     @Test
-    public abstract void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
+    public abstract void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion);
 
     void getCompletionsRunner(BiConsumer<String, List<String>> testRunner) {
         String deploymentId = "text-davinci-003";

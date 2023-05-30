@@ -38,7 +38,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletions(modelId, new CompletionsOptions(prompt)))
@@ -52,7 +52,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @Disabled("onError(com.fasterxml.jackson.databind.exc.MismatchedInputException: Missing required creator property 'usage'")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)))
@@ -67,7 +67,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsFromSinglePromptRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletions(modelId, prompt))
@@ -80,7 +80,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,
@@ -96,7 +96,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsBadSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsBadSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,
@@ -111,7 +111,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsExpiredSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsExpiredSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             StepVerifier.create(client.getCompletionsWithResponse(modelId,
@@ -126,7 +126,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
@@ -147,7 +147,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getCompletionsRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
@@ -161,7 +161,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatCompletionsForNonAzureRunner((modelId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletions(modelId, new ChatCompletionsOptions(chatMessages)))
@@ -176,7 +176,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @Disabled("onError(com.fasterxml.jackson.databind.exc.MismatchedInputException: Missing required creator property 'usage'")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)))
@@ -191,7 +191,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getChatCompletionsForNonAzureRunner((modelId, chatMessages) -> {
             StepVerifier.create(client.getChatCompletionsWithResponse(modelId,
@@ -207,7 +207,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getEmbeddingNonAzureRunner((modelId, embeddingsOptions) -> {
             StepVerifier.create(client.getEmbeddings(modelId, embeddingsOptions))
@@ -218,7 +218,7 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void getEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
         getEmbeddingNonAzureRunner((modelId, embeddingsOptions) -> {
             StepVerifier.create(client.getEmbeddingsWithResponse(modelId,
