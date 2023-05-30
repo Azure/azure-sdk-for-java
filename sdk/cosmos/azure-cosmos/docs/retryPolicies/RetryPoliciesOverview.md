@@ -57,7 +57,7 @@ Index
 - When triggered it clears the session tokens associated with some collection / container.
 
 ## Usage
-- Plugged in when performing a metadata request for a `DocumentCollection` instance. 
+- Plugged in when resolving RID or name of the collection in the `RxCollectionCache` instance. 
 
 # InvalidPartitionExceptionRetryPolicy
 
