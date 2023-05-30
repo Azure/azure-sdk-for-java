@@ -1316,6 +1316,8 @@ public class CosmosAsyncContainer {
 
     /**
      * Reads many documents.
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
      *
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
@@ -1331,12 +1333,14 @@ public class CosmosAsyncContainer {
 
     /**
      * Reads many documents.
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
      *
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param sessionToken the optional Session token - null if the read can be made without specific session token
      * @param classType   class type
-     * @return a Mono with feed response of cosmos items
+     * @return a Mono with feed response of cosmos items or error
      */
     public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
@@ -1386,7 +1390,7 @@ public class CosmosAsyncContainer {
      *
      * @param <T> the type parameter.
      * @param partitionKey the partition key value of the documents that need to be read
-     * @param options the feed options.
+     * @param options the feed options (Optional).
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages
      * of the read Cosmos items or an error.
@@ -1452,7 +1456,7 @@ public class CosmosAsyncContainer {
      * @param item the item to replace (containing the item id).
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param options the request comosItemRequestOptions.
+     * @param options the request comosItemRequestOptions (Optional).
      * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     public <T> Mono<CosmosItemResponse<T>> replaceItem(
