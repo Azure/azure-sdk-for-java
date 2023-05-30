@@ -6,6 +6,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.containerregistry.models.Architecture;
 import com.azure.resourcemanager.containerregistry.models.BaseImageTriggerType;
+import com.azure.resourcemanager.containerregistry.models.DefaultAction;
+import com.azure.resourcemanager.containerregistry.models.NetworkRuleSet;
 import com.azure.resourcemanager.containerregistry.models.OS;
 import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Registry;
@@ -1383,6 +1385,100 @@ public class RegistryTaskTests extends RegistryTest {
             .apply();
 
         Assertions.assertEquals(PublicNetworkAccess.ENABLED, registry.publicNetworkAccess());
+    }
+
+    @Test
+    public void testRegistryNetworkRules() {
+        final String acrName = generateRandomResourceName("acr", 10);
+
+        // registry with default network rule settings
+        Registry registryWithDefaultNetworkRules = registryManager.containerRegistries()
+            .define(acrName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .create();
+
+        Assertions.assertEquals(SkuTier.PREMIUM, registryWithDefaultNetworkRules.sku().tier());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, registryWithDefaultNetworkRules.publicNetworkAccess());
+        Assertions.assertTrue(registryWithDefaultNetworkRules.canAccessFromTrustedServices());
+        Assertions.assertEquals(DefaultAction.ALLOW, registryWithDefaultNetworkRules.networkRuleSet().defaultAction());
+        Assertions.assertFalse(registryWithDefaultNetworkRules.isDedicatedDataEndpointsEnabled());
+        Assertions.assertEquals(0, registryWithDefaultNetworkRules.dedicatedDataEndpointsHostNames().size());
+
+        registryWithDefaultNetworkRules.update()
+            .disablePublicNetworkAccess()
+            .apply();
+
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, registryWithDefaultNetworkRules.publicNetworkAccess());
+        Assertions.assertTrue(registryWithDefaultNetworkRules.canAccessFromTrustedServices());
+
+        // create registry with custom network rule settings
+        final String acrName2 = generateRandomResourceName("acr", 10);
+
+        String ipAddress = "3.80.0.1";
+        String cdir = "3.80.0.0/12";
+        Registry registry = registryManager.containerRegistries()
+            .define(acrName2)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withPremiumSku()
+            .withAccessFromSelectedNetworks()
+            .withAccessFromIpAddressRange(cdir)
+            .enableDedicatedDataEndpoints()
+            .withAccessFromTrustedServices()
+            .create();
+
+        NetworkRuleSet networkRuleSet = registry.networkRuleSet();
+        Assertions.assertEquals(DefaultAction.DENY, networkRuleSet.defaultAction());
+        Assertions.assertEquals(1, networkRuleSet.ipRules().size());
+        Assertions.assertEquals(PublicNetworkAccess.ENABLED, registry.publicNetworkAccess());
+
+        Assertions.assertTrue(registry.isDedicatedDataEndpointsEnabled());
+        Assertions.assertTrue(registry.canAccessFromTrustedServices());
+
+        registry.update()
+            .withAccessFromIpAddress(ipAddress)
+            // with same ip address range as before, test deduplication ability
+            .withAccessFromIpAddressRange(cdir)
+            .apply();
+
+        networkRuleSet = registry.networkRuleSet();
+        Assertions.assertEquals(2, networkRuleSet.ipRules().size());
+
+        // revoke access from a certain IP
+        registry.update()
+            .withoutAccessFromIpAddress(ipAddress)
+            .apply();
+        networkRuleSet = registry.networkRuleSet();
+        Assertions.assertEquals(1, networkRuleSet.ipRules().size());
+
+        // disable dedicated endpoint
+        registry.update()
+            .disableDedicatedDataEndpoints()
+            .apply();
+        Assertions.assertFalse(registry.isDedicatedDataEndpointsEnabled());
+        Assertions.assertEquals(0, registry.dedicatedDataEndpointsHostNames().size());
+
+        // deny access from trusted services
+        registry.update()
+            .withoutAccessFromTrustedServices()
+            .apply();
+        Assertions.assertFalse(registry.canAccessFromTrustedServices());
+
+        // restore access to public network
+        registry.update()
+            .withAccessFromAllNetworks()
+            .apply();
+        networkRuleSet = registry.networkRuleSet();
+        Assertions.assertEquals(DefaultAction.ALLOW, networkRuleSet.defaultAction());
+
+        // disable public network access
+        registry.update()
+            .disablePublicNetworkAccess()
+            .apply();
+
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, registry.publicNetworkAccess());
     }
 
     @Override

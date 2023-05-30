@@ -505,7 +505,8 @@ public final class CosmosClientTelemetryConfig {
                         false,
                         new double[0],
                         false,
-                        EnumSet.noneOf(TagName.class));
+                        EnumSet.noneOf(TagName.class),
+                        false);
                 }
 
                 @Override

@@ -287,6 +287,6 @@ public final class ReceivedSharesClientBuilder
      */
     @Generated
     public ReceivedSharesClient buildClient() {
-        return new ReceivedSharesClient(new ReceivedSharesAsyncClient(buildInnerClient().getReceivedShares()));
+        return new ReceivedSharesClient(buildInnerClient().getReceivedShares());
     }
 }

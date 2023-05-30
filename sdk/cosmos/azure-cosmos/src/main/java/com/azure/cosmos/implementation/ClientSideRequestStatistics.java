@@ -390,7 +390,10 @@ public class ClientSideRequestStatistics {
     }
 
     public void recordContributingPointOperation(ClientSideRequestStatistics other) {
+        this.mergeClientSideRequestStatistics(other);
+    }
 
+    public void mergeClientSideRequestStatistics(ClientSideRequestStatistics other) {
         if (other == null) {
             return;
         }

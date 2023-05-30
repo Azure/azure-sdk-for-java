@@ -9,7 +9,10 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
@@ -22,7 +25,7 @@ public final class KeyVaultConnectionsAsyncClient {
     @Generated private final KeyVaultConnectionsImpl serviceClient;
 
     /**
-     * Initializes an instance of KeyVaultConnections client.
+     * Initializes an instance of KeyVaultConnectionsAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
@@ -34,23 +37,15 @@ public final class KeyVaultConnectionsAsyncClient {
     /**
      * Gets key vault information.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         baseUrl: String
-     *         description: String
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         baseUrl: String (Optional)
+     *         description: String (Optional)
      *     }
      * }
      * }</pre>
@@ -58,6 +53,9 @@ public final class KeyVaultConnectionsAsyncClient {
      * @param keyVaultName The keyVaultName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return key vault information along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -69,23 +67,15 @@ public final class KeyVaultConnectionsAsyncClient {
     /**
      * Creates an instance of a key vault connection.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         baseUrl: String
-     *         description: String
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         baseUrl: String (Optional)
+     *         description: String (Optional)
      *     }
      * }
      * }</pre>
@@ -94,11 +84,11 @@ public final class KeyVaultConnectionsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         baseUrl: String
-     *         description: String
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         baseUrl: String (Optional)
+     *         description: String (Optional)
      *     }
      * }
      * }</pre>
@@ -107,6 +97,9 @@ public final class KeyVaultConnectionsAsyncClient {
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -119,23 +112,15 @@ public final class KeyVaultConnectionsAsyncClient {
     /**
      * Deletes the key vault connection associated with the account.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         baseUrl: String
-     *         description: String
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         baseUrl: String (Optional)
+     *         description: String (Optional)
      *     }
      * }
      * }</pre>
@@ -143,6 +128,9 @@ public final class KeyVaultConnectionsAsyncClient {
      * @param keyVaultName The keyVaultName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -154,36 +142,25 @@ public final class KeyVaultConnectionsAsyncClient {
     /**
      * List key vault connections in account.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     value: [
-     *         {
-     *             id: String
-     *             name: String
-     *             properties: {
-     *                 baseUrl: String
-     *                 description: String
-     *             }
-     *         }
-     *     ]
-     *     nextLink: String
-     *     count: Long
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         baseUrl: String (Optional)
+     *         description: String (Optional)
+     *     }
      * }
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)

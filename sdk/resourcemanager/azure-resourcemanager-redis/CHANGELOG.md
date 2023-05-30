@@ -1,6 +1,16 @@
 # Release History
 
-## 2.27.0-beta.1 (Unreleased)
+## 2.28.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.27.0 (2023-05-25)
 
 ### Breaking Changes
 
