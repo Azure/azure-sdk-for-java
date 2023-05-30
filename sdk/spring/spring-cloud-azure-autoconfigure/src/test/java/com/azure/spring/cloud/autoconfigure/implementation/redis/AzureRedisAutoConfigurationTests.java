@@ -14,6 +14,9 @@ import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.data.redis.core.RedisOperations;
+import org.springframework.util.ReflectionUtils;
+
+import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -107,7 +110,13 @@ class AzureRedisAutoConfigurationTests {
                     assertThat(redisProperties.getPassword()).isEqualTo(KEY);
                     assertThat(redisProperties.getHost()).isEqualTo(HOST);
                     assertThat(redisProperties.getPort()).isEqualTo(PORT);
-                    assertThat(redisProperties.isSsl()).isEqualTo(IS_SSL);
+                    Method isSsl = ReflectionUtils.findMethod(AzureRedisProperties.class, "isSsl", boolean.class);
+                    if (isSsl == null) {
+                        assertThat(ReflectionUtils.findMethod(RedisProperties.Ssl.class, "isEnabled", boolean.class)
+                                                  .invoke(redisProperties).equals(IS_SSL));
+                    } else {
+                        assertThat(isSsl.invoke(redisProperties, isSsl).equals(IS_SSL));
+                    }
                 });
     }
 
