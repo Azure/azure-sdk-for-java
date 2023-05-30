@@ -43,29 +43,36 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
         tsp_dir = os.path.join(spec_root, tsp_project)
 
         succeeded = False
+        sdk_folder = None
         try:
             cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
-            check_call(cmd, sdk_root)
+            logging.info('Command line: ' + ' '.join(cmd))
+            output = subprocess.check_output(cmd, cwd=sdk_root)
+            output_str = str(output, 'utf-8')
+            script_return = output_str.splitlines()[-1] # the path to sdk folder
+            sdk_folder = os.path.relpath(script_return, sdk_root)
+            logging.info('SDK folder: ' + sdk_folder)
             succeeded = True
         except subprocess.CalledProcessError as error:
             logging.error(f'TypeSpec-Project-Process.ps1 fail: {error}')
 
         if succeeded:
-            # get sdk_folder via tsp-location.yaml
+            # check require_sdk_integration
+            require_sdk_integration = False
             cmd = ['git', 'add', '.']
             check_call(cmd, sdk_root)
-            cmd = ['git', 'status', '--porcelain', '*/tsp-location.yaml']
+            cmd = ['git', 'status', '--porcelain', os.path.join(sdk_folder, 'pom.xml')]
             logging.info('Command line: ' + ' '.join(cmd))
             output = subprocess.check_output(cmd, cwd=sdk_root)
             output_str = str(output, 'utf-8')
-            tsp_location_path = output_str.splitlines()[0].strip()[3:]
-            sdk_folder = os.path.dirname(tsp_location_path)
-
-            sdk_folder_abspath = os.path.join(sdk_root, sdk_folder)
-            require_sdk_integration = not os.path.exists(os.path.join(sdk_folder_abspath, 'src'))
+            git_items = output_str.splitlines()
+            if len(git_items) > 0:
+                git_pom_item = git_items[0]
+                # new pom.xml implies new SDK
+                require_sdk_integration = git_pom_item.startswith('A ')
 
             # parse service and module
-            match = re.match(r'sdk/(.*)/(.*)', sdk_folder)
+            match = re.match(r'sdk[\\/](.*)[\\/](.*)', sdk_folder)
             service = match.group(1)
             module = match.group(2)
 
