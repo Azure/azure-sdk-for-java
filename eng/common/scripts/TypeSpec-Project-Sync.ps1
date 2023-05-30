@@ -45,11 +45,11 @@ function GetGitRemoteValue([string]$repo) {
         $gitRemotes = (git remote -v)
         foreach ($remote in $gitRemotes) {
             Write-Host "Checking remote $remote"
-            if ($remote.StartsWith("origin")) {
-                if ($remote -match 'https://github.com/\S+') {
+            if ($remote.StartsWith("origin") -or $remote.StartsWith("main")) {
+                if ($remote -match 'https://(.*)?github.com/\S+') {
                     $result = "https://github.com/$repo.git"
                     break
-                } elseif ($remote -match "git@github.com:\S+"){
+                } elseif ($remote -match "(.*)?git@github.com:\S+"){
                     $result = "git@github.com:$repo.git"
                     break
                 } else {
