@@ -6,6 +6,9 @@ package com.azure.data.schemaregistry.jsonschema;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 
+/**
+ * <a href="https://json-schema.org/">JSON schema</a> aware class that can validate and generate JSON schemas.
+ */
 public abstract class JsonSchemaGenerator {
 
     /**

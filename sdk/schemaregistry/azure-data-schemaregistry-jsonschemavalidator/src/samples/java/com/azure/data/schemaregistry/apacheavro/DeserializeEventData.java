@@ -7,8 +7,6 @@ import com.azure.data.schemaregistry.SchemaRegistryClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
 import com.azure.data.schemaregistry.jsonschema.SchemaRegistryJsonSchemaSerializer;
 import com.azure.data.schemaregistry.jsonschema.SchemaRegistryJsonSchemaSerializerBuilder;
-import com.azure.data.schemaregistry.jsonschema.models.SerializationResult;
-import com.azure.data.schemaregistry.jsonschema.models.ValidationError;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
@@ -81,12 +79,7 @@ public class DeserializeEventData {
         IterableStream<PartitionEvent> partitionEvents = consumer.receiveFromPartition("{partition-id}", 100, EventPosition.latest());
         for (PartitionEvent event : partitionEvents) {
 
-            SerializationResult<Person> results = serializer.deserializeWithValidation(event.getData(),
-                TypeReference.createInstance(Person.class));
-
-            for (ValidationError validationError : results.getValidationErrors()) {
-                System.out.println("Error: " + validationError);
-            }
+            Person results = serializer.deserialize(event.getData(), TypeReference.createInstance(Person.class));
         }
     }
 }

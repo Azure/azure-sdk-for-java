@@ -9,6 +9,11 @@ import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 
 import java.util.Objects;
 
+/**
+ * Class that creates {@link SchemaRegistryJsonSchemaSerializer} which interacts with Schema Registry.
+ *
+ * @see SchemaRegistryJsonSchemaSerializer
+ */
 public final class SchemaRegistryJsonSchemaSerializerBuilder {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryJsonSchemaSerializerBuilder.class);
     private SchemaRegistryAsyncClient schemaRegistryAsyncClient;

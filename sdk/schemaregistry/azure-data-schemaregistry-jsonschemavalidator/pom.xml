@@ -142,7 +142,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.apache.avro:avro:[1.11.0]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
+                <include>com.networknt:json-schema-validator:[1.0.80]</include> <!-- {x-include-update;org.apache.avro:avro;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
               </includes>

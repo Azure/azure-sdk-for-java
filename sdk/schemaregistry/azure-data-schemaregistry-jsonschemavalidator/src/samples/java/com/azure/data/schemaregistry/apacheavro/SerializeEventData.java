@@ -6,7 +6,6 @@ import com.azure.data.schemaregistry.SchemaRegistryClient;
 import com.azure.data.schemaregistry.SchemaRegistryClientBuilder;
 import com.azure.data.schemaregistry.jsonschema.SchemaRegistryJsonSchemaSerializer;
 import com.azure.data.schemaregistry.jsonschema.SchemaRegistryJsonSchemaSerializerBuilder;
-import com.azure.data.schemaregistry.jsonschema.models.SerializationResult;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.EventData;
@@ -83,14 +82,8 @@ public class SerializeEventData {
 
         // Assuming they know the schema-id. Otherwise, they'd have to fetch it via one of the schema client methods.
         // client.getSchema("group-name", "schema-name", 1).block();
-        String schemaId = "{schema-id}";
-        SerializationResult<EventData> serializationResult = serializer.serializeWithValidation(person,
-            TypeReference.createInstance(EventData.class), schemaId);
+        EventData serializationResult = serializer.serialize(person, TypeReference.createInstance(EventData.class));
 
-        serializationResult.getValidationErrors().forEach(validationMessage -> {
-            System.out.println("Error: " + validationMessage);
-        });
-
-        producer.send(Collections.singleton(serializationResult.getValue()));
+        producer.send(Collections.singleton(serializationResult));
     }
 }

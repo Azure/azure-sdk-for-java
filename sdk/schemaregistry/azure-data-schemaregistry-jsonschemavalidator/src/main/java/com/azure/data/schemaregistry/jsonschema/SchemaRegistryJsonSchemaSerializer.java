@@ -9,6 +9,11 @@ import com.azure.core.util.serializer.TypeReference;
 import com.azure.data.schemaregistry.SchemaRegistryAsyncClient;
 import reactor.core.publisher.Mono;
 
+/**
+ * Class that serializes and deserializes objects using <a href="https://json-schema.org/">JSON schema</a>.
+ *
+ * @see SchemaRegistryJsonSchemaSerializerBuilder
+ */
 public final class SchemaRegistryJsonSchemaSerializer {
     private final ClientLogger logger = new ClientLogger(SchemaRegistryJsonSchemaSerializer.class);
 
