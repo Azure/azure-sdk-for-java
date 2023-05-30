@@ -43,6 +43,17 @@ public final class SchemaRegistryJsonSchemaSerializerBuilder {
     }
 
     /**
+     * A JSON schema aware class that can generate and validate JSON schema for objects.
+     *
+     * @param jsonSchemaGenerator The JSON schema generator.
+     *
+     * @return updated {@link SchemaRegistryJsonSchemaSerializerBuilder} instance.
+     */
+    public SchemaRegistryJsonSchemaSerializerBuilder jsonSchemaGenerator(JsonSchemaGenerator jsonSchemaGenerator) {
+        return this;
+    }
+
+    /**
      * Creates a new instance of Schema Registry serializer.
      *
      * @return A new instance of {@link SchemaRegistryJsonSchemaSerializer}.
