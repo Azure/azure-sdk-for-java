@@ -44,6 +44,8 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
 
         succeeded = False
         sdk_folder = None
+        service = None
+        module = None
         try:
             cmd = ['pwsh', './eng/common/scripts/TypeSpec-Project-Process.ps1', tsp_dir, head_sha, repo_url]
             logging.info('Command line: ' + ' '.join(cmd))
@@ -86,30 +88,39 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
             succeeded = compile_package(sdk_root, GROUP_ID, module)
 
         # output
-        artifacts = [
-            '{0}/pom.xml'.format(sdk_folder)
-        ]
-        artifacts += [
-            jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
-        ]
-        result = 'succeeded' if succeeded else 'failed'
+        if sdk_folder and module and service:
+            artifacts = [
+                '{0}/pom.xml'.format(sdk_folder)
+            ]
+            artifacts += [
+                jar for jar in glob.glob('{0}/target/*.jar'.format(sdk_folder))
+            ]
+            result = 'succeeded' if succeeded else 'failed'
 
-        packages.append({
-            'packageName': module,
-            'path': [
-                sdk_folder,
-                CI_FILE_FORMAT.format(service),
-                POM_FILE_FORMAT.format(service),
-                'eng/versioning',
-                'pom.xml'
-            ],
-            'typespecProject': [tsp_project],
-            'packageFolder': sdk_folder,
-            'artifacts': artifacts,
-            'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
-            'language': 'Java',
-            'result': result,
-        })
+            packages.append({
+                'packageName': module,
+                'path': [
+                    sdk_folder,
+                    CI_FILE_FORMAT.format(service),
+                    POM_FILE_FORMAT.format(service),
+                    'eng/versioning',
+                    'pom.xml'
+                ],
+                'typespecProject': [tsp_project],
+                'packageFolder': sdk_folder,
+                'artifacts': artifacts,
+                'apiViewArtifact': next(iter(glob.glob('{0}/target/*-sources.jar'.format(sdk_folder))), None),
+                'language': 'Java',
+                'result': result,
+            })
+        else:
+            # no info about package, abort with result=failed
+            packages.append({
+                'path': [
+                ],
+                'result': 'failed',
+            })
+            break
 
     return packages
 
