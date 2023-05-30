@@ -137,7 +137,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             completionsOptions.setMaxTokens(3);
             StepVerifier.create(client.getCompletions(modelId, completionsOptions))
                 .assertNext(resultCompletions ->
-                    assertCompletions(1,"length", resultCompletions))
+                    assertCompletions(1, "length", resultCompletions))
                 .verifyComplete();
         });
     }
