@@ -18,11 +18,11 @@ and deserialization.
 
 ### Include the Package
 
-[//]: # ({x-version-update-start;com.azure:azure-data-schemaregistry-apacheavro;current})
+[//]: # ({x-version-update-start;com.azure:azure-data-schemaregistry-jsonschema;current})
 ```xml
 <dependency>
   <groupId>com.azure</groupId>
-  <artifactId>azure-data-schemaregistry-jsonschemavalidator</artifactId>
+  <artifactId>azure-data-schemaregistry-jsonschema</artifactId>
   <version>1.1.4</version>
 </dependency>
 ```
@@ -58,25 +58,7 @@ with the Azure SDK, please include the `azure-identity` package:
 You will also need to [register a new AAD application][register_aad_app] and [grant access][aad_grant_access] to
  Schema Registry service.
 
-```java readme-sample-createSchemaRegistryAsyncClient
-TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-// {schema-registry-endpoint} is the fully qualified namespace of the Event Hubs instance. It is usually
-// of the form "{your-namespace}.servicebus.windows.net"
-SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("{your-event-hubs-namespace}.servicebus.windows.net")
-    .credential(tokenCredential)
-    .buildAsyncClient();
-```
-
 #### Create `SchemaRegistryAvroSerializer` through the builder
-
-```java readme-sample-createSchemaRegistryAvroSerializer
-SchemaRegistryApacheAvroSerializer serializer = new SchemaRegistryApacheAvroSerializerBuilder()
-    .schemaRegistryClient(schemaRegistryAsyncClient)
-    .schemaGroup("{schema-group}")
-    .buildSerializer();
-```
 
 ## Key concepts
 
@@ -95,27 +77,11 @@ This serializer requires the Apache Avro library. The payload types accepted by 
 ### Serialize
 Serialize a strongly-typed object into Schema Registry-compatible avro payload.
 
-```java readme-sample-serializeSample
-PlayingCard playingCard = new PlayingCard();
-playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
-playingCard.setIsFaceCard(false);
-playingCard.setCardValue(5);
-
-MessageContent message = serializer.serialize(playingCard,
-    TypeReference.createInstance(MessageContent.class));
-```
-
 The avro type `PlayingCard` is available in samples package
 [`com.azure.data.schemaregistry.avro.generatedtestsources`][generated_types].
 
 ### Deserialize
 Deserialize a Schema Registry-compatible avro payload into a strongly-type object.
-
-```java readme-sample-deserializeSample
-SchemaRegistryApacheAvroSerializer serializer = createAvroSchemaRegistrySerializer();
-MessageContent message = getSchemaRegistryAvroMessage();
-PlayingCard playingCard = serializer.deserialize(message, TypeReference.createInstance(PlayingCard.class));
-```
 
 ## Troubleshooting
 

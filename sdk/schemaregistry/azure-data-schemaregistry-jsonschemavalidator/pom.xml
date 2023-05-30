@@ -56,17 +56,6 @@
       <artifactId>azure-data-schemaregistry</artifactId>
       <version>1.4.0-beta.3</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
-    <dependency>
-      <groupId>com.networknt</groupId>
-      <artifactId>json-schema-validator</artifactId>
-      <version>1.0.80</version> <!-- {x-version-update;com.networknt:json-schema-validator;external_dependency} -->
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.commons</groupId>
-          <artifactId>commons-lang3</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
 
     <!-- Explicitly stating these because org.apache.avro uses an older version of jackson which is resolved since it
       is close to the root for dependencies. -->
@@ -130,6 +119,18 @@
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>com.networknt</groupId>
+      <artifactId>json-schema-validator</artifactId>
+      <version>1.0.80</version> <!-- {x-version-update;com.networknt:json-schema-validator;external_dependency} -->
+      <exclusions>
+        <exclusion>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-lang3</artifactId>
+        </exclusion>
+      </exclusions>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -149,29 +150,6 @@
             </bannedDependencies>
           </rules>
         </configuration>
-      </plugin>
-
-      <plugin>
-        <groupId>org.apache.avro</groupId>
-        <artifactId>avro-maven-plugin</artifactId>
-        <version>1.11.0</version> <!-- {x-version-update;org.apache.avro:avro-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>schema</goal>
-            </goals>
-            <configuration>
-              <testSourceDirectory>src/samples/resources/avro/</testSourceDirectory>
-              <testOutputDirectory>${project.basedir}/src/samples/java/</testOutputDirectory>
-              <testIncludes>
-                <testInclude>Person.avro</testInclude>
-                <testInclude>HandOfCards.avro</testInclude>
-              </testIncludes>
-              <stringType>String</stringType>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
     </plugins>
   </build>
