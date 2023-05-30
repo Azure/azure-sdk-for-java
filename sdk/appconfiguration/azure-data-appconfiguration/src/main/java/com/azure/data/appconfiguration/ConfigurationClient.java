@@ -87,7 +87,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * <h2>Add Configuration Setting</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#addConfigurationSetting(ConfigurationSetting)}
- * can be used to add a configuration setting in the Azure App Configuration.</p>
+ * method can be used to add a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to add a setting with the key "prodDBConnection", label "westUS" and value
  * "db_connection" using {@link com.azure.data.appconfiguration.ConfigurationClient}.</p>
@@ -111,7 +111,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * <h2>Update Configuration Setting</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setConfigurationSetting(ConfigurationSetting)}
- * can be used to update a configuration setting in the Azure App Configuration.</p>
+ * method can be used to update a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to update setting's value "db_connection" to "updated_db_connection"</p>
  *
@@ -141,7 +141,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * <h2>Get Configuration Setting</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#getConfigurationSetting(ConfigurationSetting)}
- * can be used to get a configuration setting in the Azure App Configuration.</p>
+ * method can be used to get a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to retrieve the setting with the key "prodDBConnection".</p>
  *
@@ -163,7 +163,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * <h2>Delete Configuration Setting</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#deleteConfigurationSetting(ConfigurationSetting)}
- * can be used to delete a configuration setting in the Azure App Configuration.</p>
+ * method can be used to delete a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to delete the setting with the key "prodDBConnection".</p>
  *
@@ -185,7 +185,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * <h2>Set the Configuration Setting to read-only</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setReadOnly(ConfigurationSetting, boolean)}
- * can be used to conditionally set a configuration setting to read-only in the Azure App Configuration.</p>
+ * method can be used to conditionally set a configuration setting to read-only in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to conditionally set the setting to read-only with the key "prodDBConnection".</p>
  *
@@ -208,7 +208,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * <h2>Clear read-only of the Configuration Setting</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setReadOnly(ConfigurationSetting, boolean)}
- * can be used to conditionally clear read-only of the setting in the Azure App Configuration.</p>
+ * method can be used to conditionally clear read-only of the setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to conditionally clear read-only of the setting with the key "prodDBConnection".</p>
  *
@@ -231,7 +231,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * <h2>List Configuration Settings</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#listConfigurationSettings(SettingSelector)}
- * can be used to list configuration settings in the Azure App Configuration.</p>
+ * method can be used to list configuration settings in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to list all settings that use the key "prodDBConnection".</p>
  *
@@ -253,7 +253,7 @@ import static com.azure.data.appconfiguration.implementation.Utility.validateSet
  * <h2>List revisions of a Configuration Setting</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#listRevisions(SettingSelector)}
- * can be used to list all revisions of a configuration setting in the Azure App Configuration.</p>
+ * method can be used to list all revisions of a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to list all revision of a setting that use the key "prodDBConnection".</p>
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->

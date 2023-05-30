@@ -67,7 +67,7 @@
  * <h2>Add Configuration Setting</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#addConfigurationSetting(com.azure.data.appconfiguration.models.ConfigurationSetting)}
- * can be used to add a configuration setting in the Azure App Configuration.</p>
+ * method can be used to add a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to add a setting with the key "prodDBConnection", label "westUS" and value "db_connection" using {@link com.azure.data.appconfiguration.ConfigurationClient}.</p>
  *
@@ -90,7 +90,7 @@
  * <h2>Update Configuration Setting</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#setConfigurationSetting(com.azure.data.appconfiguration.models.ConfigurationSetting)}
- * can be used to update a configuration setting in the Azure App Configuration.</p>
+ * method can be used to update a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to update setting's value "db_connection" to "updated_db_connection"</p>
  *
@@ -120,7 +120,7 @@
  * <h2>Get Configuration Setting</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#getConfigurationSetting(com.azure.data.appconfiguration.models.ConfigurationSetting)}
- * can be used to get a configuration setting in the Azure App Configuration.</p>
+ * method can be used to get a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to retrieve the setting with the key "prodDBConnection".</p>
  *
@@ -142,7 +142,7 @@
  * <h2>Delete Configuration Setting</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#deleteConfigurationSetting(com.azure.data.appconfiguration.models.ConfigurationSetting)}
- * can be used to delete a configuration setting in the Azure App Configuration.</p>
+ * method can be used to delete a configuration setting in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to delete the setting with the key "prodDBConnection".</p>
  *
@@ -164,7 +164,7 @@
  * <h2>List Configuration Settings</h2>
  *
  * <p>The {@link com.azure.data.appconfiguration.ConfigurationClient#listConfigurationSettings(com.azure.data.appconfiguration.models.SettingSelector)}
- * can be used to list configuration settings in the Azure App Configuration.</p>
+ * method can be used to list configuration settings in the Azure App Configuration.</p>
  *
  * <p>The sample below shows how to list all settings that use the key "prodDBConnection".</p>
  * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
