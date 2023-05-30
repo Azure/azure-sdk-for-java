@@ -57,11 +57,12 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)))
                 .recordWith(ArrayList::new)
-                .thenConsumeWhile(chatCompletions -> true)
-                .consumeRecordedWith(messageList -> {
-                    assertTrue(messageList.size() > 1);
-                    messageList.forEach(OpenAIClientTestBase::assertCompletionsStream);
-                }).verifyComplete();
+                .thenConsumeWhile(chatCompletions -> {
+                    assertCompletionsStream(chatCompletions);
+                    return true;
+                })
+                .consumeRecordedWith(messageList -> assertTrue(messageList.size() > 1))
+                .verifyComplete();
         });
     }
 
