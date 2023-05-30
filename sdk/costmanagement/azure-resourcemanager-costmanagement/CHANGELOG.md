@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,35 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.6 (2023-05-22)
+
+- Azure Resource Manager CostManagement client library for Java. This package contains Microsoft Azure SDK for CostManagement Management SDK. CostManagement management client provides access to CostManagement resources for Azure Enterprise Subscriptions. Package tag package-2022-10. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ScheduledActions` was modified
+
+* `createOrUpdateWithResponse(java.lang.String,fluent.models.ScheduledActionInner,com.azure.core.util.Context)` was removed
+
+### Features Added
+
+#### `models.ScheduledActions` was modified
+
+* `createOrUpdateWithResponse(java.lang.String,fluent.models.ScheduledActionInner,java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.ScheduledAction$Definition` was modified
+
+* `withIfMatch(java.lang.String)` was added
+
+#### `models.GenerateDetailedCostReportOperationStatuses` was modified
+
+* `endTime()` was added
+* `startTime()` was added
+
+#### `models.ScheduledAction$Update` was modified
+
+* `withIfMatch(java.lang.String)` was added
 
 ## 1.0.0-beta.5 (2023-02-10)
 

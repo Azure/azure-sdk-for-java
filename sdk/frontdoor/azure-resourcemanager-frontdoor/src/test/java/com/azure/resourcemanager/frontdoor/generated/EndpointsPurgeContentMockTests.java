@@ -61,9 +61,9 @@ public final class EndpointsPurgeContentMockTests {
         manager
             .endpoints()
             .purgeContent(
-                "fedxihchrphkm",
-                "rjdqnsdfzp",
-                new PurgeParameters().withContentPaths(Arrays.asList("tg", "ylkdghrje", "utlwxezwzhok")),
+                "xkzb",
+                "msgeivsiykzk",
+                new PurgeParameters().withContentPaths(Arrays.asList("cjdx")),
                 com.azure.core.util.Context.NONE);
     }
 }
