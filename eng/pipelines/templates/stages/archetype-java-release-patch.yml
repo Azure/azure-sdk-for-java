@@ -214,7 +214,6 @@ stages:
                       PRBranchName: increment-package-version-patch-release-$(Build.BuildId)
                       CommitMsg: "Increment package versions for patch releases"
                       PRTitle: "Increment versions for patch releases"
-                      PRLabels: "auto-merge"
                       CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
         - deployment: PublishDocsMs

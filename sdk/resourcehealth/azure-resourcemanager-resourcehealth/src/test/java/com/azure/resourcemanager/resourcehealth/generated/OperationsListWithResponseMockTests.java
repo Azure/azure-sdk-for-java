@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcehealth.ResourceHealthManager;
 import com.azure.resourcemanager.resourcehealth.models.OperationListResult;
 import java.nio.ByteBuffer;
@@ -31,7 +30,8 @@ public final class OperationsListWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "{\"value\":[{\"name\":\"xw\"},{\"name\":\"q\"},{\"name\":\"surex\"}]}";
+        String responseStr =
+            "{\"value\":[{\"name\":\"eqnovvqfovl\"},{\"name\":\"wsuwsyr\"},{\"name\":\"sytgadgvraea\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -59,8 +59,9 @@ public final class OperationsListWithResponseMockTests {
                     tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        OperationListResult response = manager.operations().listWithResponse(Context.NONE).getValue();
+        OperationListResult response =
+            manager.operations().listWithResponse(com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("xw", response.value().get(0).name());
+        Assertions.assertEquals("eqnovvqfovl", response.value().get(0).name());
     }
 }

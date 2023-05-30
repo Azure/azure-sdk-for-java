@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Prepare all options for stress tests.<br>
+ * Prepare all options for stress tests.
  */
 @Configuration
 public class ScenarioOptions {
@@ -19,7 +19,7 @@ public class ScenarioOptions {
     private String eventhubsConnectionString;
 
     @Value("${EVENTHUBS_EVENT_HUB_NAME:#{null}}")
-    private String eventhubsEventHubName;
+    private String eventHubsEventHubName;
 
     @Value("${EVENTHUBS_CONSUMER_GROUP:" + EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME + "}")
     private String eventHubsConsumerGroup;
@@ -34,7 +34,7 @@ public class ScenarioOptions {
     private int metricIntervalSec;
 
     @Value("${SECOND_EVENTHUBS_EVENT_HUB_NAME:#{null}}")
-    private String secondEventhubsEventHubName;
+    private String secondEventHubsEventHubName;
 
     public String getTestClass() {
         return testClass;
@@ -44,8 +44,8 @@ public class ScenarioOptions {
         return eventhubsConnectionString;
     }
 
-    public String getEventhubsEventHubName() {
-        return eventhubsEventHubName;
+    public String getEventHubsEventHubName() {
+        return eventHubsEventHubName;
     }
 
     public String getEventHubsConsumerGroup() {
@@ -64,8 +64,8 @@ public class ScenarioOptions {
         return metricIntervalSec;
     }
 
-    public String getSecondEventhubsEventHubName() {
-        return secondEventhubsEventHubName;
+    public String getSecondEventHubsEventHubName() {
+        return secondEventHubsEventHubName;
     }
 
 }
