@@ -12,7 +12,6 @@ import com.fasterxml.jackson.core.TreeNode;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.aad.msal4j.TokenCache;
 import com.microsoft.aad.msal4jextensions.persistence.CacheFileAccessor;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
@@ -47,6 +46,7 @@ import java.util.Map;
  */
 public class IntelliJCacheAccessor {
     private static final ClientLogger LOGGER = new ClientLogger(IntelliJCacheAccessor.class);
+    public static final String INTELLIJ_TOOLKIT_CACHE = "azure-toolkit.cache";
     private final String keePassDatabasePath;
     private static final byte[] CRYPTO_KEY = new byte[] {0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
         0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
@@ -96,7 +96,7 @@ public class IntelliJCacheAccessor {
         } else if (Platform.isWindows()) {
 
             try {
-                CacheFileAccessor cacheFileAccessor = new CacheFileAccessor(PersistentTokenCacheImpl.DEFAULT_CACHE_FILE_PATH + File.separator + "azure-toolkit.cache");
+                CacheFileAccessor cacheFileAccessor = new CacheFileAccessor(PersistentTokenCacheImpl.DEFAULT_CACHE_FILE_PATH + File.separator + INTELLIJ_TOOLKIT_CACHE);
                 String data = new String(cacheFileAccessor.read(), StandardCharsets.UTF_8);
                 return parseRefreshTokenFromJson(data);
             } catch (Exception | Error e) {
