@@ -42,12 +42,6 @@
       <version>7.15.0-beta.2</version> <!-- {x-version-update;com.azure:azure-messaging-servicebus;current} -->
     </dependency>
 
-    <dependency>
-      <groupId>com.microsoft.azure</groupId>
-      <artifactId>applicationinsights-core</artifactId>
-      <version>3.4.10</version>  <!-- {x-version-update;com.microsoft.azure:applicationinsights-core;external_dependency} -->
-    </dependency>
-
     <!-- Enable SDK metrics -->
     <dependency>
       <groupId>com.azure</groupId>

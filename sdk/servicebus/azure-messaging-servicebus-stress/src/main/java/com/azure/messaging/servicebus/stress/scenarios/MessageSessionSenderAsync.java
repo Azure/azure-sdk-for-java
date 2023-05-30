@@ -12,50 +12,48 @@ import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
-import java.util.List;
 
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.blockingWait;
-import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createBatch;
 import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createMessagePayload;
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.getSenderBuilder;
 
 /**
- * Test ServiceBusSenderAsyncClient
+ * Test ServiceBusSenderClient and send session messages
  */
-@Component("MessageSenderAsync")
-public class MessageSenderAsync extends ServiceBusScenario {
-    private static final ClientLogger LOGGER = new ClientLogger(MessageSenderAsync.class);
+@Component("MessageSessionSender")
+public class MessageSessionSenderAsync extends ServiceBusScenario {
+    private static final ClientLogger LOGGER = new ClientLogger(MessageSessionSenderAsync.class);
+
     @Value("${DURATION_IN_MINUTES:15}")
     private int durationInMinutes;
 
-    @Value("${SEND_MESSAGE_RATE:100}")
+    @Value("${SEND_SESSIONS:8}")
+    private int sessionsToSend;
+
+    @Value("${SEND_MESSAGE_RATE:10}")
     private int sendMessageRatePerSecond;
 
-    @Value("${BATCH_SIZE:2}")
-    private int batchSize;
-
-    @Value("${MESSAGE_SIZE_IN_BYTES:8}")
-    private int messageSize;
+    @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
+    private int payloadSize;
 
     @Value("${SEND_CONCURRENCY:5}")
     private int sendConcurrency;
 
     @Override
     public void run() {
-        final byte[] messagePayload = createMessagePayload(messageSize);
+        ServiceBusSenderAsyncClient client = getSenderBuilder(options, true).buildAsyncClient();
+
+        final byte[] messagePayload = createMessagePayload(payloadSize);
         Duration testDuration = Duration.ofMinutes(durationInMinutes);
 
-        ServiceBusSenderAsyncClient client = TestUtils.getSenderBuilder(options, false).buildAsyncClient();
+        RateLimiter rateLimiter = new RateLimiter(sendMessageRatePerSecond, sendConcurrency);
+        Flux<ServiceBusMessage> messages = Flux.range(0, Integer.MAX_VALUE)
+            .map(i -> new ServiceBusMessage(messagePayload).setSessionId(Integer.toString(i % sessionsToSend)));
 
-        int batchRatePerSec = sendMessageRatePerSecond / batchSize;
-        RateLimiter rateLimiter = new RateLimiter(batchRatePerSec, sendConcurrency);
-        Flux<List<ServiceBusMessage>> batches = Flux
-            .just(createBatch(messagePayload, batchSize))
-            .repeat();
-
-        batches
-            .flatMap(batch ->
+        messages
+            .flatMap(msg ->
                 rateLimiter.acquire()
-                    .then(client.sendMessages(batch)
+                    .then(client.sendMessage(msg)
                         .doFinally(i -> rateLimiter.release()))
             )
             .take(testDuration)

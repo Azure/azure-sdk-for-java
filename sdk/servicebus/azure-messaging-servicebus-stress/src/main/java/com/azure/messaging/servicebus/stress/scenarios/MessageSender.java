@@ -4,17 +4,16 @@
 package com.azure.messaging.servicebus.stress.scenarios;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.messaging.servicebus.stress.util.EntityType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.IntStream;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createBatch;
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.createMessagePayload;
+import static com.azure.messaging.servicebus.stress.scenarios.TestUtils.limitRate;
 
 /**
  * Test ServiceBusSenderClient
@@ -23,48 +22,33 @@ import java.util.stream.IntStream;
 public class MessageSender extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageSender.class);
 
-    private static final Random RANDOM = new Random();
+    @Value("${DURATION_IN_MINUTES:15}")
+    private int durationInMinutes;
 
-    @Value("${SEND_TIMES:100000}")
-    private int sendTimes;
+    @Value("${SEND_MESSAGE_RATE:100}")
+    private int sendMessageRatePerSecond;
 
-    @Value("${SEND_MESSAGES:10}")
-    private int messagesToSend;
+    @Value("${BATCH_SIZE:2}")
+    private int batchSize;
 
-    @Value("${PAYLOAD_SIZE_IN_BYTE:8}")
-    private int payloadSize;
+    @Value("${MESSAGE_SIZE_IN_BYTES:8}")
+    private int messageSize;
 
     @Override
     public void run() {
-        final String connectionString = options.getServicebusConnectionString();
-        final EntityType entityType = options.getServicebusEntityType();
-        String queueName = null;
-        String topicName = null;
-        if (entityType == EntityType.QUEUE) {
-            queueName = options.getServicebusQueueName();
-        } else if (entityType == EntityType.TOPIC) {
-            topicName = options.getServicebusTopicName();
-        }
+        final byte[] messagePayload = createMessagePayload(messageSize);
+        ServiceBusSenderClient client = TestUtils.getSenderBuilder(options, false).buildClient();
+        long endAtEpochMillis = Instant.now().plus(durationInMinutes, ChronoUnit.MINUTES).toEpochMilli();
 
-        ServiceBusSenderClient client = new ServiceBusClientBuilder()
-            .connectionString(connectionString)
-            .sender()
-            .queueName(queueName)
-            .topicName(topicName)
-            .buildClient();
+        int batchRatePerSecond = sendMessageRatePerSecond / batchSize;
+        while (Instant.now().toEpochMilli() < endAtEpochMillis) {
+            long start = Instant.now().toEpochMilli();
 
-        final byte[] payload = new byte[payloadSize];
-        RANDOM.nextBytes(payload);
-
-        for (long i = 0; i < sendTimes; i++) {
-            List<ServiceBusMessage> eventDataList = new ArrayList<>();
-            IntStream.range(0, messagesToSend).forEach(j -> {
-                eventDataList.add(new ServiceBusMessage(payload));
-            });
             try {
-                client.sendMessages(eventDataList);
-            } catch (Exception exp) {
-                LOGGER.error(exp.getMessage());
+                client.sendMessages(createBatch(messagePayload, batchSize));
+                limitRate(batchRatePerSecond, start);
+            } catch (Exception ex) {
+                LOGGER.error("send error", ex);
             }
         }
 
