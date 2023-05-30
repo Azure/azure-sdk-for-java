@@ -1,16 +1,10 @@
 # Release History
 
-## 12.19.0-beta.1 (Unreleased)
+## 12.19.0-beta.1 (2023-05-30)
 
 ### Features Added
 - Added support for 2023-01-03 service version.
 - Added `ShareFileHandleAccessRights` property on `HandleItem` that specifies access rights for a file handle.
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 12.18.1 (2023-05-23)
 
 ### Other Changes
