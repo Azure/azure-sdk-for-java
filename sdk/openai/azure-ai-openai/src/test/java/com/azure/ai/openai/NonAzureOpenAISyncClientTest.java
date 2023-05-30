@@ -131,7 +131,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
             completionsOptions.setMaxTokens(3);
             Completions resultCompletions = client.getCompletions(modelId, completionsOptions);
-            assertCompletions(1,"length", resultCompletions);
+            assertCompletions(1, "length", resultCompletions);
         });
     }
 
