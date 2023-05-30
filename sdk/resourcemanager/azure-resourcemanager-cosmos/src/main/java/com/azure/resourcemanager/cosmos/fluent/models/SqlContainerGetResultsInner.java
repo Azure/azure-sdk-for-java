@@ -6,6 +6,7 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -31,6 +32,13 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
      */
     private SqlContainerGetProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlContainerGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
     }
 
     /** {@inheritDoc} */

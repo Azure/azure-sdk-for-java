@@ -34,6 +34,13 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
 
     /** {@inheritDoc} */
     @Override
+    public SqlContainerCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SqlContainerCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

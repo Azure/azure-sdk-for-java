@@ -34,6 +34,13 @@ public final class SqlTriggerCreateUpdateParameters extends ArmResourcePropertie
 
     /** {@inheritDoc} */
     @Override
+    public SqlTriggerCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SqlTriggerCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

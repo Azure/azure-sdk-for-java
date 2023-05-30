@@ -67,6 +67,20 @@ public final class MongoDBDatabaseGetPropertiesResource extends MongoDBDatabaseR
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDatabaseGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBDatabaseGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

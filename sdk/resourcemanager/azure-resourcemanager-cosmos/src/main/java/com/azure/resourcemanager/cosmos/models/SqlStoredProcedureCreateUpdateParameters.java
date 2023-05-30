@@ -34,6 +34,13 @@ public final class SqlStoredProcedureCreateUpdateParameters extends ArmResourceP
 
     /** {@inheritDoc} */
     @Override
+    public SqlStoredProcedureCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public SqlStoredProcedureCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

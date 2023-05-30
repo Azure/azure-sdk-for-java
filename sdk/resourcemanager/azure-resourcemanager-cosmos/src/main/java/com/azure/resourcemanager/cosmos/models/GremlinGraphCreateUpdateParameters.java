@@ -34,6 +34,13 @@ public final class GremlinGraphCreateUpdateParameters extends ArmResourcePropert
 
     /** {@inheritDoc} */
     @Override
+    public GremlinGraphCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public GremlinGraphCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

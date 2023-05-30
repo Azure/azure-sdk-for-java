@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.GremlinGraphGetPropertiesResource;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -31,6 +32,13 @@ public final class GremlinGraphGetResultsInner extends ArmResourceProperties {
      */
     private GremlinGraphGetProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GremlinGraphGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
     }
 
     /** {@inheritDoc} */

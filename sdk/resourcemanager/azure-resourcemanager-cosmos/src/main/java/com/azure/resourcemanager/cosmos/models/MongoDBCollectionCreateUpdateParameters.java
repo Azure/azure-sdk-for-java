@@ -34,6 +34,13 @@ public final class MongoDBCollectionCreateUpdateParameters extends ArmResourcePr
 
     /** {@inheritDoc} */
     @Override
+    public MongoDBCollectionCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public MongoDBCollectionCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

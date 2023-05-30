@@ -90,6 +90,20 @@ public final class MongoDBCollectionGetPropertiesResource extends MongoDBCollect
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBCollectionGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDBCollectionGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

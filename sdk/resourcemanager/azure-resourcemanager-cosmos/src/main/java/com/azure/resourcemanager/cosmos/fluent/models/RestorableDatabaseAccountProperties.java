@@ -27,16 +27,16 @@ public final class RestorableDatabaseAccountProperties {
     private OffsetDateTime creationTime;
 
     /*
-     * The time at which the restorable database account has been deleted (ISO-8601 format).
-     */
-    @JsonProperty(value = "deletionTime")
-    private OffsetDateTime deletionTime;
-
-    /*
      * The least recent time at which the database account can be restored to (ISO-8601 format).
      */
     @JsonProperty(value = "oldestRestorableTime")
     private OffsetDateTime oldestRestorableTime;
+
+    /*
+     * The time at which the restorable database account has been deleted (ISO-8601 format).
+     */
+    @JsonProperty(value = "deletionTime")
+    private OffsetDateTime deletionTime;
 
     /*
      * The API type of the restorable database account.
@@ -95,28 +95,6 @@ public final class RestorableDatabaseAccountProperties {
     }
 
     /**
-     * Get the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
-     * format).
-     *
-     * @return the deletionTime value.
-     */
-    public OffsetDateTime deletionTime() {
-        return this.deletionTime;
-    }
-
-    /**
-     * Set the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
-     * format).
-     *
-     * @param deletionTime the deletionTime value to set.
-     * @return the RestorableDatabaseAccountProperties object itself.
-     */
-    public RestorableDatabaseAccountProperties withDeletionTime(OffsetDateTime deletionTime) {
-        this.deletionTime = deletionTime;
-        return this;
-    }
-
-    /**
      * Get the oldestRestorableTime property: The least recent time at which the database account can be restored to
      * (ISO-8601 format).
      *
@@ -135,6 +113,28 @@ public final class RestorableDatabaseAccountProperties {
      */
     public RestorableDatabaseAccountProperties withOldestRestorableTime(OffsetDateTime oldestRestorableTime) {
         this.oldestRestorableTime = oldestRestorableTime;
+        return this;
+    }
+
+    /**
+     * Get the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
+     * format).
+     *
+     * @return the deletionTime value.
+     */
+    public OffsetDateTime deletionTime() {
+        return this.deletionTime;
+    }
+
+    /**
+     * Set the deletionTime property: The time at which the restorable database account has been deleted (ISO-8601
+     * format).
+     *
+     * @param deletionTime the deletionTime value to set.
+     * @return the RestorableDatabaseAccountProperties object itself.
+     */
+    public RestorableDatabaseAccountProperties withDeletionTime(OffsetDateTime deletionTime) {
+        this.deletionTime = deletionTime;
         return this;
     }
 

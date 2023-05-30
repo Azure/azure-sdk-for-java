@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ArmResourceProperties;
 import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.CassandraTableGetPropertiesResource;
+import com.azure.resourcemanager.cosmos.models.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -31,6 +32,13 @@ public final class CassandraTableGetResultsInner extends ArmResourceProperties {
      */
     private CassandraTableGetProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CassandraTableGetResultsInner withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
     }
 
     /** {@inheritDoc} */
