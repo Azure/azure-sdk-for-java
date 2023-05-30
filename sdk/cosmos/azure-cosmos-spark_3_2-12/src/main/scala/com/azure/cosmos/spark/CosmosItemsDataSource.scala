@@ -23,7 +23,7 @@ import scala.collection.JavaConverters._
 class CosmosItemsDataSource extends DataSourceRegister with TableProvider with BasicLoggingTrait {
   logInfo(s"Instantiated ${this.getClass.getSimpleName}")
 
-  private lazy val sparkSession = () => {
+  private lazy val sparkSession = {
     assertOnSparkDriver()
     SparkSession.active
   }
