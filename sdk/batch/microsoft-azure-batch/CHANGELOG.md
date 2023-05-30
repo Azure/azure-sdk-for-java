@@ -22,6 +22,9 @@
 
 ### Other Changes
 
+- Added @Deprecated annotation to the `CertificateOperations` class. 
+    - This operation is deprecated and will be removed after February 2024. Please use the [Azure KeyVault Extension](https://learn.microsoft.com/azure/batch/batch-certificate-migration-guide) instead.
+  
 
 ## 10.1.0 (2022-11-15)
 

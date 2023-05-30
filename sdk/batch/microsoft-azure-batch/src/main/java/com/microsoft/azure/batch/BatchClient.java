@@ -23,7 +23,6 @@ import java.util.LinkedList;
 public class BatchClient {
 
     private final BatchServiceClient protocolLayer;
-    @Deprecated
     private final CertificateOperations certificateOperations;
     private final JobOperations jobOperations;
     private final TaskOperations taskOperations;
