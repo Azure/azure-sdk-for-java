@@ -107,7 +107,7 @@ class AzureRedisAutoConfigurationTests {
                     assertThat(redisProperties.getPassword()).isEqualTo(KEY);
                     assertThat(redisProperties.getHost()).isEqualTo(HOST);
                     assertThat(redisProperties.getPort()).isEqualTo(PORT);
-                    assertThat(redisProperties.isSsl()).isEqualTo(IS_SSL);
+                    assertThat(redisProperties.getSsl().isEnabled()).isEqualTo(IS_SSL);
                 });
     }
 
