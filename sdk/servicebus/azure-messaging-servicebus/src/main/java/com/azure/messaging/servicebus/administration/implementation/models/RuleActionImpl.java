@@ -69,7 +69,7 @@ public class RuleActionImpl implements XmlSerializable<RuleActionImpl> {
                     if ("SqlRuleAction".equals(discriminatorValue)) {
                         return SqlRuleActionImpl.fromXml(reader, finalRootElementName);
                     } else if ("EmptyRuleAction".equals(discriminatorValue)) {
-                        return EmptyRuleAction.fromXml(reader, finalRootElementName);
+                        return EmptyRuleActionImpl.fromXml(reader, finalRootElementName);
                     } else {
                         throw new IllegalStateException(
                                 "Discriminator field 'type' didn't match one of the expected values 'SqlRuleAction', or 'EmptyRuleAction'. It was: '"

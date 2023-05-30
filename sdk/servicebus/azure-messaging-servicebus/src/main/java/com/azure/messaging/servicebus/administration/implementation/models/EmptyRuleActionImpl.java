@@ -13,14 +13,14 @@ import javax.xml.stream.XMLStreamException;
 
 /** The EmptyRuleAction model. */
 @Immutable
-public final class EmptyRuleAction extends RuleActionImpl {
+public final class EmptyRuleActionImpl extends RuleActionImpl {
     /*
      * The type property.
      */
     private static final String TYPE = "EmptyRuleAction";
 
     /** Creates an instance of EmptyRuleAction class. */
-    public EmptyRuleAction() {}
+    public EmptyRuleActionImpl() {}
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
@@ -46,7 +46,7 @@ public final class EmptyRuleAction extends RuleActionImpl {
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      * @throws XMLStreamException If an error occurs while reading the EmptyRuleAction.
      */
-    public static EmptyRuleAction fromXml(XmlReader xmlReader) throws XMLStreamException {
+    public static EmptyRuleActionImpl fromXml(XmlReader xmlReader) throws XMLStreamException {
         return fromXml(xmlReader, null);
     }
 
@@ -61,7 +61,7 @@ public final class EmptyRuleAction extends RuleActionImpl {
      * @throws IllegalStateException If the deserialized XML object was missing the polymorphic discriminator.
      * @throws XMLStreamException If an error occurs while reading the EmptyRuleAction.
      */
-    public static EmptyRuleAction fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+    public static EmptyRuleActionImpl fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
         String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Action" : rootElementName;
         return xmlReader.readObject(
                 "http://schemas.microsoft.com/netservices/2010/10/servicebus/connect",
@@ -77,9 +77,9 @@ public final class EmptyRuleAction extends RuleActionImpl {
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         reader.skipElement();
                     }
-                    EmptyRuleAction deserializedEmptyRuleAction = new EmptyRuleAction();
+                    EmptyRuleActionImpl deserializedEmptyRuleActionImpl = new EmptyRuleActionImpl();
 
-                    return deserializedEmptyRuleAction;
+                    return deserializedEmptyRuleActionImpl;
                 });
     }
 }
