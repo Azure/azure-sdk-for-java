@@ -43,12 +43,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             IterableStream<Completions> resultCompletions = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
-            resultCompletions.forEach(completions -> {
-                assertNotNull(completions.getId());
-                assertNotNull(completions.getChoices());
-                assertFalse(completions.getChoices().isEmpty());
-                assertNotNull(completions.getChoices().get(0).getText());
-            });
+            assertTrue(resultCompletions.stream().toList().size() > 1);
+            resultCompletions.forEach(OpenAIClientTestBase::assertCompletionsStream);
         });
     }
 
@@ -135,12 +131,8 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
             IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
-            resultChatCompletions.forEach(chatCompletions -> {
-                assertNotNull(chatCompletions.getId());
-                assertNotNull(chatCompletions.getChoices());
-                assertFalse(chatCompletions.getChoices().isEmpty());
-                assertNotNull(chatCompletions.getChoices().get(0).getDelta());
-            });
+            assertTrue(resultChatCompletions.stream().toList().size() > 1);
+            resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
         });
     }
 

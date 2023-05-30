@@ -14,6 +14,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
+import java.util.Objects;
+import java.util.concurrent.atomic.AtomicInteger;
+
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,14 +49,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void getCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
-            StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)).last())
-                .assertNext(completions -> {
-                    assertNotNull(completions.getId());
-                    assertNotNull(completions.getChoices());
-                    assertFalse(completions.getChoices().isEmpty());
-                    assertNotNull(completions.getChoices().get(0).getText());
-                })
-                .verifyComplete();
+            StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletions -> true)
+                .consumeRecordedWith(messageList -> {
+                    assertTrue(messageList.size() > 1);
+                    messageList.forEach(OpenAIClientTestBase::assertCompletionsStream);
+                }).verifyComplete();
         });
     }
 
@@ -154,15 +157,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     public void getChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
-            StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)).last())
-                .assertNext(chatCompletions -> {
-                    assertNotNull(chatCompletions.getId());
-                    assertNotNull(chatCompletions.getChoices());
-                    assertFalse(chatCompletions.getChoices().isEmpty());
-                    assertNotNull(chatCompletions.getChoices().get(0).getDelta());
-                })
-                .verifyComplete();
-
+            StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletions -> true)
+                .consumeRecordedWith(messageList -> {
+                    assertTrue(messageList.size() > 1);
+                    messageList.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+                }).verifyComplete();
         });
     }
 

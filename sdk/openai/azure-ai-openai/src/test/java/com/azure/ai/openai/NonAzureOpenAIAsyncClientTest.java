@@ -14,6 +14,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.util.ArrayList;
+
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -44,15 +46,14 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getCompletionsRunner((modelId, prompt) -> {
-            StepVerifier.create(client.getCompletionsStream(modelId, new CompletionsOptions(prompt)).last())
-                .assertNext(completions -> {
-                    assertNotNull(completions.getId());
-                    assertNotNull(completions.getChoices());
-                    assertFalse(completions.getChoices().isEmpty());
-                    assertNotNull(completions.getChoices().get(0).getText());
-                })
-                .verifyComplete();
+        getCompletionsRunner((deploymentId, prompt) -> {
+            StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletions -> true)
+                .consumeRecordedWith(messageList -> {
+                    assertTrue(messageList.size() > 1);
+                    messageList.forEach(OpenAIClientTestBase::assertCompletionsStream);
+                }).verifyComplete();
         });
     }
 
@@ -169,16 +170,14 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void getChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAIAsyncClient(httpClient);
-        getChatCompletionsForNonAzureRunner((modelId, chatMessages) -> {
-            StepVerifier.create(client.getChatCompletionsStream(modelId, new ChatCompletionsOptions(chatMessages)).last())
-                .assertNext(chatCompletions -> {
-                    assertNotNull(chatCompletions.getId());
-                    assertNotNull(chatCompletions.getChoices());
-                    assertFalse(chatCompletions.getChoices().isEmpty());
-                    assertNotNull(chatCompletions.getChoices().get(0).getDelta());
-                })
-                .verifyComplete();
-
+        getChatCompletionsRunner((deploymentId, chatMessages) -> {
+            StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages)))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletions -> true)
+                .consumeRecordedWith(messageList -> {
+                    assertTrue(messageList.size() > 1);
+                    messageList.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+                }).verifyComplete();
         });
     }
 
