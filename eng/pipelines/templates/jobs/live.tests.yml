@@ -55,7 +55,9 @@ jobs:
           ServiceDirectory: ${{ parameters.ServiceDirectory }}
           SDKType: ${{ parameters.SDKType }}
 
-      - ${{ if eq(parameters.UseHttpFaultInjector, 'true') }}:
+      # macOS has known issues running HTTP fault injector, change this once
+      # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
+      - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
         - template: /eng/pipelines/templates/steps/http-fault-injector.yml
 
       - template: ../steps/install-reporting-tools.yml
@@ -105,7 +107,9 @@ jobs:
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 
-      - ${{ if eq(parameters.UseHttpFaultInjector, 'true') }}:
+      # macOS has known issues running HTTP fault injector, change this once
+      # https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
+      - ${{ if and(eq(parameters.UseHttpFaultInjector, 'true'), not(contains(variables['OSVmImage'], 'mac'))) }}:
         - template: /eng/pipelines/templates/steps/publish-http-fault-injector-logs.yml
 
       - ${{ parameters.PostSteps }}

@@ -17,16 +17,20 @@ import com.azure.storage.common.implementation.Constants
 import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import reactor.core.publisher.Mono
+import spock.lang.IgnoreIf
+import spock.util.environment.OperatingSystem
 
 import java.nio.file.Files
 import java.time.Duration
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.atomic.AtomicInteger
-
 /**
  * Set of tests that use <a href="">HTTP fault injecting</a> to simulate scenarios where the network has random errors.
  */
 @LiveOnly
+// macOS has known issues running HTTP fault injector, change this once
+// https://github.com/Azure/azure-sdk-tools/pull/6216 is resolved
+@IgnoreIf({ OperatingSystem.current.family == OperatingSystem.Family.MAC_OS })
 class HttpFaultInjectingTests extends APISpec {
     private static final def LOGGER = new ClientLogger(HttpFaultInjectingTests.class)
     private static final def UPSTREAM_URI_HEADER = HttpHeaderName.fromString("X-Upstream-Base-Uri")
