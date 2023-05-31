@@ -453,7 +453,7 @@ public class CosmosContainer {
      * <br/>
      * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
      * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
-     * <p>
+     * 
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
@@ -473,7 +473,7 @@ public class CosmosContainer {
      * <br/>
      * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
      * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
-     * <p>
+     *
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.

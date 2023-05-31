@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.PartitionKey;
+import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
 import java.util.UUID;
@@ -11,6 +12,8 @@ import java.util.UUID;
 public class ReadmeSamples {
     private final String serviceEndpoint = "<service-endpoint>";
     private final String key = "<key>";
+    private final String itemId = UUID.randomUUID().toString();
+
     private final DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
     private final GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
 
@@ -122,6 +125,20 @@ public class ReadmeSamples {
         // ...
         // END: readme-sample-crudOperationOnItems
     }
+
+    public void readItem() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.readItem
+        // Read an item
+        cosmosAsyncContainer.readItem(itemId, new PartitionKey(itemId), Passenger.class)
+            .flatMap(response -> Mono.just(response.getItem()))
+            .subscribe(passenger -> System.out.println(passenger), throwable -> {
+                CosmosException cosmosException = (CosmosException) throwable;
+                cosmosException.printStackTrace();
+            });
+        // ...
+        // END: com.azure.cosmos.CosmosAsyncContainer.readItem
+    }
+
 
     private static final class Passenger {
         private final String id;

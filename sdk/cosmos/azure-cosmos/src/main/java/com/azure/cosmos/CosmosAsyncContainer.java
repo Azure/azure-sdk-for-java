@@ -1254,17 +1254,18 @@ public class CosmosAsyncContainer {
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain an item response with the read item.
-     * <p>Usage example:</p>
-     * <pre>{@code
-     *           cosmosItemResponseMono.subscribe(
-     *                 response -> {
-     *                     T item = response.getItem();
-     *                 },
-     *                 throwable -> {
-     *                     logger.warn("Read item error", throwable);
-     *                 }
-     *                 )
-     * }</pre>
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readItem -->
+     * <pre>
+     * &#47;&#47; Read an item
+     * cosmosAsyncContainer.readItem&#40;itemId, new PartitionKey&#40;itemId&#41;, Passenger.class&#41;
+     *     .flatMap&#40;response -&gt; Mono.just&#40;response.getItem&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;passenger -&gt; System.out.println&#40;passenger&#41;, throwable -&gt; &#123;
+     *         CosmosException cosmosException = &#40;CosmosException&#41; throwable;
+     *         cosmosException.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * &#47;&#47; ...
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readItem -->
      *
      * @param <T> the type parameter.
      * @param itemId the item id.
@@ -1284,17 +1285,7 @@ public class CosmosAsyncContainer {
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a Cosmos item response with the read item.
-     * <p>Usage example:</p>
-     * <pre>{@code
-     *           cosmosItemResponseMono.subscribe(
-     *                 response -> {
-     *                     T item = response.getItem();
-     *                 },
-     *                 throwable -> {
-     *                     logger.warn("Read item error", throwable);
-     *                 }
-     *                 )
-     * }</pre>
+     *
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
