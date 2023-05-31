@@ -128,8 +128,7 @@ steps:
       goals: jacoco:report-aggregate
 
   - pwsh: |
-      $directories = $(SparseCheckoutDirectories)
-      $paths = '${{ convertToJson($directories) }}'.Trim('"') | ConvertFrom-Json
+      $paths = '${{ convertToJson($(SparseCheckoutDirectories)) }}'.Trim('"') | ConvertFrom-Json
       foreach($path in $paths) {
         Get-ChildItem -Recurse -Path $(Build.SourcesDirectory)$path -Filter assets.json | ForEach-Object { test-proxy restore -a $_.FullName }
       }
