@@ -43,7 +43,8 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  * @see Configuration
  */
 public class ClientLogger {
-    private final Logger logger;
+    private final String loggerName;
+    private Logger logger;
     private final String globalContextSerialized;
     private final boolean hasGlobalContext;
 
@@ -97,10 +98,21 @@ public class ClientLogger {
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className, Map<String, Object> context) {
-        Logger initLogger = LoggerFactory.getLogger(className);
-        logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
-        globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
-        hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);
+        this.loggerName = className;
+        this.globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
+        this.hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);
+    }
+
+    private Logger getLogger() {
+        if (logger != null) {
+            return logger;
+        }
+
+        // This will be eventually consistent, the logger may be initialized multiple times.
+        Logger initLogger = LoggerFactory.getLogger(loggerName);
+        logger = initLogger instanceof NOPLogger ? new DefaultLogger(loggerName) : initLogger;
+
+        return logger;
     }
 
     /**
@@ -166,6 +178,7 @@ public class ClientLogger {
      * @param message The message to log.
      */
     public void verbose(String message) {
+        Logger logger = getLogger();
         if (logger.isDebugEnabled()) {
             if (hasGlobalContext) {
                 atVerbose().log(message);
@@ -193,9 +206,7 @@ public class ClientLogger {
      * Throwable}.
      */
     public void verbose(String format, Object... args) {
-        if (logger.isDebugEnabled()) {
-            performLogging(LogLevel.VERBOSE, false, format, args);
-        }
+        performLogging(getLogger(), LogLevel.VERBOSE, false, format, args);
     }
 
     /**
@@ -214,6 +225,7 @@ public class ClientLogger {
      * @param message The message to log.
      */
     public void info(String message) {
+        Logger logger = getLogger();
         if (logger.isInfoEnabled()) {
             if (hasGlobalContext) {
                 atInfo().log(message);
@@ -241,9 +253,7 @@ public class ClientLogger {
      * Throwable}.
      */
     public void info(String format, Object... args) {
-        if (logger.isInfoEnabled()) {
-            performLogging(LogLevel.INFORMATIONAL, false, format, args);
-        }
+        performLogging(getLogger(), LogLevel.INFORMATIONAL, false, format, args);
     }
 
     /**
@@ -263,6 +273,7 @@ public class ClientLogger {
      * @param message The message to log.
      */
     public void warning(String message) {
+        Logger logger = getLogger();
         if (logger.isWarnEnabled()) {
             if (hasGlobalContext) {
                 atWarning().log(message);
@@ -291,9 +302,7 @@ public class ClientLogger {
      * Throwable}.
      */
     public void warning(String format, Object... args) {
-        if (logger.isWarnEnabled()) {
-            performLogging(LogLevel.WARNING, false, format, args);
-        }
+        performLogging(getLogger(), LogLevel.WARNING, false, format, args);
     }
 
     /**
@@ -316,6 +325,7 @@ public class ClientLogger {
      * @param message The message to log.
      */
     public void error(String message) {
+        Logger logger = getLogger();
         if (logger.isErrorEnabled()) {
             if (hasGlobalContext) {
                 atError().log(message);
@@ -347,9 +357,7 @@ public class ClientLogger {
      * Throwable}.
      */
     public void error(String format, Object... args) {
-        if (logger.isErrorEnabled()) {
-            performLogging(LogLevel.ERROR, false, format, args);
-        }
+        performLogging(getLogger(), LogLevel.ERROR, false, format, args);
     }
 
     /**
@@ -383,11 +391,9 @@ public class ClientLogger {
     @Deprecated
     public <T extends Throwable> T logThowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        if (!logger.isWarnEnabled()) {
-            return throwable;
-        }
 
-        performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
+        performLogging(getLogger(), LogLevel.WARNING, true, throwable.getMessage(), throwable);
+
         return throwable;
     }
 
@@ -404,9 +410,8 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        if (logger.isWarnEnabled()) {
-            performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
-        }
+
+        performLogging(getLogger(), LogLevel.WARNING, true, throwable.getMessage(), throwable);
 
         return throwable;
     }
@@ -440,11 +445,9 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        if (!logger.isErrorEnabled()) {
-            return throwable;
-        }
 
-        performLogging(LogLevel.ERROR, true, throwable.getMessage(), throwable);
+        performLogging(getLogger(), LogLevel.ERROR, true, throwable.getMessage(), throwable);
+
         return throwable;
     }
 
@@ -454,7 +457,12 @@ public class ClientLogger {
      * @param format format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
+    private void performLogging(Logger logger, LogLevel logLevel, boolean isExceptionLogging, String format,
+        Object... args) {
+        if (!canLogAtLevel(logLevel, logger)) {
+            return;
+        }
+
         if (hasGlobalContext) {
             LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
                 .log(format, args);
@@ -517,7 +525,7 @@ public class ClientLogger {
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
-
+        Logger logger = getLogger();
         if (hasGlobalContext) {
             // LoggingEventBuilder writes log messages as json and performs all necessary escaping, i.e. no
             // sanitization needed
@@ -585,9 +593,14 @@ public class ClientLogger {
      * @return Flag indicating if the environment and logger are configured to support logging at the given log level.
      */
     public boolean canLogAtLevel(LogLevel logLevel) {
+        return canLogAtLevel(logLevel, getLogger());
+    }
+
+    private boolean canLogAtLevel(LogLevel logLevel, Logger logger) {
         if (logLevel == null) {
             return false;
         }
+
         switch (logLevel) {
             case VERBOSE:
                 return logger.isDebugEnabled();
@@ -620,7 +633,10 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
     public LoggingEventBuilder atError() {
-        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized, canLogAtLevel(LogLevel.ERROR));
+        Logger logger = getLogger();
+
+        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized,
+            canLogAtLevel(LogLevel.ERROR, logger));
     }
 
     /**
@@ -642,8 +658,10 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if warn logging is disabled.
      */
     public LoggingEventBuilder atWarning() {
+        Logger logger = getLogger();
+
         return LoggingEventBuilder.create(logger, LogLevel.WARNING, globalContextSerialized,
-            canLogAtLevel(LogLevel.WARNING));
+            canLogAtLevel(LogLevel.WARNING, logger));
     }
 
     /**
@@ -665,8 +683,10 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if info logging is disabled.
      */
     public LoggingEventBuilder atInfo() {
+        Logger logger = getLogger();
+
         return LoggingEventBuilder.create(logger, LogLevel.INFORMATIONAL, globalContextSerialized,
-            canLogAtLevel(LogLevel.INFORMATIONAL));
+            canLogAtLevel(LogLevel.INFORMATIONAL, logger));
     }
 
     /**
@@ -687,8 +707,10 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atVerbose() {
+        Logger logger = getLogger();
+
         return LoggingEventBuilder.create(logger, LogLevel.VERBOSE, globalContextSerialized,
-            canLogAtLevel(LogLevel.VERBOSE));
+            canLogAtLevel(LogLevel.VERBOSE, logger));
     }
 
     /**
@@ -712,7 +734,8 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if logging at provided level is disabled.
      */
     public LoggingEventBuilder atLevel(LogLevel level) {
-        return LoggingEventBuilder.create(logger, level, globalContextSerialized,
-            canLogAtLevel(level));
+        Logger logger = getLogger();
+
+        return LoggingEventBuilder.create(logger, level, globalContextSerialized, canLogAtLevel(level, logger));
     }
 }
