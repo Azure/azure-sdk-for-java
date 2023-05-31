@@ -64,8 +64,7 @@ public class EventProcessorClientStateManagement {
      * @param error Error that occurred.
      */
     void onError(PartitionContext partitionContext, Throwable error) {
-        logger.error("Error occurred processing partition '{}'. Exception: {}", partitionContext.getPartitionId(),
-            error);
+        logger.error("Error occurred processing partition '{}'", partitionContext.getPartitionId(), error);
     }
 
     /**
