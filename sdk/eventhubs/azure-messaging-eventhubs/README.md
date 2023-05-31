@@ -116,12 +116,8 @@ Both the asynchronous and synchronous Event Hub producer and consumer clients ca
 
 The snippet below creates a synchronous Event Hub producer.
 
-```java readme-sample-createSynchronousEventHubProducer
-// The credential used is DefaultAzureCredential because it combines commonly used credentials
-// in deployment and development and chooses the credential to used based on its running environment.
-// More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
+```java com.azure.messaging.eventhubs.eventhubproducerclient.construct
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
 // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
@@ -156,18 +152,14 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Event Hubs, please refer
 to [the associated documentation][aad_authorization].
 
-```java readme-sample-useAadAuthorization
-// The credential used is DefaultAzureCredential because it combines commonly used credentials
-// in deployment and development and chooses the credential to used based on its running environment.
-// More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
+```java com.azure.messaging.eventhubs.eventhubproducerclient.construct
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
 // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
-EventHubProducerClient client = new EventHubClientBuilder()
+    EventHubProducerClient producer = new EventHubClientBuilder()
     .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
-        credential)
+    credential)
     .buildProducerClient();
 ```
 
@@ -218,11 +210,7 @@ The snippet below creates a synchronous producer and sends events to any partiti
 the event to an available partition.
 
 ```java readme-sample-publishEvents
-// The credential used is DefaultAzureCredential because it combines commonly used credentials
-// in deployment and development and chooses the credential to used based on its running environment.
-// More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 EventHubProducerClient producer = new EventHubClientBuilder()
     .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
@@ -259,11 +247,7 @@ Many Event Hub operations take place within the scope of a specific partition. A
 instance.
 
 ```java readme-sample-publishEventsToPartition
-// The credential used is DefaultAzureCredential because it combines commonly used credentials
-// in deployment and development and chooses the credential to used based on its running environment.
-// More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 EventHubProducerClient producer = new EventHubClientBuilder()
     .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
@@ -284,11 +268,7 @@ Hubs service keep different events or batches of events together on the same par
 setting a `partition key` when publishing the events.
 
 ```java readme-sample-publishEventsWithPartitionKey
-// The credential used is DefaultAzureCredential because it combines commonly used credentials
-// in deployment and development and chooses the credential to used based on its running environment.
-// More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 EventHubProducerClient producer = new EventHubClientBuilder()
     .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
@@ -336,11 +316,7 @@ Developers can create a synchronous consumer that returns events in batches usin
 snippet below, a consumer is created that starts reading events from the beginning of the partition's event stream.
 
 ```java readme-sample-consumeEventsFromPartitionUsingSyncClient
-// The credential used is DefaultAzureCredential because it combines commonly used credentials
-// in deployment and development and chooses the credential to used based on its running environment.
-// More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 EventHubConsumerClient consumer = new EventHubClientBuilder()
     .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
@@ -373,11 +349,7 @@ received from the Event Hub and writes to console. For production applications, 
 store like [Checkpoint Store with Azure Storage Blobs][BlobCheckpointStore].
 
 ```java readme-sample-consumeEventsUsingEventProcessor
-// The credential used is DefaultAzureCredential because it combines commonly used credentials
-// in deployment and development and chooses the credential to used based on its running environment.
-// More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-TokenCredential credential = new DefaultAzureCredentialBuilder()
-    .build();
+TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
     .consumerGroup("<< CONSUMER GROUP NAME >>")

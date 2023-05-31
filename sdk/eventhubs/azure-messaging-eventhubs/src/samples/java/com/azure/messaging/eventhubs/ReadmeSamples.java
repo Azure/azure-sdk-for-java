@@ -24,12 +24,8 @@ public class ReadmeSamples {
      * Code sample for creating a synchronous Event Hub producer.
      */
     public void createSynchronousEventHubProducer() {
-        // BEGIN: readme-sample-createSynchronousEventHubProducer
-        // The credential used is DefaultAzureCredential because it combines commonly used credentials
-        // in deployment and development and chooses the credential to used based on its running environment.
-        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.construct
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
@@ -37,27 +33,7 @@ public class ReadmeSamples {
             .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
                 credential)
             .buildProducerClient();
-        // END: readme-sample-createSynchronousEventHubProducer
-    }
-
-    /**
-     * Code sample for using AAD authorization to create a client.
-     */
-    public void useAadAuthorization() {
-        // BEGIN: readme-sample-useAadAuthorization
-        // The credential used is DefaultAzureCredential because it combines commonly used credentials
-        // in deployment and development and chooses the credential to used based on its running environment.
-        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
-
-        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
-        EventHubProducerClient client = new EventHubClientBuilder()
-            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
-                credential)
-            .buildProducerClient();
-        // END: readme-sample-useAadAuthorization
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.construct
     }
 
     /**
@@ -66,11 +42,7 @@ public class ReadmeSamples {
      */
     public void publishEvents() {
         // BEGIN: readme-sample-publishEvents
-        // The credential used is DefaultAzureCredential because it combines commonly used credentials
-        // in deployment and development and chooses the credential to used based on its running environment.
-        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
         EventHubProducerClient producer = new EventHubClientBuilder()
             .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
@@ -104,11 +76,7 @@ public class ReadmeSamples {
      */
     public void publishEventsToPartition() {
         // BEGIN: readme-sample-publishEventsToPartition
-        // The credential used is DefaultAzureCredential because it combines commonly used credentials
-        // in deployment and development and chooses the credential to used based on its running environment.
-        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
         EventHubProducerClient producer = new EventHubClientBuilder()
             .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
@@ -128,11 +96,7 @@ public class ReadmeSamples {
      */
     public void publishEventsWithPartitionKey() {
         // BEGIN: readme-sample-publishEventsWithPartitionKey
-        // The credential used is DefaultAzureCredential because it combines commonly used credentials
-        // in deployment and development and chooses the credential to used based on its running environment.
-        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
         EventHubProducerClient producer = new EventHubClientBuilder()
             .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
@@ -172,11 +136,7 @@ public class ReadmeSamples {
      */
     public void consumeEventsFromPartitionUsingSyncClient() {
         // BEGIN: readme-sample-consumeEventsFromPartitionUsingSyncClient
-        // The credential used is DefaultAzureCredential because it combines commonly used credentials
-        // in deployment and development and chooses the credential to used based on its running environment.
-        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
@@ -201,11 +161,7 @@ public class ReadmeSamples {
      */
     public void consumeEventsUsingEventProcessor() throws InterruptedException {
         // BEGIN: readme-sample-consumeEventsUsingEventProcessor
-        // The credential used is DefaultAzureCredential because it combines commonly used credentials
-        // in deployment and development and chooses the credential to used based on its running environment.
-        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
-        TokenCredential credential = new DefaultAzureCredentialBuilder()
-            .build();
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("<< CONSUMER GROUP NAME >>")
