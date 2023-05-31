@@ -74,7 +74,7 @@ steps:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
-  - template: /eng/pipeline/templates/steps/restore-test-proxy-recordings.yml
+  - template: /eng/pipelines/templates/steps/restore-test-proxy-recordings.yml
     parameters:
       Paths: $(SparseCheckoutDirectories)
 
