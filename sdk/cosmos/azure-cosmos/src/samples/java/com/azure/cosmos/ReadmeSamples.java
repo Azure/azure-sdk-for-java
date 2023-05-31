@@ -12,8 +12,6 @@ import java.util.UUID;
 public class ReadmeSamples {
     private final String serviceEndpoint = "<service-endpoint>";
     private final String key = "<key>";
-    private final String itemId = UUID.randomUUID().toString();
-
     private final DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
     private final GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
 
@@ -127,11 +125,12 @@ public class ReadmeSamples {
     }
 
     public void readItem() {
+        Passenger passenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
         // BEGIN: com.azure.cosmos.CosmosAsyncContainer.readItem
         // Read an item
-        cosmosAsyncContainer.readItem(itemId, new PartitionKey(itemId), Passenger.class)
+        cosmosAsyncContainer.readItem(passenger.getId(), new PartitionKey(passenger.getId()), Passenger.class)
             .flatMap(response -> Mono.just(response.getItem()))
-            .subscribe(passenger -> System.out.println(passenger), throwable -> {
+            .subscribe(passengerItem -> System.out.println(passengerItem), throwable -> {
                 CosmosException cosmosException = (CosmosException) throwable;
                 cosmosException.printStackTrace();
             });

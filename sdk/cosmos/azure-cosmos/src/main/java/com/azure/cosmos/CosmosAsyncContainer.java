@@ -1257,9 +1257,9 @@ public class CosmosAsyncContainer {
      * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readItem -->
      * <pre>
      * &#47;&#47; Read an item
-     * cosmosAsyncContainer.readItem&#40;itemId, new PartitionKey&#40;itemId&#41;, Passenger.class&#41;
+     * cosmosAsyncContainer.readItem&#40;passenger.getId&#40;&#41;, new PartitionKey&#40;passenger.getId&#40;&#41;&#41;, Passenger.class&#41;
      *     .flatMap&#40;response -&gt; Mono.just&#40;response.getItem&#40;&#41;&#41;&#41;
-     *     .subscribe&#40;passenger -&gt; System.out.println&#40;passenger&#41;, throwable -&gt; &#123;
+     *     .subscribe&#40;passengerItem -&gt; System.out.println&#40;passengerItem&#41;, throwable -&gt; &#123;
      *         CosmosException cosmosException = &#40;CosmosException&#41; throwable;
      *         cosmosException.printStackTrace&#40;&#41;;
      *     &#125;&#41;;
