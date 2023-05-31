@@ -6,13 +6,40 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The core properties of ARM resources. */
 @Fluent
 public class ArmResourceProperties extends Resource {
+    /*
+     * Identity for the resource.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
+
     /** Creates an instance of ArmResourceProperties class. */
     public ArmResourceProperties() {
+    }
+
+    /**
+     * Get the identity property: Identity for the resource.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Identity for the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the ArmResourceProperties object itself.
+     */
+    public ArmResourceProperties withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -35,5 +62,8 @@ public class ArmResourceProperties extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
     }
 }

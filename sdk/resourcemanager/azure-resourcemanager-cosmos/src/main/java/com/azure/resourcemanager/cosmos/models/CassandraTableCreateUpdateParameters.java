@@ -34,6 +34,13 @@ public final class CassandraTableCreateUpdateParameters extends ArmResourcePrope
 
     /** {@inheritDoc} */
     @Override
+    public CassandraTableCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public CassandraTableCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

@@ -136,6 +136,13 @@ public interface CosmosDBManagementClient {
     PartitionKeyRangeIdRegionsClient getPartitionKeyRangeIdRegions();
 
     /**
+     * Gets the GraphResourcesClient object to access its operations.
+     *
+     * @return the GraphResourcesClient object.
+     */
+    GraphResourcesClient getGraphResources();
+
+    /**
      * Gets the SqlResourcesClient object to access its operations.
      *
      * @return the SqlResourcesClient object.
@@ -178,6 +185,13 @@ public interface CosmosDBManagementClient {
     LocationsClient getLocations();
 
     /**
+     * Gets the DataTransferJobsClient object to access its operations.
+     *
+     * @return the DataTransferJobsClient object.
+     */
+    DataTransferJobsClient getDataTransferJobs();
+
+    /**
      * Gets the CassandraClustersClient object to access its operations.
      *
      * @return the CassandraClustersClient object.
@@ -190,6 +204,13 @@ public interface CosmosDBManagementClient {
      * @return the CassandraDataCentersClient object.
      */
     CassandraDataCentersClient getCassandraDataCenters();
+
+    /**
+     * Gets the MongoClustersClient object to access its operations.
+     *
+     * @return the MongoClustersClient object.
+     */
+    MongoClustersClient getMongoClusters();
 
     /**
      * Gets the NotebookWorkspacesClient object to access its operations.

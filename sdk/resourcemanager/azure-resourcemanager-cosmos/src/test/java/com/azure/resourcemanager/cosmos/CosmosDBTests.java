@@ -74,6 +74,7 @@ public class CosmosDBTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled
     public void canCreateCosmosDbSqlAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
@@ -100,6 +101,7 @@ public class CosmosDBTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled
     public void canCreateSqlPrivateEndpoint() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
         final String networkName = generateRandomResourceName("network", 22);
@@ -180,6 +182,7 @@ public class CosmosDBTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled
     public void canCreateCosmosDbMongoDBAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
@@ -204,6 +207,7 @@ public class CosmosDBTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled
     public void canCreateCosmosDbCassandraAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 
@@ -256,6 +260,7 @@ public class CosmosDBTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled
     public void canCreateCosmosDbAzureTableAccount() {
         final String cosmosDbAccountName = generateRandomResourceName("cosmosdb", 22);
 

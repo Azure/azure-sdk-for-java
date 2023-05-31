@@ -133,6 +133,29 @@ public final class RestorableSqlContainerPropertiesResourceContainer extends Sql
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public RestorableSqlContainerPropertiesResourceContainer withRestoreParameters(
+        ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestorableSqlContainerPropertiesResourceContainer withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestorableSqlContainerPropertiesResourceContainer withMaterializedViewDefinition(
+        MaterializedViewDefinition materializedViewDefinition) {
+        super.withMaterializedViewDefinition(materializedViewDefinition);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

@@ -11,25 +11,12 @@ import java.util.List;
 
 /** Parameters to indicate the information about the restore. */
 @Fluent
-public final class RestoreParameters {
+public final class RestoreParameters extends RestoreParametersBase {
     /*
      * Describes the mode of the restore.
      */
     @JsonProperty(value = "restoreMode")
     private RestoreMode restoreMode;
-
-    /*
-     * The id of the restorable database account from which the restore has to be initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}
-     */
-    @JsonProperty(value = "restoreSource")
-    private String restoreSource;
-
-    /*
-     * Time to which the account has to be restored (ISO-8601 format).
-     */
-    @JsonProperty(value = "restoreTimestampInUtc")
-    private OffsetDateTime restoreTimestampInUtc;
 
     /*
      * List of specific databases available for restore.
@@ -48,6 +35,12 @@ public final class RestoreParameters {
      */
     @JsonProperty(value = "tablesToRestore")
     private List<String> tablesToRestore;
+
+    /*
+     * The source backup location for restore.
+     */
+    @JsonProperty(value = "sourceBackupLocation")
+    private String sourceBackupLocation;
 
     /** Creates an instance of RestoreParameters class. */
     public RestoreParameters() {
@@ -70,50 +63,6 @@ public final class RestoreParameters {
      */
     public RestoreParameters withRestoreMode(RestoreMode restoreMode) {
         this.restoreMode = restoreMode;
-        return this;
-    }
-
-    /**
-     * Get the restoreSource property: The id of the restorable database account from which the restore has to be
-     * initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-     *
-     * @return the restoreSource value.
-     */
-    public String restoreSource() {
-        return this.restoreSource;
-    }
-
-    /**
-     * Set the restoreSource property: The id of the restorable database account from which the restore has to be
-     * initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-     *
-     * @param restoreSource the restoreSource value to set.
-     * @return the RestoreParameters object itself.
-     */
-    public RestoreParameters withRestoreSource(String restoreSource) {
-        this.restoreSource = restoreSource;
-        return this;
-    }
-
-    /**
-     * Get the restoreTimestampInUtc property: Time to which the account has to be restored (ISO-8601 format).
-     *
-     * @return the restoreTimestampInUtc value.
-     */
-    public OffsetDateTime restoreTimestampInUtc() {
-        return this.restoreTimestampInUtc;
-    }
-
-    /**
-     * Set the restoreTimestampInUtc property: Time to which the account has to be restored (ISO-8601 format).
-     *
-     * @param restoreTimestampInUtc the restoreTimestampInUtc value to set.
-     * @return the RestoreParameters object itself.
-     */
-    public RestoreParameters withRestoreTimestampInUtc(OffsetDateTime restoreTimestampInUtc) {
-        this.restoreTimestampInUtc = restoreTimestampInUtc;
         return this;
     }
 
@@ -179,11 +128,47 @@ public final class RestoreParameters {
     }
 
     /**
+     * Get the sourceBackupLocation property: The source backup location for restore.
+     *
+     * @return the sourceBackupLocation value.
+     */
+    public String sourceBackupLocation() {
+        return this.sourceBackupLocation;
+    }
+
+    /**
+     * Set the sourceBackupLocation property: The source backup location for restore.
+     *
+     * @param sourceBackupLocation the sourceBackupLocation value to set.
+     * @return the RestoreParameters object itself.
+     */
+    public RestoreParameters withSourceBackupLocation(String sourceBackupLocation) {
+        this.sourceBackupLocation = sourceBackupLocation;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestoreParameters withRestoreSource(String restoreSource) {
+        super.withRestoreSource(restoreSource);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestoreParameters withRestoreTimestampInUtc(OffsetDateTime restoreTimestampInUtc) {
+        super.withRestoreTimestampInUtc(restoreTimestampInUtc);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
         if (databasesToRestore() != null) {
             databasesToRestore().forEach(e -> e.validate());
         }

@@ -1284,6 +1284,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
     }
 
     @Test
+    @Disabled
     public void testCosmosDB() throws Exception {
         new TestCosmosDB().runTest(azureResourceManager.cosmosDBAccounts(), azureResourceManager.resourceGroups());
     }

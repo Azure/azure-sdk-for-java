@@ -34,6 +34,13 @@ public final class TableCreateUpdateParameters extends ArmResourceProperties {
 
     /** {@inheritDoc} */
     @Override
+    public TableCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public TableCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

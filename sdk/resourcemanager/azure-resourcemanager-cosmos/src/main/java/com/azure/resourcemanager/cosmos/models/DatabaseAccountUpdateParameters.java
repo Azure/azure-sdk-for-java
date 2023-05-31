@@ -649,6 +649,31 @@ public final class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     *
+     * @return the diagnosticLogSettings value.
+     */
+    public DiagnosticLogSettings diagnosticLogSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().diagnosticLogSettings();
+    }
+
+    /**
+     * Set the diagnosticLogSettings property: The Object representing the different Diagnostic log settings for the
+     * Cosmos DB Account.
+     *
+     * @param diagnosticLogSettings the diagnosticLogSettings value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withDiagnosticLogSettings(DiagnosticLogSettings diagnosticLogSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withDiagnosticLogSettings(diagnosticLogSettings);
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: Opt-out of local authentication and ensure only MSI and AAD can be used
      * exclusively for authentication.
      *
@@ -699,6 +724,31 @@ public final class DatabaseAccountUpdateParameters {
     }
 
     /**
+     * Get the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     *
+     * @return the enableMaterializedViews value.
+     */
+    public Boolean enableMaterializedViews() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableMaterializedViews();
+    }
+
+    /**
+     * Set the enableMaterializedViews property: Flag to indicate whether to enable MaterializedViews on the Cosmos DB
+     * account.
+     *
+     * @param enableMaterializedViews the enableMaterializedViews value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withEnableMaterializedViews(Boolean enableMaterializedViews) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableMaterializedViews(enableMaterializedViews);
+        return this;
+    }
+
+    /**
      * Get the keysMetadata property: This property is ignored during the update operation, as the metadata is
      * read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
      *
@@ -730,6 +780,31 @@ public final class DatabaseAccountUpdateParameters {
             this.innerProperties = new DatabaseAccountUpdateProperties();
         }
         this.innerProperties().withEnablePartitionMerge(enablePartitionMerge);
+        return this;
+    }
+
+    /**
+     * Get the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
+     *
+     * @return the enableBurstCapacity value.
+     */
+    public Boolean enableBurstCapacity() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableBurstCapacity();
+    }
+
+    /**
+     * Set the enableBurstCapacity property: Flag to indicate enabling/disabling of Burst Capacity Preview feature on
+     * the account.
+     *
+     * @param enableBurstCapacity the enableBurstCapacity value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withEnableBurstCapacity(Boolean enableBurstCapacity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnableBurstCapacity(enableBurstCapacity);
         return this;
     }
 

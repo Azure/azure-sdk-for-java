@@ -113,6 +113,21 @@ public final class RestorableSqlDatabasePropertiesResourceDatabase extends SqlDa
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public RestorableSqlDatabasePropertiesResourceDatabase withRestoreParameters(
+        ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public RestorableSqlDatabasePropertiesResourceDatabase withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
