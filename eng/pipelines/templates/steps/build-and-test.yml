@@ -77,7 +77,7 @@ steps:
   - pwsh: |
       Get-ChildItem -Recurse -Path $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }} -Filter assets.json | `
         ForEach-Object { test-proxy restore -a $_.FullName }
-    displayName: Restore Recordings
+    displayName: 'Restore Recordings non-From Source run'
     # we want to run this when TestFromSource isn't true
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
@@ -128,12 +128,13 @@ steps:
       goals: jacoco:report-aggregate
 
   - pwsh: |
-      $ServiceDirs = '$(ServiceDirectories)'
-      foreach($ServiceDir in $ServiceDirs.Split(',')) {
-        Get-ChildItem -Recurse -Path $(Build.SourcesDirectory)/sdk/$ServiceDir -Filter assets.json | ForEach-Object { test-proxy restore -a $_.FullName }
+      $directories = $(SparseCheckoutDirectories)
+      $paths = '${{ convertToJson($directories) }}'.Trim('"') | ConvertFrom-Json
+      foreach($path in $paths) {
+        Get-ChildItem -Recurse -Path $(Build.SourcesDirectory)$path -Filter assets.json | ForEach-Object { test-proxy restore -a $_.FullName }
       }
-    displayName: Restore Recordings
-    # we want to run this when TestFromSource isn't true
+    displayName: 'Restore Recordings From Source run'
+    # we want to run this when TestFromSource is true
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
