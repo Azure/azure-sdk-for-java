@@ -31,10 +31,11 @@ public class ReadmeSamples {
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
 
-        String fullyQualifiedNamespace = "<<fully-qualified-namespace>>";
-        String eventHubName = "<< NAME OF THE EVENT HUB >>";
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerClient producer = new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName, credential)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .buildProducerClient();
         // END: readme-sample-createSynchronousEventHubProducer
     }
@@ -50,12 +51,11 @@ public class ReadmeSamples {
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
 
-        // The fully qualified namespace for the Event Hubs instance. This is likely to be similar to:
-        // {your-namespace}.servicebus.windows.net
-        String fullyQualifiedNamespace = "my-test-eventhubs.servicebus.windows.net";
-        String eventHubName = "<< NAME OF THE EVENT HUB >>";
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerClient client = new EventHubClientBuilder()
-            .credential(fullyQualifiedNamespace, eventHubName, credential)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .buildProducerClient();
         // END: readme-sample-useAadAuthorization
     }
