@@ -21,34 +21,50 @@
  * <h2>Getting Started</h2>
  * 
  * <h3>Prerequisites</h3>
+ * 
  * <p>The client library package requires the following:</p>
+ * 
  * <ul>
- * <li>Java 8 or later</li>
- * <li>An Azure subscription</li>
- * <li>An existing Azure Storage or Azure Cosmos account</li>
+ *  <li>Java 8 or later</li>
+ *  <li>An Azure subscription</li>
+ *  <li>An existing Azure Storage or Azure Cosmos account</li>
  * </ul>
+ * 
  * <hr/>
- * <h3>Authenticate the Client</h3>
+ * 
+ * <h3>Authenticating Client</h3>
+ * 
  * <p>In order to build a valid table client or table service client, you will need to authenticate the client using an accepted method of authentication. The supported forms of authentication are:
+ * 
  * <ul>
- * <li>Connection String</li>
- * <li>Shared Key</li>
- * <li>Shared Access Signature (SAS)</li>
- * <li>Token Credential</li>
+ *  <li>Connection String</li>
+ *  <li><a href="https://learn.microsoft.com/en-us/java/api/com.azure.core.credential.azurenamedkeycredential?view=azure-java-stable">Shared Key</a></li>
+ *  <li><a href="https://learn.microsoft.com/en-us/java/api/com.azure.core.credential.azuresascredential?view=azure-java-stable">Shared Access Signature (SAS)</a></li>
+ *  <li><a href="https://learn.microsoft.com/en-us/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable">Token Credential</a></li>
  * </ul>
- * <p>For more information on authentication types, see <a href=https://learn.microsoft.com/azure/developer/java/sdk/identity></a></p>
+ * 
+ * <p>For more information on authentication types, see <a href=https://learn.microsoft.com/azure/developer/java/sdk/identity>the identity documentation</a>.</p>
+ * 
  * <em>Table service clients utilize their authentication information to create table clients. Table clients created via a table service client will inherit the authentication information of the table
  *  service client.</em>
+ * 
  * <p>See client builder class documentation {@link com.azure.data.tables.TableServiceClientBuilder TableServiceClientBuilder} and {@link com.azure.data.tables.TableClientBuilder TableClientBuilder}
  * for examples of authenticating a client.</p>
+ * 
  * <hr/>
+ * 
  * <h3>Building Clients</h3>
+ * 
  * <h4>Table Service Clients</h4>
+ * 
  * <p>The {@link com.azure.data.tables.TableServiceClient TableServiceClient} and {@link com.azure.data.tables.TableServiceAsyncClient TableServiceAsyncClient} provide access to the tables within an 
  * Azure Storage or Azure Cosmos account. A table service client can create, list, and delete tables. It also provides access to a table client that can be used to perform CRUD operations on entities
  * within a table. You can instantiate a table service client using an instance of {@link com.azure.data.tables.TableServiceClientBuilder TableServiceClientBuilder TableServiceClientBuilder}.</p>
+ * 
  * <h5>Examples</h5>
+ * 
  * <p>Here's an example of creating a synchronous table service client:</p> 
+ * 
  * <!-- src_embed com.azure.data.tables.TableServiceClient.instantiation.package -->
  * <pre>
  * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
@@ -58,6 +74,7 @@
  * <!-- end com.azure.data.tables.TableServiceClient.instantiation.package -->
  *  
  * <p>Here's an example of creating an asynchronous table service client:</p>
+ * 
  * <!-- src_embed com.azure.data.tables.TableServiceAsyncClient.instantiation.package -->
  * <pre>
  * TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder&#40;&#41;
@@ -67,6 +84,7 @@
  * <!-- end com.azure.data.tables.TableServiceAsyncClient.instantiation.package -->
  * 
  * <h4>Table Clients</h4>
+ * 
  * <p>The {@link com.azure.data.tables.TableClient TableClient} and {@link com.azure.data.tables.TableAsyncClient} provide access to a specific table within an Azure Storage or Azure Cosmos account.
  * A table client can be used to perform CRUD and query operations on entities within a table. Table clients can also create* new tables and delete the table they reference from the Azure Storage or
  * Cosmos acount. An instance of a table client can be returned via a table service client or can be instantiated using an instance of
@@ -74,8 +92,11 @@
  * 
  * <em>* Tables created from a table client do not return a new TableClient instance. Table client instances cannot change the table they reference. To reference the newly created table, a new table
  * client instance must be instantiated referencing the table.</em>
+ * 
  * <h5>Examples</h5>
+ * 
  * <p>Heres an example of creating a synchronous table client from a service client:</p>
+ * 
  * <!-- src_embed com.azure.data.tables.TableClient.instantiationFromServiceClient.package -->
  * <pre>
  * TableClient tableClient = tableServiceClient.getTableClient&#40;&quot;tableName&quot;&#41;;
@@ -83,6 +104,7 @@
  * <!-- end com.azure.data.tables.TableClient.instantiationFromServiceClient.package -->
  * 
  * <p>Here's an example of creating a synchronous table client using a builder:</p>
+ * 
  * <!-- src_embed com.azure.data.tables.TableClient.instantiationFromBuilder.package -->
  * <pre>
  * TableClient tableClient = new TableClientBuilder&#40;&#41;
@@ -93,6 +115,7 @@
  * <!-- end com.azure.data.tables.TableClient.instantiationFromBuilder.package -->
  * 
  * <p>Here's an example of creating an asynchronous table client from a service client:</p>
+ * 
  * <!-- src_embed com.azure.data.tables.TableAsyncClient.instantiationFromServiceAsyncClient.package -->
  * <pre>
  * TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient&#40;&quot;tableName&quot;&#41;;
@@ -100,6 +123,7 @@
  * <!-- end com.azure.data.tables.TableAsyncClient.instantiationFromServiceAsyncClient.package -->
  * 
  * <p>Here's an example of creating an asynchronous table client from a builder:</p>
+ * 
  * <!-- src_embed com.azure.data.tables.TableClient.instantiationFromBuilder.package#async -->
  * <pre>
  * TableAsyncClient tableClient = new TableClientBuilder&#40;&#41;
@@ -110,7 +134,9 @@
  * <!-- end com.azure.data.tables.TableClient.instantiationFromBuilder.package#async -->
  * 
  * <hr/>
+ * 
  * <h3>Client Operation Examples</h3>
+ * 
  * <p>Once you have an instance of a table client or table service client, you can perform operations on the table or tables within the account.</p>
  * 
  * <h4><u>Table Operations</u></h4>
@@ -203,7 +229,5 @@
  * @see com.azure.data.tables.TableAsyncClient
  * @see com.azure.data.tables.TableClientBuilder
  * @see com.azure.data.tables.sas.TableSasSignatureValues
- * @see com.azure.core.credential.AzureNamedKeyCredential
- * @see com.azure.core.credential.TokenCredential
  */
 package com.azure.data.tables;

@@ -88,6 +88,7 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * methods invoke REST API operations to make the requests and obtain the results that are returned.</p>
  * 
  * <h2>Creating a Synchronous Table Client</h2>
+ * 
  * <p>Instances of this client are obtained by calling the {@link TableClientBuilder#buildClient()} method on a
  * {@link TableClientBuilder} object.</p>
  *
@@ -102,6 +103,7 @@ import static com.azure.data.tables.implementation.TableUtils.toTableServiceErro
  * <!-- end com.azure.data.tables.tableClient.instantiation -->
  * 
  * <p>See {@link TableClientBuilder} documentation for more information on constructing a client.</p>
+ * 
  * <h2>Usage Code Samples</h2>
  * 
  * <strong>Creating a {@link TableEntity}:</strong>

@@ -58,6 +58,7 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
  * <h2> Creating an Asynchronous Table Service Client </h2>
+ * 
  * <p>Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildAsyncClient()} method
  * on a {@link TableServiceClientBuilder} object.</p>
  *
@@ -71,6 +72,7 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.instantiation -->
  * 
  * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing a client.</p>
+ * 
  * <h2>Usage Code Samples</h2>
  * 
  * <strong>Creating a Table</strong>
