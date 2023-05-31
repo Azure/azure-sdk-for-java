@@ -1,12 +1,12 @@
 # Release History
 
-## 2.28.0-beta.1 (Unreleased)
+## 2.28.0-beta.1 (2023-05-30)
 
 ### Other Changes
 
 ### Dependency Updates
 
--Update `api-version` to `2023-03-15-previe`
+-Update `api-version` to `2023-03-15-preview`
 
 ## 2.27.0 (2023-05-25)
 
