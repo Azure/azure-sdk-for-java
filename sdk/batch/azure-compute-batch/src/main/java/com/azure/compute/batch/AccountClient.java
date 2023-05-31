@@ -16,6 +16,7 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
+import java.time.OffsetDateTime;
 
 /** Initializes a new instance of the synchronous BatchServiceClient type. */
 @ServiceClient(builder = BatchServiceClientBuilder.class)
@@ -56,7 +57,7 @@ public final class AccountClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -126,7 +127,7 @@ public final class AccountClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -178,6 +179,43 @@ public final class AccountClient {
     /**
      * Lists all Virtual Machine Images supported by the Azure Batch service.
      *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the supported Virtual Machine Images as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ImageInformation> listSupportedImages() {
+        // Generated convenience method for listSupportedImages
+        return new PagedIterable<>(client.listSupportedImages());
+    }
+
+    /**
+     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be
+     * up to date. If you need exact node counts, use a list query.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link
+     *     PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PoolNodeCounts> listPoolNodeCounts() {
+        // Generated convenience method for listPoolNodeCounts
+        return new PagedIterable<>(client.listPoolNodeCounts());
+    }
+
+    /**
+     * Lists all Virtual Machine Images supported by the Azure Batch service.
+     *
      * @param maxresults The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param ocpDate The time the request was issued. Client libraries typically set this to the current system clock
@@ -202,53 +240,15 @@ public final class AccountClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ImageInformation> listSupportedImages(
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
             String filter) {
         // Generated convenience method for listSupportedImages
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
         return new PagedIterable<>(
                 client.listSupportedImages(
                         maxresults, ocpDate, timeOut, clientRequestId, returnClientRequestId, filter));
-    }
-
-    /**
-     * Lists all Virtual Machine Images supported by the Azure Batch service.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the supported Virtual Machine Images as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ImageInformation> listSupportedImages() {
-        // Generated convenience method for listSupportedImages
-        RequestOptions requestOptions = new RequestOptions();
-        return new PagedIterable<>(client.listSupportedImages());
     }
 
     /**
@@ -279,53 +279,14 @@ public final class AccountClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PoolNodeCounts> listPoolNodeCounts(
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
             String filter) {
         // Generated convenience method for listPoolNodeCounts
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
         return new PagedIterable<>(
                 client.listPoolNodeCounts(
                         maxresults, ocpDate, timeOut, clientRequestId, returnClientRequestId, filter));
-    }
-
-    /**
-     * Gets the number of Compute Nodes in each state, grouped by Pool. Note that the numbers returned may not always be
-     * up to date. If you need exact node counts, use a list query.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the number of Compute Nodes in each state, grouped by Pool as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PoolNodeCounts> listPoolNodeCounts() {
-        // Generated convenience method for listPoolNodeCounts
-        RequestOptions requestOptions = new RequestOptions();
-        return new PagedIterable<>(client.listPoolNodeCounts());
     }
 }

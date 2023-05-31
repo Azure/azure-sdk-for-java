@@ -48,14 +48,14 @@ public final class VMExtension {
      * JSON formatted public settings for the extension.
      */
     @JsonProperty(value = "settings")
-    private Object settings;
+    private ObjectModel settings;
 
     /*
      * The extension can contain either protectedSettings or
      * protectedSettingsFromKeyVault or no protected settings at all.
      */
     @JsonProperty(value = "protectedSettings")
-    private Object protectedSettings;
+    private ObjectModel protectedSettings;
 
     /*
      * Collection of extension names after which this extension needs to be
@@ -157,7 +157,7 @@ public final class VMExtension {
      *
      * @return the settings value.
      */
-    public Object getSettings() {
+    public ObjectModel getSettings() {
         return this.settings;
     }
 
@@ -167,7 +167,7 @@ public final class VMExtension {
      * @param settings the settings value to set.
      * @return the VMExtension object itself.
      */
-    public VMExtension setSettings(Object settings) {
+    public VMExtension setSettings(ObjectModel settings) {
         this.settings = settings;
         return this;
     }
@@ -178,7 +178,7 @@ public final class VMExtension {
      *
      * @return the protectedSettings value.
      */
-    public Object getProtectedSettings() {
+    public ObjectModel getProtectedSettings() {
         return this.protectedSettings;
     }
 
@@ -189,7 +189,7 @@ public final class VMExtension {
      * @param protectedSettings the protectedSettings value to set.
      * @return the VMExtension object itself.
      */
-    public VMExtension setProtectedSettings(Object protectedSettings) {
+    public VMExtension setProtectedSettings(ObjectModel protectedSettings) {
         this.protectedSettings = protectedSettings;
         return this;
     }

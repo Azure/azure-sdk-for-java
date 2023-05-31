@@ -16,6 +16,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
+import java.time.OffsetDateTime;
 
 /** Initializes a new instance of the synchronous BatchServiceClient type. */
 @ServiceClient(builder = BatchServiceClientBuilder.class)
@@ -55,7 +57,7 @@ public final class JobScheduleClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -64,27 +66,32 @@ public final class JobScheduleClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * boolean
+     * }</pre>
+     *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return whether resource exists along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> existsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    public Response<Boolean> existsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return this.client.existsWithResponse(jobScheduleId, requestOptions).block();
     }
 
@@ -115,7 +122,7 @@ public final class JobScheduleClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -124,10 +131,10 @@ public final class JobScheduleClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -172,7 +179,7 @@ public final class JobScheduleClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -181,10 +188,10 @@ public final class JobScheduleClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -400,8 +407,9 @@ public final class JobScheduleClient {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -617,7 +625,7 @@ public final class JobScheduleClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -626,10 +634,10 @@ public final class JobScheduleClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -845,8 +853,9 @@ public final class JobScheduleClient {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -1064,7 +1073,7 @@ public final class JobScheduleClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1073,10 +1082,10 @@ public final class JobScheduleClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1292,8 +1301,9 @@ public final class JobScheduleClient {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -1508,7 +1518,7 @@ public final class JobScheduleClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1517,10 +1527,10 @@ public final class JobScheduleClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1563,7 +1573,7 @@ public final class JobScheduleClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1572,10 +1582,10 @@ public final class JobScheduleClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1618,7 +1628,7 @@ public final class JobScheduleClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1627,10 +1637,10 @@ public final class JobScheduleClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1673,7 +1683,7 @@ public final class JobScheduleClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -1889,8 +1899,9 @@ public final class JobScheduleClient {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -2104,7 +2115,7 @@ public final class JobScheduleClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -2323,8 +2334,9 @@ public final class JobScheduleClient {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -2516,6 +2528,214 @@ public final class JobScheduleClient {
      * Checks the specified Job Schedule exists.
      *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean exists(String jobScheduleId) {
+        // Generated convenience method for existsWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return existsWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Deletes a Job Schedule from the specified Account.
+     *
+     * <p>When you delete a Job Schedule, this also deletes all Jobs and Tasks under that schedule. When Tasks are
+     * deleted, all the files in their working directories on the Compute Nodes are also deleted (the retention period
+     * is ignored). The Job Schedule statistics are no longer accessible once the Job Schedule is deleted, though they
+     * are still counted towards Account lifetime statistics.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String jobScheduleId) {
+        // Generated convenience method for deleteWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Gets information about the specified Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to get.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified Job Schedule.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchJobSchedule get(String jobScheduleId) {
+        // Generated convenience method for getWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getWithResponse(jobScheduleId, requestOptions).getValue().toObject(BatchJobSchedule.class);
+    }
+
+    /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * <p>This replaces only the Job Schedule properties specified in the request. For example, if the schedule property
+     * is not specified with this request, then the Batch service will keep the existing schedule. Changes to a Job
+     * Schedule only impact Jobs created by the schedule after the update has taken place; currently running Jobs are
+     * unaffected.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param jobSchedulePatchParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void patch(String jobScheduleId, BatchJobSchedule jobSchedulePatchParameter) {
+        // Generated convenience method for patchWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        patchWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedulePatchParameter), requestOptions).getValue();
+    }
+
+    /**
+     * Updates the properties of the specified Job Schedule.
+     *
+     * <p>This fully replaces all the updatable properties of the Job Schedule. For example, if the schedule property is
+     * not specified with this request, then the Batch service will remove the existing schedule. Changes to a Job
+     * Schedule only impact Jobs created by the schedule after the update has taken place; currently running Jobs are
+     * unaffected.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to update.
+     * @param jobScheduleUpdateParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(String jobScheduleId, BatchJobSchedule jobScheduleUpdateParameter) {
+        // Generated convenience method for updateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        updateWithResponse(jobScheduleId, BinaryData.fromObject(jobScheduleUpdateParameter), requestOptions).getValue();
+    }
+
+    /**
+     * Disables a Job Schedule.
+     *
+     * <p>No new Jobs will be created until the Job Schedule is enabled again.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to disable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void disable(String jobScheduleId) {
+        // Generated convenience method for disableWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        disableWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Enables a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to enable.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void enable(String jobScheduleId) {
+        // Generated convenience method for enableWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        enableWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Terminates a Job Schedule.
+     *
+     * @param jobScheduleId The ID of the Job Schedule to terminates.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void terminate(String jobScheduleId) {
+        // Generated convenience method for terminateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        terminateWithResponse(jobScheduleId, requestOptions).getValue();
+    }
+
+    /**
+     * Adds a Job Schedule to the specified Account.
+     *
+     * @param cloudJobSchedule The Job Schedule to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void add(BatchJobSchedule cloudJobSchedule) {
+        // Generated convenience method for addWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        addWithResponse(BinaryData.fromObject(cloudJobSchedule), requestOptions).getValue();
+    }
+
+    /**
+     * Lists all of the Job Schedules in the specified Account.
+     *
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchJobSchedule> list() {
+        // Generated convenience method for list
+        return new PagedIterable<>(client.list());
+    }
+
+    /**
+     * Checks the specified Job Schedule exists.
+     *
+     * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param timeOut The maximum number of items to return in the response. A maximum of 1000 applications can be
      *     returned.
      * @param clientRequestId The caller-generated request identity, in the form of a GUID with no decoration such as
@@ -2537,22 +2757,22 @@ public final class JobScheduleClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return whether resource exists.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void exists(
+    public boolean exists(
             String jobScheduleId,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for existsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -2565,7 +2785,7 @@ public final class JobScheduleClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -2574,31 +2794,12 @@ public final class JobScheduleClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        existsWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Checks the specified Job Schedule exists.
-     *
-     * @param jobScheduleId The ID of the Job Schedule which you want to check.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void exists(String jobScheduleId) {
-        // Generated convenience method for existsWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        existsWithResponse(jobScheduleId, requestOptions).getValue();
+        return existsWithResponse(jobScheduleId, requestOptions).getValue();
     }
 
     /**
@@ -2642,11 +2843,11 @@ public final class JobScheduleClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -2659,7 +2860,7 @@ public final class JobScheduleClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -2668,35 +2869,11 @@ public final class JobScheduleClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        deleteWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a Job Schedule from the specified Account.
-     *
-     * <p>When you delete a Job Schedule, this also deletes all Jobs and Tasks under that schedule. When Tasks are
-     * deleted, all the files in their working directories on the Compute Nodes are also deleted (the retention period
-     * is ignored). The Job Schedule statistics are no longer accessible once the Job Schedule is deleted, though they
-     * are still counted towards Account lifetime statistics.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String jobScheduleId) {
-        // Generated convenience method for deleteWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         deleteWithResponse(jobScheduleId, requestOptions).getValue();
     }
 
@@ -2739,11 +2916,11 @@ public final class JobScheduleClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
             String select,
             String expand) {
         // Generated convenience method for getWithResponse
@@ -2758,7 +2935,7 @@ public final class JobScheduleClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -2767,10 +2944,10 @@ public final class JobScheduleClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         if (select != null) {
             requestOptions.addQueryParam("$select", select, false);
@@ -2778,26 +2955,6 @@ public final class JobScheduleClient {
         if (expand != null) {
             requestOptions.addQueryParam("$expand", expand, false);
         }
-        return getWithResponse(jobScheduleId, requestOptions).getValue().toObject(BatchJobSchedule.class);
-    }
-
-    /**
-     * Gets information about the specified Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified Job Schedule.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchJobSchedule get(String jobScheduleId) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getWithResponse(jobScheduleId, requestOptions).getValue().toObject(BatchJobSchedule.class);
     }
 
@@ -2844,11 +3001,11 @@ public final class JobScheduleClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for patchWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -2861,7 +3018,7 @@ public final class JobScheduleClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -2870,36 +3027,11 @@ public final class JobScheduleClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        patchWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedulePatchParameter), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Job Schedule.
-     *
-     * <p>This replaces only the Job Schedule properties specified in the request. For example, if the schedule property
-     * is not specified with this request, then the Batch service will keep the existing schedule. Changes to a Job
-     * Schedule only impact Jobs created by the schedule after the update has taken place; currently running Jobs are
-     * unaffected.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobSchedulePatchParameter The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void patch(String jobScheduleId, BatchJobSchedule jobSchedulePatchParameter) {
-        // Generated convenience method for patchWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         patchWithResponse(jobScheduleId, BinaryData.fromObject(jobSchedulePatchParameter), requestOptions).getValue();
     }
 
@@ -2946,11 +3078,11 @@ public final class JobScheduleClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -2963,7 +3095,7 @@ public final class JobScheduleClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -2972,36 +3104,11 @@ public final class JobScheduleClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        updateWithResponse(jobScheduleId, BinaryData.fromObject(jobScheduleUpdateParameter), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Job Schedule.
-     *
-     * <p>This fully replaces all the updatable properties of the Job Schedule. For example, if the schedule property is
-     * not specified with this request, then the Batch service will remove the existing schedule. Changes to a Job
-     * Schedule only impact Jobs created by the schedule after the update has taken place; currently running Jobs are
-     * unaffected.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to update.
-     * @param jobScheduleUpdateParameter The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String jobScheduleId, BatchJobSchedule jobScheduleUpdateParameter) {
-        // Generated convenience method for updateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         updateWithResponse(jobScheduleId, BinaryData.fromObject(jobScheduleUpdateParameter), requestOptions).getValue();
     }
 
@@ -3043,11 +3150,11 @@ public final class JobScheduleClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for disableWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -3060,7 +3167,7 @@ public final class JobScheduleClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -3069,32 +3176,11 @@ public final class JobScheduleClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        disableWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Disables a Job Schedule.
-     *
-     * <p>No new Jobs will be created until the Job Schedule is enabled again.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to disable.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disable(String jobScheduleId) {
-        // Generated convenience method for disableWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         disableWithResponse(jobScheduleId, requestOptions).getValue();
     }
 
@@ -3134,11 +3220,11 @@ public final class JobScheduleClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for enableWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -3151,7 +3237,7 @@ public final class JobScheduleClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -3160,30 +3246,11 @@ public final class JobScheduleClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        enableWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Enables a Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to enable.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enable(String jobScheduleId) {
-        // Generated convenience method for enableWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         enableWithResponse(jobScheduleId, requestOptions).getValue();
     }
 
@@ -3223,11 +3290,11 @@ public final class JobScheduleClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for terminateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -3240,7 +3307,7 @@ public final class JobScheduleClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -3249,30 +3316,11 @@ public final class JobScheduleClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        terminateWithResponse(jobScheduleId, requestOptions).getValue();
-    }
-
-    /**
-     * Terminates a Job Schedule.
-     *
-     * @param jobScheduleId The ID of the Job Schedule to terminates.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminate(String jobScheduleId) {
-        // Generated convenience method for terminateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         terminateWithResponse(jobScheduleId, requestOptions).getValue();
     }
 
@@ -3301,7 +3349,7 @@ public final class JobScheduleClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for addWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -3314,27 +3362,8 @@ public final class JobScheduleClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        addWithResponse(BinaryData.fromObject(cloudJobSchedule), requestOptions).getValue();
-    }
-
-    /**
-     * Adds a Job Schedule to the specified Account.
-     *
-     * @param cloudJobSchedule The Job Schedule to be added.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void add(BatchJobSchedule cloudJobSchedule) {
-        // Generated convenience method for addWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         addWithResponse(BinaryData.fromObject(cloudJobSchedule), requestOptions).getValue();
     }
 
@@ -3366,7 +3395,7 @@ public final class JobScheduleClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BatchJobSchedule> list(
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
@@ -3374,51 +3403,8 @@ public final class JobScheduleClient {
             String select,
             String expand) {
         // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand, false);
-        }
         return new PagedIterable<>(
                 client.list(
                         maxresults, ocpDate, timeOut, clientRequestId, returnClientRequestId, filter, select, expand));
-    }
-
-    /**
-     * Lists all of the Job Schedules in the specified Account.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Job Schedules in an Account as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchJobSchedule> list() {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        return new PagedIterable<>(client.list());
     }
 }

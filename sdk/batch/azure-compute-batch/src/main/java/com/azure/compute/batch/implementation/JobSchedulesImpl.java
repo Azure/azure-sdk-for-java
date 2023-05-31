@@ -67,18 +67,15 @@ public final class JobSchedulesImpl {
     @ServiceInterface(name = "BatchServiceClientJo")
     public interface JobSchedulesService {
         @Head("/jobschedules/{jobScheduleId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 404})
         @UnexpectedResponseExceptionType(
                 value = ClientAuthenticationException.class,
                 code = {401})
         @UnexpectedResponseExceptionType(
-                value = ResourceNotFoundException.class,
-                code = {404})
-        @UnexpectedResponseExceptionType(
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<Void>> exists(
+        Mono<Response<Boolean>> exists(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @PathParam("jobScheduleId") String jobScheduleId,
@@ -312,7 +309,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -321,26 +318,31 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * boolean
+     * }</pre>
+     *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> existsWithResponseAsync(String jobScheduleId, RequestOptions requestOptions) {
+    public Mono<Response<Boolean>> existsWithResponseAsync(String jobScheduleId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -375,7 +377,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -384,26 +386,31 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
      *
      * You can add these to a request with {@link RequestOptions#addHeader}
      *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * boolean
+     * }</pre>
+     *
      * @param jobScheduleId The ID of the Job Schedule which you want to check.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the {@link Response}.
+     * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> existsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
+    public Response<Boolean> existsWithResponse(String jobScheduleId, RequestOptions requestOptions) {
         return existsWithResponseAsync(jobScheduleId, requestOptions).block();
     }
 
@@ -434,7 +441,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -443,10 +450,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -502,7 +509,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -511,10 +518,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -558,7 +565,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -567,10 +574,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -786,8 +793,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -1009,7 +1017,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1018,10 +1026,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1237,8 +1245,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -1453,7 +1462,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1462,10 +1471,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1681,8 +1690,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -1911,7 +1921,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1920,10 +1930,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2139,8 +2149,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -2357,7 +2368,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2366,10 +2377,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -2585,8 +2596,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -2815,7 +2827,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -2824,10 +2836,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3043,8 +3055,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -3258,7 +3271,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3267,10 +3280,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3323,7 +3336,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3332,10 +3345,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3377,7 +3390,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3386,10 +3399,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3440,7 +3453,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3449,10 +3462,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3494,7 +3507,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3503,10 +3516,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3557,7 +3570,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -3566,10 +3579,10 @@ public final class JobSchedulesImpl {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -3611,7 +3624,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -3827,8 +3840,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -4049,7 +4063,7 @@ public final class JobSchedulesImpl {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -4265,8 +4279,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -4479,7 +4494,7 @@ public final class JobSchedulesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -4698,8 +4713,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -4929,7 +4945,7 @@ public final class JobSchedulesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -5148,8 +5164,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -5368,7 +5385,7 @@ public final class JobSchedulesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -5587,8 +5604,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]
@@ -5785,7 +5803,7 @@ public final class JobSchedulesImpl {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -6004,8 +6022,9 @@ public final class JobSchedulesImpl {
      *                                 type: String (Required)
      *                                 typeHandlerVersion: String (Optional)
      *                                 autoUpgradeMinorVersion: Boolean (Optional)
-     *                                 settings: Object (Optional)
-     *                                 protectedSettings: Object (Optional)
+     *                                 settings (Optional): {
+     *                                 }
+     *                                 protectedSettings (Optional): (recursive schema, see protectedSettings above)
      *                                 provisionAfterExtensions (Optional): [
      *                                     String (Optional)
      *                                 ]

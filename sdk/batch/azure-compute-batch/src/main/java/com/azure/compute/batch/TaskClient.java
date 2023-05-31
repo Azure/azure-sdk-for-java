@@ -19,6 +19,8 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
+import java.time.OffsetDateTime;
 
 /** Initializes a new instance of the synchronous BatchServiceClient type. */
 @ServiceClient(builder = BatchServiceClientBuilder.class)
@@ -61,7 +63,7 @@ public final class TaskClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -293,7 +295,7 @@ public final class TaskClient {
      * <table border="1">
      *     <caption>Header Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
@@ -532,7 +534,7 @@ public final class TaskClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -796,7 +798,7 @@ public final class TaskClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -805,10 +807,10 @@ public final class TaskClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -857,7 +859,7 @@ public final class TaskClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -866,10 +868,10 @@ public final class TaskClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1098,7 +1100,7 @@ public final class TaskClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1107,10 +1109,10 @@ public final class TaskClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1341,7 +1343,7 @@ public final class TaskClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      * </table>
@@ -1433,7 +1435,7 @@ public final class TaskClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1442,10 +1444,10 @@ public final class TaskClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1495,7 +1497,7 @@ public final class TaskClient {
      *     <tr><td>client-request-id</td><td>String</td><td>No</td><td>The caller-generated request identity, in the form of a GUID with no decoration
      * such as curly braces, e.g. 9C4D50EE-2D56-4CD3-8152-34347DC9F2B0.</td></tr>
      *     <tr><td>return-client-request-id</td><td>Boolean</td><td>No</td><td>Whether the server should return the client-request-id in the response.</td></tr>
-     *     <tr><td>ocp-date</td><td>String</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
+     *     <tr><td>ocp-date</td><td>OffsetDateTime</td><td>No</td><td>The time the request was issued. Client libraries typically set this to the
      * current system clock time; set it explicitly if you are calling the REST API
      * directly.</td></tr>
      *     <tr><td>if-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
@@ -1504,10 +1506,10 @@ public final class TaskClient {
      *     <tr><td>if-none-match</td><td>String</td><td>No</td><td>An ETag value associated with the version of the resource known to the client.
      * The operation will be performed only if the resource's current ETag on the
      * service does not match the value specified by the client.</td></tr>
-     *     <tr><td>if-modified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-modified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * been modified since the specified time.</td></tr>
-     *     <tr><td>if-unmodified-since</td><td>String</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
+     *     <tr><td>if-unmodified-since</td><td>OffsetDateTime</td><td>No</td><td>A timestamp indicating the last modified time of the resource known to the
      * client. The operation will be performed only if the resource on the service has
      * not been modified since the specified time.</td></tr>
      * </table>
@@ -1527,6 +1529,232 @@ public final class TaskClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> reactivateWithResponse(String jobId, String taskId, RequestOptions requestOptions) {
         return this.client.reactivateWithResponse(jobId, taskId, requestOptions).block();
+    }
+
+    /**
+     * Adds a Task to the specified Job.
+     *
+     * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
+     * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task is to be added.
+     * @param task The Task to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void add(String jobId, BatchTask task) {
+        // Generated convenience method for addWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        addWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
+    }
+
+    /**
+     * Lists all of the Tasks that are associated with the specified Job.
+     *
+     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
+     * Task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the Job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BatchTask> list(String jobId) {
+        // Generated convenience method for list
+        return new PagedIterable<>(client.list(jobId));
+    }
+
+    /**
+     * Adds a collection of Tasks to the specified Job.
+     *
+     * <p>Note that each Task must have a unique ID. The Batch service may not return the results for each Task in the
+     * same order the Tasks were submitted in this request. If the server times out or the connection is closed during
+     * the request, the request may have been partially or fully processed, or not at all. In such cases, the user
+     * should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a
+     * request. For example, you should use the same Task IDs during a retry so that if the prior operation succeeded,
+     * the retry will not create extra Tasks unexpectedly. If the response contains any Tasks which failed to add, a
+     * client can retry the request. In a retry, it is most efficient to resubmit only Tasks that failed to add, and to
+     * omit Tasks that were successfully added on the first attempt. The maximum lifetime of a Task from addition to
+     * completion is 180 days. If a Task has not completed within 180 days of being added it will be terminated by the
+     * Batch service and left in whatever state it was in at that time.
+     *
+     * @param jobId The ID of the Job to which the Task collection is to be added.
+     * @param taskCollection The Tasks to be added.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of adding a collection of Tasks to a Job.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TaskAddCollectionResult addCollection(String jobId, BatchTaskCollection taskCollection) {
+        // Generated convenience method for addCollectionWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return addCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions)
+                .getValue()
+                .toObject(TaskAddCollectionResult.class);
+    }
+
+    /**
+     * Deletes a Task from the specified Job.
+     *
+     * <p>When a Task is deleted, all of the files in its directory on the Compute Node where it ran are also deleted
+     * (regardless of the retention time). For multi-instance Tasks, the delete Task operation applies synchronously to
+     * the primary task; subtasks and their files are then deleted asynchronously in the background.
+     *
+     * @param jobId The ID of the Job from which to delete the Task.
+     * @param taskId The ID of the Task to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String jobId, String taskId) {
+        // Generated convenience method for deleteWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        deleteWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Gets information about the specified Task.
+     *
+     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
+     * Task. Use the list subtasks API to retrieve information about subtasks.
+     *
+     * @param jobId The ID of the Job that contains the Task.
+     * @param taskId The ID of the Task to get information about.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery operations
+     *     include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared due to host
+     *     failure. Retries due to recovery operations are independent of and are not counted against the
+     *     maxTaskRetryCount.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchTask get(String jobId, String taskId) {
+        // Generated convenience method for getWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return getWithResponse(jobId, taskId, requestOptions).getValue().toObject(BatchTask.class);
+    }
+
+    /**
+     * Updates the properties of the specified Task.
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to update.
+     * @param taskUpdateParameter The parameters for the request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(String jobId, String taskId, BatchTask taskUpdateParameter) {
+        // Generated convenience method for updateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        updateWithResponse(jobId, taskId, BinaryData.fromObject(taskUpdateParameter), requestOptions).getValue();
+    }
+
+    /**
+     * Lists all of the subtasks that are associated with the specified multi-instance Task.
+     *
+     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
+     *
+     * @param jobId The ID of the Job.
+     * @param taskId The ID of the Task.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of listing the subtasks of a Task.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BatchTaskListSubtasksResult listSubtasks(String jobId, String taskId) {
+        // Generated convenience method for listSubtasksWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return listSubtasksWithResponse(jobId, taskId, requestOptions)
+                .getValue()
+                .toObject(BatchTaskListSubtasksResult.class);
+    }
+
+    /**
+     * Terminates the specified Task.
+     *
+     * <p>When the Task has been terminated, it moves to the completed state. For multi-instance Tasks, the terminate
+     * Task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the
+     * background.
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to terminate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void terminate(String jobId, String taskId) {
+        // Generated convenience method for terminateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        terminateWithResponse(jobId, taskId, requestOptions).getValue();
+    }
+
+    /**
+     * Reactivates a Task, allowing it to run again even if its retry count has been exhausted.
+     *
+     * <p>Reactivation makes a Task eligible to be retried again up to its maximum retry count. The Task's state is
+     * changed to active. As the Task is no longer in the completed state, any previous exit code or failure information
+     * is no longer available after reactivation. Each time a Task is reactivated, its retry count is reset to 0.
+     * Reactivation will fail for Tasks that are not completed or that previously completed successfully (with an exit
+     * code of 0). Additionally, it will fail if the Job has completed (or is terminating or deleting).
+     *
+     * @param jobId The ID of the Job containing the Task.
+     * @param taskId The ID of the Task to reactivate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void reactivate(String jobId, String taskId) {
+        // Generated convenience method for reactivateWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        reactivateWithResponse(jobId, taskId, requestOptions).getValue();
     }
 
     /**
@@ -1559,7 +1787,7 @@ public final class TaskClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for addWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -1572,31 +1800,8 @@ public final class TaskClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        addWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
-    }
-
-    /**
-     * Adds a Task to the specified Job.
-     *
-     * <p>The maximum lifetime of a Task from addition to completion is 180 days. If a Task has not completed within 180
-     * days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
-     *
-     * @param jobId The ID of the Job to which the Task is to be added.
-     * @param task The Task to be added.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void add(String jobId, BatchTask task) {
-        // Generated convenience method for addWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         addWithResponse(jobId, BinaryData.fromObject(task), requestOptions).getValue();
     }
 
@@ -1633,7 +1838,7 @@ public final class TaskClient {
     public PagedIterable<BatchTask> list(
             String jobId,
             Integer maxresults,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
@@ -1641,31 +1846,6 @@ public final class TaskClient {
             String select,
             String expand) {
         // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        if (maxresults != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxresults), false);
-        }
-        if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
-        }
-        if (timeOut != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOut), false);
-        }
-        if (clientRequestId != null) {
-            requestOptions.setHeader("client-request-id", clientRequestId);
-        }
-        if (returnClientRequestId != null) {
-            requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
-        }
-        if (filter != null) {
-            requestOptions.addQueryParam("$filter", filter, false);
-        }
-        if (select != null) {
-            requestOptions.addQueryParam("$select", select, false);
-        }
-        if (expand != null) {
-            requestOptions.addQueryParam("$expand", expand, false);
-        }
         return new PagedIterable<>(
                 client.list(
                         jobId,
@@ -1677,29 +1857,6 @@ public final class TaskClient {
                         filter,
                         select,
                         expand));
-    }
-
-    /**
-     * Lists all of the Tasks that are associated with the specified Job.
-     *
-     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
-     * Task. Use the list subtasks API to retrieve information about subtasks.
-     *
-     * @param jobId The ID of the Job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the Tasks in a Job as paginated response with {@link PagedIterable}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BatchTask> list(String jobId) {
-        // Generated convenience method for list
-        RequestOptions requestOptions = new RequestOptions();
-        return new PagedIterable<>(client.list(jobId));
     }
 
     /**
@@ -1741,7 +1898,7 @@ public final class TaskClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate) {
+            OffsetDateTime ocpDate) {
         // Generated convenience method for addCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -1754,42 +1911,8 @@ public final class TaskClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
-        return addCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions)
-                .getValue()
-                .toObject(TaskAddCollectionResult.class);
-    }
-
-    /**
-     * Adds a collection of Tasks to the specified Job.
-     *
-     * <p>Note that each Task must have a unique ID. The Batch service may not return the results for each Task in the
-     * same order the Tasks were submitted in this request. If the server times out or the connection is closed during
-     * the request, the request may have been partially or fully processed, or not at all. In such cases, the user
-     * should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a
-     * request. For example, you should use the same Task IDs during a retry so that if the prior operation succeeded,
-     * the retry will not create extra Tasks unexpectedly. If the response contains any Tasks which failed to add, a
-     * client can retry the request. In a retry, it is most efficient to resubmit only Tasks that failed to add, and to
-     * omit Tasks that were successfully added on the first attempt. The maximum lifetime of a Task from addition to
-     * completion is 180 days. If a Task has not completed within 180 days of being added it will be terminated by the
-     * Batch service and left in whatever state it was in at that time.
-     *
-     * @param jobId The ID of the Job to which the Task collection is to be added.
-     * @param taskCollection The Tasks to be added.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of adding a collection of Tasks to a Job.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TaskAddCollectionResult addCollection(String jobId, BatchTaskCollection taskCollection) {
-        // Generated convenience method for addCollectionWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return addCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions)
                 .getValue()
                 .toObject(TaskAddCollectionResult.class);
@@ -1837,11 +1960,11 @@ public final class TaskClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for deleteWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -1854,7 +1977,7 @@ public final class TaskClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -1863,35 +1986,11 @@ public final class TaskClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        deleteWithResponse(jobId, taskId, requestOptions).getValue();
-    }
-
-    /**
-     * Deletes a Task from the specified Job.
-     *
-     * <p>When a Task is deleted, all of the files in its directory on the Compute Node where it ran are also deleted
-     * (regardless of the retention time). For multi-instance Tasks, the delete Task operation applies synchronously to
-     * the primary task; subtasks and their files are then deleted asynchronously in the background.
-     *
-     * @param jobId The ID of the Job from which to delete the Task.
-     * @param taskId The ID of the Task to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String jobId, String taskId) {
-        // Generated convenience method for deleteWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         deleteWithResponse(jobId, taskId, requestOptions).getValue();
     }
 
@@ -1942,11 +2041,11 @@ public final class TaskClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince,
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince,
             String select,
             String expand) {
         // Generated convenience method for getWithResponse
@@ -1961,7 +2060,7 @@ public final class TaskClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -1970,10 +2069,10 @@ public final class TaskClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
         if (select != null) {
             requestOptions.addQueryParam("$select", select, false);
@@ -1981,33 +2080,6 @@ public final class TaskClient {
         if (expand != null) {
             requestOptions.addQueryParam("$expand", expand, false);
         }
-        return getWithResponse(jobId, taskId, requestOptions).getValue().toObject(BatchTask.class);
-    }
-
-    /**
-     * Gets information about the specified Task.
-     *
-     * <p>For multi-instance Tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary
-     * Task. Use the list subtasks API to retrieve information about subtasks.
-     *
-     * @param jobId The ID of the Job that contains the Task.
-     * @param taskId The ID of the Task to get information about.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return batch will retry Tasks when a recovery operation is triggered on a Node. Examples of recovery operations
-     *     include (but are not limited to) when an unhealthy Node is rebooted or a Compute Node disappeared due to host
-     *     failure. Retries due to recovery operations are independent of and are not counted against the
-     *     maxTaskRetryCount.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTask get(String jobId, String taskId) {
-        // Generated convenience method for getWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return getWithResponse(jobId, taskId, requestOptions).getValue().toObject(BatchTask.class);
     }
 
@@ -2051,11 +2123,11 @@ public final class TaskClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for updateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -2068,7 +2140,7 @@ public final class TaskClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -2077,32 +2149,11 @@ public final class TaskClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        updateWithResponse(jobId, taskId, BinaryData.fromObject(taskUpdateParameter), requestOptions).getValue();
-    }
-
-    /**
-     * Updates the properties of the specified Task.
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to update.
-     * @param taskUpdateParameter The parameters for the request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String jobId, String taskId, BatchTask taskUpdateParameter) {
-        // Generated convenience method for updateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         updateWithResponse(jobId, taskId, BinaryData.fromObject(taskUpdateParameter), requestOptions).getValue();
     }
 
@@ -2137,7 +2188,7 @@ public final class TaskClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String select) {
         // Generated convenience method for listSubtasksWithResponse
         RequestOptions requestOptions = new RequestOptions();
@@ -2151,36 +2202,11 @@ public final class TaskClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (select != null) {
             requestOptions.addQueryParam("$select", select, false);
         }
-        return listSubtasksWithResponse(jobId, taskId, requestOptions)
-                .getValue()
-                .toObject(BatchTaskListSubtasksResult.class);
-    }
-
-    /**
-     * Lists all of the subtasks that are associated with the specified multi-instance Task.
-     *
-     * <p>If the Task is not a multi-instance Task then this returns an empty collection.
-     *
-     * @param jobId The ID of the Job.
-     * @param taskId The ID of the Task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of listing the subtasks of a Task.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BatchTaskListSubtasksResult listSubtasks(String jobId, String taskId) {
-        // Generated convenience method for listSubtasksWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         return listSubtasksWithResponse(jobId, taskId, requestOptions)
                 .getValue()
                 .toObject(BatchTaskListSubtasksResult.class);
@@ -2228,11 +2254,11 @@ public final class TaskClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for terminateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -2245,7 +2271,7 @@ public final class TaskClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -2254,35 +2280,11 @@ public final class TaskClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        terminateWithResponse(jobId, taskId, requestOptions).getValue();
-    }
-
-    /**
-     * Terminates the specified Task.
-     *
-     * <p>When the Task has been terminated, it moves to the completed state. For multi-instance Tasks, the terminate
-     * Task operation applies synchronously to the primary task; subtasks are then terminated asynchronously in the
-     * background.
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to terminate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void terminate(String jobId, String taskId) {
-        // Generated convenience method for terminateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         terminateWithResponse(jobId, taskId, requestOptions).getValue();
     }
 
@@ -2330,11 +2332,11 @@ public final class TaskClient {
             Integer timeOut,
             String clientRequestId,
             Boolean returnClientRequestId,
-            String ocpDate,
+            OffsetDateTime ocpDate,
             String ifMatch,
             String ifNoneMatch,
-            String ifModifiedSince,
-            String ifUnmodifiedSince) {
+            OffsetDateTime ifModifiedSince,
+            OffsetDateTime ifUnmodifiedSince) {
         // Generated convenience method for reactivateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (timeOut != null) {
@@ -2347,7 +2349,7 @@ public final class TaskClient {
             requestOptions.setHeader("return-client-request-id", String.valueOf(returnClientRequestId));
         }
         if (ocpDate != null) {
-            requestOptions.setHeader("ocp-date", ocpDate);
+            requestOptions.setHeader("ocp-date", String.valueOf(new DateTimeRfc1123(ocpDate)));
         }
         if (ifMatch != null) {
             requestOptions.setHeader("if-match", ifMatch);
@@ -2356,37 +2358,11 @@ public final class TaskClient {
             requestOptions.setHeader("if-none-match", ifNoneMatch);
         }
         if (ifModifiedSince != null) {
-            requestOptions.setHeader("if-modified-since", ifModifiedSince);
+            requestOptions.setHeader("if-modified-since", String.valueOf(new DateTimeRfc1123(ifModifiedSince)));
         }
         if (ifUnmodifiedSince != null) {
-            requestOptions.setHeader("if-unmodified-since", ifUnmodifiedSince);
+            requestOptions.setHeader("if-unmodified-since", String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
         }
-        reactivateWithResponse(jobId, taskId, requestOptions).getValue();
-    }
-
-    /**
-     * Reactivates a Task, allowing it to run again even if its retry count has been exhausted.
-     *
-     * <p>Reactivation makes a Task eligible to be retried again up to its maximum retry count. The Task's state is
-     * changed to active. As the Task is no longer in the completed state, any previous exit code or failure information
-     * is no longer available after reactivation. Each time a Task is reactivated, its retry count is reset to 0.
-     * Reactivation will fail for Tasks that are not completed or that previously completed successfully (with an exit
-     * code of 0). Additionally, it will fail if the Job has completed (or is terminating or deleting).
-     *
-     * @param jobId The ID of the Job containing the Task.
-     * @param taskId The ID of the Task to reactivate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void reactivate(String jobId, String taskId) {
-        // Generated convenience method for reactivateWithResponse
-        RequestOptions requestOptions = new RequestOptions();
         reactivateWithResponse(jobId, taskId, requestOptions).getValue();
     }
 }

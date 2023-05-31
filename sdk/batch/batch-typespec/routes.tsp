@@ -19,6 +19,31 @@ using Azure.ClientGenerator.Core;
 
 namespace BatchService;
 
+// Templates
+
+/**
+ * A remote procedure call (RPC) operation with additional response.
+ * @template TParams Object describing the parameters of the operation.
+ * @template TResponse Object describing the response of the operation.
+ * @template TAdditionalResponse Object describing the response of the operation.
+ * @template Traits Object describing the traits of the operation.
+ * @template TErrorResponse Error response of the operation. If not specified, the default error response is used.
+ */
+@doc("New rpc operation allowing multiple repsonses")
+@Foundations.Private.needsRoute
+op RpcOperationWithAdditionalResponse<
+  TParams,
+  TResponse extends TypeSpec.Reflection.Model,
+  TAdditionalResponse extends object,
+  Traits extends object = {},
+  TErrorResponse = Azure.Core.Foundations.ErrorResponse
+> is Foundations.Operation<
+  TParams & Azure.Core.Traits.Private.TraitProperties<Traits, TraitLocation.Parameters>,
+  TResponse & Azure.Core.Traits.Private.TraitProperties<Traits, TraitLocation.Response> | TAdditionalResponse,
+  Traits,
+  TErrorResponse
+>;
+
 // Interfaces ////////////////////
 
 #suppress "@azure-tools/typespec-azure-core/casing-style" "The names of Model types must use camelCase"
@@ -241,9 +266,10 @@ error code PoolBeingDeleted.
   @example("./examples/PoolExists.json", "Check Pool Exists")
   @route("/pools/{poolId}")
   @head
-  Exists is RpcOperation<
+  Exists is RpcOperationWithAdditionalResponse<
     BatchClientRequestHeaders & BatchPoolHeaders,
-    PoolDoesntExistResponseHeaders | PoolDoesExistResponseHeaders,
+    PoolDoesntExistResponseHeaders,
+    PoolDoesExistResponseHeaders,
     {},
     BatchError
   >;
@@ -1344,7 +1370,7 @@ interface JobSchedule {
   @example("./examples/JobScheduleExists.json", "Check Job Schedule Exists")
   @route("/jobschedules/{jobScheduleId}")
   @head
-  Exists is RpcOperation<
+  Exists is RpcOperationWithAdditionalResponse<
     BatchClientRequestHeaders &
       BatchMatchHeaders & {
         @doc("The ID of the Job Schedule which you want to check.")
@@ -1355,7 +1381,8 @@ interface JobSchedule {
       @doc("A response containing headers related to the Job Schedule, if it exists.")
       @statusCode
       code: "200";
-    }) | {
+    }),
+    {
       @doc("The Job Schedule does not exist.")
       @statusCode
       code: "404";
