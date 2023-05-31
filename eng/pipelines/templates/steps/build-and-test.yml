@@ -74,11 +74,9 @@ steps:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
 
-  # we want to run this when TestFromSource isn't true
-  - ${{ if ne(variables['TestFromSource'], 'true') }}:
-    - template: /eng/pipeline/templates/steps/restore-test-proxy-recordings.yml
-      parameters:
-        - Paths: [ '/sdk/${{ parameters.ServiceDirectory }}' ]
+  - template: /eng/pipeline/templates/steps/restore-test-proxy-recordings.yml
+    parameters:
+      Paths: $(SparseCheckoutDirectories)
 
   - task: Maven@3
     displayName: 'Run tests'
@@ -125,12 +123,6 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       goals: jacoco:report-aggregate
-
-  # we want to run this when TestFromSource is true
-  - ${{ if eq(variables['TestFromSource'], 'true') }}:
-    - template: /eng/pipeline/templates/steps/restore-test-proxy-recordings.yml
-      parameters:
-        - Paths: $(SparseCheckoutDirectories)
 
   - task: Maven@3
     displayName: 'Build for From Source run'
