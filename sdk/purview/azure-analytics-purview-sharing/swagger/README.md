@@ -2,7 +2,7 @@
 
 ```yaml
 input-file:
-- https://github.com/Azure/azure-rest-api-specs/blob/12cbd66750c4dfe302e9eca42b1fc727f8c02700/specification/purview/data-plane/Azure.Analytics.Purview.Share/preview/2023-02-15-preview/share.json
+- https://github.com/Azure/azure-rest-api-specs/blob/main/specification/purview/data-plane/Azure.Analytics.Purview.Share/preview/2023-05-30-preview/share.json
 output-folder: ../
 java: true
 regenerate-pom: false
@@ -12,7 +12,7 @@ artifact-id: azure-analytics-purview-sharing
 generate-samples: true
 namespace: com.azure.analytics.purview.sharing
 service-versions:
-- 2023-02-15-preview
+- 2023-05-30-preview
 directive:
   rename-operation:
     [
@@ -45,5 +45,4 @@ directive:
       from: "ReceivedShares_ListDetached",
       to: "ReceivedShares_GetAllDetachedReceivedShares",
     ]
-```
 ```

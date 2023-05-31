@@ -891,7 +891,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -949,7 +948,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -996,7 +994,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -1051,7 +1048,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -1097,7 +1093,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -1152,7 +1147,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -1197,7 +1191,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
@@ -1249,7 +1242,6 @@ public final class ReceivedSharesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The continuation token to list the next page</td></tr>
      *     <tr><td>filter</td><td>String</td><td>No</td><td>Filters the results using OData syntax</td></tr>
      *     <tr><td>orderby</td><td>String</td><td>No</td><td>Sorts the results using OData syntax</td></tr>
      * </table>
