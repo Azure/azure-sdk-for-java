@@ -3,16 +3,16 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.ExtractSummaryOperationDetailPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractiveSummaryOperationDetailPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 
 /**
- * The {@link ExtractSummaryOperationDetail} model.
+ * The {@link ExtractiveSummaryOperationDetail} model.
  */
 @Immutable
-public final class ExtractSummaryOperationDetail {
+public final class ExtractiveSummaryOperationDetail {
     private String operationId;
     private String displayName;
     private OffsetDateTime createdAt;
@@ -20,35 +20,34 @@ public final class ExtractSummaryOperationDetail {
     private OffsetDateTime lastModifiedAt;
 
     static {
-        ExtractSummaryOperationDetailPropertiesHelper.setAccessor(
-            new ExtractSummaryOperationDetailPropertiesHelper
-                .ExtractSummaryOperationDetailAccessor() {
+        ExtractiveSummaryOperationDetailPropertiesHelper.setAccessor(
+            new ExtractiveSummaryOperationDetailPropertiesHelper.ExtractiveSummaryOperationDetailAccessor() {
                 @Override
-                public void setOperationId(ExtractSummaryOperationDetail operationResult,
-                    String operationId) {
+                public void setOperationId(ExtractiveSummaryOperationDetail operationResult,
+                                           String operationId) {
                     operationResult.setOperationId(operationId);
                 }
 
                 @Override
-                public void setDisplayName(ExtractSummaryOperationDetail operationDetail, String name) {
+                public void setDisplayName(ExtractiveSummaryOperationDetail operationDetail, String name) {
                     operationDetail.setDisplayName(name);
                 }
 
                 @Override
-                public void setExpiresAt(ExtractSummaryOperationDetail operationDetail,
-                    OffsetDateTime expiresAt) {
+                public void setExpiresAt(ExtractiveSummaryOperationDetail operationDetail,
+                                         OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(ExtractSummaryOperationDetail operationDetail,
-                    OffsetDateTime createdAt) {
+                public void setCreatedAt(ExtractiveSummaryOperationDetail operationDetail,
+                                         OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 
                 @Override
-                public void setLastModifiedAt(ExtractSummaryOperationDetail operationDetail,
-                    OffsetDateTime lastModifiedAt) {
+                public void setLastModifiedAt(ExtractiveSummaryOperationDetail operationDetail,
+                                              OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
             }
@@ -56,18 +55,18 @@ public final class ExtractSummaryOperationDetail {
     }
 
     /**
-     * Gets the operationId property of the {@link ExtractSummaryOperationDetail}.
+     * Gets the operationId property of the {@link ExtractiveSummaryOperationDetail}.
      *
-     * @return The operationId property of the {@link ExtractSummaryOperationDetail}.
+     * @return The operationId property of the {@link ExtractiveSummaryOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the displayName property of the {@link ExtractSummaryOperationDetail}.
+     * Gets the displayName property of the {@link ExtractiveSummaryOperationDetail}.
      *
-     * @return The displayName property of the {@link ExtractSummaryOperationDetail}.
+     * @return The displayName property of the {@link ExtractiveSummaryOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;

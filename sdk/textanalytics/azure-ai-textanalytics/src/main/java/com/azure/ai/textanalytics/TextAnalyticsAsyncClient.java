@@ -6,8 +6,8 @@ package com.azure.ai.textanalytics;
 import com.azure.ai.textanalytics.implementation.AnalyzeTextsImpl;
 import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
-import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
-import com.azure.ai.textanalytics.models.AbstractSummaryOptions;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
@@ -21,8 +21,8 @@ import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
-import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
-import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOptions;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
@@ -39,8 +39,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AbstractSummaryPagedFlux;
-import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryPagedFlux;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
@@ -49,8 +49,8 @@ import com.azure.ai.textanalytics.util.ClassifyDocumentPagedFlux;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.ExtractSummaryPagedFlux;
-import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryPagedFlux;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedFlux;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
@@ -115,8 +115,8 @@ public final class TextAnalyticsAsyncClient {
     final LabelClassifyUtilClient labelClassifyUtilClient;
     final AnalyzeHealthcareEntityUtilClient analyzeHealthcareEntityUtilClient;
     final AnalyzeActionsUtilClient analyzeActionsUtilClient;
-    final AbstractSummaryUtilClient abstractSummaryUtilClient;
-    final ExtractSummaryUtilClient extractSummaryUtilClient;
+    final AbstractiveSummaryUtilClient abstractiveSummaryUtilClient;
+    final ExtractiveSummaryUtilClient extractiveSummaryUtilClient;
 
     /**
      * Creates a {@link TextAnalyticsAsyncClient} that sends requests to the Text Analytics service's endpoint. Each
@@ -144,8 +144,8 @@ public final class TextAnalyticsAsyncClient {
         this.analyzeHealthcareEntityUtilClient = new AnalyzeHealthcareEntityUtilClient(legacyService, serviceVersion);
         this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(legacyService, serviceVersion);
         this.labelClassifyUtilClient = new LabelClassifyUtilClient(null, serviceVersion);
-        this.abstractSummaryUtilClient = new AbstractSummaryUtilClient(null, serviceVersion);
-        this.extractSummaryUtilClient = new ExtractSummaryUtilClient(null, serviceVersion);
+        this.abstractiveSummaryUtilClient = new AbstractiveSummaryUtilClient(null, serviceVersion);
+        this.extractiveSummaryUtilClient = new ExtractiveSummaryUtilClient(null, serviceVersion);
     }
 
     TextAnalyticsAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
@@ -167,8 +167,8 @@ public final class TextAnalyticsAsyncClient {
             serviceVersion);
         this.analyzeActionsUtilClient = new AnalyzeActionsUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
         this.labelClassifyUtilClient = new LabelClassifyUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
-        this.abstractSummaryUtilClient = new AbstractSummaryUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
-        this.extractSummaryUtilClient = new ExtractSummaryUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
+        this.abstractiveSummaryUtilClient = new AbstractiveSummaryUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
+        this.extractiveSummaryUtilClient = new ExtractiveSummaryUtilClient(new AnalyzeTextsImpl(service), serviceVersion);
     }
 
     /**
@@ -2721,7 +2721,7 @@ public final class TextAnalyticsAsyncClient {
      * &#125;
      * textAnalyticsAsyncClient.beginAbstractSummary&#40;documents&#41;
      *     .flatMap&#40;result -&gt; &#123;
-     *         AbstractSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
+     *         AbstractiveSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
      *             operationDetail.getCreatedAt&#40;&#41;, operationDetail.getExpiresAt&#40;&#41;&#41;;
      *         return result.getFinalResult&#40;&#41;;
@@ -2729,13 +2729,13 @@ public final class TextAnalyticsAsyncClient {
      *     .flatMap&#40;pagedFlux -&gt; pagedFlux&#41; &#47;&#47; this unwrap the Mono&lt;&gt; of Mono&lt;PagedFlux&lt;T&gt;&gt; to return PagedFlux&lt;T&gt;
      *     .subscribe&#40;
      *         resultCollection -&gt; &#123;
-     *             for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
+     *             for &#40;AbstractiveSummaryResult documentResult : resultCollection&#41; &#123;
      *                 System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
      *                 for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
      *                     System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
-     *                     for &#40;SummaryContext summaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                     for &#40;AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
      *                         System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
-     *                             summaryContext.getOffset&#40;&#41;, summaryContext.getLength&#40;&#41;&#41;;
+     *                             abstractiveSummaryContext.getOffset&#40;&#41;, abstractiveSummaryContext.getLength&#40;&#41;&#41;;
      *                     &#125;
      *                 &#125;
      *             &#125;
@@ -2751,7 +2751,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the abstractive summarization operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
-     * {@link AbstractSummaryResultCollection}.
+     * {@link AbstractiveSummaryResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
@@ -2762,7 +2762,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AbstractSummaryOperationDetail, AbstractSummaryPagedFlux> beginAbstractSummary(
+    public PollerFlux<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> beginAbstractSummary(
         Iterable<String> documents) {
         return beginAbstractSummary(documents, defaultLanguage, null);
     }
@@ -2776,7 +2776,7 @@ public final class TextAnalyticsAsyncClient {
      * See <a href="https://aka.ms/talangs">this</a> supported languages in Language service API.
      *
      * <p><strong>Code Sample</strong></p>
-     * <!-- src_embed AsyncClient.beginAbstractSummary#Iterable-String-AbstractSummaryOptions -->
+     * <!-- src_embed AsyncClient.beginAbstractSummary#Iterable-String-AbstractiveSummaryOptions -->
      * <pre>
      * List&lt;String&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
@@ -2800,10 +2800,10 @@ public final class TextAnalyticsAsyncClient {
      *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
      *             + &quot;the downstream AI tasks.&quot;&#41;;
      * &#125;
-     * AbstractSummaryOptions options = new AbstractSummaryOptions&#40;&#41;.setSentenceCount&#40;4&#41;;
+     * AbstractiveSummaryOptions options = new AbstractiveSummaryOptions&#40;&#41;.setSentenceCount&#40;4&#41;;
      * textAnalyticsAsyncClient.beginAbstractSummary&#40;documents, &quot;en&quot;, options&#41;
      *     .flatMap&#40;result -&gt; &#123;
-     *         AbstractSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
+     *         AbstractiveSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
      *             operationDetail.getCreatedAt&#40;&#41;, operationDetail.getExpiresAt&#40;&#41;&#41;;
      *         return result.getFinalResult&#40;&#41;;
@@ -2811,13 +2811,13 @@ public final class TextAnalyticsAsyncClient {
      *     .flatMap&#40;pagedFlux -&gt; pagedFlux&#41; &#47;&#47; this unwrap the Mono&lt;&gt; of Mono&lt;PagedFlux&lt;T&gt;&gt; to return PagedFlux&lt;T&gt;
      *     .subscribe&#40;
      *         resultCollection -&gt; &#123;
-     *             for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
+     *             for &#40;AbstractiveSummaryResult documentResult : resultCollection&#41; &#123;
      *                 System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
      *                 for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
      *                     System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
-     *                     for &#40;SummaryContext summaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                     for &#40;AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
      *                         System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
-     *                             summaryContext.getOffset&#40;&#41;, summaryContext.getLength&#40;&#41;&#41;;
+     *                             abstractiveSummaryContext.getOffset&#40;&#41;, abstractiveSummaryContext.getLength&#40;&#41;&#41;;
      *                     &#125;
      *                 &#125;
      *             &#125;
@@ -2825,19 +2825,19 @@ public final class TextAnalyticsAsyncClient {
      *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
      * </pre>
-     * <!-- end AsyncClient.beginAbstractSummary#Iterable-String-AbstractSummaryOptions -->
+     * <!-- end AsyncClient.beginAbstractSummary#Iterable-String-AbstractiveSummaryOptions -->
      *
      * @param documents A list of documents to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
-     * @param options The additional configurable {@link AbstractSummaryOptions options} that may be passed
+     * @param options The additional configurable {@link AbstractiveSummaryOptions options} that may be passed
      * when analyzing abstractive summarization.
      *
      * @return A {@link PollerFlux} that polls the abstractive summarization operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
-     * {@link AbstractSummaryResultCollection}.
+     * {@link AbstractiveSummaryResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
@@ -2848,8 +2848,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AbstractSummaryOperationDetail, AbstractSummaryPagedFlux> beginAbstractSummary(
-        Iterable<String> documents, String language, AbstractSummaryOptions options) {
+    public PollerFlux<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> beginAbstractSummary(
+        Iterable<String> documents, String language, AbstractiveSummaryOptions options) {
         return beginAbstractSummary(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
@@ -2865,7 +2865,7 @@ public final class TextAnalyticsAsyncClient {
      * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
      *
      * <p><strong>Code Sample</strong></p>
-     * <!-- src_embed AsyncClient.beginAbstractSummary#Iterable-AbstractSummaryOptions -->
+     * <!-- src_embed AsyncClient.beginAbstractSummary#Iterable-AbstractiveSummaryOptions -->
      * <pre>
      * List&lt;TextDocumentInput&gt; documents = new ArrayList&lt;&gt;&#40;&#41;;
      * for &#40;int i = 0; i &lt; 3; i++&#41; &#123;
@@ -2889,10 +2889,10 @@ public final class TextAnalyticsAsyncClient {
      *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
      *             + &quot;the downstream AI tasks.&quot;&#41;&#41;;
      * &#125;
-     * AbstractSummaryOptions options = new AbstractSummaryOptions&#40;&#41;.setSentenceCount&#40;4&#41;;
+     * AbstractiveSummaryOptions options = new AbstractiveSummaryOptions&#40;&#41;.setSentenceCount&#40;4&#41;;
      * textAnalyticsAsyncClient.beginAbstractSummary&#40;documents, options&#41;
      *     .flatMap&#40;result -&gt; &#123;
-     *         AbstractSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
+     *         AbstractiveSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
      *             operationDetail.getCreatedAt&#40;&#41;, operationDetail.getExpiresAt&#40;&#41;&#41;;
      *         return result.getFinalResult&#40;&#41;;
@@ -2900,13 +2900,13 @@ public final class TextAnalyticsAsyncClient {
      *     .flatMap&#40;pagedFlux -&gt; pagedFlux&#41; &#47;&#47; this unwrap the Mono&lt;&gt; of Mono&lt;PagedFlux&lt;T&gt;&gt; to return PagedFlux&lt;T&gt;
      *     .subscribe&#40;
      *         resultCollection -&gt; &#123;
-     *             for &#40;AbstractSummaryResult documentResult : resultCollection&#41; &#123;
+     *             for &#40;AbstractiveSummaryResult documentResult : resultCollection&#41; &#123;
      *                 System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
      *                 for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
      *                     System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
-     *                     for &#40;SummaryContext summaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
+     *                     for &#40;AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
      *                         System.out.printf&#40;&quot;&#92;t&#92;t offset: %d, length: %d%n&quot;,
-     *                             summaryContext.getOffset&#40;&#41;, summaryContext.getLength&#40;&#41;&#41;;
+     *                             abstractiveSummaryContext.getOffset&#40;&#41;, abstractiveSummaryContext.getLength&#40;&#41;&#41;;
      *                     &#125;
      *                 &#125;
      *             &#125;
@@ -2914,17 +2914,17 @@ public final class TextAnalyticsAsyncClient {
      *         ex -&gt; System.out.println&#40;&quot;Error listing pages: &quot; + ex.getMessage&#40;&#41;&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Successfully listed all pages&quot;&#41;&#41;;
      * </pre>
-     * <!-- end AsyncClient.beginAbstractSummary#Iterable-AbstractSummaryOptions -->
+     * <!-- end AsyncClient.beginAbstractSummary#Iterable-AbstractiveSummaryOptions -->
      *
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param options The additional configurable {@link AbstractSummaryOptions options} that may be passed
+     * @param options The additional configurable {@link AbstractiveSummaryOptions options} that may be passed
      * when analyzing abstractive summarization.
      *
      * @return A {@link PollerFlux} that polls the abstractive summarization operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
-     * {@link AbstractSummaryResultCollection}.
+     * {@link AbstractiveSummaryResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
@@ -2935,9 +2935,9 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<AbstractSummaryOperationDetail, AbstractSummaryPagedFlux> beginAbstractSummary(
-        Iterable<TextDocumentInput> documents, AbstractSummaryOptions options) {
-        return abstractSummaryUtilClient.abstractSummaryAsync(documents, options, Context.NONE);
+    public PollerFlux<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedFlux> beginAbstractSummary(
+        Iterable<TextDocumentInput> documents, AbstractiveSummaryOptions options) {
+        return abstractiveSummaryUtilClient.abstractiveSummaryAsync(documents, options, Context.NONE);
     }
 
     // Extractive Summarization
@@ -2978,7 +2978,7 @@ public final class TextAnalyticsAsyncClient {
      * &#125;
      * textAnalyticsAsyncClient.beginExtractSummary&#40;documents&#41;
      *     .flatMap&#40;result -&gt; &#123;
-     *         ExtractSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
+     *         ExtractiveSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
      *             operationDetail.getCreatedAt&#40;&#41;, operationDetail.getExpiresAt&#40;&#41;&#41;;
      *         return result.getFinalResult&#40;&#41;;
@@ -2986,12 +2986,12 @@ public final class TextAnalyticsAsyncClient {
      *     .flatMap&#40;pagedFlux -&gt; pagedFlux&#41; &#47;&#47; this unwrap the Mono&lt;&gt; of Mono&lt;PagedFlux&lt;T&gt;&gt; to return PagedFlux&lt;T&gt;
      *     .subscribe&#40;
      *         resultCollection -&gt; &#123;
-     *             for &#40;ExtractSummaryResult documentResult : resultCollection&#41; &#123;
-     *                 for &#40;SummarySentence summarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             for &#40;ExtractiveSummaryResult documentResult : resultCollection&#41; &#123;
+     *                 for &#40;ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
      *                     System.out.printf&#40;
      *                         &quot;Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
-     *                         summarySentence.getText&#40;&#41;, summarySentence.getLength&#40;&#41;,
-     *                         summarySentence.getOffset&#40;&#41;, summarySentence.getRankScore&#40;&#41;&#41;;
+     *                         extractiveSummarySentence.getText&#40;&#41;, extractiveSummarySentence.getLength&#40;&#41;,
+     *                         extractiveSummarySentence.getOffset&#40;&#41;, extractiveSummarySentence.getRankScore&#40;&#41;&#41;;
      *                 &#125;
      *             &#125;
      *         &#125;,
@@ -3006,7 +3006,7 @@ public final class TextAnalyticsAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the extractive summarization operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
-     * {@link ExtractSummaryResultCollection}.
+     * {@link ExtractiveSummaryResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
@@ -3017,7 +3017,7 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<ExtractSummaryOperationDetail, ExtractSummaryPagedFlux> beginExtractSummary(
+    public PollerFlux<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> beginExtractSummary(
         Iterable<String> documents) {
         return beginExtractSummary(documents, defaultLanguage, null);
     }
@@ -3055,11 +3055,11 @@ public final class TextAnalyticsAsyncClient {
      *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
      *             + &quot;the downstream AI tasks.&quot;&#41;;
      * &#125;
-     * ExtractSummaryOptions options =
-     *     new ExtractSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;.setOrderBy&#40;SummarySentencesOrder.RANK&#41;;
+     * ExtractiveSummaryOptions options =
+     *     new ExtractiveSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;.setOrderBy&#40;ExtractiveSummarySentencesOrder.RANK&#41;;
      * textAnalyticsAsyncClient.beginExtractSummary&#40;documents, &quot;en&quot;, options&#41;
      *     .flatMap&#40;result -&gt; &#123;
-     *         ExtractSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
+     *         ExtractiveSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
      *             operationDetail.getCreatedAt&#40;&#41;, operationDetail.getExpiresAt&#40;&#41;&#41;;
      *         return result.getFinalResult&#40;&#41;;
@@ -3067,12 +3067,12 @@ public final class TextAnalyticsAsyncClient {
      *     .flatMap&#40;pagedFlux -&gt; pagedFlux&#41; &#47;&#47; this unwrap the Mono&lt;&gt; of Mono&lt;PagedFlux&lt;T&gt;&gt; to return PagedFlux&lt;T&gt;
      *     .subscribe&#40;
      *         resultCollection -&gt; &#123;
-     *             for &#40;ExtractSummaryResult documentResult : resultCollection&#41; &#123;
-     *                 for &#40;SummarySentence summarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             for &#40;ExtractiveSummaryResult documentResult : resultCollection&#41; &#123;
+     *                 for &#40;ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
      *                     System.out.printf&#40;
      *                         &quot;Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
-     *                         summarySentence.getText&#40;&#41;, summarySentence.getLength&#40;&#41;,
-     *                         summarySentence.getOffset&#40;&#41;, summarySentence.getRankScore&#40;&#41;&#41;;
+     *                         extractiveSummarySentence.getText&#40;&#41;, extractiveSummarySentence.getLength&#40;&#41;,
+     *                         extractiveSummarySentence.getOffset&#40;&#41;, extractiveSummarySentence.getRankScore&#40;&#41;&#41;;
      *                 &#125;
      *             &#125;
      *         &#125;,
@@ -3086,12 +3086,12 @@ public final class TextAnalyticsAsyncClient {
      * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
      * @param language The 2-letter ISO 639-1 representation of language for the documents. If not set, uses "en" for
      * English as default.
-     * @param options The additional configurable {@link ExtractSummaryOptions options} that may be passed
+     * @param options The additional configurable {@link ExtractiveSummaryOptions options} that may be passed
      * when analyzing extractive summarization.
      *
      * @return A {@link PollerFlux} that polls the extractive summarization operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
-     * {@link ExtractSummaryResultCollection}.
+     * {@link ExtractiveSummaryResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
@@ -3102,8 +3102,8 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<ExtractSummaryOperationDetail, ExtractSummaryPagedFlux> beginExtractSummary(
-        Iterable<String> documents, String language, ExtractSummaryOptions options) {
+    public PollerFlux<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> beginExtractSummary(
+        Iterable<String> documents, String language, ExtractiveSummaryOptions options) {
         return beginExtractSummary(
             mapByIndex(documents, (index, value) -> {
                 final TextDocumentInput textDocumentInput = new TextDocumentInput(index, value);
@@ -3143,11 +3143,11 @@ public final class TextAnalyticsAsyncClient {
      *             + &quot;foundational component of this aspiration, if grounded with external knowledge sources in &quot;
      *             + &quot;the downstream AI tasks.&quot;&#41;&#41;;
      * &#125;
-     * ExtractSummaryOptions options =
-     *     new ExtractSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;.setOrderBy&#40;SummarySentencesOrder.RANK&#41;;
+     * ExtractiveSummaryOptions options =
+     *     new ExtractiveSummaryOptions&#40;&#41;.setMaxSentenceCount&#40;4&#41;.setOrderBy&#40;ExtractiveSummarySentencesOrder.RANK&#41;;
      * textAnalyticsAsyncClient.beginExtractSummary&#40;documents, options&#41;
      *     .flatMap&#40;result -&gt; &#123;
-     *         ExtractSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
+     *         ExtractiveSummaryOperationDetail operationDetail = result.getValue&#40;&#41;;
      *         System.out.printf&#40;&quot;Operation created time: %s, expiration time: %s.%n&quot;,
      *             operationDetail.getCreatedAt&#40;&#41;, operationDetail.getExpiresAt&#40;&#41;&#41;;
      *         return result.getFinalResult&#40;&#41;;
@@ -3155,12 +3155,12 @@ public final class TextAnalyticsAsyncClient {
      *     .flatMap&#40;pagedFlux -&gt; pagedFlux&#41; &#47;&#47; this unwrap the Mono&lt;&gt; of Mono&lt;PagedFlux&lt;T&gt;&gt; to return PagedFlux&lt;T&gt;
      *     .subscribe&#40;
      *         resultCollection -&gt; &#123;
-     *             for &#40;ExtractSummaryResult documentResult : resultCollection&#41; &#123;
-     *                 for &#40;SummarySentence summarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
+     *             for &#40;ExtractiveSummaryResult documentResult : resultCollection&#41; &#123;
+     *                 for &#40;ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences&#40;&#41;&#41; &#123;
      *                     System.out.printf&#40;
      *                         &quot;Sentence text: %s, length: %d, offset: %d, rank score: %f.%n&quot;,
-     *                         summarySentence.getText&#40;&#41;, summarySentence.getLength&#40;&#41;,
-     *                         summarySentence.getOffset&#40;&#41;, summarySentence.getRankScore&#40;&#41;&#41;;
+     *                         extractiveSummarySentence.getText&#40;&#41;, extractiveSummarySentence.getLength&#40;&#41;,
+     *                         extractiveSummarySentence.getOffset&#40;&#41;, extractiveSummarySentence.getRankScore&#40;&#41;&#41;;
      *                 &#125;
      *             &#125;
      *         &#125;,
@@ -3172,12 +3172,12 @@ public final class TextAnalyticsAsyncClient {
      * @param documents A list of {@link TextDocumentInput documents} to be analyzed.
      * For text length limits, maximum batch size, and supported text encoding, see
      * <a href="https://aka.ms/azsdk/textanalytics/data-limits">data limits</a>.
-     * @param options The additional configurable {@link ExtractSummaryOptions options} that may be passed
+     * @param options The additional configurable {@link ExtractiveSummaryOptions options} that may be passed
      * when analyzing extractive summarization.
      *
      * @return A {@link PollerFlux} that polls the extractive summarization operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns a {@link PagedFlux} of
-     * {@link ExtractSummaryResultCollection}.
+     * {@link ExtractiveSummaryResultCollection}.
      *
      * @throws NullPointerException if {@code documents} is null.
      * @throws IllegalArgumentException if {@code documents} is empty.
@@ -3188,9 +3188,9 @@ public final class TextAnalyticsAsyncClient {
      * @throws TextAnalyticsException If analyze operation fails.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PollerFlux<ExtractSummaryOperationDetail, ExtractSummaryPagedFlux> beginExtractSummary(
-        Iterable<TextDocumentInput> documents, ExtractSummaryOptions options) {
-        return extractSummaryUtilClient.extractSummaryAsync(documents, options, Context.NONE);
+    public PollerFlux<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedFlux> beginExtractSummary(
+        Iterable<TextDocumentInput> documents, ExtractiveSummaryOptions options) {
+        return extractiveSummaryUtilClient.extractiveSummaryAsync(documents, options, Context.NONE);
     }
 
     /**

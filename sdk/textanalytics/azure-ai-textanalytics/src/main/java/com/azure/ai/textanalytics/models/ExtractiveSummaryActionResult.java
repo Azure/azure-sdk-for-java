@@ -3,19 +3,19 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.ExtractSummaryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
+import com.azure.ai.textanalytics.implementation.ExtractiveSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link ExtractSummaryActionResult} model.
+ * The {@link ExtractiveSummaryActionResult} model.
  */
 @Immutable
-public final class ExtractSummaryActionResult extends TextAnalyticsActionResult {
-    private ExtractSummaryResultCollection documentsResults;
+public final class ExtractiveSummaryActionResult extends TextAnalyticsActionResult {
+    private ExtractiveSummaryResultCollection documentsResults;
 
     static {
-        ExtractSummaryActionResultPropertiesHelper.setAccessor(
+        ExtractiveSummaryActionResultPropertiesHelper.setAccessor(
             (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
@@ -27,12 +27,12 @@ public final class ExtractSummaryActionResult extends TextAnalyticsActionResult 
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public ExtractSummaryResultCollection getDocumentsResults() {
+    public ExtractiveSummaryResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }
 
-    private void setDocumentsResults(ExtractSummaryResultCollection documentsResults) {
+    private void setDocumentsResults(ExtractiveSummaryResultCollection documentsResults) {
         this.documentsResults = documentsResults;
     }
 }

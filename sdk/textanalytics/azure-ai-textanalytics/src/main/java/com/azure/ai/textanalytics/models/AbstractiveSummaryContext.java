@@ -3,14 +3,14 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.SummaryContextPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryContextPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /**
- * {@link SummaryContext} model.
+ * {@link AbstractiveSummaryContext} model.
  */
 @Immutable
-public final class SummaryContext {
+public final class AbstractiveSummaryContext {
     /*
      * Start position for the context. Use of different 'stringIndexType' values can affect the offset returned.
      */
@@ -22,16 +22,16 @@ public final class SummaryContext {
     private int length;
 
     static {
-        SummaryContextPropertiesHelper.setAccessor(
-            new SummaryContextPropertiesHelper.SummaryContextAccessor() {
+        AbstractiveSummaryContextPropertiesHelper.setAccessor(
+            new AbstractiveSummaryContextPropertiesHelper.AbstractiveSummaryContextAccessor() {
                 @Override
-                public void setOffset(SummaryContext summaryContext, int offset) {
-                    summaryContext.setOffset(offset);
+                public void setOffset(AbstractiveSummaryContext abstractiveSummaryContext, int offset) {
+                    abstractiveSummaryContext.setOffset(offset);
                 }
 
                 @Override
-                public void setLength(SummaryContext summaryContext, int length) {
-                    summaryContext.setLength(length);
+                public void setLength(AbstractiveSummaryContext abstractiveSummaryContext, int length) {
+                    abstractiveSummaryContext.setLength(length);
                 }
             }
         );

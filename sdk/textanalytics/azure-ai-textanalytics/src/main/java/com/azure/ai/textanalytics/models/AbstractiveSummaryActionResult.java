@@ -3,19 +3,19 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.AbstractSummaryActionResultPropertiesHelper;
-import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
  * The {@link AnalyzeHealthcareEntitiesActionResult} model.
  */
 @Immutable
-public final class AbstractSummaryActionResult extends TextAnalyticsActionResult {
-    private AbstractSummaryResultCollection documentsResults;
+public final class AbstractiveSummaryActionResult extends TextAnalyticsActionResult {
+    private AbstractiveSummaryResultCollection documentsResults;
 
     static {
-        AbstractSummaryActionResultPropertiesHelper.setAccessor(
+        AbstractiveSummaryActionResultPropertiesHelper.setAccessor(
             (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
     }
 
@@ -27,12 +27,12 @@ public final class AbstractSummaryActionResult extends TextAnalyticsActionResult
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
      */
-    public AbstractSummaryResultCollection getDocumentsResults() {
+    public AbstractiveSummaryResultCollection getDocumentsResults() {
         throwExceptionIfError();
         return documentsResults;
     }
 
-    private void setDocumentsResults(AbstractSummaryResultCollection documentsResults) {
+    private void setDocumentsResults(AbstractiveSummaryResultCollection documentsResults) {
         this.documentsResults = documentsResults;
     }
 }

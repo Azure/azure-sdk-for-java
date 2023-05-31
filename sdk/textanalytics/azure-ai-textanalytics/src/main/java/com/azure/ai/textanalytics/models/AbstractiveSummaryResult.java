@@ -3,50 +3,50 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.AbstractSummaryResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link AbstractSummaryResult} model.
+ * The {@link AbstractiveSummaryResult} model.
  */
 @Immutable
-public final class AbstractSummaryResult extends TextAnalyticsResult {
+public final class AbstractiveSummaryResult extends TextAnalyticsResult {
     private DetectedLanguage detectedLanguage;
     private IterableStream<AbstractiveSummary> summaries;
     private IterableStream<TextAnalyticsWarning> warnings;
 
     static {
-        AbstractSummaryResultPropertiesHelper.setAccessor(
-                new AbstractSummaryResultPropertiesHelper.AbstractSummaryResultAccessor() {
+        AbstractiveSummaryResultPropertiesHelper.setAccessor(
+                new AbstractiveSummaryResultPropertiesHelper.AbstractiveSummaryResultAccessor() {
                     @Override
-                    public void setDetectedLanguage(AbstractSummaryResult documentResult,
-                        DetectedLanguage detectedLanguage) {
+                    public void setDetectedLanguage(AbstractiveSummaryResult documentResult,
+                                                    DetectedLanguage detectedLanguage) {
                         documentResult.setDetectedLanguage(detectedLanguage);
                     }
 
                     @Override
-                    public void setWarnings(AbstractSummaryResult documentResult,
-                        IterableStream<TextAnalyticsWarning> warnings) {
+                    public void setWarnings(AbstractiveSummaryResult documentResult,
+                                            IterableStream<TextAnalyticsWarning> warnings) {
                         documentResult.setWarnings(warnings);
                     }
 
                     @Override
-                    public void setSummaries(AbstractSummaryResult documentResult,
-                        IterableStream<AbstractiveSummary> summaries) {
+                    public void setSummaries(AbstractiveSummaryResult documentResult,
+                                             IterableStream<AbstractiveSummary> summaries) {
                         documentResult.setSummaries(summaries);
                     }
                 });
     }
 
     /**
-     * Creates a {@link AbstractSummaryResult} model that describes the abstractive summarization result.
+     * Creates a {@link AbstractiveSummaryResult} model that describes the abstractive summarization result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
      */
-    public AbstractSummaryResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
+    public AbstractiveSummaryResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
     }
 
