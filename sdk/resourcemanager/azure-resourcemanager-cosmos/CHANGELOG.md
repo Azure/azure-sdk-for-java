@@ -4,9 +4,9 @@
 
 ### Other Changes
 
-### Dependency Updates
+#### Dependency Updates
 
--Update `api-version` to `2023-03-15-preview`
+- Updated `api-version` to `2023-03-15-preview`
 
 ## 2.27.0 (2023-05-25)
 
