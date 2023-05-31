@@ -1,6 +1,21 @@
-# Azure Purview Sharing client library for Java
+# Microsoft Azure Java SDK for Purview Sharing
 
-**Please rely heavily on the [service's documentation][product_documentation] to use this library**
+Microsoft Purview Data Sharing allows data to be shared in-place from Azure Data Lake Storage Gen2 and Azure Storage accounts, both within and across organizations.
+
+Data providers may use Microsoft Purview Data Sharing to share their data directly with users and partners (known as data consumers) without data duplication, while centrally managing their sharing activities from within Microsoft Purview.
+
+For data consumers, Microsoft Purview Data Sharing provides near real-time access to data shared with them by a provider.
+
+Key capabilities delivered by Microsoft Purview Data Sharing include:
+- Share data within the organization or with partners and customers outside of the organization (within the same Azure tenant or across different Azure tenants).
+- Share data from ADLS Gen2 or Blob storage in-place without data duplication.
+- Share data with multiple recipients.
+- Access shared data in near real time.
+- Manage sharing relationships and keep track of who the data is shared with/from, for each ADLSGen2 or Blob Storage account.
+- Terminate share access at any time.
+- Flexible experience through Microsoft Purview governance portal or via REST APIs.
+
+**Please visit the following resources to learn more about this product.**
 
 [Source code][source_code] | [Package (Maven)][package] | [API reference documentation][docs] | [Product Documentation][share_product_documentation] | [Samples][samples_code]
 
@@ -39,7 +54,13 @@ Various documentation is available to help you get started
 
 ## Key concepts
 
-## Examples
+**Data Provider: ** A data provider is the individual who creates a share by selecting a data source that is registered in Microsoft Purview, choosing which files and folders to share, and who to share them with. Microsoft Purview then sends an invitation to each data consumer.
+
+**Data Consumer: ** A data consumer is the individual who accepts the invitation by specifying a target storage account in their own Azure subscription that they'll use to access the shared data.
+
+## Data Provider Examples
+
+The following code examples demonstrate how data provider's can use the Microsoft Azure Java SDK for Purview Sharing to manage their sharing activity.
 
 ### Create a Sent Share Client
 ```java com.azure.analytics.purview.sharing.createSentShareClient
@@ -51,6 +72,9 @@ SentSharesClient sentSharesClient =
 ```
 
 ### Create a Sent Share
+
+To begin sharing data, the data provider must first create a sent share that identifies the data they would like to share.
+
 ```java com.azure.analytics.purview.sharing.createSentShare
 SentSharesClient sentSharesClient =
         new SentSharesClientBuilder()
@@ -88,49 +112,10 @@ SyncPoller<BinaryData, BinaryData> response =
                 new RequestOptions());
 ```
 
-### Get a Sent Share
-```java com.azure.analytics.purview.sharing.getSentShare
-SentSharesClient sentSharesClient =
-        new SentSharesClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint("https://<my-account-name>.purview.azure.com/share")
-                .buildClient();
-
-SentShare retrievedSentShare = sentSharesClient
-        .getSentShareWithResponse("<sent-share-id>", new RequestOptions())
-        .getValue()
-        .toObject(SentShare.class);
-```
-
-### Get All Sent Shares
-```java com.azure.analytics.purview.sharing.getAllSentShares
-SentSharesClient sentSharesClient =
-        new SentSharesClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint("https://<my-account-name>.purview.azure.com/share")
-                .buildClient();
-
-PagedIterable<BinaryData> sentShareResults = sentSharesClient.getAllSentShares(
-                "/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/provider-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage",
-                new RequestOptions());
-
-List<SentShare> sentShares = sentShareResults.stream()
-    .map(binaryData -> binaryData.toObject(SentShare.class))
-    .collect(Collectors.toList());
-```
-
-### Delete a Sent Share
-```java com.azure.analytics.purview.sharing.deleteSentShare
-SentSharesClient sentSharesClient =
-        new SentSharesClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint("https://<my-account-name>.purview.azure.com/share")
-                .buildClient();
-
-sentSharesClient.beginDeleteSentShare("<sent-share-id", new RequestOptions());
-```
-
 ### Send a Share Invitation to a User
+
+After creating a sent share, the data provider can extend invitations to consumers who may then view the shared data.  In this example, an invitation is extended to an individual by specifying their email address.
+
 ```java com.azure.analytics.purview.sharing.sendUserInvitation
 SentSharesClient sentSharesClient =
         new SentSharesClientBuilder()
@@ -155,6 +140,9 @@ Response<BinaryData> response =
 ```
 
 ### Send a Share Invitation to a Service
+
+Data providers can also extend invitations to services or applications by specifying the tenant id and object id of the service.  *The object id used for sending an invitation to a service must be the object id associated with the Enterprise Application (not the application registration)*.
+
 ```java com.azure.analytics.purview.sharing.sendServiceInvitation
 SentSharesClient sentSharesClient =
         new SentSharesClientBuilder()
@@ -178,22 +166,61 @@ Response<BinaryData> response =
                 new RequestOptions());
 ```
 
-### Get All Sent Share Invitations
-```java com.azure.analytics.purview.sharing.getAllSentShareInvitations
+### Get a Sent Share
+
+After creating a sent share, data providers can retrieve it from the service.
+
+```java com.azure.analytics.purview.sharing.getSentShare
 SentSharesClient sentSharesClient =
         new SentSharesClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .endpoint("https://<my-account-name>.purview.azure.com/share")
                 .buildClient();
 
-String sentShareId = "<sent-share-id>";
+SentShare retrievedSentShare = sentSharesClient
+        .getSentShareWithResponse("<sent-share-id>", new RequestOptions())
+        .getValue()
+        .toObject(SentShare.class);
+```
 
-RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/sentAt desc");
-PagedIterable<BinaryData> response =
-        sentSharesClient.getAllSentShareInvitations(sentShareId, requestOptions);
+### Get All Sent Shares
+
+Data providers can also retrieve a list of the sent shares they have created.
+
+```java com.azure.analytics.purview.sharing.getAllSentShares
+SentSharesClient sentSharesClient =
+        new SentSharesClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("https://<my-account-name>.purview.azure.com/share")
+                .buildClient();
+
+PagedIterable<BinaryData> sentShareResults = sentSharesClient.getAllSentShares(
+                "/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/provider-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage",
+                new RequestOptions());
+
+List<SentShare> sentShares = sentShareResults.stream()
+    .map(binaryData -> binaryData.toObject(SentShare.class))
+    .collect(Collectors.toList());
+```
+
+### Delete a Sent Share
+
+A sent share can be deleted by the data provider to stop sharing their data.
+
+```java com.azure.analytics.purview.sharing.deleteSentShare
+SentSharesClient sentSharesClient =
+        new SentSharesClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("https://<my-account-name>.purview.azure.com/share")
+                .buildClient();
+
+sentSharesClient.beginDeleteSentShare("<sent-share-id", new RequestOptions());
 ```
 
 ### Get Sent Share Invitation
+
+After creating a sent share invitation, data providers can retrieve it from the service.
+
 ```java com.azure.analytics.purview.sharing.getSentShareInvitation
 SentSharesClient sentSharesClient =
         new SentSharesClientBuilder()
@@ -208,6 +235,28 @@ Response<BinaryData> sentShareInvitation =
         sentSharesClient.getSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, new RequestOptions());
 ```
 
+### Get All Sent Share Invitations
+
+Data providers can also retrieve a list of the sent share invitations they have created.
+
+```java com.azure.analytics.purview.sharing.getAllSentShareInvitations
+SentSharesClient sentSharesClient =
+        new SentSharesClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("https://<my-account-name>.purview.azure.com/share")
+                .buildClient();
+
+String sentShareId = "<sent-share-id>";
+
+RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/sentAt desc");
+PagedIterable<BinaryData> response =
+        sentSharesClient.getAllSentShareInvitations(sentShareId, requestOptions);
+```
+
+## Data Consumer Examples
+
+The following code examples demonstrate how data consumers can use the Microsoft Azure Java SDK for Purview Sharing to manage their sharing activity.
+
 ### Create a Received Share Client
 ```java com.azure.analytics.purview.sharing.createReceivedShareClient
 ReceivedSharesClient receivedSharesClient =
@@ -218,6 +267,9 @@ ReceivedSharesClient receivedSharesClient =
 ```
 
 ### Get All Detached Received Shares
+
+To begin viewing data shared with them, a data consumer must first retrieve a list of detached received shares.  Within this list, they can identify a detached received share to attach.
+
 ```java com.azure.analytics.purview.sharing.getAllDetachedReceivedShares
 ReceivedSharesClient receivedSharesClient =
         new ReceivedSharesClientBuilder()
@@ -228,19 +280,11 @@ ReceivedSharesClient receivedSharesClient =
 RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
 PagedIterable<BinaryData> response = receivedSharesClient.getAllDetachedReceivedShares(requestOptions);
 ```
-### Get Received Share
-```java com.azure.analytics.purview.sharing.getReceivedShare
-ReceivedSharesClient receivedSharesClient =
-        new ReceivedSharesClientBuilder()
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint("https://<my-account-name>.purview.azure.com/share")
-                .buildClient();
 
-Response<BinaryData> receivedShare =
-        receivedSharesClient.getReceivedShareWithResponse("<received-share-id>", new RequestOptions());
-```
+### Attach a Receive Share
 
-### Attach Received Shares
+Once the data consumer has identified a received share, they can attach the received share to a location where they can access the shared data.  If the received share is already attached, the shared data will be made accessible at the new location specified.
+
 ```java com.azure.analytics.purview.sharing.attachReceivedShare
 ReceivedSharesClient receivedSharesClient =
         new ReceivedSharesClientBuilder()
@@ -281,7 +325,25 @@ SyncPoller<BinaryData, BinaryData> createResponse =
         receivedSharesClient.beginCreateOrReplaceReceivedShare(receivedShareId, BinaryData.fromObject(receivedShare), new RequestOptions());
 ```
 
+### Get Received Share
+
+A data consumer can retrieve an individual received share from the service.
+
+```java com.azure.analytics.purview.sharing.getReceivedShare
+ReceivedSharesClient receivedSharesClient =
+        new ReceivedSharesClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("https://<my-account-name>.purview.azure.com/share")
+                .buildClient();
+
+Response<BinaryData> receivedShare =
+        receivedSharesClient.getReceivedShareWithResponse("<received-share-id>", new RequestOptions());
+```
+
 ### Get All Attached Received Shares
+
+Data consumers can also retrieve a list of their attached received shares.
+
 ```java com.azure.analytics.purview.sharing.getAllAttachedReceivedShares
 ReceivedSharesClient receivedSharesClient =
         new ReceivedSharesClientBuilder()
@@ -305,6 +367,9 @@ ReceivedShare receivedShareResponse = receivedShare.get().toObject(InPlaceReceiv
 ```
 
 ### Delete a Received Share
+
+A received share can be deleted by the data consumer to terminate their access to shared data.
+
 ```java com.azure.analytics.purview.sharing.deleteReceivedShare
 ReceivedSharesClient receivedSharesClient =
         new ReceivedSharesClientBuilder()
@@ -330,17 +395,16 @@ locate the root issue. View the [logging][logging] wiki for guidance about enabl
 For details on contributing to this repository, see the [contributing guide](https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md).
 
 1. Fork it
-1. Create your feature branch (`git checkout -b my-new-feature`)
-1. Commit your changes (`git commit -am 'Add some feature'`)
-1. Push to the branch (`git push origin my-new-feature`)
-1. Create new Pull Request
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-sharing/src
 [package]: https://mvnrepository.com/artifact/com.azure/azure-analytics-purview-sharing
 [share_product_documentation]: https://docs.microsoft.com/azure/purview/concept-data-share
 [samples_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-sharing/src/samples/
-[product_documentation]: https://azure.microsoft.com/services/
 [docs]: https://azure.github.io/azure-sdk-for-java/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
