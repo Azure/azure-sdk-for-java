@@ -9,14 +9,12 @@ import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -26,30 +24,29 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
+public class OpenAISyncClientTest extends OpenAIClientTestBase {
     private OpenAIClient client;
 
-    private OpenAIClient getNonAzureOpenAISyncClient(HttpClient httpClient) {
-        return getNonAzureOpenAIClientBuilder(
-            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient)
+    private OpenAIClient getOpenAIClient(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        return getOpenAIClientBuilder(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient, serviceVersion)
             .buildClient();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
+        client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             Completions resultCompletions = client.getCompletions(deploymentId, new CompletionsOptions(prompt));
             assertCompletions(1, resultCompletions);
         });
     }
 
-    @Disabled("onError(com.fasterxml.jackson.databind.exc.MismatchedInputException: Missing required creator property 'usage'")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
+        client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             IterableStream<Completions> resultCompletions = client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt));
             assertTrue(resultCompletions.stream().toArray().length > 1);
@@ -60,7 +57,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsFromPrompt(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
+        client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsFromSinglePromptRunner((deploymentId, prompts) -> {
             Completions completions = client.getCompletions(deploymentId, prompts);
             assertCompletions(1, completions);
@@ -70,7 +67,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
+        client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((deploymentId, prompt) -> {
             Response<BinaryData> response = client.getCompletionsWithResponse(deploymentId,
                 BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions());
@@ -81,32 +78,21 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetCompletionsBadSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
-        getCompletionsRunner((modelId, prompt) -> {
-            ClientAuthenticationException exception = assertThrows(ClientAuthenticationException.class,
-                () ->  client.getCompletionsWithResponse(modelId,
-                    BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
-            assertEquals(401, exception.getResponse().getStatusCode());
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetCompletionsExpiredSecretKey(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
-        getCompletionsRunner((modelId, prompt) -> {
-            HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () ->  client.getCompletionsWithResponse(modelId,
-                    BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
-            assertEquals(429, exception.getResponse().getStatusCode());
+    public void testGetCompletionsWithResponseBadDeployment(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getCompletionsRunner((_deploymentId, prompt) -> {
+            String deploymentId = "BAD_DEPLOYMENT_ID";
+            ResourceNotFoundException exception = assertThrows(ResourceNotFoundException.class,
+                () -> client.getCompletionsWithResponse(deploymentId,
+                BinaryData.fromObject(new CompletionsOptions(prompt)), new RequestOptions()));
+            assertEquals(404, exception.getResponse().getStatusCode());
         });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsUsageField(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
+        client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
             completionsOptions.setMaxTokens(1024);
@@ -126,7 +112,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsTokenCutoff(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
+        client = getOpenAIClient(httpClient, serviceVersion);
         getCompletionsRunner((modelId, prompt) -> {
             CompletionsOptions completionsOptions = new CompletionsOptions(prompt);
             completionsOptions.setMaxTokens(3);
@@ -138,19 +124,18 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletions(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
-        getChatCompletionsForNonAzureRunner((deploymentId, chatMessages) -> {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsRunner((deploymentId, chatMessages) -> {
             ChatCompletions resultChatCompletions = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(chatMessages));
             assertChatCompletions(1, resultChatCompletions);
         });
     }
 
-    @Disabled("onError(com.fasterxml.jackson.databind.exc.MismatchedInputException: Missing required creator property 'usage'")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
-        getChatCompletionsForNonAzureRunner((deploymentId, chatMessages) -> {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsRunner((deploymentId, chatMessages) -> {
             IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
             assertTrue(resultChatCompletions.stream().toArray().length > 1);
             resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
@@ -160,8 +145,8 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
-        getChatCompletionsForNonAzureRunner((deploymentId, chatMessages) -> {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsRunner((deploymentId, chatMessages) -> {
             Response<BinaryData> response = client.getChatCompletionsWithResponse(deploymentId,
                 BinaryData.fromObject(new ChatCompletionsOptions(chatMessages)), new RequestOptions());
             ChatCompletions resultChatCompletions = assertAndGetValueFromResponse(response, ChatCompletions.class, 200);
@@ -172,8 +157,8 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetEmbeddings(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
-        getEmbeddingNonAzureRunner((deploymentId, embeddingsOptions) -> {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             Embeddings resultEmbeddings = client.getEmbeddings(deploymentId, embeddingsOptions);
             assertEmbeddings(resultEmbeddings);
         });
@@ -182,8 +167,8 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetEmbeddingsWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getNonAzureOpenAISyncClient(httpClient);
-        getEmbeddingNonAzureRunner((deploymentId, embeddingsOptions) -> {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getEmbeddingRunner((deploymentId, embeddingsOptions) -> {
             Response<BinaryData> response = client.getEmbeddingsWithResponse(deploymentId,
                 BinaryData.fromObject(embeddingsOptions), new RequestOptions());
             Embeddings resultEmbeddings = assertAndGetValueFromResponse(response, Embeddings.class, 200);
