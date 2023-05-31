@@ -4,7 +4,7 @@ import com.azure.core.http.*;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.Header;
-import org.apache.commons.codec.binary.Base64;
+import java.util.Base64;
 import reactor.core.publisher.Mono;
 
 import javax.crypto.Mac;
@@ -49,7 +49,7 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
             // Encoding the Signature
             // Signature=Base64(HMAC-SHA256(UTF8(StringToSign)))
             byte[] digest = getHmac256().doFinal(stringToSign.getBytes("UTF-8"));
-            return Base64.encodeBase64String(digest);
+            return Base64.getEncoder().encodeToString(digest);
         } catch (Exception e) {
             throw new IllegalArgumentException("accessKey", e);
         }
@@ -58,8 +58,9 @@ public final class BatchSharedKeyCredentialsPolicy implements HttpPipelinePolicy
     private synchronized Mac getHmac256() throws NoSuchAlgorithmException, InvalidKeyException {
         if (this.hmacSha256 == null) {
             // Initializes the HMAC-SHA256 Mac and SecretKey.
+            byte[] key = Base64.getDecoder().decode(batchSharedKeyCred.keyValue());
             this.hmacSha256 = Mac.getInstance("HmacSHA256");
-            this.hmacSha256.init(new SecretKeySpec(Base64.decodeBase64(batchSharedKeyCred.keyValue()), "HmacSHA256"));
+            this.hmacSha256.init(new SecretKeySpec(key, "HmacSHA256"));
         }
         return this.hmacSha256;
     }
