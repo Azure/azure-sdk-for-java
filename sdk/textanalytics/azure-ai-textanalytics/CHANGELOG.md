@@ -35,7 +35,7 @@
   `setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions)` to
   `setExtractiveSummaryActions(ExtractiveSummaryAction... extractiveSummaryActions)`,
   `getAbstractSummaryResults` to `getAbstractiveSummaryResults`,
-  `getExtractSummaryResults` to `getExtractiveSummaryResults`,
+  `getExtractSummaryResults` to `getExtractiveSummaryResults`
 
 ### Bugs Fixed
 

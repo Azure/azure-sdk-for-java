@@ -2560,7 +2560,7 @@ public final class TextAnalyticsClient {
 
     // Abstractive Summarization
     /**
-     * Returns a list of abstract summary for the provided list of {@link String document}.
+     * Returns a list of abstractive summary for the provided list of {@link String document}.
      *
      * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
      *
@@ -2598,7 +2598,7 @@ public final class TextAnalyticsClient {
      * syncPoller.waitForCompletion&#40;&#41;;
      * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
      *     for &#40;AbstractiveSummaryResult documentResult : resultCollection&#41; &#123;
-     *         System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
+     *         System.out.println&#40;&quot;&#92;tAbstractive summary sentences:&quot;&#41;;
      *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
      *             for &#40;AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
@@ -2634,7 +2634,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of abstract summary for the provided list of {@link String document} with
+     * Returns a list of abstractive summary for the provided list of {@link String document} with
      * provided request options.
      *
      * <p>This method is supported since service API version {@code V2022_05_01}.</p>
@@ -2672,7 +2672,7 @@ public final class TextAnalyticsClient {
      * syncPoller.waitForCompletion&#40;&#41;;
      * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
      *     for &#40;AbstractiveSummaryResult documentResult : resultCollection&#41; &#123;
-     *         System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
+     *         System.out.println&#40;&quot;&#92;tAbstractive summary sentences:&quot;&#41;;
      *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
      *             for &#40;AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;
@@ -2717,7 +2717,7 @@ public final class TextAnalyticsClient {
     }
 
     /**
-     * Returns a list of abstract summary for the provided list of {@link TextDocumentInput document} with
+     * Returns a list of abstractive summary for the provided list of {@link TextDocumentInput document} with
      * provided request options.
      *
      * <p>This method is supported since service API version {@link TextAnalyticsServiceVersion#V2022_10_01_PREVIEW}.</p>
@@ -2754,7 +2754,7 @@ public final class TextAnalyticsClient {
      * syncPoller.waitForCompletion&#40;&#41;;
      * syncPoller.getFinalResult&#40;&#41;.forEach&#40;resultCollection -&gt; &#123;
      *     for &#40;AbstractiveSummaryResult documentResult : resultCollection&#41; &#123;
-     *         System.out.println&#40;&quot;&#92;tAbstract summary sentences:&quot;&#41;;
+     *         System.out.println&#40;&quot;&#92;tAbstractive summary sentences:&quot;&#41;;
      *         for &#40;AbstractiveSummary summarySentence : documentResult.getSummaries&#40;&#41;&#41; &#123;
      *             System.out.printf&#40;&quot;&#92;t&#92;t Summary text: %s.%n&quot;, summarySentence.getText&#40;&#41;&#41;;
      *             for &#40;AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts&#40;&#41;&#41; &#123;

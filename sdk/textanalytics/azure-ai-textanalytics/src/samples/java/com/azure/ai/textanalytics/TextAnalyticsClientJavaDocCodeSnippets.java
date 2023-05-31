@@ -1369,7 +1369,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
             for (AbstractiveSummaryResult documentResult : resultCollection) {
-                System.out.println("\tAbstract summary sentences:");
+                System.out.println("\tAbstractive summary sentences:");
                 for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                     System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
                     for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
@@ -1415,7 +1415,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
             for (AbstractiveSummaryResult documentResult : resultCollection) {
-                System.out.println("\tAbstract summary sentences:");
+                System.out.println("\tAbstractive summary sentences:");
                 for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                     System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
                     for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
@@ -1462,7 +1462,7 @@ public class TextAnalyticsClientJavaDocCodeSnippets {
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
             for (AbstractiveSummaryResult documentResult : resultCollection) {
-                System.out.println("\tAbstract summary sentences:");
+                System.out.println("\tAbstractive summary sentences:");
                 for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                     System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
                     for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {

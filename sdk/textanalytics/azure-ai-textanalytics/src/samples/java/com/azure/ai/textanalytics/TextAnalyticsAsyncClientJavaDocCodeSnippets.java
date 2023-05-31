@@ -1444,7 +1444,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(
                 resultCollection -> {
                     for (AbstractiveSummaryResult documentResult : resultCollection) {
-                        System.out.println("\tAbstract summary sentences:");
+                        System.out.println("\tAbstractive summary sentences:");
                         for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                             System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
                             for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
@@ -1498,7 +1498,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(
                 resultCollection -> {
                     for (AbstractiveSummaryResult documentResult : resultCollection) {
-                        System.out.println("\tAbstract summary sentences:");
+                        System.out.println("\tAbstractive summary sentences:");
                         for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                             System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
                             for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
@@ -1552,7 +1552,7 @@ public class TextAnalyticsAsyncClientJavaDocCodeSnippets {
             .subscribe(
                 resultCollection -> {
                     for (AbstractiveSummaryResult documentResult : resultCollection) {
-                        System.out.println("\tAbstract summary sentences:");
+                        System.out.println("\tAbstractive summary sentences:");
                         for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                             System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
                             for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {

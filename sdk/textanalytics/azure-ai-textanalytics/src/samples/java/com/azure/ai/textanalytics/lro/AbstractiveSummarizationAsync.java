@@ -82,7 +82,7 @@ public class AbstractiveSummarizationAsync {
     private static void processResult(AbstractiveSummaryResultCollection actionsResult) {
         for (AbstractiveSummaryResult documentResult : actionsResult) {
             if (!documentResult.isError()) {
-                System.out.println("\tAbstract summary sentences:");
+                System.out.println("\tAbstractive summary sentences:");
                 for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                     System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
                     for (AbstractiveSummaryContext abstractiveSummaryContext : summarySentence.getContexts()) {
@@ -91,7 +91,7 @@ public class AbstractiveSummarizationAsync {
                     }
                 }
             } else {
-                System.out.printf("\tCannot get abstract summary. Error: %s%n",
+                System.out.printf("\tCannot get abstractive summary. Error: %s%n",
                     documentResult.getError().getMessage());
             }
         }

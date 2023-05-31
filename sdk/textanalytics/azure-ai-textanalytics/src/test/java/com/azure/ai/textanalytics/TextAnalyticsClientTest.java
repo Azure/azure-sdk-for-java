@@ -2904,7 +2904,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
             actionsResults.forEach(
                 actionsResult -> actionsResult.getExtractiveSummaryResults().forEach(
-                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
+                    extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults().forEach(
                         documentResult -> assertEquals(
                             documentResult.getSentences().stream().collect(Collectors.toList()).size(), 5))));
         }, 5, null);
