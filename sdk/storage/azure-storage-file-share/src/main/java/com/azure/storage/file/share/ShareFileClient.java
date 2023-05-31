@@ -11,6 +11,8 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -18,23 +20,39 @@ import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
+import com.azure.core.util.polling.PollResponse;
+import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.common.ParallelTransferOptions;
+import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageSeekableByteChannel;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.models.CopyFileSmbInfo;
+import com.azure.storage.file.share.implementation.models.DestinationLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.FilesForceCloseHandlesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.FilesGetRangeListHeaders;
+import com.azure.storage.file.share.implementation.models.FilesListHandlesHeaders;
+import com.azure.storage.file.share.implementation.models.FilesRenameHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
+import com.azure.storage.file.share.implementation.models.ListHandlesResponse;
+import com.azure.storage.file.share.implementation.models.SourceLeaseAccessConditions;
 import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.implementation.util.ShareSasImplUtil;
 import com.azure.storage.file.share.models.CloseHandlesInfo;
+import com.azure.storage.file.share.models.CopyStatusType;
+import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.HandleItem;
+import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.PermissionCopyModeType;
+import com.azure.storage.file.share.models.Range;
 import com.azure.storage.file.share.models.ShareFileCopyInfo;
 import com.azure.storage.file.share.models.ShareFileDownloadResponse;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
@@ -64,12 +82,18 @@ import java.io.OutputStream;
 import java.nio.channels.SeekableByteChannel;
 import java.nio.file.FileAlreadyExistsException;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
 
@@ -469,11 +493,6 @@ public class ShareFileClient {
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
-
-//        Mono<Response<ShareFileInfo>> response = shareFileAsyncClient
-//            .createWithResponse(maxSize, httpHeaders, smbProperties, filePermission, metadata, requestConditions,
-//                context);
-//        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -629,7 +648,104 @@ public class ShareFileClient {
      * @see <a href="https://docs.microsoft.com/dotnet/csharp/language-reference/">C# identifiers</a>
      */
     public SyncPoller<ShareFileCopyInfo, Void> beginCopy(String sourceUrl, ShareFileCopyOptions options, Duration pollInterval) {
+        final ShareRequestConditions finalRequestConditions =
+            options.getDestinationRequestConditions() == null ? new ShareRequestConditions() : options.getDestinationRequestConditions();
+        final AtomicReference<String> copyId = new AtomicReference<>();
+        final Duration interval = pollInterval == null ? Duration.ofSeconds(1) : pollInterval;
+
+        FileSmbProperties tempSmbProperties = options.getSmbProperties() == null ? new FileSmbProperties() : options.getSmbProperties();
+
+        String filePermissionKey = tempSmbProperties.getFilePermissionKey();
+
+        if (options.getFilePermission() == null || options.getPermissionCopyModeType() == PermissionCopyModeType.SOURCE) {
+            if ((options.getFilePermission() != null || filePermissionKey != null) && options.getPermissionCopyModeType() != PermissionCopyModeType.OVERRIDE) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException("File permission and file permission key can not be set when PermissionCopyModeType is source or null"));
+            }
+        } else if (options.getPermissionCopyModeType() == PermissionCopyModeType.OVERRIDE) {
+            // Checks that file permission and file permission key are valid
+            try {
+                ModelHelper.validateFilePermissionAndKey(options.getFilePermission(), tempSmbProperties.getFilePermissionKey());
+            } catch (RuntimeException ex) {
+                throw LOGGER.logExceptionAsError(ex);
+            }
+        }
+
+        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy()  == null ? new CopyableFileSmbPropertiesList() : options.getSmbPropertiesToCopy();
+        // check if only copy flag or smb properties are set (not both)
+        try {
+            ModelHelper.validateCopyFlagAndSmbProperties(options, tempSmbProperties);
+        } catch (RuntimeException ex) {
+            throw LOGGER.logExceptionAsError(ex);
+        }
+
+        String fileAttributes = list.isFileAttributes() ? FileConstants.COPY_SOURCE : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+        String fileCreationTime = list.isCreatedOn()  ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+        String fileLastWriteTime = list.isLastWrittenOn() ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+        String fileChangedOnTime = list.isChangedOn() ? FileConstants.COPY_SOURCE : FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
+
+        final CopyFileSmbInfo copyFileSmbInfo = new CopyFileSmbInfo()
+            .setFilePermissionCopyMode(options.getPermissionCopyModeType())
+            .setFileAttributes(fileAttributes)
+            .setFileCreationTime(fileCreationTime)
+            .setFileLastWriteTime(fileLastWriteTime)
+            .setFileChangeTime(fileChangedOnTime)
+            .setIgnoreReadOnly(options.isIgnoreReadOnly())
+            .setSetArchiveAttribute(options.isArchiveAttributeSet());
+
+        final String copySource = Utility.encodeUrlPath(sourceUrl);
+
+        Supplier<ResponseBase<FilesCreateHeaders, Void>> operation = () ->azureFileStorageClient.getFiles()
+            .startCopyWithResponse(shareName, filePath, copySource, null,
+                options.getMetadata(), options.getFilePermission(), tempSmbProperties.getFilePermissionKey(),
+                finalRequestConditions.getLeaseId(), copyFileSmbInfo, null);
+
+        //SyncPoller<ShareFileCopyInfo, Void> poller = SyncPoller.createPoller()
+
         return shareFileAsyncClient.beginCopy(sourceUrl, options, pollInterval).getSyncPoller();
+    }
+
+    private PollResponse<ShareFileCopyInfo> onPoll(PollResponse<ShareFileCopyInfo> pollResponse,
+        ShareRequestConditions requestConditions) {
+        if (pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
+            || pollResponse.getStatus() == LongRunningOperationStatus.FAILED) {
+            return pollResponse;
+        }
+
+        final ShareFileCopyInfo lastInfo = pollResponse.getValue();
+        if (lastInfo == null) {
+            LOGGER.warning("ShareFileCopyInfo does not exist. Activation operation failed.");
+            return new PollResponse<>(LongRunningOperationStatus.fromString("COPY_START_FAILED", true), null);
+        }
+
+        try {
+            Response<ShareFileProperties> response = getPropertiesWithResponse(requestConditions, null, null);
+            ShareFileProperties value = response.getValue();
+            final CopyStatusType status = value.getCopyStatus();
+            final ShareFileCopyInfo result = new ShareFileCopyInfo(value.getCopySource(), value.getCopyId(),
+                status, value.getETag(), value.getCopyCompletionTime(), value.getCopyStatusDescription());
+
+            LongRunningOperationStatus operationStatus;
+            switch (status) {
+                case SUCCESS:
+                    operationStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+                    break;
+                case FAILED:
+                    operationStatus = LongRunningOperationStatus.FAILED;
+                    break;
+                case ABORTED:
+                    operationStatus = LongRunningOperationStatus.USER_CANCELLED;
+                    break;
+                case PENDING:
+                    operationStatus = LongRunningOperationStatus.IN_PROGRESS;
+                    break;
+                default:
+                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                        "CopyStatusType is not supported. Status: " + status));
+            }
+            return new PollResponse<>(operationStatus, result);
+        } catch (RuntimeException e) {
+            return new PollResponse<>(LongRunningOperationStatus.fromString("POLLING_FAILED", true), lastInfo);
+        }
     }
 
     /**
@@ -2276,8 +2392,35 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareFileRange> listRanges(ShareFileRange range, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        return new PagedIterable<>(shareFileAsyncClient.listRangesWithOptionalTimeout(range, requestConditions,
-            timeout, context));
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareRequestConditions finalRequestConditions = requestConditions == null
+            ? new ShareRequestConditions() : requestConditions;
+        String rangeString = range == null ? null : range.toString();
+
+        try {
+            Supplier<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation = () ->
+                this.azureFileStorageClient.getFiles().getRangeListWithResponse(shareName, filePath, snapshot,
+                null, null, rangeString, finalRequestConditions.getLeaseId(), finalContext);
+
+            ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            List<ShareFileRange> shareFileRangeList =
+                response.getValue().getRanges().stream()
+                .map(r -> new Range().setStart(r.getStart()).setEnd(r.getEnd()))
+                .map(ShareFileRange::new).collect(Collectors.toList());
+
+            Supplier<PagedResponse<ShareFileRange>> finalResponse = () -> new PagedResponseBase<>(response.getRequest(),
+                response.getStatusCode(), response.getHeaders(), shareFileRangeList, null,
+                response.getDeserializedHeaders());
+
+            return new PagedIterable<>(finalResponse);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -2345,10 +2488,23 @@ public class ShareFileClient {
     public Response<ShareFileRangeList> listRangesDiffWithResponse(ShareFileListRangesDiffOptions options,
         Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<ShareFileRangeList>> response = shareFileAsyncClient.listRangesWithResponse(options.getRange(),
-            options.getRequestConditions(), options.getPreviousSnapshot(), context);
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        String rangeString = options.getRange() == null ? null : options.getRange().toString();
+        try {
+            Supplier<ResponseBase<FilesGetRangeListHeaders, ShareFileRangeList>> operation = () ->
+                this.azureFileStorageClient.getFiles().getRangeListWithResponse(shareName, filePath, snapshot,
+                    options.getPreviousSnapshot(), null, rangeString, requestConditions.getLeaseId(), finalContext);
 
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+            return timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -2403,8 +2559,29 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<HandleItem> listHandles(Integer maxResultsPerPage, Duration timeout, Context context) {
-        return new PagedIterable<>(shareFileAsyncClient.listHandlesWithOptionalTimeout(maxResultsPerPage, timeout,
-            context));
+        Context finalContext = context == null ? Context.NONE : context;
+        try {
+            Supplier<ResponseBase<FilesListHandlesHeaders, ListHandlesResponse>> operation = () ->
+                this.azureFileStorageClient.getFiles().listHandlesWithResponse(shareName, filePath, null,
+                    maxResultsPerPage, null, snapshot, finalContext);
+
+            ResponseBase<FilesListHandlesHeaders, ListHandlesResponse> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            Supplier<PagedResponse<HandleItem>> finalResponse = () -> new PagedResponseBase<>(response.getRequest(),
+                response.getStatusCode(),
+                response.getHeaders(),
+                ModelHelper.transformHandleItems(response.getValue().getHandleList()),
+                null,
+                response.getDeserializedHeaders());
+
+            return new PagedIterable<>(finalResponse);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -2463,9 +2640,24 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CloseHandlesInfo> forceCloseHandleWithResponse(String handleId, Duration timeout, Context context) {
-        Mono<Response<CloseHandlesInfo>> response = shareFileAsyncClient
-            .forceCloseHandleWithResponse(handleId, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        try {
+            Supplier<ResponseBase<FilesForceCloseHandlesHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getFiles().forceCloseHandlesWithResponse(shareName, filePath, handleId,
+                    null, null, snapshot, finalContext);
+
+            ResponseBase<FilesForceCloseHandlesHeaders, Void> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return new SimpleResponse<>(response,
+                new CloseHandlesInfo(response.getDeserializedHeaders().getXMsNumberOfHandlesClosed(),
+                    response.getDeserializedHeaders().getXMsNumberOfHandlesFailed()));
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -2493,10 +2685,32 @@ public class ShareFileClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CloseHandlesInfo forceCloseAllHandles(Duration timeout, Context context) {
-        return new PagedIterable<>(shareFileAsyncClient.forceCloseAllHandlesWithOptionalTimeout(timeout, context))
-            .stream().reduce(new CloseHandlesInfo(0, 0),
-                (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
-                    accu.getFailedHandles() + next.getFailedHandles()));
+        Context finalContext = context == null ? Context.NONE : context;
+        try {
+            Supplier<ResponseBase<FilesForceCloseHandlesHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getFiles().forceCloseHandlesWithResponse(shareName, filePath, "*", null,
+                    null, snapshot, finalContext);
+
+            ResponseBase<FilesForceCloseHandlesHeaders, Void> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            Supplier<PagedResponse<CloseHandlesInfo>> finalResponse = () -> new PagedResponseBase<>(response.getRequest(),
+                response.getStatusCode(), response.getHeaders(),
+                Collections.singletonList(new CloseHandlesInfo(
+                    response.getDeserializedHeaders().getXMsNumberOfHandlesClosed(),
+                    response.getDeserializedHeaders().getXMsNumberOfHandlesFailed())),
+                response.getDeserializedHeaders().getXMsMarker(),
+                response.getDeserializedHeaders());
+
+            return new PagedIterable<>(finalResponse).stream().reduce(new CloseHandlesInfo(0, 0),
+                    (accu, next) -> new CloseHandlesInfo(accu.getClosedHandles() + next.getClosedHandles(),
+                        accu.getFailedHandles() + next.getFailedHandles()));
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -2561,11 +2775,67 @@ public class ShareFileClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareFileClient> renameWithResponse(ShareFileRenameOptions options, Duration timeout,
         Context context) {
-        Mono<Response<ShareFileAsyncClient>> mono = shareFileAsyncClient.renameWithResponse(options, context);
-        Response<ShareFileAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(mono, timeout);
+        StorageImplUtils.assertNotNull("options", options);
+        Context finalContext = context == null ? Context.NONE : context;
+
+        ShareRequestConditions sourceRequestConditions = options.getSourceRequestConditions() == null
+            ? new ShareRequestConditions() : options.getSourceRequestConditions();
+        ShareRequestConditions destinationRequestConditions = options.getDestinationRequestConditions() == null
+            ? new ShareRequestConditions() : options.getDestinationRequestConditions();
+
+        // We want to hide the SourceAccessConditions type from the user for consistency's sake, so we convert here.
+        SourceLeaseAccessConditions sourceConditions = new SourceLeaseAccessConditions()
+            .setSourceLeaseId(sourceRequestConditions.getLeaseId());
+        DestinationLeaseAccessConditions destinationConditions = new DestinationLeaseAccessConditions()
+            .setDestinationLeaseId(destinationRequestConditions.getLeaseId());
+
+        CopyFileSmbInfo smbInfo;
+        String filePermissionKey;
+        if (options.getSmbProperties() != null) {
+            FileSmbProperties tempSmbProperties = options.getSmbProperties();
+            filePermissionKey = tempSmbProperties.getFilePermissionKey();
+
+            String fileAttributes = NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());
+            String fileCreationTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileCreationTime());
+            String fileLastWriteTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileLastWriteTime());
+            String fileChangeTime = FileSmbProperties.parseFileSMBDate(tempSmbProperties.getFileChangeTime());
+            smbInfo = new CopyFileSmbInfo()
+                .setFileAttributes(fileAttributes)
+                .setFileCreationTime(fileCreationTime)
+                .setFileLastWriteTime(fileLastWriteTime)
+                .setFileChangeTime(fileChangeTime)
+                .setIgnoreReadOnly(options.isIgnoreReadOnly());
+        } else {
+            smbInfo = null;
+            filePermissionKey = null;
+        }
 
         ShareFileClient destinationFileClient = getFileClient(options.getDestinationPath());
-        return new SimpleResponse<>(response, destinationFileClient);
+
+        ShareFileHttpHeaders headers = options.getContentType() == null ? null
+            : new ShareFileHttpHeaders().setContentType(options.getContentType());
+
+        String renameSource = this.sasToken != null
+            ? this.getFileUrl() + "?" + this.sasToken.getSignature() : this.getFileUrl();
+
+        try {
+            Supplier<ResponseBase<FilesRenameHeaders, Void>> operation = () ->
+                destinationFileClient.azureFileStorageClient.getFiles().renameWithResponse(
+                    destinationFileClient.getShareName(), destinationFileClient.getFilePath(), renameSource,
+                    null /* timeout */, options.getReplaceIfExists(), options.isIgnoreReadOnly(),
+                    options.getFilePermission(), filePermissionKey, options.getMetadata(), sourceConditions,
+                    destinationConditions, smbInfo, headers, finalContext);
+
+            ResponseBase<FilesRenameHeaders, Void> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return new SimpleResponse<>(response, destinationFileClient);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     ShareFileClient getFileClient(String destinationPath) {
@@ -2603,7 +2873,7 @@ public class ShareFileClient {
      * share.
      */
     public String getShareSnapshotId() {
-        return snapshot;
+        return this.snapshot;
     }
 
     /**

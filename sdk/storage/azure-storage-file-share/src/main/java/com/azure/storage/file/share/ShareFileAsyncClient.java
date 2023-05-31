@@ -623,25 +623,17 @@ public class ShareFileAsyncClient {
         } else if (options.getPermissionCopyModeType() == PermissionCopyModeType.OVERRIDE) {
             // Checks that file permission and file permission key are valid
             try {
-                validateFilePermissionAndKey(options.getFilePermission(), tempSmbProperties.getFilePermissionKey());
+                ModelHelper.validateFilePermissionAndKey(options.getFilePermission(), tempSmbProperties.getFilePermissionKey());
             } catch (RuntimeException ex) {
                 return PollerFlux.error(LOGGER.logExceptionAsError(ex));
             }
         }
 
-        // check if only copy flag or smb properties are set (not both)
         CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy()  == null ? new CopyableFileSmbPropertiesList() : options.getSmbPropertiesToCopy();
-        if (list.isFileAttributes() && tempSmbProperties.getNtfsFileAttributes() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetFileAttributes and smbProperties.ntfsFileAttributes cannot be set."));
-        }
-        if (list.isCreatedOn() && tempSmbProperties.getFileCreationTime() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetCreatedOn and smbProperties.fileCreationTime cannot be set."));
-        }
-        if (list.isLastWrittenOn() && tempSmbProperties.getFileLastWriteTime() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetLastWrittenOn and smbProperties.fileLastWriteTime cannot be set."));
-        }
-        if (list.isChangedOn() && tempSmbProperties.getFileChangeTime() != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetChangedOn and smbProperties.fileChangeTime cannot be set."));
+        try {
+            ModelHelper.validateCopyFlagAndSmbProperties(options, tempSmbProperties);
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(LOGGER.logExceptionAsError(ex));
         }
 
         String fileAttributes = list.isFileAttributes() ? FileConstants.COPY_SOURCE : NtfsFileAttributes.toString(tempSmbProperties.getNtfsFileAttributes());

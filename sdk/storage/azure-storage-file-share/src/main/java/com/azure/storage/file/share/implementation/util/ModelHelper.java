@@ -29,6 +29,7 @@ import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
 import com.azure.storage.file.share.models.CopyStatusType;
+import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
 import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
@@ -44,6 +45,7 @@ import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.models.ShareStorageException;
+import com.azure.storage.file.share.options.ShareFileCopyOptions;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -359,5 +361,22 @@ public class ModelHelper {
         Boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
         ShareFileMetadataInfo shareFileMetadataInfo = new ShareFileMetadataInfo(eTag, isServerEncrypted);
         return new SimpleResponse<>(response, shareFileMetadataInfo);
+    }
+
+    public static void validateCopyFlagAndSmbProperties(ShareFileCopyOptions options,FileSmbProperties tempSmbProperties) {
+        // check if only copy flag or smb properties are set (not both)
+        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy()  == null ? new CopyableFileSmbPropertiesList() : options.getSmbPropertiesToCopy();
+        if (list.isFileAttributes() && tempSmbProperties.getNtfsFileAttributes() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetFileAttributes and smbProperties.ntfsFileAttributes cannot be set."));
+        }
+        if (list.isCreatedOn() && tempSmbProperties.getFileCreationTime() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetCreatedOn and smbProperties.fileCreationTime cannot be set."));
+        }
+        if (list.isLastWrittenOn() && tempSmbProperties.getFileLastWriteTime() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetLastWrittenOn and smbProperties.fileLastWriteTime cannot be set."));
+        }
+        if (list.isChangedOn() && tempSmbProperties.getFileChangeTime() != null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetChangedOn and smbProperties.fileChangeTime cannot be set."));
+        }
     }
 }
