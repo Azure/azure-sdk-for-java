@@ -78,6 +78,8 @@ steps:
       Get-ChildItem -Recurse -Path $(Build.SourcesDirectory)/sdk/${{ parameters.ServiceDirectory }} -Filter assets.json | `
         ForEach-Object { test-proxy restore -a $_.FullName }
     displayName: Restore Recordings
+    # we want to run this when TestFromSource isn't true
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
     displayName: 'Run tests'
@@ -124,6 +126,15 @@ steps:
       jdkVersionOption: $(JavaTestVersion)
       jdkArchitectureOption: 'x64'
       goals: jacoco:report-aggregate
+
+  - pwsh: |
+      $ServiceDirs = '$(ServiceDirectories)'
+      foreach($ServiceDir in $ServiceDirs.Split(',')) {
+        Get-ChildItem -Recurse -Path $(Build.SourcesDirectory)/sdk/$ServiceDir -Filter assets.json | ForEach-Object { test-proxy restore -a $_.FullName }
+      }
+    displayName: Restore Recordings
+    # we want to run this when TestFromSource isn't true
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
   - task: Maven@3
     displayName: 'Build for From Source run'
