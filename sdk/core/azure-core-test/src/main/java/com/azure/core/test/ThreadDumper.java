@@ -102,7 +102,7 @@ public class ThreadDumper implements BeforeAllCallback, BeforeEachCallback, Afte
         for (Map.Entry<String, Long> runningTest : RUNNING_TEST_TIMES.entrySet()) {
             if (nowMillis - runningTest.getValue() > FIVE_MINUTES_MILLIS) {
                 dump.append(System.lineSeparator())
-                    .append(runningTest.getValue())
+                    .append(runningTest.getKey())
                     .append(": ")
                     .append(nowMillis - runningTest.getValue())
                     .append(" millis");
