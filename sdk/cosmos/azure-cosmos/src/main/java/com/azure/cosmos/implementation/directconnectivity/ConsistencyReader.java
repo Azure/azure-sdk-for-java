@@ -166,6 +166,7 @@ public class ConsistencyReader {
         this.configs = configs;
         this.serviceConfigReader = serviceConfigReader;
         this.storeReader = createStoreReader(transportClient, addressSelector, sessionContainer);
+        this.storeReader.init(transportClient.getRntbdServerErrorInjector());
         this.quorumReader = createQuorumReader(transportClient, addressSelector, this.storeReader, serviceConfigReader, authorizationTokenProvider);
     }
 

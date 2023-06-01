@@ -3,10 +3,12 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
+import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.IRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 /***
@@ -54,4 +56,6 @@ public interface IRntbdServerErrorInjector {
     boolean injectRntbdServerConnectionDelay(
         IRequestRecord requestRecord,
         Consumer<Duration> openConnectionWithDelayConsumer);
+
+    boolean injectBadSessionTokenIntoStoreResult(StoreResult storeResult);
 }

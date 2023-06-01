@@ -94,6 +94,7 @@ public class ConsistencyWriter {
         this.useMultipleWriteLocations = useMultipleWriteLocations;
         this.serviceConfigReader = serviceConfigReader;
         this.storeReader = new StoreReader(transportClient, addressSelector, null /*we need store reader only for global strong, no session is needed*/);
+        this.storeReader.init(transportClient.getRntbdServerErrorInjector());
     }
 
     public Mono<StoreResponse> writeAsync(

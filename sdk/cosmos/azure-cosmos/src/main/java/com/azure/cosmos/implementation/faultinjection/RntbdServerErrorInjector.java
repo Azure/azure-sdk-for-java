@@ -3,12 +3,15 @@
 
 package com.azure.cosmos.implementation.faultinjection;
 
+import com.azure.cosmos.implementation.VectorSessionToken;
+import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.IRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -66,6 +69,18 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
 
         for (IRntbdServerErrorInjector injector : this.faultInjectors) {
             if (injector.injectRntbdServerConnectionDelay(requestRecord, openConnectionWithDelayConsumer)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean injectBadSessionTokenIntoStoreResult(StoreResult storeResult) {
+
+        for (IRntbdServerErrorInjector injector : this.faultInjectors) {
+            if (injector.injectBadSessionTokenIntoStoreResult(storeResult)) {
                 return true;
             }
         }

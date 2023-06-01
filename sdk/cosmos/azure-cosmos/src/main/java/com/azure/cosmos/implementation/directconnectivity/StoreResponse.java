@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,6 +39,8 @@ public class StoreResponse {
 
     private String faultInjectionRuleId;
     private List<String> faultInjectionRuleEvaluationResults;
+
+    private RntbdRequestArgs requestArgs;
 
     public StoreResponse(
             int status,
@@ -218,6 +221,14 @@ public class StoreResponse {
 
     public void setFaultInjectionRuleEvaluationResults(List<String> results) {
         this.faultInjectionRuleEvaluationResults = results;
+    }
+
+    public RntbdRequestArgs getRequestArgs() {
+        return this.requestArgs;
+    }
+
+    public void setRequestArgs(RntbdRequestArgs requestArgs) {
+        this.requestArgs = requestArgs;
     }
 
     public StoreResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {

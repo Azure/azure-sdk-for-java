@@ -13,6 +13,7 @@ import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -141,5 +142,10 @@ public class SharedTransportClient extends TransportClient {
     @Override
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         this.transportClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
+    }
+
+    @Override
+    public IRntbdServerErrorInjector getRntbdServerErrorInjector() {
+        return this.transportClient.getRntbdServerErrorInjector();
     }
 }

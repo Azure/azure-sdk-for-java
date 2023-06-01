@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import reactor.core.publisher.Mono;
@@ -56,6 +57,8 @@ public abstract class TransportClient implements AutoCloseable {
     public abstract void recordOpenConnectionsAndInitCachesCompleted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 
     public abstract void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
+
+    public abstract IRntbdServerErrorInjector getRntbdServerErrorInjector();
 
     private Mono<StoreResponse> invokeStoreWithThroughputControlAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return this.throughputControlStore.processRequest(

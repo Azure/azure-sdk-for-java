@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.directconnectivity.TransportClient;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
 import com.azure.cosmos.implementation.routing.LocationCache;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -547,6 +548,11 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         @Override
         public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
             throw new NotImplementedException("recordOpenConnectionsAndInitCachesStarted is not supported in RntbdTransportClientTest");
+        }
+
+        @Override
+        public IRntbdServerErrorInjector getRntbdServerErrorInjector() {
+            throw new NotImplementedException("getRntbdServerErrorInjector is not supported in RntbdTransportClientTest");
         }
     }
 

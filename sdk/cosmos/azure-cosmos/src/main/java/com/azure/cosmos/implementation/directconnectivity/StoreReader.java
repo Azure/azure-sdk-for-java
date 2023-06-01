@@ -26,6 +26,7 @@ import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
+import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -49,6 +50,7 @@ public class StoreReader {
     private final TransportClient transportClient;
     private final AddressSelector addressSelector;
     private final ISessionContainer sessionContainer;
+    private IRntbdServerErrorInjector rntbdServerErrorInjector;
     private String lastReadAddress;
 
     public StoreReader(
@@ -58,6 +60,10 @@ public class StoreReader {
         this.transportClient = transportClient;
         this.addressSelector = addressSelector;
         this.sessionContainer = sessionContainer;
+    }
+
+    public void init(IRntbdServerErrorInjector rntbdServerErrorInjector) {
+        this.rntbdServerErrorInjector = rntbdServerErrorInjector;
     }
 
     public Mono<List<StoreResult>> readMultipleReplicaAsync(
@@ -145,7 +151,8 @@ public class StoreReader {
         Pair<Flux<StoreResponse>, Uri> storeRespAndURI,
         ReadMode readMode,
         boolean requiresValidLsn,
-        List<String> replicaStatusList) {
+        List<String> replicaStatusList,
+        boolean useSessionToken) {
 
         return storeRespAndURI.getLeft()
                 .flatMap(storeResponse -> {
@@ -158,6 +165,10 @@ public class StoreReader {
                                         readMode != ReadMode.Strong,
                                         storeRespAndURI.getRight(),
                                         replicaStatusList);
+
+                                if (useSessionToken && readMode == ReadMode.Any && rntbdServerErrorInjector != null) {
+                                    rntbdServerErrorInjector.injectBadSessionTokenIntoStoreResult(storeResult);
+                                }
 
                                 BridgeInternal.getContactedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                                 return Flux.just(storeResult);
@@ -253,7 +264,7 @@ public class StoreReader {
 
         List<Flux<StoreResult>> storeResult = readStoreTasks
                 .stream()
-                .map(item -> toStoreResult(entity, item, readMode, requiresValidLsn, replicaStatusList))
+                .map(item -> toStoreResult(entity, item, readMode, requiresValidLsn, replicaStatusList, useSessionToken))
                 .collect(Collectors.toList());
         Flux<StoreResult> allStoreResults = Flux.merge(storeResult);
 

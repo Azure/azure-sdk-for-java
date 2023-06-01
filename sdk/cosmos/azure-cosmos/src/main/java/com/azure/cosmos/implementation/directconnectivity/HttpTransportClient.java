@@ -47,6 +47,7 @@ import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedExceptio
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpClientConfig;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -265,6 +266,11 @@ public class HttpTransportClient extends TransportClient {
     @Override
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         throw new NotImplementedException("recordOpenConnectionsAndInitCachesStarted is not supported in httpTransportClient");
+    }
+
+    @Override
+    public IRntbdServerErrorInjector getRntbdServerErrorInjector() {
+        throw new NotImplementedException("getRntbdServerErrorInjector is not supported in httpTransportClient");
     }
 
     private void beforeRequest(String activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {
