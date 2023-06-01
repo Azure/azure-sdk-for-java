@@ -1129,14 +1129,6 @@ service
 
 <br/>
 <details>
-<summary> paloaltonetworks-ngfw </summary>
-
-* package-2022-08-29-preview
-    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-paloaltonetworks-ngfw/1.0.0-beta.1)
-</details>
-
-<br/>
-<details>
 <summary> nginx </summary>
 
 * [package-2022-08-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/nginx/resource-manager#tag-package-2022-08-01)
@@ -1179,6 +1171,14 @@ service
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-orbital/1.0.0-beta.2)
 * [package-2022-03-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/orbital/resource-manager#tag-package-2022-03-01)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-orbital/1.0.0-beta.1)
+</details>
+
+<br/>
+<details>
+<summary> paloaltonetworks-ngfw </summary>
+
+* [package-2022-08-29-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/paloaltonetworks/resource-manager#tag-package-2022-08-29-preview)
+    * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-paloaltonetworks-ngfw/1.0.0-beta.1)
 </details>
 
 <br/>
@@ -1385,6 +1385,8 @@ service
 <details>
 <summary> resourcehealth </summary>
 
+* [package-2022-10](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resourcehealth/resource-manager#tag-package-2022-10)
+    * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resourcehealth/1.1.0-beta.1)
 * [package-2020-05-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/resourcehealth/resource-manager#tag-package-2020-05-01)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resourcehealth/1.0.0)
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-resourcehealth/1.0.0-beta.2)
