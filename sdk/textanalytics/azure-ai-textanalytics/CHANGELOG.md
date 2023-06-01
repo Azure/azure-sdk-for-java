@@ -7,10 +7,40 @@
 
 ### Breaking Changes
 - Removed `Dynamic Classification` feature, which was introduced in the previous beta release.
+- Renamed class:
+  `SummaryContext` to `AbstractiveSummaryContext`,
+  `SummarySentence` to `ExtractiveSummarySentence`,
+  `SummarySentencesOrder` to `ExtractiveSummarySentencesOrder`,
+  `ExtractSummaryOptions` to `ExtractiveSummaryOptions`,
+  `ExtractSummaryAction` to `ExtractiveSummaryAction`,
+  `ExtractSummaryActionResult` to `ExtractiveSummaryActionResult`,
+  `ExtractSummaryResult` to `ExtractiveSummaryResult`,
+  `ExtractSummaryResultCollection` to `ExtractiveSummaryResultCollection`,
+  `ExtractSummaryOperationDetail` to `ExtractiveSummaryOperationDetail`,
+  `ExtractSummaryPagedFlux` to `ExtractiveSummaryPagedFlux`,
+  `ExtractSummaryPagedIterable` to `ExtractiveSummaryPagedIterable`,
+  `AbstractSummaryOptions` to `AbstractiveSummaryOptions`,
+  `AbstractSummaryAction` to `AbstractiveSummaryAction`,
+  `AbstractSummaryActionResult` to `AbtractiveSummaryActionResult`,
+  `AbstractSummaryResultCollection` to `AbstractiveSummaryResultCollection`
+  `AbstractSummaryResult` to `AbstractiveSummaryResult`,
+  `AbstractSummaryOperationDetail` to `AbstractiveSummaryOperationDetail`,
+  `AbstractSummaryPagedFlux` to `AbstractiveSummaryPagedFlux`,
+  `AbstractSummaryPagedIterable` to `AbstractiveSummaryPagedIterable`,
+- Renamed methods:
+  `getExtractSummaryActions()` to `getExtractiveSummaryActions()`,
+  `getAbstractSummaryActions()` to `getAbstractiveSummaryActions()`,
+  `setAbstractSummaryActions(AbstractSummaryAction... abstractSummaryActions)` to 
+  `setAbstractiveSummaryActions(AbstractiveSummaryAction... abstractiveSummaryActions)`,
+  `setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions)` to
+  `setExtractiveSummaryActions(ExtractiveSummaryAction... extractiveSummaryActions)`,
+  `getAbstractSummaryResults` to `getAbstractiveSummaryResults`,
+  `getExtractSummaryResults` to `getExtractiveSummaryResults`
 
 ### Bugs Fixed
 
 ### Other Changes
+- Migrate test recordings to assets repo.
 
 ## 5.2.7 (2023-05-23)
 

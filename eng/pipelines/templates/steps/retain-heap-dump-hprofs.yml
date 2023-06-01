@@ -5,6 +5,14 @@ parameters:
 
 steps:
   - pwsh: |
+      if ((Get-ChildItem -Path . -Recurse -Filter *.hprof -File).Count -eq 0) {
+        Write-Host "##vso[task.setvariable variable=HAS_OOM_PROFS]false"
+      } else {
+        Write-Host "##vso[task.setvariable variable=HAS_OOM_PROFS]true"
+      }
+    condition: always()
+
+  - pwsh: |
       New-Item $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }} -ItemType directory
       foreach($hprofFile in (Get-ChildItem -Path . -Recurse -Filter *.hprof -File))
       {
@@ -14,9 +22,9 @@ steps:
       }
       [System.IO.Compression.ZipFile]::CreateFromDirectory("$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}","$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip")
     displayName: 'Copy OOM hprofs'
-    condition: always()
+    condition: eq(variables['HAS_OOM_PROFS'], 'true')
 
   - publish: $(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}.zip
     displayName: 'Publish OOM hprofs'
     artifact: ${{ parameters.OomArtifactName }}-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
-    condition: always()
+    condition: eq(variables['HAS_OOM_PROFS'], 'true')
