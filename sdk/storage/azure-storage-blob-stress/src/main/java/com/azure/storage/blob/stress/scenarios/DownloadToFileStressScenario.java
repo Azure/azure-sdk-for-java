@@ -3,7 +3,7 @@ package com.azure.storage.blob.stress.scenarios;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
-import com.azure.storage.blob.stress.options.DownloadToFileScenarioBuilder;
+import com.azure.storage.blob.stress.builders.DownloadToFileScenarioBuilder;
 import com.azure.storage.blob.stress.scenarios.infra.BlobStressScenario;
 import com.azure.storage.stress.RandomInputStream;
 import reactor.core.publisher.Mono;
@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.time.Duration;
 import java.util.Queue;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -34,17 +35,32 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
     }
 
     @Override
-    public void run() {
-        Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
-        try {
-            Queue<String> faultTypes = new ConcurrentLinkedQueue<>();
-            Context context = new Context(FAULT_TRACKING_CONTEXT_KEY, faultTypes);
-            BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(downloadPath.toString());
+    public void run(Duration timeout) {
+        long endTimeNano = System.nanoTime() + timeout.toNanos();
+        long timeoutNano;
+        while ((timeoutNano = endTimeNano - System.nanoTime()) > 0) {
+            Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
+            try {
+                Queue<String> faultTypes = new ConcurrentLinkedQueue<>();
+                Context context = new Context(FAULT_TRACKING_CONTEXT_KEY, faultTypes);
+                BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(downloadPath.toString());
 
-            getSyncBlobClient().downloadToFileWithResponse(options, null, context);
-            validateDownloadedContents(downloadPath);
-        } catch (Exception e) {
-            System.err.println(e);
+                try {
+                    getSyncBlobClient().downloadToFileWithResponse(options, Duration.ofNanos(timeoutNano), context);
+                } catch (IllegalStateException e) {
+                    // TODO can we better detect this?
+                    if (e.getMessage().contains("Timeout on blocking read")) {
+                        // test timed out, so break out of loop instead of validating the incomplete operation.
+                        break;
+                    } else {
+                        throw e;
+                    }
+                }
+
+                validateDownloadedContents(downloadPath);
+            } catch (Exception e) {
+                System.err.println(e);
+            }
         }
     }
 
