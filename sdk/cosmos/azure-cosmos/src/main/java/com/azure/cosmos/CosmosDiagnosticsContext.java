@@ -608,7 +608,7 @@ public final class CosmosDiagnosticsContext {
      * is usually only relevant when thresholds are violated, in which case the entire diagnostics json-string is
      * included. Calling this method will lazily collect the user agent - which can be useful when writing
      * a custom {@link CosmosDiagnosticsHandler}
-     * @return the set of contacted regions
+     * @return the connection mode used in the client.
      */
     public String getConnectionMode() {
         for (CosmosDiagnostics d: this.diagnostics) {
