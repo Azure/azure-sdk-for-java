@@ -91,6 +91,7 @@ public class ThreadDumper implements BeforeAllCallback, BeforeEachCallback, Afte
             }
             dump.append("\n\n");
         }
+
         dump.append("============= THREAD DUMP END =========")
             .append(System.lineSeparator())
             .append("========= RUNNING TESTS START =========");
@@ -121,11 +122,18 @@ public class ThreadDumper implements BeforeAllCallback, BeforeEachCallback, Afte
 
     @Override
     public void beforeEach(ExtensionContext context) {
-        RUNNING_TEST_TIMES.put(context.getDisplayName(), System.currentTimeMillis());
+        RUNNING_TEST_TIMES.put(getFullTestName(context), System.currentTimeMillis());
     }
 
     @Override
     public void afterEach(ExtensionContext context) {
-        RUNNING_TEST_TIMES.remove(context.getDisplayName());
+        RUNNING_TEST_TIMES.remove(getFullTestName(context));
+    }
+
+    private static String getFullTestName(ExtensionContext context) {
+        String testName = context.getDisplayName();
+        String className = context.getRequiredTestClass().getName();
+
+        return className + "." + testName;
     }
 }
