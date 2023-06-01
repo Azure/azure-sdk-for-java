@@ -11,14 +11,12 @@ ch.qos.logback:logback-classic;1.2.12
 com.azure.tools:azure-autorest-customization;1.0.0-beta.7
 com.fasterxml.jackson.core:jackson-annotations;2.13.5
 com.fasterxml.jackson.core:jackson-core;2.13.5
-com.fasterxml.jackson.core:jackson-databind;2.13.5
 com.fasterxml.jackson.core:jackson-databind;2.14.2
 com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.13.5
 com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.13.5
 com.fasterxml.jackson.datatype:jackson-datatype-jdk8;2.13.5
 com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.13.5
 com.fasterxml.jackson.module:jackson-module-parameter-names;2.13.5
-com.fasterxml.jackson.module:jackson-module-scala_2.12;2.13.5
 com.fasterxml.jackson.module:jackson-module-scala_2.12;2.14.2
 com.fasterxml.woodstox:woodstox-core;6.4.0
 com.github.spotbugs:spotbugs;4.2.2
