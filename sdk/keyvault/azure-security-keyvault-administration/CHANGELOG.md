@@ -13,6 +13,7 @@
 ## 4.3.2 (2023-05-23)
 
 ### Other Changes
+- Migrate test recordings to assets repo.
 
 #### Dependency Updates
 
