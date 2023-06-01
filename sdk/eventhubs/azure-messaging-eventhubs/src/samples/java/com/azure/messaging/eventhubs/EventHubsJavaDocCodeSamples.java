@@ -6,10 +6,13 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.credential.AzureNamedKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
+import com.azure.messaging.eventhubs.models.EventHubConnectionStringProperties;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -736,6 +739,61 @@ public class EventHubsJavaDocCodeSamples {
             })
             .buildClient();
         // END: com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation
+    }
+
+    /**
+     * Code snippet showing how to use {@link EventHubConnectionStringProperties}.
+     */
+    public void eventHubConnectionStringProperties() {
+        // BEGIN: com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct
+        String connectionString = "Endpoint=sb://demo-hub.servicebus.windows.net/;SharedAccessKeyName=TestAccessKey;SharedAccessKey=TestAccessKeyValue;EntityPath=MyEventHub";
+
+        EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse(connectionString);
+        AzureNamedKeyCredential credential = new AzureNamedKeyCredential(properties.getSharedAccessKeyName(),
+            properties.getSharedAccessKey());
+
+        EventHubProducerClient producer = new EventHubClientBuilder()
+            .credential(properties.getFullyQualifiedNamespace(), properties.getEntityPath(), credential)
+            .buildProducerClient();
+        // END: com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct
+    }
+
+    /**
+     * Code snippet showing how to use {@link EventHubConnectionStringProperties}.
+     */
+    public void eventHubConnectionStringPropertiesNamespace() {
+        // BEGIN: com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct.namespace
+        String connectionString = "Endpoint=sb://demo-hub.servicebus.windows.net/;SharedAccessKeyName=NamespaceAccessKey;SharedAccessKey=NamespaceAccessKeyValue";
+
+        String eventHubName = "my-event-hub";
+
+        EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse(connectionString);
+        AzureNamedKeyCredential credential = new AzureNamedKeyCredential(properties.getSharedAccessKeyName(),
+            properties.getSharedAccessKey());
+
+        EventHubProducerClient producer = new EventHubClientBuilder()
+            .credential(properties.getFullyQualifiedNamespace(), eventHubName, credential)
+            .buildProducerClient();
+        // END: com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct.namespace
+    }
+
+    /**
+     * Code snippet showing how to use {@link EventHubConnectionStringProperties}.
+     */
+    public void eventHubConnectionStringPropertiesSas() {
+        // BEGIN: com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct.sas
+        // "sr" is the URI of the resource being accessed.
+        // "se" is the expiration date of the signature.
+        // "skn" is name of the authorization policy used to create the SAS
+        String sharedAccessSignature = "SharedAccessSignature sr={0}&sig={1}&se={2}&skn={3}";
+
+        EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse(sharedAccessSignature);
+        AzureSasCredential credential = new AzureSasCredential(sharedAccessSignature);
+
+        EventHubConsumerClient consumer = new EventHubClientBuilder()
+            .credential(properties.getFullyQualifiedNamespace(), properties.getEntityPath(), credential)
+            .buildConsumerClient();
+        // END: com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct.sas
     }
 
     private static final class TelemetryEvent {

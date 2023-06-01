@@ -4,11 +4,15 @@
 package com.azure.messaging.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
+import com.azure.messaging.eventhubs.EventProcessorClient;
 
 /**
- * A model class to hold checkpoint data. A checkpoint represents the last successfully processed event by a {@link
- * PartitionProcessor} for a particular partition of an Event Hub.
+ * A model class to hold checkpoint data. A checkpoint represents the last successfully processed event for a
+ * particular partition of an Event Hub.
+ *
+ * @see EventBatchContext
+ * @see EventContext
+ * @see EventProcessorClient
  */
 @Fluent
 public class Checkpoint {
