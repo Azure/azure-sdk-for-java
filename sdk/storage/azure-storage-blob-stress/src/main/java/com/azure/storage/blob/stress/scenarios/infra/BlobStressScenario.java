@@ -2,8 +2,7 @@ package com.azure.storage.blob.stress.scenarios.infra;
 
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.stress.options.BlobScenarioBuilder;
+import com.azure.storage.blob.stress.builders.BlobScenarioBuilder;
 import com.azure.storage.stress.RandomInputStream;
 
 import java.util.UUID;
