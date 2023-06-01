@@ -5,7 +5,7 @@ import com.azure.core.http.HttpClient;
 public abstract class StressScenarioBuilder {
     private int parallel;
 
-    private long testTimeNanoseconds;
+    private long testTimeSeconds;
 
     private HttpClient faultInjectingClient;
 
@@ -19,12 +19,12 @@ public abstract class StressScenarioBuilder {
         this.parallel = parallel;
     }
 
-    public long getTestTimeNanoseconds() {
-        return testTimeNanoseconds;
+    public long getTestTimeSeconds() {
+        return testTimeSeconds;
     }
 
-    public void setTestTimeNanoseconds(long testTimeNanoseconds) {
-        this.testTimeNanoseconds = testTimeNanoseconds;
+    public void setTestTimeSeconds(long testTimeNanoseconds) {
+        this.testTimeSeconds = testTimeNanoseconds;
     }
 
     public HttpClient getFaultInjectingClient() {

@@ -1,4 +1,4 @@
-package com.azure.storage.blob.stress.options;
+package com.azure.storage.blob.stress.builders;
 
 import com.azure.storage.stress.StressScenarioBuilder;
 
