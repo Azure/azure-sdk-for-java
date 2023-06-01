@@ -317,9 +317,14 @@ public final class DocumentCollection extends Resource {
      * @param computedProperties the computed properties associated with the container.
      */
     public void setComputedProperties(Collection<ComputedProperty> computedProperties) {
-        if (computedProperties == null) {
-            throw new IllegalArgumentException("COMPUTED_PROPERTIES cannot be null.");
+        if (computedProperties == null || computedProperties.isEmpty()) {
+            throw new IllegalArgumentException("COMPUTED_PROPERTIES cannot be null or empty.");
         }
+        computedProperties.forEach(computedProperty -> {
+            if (computedProperty == null) {
+                throw new IllegalArgumentException("COMPUTED_PROPERTIES cannot have null values.");
+            }
+        });
 
         setProperty(this, Constants.Properties.COMPUTED_PROPERTIES, computedProperties);
     }

@@ -3,14 +3,19 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.JsonSerializable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a computed property definition for a Cosmos DB container.
  */
 public final class ComputedProperty {
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("query")
     private String query;
+
     private JsonSerializable jsonSerializable;
 
     /**
@@ -28,24 +33,6 @@ public final class ComputedProperty {
     public ComputedProperty(String name, String query) {
         this.name = name;
         this.query = query;
-    }
-
-    /**
-     * Instantiates a new Computed properties.
-     *
-     * @param jsonString the json string that represents the Computed properties.
-     */
-    ComputedProperty(String jsonString) {
-        this.jsonSerializable = new JsonSerializable(jsonString);
-    }
-
-    /**
-     * Instantiates a new Computed properties.
-     *
-     * @param objectNode the object node that represents the Computed properties.
-     */
-    ComputedProperty(ObjectNode objectNode) {
-        this.jsonSerializable = new JsonSerializable(objectNode);
     }
 
     /**
