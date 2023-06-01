@@ -62,7 +62,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-web</artifactId>
-      <version>6.0.0</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
+      <version>5.3.27</version> <!-- {x-version-update;org.springframework:spring-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -206,7 +206,7 @@
             <bannedDependencies>
               <includes>
                 <include>org.springframework:spring-beans:[5.3.27]</include> <!-- {x-include-update;org.springframework:spring-beans;external_dependency} -->
-                <include>org.springframework:spring-web:[6.0.0]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
+                <include>org.springframework:spring-web:[5.3.27]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-tx:[5.3.27]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
                 <include>org.springframework:spring-expression:[5.3.27]</include> <!-- {x-include-update;org.springframework:spring-expression;external_dependency} -->
                 <include>org.springframework:spring-core:[5.3.27]</include> <!-- {x-include-update;org.springframework:spring-core;external_dependency} -->

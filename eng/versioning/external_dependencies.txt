@@ -158,7 +158,7 @@ org.springframework:spring-jdbc;5.3.27
 org.springframework:spring-jms;5.3.27
 org.springframework:spring-messaging;5.3.27
 org.springframework:spring-tx;5.3.27
-org.springframework:spring-web;6.0.0
+org.springframework:spring-web;5.3.27
 org.springframework:spring-webmvc;5.3.27
 org.springframework:spring-test;5.3.27
 org.springframework.retry:spring-retry;1.3.4
