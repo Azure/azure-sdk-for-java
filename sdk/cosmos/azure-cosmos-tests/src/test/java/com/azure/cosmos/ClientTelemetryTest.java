@@ -27,7 +27,6 @@ import org.mockito.Mockito;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
-import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -348,6 +347,27 @@ public class ClientTelemetryTest extends TestSuiteBase {
 
             // clear system property
             System.clearProperty("COSMOS.CLIENT_TELEMETRY_PROXY_OPTIONS_CONFIG");
+        }
+    }
+
+    @Test(groups = {"emulator"}, timeOut = TIMEOUT)
+    public void clientTelemetryUseBaseUserAgent() {
+        CosmosAsyncClient client = null;
+        String userAgentSuffix = "clientTelemetryUseBaseUserAgent";
+
+        try {
+            client = new CosmosClientBuilder()
+                .key(TestConfigurations.MASTER_KEY)
+                .endpoint(TestConfigurations.HOST)
+                .userAgentSuffix(userAgentSuffix)
+                .buildAsyncClient();
+
+            ClientTelemetry clientTelemetry = client.getContextClient().getClientTelemetry();
+            assertThat(clientTelemetry.getClientTelemetryInfo().getUserAgent().contains(userAgentSuffix)).isFalse();
+        } finally {
+            if (client != null) {
+                client.close();
+            }
         }
     }
 

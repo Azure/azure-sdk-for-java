@@ -14,15 +14,15 @@ public final class PreconfiguredEndpointListTests {
         PreconfiguredEndpointList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"description\":\"ozkrwfndiodjpslw\",\"endpoint\":\"dpvwryoqpsoaccta\",\"endpointType\":\"AzureRegion\",\"backend\":\"j\"},\"location\":\"ahbc\",\"tags\":{\"jakhmsbzjh\":\"fdfdosygexpa\",\"hqtrgqjbpf\":\"rzevdphlxaol\",\"tfell\":\"fsinzgvfcjrwzoxx\",\"lxofpdvhpfxxypin\":\"wfzitonpeqfpjk\"},\"id\":\"nmayhuybb\",\"name\":\"podepoo\",\"type\":\"inuvamiheogn\"},{\"properties\":{\"description\":\"zxtheotusivyevcc\",\"endpoint\":\"ihnhun\",\"endpointType\":\"ATM\",\"backend\":\"zrnf\"},\"location\":\"gxg\",\"tags\":{\"zfkufubljofx\":\"emv\",\"jbasvmsmjqulngs\":\"eofjaeqjh\",\"bkzgcwrwclx\":\"tnb\",\"vkocrcjdkwtn\":\"wrljdouskc\"},\"id\":\"xbnjbiksq\",\"name\":\"gls\",\"type\":\"ainqpjwnzlljfm\"},{\"properties\":{\"description\":\"ebvmgxsabkyqd\",\"endpoint\":\"jitcjczdzevn\",\"endpointType\":\"AzureRegion\",\"backend\":\"wpdappdsbdkv\"},\"location\":\"rwjfe\",\"tags\":{\"tmrldhugjzzdatq\":\"hutje\",\"gphuticndvka\":\"hocdgeab\",\"k\":\"zwyiftyhxhur\",\"kjfkg\":\"tyxolniwpwc\"},\"id\":\"awxklr\",\"name\":\"plwckbas\",\"type\":\"ypnddhsgcb\"}],\"nextLink\":\"phejkotynqgoulz\"}")
+                    "{\"value\":[{\"properties\":{\"description\":\"doaon\",\"endpoint\":\"jcntuj\",\"endpointType\":\"AFD\",\"backend\":\"ed\"},\"location\":\"twwaezkojvdcpzf\",\"tags\":{\"x\":\"uicybxarzgszuf\",\"khazxkhnzbonlwn\":\"iqopidoamciod\",\"szzcmrvexztv\":\"oegokdwbwh\",\"gsfraoyzkoow\":\"t\"},\"id\":\"lmnguxaw\",\"name\":\"aldsy\",\"type\":\"uximerqfobw\"},{\"properties\":{\"description\":\"kby\",\"endpoint\":\"t\",\"endpointType\":\"ATM\",\"backend\":\"pagmhrskdsnf\"},\"location\":\"sd\",\"tags\":{\"zev\":\"gtdlmk\",\"ewpusdsttwvogvb\":\"l\",\"m\":\"ejdcngqqmoakuf\"},\"id\":\"zr\",\"name\":\"rdgrtw\",\"type\":\"enuuzkopbm\"}],\"nextLink\":\"rfdwoyu\"}")
                 .toObject(PreconfiguredEndpointList.class);
-        Assertions.assertEquals("phejkotynqgoulz", model.nextLink());
+        Assertions.assertEquals("rfdwoyu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PreconfiguredEndpointList model = new PreconfiguredEndpointList().withNextLink("phejkotynqgoulz");
+        PreconfiguredEndpointList model = new PreconfiguredEndpointList().withNextLink("rfdwoyu");
         model = BinaryData.fromObject(model).toObject(PreconfiguredEndpointList.class);
-        Assertions.assertEquals("phejkotynqgoulz", model.nextLink());
+        Assertions.assertEquals("rfdwoyu", model.nextLink());
     }
 }

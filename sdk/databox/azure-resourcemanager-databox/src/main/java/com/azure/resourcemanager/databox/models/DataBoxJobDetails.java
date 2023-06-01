@@ -111,6 +111,13 @@ public final class DataBoxJobDetails extends JobDetails {
 
     /** {@inheritDoc} */
     @Override
+    public DataBoxJobDetails withReverseShippingDetails(ReverseShippingDetails reverseShippingDetails) {
+        super.withReverseShippingDetails(reverseShippingDetails);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
     public DataBoxJobDetails withKeyEncryptionKey(KeyEncryptionKey keyEncryptionKey) {
         super.withKeyEncryptionKey(keyEncryptionKey);
         return this;

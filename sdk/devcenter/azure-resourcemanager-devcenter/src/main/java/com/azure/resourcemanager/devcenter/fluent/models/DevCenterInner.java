@@ -99,7 +99,7 @@ public final class DevCenterInner extends Resource {
     }
 
     /**
-     * Get the devCenterUri property: The URI of the resource.
+     * Get the devCenterUri property: The URI of the Dev Center.
      *
      * @return the devCenterUri value.
      */

@@ -4,6 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
+import com.azure.cosmos.models.{CosmosBulkExecutionOptions, CosmosChangeFeedRequestOptions, CosmosItemRequestOptions, CosmosQueryRequestOptions}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncContainer, ThroughputControlGroupConfigBuilder}
 import org.apache.spark.broadcast.Broadcast
@@ -47,6 +48,42 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
         container
     }
 
+    def populateThroughputControlGroupName(
+                                              bulkExecutionOptions: CosmosBulkExecutionOptions,
+                                              throughputControlConfigOpt: Option[CosmosThroughputControlConfig]
+                                          ): Unit = {
+        if (throughputControlConfigOpt.isDefined) {
+            bulkExecutionOptions.setThroughputControlGroupName(throughputControlConfigOpt.get.groupName)
+        }
+    }
+
+    def populateThroughputControlGroupName(
+                                              itemRequestOptions: CosmosItemRequestOptions,
+                                              throughputControlConfigOpt: Option[CosmosThroughputControlConfig]
+                                          ): Unit = {
+        if (throughputControlConfigOpt.isDefined) {
+            itemRequestOptions.setThroughputControlGroupName(throughputControlConfigOpt.get.groupName)
+        }
+    }
+
+    def populateThroughputControlGroupName(
+                                              queryRequestOptions: CosmosQueryRequestOptions,
+                                              throughputControlConfigOpt: Option[CosmosThroughputControlConfig]
+                                          ): Unit = {
+        if (throughputControlConfigOpt.isDefined) {
+            queryRequestOptions.setThroughputControlGroupName(throughputControlConfigOpt.get.groupName)
+        }
+    }
+
+    def populateThroughputControlGroupName(
+                                              changeFeedRequestOptions: CosmosChangeFeedRequestOptions,
+                                              throughputControlConfigOpt: Option[CosmosThroughputControlConfig]
+                                          ): Unit = {
+        if (throughputControlConfigOpt.isDefined) {
+            changeFeedRequestOptions.setThroughputControlGroupName(throughputControlConfigOpt.get.groupName)
+        }
+    }
+
     private def enableGlobalThroughputControlGroup(
                                                       userConfig: Map[String, String],
                                                       cosmosContainerConfig: CosmosContainerConfig,
@@ -56,7 +93,6 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
                                                       throughputControlConfig: CosmosThroughputControlConfig): Unit = {
         val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
             .groupName(throughputControlConfig.groupName)
-            .defaultControlGroup(true)
 
         if (throughputControlConfig.targetThroughput.isDefined) {
             groupConfigBuilder.targetThroughput(throughputControlConfig.targetThroughput.get)
@@ -106,7 +142,6 @@ private object ThroughputControlHelper extends BasicLoggingTrait {
 
         val groupConfigBuilder = new ThroughputControlGroupConfigBuilder()
             .groupName(throughputControlConfig.groupName)
-            .defaultControlGroup(true)
 
         // If there is no SparkExecutorCount being captured, then fall back to use 1 executor count
         // If the spark executor count is somehow 0, then fall back to 1 executor count

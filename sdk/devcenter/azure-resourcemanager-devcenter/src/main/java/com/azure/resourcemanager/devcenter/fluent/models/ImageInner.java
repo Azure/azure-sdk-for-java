@@ -7,6 +7,7 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.devcenter.models.HibernateSupport;
 import com.azure.resourcemanager.devcenter.models.ProvisioningState;
 import com.azure.resourcemanager.devcenter.models.RecommendedMachineConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -100,6 +101,16 @@ public final class ImageInner extends ProxyResource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the hibernateSupport property: Indicates whether this image has hibernate enabled. Not all images are capable
+     * of supporting hibernation. To find out more see https://aka.ms/devbox/hibernate.
+     *
+     * @return the hibernateSupport value.
+     */
+    public HibernateSupport hibernateSupport() {
+        return this.innerProperties() == null ? null : this.innerProperties().hibernateSupport();
     }
 
     /**

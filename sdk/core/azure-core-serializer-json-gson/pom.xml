@@ -15,7 +15,7 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-core-serializer-json-gson</artifactId>
   <packaging>jar</packaging>
-  <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
+  <version>1.3.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-serializer-json-gson;current} -->
 
   <name>Microsoft Azure Gson JSON Serializer Library</name>
   <description>This package contains the Gson JSON serializer client plugin for azure-core.</description>
@@ -48,12 +48,14 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.serializer.json.gson/com.azure.core.serializer.json.gson=ALL-UNNAMED
       --add-opens com.azure.core.serializer.json.gson/com.azure.core.serializer.json.gson=com.google.gson
+      --add-opens com.azure.core.serializer.json.gson/com.azure.core.serializer.json.gson.implementation=com.azure.core
+      --add-opens com.azure.core.serializer.json.gson/com.azure.core.serializer.json.gson.implementation=com.google.gson
     </javaModulesSurefireArgLine>
 
     <!-- Enables fail on deprecated API usage. -->
     <compiler.failondeprecatedstatus/>
 
-     <javadoc.excludePackageNames>com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
+     <javadoc.excludePackageNames>com.azure.json,com.azure.core.implementation*,com.azure.core.util,com.azure.core.util*,
       com.azure.core.models,com.azure.core.http,com.azure.core.http.policy,com.azure.core.http.rest,com.azure.core.exception,com.azure.core.cryptography,
       com.azure.core.credential,com.azure.core.client.traits,com.azure.core.annotation</javadoc.excludePackageNames>
   </properties>
@@ -69,13 +71,26 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.39.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.40.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
     </dependency>
 
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.10</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-json</artifactId>
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <type>test-jar</type>
+      <scope>test</scope>
     </dependency>
 
     <dependency>
@@ -105,7 +120,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.27</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.29</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

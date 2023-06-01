@@ -16,6 +16,7 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.MalformedURLException;
@@ -52,7 +53,6 @@ public class TestProxyUtils {
     private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
             put("Operation-Location", URL_REGEX);
             put("operation-location", URL_REGEX);
-            put("Location", URL_REGEX);
             }};
 
     private static final List<String> BODY_REGEX_TO_REDACT
@@ -125,17 +125,38 @@ public class TestProxyUtils {
     }
 
     /**
+     * Get the assets json file path if it exists.
+     * @param recordFile the record/playback file
+     * @param testClassPath the test class path
+     * @return the assets json file path if it exists.
+     */
+    public static String getAssetJsonFile(File recordFile, Path testClassPath) {
+        if (assetJsonFileExists(testClassPath)) {
+            // subpath removes nodes "src/test/resources/session-records"
+            return Paths.get(recordFile.toPath().subpath(0, 3).toString(), "assets.json").toString();
+        } else {
+            return null;
+        }
+    }
+
+    private static boolean assetJsonFileExists(Path testClassPath) {
+        return Files.exists(Paths.get(String.valueOf(TestUtils.getRepoRootResolveUntil(testClassPath, "target")),
+            "assets.json"));
+    }
+
+    /**
      * Sets the response URL back to the original URL before returning it through the pipeline.
      * @param response The {@link HttpResponse} to modify.
      * @return The modified response.
      * @throws RuntimeException Construction of one of the URLs failed.
      */
-    public static HttpResponse revertUrl(HttpResponse response) {
+    public static HttpResponse resetTestProxyData(HttpResponse response) {
+        HttpRequest responseRequest = response.getRequest();
+        HttpHeaders requestHeaders = responseRequest.getHeaders();
         try {
-            URL originalUrl = UrlBuilder.parse(response.getRequest().getHeaders()
-                .getValue(X_RECORDING_UPSTREAM_BASE_URI))
+            URL originalUrl = UrlBuilder.parse(requestHeaders.getValue(X_RECORDING_UPSTREAM_BASE_URI))
                 .toUrl();
-            UrlBuilder currentUrl = UrlBuilder.parse(response.getRequest().getUrl());
+            UrlBuilder currentUrl = UrlBuilder.parse(responseRequest.getUrl());
             currentUrl.setScheme(originalUrl.getProtocol());
             currentUrl.setHost(originalUrl.getHost());
             int port = originalUrl.getPort();
@@ -144,7 +165,12 @@ public class TestProxyUtils {
             } else {
                 currentUrl.setPort(port);
             }
-            response.getRequest().setUrl(currentUrl.toUrl());
+            responseRequest.setUrl(currentUrl.toUrl());
+
+            requestHeaders.remove(X_RECORDING_UPSTREAM_BASE_URI);
+            requestHeaders.remove(X_RECORDING_MODE);
+            requestHeaders.remove(X_RECORDING_SKIP);
+            requestHeaders.remove(X_RECORDING_ID);
             return response;
         } catch (MalformedURLException e) {
             throw new RuntimeException(e);
@@ -189,12 +215,13 @@ public class TestProxyUtils {
 
     /**
      * Finds the test proxy version in the source tree.
+     * @param testClassPath the test class path
      * @return The version string to use.
      * @throws RuntimeException The eng folder could not be located in the repo.
      * @throws UncheckedIOException The version file could not be read properly.
      */
-    public static String getTestProxyVersion() {
-        Path rootPath = TestUtils.getRepoRoot();
+    public static String getTestProxyVersion(Path testClassPath) {
+        Path rootPath = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
         Path versionFile =  Paths.get("eng", "common", "testproxy", "target_version.txt");
         rootPath = rootPath.resolve(versionFile);
         try {
@@ -376,6 +403,21 @@ public class TestProxyUtils {
             request.setHeader(X_ABSTRACTION_IDENTIFIER, matcherType);
             return request;
         }).collect(Collectors.toList());
+    }
+
+    /**
+     * Set comparing bodies to false when running in playback and RecordWithoutRequestBody is set for the test.
+     * @return the HttpRequest for setting compare bodies matcher to false.
+     */
+    public static HttpRequest setCompareBodiesMatcher() {
+        String requestBody = createCustomMatcherRequestBody(new CustomMatcher().setComparingBodies(false));
+        HttpRequest request =
+            new HttpRequest(HttpMethod.POST, String.format("%s/Admin/setmatcher", proxyUrl.toString())).setBody(
+                requestBody);
+
+        request.setHeader(X_ABSTRACTION_IDENTIFIER,
+            TestProxyRequestMatcher.TestProxyRequestMatcherType.CUSTOM.getName());
+        return request;
     }
 
     private static TestProxySanitizer addDefaultUrlSanitizer() {

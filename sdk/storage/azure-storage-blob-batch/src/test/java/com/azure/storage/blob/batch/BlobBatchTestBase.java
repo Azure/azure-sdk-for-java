@@ -74,7 +74,10 @@ public class BlobBatchTestBase extends TestProxyTestBase {
         }
 
         interceptorManager.addMatchers(Arrays.asList(new BodilessMatcher(),
-            new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Content-Type"))));
+            new CustomMatcher().setHeadersKeyOnlyMatch(Collections.singletonList("Content-Type"))
+                .setQueryOrderingIgnored(true)
+                .setIgnoredQueryParameters(Arrays.asList("sv"))));
+
         primaryBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
         versionedBlobServiceClient = getServiceClient(ENVIRONMENT.getPrimaryAccount());

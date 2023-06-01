@@ -93,3 +93,5 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
+
+      - template: /eng/common/testproxy/publish-proxy-logs.yml

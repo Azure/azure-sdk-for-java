@@ -30,7 +30,7 @@ public class TestContextManagerTests {
     @ParameterizedTest(name = "[{index}] {displayName}")
     @EnumSource(TestMode.class)
     public void testWithoutDoNotRecord(TestMode testMode) {
-        TestContextManager testContextManager = new TestContextManager(METHOD_WITHOUT_DONOTRECORD, testMode, false, false);
+        TestContextManager testContextManager = new TestContextManager(METHOD_WITHOUT_DONOTRECORD, testMode, false, false, null);
 
         assertFalse(testContextManager.doNotRecordTest());
         assertTrue(testContextManager.didTestRun());
@@ -43,7 +43,7 @@ public class TestContextManagerTests {
     @ParameterizedTest(name = "[{index}] {displayName}")
     @EnumSource(TestMode.class)
     public void testWithDoNotRecordRunInPlayback(TestMode testMode) {
-        TestContextManager testContextManager = new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, testMode, false, false);
+        TestContextManager testContextManager = new TestContextManager(DONOTRECORD_FALSE_SKIPINPLAYBACK, testMode, false, false, null);
 
         assertTrue(testContextManager.doNotRecordTest());
         assertTrue(testContextManager.didTestRun());
@@ -58,13 +58,13 @@ public class TestContextManagerTests {
     public void testWithDoNotRecordSkipInPlayback() {
         Method testMethod = DONOTRECORD_SKIPINPLAYBACK;
 
-        assertThrows(TestAbortedException.class, () -> new TestContextManager(testMethod, TestMode.PLAYBACK, false, false));
+        assertThrows(TestAbortedException.class, () -> new TestContextManager(testMethod, TestMode.PLAYBACK, false, false, null));
 
-        TestContextManager testContextManager = new TestContextManager(testMethod, TestMode.LIVE, false, false);
+        TestContextManager testContextManager = new TestContextManager(testMethod, TestMode.LIVE, false, false, null);
         assertTrue(testContextManager.doNotRecordTest());
         assertTrue(testContextManager.didTestRun());
 
-        testContextManager = new TestContextManager(testMethod, TestMode.RECORD, false, false);
+        testContextManager = new TestContextManager(testMethod, TestMode.RECORD, false, false, null);
         assertTrue(testContextManager.doNotRecordTest());
         assertTrue(testContextManager.didTestRun());
     }

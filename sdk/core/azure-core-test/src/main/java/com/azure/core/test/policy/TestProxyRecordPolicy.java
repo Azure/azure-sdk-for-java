@@ -25,12 +25,14 @@ import reactor.core.publisher.Mono;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
+import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
 
@@ -66,13 +68,17 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * Starts a recording of test traffic.
      *
      * @param recordFile The name of the file to save the recording to.
+     * @param testClassPath the test class path
      * @throws RuntimeException Failed to serialize body payload.
      */
-    public void startRecording(File recordFile) {
+    public void startRecording(File recordFile, Path testClassPath) {
+        String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         HttpRequest request = null;
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/record/start", proxyUrl.toString()))
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString()), SerializerEncoding.JSON));
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
+                    SerializerEncoding.JSON))
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -81,6 +87,14 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         this.xRecordingId = response.getHeaderValue(X_RECORDING_ID);
 
         addProxySanitization(this.sanitizers);
+        setDefaultRecordingOptions();
+    }
+
+    private void setDefaultRecordingOptions() {
+        HttpRequest request = new HttpRequest(HttpMethod.POST, String.format("%s/Admin/SetRecordingOptions", proxyUrl.toString()));
+        request.setBody("{\"HandleRedirects\": false}");
+        request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+        client.sendSync(request, Context.NONE);
     }
 
     /**
@@ -134,7 +148,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      */
     private HttpResponse afterReceivedResponse(HttpResponse response) {
         TestProxyUtils.checkForTestProxyErrors(response);
-        return TestProxyUtils.revertUrl(response);
+        return TestProxyUtils.resetTestProxyData(response);
     }
 
     @Override

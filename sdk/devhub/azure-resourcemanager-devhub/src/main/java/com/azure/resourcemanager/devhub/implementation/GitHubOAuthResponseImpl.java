@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devhub.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devhub.fluent.models.GitHubOAuthResponseInner;
 import com.azure.resourcemanager.devhub.models.GitHubOAuthResponse;
 
@@ -28,6 +29,10 @@ public final class GitHubOAuthResponseImpl implements GitHubOAuthResponse {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String username() {

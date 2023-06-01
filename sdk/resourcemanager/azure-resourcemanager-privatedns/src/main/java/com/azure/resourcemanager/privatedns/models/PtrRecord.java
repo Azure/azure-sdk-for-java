@@ -16,6 +16,10 @@ public final class PtrRecord {
     @JsonProperty(value = "ptrdname")
     private String ptrdname;
 
+    /** Creates an instance of PtrRecord class. */
+    public PtrRecord() {
+    }
+
     /**
      * Get the ptrdname property: The PTR target domain name for this PTR record.
      *

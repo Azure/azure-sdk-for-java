@@ -22,6 +22,10 @@ public final class PartnerNamespaceSharedAccessKeysInner {
     @JsonProperty(value = "key2")
     private String key2;
 
+    /** Creates an instance of PartnerNamespaceSharedAccessKeysInner class. */
+    public PartnerNamespaceSharedAccessKeysInner() {
+    }
+
     /**
      * Get the key1 property: Shared access key1 for the partner namespace.
      *

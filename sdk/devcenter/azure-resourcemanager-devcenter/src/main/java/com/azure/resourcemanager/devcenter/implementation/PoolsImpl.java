@@ -70,6 +70,14 @@ public final class PoolsImpl implements Pools {
         this.serviceClient().delete(resourceGroupName, projectName, poolName, context);
     }
 
+    public void runHealthChecks(String resourceGroupName, String projectName, String poolName) {
+        this.serviceClient().runHealthChecks(resourceGroupName, projectName, poolName);
+    }
+
+    public void runHealthChecks(String resourceGroupName, String projectName, String poolName, Context context) {
+        this.serviceClient().runHealthChecks(resourceGroupName, projectName, poolName, context);
+    }
+
     public Pool getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {

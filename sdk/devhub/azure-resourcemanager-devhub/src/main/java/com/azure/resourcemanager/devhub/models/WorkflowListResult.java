@@ -24,6 +24,10 @@ public final class WorkflowListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of WorkflowListResult class. */
+    public WorkflowListResult() {
+    }
+
     /**
      * Get the value property: The list of workflows.
      *

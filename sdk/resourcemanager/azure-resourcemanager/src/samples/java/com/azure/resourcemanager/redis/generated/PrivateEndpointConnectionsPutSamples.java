@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.redis.models.PrivateEndpointServiceConnectionStatus;
 import com.azure.resourcemanager.redis.models.PrivateLinkServiceConnectionState;
@@ -12,7 +11,7 @@ import com.azure.resourcemanager.redis.models.PrivateLinkServiceConnectionState;
 /** Samples for PrivateEndpointConnections Put. */
 public final class PrivateEndpointConnectionsPutSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCachePutPrivateEndpointConnection.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCachePutPrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisCachePutPrivateEndpointConnection.
@@ -34,6 +33,6 @@ public final class PrivateEndpointConnectionsPutSamples {
                         new PrivateLinkServiceConnectionState()
                             .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
                             .withDescription("Auto-Approved")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

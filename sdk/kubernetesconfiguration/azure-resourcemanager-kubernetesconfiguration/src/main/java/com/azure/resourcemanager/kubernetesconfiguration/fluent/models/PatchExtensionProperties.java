@@ -13,41 +13,42 @@ import java.util.Map;
 @Fluent
 public final class PatchExtensionProperties {
     /*
-     * Flag to note if this extension participates in auto upgrade of minor
-     * version, or not.
+     * Flag to note if this extension participates in auto upgrade of minor version, or not.
      */
     @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
-     * ReleaseTrain this extension participates in for auto-upgrade (e.g.
-     * Stable, Preview, etc.) - only if autoUpgradeMinorVersion is 'true'.
+     * ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if
+     * autoUpgradeMinorVersion is 'true'.
      */
     @JsonProperty(value = "releaseTrain")
     private String releaseTrain;
 
     /*
-     * Version of the extension for this extension, if it is 'pinned' to a
-     * specific version. autoUpgradeMinorVersion must be 'false'.
+     * Version of the extension for this extension, if it is 'pinned' to a specific version. autoUpgradeMinorVersion
+     * must be 'false'.
      */
     @JsonProperty(value = "version")
     private String version;
 
     /*
-     * Configuration settings, as name-value pairs for configuring this
-     * extension.
+     * Configuration settings, as name-value pairs for configuring this extension.
      */
     @JsonProperty(value = "configurationSettings")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> configurationSettings;
 
     /*
-     * Configuration settings that are sensitive, as name-value pairs for
-     * configuring this extension.
+     * Configuration settings that are sensitive, as name-value pairs for configuring this extension.
      */
     @JsonProperty(value = "configurationProtectedSettings")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> configurationProtectedSettings;
+
+    /** Creates an instance of PatchExtensionProperties class. */
+    public PatchExtensionProperties() {
+    }
 
     /**
      * Get the autoUpgradeMinorVersion property: Flag to note if this extension participates in auto upgrade of minor

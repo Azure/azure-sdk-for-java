@@ -61,7 +61,7 @@ public final class RemoveParticipantFailed {
      * Set the callConnectionId property: Call connection ID.
      *
      * @param callConnectionId the callConnectionId value to set.
-     * @return the RemoveParticipantFailedEventData object itself.
+     * @return the RemoveParticipantFailed object itself.
      */
     public RemoveParticipantFailed setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
@@ -81,7 +81,7 @@ public final class RemoveParticipantFailed {
      * Set the serverCallId property: Server call ID.
      *
      * @param serverCallId the serverCallId value to set.
-     * @return the RemoveParticipantFailedEventData object itself.
+     * @return the RemoveParticipantFailed object itself.
      */
     public RemoveParticipantFailed setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
@@ -103,7 +103,7 @@ public final class RemoveParticipantFailed {
      * ID.
      *
      * @param correlationId the correlationId value to set.
-     * @return the RemoveParticipantFailedEventData object itself.
+     * @return the RemoveParticipantFailed object itself.
      */
     public RemoveParticipantFailed setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
@@ -125,7 +125,7 @@ public final class RemoveParticipantFailed {
      * the response event.
      *
      * @param operationContext the operationContext value to set.
-     * @return the RemoveParticipantFailedEventData object itself.
+     * @return the RemoveParticipantFailed object itself.
      */
     public RemoveParticipantFailed setOperationContext(String operationContext) {
         this.operationContext = operationContext;
@@ -145,7 +145,7 @@ public final class RemoveParticipantFailed {
      * Set the resultInformation property: Contains the resulting SIP code/sub-code and message from NGC services.
      *
      * @param resultInformation the resultInformation value to set.
-     * @return the RemoveParticipantFailedEventData object itself.
+     * @return the RemoveParticipantFailed object itself.
      */
     public RemoveParticipantFailed setResultInformation(ResultInformation resultInformation) {
         this.resultInformation = resultInformation;
@@ -165,7 +165,7 @@ public final class RemoveParticipantFailed {
      * Set the participant property: Participant.
      *
      * @param participant the participant value to set.
-     * @return the RemoveParticipantFailedEventData object itself.
+     * @return the RemoveParticipantFailed object itself.
      */
     public RemoveParticipantFailed setParticipant(CommunicationIdentifierModel participant) {
         this.participant = participant;

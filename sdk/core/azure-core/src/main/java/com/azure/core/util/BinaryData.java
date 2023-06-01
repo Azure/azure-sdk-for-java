@@ -1557,7 +1557,7 @@ public final class BinaryData {
      * <!-- src_embed com.azure.core.util.BinaryData.toStream -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
-     * BinaryData binaryData = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;data&#41;&#41;;
+     * BinaryData binaryData = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;data&#41;, &#40;long&#41; data.length&#41;;
      * final byte[] bytes = new byte[data.length];
      * binaryData.toStream&#40;&#41;.read&#40;bytes, 0, data.length&#41;;
      * System.out.println&#40;new String&#40;bytes&#41;&#41;;

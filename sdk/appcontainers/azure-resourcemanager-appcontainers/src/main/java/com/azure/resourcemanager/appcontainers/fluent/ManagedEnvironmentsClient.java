@@ -260,10 +260,10 @@ public interface ManagedEnvironmentsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an environment for hosting container apps.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(
+    SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginUpdate(
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope);
 
     /**
@@ -279,10 +279,10 @@ public interface ManagedEnvironmentsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
+     * @return the {@link SyncPoller} for polling of an environment for hosting container apps.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginUpdate(
+    SyncPoller<PollResult<ManagedEnvironmentInner>, ManagedEnvironmentInner> beginUpdate(
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope, Context context);
 
     /**
@@ -297,9 +297,11 @@ public interface ManagedEnvironmentsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment for hosting container apps.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope);
+    ManagedEnvironmentInner update(
+        String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope);
 
     /**
      * Update Managed Environment's properties.
@@ -314,9 +316,10 @@ public interface ManagedEnvironmentsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment for hosting container apps.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void update(
+    ManagedEnvironmentInner update(
         String resourceGroupName, String environmentName, ManagedEnvironmentInner environmentEnvelope, Context context);
 
     /**
@@ -354,9 +357,9 @@ public interface ManagedEnvironmentsClient {
     EnvironmentAuthTokenInner getAuthToken(String resourceGroupName, String environmentName);
 
     /**
-     * Get all workload Profile States for a Premium Managed Environment..
+     * Get all workload Profile States for a Managed Environment..
      *
-     * <p>Get all workload Profile States for a Premium Managed Environment.
+     * <p>Get all workload Profile States for a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -364,17 +367,16 @@ public interface ManagedEnvironmentsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workload Profile States for a Premium Managed Environment as paginated response with {@link
-     *     PagedIterable}.
+     * @return all workload Profile States for a Managed Environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkloadProfileStatesInner> listWorkloadProfileStates(
         String resourceGroupName, String environmentName);
 
     /**
-     * Get all workload Profile States for a Premium Managed Environment..
+     * Get all workload Profile States for a Managed Environment..
      *
-     * <p>Get all workload Profile States for a Premium Managed Environment.
+     * <p>Get all workload Profile States for a Managed Environment.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param environmentName Name of the Managed Environment.
@@ -383,8 +385,7 @@ public interface ManagedEnvironmentsClient {
      * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all workload Profile States for a Premium Managed Environment as paginated response with {@link
-     *     PagedIterable}.
+     * @return all workload Profile States for a Managed Environment as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkloadProfileStatesInner> listWorkloadProfileStates(

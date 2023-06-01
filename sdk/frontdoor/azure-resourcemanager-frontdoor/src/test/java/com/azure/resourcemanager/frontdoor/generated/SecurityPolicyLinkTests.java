@@ -11,14 +11,14 @@ import org.junit.jupiter.api.Assertions;
 public final class SecurityPolicyLinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SecurityPolicyLink model = BinaryData.fromString("{\"id\":\"ax\"}").toObject(SecurityPolicyLink.class);
-        Assertions.assertEquals("ax", model.id());
+        SecurityPolicyLink model = BinaryData.fromString("{\"id\":\"kwt\"}").toObject(SecurityPolicyLink.class);
+        Assertions.assertEquals("kwt", model.id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SecurityPolicyLink model = new SecurityPolicyLink().withId("ax");
+        SecurityPolicyLink model = new SecurityPolicyLink().withId("kwt");
         model = BinaryData.fromObject(model).toObject(SecurityPolicyLink.class);
-        Assertions.assertEquals("ax", model.id());
+        Assertions.assertEquals("kwt", model.id());
     }
 }
