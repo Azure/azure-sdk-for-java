@@ -3,6 +3,8 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
 
@@ -19,7 +21,17 @@ public class ReadmeSamples {
         .endpoint("<YOUR ENDPOINT HERE>")
         .key("<YOUR KEY HERE>")
         .buildAsyncClient();
+
+    private final CosmosClient cosmosClient = new CosmosClientBuilder()
+        .endpoint("<YOUR ENDPOINT HERE>")
+        .key("<YOUR KEY HERE>")
+        .buildClient();
+
     private final CosmosAsyncContainer cosmosAsyncContainer = cosmosAsyncClient
+        .getDatabase("<YOUR DATABASE NAME>")
+        .getContainer("<YOUR CONTAINER NAME>");
+
+    private final CosmosContainer cosmosContainer = cosmosClient
         .getDatabase("<YOUR DATABASE NAME>")
         .getContainer("<YOUR CONTAINER NAME>");
 
@@ -124,7 +136,7 @@ public class ReadmeSamples {
         // END: readme-sample-crudOperationOnItems
     }
 
-    public void readItem() {
+    public void readItemAsync() {
         Passenger passenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
         // BEGIN: com.azure.cosmos.CosmosAsyncContainer.readItem
         // Read an item
@@ -136,6 +148,29 @@ public class ReadmeSamples {
             });
         // ...
         // END: com.azure.cosmos.CosmosAsyncContainer.readItem
+    }
+
+    public void readItem() {
+        Passenger passenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        // BEGIN: com.azure.cosmos.CosmosContainer.readItem
+        // Read an item
+        try {
+            CosmosItemResponse<Passenger> response = cosmosContainer.readItem(
+                passenger.getId(),
+                new PartitionKey(passenger.getId()),
+                Passenger.class
+            );
+            Passenger passengerItem = response.getItem();
+        } catch (NotFoundException e) {
+            // catch exception if item not found
+            System.out.printf("Passenger with item id %s not found\n",
+                passenger.getId());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        // ...
+        // END: com.azure.cosmos.CosmosContainer.readItem
     }
 
 
