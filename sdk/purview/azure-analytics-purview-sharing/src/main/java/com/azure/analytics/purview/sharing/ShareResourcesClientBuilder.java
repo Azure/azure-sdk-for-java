@@ -287,6 +287,6 @@ public final class ShareResourcesClientBuilder
      */
     @Generated
     public ShareResourcesClient buildClient() {
-        return new ShareResourcesClient(buildInnerClient().getShareResources());
+        return new ShareResourcesClient(new ShareResourcesAsyncClient(buildInnerClient().getShareResources()));
     }
 }

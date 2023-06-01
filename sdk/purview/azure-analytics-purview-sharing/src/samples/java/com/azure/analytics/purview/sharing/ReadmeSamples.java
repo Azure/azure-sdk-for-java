@@ -211,6 +211,21 @@ public final class ReadmeSamples {
         // END: com.azure.analytics.purview.sharing.getSentShareInvitation
     }
     
+    public void deleteSentInvitationSample() {
+        // BEGIN: com.azure.analytics.purview.sharing.deleteSentShareInvitation
+        SentSharesClient sentSharesClient =
+                new SentSharesClientBuilder()
+                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .endpoint("https://<my-account-name>.purview.azure.com/share")
+                        .buildClient();
+
+        String sentShareId = "<sent-share-id>";
+        String sentShareInvitationId = "<sent-share-invitation-id>";
+ 
+        sentSharesClient.beginDeleteSentShareInvitation(sentShareId, sentShareInvitationId, new RequestOptions());
+        // END: com.azure.analytics.purview.sharing.deleteSentShareInvitation
+    }
+
     public void createReceivedShareClientSample() {
         // BEGIN: com.azure.analytics.purview.sharing.createReceivedShareClient
         ReceivedSharesClient receivedSharesClient =

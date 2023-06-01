@@ -205,7 +205,7 @@ List<SentShare> sentShares = sentShareResults.stream()
 
 ### Delete a Sent Share
 
-A sent share can be deleted by the data provider to stop sharing their data.
+A sent share can be deleted by the data provider to stop sharing their data with all data consumers.
 
 ```java com.azure.analytics.purview.sharing.deleteSentShare
 SentSharesClient sentSharesClient =
@@ -251,6 +251,13 @@ String sentShareId = "<sent-share-id>";
 RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/sentAt desc");
 PagedIterable<BinaryData> response =
         sentSharesClient.getAllSentShareInvitations(sentShareId, requestOptions);
+```
+
+### Delete a Sent Share Invitation
+
+An individual sent share invitation can be deleted by the data provider to stop sharing their data with the specific data consumer to whom the invitation was addressed.
+
+```java com.azure.analytics.purview.sharing.deleteSentShareInvitation
 ```
 
 ## Data Consumer Examples

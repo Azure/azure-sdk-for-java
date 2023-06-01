@@ -87,6 +87,8 @@ class PurviewShareTestBase extends TestBase {
                 BinaryData.fromObject(sentShare), requestOptions);
 
         response.waitForCompletion();
+        
+        System.out.println(response.getFinalResult().toString());
 
         return response.getFinalResult().toObject(SentShare.class);
     }
