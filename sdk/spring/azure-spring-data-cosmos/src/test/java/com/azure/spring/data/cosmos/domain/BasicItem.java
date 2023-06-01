@@ -16,6 +16,7 @@ public class BasicItem {
     public BasicItem(String id) {
         this.id = id;
     }
+
     public String getId() {
         return id;
     }
@@ -23,6 +24,7 @@ public class BasicItem {
     public void setId(String id) {
         this.id = id;
     }
+
     public BasicItem() {
     }
 
@@ -46,5 +48,4 @@ public class BasicItem {
             + '\''
             + '}';
     }
-
 }
