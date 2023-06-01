@@ -189,6 +189,25 @@ public final class CosmosDiagnostics {
         return this.clientSideRequestStatistics.getContactedRegionNames();
     }
 
+    /**
+     * Gets the UserAgent header value used by the client issueing this operation
+     * @return the UserAgent header value used for the client that issued this operation
+     */
+    public String getUserAgent() {
+        String userAgent = null;
+        if (this.feedResponseDiagnostics != null) {
+            userAgent = this.feedResponseDiagnostics.getUserAgent();
+        } else if (this.clientSideRequestStatistics != null) {
+            userAgent = this.clientSideRequestStatistics.getUserAgent();
+        }
+
+        if (userAgent != null) {
+            return userAgent;
+        }
+
+        return "";
+    }
+
     FeedResponseDiagnostics getFeedResponseDiagnostics() {
         return feedResponseDiagnostics;
     }

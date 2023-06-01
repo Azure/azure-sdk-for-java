@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -149,6 +150,28 @@ public class StoreResultDiagnostics {
         return storePhysicalAddress != null
             ? storePhysicalAddress.getURI().getPath()
             : null;
+    }
+
+    public String[] getPartitionAndReplicaId() {
+        return getPartitionAndReplicaId(this.getStorePhysicalAddressEscapedPath());
+    }
+
+    public static String[] getPartitionAndReplicaId(String serviceAddress) {
+        if (serviceAddress == null) {
+            return null;
+        }
+
+        String[] serviceAddressParts = serviceAddress.split("/");
+        // Sample value for serviceAddress
+        // /apps/f88bfdf4-2954-4324-aad3-f1686668076d/services/3359112a-719d-474e-aa51-e89a142ae1b3/partitions/512fe816-24fa-4fbb-bbb1-587d2ce19851/replicas/133038444008943156p/
+        if (serviceAddressParts.length != 9) {
+            return null;
+        }
+        String[] result = new String[2];
+        result[0] = serviceAddressParts[6];
+        result[1] = serviceAddressParts[8];
+
+        return result;
     }
 
     public boolean isThroughputControlRequestRateTooLargeException() {

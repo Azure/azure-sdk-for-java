@@ -502,6 +502,10 @@ public class ClientSideRequestStatistics {
         return supplementalResponseStatisticsList;
     }
 
+    public String getActivityId() {
+        return this.activityId;
+    }
+
     public Map<String, AddressResolutionStatistics> getAddressResolutionStatistics() {
         return addressResolutionStatistics;
     }
