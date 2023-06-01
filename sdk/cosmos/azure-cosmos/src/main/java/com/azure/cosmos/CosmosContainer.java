@@ -450,16 +450,18 @@ public class CosmosContainer {
 
     /**
      * Reads an item in the current container.
-     * <br/>
-     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
-     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
-     * 
-     * @param <T> the type parameter.
-     * @param itemId the item id.
-     * @param partitionKey the partition key.
-     * @param itemType the class type of item.
+     *
+     * @param <T> the type parameter. Required.
+     * @param itemId the item id. Required.
+     * @param partitionKey the partition key. Required.
+     * @param itemType the class type of item. Required.
      * @return the Cosmos item response.
-     * @throws com.azure.cosmos.implementation.NotFoundException if document with the specified itemId does not exist
+     *
+     * @exception com.azure.cosmos.implementation.NotFoundException When there is no item in the database with a given itemId
+     * @exception com.azure.cosmos.CosmosException On trying to read an item after closing <code>CosmosClient</code>
+     * @exception java.lang.IllegalStateException On passing itemType that can't be deserialized
+     *
+     * @see com.azure.cosmos.CosmosClient
      */
     public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) {
         return this.blockItemResponse(asyncContainer.readItem(itemId,
@@ -470,17 +472,20 @@ public class CosmosContainer {
 
     /**
      * Reads an item in the current container while specifying additional options.
-     * <br/>
-     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
-     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
      *
-     * @param <T> the type parameter.
-     * @param itemId the item id.
-     * @param partitionKey the partition key.
-     * @param options the options (Optional).
-     * @param itemType the class type of item.
+     * @param <T> the type parameter. Required.
+     * @param itemId the item id in Cosmos Database. Required.
+     * @param partitionKey the partition key which identifies item's container in Cosmos Database. Required.
+     * @param options the options. Optional.
+     * @param itemType the class type of item. Required.
      * @return the Cosmos item response.
-     * @throws com.azure.cosmos.implementation.NotFoundException if document with the specified itemId does not exist
+     *
+     * @exception com.azure.cosmos.implementation.NotFoundException When there is no item in the database with a given itemId
+     * @exception com.azure.cosmos.implementation.BadRequestException On passing invalid options (for example, session token in a wrong format)
+     * @exception com.azure.cosmos.CosmosException On trying to read an item after closing <code>CosmosClient</code>
+     * @exception java.lang.IllegalStateException On passing itemType that can't be deserialized
+     *
+     * @see com.azure.cosmos.CosmosClient
      */
     public <T> CosmosItemResponse<T> readItem(
         String itemId, PartitionKey partitionKey,
