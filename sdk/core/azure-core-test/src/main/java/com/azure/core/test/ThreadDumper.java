@@ -14,6 +14,7 @@ import java.lang.management.ThreadMXBean;
 import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -142,6 +143,8 @@ public class ThreadDumper implements BeforeAllCallback, BeforeEachCallback, Afte
             fullyQualifiedTestName = method.getDeclaringClass().getName() + "." + testName;
         }
 
-        return fullyQualifiedTestName + "(" + displayName + ")";
+        return !Objects.equals(displayName, testName)
+            ? fullyQualifiedTestName + "(" + displayName + ")"
+            : fullyQualifiedTestName;
     }
 }
