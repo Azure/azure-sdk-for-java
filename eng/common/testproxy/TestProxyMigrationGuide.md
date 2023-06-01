@@ -13,21 +13,19 @@ GitHub repository, and documentation of how to set up and use the proxy can be f
     - [Start the proxy server](#start-the-proxy-server)
     - [Record or play back tests](#record-or-play-back-tests)
     - [Adding sanitizers](#adding-sanitizers)
-    - [Enable the test proxy in pipelines](#enable-the-test-proxy-in-pipelines)
     - [Record test variables](#record-test-variables)
 - [Migrate management-plane tests](#migrate-management-plane-tests)
 - [Next steps](#next-steps)
 - [Advanced details](#advanced-details)
     - [What does the test proxy do?](#what-does-the-test-proxy-do)
     - [How does the test proxy know when and what to record or play back?](#how-does-the-test-proxy-know-when-and-what-to-record-or-play-back)
-    - [Start the proxy manually](#start-the-proxy-manually)
 
 ## Re-record existing test recordings
 Each SDK needs to re-record its test recordings using the test-proxy integration to ensure a consolidated recording format with serialized/sanitized requests and their matching responses.
 #### Steps:
 1) Run & update test recordings using the [test-proxy integration][test_proxy_integration].
 2) Add [custom sanitizers][custom_sanitizer_example] if needed to address service-specific redactions.
-[Default redaction][default_redaction] are already set up here in Test Proxy for primary sanitization.
+[Default redaction][default_sanitizers] are already set up here in Test Proxy for primary sanitization.
 
 ## Run tests
 Test-Proxy maintains a _separate clone_ for each assets.json. The recording files will be located under your repo root under the `.assets` folder.
@@ -59,7 +57,8 @@ Test-Proxy maintains a _separate clone_ for each assets.json. The recording file
 
 ### Perform one-time setup
 
-1. Test-proxy needs to be on the machine and in the path. Instructions for that are [here][test_proxy_installation].
+Test-proxy needs to be on the machine and in the path. Instructions for that are [here][test_proxy_installation]. 
+For more details on proxy startup, please refer to the [proxy documentation][detailed_docs].
 
 ### Start the proxy server
 
@@ -143,26 +142,6 @@ body matching is disabled, but not if it's enabled.
 Body matching can be turned off with the test proxy by calling the `setComparingBodies` method from
 [TestProxyRequestMatcher][test_proxy_matcher] on the Interceptor Manager for that particular test.
 
-### Enable the test proxy in pipelines
-
-#### CI pipelines
-
-To enable using the test proxy in CI, you need to set the parameter `TestProxy: true` in the `ci.yml` file in the
-service-level folder. For example, in [sdk/formrecognizer/ci.yml][pipelines_ci]:
-
-```diff
-extends:
-  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
-  parameters:
-    ServiceDirectory: formrecognizer
-+   TestProxy: true
-    ...
-```
-
-#### Live test pipelines
-
--- TODO --
-
 ### Record test variables
 
 To run recorded tests successfully when there's an element of non-secret randomness to them, the test proxy provides a
@@ -233,34 +212,24 @@ Running tests in playback follows the same pattern, except that requests will be
 The [`TestProxyRecordPolicy`][test_proxy_record_policy] and [`TestProxyPlaybackClient`][test_proxy_playback_client] send 
 the appropriate requests at the start and end of each test case.
 
-### Start the proxy manually
-Test-proxy needs to be on the machine and in the path. Instructions for that are [here][test_proxy_installation].
-
-For more details on proxy startup, please refer to the [proxy documentation][detailed_docs].
-
 [asset_sync_push]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy/documentation/asset-sync#pushing-new-recordings
-[custom_sanitizer_example]: https://github.com/samvaity/azure-sdk-for-java/blob/ed6c25bd9521631080fbd0c2eeeac5180fac4fe4/sdk/formrecognizer/azure-ai-formrecognizer/src/test/java/com/azure/ai/formrecognizer/documentanalysis/administration/DocumentModelAdministrationClientTestBase.java#L52-L56
+[custom_sanitizer_example]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/test/java/com/azure/ai/formrecognizer/documentanalysis/TestUtils.java#L293
 
 [default_sanitizers]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/utils/TestProxyUtils.java#L259
 [detailed_docs]: https://github.com/Azure/azure-sdk-tools/tree/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md
-[default_redaction]: https://github.com/Azure/azure-sdk-for-java/blob/caf484edbb1b679243ffa960f7960ddf643362d6/sdk/core/azure-core-test/src/main/java/com/azure/core/test/utils/TestProxyUtils.java#L89-L96
 
-[general_docs]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/README.md
+[general_docs]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md
 
-[pipelines_ci]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/sdk/formrecognizer/ci.yml
-[proxy_cert_docs]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/documentation/test-proxy/trusting-cert-per-language.md
-
-[recording_migration]: https://github.com/Azure/azure-sdk-for-java/blob/main/doc/dev/recording_migration_guide.md
+[recording_migration]: https://github.com/samvaity/azure-sdk-for-java/blob/b32132d0b01140c7c10858f41202a14c046c82f6/eng/common/testproxy/RecordingMigrationGuide.md
 [RecordNetworkCallPolicy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/policy/RecordNetworkCallPolicy.java
 
 [sanitizers]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#session-and-test-level-transforms-sanitiziers-and-matchers
 
-[test_proxy_migration]: https://github.com/Azure/azure-sdk-for-java/wiki/Test-Proxy-Migration
-[test_proxy_sanitizer]: https://github.com/Azure/azure-sdk-for-java/blob/caf484edbb1b679243ffa960f7960ddf643362d6/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxySanitizer.java
-[test_base]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/TestBase.java
-[test_proxy_manager]: https://github.com/Azure/azure-sdk-for-java/blob/caf484edbb1b679243ffa960f7960ddf643362d6/sdk/core/azure-core-test/src/main/java/com/azure/core/test/utils/TestProxyManager.java
-[test_proxy_record_policy]: https://github.com/Azure/azure-sdk-for-java/blob/caf484edbb1b679243ffa960f7960ddf643362d6/sdk/core/azure-core-test/src/main/java/com/azure/core/test/policy/TestProxyRecordPolicy.java
-[test_proxy_playback_client]: https://github.com/Azure/azure-sdk-for-java/blob/caf484edbb1b679243ffa960f7960ddf643362d6/sdk/core/azure-core-test/src/main/java/com/azure/core/test/http/TestProxyPlaybackClient.java
+[test_proxy_migration]: https://github.com/Azure/azure-sdk-for-java/wiki/Test-Proxy-Migration#3-using-test-proxy-going-forward
+[test_proxy_sanitizer]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/models/TestProxySanitizer.java
+[test_proxy_manager]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/utils/TestProxyManager.java
+[test_proxy_record_policy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/policy/TestProxyRecordPolicy.java
+[test_proxy_playback_client]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-test/src/main/java/com/azure/core/test/http/TestProxyPlaybackClient.java
 [test_proxy_installation]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/test-proxy/Azure.Sdk.Tools.TestProxy/README.md#installation
 [test_proxy_integration]: https://github.com/Azure/azure-sdk-for-java/pull/33902
 
