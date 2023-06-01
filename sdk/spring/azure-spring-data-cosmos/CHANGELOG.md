@@ -14,6 +14,9 @@
 
 #### Other Changes
 * The module `azure-spring-data-cosmos` was moved from sdk/cosmos to sdk/spring - See [PR 33905](https://github.com/Azure/azure-sdk-for-java/pull/33905)
+* Updated `azure-cosmos` to version `4.45.1`.
+* Updated `Spring Boot` to version `2.7.11`.
+* Updated `Spring Data Commons` to version `2.7.11`.
 
 ### 3.34.0 (2023-04-21)
 #### Breaking Changes

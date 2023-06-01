@@ -98,7 +98,9 @@ public class ClientMetricsTest extends BatchTestBase {
         beforeTest(null, metricCategories);
     }
 
-    public void beforeTest(CosmosDiagnosticsThresholds thresholds, CosmosMetricCategory... metricCategories) {
+    public void beforeTest(
+        CosmosDiagnosticsThresholds thresholds,
+        CosmosMetricCategory... metricCategories) {
         assertThat(this.client).isNull();
         assertThat(this.meterRegistry).isNull();
 
@@ -106,7 +108,11 @@ public class ClientMetricsTest extends BatchTestBase {
 
         this.inputMetricsOptions = new CosmosMicrometerMetricsOptions()
             .meterRegistry(this.meterRegistry)
-            .setMetricCategories(metricCategories);
+            .setMetricCategories(metricCategories)
+            .configureDefaultTagNames(
+                CosmosMetricTagName.DEFAULT,
+                CosmosMetricTagName.PARTITION_ID,
+                CosmosMetricTagName.REPLICA_ID);
 
         this.inputClientTelemetryConfig = new CosmosClientTelemetryConfig()
             .metricsOptions(this.inputMetricsOptions);
@@ -234,12 +240,30 @@ public class ClientMetricsTest extends BatchTestBase {
                 this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
 
                 if (!disableLatencyMeter) {
+                    Tag expectedRequestTag = Tag.of(TagName.RequestStatusCode.toString(), "201/0");
                     this.validateMetrics(
                         expectedOperationTag,
-                        Tag.of(TagName.RequestStatusCode.toString(), "201/0"),
+                        expectedRequestTag,
                         1,
                         300
                     );
+
+                    // also ensure the replicaId dimension is populated for DIRECT mode
+                    if (this.client.asyncClient().getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+                        Meter foundMeter = this.assertMetrics(
+                            "cosmos.client.req.rntbd.latency",
+                            true,
+                            expectedRequestTag);
+                        assertThat(foundMeter).isNotNull();
+                        boolean replicaIdDimensionExists = foundMeter
+                            .getId()
+                            .getTags()
+                            .stream()
+                            .anyMatch(tag -> tag.getKey().equals(TagName.ReplicaId.toString()) &&
+                                !tag.getValue().equals("NONE"));
+                        assertThat(replicaIdDimensionExists)
+                            .isEqualTo(true);
+                    }
 
                     this.validateMetrics(
                         Tag.of(
@@ -1095,6 +1119,11 @@ public class ClientMetricsTest extends BatchTestBase {
             .isSameAs(CosmosMetricTagName.SERVICE_ADDRESS);
         assertThat(CosmosMetricTagName.fromString("serviceEndpoint"))
             .isSameAs(CosmosMetricTagName.SERVICE_ENDPOINT);
+        assertThat(CosmosMetricTagName.fromString("partitionID"))
+            .isSameAs(CosmosMetricTagName.PARTITION_ID);
+        assertThat(CosmosMetricTagName.fromString("REPLICAid"))
+            .isSameAs(CosmosMetricTagName.REPLICA_ID);
+
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT)
