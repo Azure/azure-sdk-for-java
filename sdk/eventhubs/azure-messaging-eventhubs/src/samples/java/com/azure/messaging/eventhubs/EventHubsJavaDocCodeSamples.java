@@ -174,8 +174,7 @@ public class EventHubsJavaDocCodeSamples {
     /**
      * Receives event data from a single partition.
      */
-    public void receive() {
-
+    public void receiveAsync() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition
         // Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds()
         String partitionId = "0";
@@ -190,7 +189,13 @@ public class EventHubsJavaDocCodeSamples {
 
                 System.out.printf("Received event from partition '%s'%n", partitionContext.getPartitionId());
                 System.out.printf("Contents of event as string: '%s'%n", event.getBodyAsString());
-            }, error -> System.err.print(error.toString()));
+            }, error -> {
+                // This is a terminal signal.  No more events will be received from the same Flux object.
+                System.err.print("An error occurred:" + error);
+            }, () -> {
+                // This is a terminal signal.  No more events will be received from the same Flux object.
+                System.out.print("Stream has ended.");
+            });
         // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition
 
         // When program ends, or you're done receiving all events.
@@ -200,8 +205,7 @@ public class EventHubsJavaDocCodeSamples {
     /**
      * Receives event data with back pressure.
      */
-    public void receiveBackpressure() {
-        // Obtain partitionId from EventHubAsyncClient.getPartitionIds()
+    public void receiveBackpressureAsync() {
         String partitionId = "0";
 
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
@@ -238,26 +242,36 @@ public class EventHubsJavaDocCodeSamples {
     /**
      * Receives from all partitions.
      */
-    public void receiveAll() {
+    public void receiveAllAsync() {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("fake-string")
             .consumerGroup("consumer-group-name")
             .buildAsyncConsumerClient();
 
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean
-        // Receives events from all partitions from the beginning of each partition.
-        consumer.receive(true).subscribe(partitionEvent -> {
-            PartitionContext context = partitionEvent.getPartitionContext();
-            EventData event = partitionEvent.getData();
-            System.out.printf("Event %s is from partition %s%n.", event.getSequenceNumber(), context.getPartitionId());
-        });
+        // Keep a reference to `subscription`. When the program is finished receiving events, call
+        // subscription.dispose(). This will stop fetching events from the Event Hub.
+        Disposable subscription = consumer.receive(true)
+            .subscribe(partitionEvent -> {
+                PartitionContext context = partitionEvent.getPartitionContext();
+                EventData event = partitionEvent.getData();
+
+                System.out.printf("Event %s is from partition %s%n.", event.getSequenceNumber(),
+                    context.getPartitionId());
+            }, error -> {
+                // This is a terminal signal.  No more events will be received from the same Flux object.
+                System.err.print("An error occurred:" + error);
+            }, () -> {
+                // This is a terminal signal.  No more events will be received from the same Flux object.
+                System.out.print("Stream has ended.");
+            });
         // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean
     }
 
     /**
      * Receives from all partitions with last enqueued information.
      */
-    public void receiveLastEnqueuedInformation() {
+    public void receiveLastEnqueuedInformationAsync() {
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("event-hub-instance-connection-string")
             .consumerGroup("consumer-group-name")
@@ -268,9 +282,12 @@ public class EventHubsJavaDocCodeSamples {
         // each event that is received.
         ReceiveOptions receiveOptions = new ReceiveOptions()
             .setTrackLastEnqueuedEventProperties(true);
+        EventPosition startingPosition = EventPosition.earliest();
 
-        // Receives events from partition "0" as they come in.
-        consumer.receiveFromPartition("0", EventPosition.earliest(), receiveOptions)
+        // Receives events from partition "0" starting at the beginning of the stream.
+        // Keep a reference to `subscription`. When the program is finished receiving events, call
+        // subscription.dispose(). This will stop fetching events from the Event Hub.
+        Disposable subscription = consumer.receiveFromPartition("0", startingPosition, receiveOptions)
             .subscribe(partitionEvent -> {
                 LastEnqueuedEventProperties properties = partitionEvent.getLastEnqueuedEventProperties();
                 System.out.printf("Information received at %s. Last enqueued sequence number: %s%n",
@@ -336,7 +353,8 @@ public class EventHubsJavaDocCodeSamples {
             batch.tryAdd(new EventData("test-event-1"));
             batch.tryAdd(new EventData("test-event-2"));
             return producer.send(batch);
-        }).subscribe(unused -> { },
+        }).subscribe(unused -> {
+            },
             error -> System.err.println("Error occurred while sending batch:" + error),
             () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch
@@ -357,7 +375,8 @@ public class EventHubsJavaDocCodeSamples {
             batch.tryAdd(new EventData("test-event-1"));
             batch.tryAdd(new EventData("test-event-2"));
             return producer.send(batch);
-        }).subscribe(unused -> { },
+        }).subscribe(unused -> {
+            },
             error -> System.err.println("Error occurred while sending batch:" + error),
             () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionId
@@ -379,7 +398,8 @@ public class EventHubsJavaDocCodeSamples {
             batch.tryAdd(new EventData("sourdough"));
             batch.tryAdd(new EventData("rye"));
             return producer.send(batch);
-        }).subscribe(unused -> { },
+        }).subscribe(unused -> {
+            },
             error -> System.err.println("Error occurred while sending batch:" + error),
             () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey
@@ -406,25 +426,25 @@ public class EventHubsJavaDocCodeSamples {
 
         // The sample Flux contains two events, but it could be an infinite stream of telemetry events.
         telemetryEvents.flatMap(event -> {
-            final EventDataBatch batch = currentBatch.get();
-            if (batch.tryAdd(event)) {
-                return Mono.empty();
-            }
+                final EventDataBatch batch = currentBatch.get();
+                if (batch.tryAdd(event)) {
+                    return Mono.empty();
+                }
 
-            return Mono.when(
-                producer.send(batch),
-                producer.createBatch(options).map(newBatch -> {
-                    currentBatch.set(newBatch);
+                return Mono.when(
+                    producer.send(batch),
+                    producer.createBatch(options).map(newBatch -> {
+                        currentBatch.set(newBatch);
 
-                    // Add the event that did not fit in the previous batch.
-                    if (!newBatch.tryAdd(event)) {
-                        throw Exceptions.propagate(new IllegalArgumentException(
-                            "Event was too large to fit in an empty batch. Max size: " + newBatch.getMaxSizeInBytes()));
-                    }
+                        // Add the event that did not fit in the previous batch.
+                        if (!newBatch.tryAdd(event)) {
+                            throw Exceptions.propagate(new IllegalArgumentException(
+                                "Event was too large to fit in an empty batch. Max size: " + newBatch.getMaxSizeInBytes()));
+                        }
 
-                    return newBatch;
-                }));
-        }).then()
+                        return newBatch;
+                    }));
+            }).then()
             .doFinally(signal -> {
                 final EventDataBatch batch = currentBatch.getAndSet(null);
                 if (batch != null && batch.getCount() > 0) {
@@ -445,7 +465,8 @@ public class EventHubsJavaDocCodeSamples {
             new EventData("oak"));
         producer
             .send(events)
-            .subscribe(unused -> { },
+            .subscribe(unused -> {
+                },
                 error -> System.err.println("Error occurred while sending events:" + error),
                 () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable
@@ -463,7 +484,8 @@ public class EventHubsJavaDocCodeSamples {
         SendOptions sendOptions = new SendOptions().setPartitionKey("cities");
         producer
             .send(events, sendOptions)
-            .subscribe(unused -> { },
+            .subscribe(unused -> {
+                },
                 error -> System.err.println("Error occurred while sending events:" + error),
                 () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable-SendOptions

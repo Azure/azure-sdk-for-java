@@ -33,18 +33,27 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.LINK_NAME_KEY;
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNECTION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNAL_TYPE_KEY;
 
 /**
  * An <b>asynchronous</b> consumer responsible for reading {@link EventData} from either a specific Event Hub partition
  * or all partitions in the context of a specific consumer group.
  *
- * <p><strong>Creating an {@link EventHubConsumerAsyncClient}</strong></p>
+ * <p><strong>Sample: Creating an {@link EventHubConsumerAsyncClient}</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the asynchronous client
+ * {@link EventHubConsumerAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.
+ * It is listed under the "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal. The
+ * {@code consumerGroup} is found by navigating to the Event Hub instance, and selecting "Consumer groups" under the
+ * "Entities" panel.  The {@link EventHubClientBuilder#consumerGroup(String)} is required for creating consumer clients.
+ * The credential used is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment
+ * and development and chooses the credential to used based on its running environment.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -58,7 +67,16 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct -->
  *
- * <p><strong>Consuming events a single partition from Event Hub</strong></p>
+ * <p><strong>Sample: Consuming events a single partition from Event Hub</strong></p>
+ *
+ * <p>The code sample below demonstrates receiving events from partition "0" of an Event Hub starting from
+ * {@link EventPosition#latest()}.  {@link EventPosition#latest()} points to the end of the partition stream.  The
+ * consumer receives events received <i>after</i> it started subscribing for events.</p>
+ *
+ * <p>{@link #receiveFromPartition(String, EventPosition)} is a non-blocking call.  After setting up the operation,
+ * its async representation is returned. The {@code Flux<PartitionEvent>} must be subscribed to, like the sample below,
+ * to start receiving events.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition -->
  * <pre>
  * &#47;&#47; Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds&#40;&#41;
@@ -74,23 +92,40 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  *
  *         System.out.printf&#40;&quot;Received event from partition '%s'%n&quot;, partitionContext.getPartitionId&#40;&#41;&#41;;
  *         System.out.printf&#40;&quot;Contents of event as string: '%s'%n&quot;, event.getBodyAsString&#40;&#41;&#41;;
- *     &#125;, error -&gt; System.err.print&#40;error.toString&#40;&#41;&#41;&#41;;
+ *     &#125;, error -&gt; &#123;
+ *         &#47;&#47; This is a terminal signal.  No more events will be received from the same Flux object.
+ *         System.err.print&#40;&quot;An error occurred:&quot; + error&#41;;
+ *     &#125;, &#40;&#41; -&gt; &#123;
+ *         &#47;&#47; This is a terminal signal.  No more events will be received from the same Flux object.
+ *         System.out.print&#40;&quot;Stream has ended.&quot;&#41;;
+ *     &#125;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition -->
  *
- * <p><strong>Viewing latest partition information</strong></p>
+ * <p><strong>Sample: Including latest partition information in received events</strong></p>
+ *
  * <p>Latest partition information as events are received can by setting
- * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean) setTrackLastEnqueuedEventProperties} to
- * {@code true}. As events come in, explore the {@link PartitionEvent} object.
+ * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean)} to {@code true}. As events come in, explore the
+ * {@link PartitionEvent} object.  This is useful in scenarios where customers want to constant up-to-date information
+ * about their Event Hub. This does take a performance hit as the extra partition information must be sent over the
+ * wire with every event.</p>
+ *
+ * <p>{@link #receiveFromPartition(String, EventPosition, ReceiveOptions)} is a non-blocking call.  After setting up the
+ * operation, its async representation is returned. The {@code Flux<PartitionEvent>} must be subscribed to, like
+ * sample below, to start receiving events.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions -->
  * <pre>
  * &#47;&#47; Set `setTrackLastEnqueuedEventProperties` to true to get the last enqueued information from the partition for
  * &#47;&#47; each event that is received.
  * ReceiveOptions receiveOptions = new ReceiveOptions&#40;&#41;
  *     .setTrackLastEnqueuedEventProperties&#40;true&#41;;
+ * EventPosition startingPosition = EventPosition.earliest&#40;&#41;;
  *
- * &#47;&#47; Receives events from partition &quot;0&quot; as they come in.
- * consumer.receiveFromPartition&#40;&quot;0&quot;, EventPosition.earliest&#40;&#41;, receiveOptions&#41;
+ * &#47;&#47; Receives events from partition &quot;0&quot; starting at the beginning of the stream.
+ * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving events, call
+ * &#47;&#47; subscription.dispose&#40;&#41;. This will stop fetching events from the Event Hub.
+ * Disposable subscription = consumer.receiveFromPartition&#40;&quot;0&quot;, startingPosition, receiveOptions&#41;
  *     .subscribe&#40;partitionEvent -&gt; &#123;
  *         LastEnqueuedEventProperties properties = partitionEvent.getLastEnqueuedEventProperties&#40;&#41;;
  *         System.out.printf&#40;&quot;Information received at %s. Last enqueued sequence number: %s%n&quot;,
@@ -100,9 +135,16 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receiveFromPartition#string-eventposition-receiveoptions -->
  *
- * <p><strong>Rate limiting consumption of events from Event Hub</strong></p>
+ * <p><strong>Sample: Rate limiting consumption of events from Event Hub</strong></p>
+ *
  * <p>For event consumers that need to limit the number of events they receive at a given time, they can use
- * {@link BaseSubscriber#request(long)}.</p>
+ * {@link BaseSubscriber#request(long)}.  Using a custom subscriber allows developers more granular control over the
+ * rate at which they receive events.</p>
+ *
+ * <p>{@link #receiveFromPartition(String, EventPosition)} is a non-blocking call.  After setting up the operation,
+ * its async representation is returned. The {@code Flux<PartitionEvent>} must be subscribed to, like the sample below,
+ * to start receiving events.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber -->
  * <pre>
  * consumer.receiveFromPartition&#40;partitionId, EventPosition.latest&#40;&#41;&#41;.subscribe&#40;new BaseSubscriber&lt;PartitionEvent&gt;&#40;&#41; &#123;
@@ -130,15 +172,34 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition-basesubscriber -->
  *
- * <p><strong>Receiving from all partitions</strong></p>
+ * <p><strong>Sample: Receiving from all partitions</strong></p>
+ *
+ * <p>The code sample below demonstrates receiving events from all partitions of an Event Hub starting the beginning of
+ * each partition's stream.  This is valuable for demo purposes but <i>is not</i> intended for production scenarios.
+ * For production scenarios, consider using {@link EventProcessorClient}.</p>
+ *
+ * <p>{@link #receive(boolean)} is a non-blocking call.  After setting up the operation, its async representation is
+ * returned. The {@code Flux<PartitionEvent>} must be subscribed to, like the sample below, to start receiving events.
+ * </p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean -->
  * <pre>
- * &#47;&#47; Receives events from all partitions from the beginning of each partition.
- * consumer.receive&#40;true&#41;.subscribe&#40;partitionEvent -&gt; &#123;
- *     PartitionContext context = partitionEvent.getPartitionContext&#40;&#41;;
- *     EventData event = partitionEvent.getData&#40;&#41;;
- *     System.out.printf&#40;&quot;Event %s is from partition %s%n.&quot;, event.getSequenceNumber&#40;&#41;, context.getPartitionId&#40;&#41;&#41;;
- * &#125;&#41;;
+ * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving events, call
+ * &#47;&#47; subscription.dispose&#40;&#41;. This will stop fetching events from the Event Hub.
+ * Disposable subscription = consumer.receive&#40;true&#41;
+ *     .subscribe&#40;partitionEvent -&gt; &#123;
+ *         PartitionContext context = partitionEvent.getPartitionContext&#40;&#41;;
+ *         EventData event = partitionEvent.getData&#40;&#41;;
+ *
+ *         System.out.printf&#40;&quot;Event %s is from partition %s%n.&quot;, event.getSequenceNumber&#40;&#41;,
+ *             context.getPartitionId&#40;&#41;&#41;;
+ *     &#125;, error -&gt; &#123;
+ *         &#47;&#47; This is a terminal signal.  No more events will be received from the same Flux object.
+ *         System.err.print&#40;&quot;An error occurred:&quot; + error&#41;;
+ *     &#125;, &#40;&#41; -&gt; &#123;
+ *         &#47;&#47; This is a terminal signal.  No more events will be received from the same Flux object.
+ *         System.out.print&#40;&quot;Stream has ended.&quot;&#41;;
+ *     &#125;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#boolean -->
  */

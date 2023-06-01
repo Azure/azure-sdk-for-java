@@ -82,7 +82,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  *     batch.tryAdd&#40;new EventData&#40;&quot;test-event-1&quot;&#41;&#41;;
  *     batch.tryAdd&#40;new EventData&#40;&quot;test-event-2&quot;&#41;&#41;;
  *     return producer.send&#40;batch&#41;;
- * &#125;&#41;.subscribe&#40;unused -&gt; &#123; &#125;,
+ * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+ *     &#125;,
  *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
  * </pre>
@@ -97,7 +98,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  *     batch.tryAdd&#40;new EventData&#40;&quot;test-event-1&quot;&#41;&#41;;
  *     batch.tryAdd&#40;new EventData&#40;&quot;test-event-2&quot;&#41;&#41;;
  *     return producer.send&#40;batch&#41;;
- * &#125;&#41;.subscribe&#40;unused -&gt; &#123; &#125;,
+ * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+ *     &#125;,
  *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
  * </pre>
@@ -113,7 +115,8 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  *     batch.tryAdd&#40;new EventData&#40;&quot;sourdough&quot;&#41;&#41;;
  *     batch.tryAdd&#40;new EventData&#40;&quot;rye&quot;&#41;&#41;;
  *     return producer.send&#40;batch&#41;;
- * &#125;&#41;.subscribe&#40;unused -&gt; &#123; &#125;,
+ * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
+ *     &#125;,
  *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
  * </pre>
@@ -132,25 +135,25 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  *
  * &#47;&#47; The sample Flux contains two events, but it could be an infinite stream of telemetry events.
  * telemetryEvents.flatMap&#40;event -&gt; &#123;
- *     final EventDataBatch batch = currentBatch.get&#40;&#41;;
- *     if &#40;batch.tryAdd&#40;event&#41;&#41; &#123;
- *         return Mono.empty&#40;&#41;;
- *     &#125;
+ *         final EventDataBatch batch = currentBatch.get&#40;&#41;;
+ *         if &#40;batch.tryAdd&#40;event&#41;&#41; &#123;
+ *             return Mono.empty&#40;&#41;;
+ *         &#125;
  *
- *     return Mono.when&#40;
- *         producer.send&#40;batch&#41;,
- *         producer.createBatch&#40;options&#41;.map&#40;newBatch -&gt; &#123;
- *             currentBatch.set&#40;newBatch&#41;;
+ *         return Mono.when&#40;
+ *             producer.send&#40;batch&#41;,
+ *             producer.createBatch&#40;options&#41;.map&#40;newBatch -&gt; &#123;
+ *                 currentBatch.set&#40;newBatch&#41;;
  *
- *             &#47;&#47; Add the event that did not fit in the previous batch.
- *             if &#40;!newBatch.tryAdd&#40;event&#41;&#41; &#123;
- *                 throw Exceptions.propagate&#40;new IllegalArgumentException&#40;
- *                     &quot;Event was too large to fit in an empty batch. Max size: &quot; + newBatch.getMaxSizeInBytes&#40;&#41;&#41;&#41;;
- *             &#125;
+ *                 &#47;&#47; Add the event that did not fit in the previous batch.
+ *                 if &#40;!newBatch.tryAdd&#40;event&#41;&#41; &#123;
+ *                     throw Exceptions.propagate&#40;new IllegalArgumentException&#40;
+ *                         &quot;Event was too large to fit in an empty batch. Max size: &quot; + newBatch.getMaxSizeInBytes&#40;&#41;&#41;&#41;;
+ *                 &#125;
  *
- *             return newBatch;
- *         &#125;&#41;&#41;;
- * &#125;&#41;.then&#40;&#41;
+ *                 return newBatch;
+ *             &#125;&#41;&#41;;
+ *     &#125;&#41;.then&#40;&#41;
  *     .doFinally&#40;signal -&gt; &#123;
  *         final EventDataBatch batch = currentBatch.getAndSet&#40;null&#41;;
  *         if &#40;batch != null &amp;&amp; batch.getCount&#40;&#41; &gt; 0&#41; &#123;
@@ -390,7 +393,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      *     new EventData&#40;&quot;oak&quot;&#41;&#41;;
      * producer
      *     .send&#40;events&#41;
-     *     .subscribe&#40;unused -&gt; &#123; &#125;,
+     *     .subscribe&#40;unused -&gt; &#123;
+     *         &#125;,
      *         error -&gt; System.err.println&#40;&quot;Error occurred while sending events:&quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
      * </pre>
@@ -427,7 +431,8 @@ public class EventHubProducerAsyncClient implements Closeable {
      * SendOptions sendOptions = new SendOptions&#40;&#41;.setPartitionKey&#40;&quot;cities&quot;&#41;;
      * producer
      *     .send&#40;events, sendOptions&#41;
-     *     .subscribe&#40;unused -&gt; &#123; &#125;,
+     *     .subscribe&#40;unused -&gt; &#123;
+     *         &#125;,
      *         error -&gt; System.err.println&#40;&quot;Error occurred while sending events:&quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
      * </pre>

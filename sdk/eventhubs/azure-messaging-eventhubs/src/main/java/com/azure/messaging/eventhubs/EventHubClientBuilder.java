@@ -119,7 +119,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNE
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct -->
  *
- * <p><strong>Sample: Create a {@link EventHubConsumerAsyncClient}</strong></p>
+ * <p><strong>Sample: Construct a {@link EventHubConsumerAsyncClient}</strong></p>
  *
  * <p>The following code sample demonstrates the creation of the asynchronous client
  * {@link EventHubConsumerAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.
