@@ -1,4 +1,4 @@
-# Microsoft Azure Java SDK for Purview Sharing
+# Azure Purview Sharing client library for Java
 
 Microsoft Purview Data Sharing allows data to be shared in-place from Azure Data Lake Storage Gen2 and Azure Storage accounts, both within and across organizations.
 
