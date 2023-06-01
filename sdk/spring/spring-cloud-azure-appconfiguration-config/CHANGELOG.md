@@ -1,18 +1,8 @@
 # Release History
 
-## 5.2.0-beta.1 (Unreleased)
+## 5.2.0 (2023-06-02)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-- Fixes issue where credential from Azure Spring global properties was being overridden.
-- Fixes bug where Http Response wasn't checked before trying to use response.
-- Fixes Tracing info for ContainerApp
-
-### Other Changes
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#520-2023-06-02) for more details.
 
 ## 5.1.0 (2023-04-26)
 
