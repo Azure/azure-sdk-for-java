@@ -3,16 +3,16 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.AbstractSummaryOperationDetailPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryOperationDetailPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 import java.time.OffsetDateTime;
 
 /**
- * The {@link AbstractSummaryOperationDetail} model.
+ * The {@link AbstractiveSummaryOperationDetail} model.
  */
 @Immutable
-public final class AbstractSummaryOperationDetail {
+public final class AbstractiveSummaryOperationDetail {
     private String operationId;
     private String displayName;
     private OffsetDateTime createdAt;
@@ -20,35 +20,34 @@ public final class AbstractSummaryOperationDetail {
     private OffsetDateTime lastModifiedAt;
 
     static {
-        AbstractSummaryOperationDetailPropertiesHelper.setAccessor(
-            new AbstractSummaryOperationDetailPropertiesHelper
-                .AbstractSummaryOperationDetailAccessor() {
+        AbstractiveSummaryOperationDetailPropertiesHelper.setAccessor(
+            new AbstractiveSummaryOperationDetailPropertiesHelper.AbstractiveSummaryOperationDetailAccessor() {
                 @Override
-                public void setOperationId(AbstractSummaryOperationDetail operationResult,
-                    String operationId) {
+                public void setOperationId(AbstractiveSummaryOperationDetail operationResult,
+                                           String operationId) {
                     operationResult.setOperationId(operationId);
                 }
 
                 @Override
-                public void setDisplayName(AbstractSummaryOperationDetail operationDetail, String name) {
+                public void setDisplayName(AbstractiveSummaryOperationDetail operationDetail, String name) {
                     operationDetail.setDisplayName(name);
                 }
 
                 @Override
-                public void setExpiresAt(AbstractSummaryOperationDetail operationDetail,
-                    OffsetDateTime expiresAt) {
+                public void setExpiresAt(AbstractiveSummaryOperationDetail operationDetail,
+                                         OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(AbstractSummaryOperationDetail operationDetail,
-                    OffsetDateTime createdAt) {
+                public void setCreatedAt(AbstractiveSummaryOperationDetail operationDetail,
+                                         OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 
                 @Override
-                public void setLastModifiedAt(AbstractSummaryOperationDetail operationDetail,
-                    OffsetDateTime lastModifiedAt) {
+                public void setLastModifiedAt(AbstractiveSummaryOperationDetail operationDetail,
+                                              OffsetDateTime lastModifiedAt) {
                     operationDetail.setLastModifiedAt(lastModifiedAt);
                 }
             }
@@ -56,18 +55,18 @@ public final class AbstractSummaryOperationDetail {
     }
 
     /**
-     * Gets the operationId property of the {@link AbstractSummaryOperationDetail}.
+     * Gets the operationId property of the {@link AbstractiveSummaryOperationDetail}.
      *
-     * @return The operationId property of the {@link AbstractSummaryOperationDetail}.
+     * @return The operationId property of the {@link AbstractiveSummaryOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the displayName property of the {@link AbstractSummaryOperationDetail}.
+     * Gets the displayName property of the {@link AbstractiveSummaryOperationDetail}.
      *
-     * @return The displayName property of the {@link AbstractSummaryOperationDetail}.
+     * @return The displayName property of the {@link AbstractiveSummaryOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;

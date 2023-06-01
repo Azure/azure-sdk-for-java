@@ -10,11 +10,11 @@ import com.azure.core.annotation.Fluent;
  * set of documents.
  */
 @Fluent
-public final class ExtractSummaryAction {
+public final class ExtractiveSummaryAction {
     private String actionName;
     private String modelVersion;
     private Integer maxSentenceCount;
-    private SummarySentencesOrder orderBy;
+    private ExtractiveSummarySentencesOrder orderBy;
     private boolean disableServiceLogs;
 
     /**
@@ -31,9 +31,9 @@ public final class ExtractSummaryAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link ExtractSummaryAction} object itself.
+     * @return The {@link ExtractiveSummaryAction} object itself.
      */
-    public ExtractSummaryAction setActionName(String actionName) {
+    public ExtractiveSummaryAction setActionName(String actionName) {
         this.actionName = actionName;
         return this;
     }
@@ -53,9 +53,9 @@ public final class ExtractSummaryAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link ExtractSummaryAction} object itself.
+     * @return The {@link ExtractiveSummaryAction} object itself.
      */
-    public ExtractSummaryAction setModelVersion(String modelVersion) {
+    public ExtractiveSummaryAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
     }
@@ -78,9 +78,9 @@ public final class ExtractSummaryAction {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link ExtractSummaryAction} object itself.
+     * @return The {@link ExtractiveSummaryAction} object itself.
      */
-    public ExtractSummaryAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public ExtractiveSummaryAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }
@@ -103,9 +103,9 @@ public final class ExtractSummaryAction {
      *
      * @param maxSentenceCount The maximum extractive summarization sentences number to be returned in the response.
      *
-     * @return The {@link ExtractSummaryAction} object itself.
+     * @return The {@link ExtractiveSummaryAction} object itself.
      */
-    public ExtractSummaryAction setMaxSentenceCount(Integer maxSentenceCount) {
+    public ExtractiveSummaryAction setMaxSentenceCount(Integer maxSentenceCount) {
         this.maxSentenceCount = maxSentenceCount;
         return this;
     }
@@ -115,20 +115,20 @@ public final class ExtractSummaryAction {
      *
      * @return The order in which the summary sentences will be presented by.
      */
-    public SummarySentencesOrder getOrderBy() {
+    public ExtractiveSummarySentencesOrder getOrderBy() {
         return orderBy;
     }
 
     /**
      * Sets the order in which the summary sentences will be presented by.
-     * Defaults to {@link SummarySentencesOrder#OFFSET} if not specified.
+     * Defaults to {@link ExtractiveSummarySentencesOrder#OFFSET} if not specified.
      *
-     * @param orderBy The type of summary sentences order. Defaults to {@link SummarySentencesOrder#OFFSET}
+     * @param orderBy The type of summary sentences order. Defaults to {@link ExtractiveSummarySentencesOrder#OFFSET}
      * if not specified.
      *
-     * @return The {@link ExtractSummaryAction} object itself.
+     * @return The {@link ExtractiveSummaryAction} object itself.
      */
-    public ExtractSummaryAction setOrderBy(SummarySentencesOrder orderBy) {
+    public ExtractiveSummaryAction setOrderBy(ExtractiveSummarySentencesOrder orderBy) {
         this.orderBy = orderBy;
         return this;
     }

@@ -17,18 +17,18 @@ import java.util.stream.Stream;
  * interfaces.
  */
 @Immutable
-public final class ExtractSummaryPagedIterable extends ContinuablePagedIterable<String,
-    ExtractSummaryResultCollection, PagedResponse<ExtractSummaryResultCollection>> {
+public final class ExtractiveSummaryPagedIterable extends ContinuablePagedIterable<String,
+        ExtractiveSummaryResultCollection, PagedResponse<ExtractiveSummaryResultCollection>> {
 
     /**
-     * Creates an instance of {@link ExtractSummaryPagedIterable}. The constructor takes a {@code Supplier} and
-     * {@code Function}. The {@code Supplier} returns the first page of {@link ExtractSummaryResultCollection},
-     * the {@code Function} retrieves subsequent pages of {@link ExtractSummaryResultCollection}.
+     * Creates an instance of {@link ExtractiveSummaryPagedIterable}. The constructor takes a {@code Supplier} and
+     * {@code Function}. The {@code Supplier} returns the first page of {@link ExtractiveSummaryResultCollection},
+     * the {@code Function} retrieves subsequent pages of {@link ExtractiveSummaryResultCollection}.
      *
      * @param provider Supplier that retrieves the first page
      */
-    public ExtractSummaryPagedIterable(
-        Supplier<PageRetrieverSync<String, PagedResponse<ExtractSummaryResultCollection>>> provider) {
+    public ExtractiveSummaryPagedIterable(
+        Supplier<PageRetrieverSync<String, PagedResponse<ExtractiveSummaryResultCollection>>> provider) {
         super(provider, (Integer) null, (token) -> {
             return !CoreUtils.isNullOrEmpty(token);
         });

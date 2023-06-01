@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
  * set of documents.
  */
 @Fluent
-public final class AbstractSummaryAction {
+public final class AbstractiveSummaryAction {
     private String actionName;
     private String modelVersion;
     private Boolean disableServiceLogs;
@@ -30,9 +30,9 @@ public final class AbstractSummaryAction {
      *
      * @param actionName the custom name for the action.
      *
-     * @return The {@link AbstractSummaryAction} object itself.
+     * @return The {@link AbstractiveSummaryAction} object itself.
      */
-    public AbstractSummaryAction setActionName(String actionName) {
+    public AbstractiveSummaryAction setActionName(String actionName) {
         this.actionName = actionName;
         return this;
     }
@@ -52,9 +52,9 @@ public final class AbstractSummaryAction {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link AbstractSummaryAction} object itself.
+     * @return The {@link AbstractiveSummaryAction} object itself.
      */
-    public AbstractSummaryAction setModelVersion(String modelVersion) {
+    public AbstractiveSummaryAction setModelVersion(String modelVersion) {
         this.modelVersion = modelVersion;
         return this;
     }
@@ -77,9 +77,9 @@ public final class AbstractSummaryAction {
      * log your input text. Setting this property to 'false', enables logging your input text for 48 hours,
      * solely to allow for troubleshooting issues.
      *
-     * @return The {@link AbstractSummaryAction} object itself.
+     * @return The {@link AbstractiveSummaryAction} object itself.
      */
-    public AbstractSummaryAction setServiceLogsDisabled(boolean disableServiceLogs) {
+    public AbstractiveSummaryAction setServiceLogsDisabled(boolean disableServiceLogs) {
         this.disableServiceLogs = disableServiceLogs;
         return this;
     }
@@ -97,9 +97,9 @@ public final class AbstractSummaryAction {
      * Set the sentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
      * @param sentenceCount the sentenceCount value to set.
-     * @return the AbstractSummaryAction object itself.
+     * @return the AbstractiveSummaryAction object itself.
      */
-    public AbstractSummaryAction setSentenceCount(Integer sentenceCount) {
+    public AbstractiveSummaryAction setSentenceCount(Integer sentenceCount) {
         this.sentenceCount = sentenceCount;
         return this;
     }

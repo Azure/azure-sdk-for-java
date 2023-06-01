@@ -3,45 +3,45 @@
 
 package com.azure.ai.textanalytics.util;
 
-import com.azure.ai.textanalytics.implementation.AbstractSummaryResultCollectionPropertiesHelper;
-import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link AbstractSummaryResult} along with model version and
+ * A collection model that contains a list of {@link AbstractiveSummaryResult} along with model version and
  * batch's statistics.
  */
 @Immutable
-public final class AbstractSummaryResultCollection extends IterableStream<AbstractSummaryResult> {
+public final class AbstractiveSummaryResultCollection extends IterableStream<AbstractiveSummaryResult> {
     private String modelVersion;
     private TextDocumentBatchStatistics statistics;
 
     static {
-        AbstractSummaryResultCollectionPropertiesHelper.setAccessor(
-            new AbstractSummaryResultCollectionPropertiesHelper.AbstractSummaryResultCollectionAccessor() {
+        AbstractiveSummaryResultCollectionPropertiesHelper.setAccessor(
+            new AbstractiveSummaryResultCollectionPropertiesHelper.AbstractiveSummaryResultCollectionAccessor() {
                 @Override
-                public void setModelVersion(AbstractSummaryResultCollection resultCollection,
-                    String modelVersion) {
+                public void setModelVersion(AbstractiveSummaryResultCollection resultCollection,
+                                            String modelVersion) {
                     resultCollection.setModelVersion(modelVersion);
                 }
 
                 @Override
-                public void setStatistics(AbstractSummaryResultCollection resultCollection,
-                    TextDocumentBatchStatistics statistics) {
+                public void setStatistics(AbstractiveSummaryResultCollection resultCollection,
+                                          TextDocumentBatchStatistics statistics) {
                     resultCollection.setStatistics(statistics);
                 }
             });
     }
 
     /**
-     * Create a {@link AbstractSummaryResultCollection} model that maintains a list of
-     * {@link AbstractSummaryResult} along with model version and batch's statistics.
+     * Create a {@link AbstractiveSummaryResultCollection} model that maintains a list of
+     * {@link AbstractiveSummaryResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link AbstractSummaryResult}.
+     * @param documentResults A list of {@link AbstractiveSummaryResult}.
      */
-    public AbstractSummaryResultCollection(Iterable<AbstractSummaryResult> documentResults) {
+    public AbstractiveSummaryResultCollection(Iterable<AbstractiveSummaryResult> documentResults) {
         super(documentResults);
     }
 

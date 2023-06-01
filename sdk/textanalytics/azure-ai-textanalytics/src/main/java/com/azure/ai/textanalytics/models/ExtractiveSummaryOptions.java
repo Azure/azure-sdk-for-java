@@ -10,10 +10,10 @@ import com.azure.core.annotation.Fluent;
  * set of documents.
  */
 @Fluent
-public final class ExtractSummaryOptions extends TextAnalyticsRequestOptions {
+public final class ExtractiveSummaryOptions extends TextAnalyticsRequestOptions {
     private String displayName;
     private Integer maxSentenceCount;
-    private SummarySentencesOrder orderBy;
+    private ExtractiveSummarySentencesOrder orderBy;
 
     /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
@@ -21,10 +21,10 @@ public final class ExtractSummaryOptions extends TextAnalyticsRequestOptions {
      *
      * @param modelVersion The model version.
      *
-     * @return The {@link ExtractSummaryOptions} object itself.
+     * @return The {@link ExtractiveSummaryOptions} object itself.
      */
     @Override
-    public ExtractSummaryOptions setModelVersion(String modelVersion) {
+    public ExtractiveSummaryOptions setModelVersion(String modelVersion) {
         super.setModelVersion(modelVersion);
         return this;
     }
@@ -37,10 +37,10 @@ public final class ExtractSummaryOptions extends TextAnalyticsRequestOptions {
      * @param includeStatistics If a boolean value was specified in the request this field will contain
      * information about the document payload.
      *
-     * @return The {@link ExtractSummaryOptions} object itself.
+     * @return The {@link ExtractiveSummaryOptions} object itself.
      */
     @Override
-    public ExtractSummaryOptions setIncludeStatistics(boolean includeStatistics) {
+    public ExtractiveSummaryOptions setIncludeStatistics(boolean includeStatistics) {
         super.setIncludeStatistics(includeStatistics);
         return this;
     }
@@ -53,10 +53,10 @@ public final class ExtractSummaryOptions extends TextAnalyticsRequestOptions {
      * your input text for 48 hours, solely to allow for troubleshooting issues. Setting this property to true,
      * disables input logging and may limit our ability to investigate issues that occur.
      *
-     * @return The {@link ExtractSummaryOptions} object itself.
+     * @return The {@link ExtractiveSummaryOptions} object itself.
      */
     @Override
-    public ExtractSummaryOptions setServiceLogsDisabled(boolean disableServiceLogs) {
+    public ExtractiveSummaryOptions setServiceLogsDisabled(boolean disableServiceLogs) {
         super.setServiceLogsDisabled(disableServiceLogs);
         return this;
     }
@@ -75,9 +75,9 @@ public final class ExtractSummaryOptions extends TextAnalyticsRequestOptions {
      *
      * @param displayName Display name of the operation.
      *
-     * @return The {@link ExtractSummaryOptions} object itself.
+     * @return The {@link ExtractiveSummaryOptions} object itself.
      */
-    public ExtractSummaryOptions setDisplayName(String displayName) {
+    public ExtractiveSummaryOptions setDisplayName(String displayName) {
         this.displayName = displayName;
         return this;
     }
@@ -100,9 +100,9 @@ public final class ExtractSummaryOptions extends TextAnalyticsRequestOptions {
      *
      * @param maxSentenceCount The maximum extractive summarization sentences number to be returned in the response.
      *
-     * @return The {@link ExtractSummaryOptions} object itself.
+     * @return The {@link ExtractiveSummaryOptions} object itself.
      */
-    public ExtractSummaryOptions setMaxSentenceCount(Integer maxSentenceCount) {
+    public ExtractiveSummaryOptions setMaxSentenceCount(Integer maxSentenceCount) {
         this.maxSentenceCount = maxSentenceCount;
         return this;
     }
@@ -112,20 +112,20 @@ public final class ExtractSummaryOptions extends TextAnalyticsRequestOptions {
      *
      * @return The order in which the summary sentences will be presented by.
      */
-    public SummarySentencesOrder getOrderBy() {
+    public ExtractiveSummarySentencesOrder getOrderBy() {
         return orderBy;
     }
 
     /**
      * Sets the order in which the summary sentences will be presented by.
-     * Defaults to {@link SummarySentencesOrder#OFFSET} if not specified.
+     * Defaults to {@link ExtractiveSummarySentencesOrder#OFFSET} if not specified.
      *
-     * @param orderBy The type of summary sentences order. Defaults to {@link SummarySentencesOrder#OFFSET}
+     * @param orderBy The type of summary sentences order. Defaults to {@link ExtractiveSummarySentencesOrder#OFFSET}
      * if not specified.
      *
-     * @return The {@link ExtractSummaryOptions} object itself.
+     * @return The {@link ExtractiveSummaryOptions} object itself.
      */
-    public ExtractSummaryOptions setOrderBy(SummarySentencesOrder orderBy) {
+    public ExtractiveSummaryOptions setOrderBy(ExtractiveSummarySentencesOrder orderBy) {
         this.orderBy = orderBy;
         return this;
     }

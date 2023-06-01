@@ -3,45 +3,45 @@
 
 package com.azure.ai.textanalytics.util;
 
-import com.azure.ai.textanalytics.implementation.ExtractSummaryResultCollectionPropertiesHelper;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
+import com.azure.ai.textanalytics.implementation.ExtractiveSummaryResultCollectionPropertiesHelper;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * A collection model that contains a list of {@link ExtractSummaryResult} along with model version and
+ * A collection model that contains a list of {@link ExtractiveSummaryResult} along with model version and
  * batch's statistics.
  */
 @Immutable
-public final class ExtractSummaryResultCollection extends IterableStream<ExtractSummaryResult> {
+public final class ExtractiveSummaryResultCollection extends IterableStream<ExtractiveSummaryResult> {
     private String modelVersion;
     private TextDocumentBatchStatistics statistics;
 
     static {
-        ExtractSummaryResultCollectionPropertiesHelper.setAccessor(
-            new ExtractSummaryResultCollectionPropertiesHelper.ExtractSummaryResultCollectionAccessor() {
+        ExtractiveSummaryResultCollectionPropertiesHelper.setAccessor(
+            new ExtractiveSummaryResultCollectionPropertiesHelper.ExtractiveSummaryResultCollectionAccessor() {
                 @Override
-                public void setModelVersion(ExtractSummaryResultCollection resultCollection,
-                    String modelVersion) {
+                public void setModelVersion(ExtractiveSummaryResultCollection resultCollection,
+                                            String modelVersion) {
                     resultCollection.setModelVersion(modelVersion);
                 }
 
                 @Override
-                public void setStatistics(ExtractSummaryResultCollection resultCollection,
-                    TextDocumentBatchStatistics statistics) {
+                public void setStatistics(ExtractiveSummaryResultCollection resultCollection,
+                                          TextDocumentBatchStatistics statistics) {
                     resultCollection.setStatistics(statistics);
                 }
             });
     }
 
     /**
-     * Create a {@link ExtractSummaryResultCollection} model that maintains a list of
-     * {@link ExtractSummaryResult} along with model version and batch's statistics.
+     * Create a {@link ExtractiveSummaryResultCollection} model that maintains a list of
+     * {@link ExtractiveSummaryResult} along with model version and batch's statistics.
      *
-     * @param documentResults A list of {@link ExtractSummaryResult}.
+     * @param documentResults A list of {@link ExtractiveSummaryResult}.
      */
-    public ExtractSummaryResultCollection(Iterable<ExtractSummaryResult> documentResults) {
+    public ExtractiveSummaryResultCollection(Iterable<ExtractiveSummaryResult> documentResults) {
         super(documentResults);
     }
 

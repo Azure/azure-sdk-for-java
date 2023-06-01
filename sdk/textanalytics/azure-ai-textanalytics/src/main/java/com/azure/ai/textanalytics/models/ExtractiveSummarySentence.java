@@ -3,40 +3,40 @@
 
 package com.azure.ai.textanalytics.models;
 
-import com.azure.ai.textanalytics.implementation.SummarySentencePropertiesHelper;
+import com.azure.ai.textanalytics.implementation.ExtractiveSummarySentencePropertiesHelper;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link SummarySentence} model.
+ * The {@link ExtractiveSummarySentence} model.
  */
 @Immutable
-public final class SummarySentence {
+public final class ExtractiveSummarySentence {
     private String text;
     private double rankScore;
     private int length;
     private int offset;
 
     static {
-        SummarySentencePropertiesHelper.setAccessor(
-            new SummarySentencePropertiesHelper.SummarySentenceAccessor() {
+        ExtractiveSummarySentencePropertiesHelper.setAccessor(
+            new ExtractiveSummarySentencePropertiesHelper.ExtractiveSummarySentenceAccessor() {
                 @Override
-                public void setText(SummarySentence summarySentence, String text) {
-                    summarySentence.setText(text);
+                public void setText(ExtractiveSummarySentence extractiveSummarySentence, String text) {
+                    extractiveSummarySentence.setText(text);
                 }
 
                 @Override
-                public void setRankScore(SummarySentence summarySentence, double rankScore) {
-                    summarySentence.setRankScore(rankScore);
+                public void setRankScore(ExtractiveSummarySentence extractiveSummarySentence, double rankScore) {
+                    extractiveSummarySentence.setRankScore(rankScore);
                 }
 
                 @Override
-                public void setOffset(SummarySentence summarySentence, int offset) {
-                    summarySentence.setOffset(offset);
+                public void setOffset(ExtractiveSummarySentence extractiveSummarySentence, int offset) {
+                    extractiveSummarySentence.setOffset(offset);
                 }
 
                 @Override
-                public void setLength(SummarySentence summarySentence, int length) {
-                    summarySentence.setLength(length);
+                public void setLength(ExtractiveSummarySentence extractiveSummarySentence, int length) {
+                    extractiveSummarySentence.setLength(length);
                 }
             }
         );

@@ -16,15 +16,15 @@ import java.util.function.Supplier;
  * @see ContinuablePagedFluxCore
  */
 @Immutable
-public final class ExtractSummaryPagedFlux extends ContinuablePagedFluxCore<String,
-    ExtractSummaryResultCollection, PagedResponse<ExtractSummaryResultCollection>> {
+public final class AbstractiveSummaryPagedFlux extends ContinuablePagedFluxCore<String,
+        AbstractiveSummaryResultCollection, PagedResponse<AbstractiveSummaryResultCollection>> {
     /**
-     * Creates an instance of {@link ExtractSummaryPagedFlux}
+     * Creates an instance of {@link AbstractiveSummaryPagedFlux}
      *
      * @param pageRetrieverProvider a provider that returns {@link PageRetriever}
      */
-    public ExtractSummaryPagedFlux(
-        Supplier<PageRetriever<String, PagedResponse<ExtractSummaryResultCollection>>> pageRetrieverProvider) {
+    public AbstractiveSummaryPagedFlux(
+        Supplier<PageRetriever<String, PagedResponse<AbstractiveSummaryResultCollection>>> pageRetrieverProvider) {
         super(pageRetrieverProvider);
     }
 }
