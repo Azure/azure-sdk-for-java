@@ -4,26 +4,18 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.*;
-import com.azure.cosmos.implementation.clienttelemetry.CosmosMeterOptions;
-import com.azure.cosmos.implementation.clienttelemetry.MetricCategory;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
-import com.azure.cosmos.models.CosmosMetricName;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.Tags;
-import io.micrometer.core.instrument.Timer;
-
 import java.time.Duration;
 import java.time.Instant;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiFunction;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkState;
@@ -64,6 +56,8 @@ public final class CosmosDiagnosticsContext {
     private int maxResponseSize = 0;
     private String cachedRequestDiagnostics = null;
     private final AtomicBoolean isCompleted = new AtomicBoolean(false);
+
+    private CosmosDiagnosticsSystemUsageSnapshot systemUsage;
 
     private Double samplingRateSnapshot;
 
@@ -358,19 +352,21 @@ public final class CosmosDiagnosticsContext {
      * a custom {@link CosmosDiagnosticsHandler}
      * @return the system usage
      */
-    public Collection<String> getSystemUsage() {
-        TreeSet<String> systemUsage = new TreeSet<>();
-        if (this.diagnostics == null) {
-            return null;
+    public CosmosDiagnosticsSystemUsageSnapshot getSystemUsage() {
+
+        CosmosDiagnosticsSystemUsageSnapshot snapshot = this.systemUsage;
+        if (snapshot != null) {
+            return snapshot;
         }
 
-        for (CosmosDiagnostics d: this.diagnostics) {
-            if (d.getDiagnosticsContext() != null) {
-                systemUsage.addAll(d.getDiagnosticsContext().getSystemUsage());
+        synchronized (this.spanName) {
+            snapshot = this.systemUsage;
+            if (snapshot != null) {
+                return snapshot;
             }
-        }
 
-        return systemUsage;
+            return this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation();
+        }
     }
 
     /**
@@ -581,6 +577,7 @@ public final class CosmosDiagnosticsContext {
                 return snapshot;
             }
 
+            this.systemUsage = ClientSideRequestStatistics.fetchSystemInformation();
             return this.cachedRequestDiagnostics = getRequestDiagnostics();
         }
     }
@@ -681,30 +678,46 @@ public final class CosmosDiagnosticsContext {
             }
 
             Collection<CosmosDiagnosticsRequestEvent> events = new ArrayList<>();
+            String pkRangeId = "";
+            double requestCharge = 0;
+            int responsePayloadLength = 0;
+            int statusCode = 0;
+            int subStatusCode = 0;
+            String activityId = requestStats.getActivityId();
             if (responseDiagnostics != null) {
+                activityId = responseDiagnostics.getActivityId();
+                requestCharge = responseDiagnostics.getRequestCharge();
+                responsePayloadLength = responseDiagnostics.getResponsePayloadLength();
+                statusCode = responseDiagnostics.getStatusCode();
+                subStatusCode = responseDiagnostics.getSubStatusCode();
+                if (responseDiagnostics.getPartitionKeyRangeId() != null) {
+                    pkRangeId = responseDiagnostics.getPartitionKeyRangeId();
+                }
                 RequestTimeline timeline = responseDiagnostics.getRequestTimeline();
-                timeline.forEach( e ->
-                    events.add(new CosmosDiagnosticsRequestEvent(e.getStartTime(), e.getDuration(), e.getName()))
-                );
+                timeline.forEach( e -> {
+                    if (e.getStartTime() != null && e.getDuration() != null && !e.getDuration().equals(Duration.ZERO)) {
+                        events.add(new CosmosDiagnosticsRequestEvent(e.getStartTime(), e.getDuration(), e.getName()));
+                    }
+                });
             }
 
             Duration backendLatency = null;
             if (resultDiagnostics.getBackendLatencyInMs() != null) {
-                backendLatency = Duration.ofNanos((long)(1000000 * resultDiagnostics.getBackendLatencyInMs()));
+                backendLatency = Duration.ofNanos((long)(resultDiagnostics.getBackendLatencyInMs() * 1000000d));
             }
 
             CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
-                requestStats.getActivityId(),
+                activityId,
                 partitionId,
-                responseDiagnostics.getPartitionKeyRangeId(),
+                pkRangeId,
                 responseStats.getRequestResourceType() + ":" + responseStats.getRequestOperationType(),
                 requestStats.getRequestStartTimeUTC(),
-                requestStats.getDuration(),
+                responseStats.getDuration(),
                 backendLatency,
-                responseDiagnostics.getRequestCharge(),
-                responseDiagnostics.getResponsePayloadLength(),
-                responseDiagnostics.getStatusCode(),
-                responseDiagnostics.getSubStatusCode(),
+                requestCharge,
+                responsePayloadLength,
+                statusCode,
+                subStatusCode,
                 events
             );
 
@@ -765,7 +778,7 @@ public final class CosmosDiagnosticsContext {
                 0,
                 0,
                 0,
-                new ArrayList()
+                new ArrayList<>()
             );
 
             requestInfo.add(info);
@@ -851,6 +864,11 @@ public final class CosmosDiagnosticsContext {
                             maxItemCount,
                             thresholds,
                             trackingId);
+                    }
+
+                    @Override
+                    public CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(String cpu, String used, String available, int cpuCount) {
+                        return new CosmosDiagnosticsSystemUsageSnapshot(cpu, used, available, cpuCount);
                     }
 
                     @Override

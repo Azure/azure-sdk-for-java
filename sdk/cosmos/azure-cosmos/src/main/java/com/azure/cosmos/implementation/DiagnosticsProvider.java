@@ -1249,7 +1249,7 @@ public final class DiagnosticsProvider {
                 }
 
                 String activityId = storeResponseDiagnostics.getActivityId();
-                if (requestSessionToken != null && !requestSessionToken.isEmpty()) {
+                if (activityId != null && !activityId.isEmpty()) {
                     attributes.put("rntbd.activity_id", activityId);
                 }
 
