@@ -62,7 +62,7 @@ __Data Consumer:__ A data consumer is the individual who accepts the invitation 
 
 ### Data Provider Examples
 
-The following code examples demonstrate how data provider's can use the Microsoft Azure Java SDK for Purview Sharing to manage their sharing activity.
+The following code examples demonstrate how data providers can use the Microsoft Azure Java SDK for Purview Sharing to manage their sharing activity.
 
 #### Create a Sent Share Client
 ```java com.azure.analytics.purview.sharing.createSentShareClient
