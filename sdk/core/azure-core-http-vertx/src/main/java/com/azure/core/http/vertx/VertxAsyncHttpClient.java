@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
+import com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -20,7 +21,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import io.netty.buffer.Unpooled;
-import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.file.AsyncFile;
@@ -29,7 +29,6 @@ import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
-import io.vertx.ext.reactivestreams.ReactiveReadStream;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.scheduler.Scheduler;
@@ -165,21 +164,8 @@ class VertxAsyncHttpClient implements HttpClient {
             });
         } else {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
-            // Create a ReadStream<Buffer> implementation that sends the InputStream without the use of Reactor.
-            ReactiveReadStream<Buffer> reactiveSender = ReactiveReadStream.<Buffer>readStream(1)
-                .exceptionHandler(sink::error);
-
-            azureRequest.getBody().map(byteBuffer -> Buffer.buffer(Unpooled.wrappedBuffer(byteBuffer)))
-                .doOnNext(data -> reportProgress(data.length(), progressReporter))
-                .doOnError(sink::error)
-                .subscribeOn(scheduler)
-                .subscribe(reactiveSender);
-
-            vertxRequest.send(reactiveSender, result -> {
-                if (result.failed()) {
-                    sink.error(result.cause());
-                }
-            });
+            azureRequest.getBody().subscribeOn(scheduler)
+                .subscribe(new VertxRequestWriteSubscriber(vertxRequest, sink, progressReporter));
         }
     }
 
@@ -187,9 +173,5 @@ class VertxAsyncHttpClient implements HttpClient {
         if (progressReporter != null) {
             progressReporter.reportProgress(progress);
         }
-    }
-
-    private static Future<HttpResponse> handleVertxResponse(HttpRequest request, HttpClientResponse vertxResponse) {
-        return vertxResponse.body().map(body -> new BufferedVertxHttpResponse(request, vertxResponse, body));
     }
 }
