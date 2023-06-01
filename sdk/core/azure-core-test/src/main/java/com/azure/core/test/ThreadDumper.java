@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import java.lang.management.ManagementFactory;
 import java.lang.management.ThreadInfo;
 import java.lang.management.ThreadMXBean;
+import java.lang.reflect.Method;
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -106,7 +107,7 @@ public class ThreadDumper implements BeforeAllCallback, BeforeEachCallback, Afte
                     .append(" millis");
             }
         }
-        dump.append("========== RUNNING TESTS END ==========");
+        dump.append("========== RUNNING TESTS END ==========\n");
 
         String output = dump.toString();
 
@@ -131,9 +132,16 @@ public class ThreadDumper implements BeforeAllCallback, BeforeEachCallback, Afte
     }
 
     private static String getFullTestName(ExtensionContext context) {
-        String testName = context.getDisplayName();
-        String className = context.getRequiredTestClass().getName();
+        String displayName = context.getDisplayName();
 
-        return className + "." + testName;
+        String testName = "";
+        String fullyQualifiedTestName = "";
+        if (context.getTestMethod().isPresent()) {
+            Method method = context.getTestMethod().get();
+            testName = method.getName();
+            fullyQualifiedTestName = method.getDeclaringClass().getName() + "." + testName;
+        }
+
+        return fullyQualifiedTestName + "(" + displayName + ")";
     }
 }
