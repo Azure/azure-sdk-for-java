@@ -170,7 +170,7 @@ Response<BinaryData> response =
 
 #### Get a Sent Share
 
-After creating a sent share, data providers can retrieve it from the service.
+After creating a sent share, data providers can retrieve it.
 
 ```java com.azure.analytics.purview.sharing.getSentShare
 SentSharesClient sentSharesClient =
@@ -221,7 +221,7 @@ sentSharesClient.beginDeleteSentShare("<sent-share-id", new RequestOptions());
 
 #### Get Sent Share Invitation
 
-After creating a sent share invitation, data providers can retrieve it from the service.
+After creating a sent share invitation, data providers can retrieve it.
 
 ```java com.azure.analytics.purview.sharing.getSentShareInvitation
 SentSharesClient sentSharesClient =
@@ -346,7 +346,7 @@ SyncPoller<BinaryData, BinaryData> createResponse =
 
 #### Get Received Share
 
-A data consumer can retrieve an individual received share from the service.
+A data consumer can retrieve an individual received share.
 
 ```java com.azure.analytics.purview.sharing.getReceivedShare
 ReceivedSharesClient receivedSharesClient =
