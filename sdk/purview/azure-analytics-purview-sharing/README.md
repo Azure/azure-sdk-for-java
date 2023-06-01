@@ -258,6 +258,16 @@ PagedIterable<BinaryData> response =
 An individual sent share invitation can be deleted by the data provider to stop sharing their data with the specific data consumer to whom the invitation was addressed.
 
 ```java com.azure.analytics.purview.sharing.deleteSentShareInvitation
+SentSharesClient sentSharesClient =
+        new SentSharesClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("https://<my-account-name>.purview.azure.com/share")
+                .buildClient();
+
+String sentShareId = "<sent-share-id>";
+String sentShareInvitationId = "<sent-share-invitation-id>";
+ 
+sentSharesClient.beginDeleteSentShareInvitation(sentShareId, sentShareInvitationId, new RequestOptions());
 ```
 
 ## Data Consumer Examples

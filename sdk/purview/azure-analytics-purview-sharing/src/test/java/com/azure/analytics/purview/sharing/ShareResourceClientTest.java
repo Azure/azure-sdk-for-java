@@ -18,27 +18,25 @@ import com.azure.core.util.BinaryData;
 
 @SuppressWarnings("unused")
 public class ShareResourceClientTest extends PurviewShareTestBase {
-    
+
     @Override
     protected void beforeTest() {
-       super.beforeTest(); 
+        super.beforeTest();
     }
-    
+
     @Test
     void getAllShareResourcesTest() {
-       UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
-       SentShare sentShare = super.createSentShare(sentShareId);
-       
-       PagedIterable<BinaryData> shareResources =
-               super.shareResourcesClient
-                   .getAllShareResources(new RequestOptions());
-       
-       var sentShareResource = ((InPlaceSentShare)sentShare).getArtifact().getStoreReference().getReferenceName();
+        UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
+        SentShare sentShare = super.createSentShare(sentShareId);
 
-       assertTrue(shareResources.stream().findAny().isPresent());
-       assertTrue(shareResources.stream()
-                   .map(binaryData -> binaryData.toObject(ShareResource.class))
-                   .anyMatch(shareResource -> 
-                       shareResource.getStoreReference().getReferenceName().equalsIgnoreCase(sentShareResource)));
+        PagedIterable<BinaryData> shareResources = super.shareResourcesClient
+                .getAllShareResources(new RequestOptions());
+
+        String sentShareResource = ((InPlaceSentShare) sentShare).getArtifact().getStoreReference().getReferenceName();
+
+        assertTrue(shareResources.stream().findAny().isPresent());
+        assertTrue(shareResources.stream().map(binaryData -> binaryData.toObject(ShareResource.class))
+                .anyMatch(shareResource -> shareResource.getStoreReference().getReferenceName()
+                        .equalsIgnoreCase(sentShareResource)));
     }
 }
