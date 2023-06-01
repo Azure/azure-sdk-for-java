@@ -58,11 +58,13 @@ __Data Provider:__ A data provider is the individual who creates a share by sele
 
 __Data Consumer:__ A data consumer is the individual who accepts the invitation by specifying a target storage account in their own Azure subscription that they'll use to access the shared data.
 
-## Data Provider Examples
+## Examples
+
+### Data Provider Examples
 
 The following code examples demonstrate how data provider's can use the Microsoft Azure Java SDK for Purview Sharing to manage their sharing activity.
 
-### Create a Sent Share Client
+#### Create a Sent Share Client
 ```java com.azure.analytics.purview.sharing.createSentShareClient
 SentSharesClient sentSharesClient =
         new SentSharesClientBuilder()
@@ -71,7 +73,7 @@ SentSharesClient sentSharesClient =
                 .buildClient();
 ```
 
-### Create a Sent Share
+#### Create a Sent Share
 
 To begin sharing data, the data provider must first create a sent share that identifies the data they would like to share.
 
@@ -112,7 +114,7 @@ SyncPoller<BinaryData, BinaryData> response =
                 new RequestOptions());
 ```
 
-### Send a Share Invitation to a User
+#### Send a Share Invitation to a User
 
 After creating a sent share, the data provider can extend invitations to consumers who may then view the shared data.  In this example, an invitation is extended to an individual by specifying their email address.
 
@@ -139,7 +141,7 @@ Response<BinaryData> response =
                 new RequestOptions());
 ```
 
-### Send a Share Invitation to a Service
+#### Send a Share Invitation to a Service
 
 Data providers can also extend invitations to services or applications by specifying the tenant id and object id of the service.  *The object id used for sending an invitation to a service must be the object id associated with the Enterprise Application (not the application registration)*.
 
@@ -166,7 +168,7 @@ Response<BinaryData> response =
                 new RequestOptions());
 ```
 
-### Get a Sent Share
+#### Get a Sent Share
 
 After creating a sent share, data providers can retrieve it from the service.
 
@@ -183,7 +185,7 @@ SentShare retrievedSentShare = sentSharesClient
         .toObject(SentShare.class);
 ```
 
-### Get All Sent Shares
+#### Get All Sent Shares
 
 Data providers can also retrieve a list of the sent shares they have created.
 
@@ -203,7 +205,7 @@ List<SentShare> sentShares = sentShareResults.stream()
     .collect(Collectors.toList());
 ```
 
-### Delete a Sent Share
+#### Delete a Sent Share
 
 A sent share can be deleted by the data provider to stop sharing their data with all data consumers.
 
@@ -217,7 +219,7 @@ SentSharesClient sentSharesClient =
 sentSharesClient.beginDeleteSentShare("<sent-share-id", new RequestOptions());
 ```
 
-### Get Sent Share Invitation
+#### Get Sent Share Invitation
 
 After creating a sent share invitation, data providers can retrieve it from the service.
 
@@ -235,7 +237,7 @@ Response<BinaryData> sentShareInvitation =
         sentSharesClient.getSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, new RequestOptions());
 ```
 
-### Get All Sent Share Invitations
+#### Get All Sent Share Invitations
 
 Data providers can also retrieve a list of the sent share invitations they have created.
 
@@ -253,7 +255,7 @@ PagedIterable<BinaryData> response =
         sentSharesClient.getAllSentShareInvitations(sentShareId, requestOptions);
 ```
 
-### Delete a Sent Share Invitation
+#### Delete a Sent Share Invitation
 
 An individual sent share invitation can be deleted by the data provider to stop sharing their data with the specific data consumer to whom the invitation was addressed.
 
@@ -270,11 +272,11 @@ String sentShareInvitationId = "<sent-share-invitation-id>";
 sentSharesClient.beginDeleteSentShareInvitation(sentShareId, sentShareInvitationId, new RequestOptions());
 ```
 
-## Data Consumer Examples
+### Data Consumer Examples
 
 The following code examples demonstrate how data consumers can use the Microsoft Azure Java SDK for Purview Sharing to manage their sharing activity.
 
-### Create a Received Share Client
+#### Create a Received Share Client
 ```java com.azure.analytics.purview.sharing.createReceivedShareClient
 ReceivedSharesClient receivedSharesClient =
         new ReceivedSharesClientBuilder()
@@ -283,7 +285,7 @@ ReceivedSharesClient receivedSharesClient =
                 .buildClient();
 ```
 
-### Get All Detached Received Shares
+#### Get All Detached Received Shares
 
 To begin viewing data shared with them, a data consumer must first retrieve a list of detached received shares.  Within this list, they can identify a detached received share to attach.
 
@@ -298,7 +300,7 @@ RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "
 PagedIterable<BinaryData> response = receivedSharesClient.getAllDetachedReceivedShares(requestOptions);
 ```
 
-### Attach a Receive Share
+#### Attach a Receive Share
 
 Once the data consumer has identified a received share, they can attach the received share to a location where they can access the shared data.  If the received share is already attached, the shared data will be made accessible at the new location specified.
 
@@ -342,7 +344,7 @@ SyncPoller<BinaryData, BinaryData> createResponse =
         receivedSharesClient.beginCreateOrReplaceReceivedShare(receivedShareId, BinaryData.fromObject(receivedShare), new RequestOptions());
 ```
 
-### Get Received Share
+#### Get Received Share
 
 A data consumer can retrieve an individual received share from the service.
 
@@ -357,7 +359,7 @@ Response<BinaryData> receivedShare =
         receivedSharesClient.getReceivedShareWithResponse("<received-share-id>", new RequestOptions());
 ```
 
-### Get All Attached Received Shares
+#### Get All Attached Received Shares
 
 Data consumers can also retrieve a list of their attached received shares.
 
@@ -383,7 +385,7 @@ if (!receivedShare.isPresent()) {
 ReceivedShare receivedShareResponse = receivedShare.get().toObject(InPlaceReceivedShare.class);
 ```
 
-### Delete a Received Share
+#### Delete a Received Share
 
 A received share can be deleted by the data consumer to terminate their access to shared data.
 
@@ -397,11 +399,11 @@ ReceivedSharesClient receivedSharesClient =
 receivedSharesClient.beginDeleteReceivedShare("<received-share-id>", new RequestOptions()); 
 ```
 
-## Share Resource Examples
+### Share Resource Examples
 
 The following code examples demonstrate how to use the Microsoft Azure Java SDK for Purview Sharing to view share resources.  A share resource is the underlying resource from which a provider shares data or the destination where a consumer attaches data shared with them.
 
-### Get All Share Resources
+#### Get All Share Resources
 
 A list of share resources can be retrieved to view all resources within an account where sharing activities have taken place.
 
