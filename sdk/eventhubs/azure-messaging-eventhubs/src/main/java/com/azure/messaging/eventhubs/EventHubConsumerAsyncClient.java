@@ -45,16 +45,18 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * or all partitions in the context of a specific consumer group.
  *
  * <p><strong>Creating an {@link EventHubConsumerAsyncClient}</strong></p>
- * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation -->
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct -->
  * <pre>
- * &#47;&#47; The required parameters are `consumerGroup` and a way to authenticate with Event Hubs using credentials.
- * EventHubConsumerAsyncClient consumer = new EventHubClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;&quot;
- *         + &quot;SharedAccessKey=&#123;key&#125;;EntityPath=&#123;eh-name&#125;&quot;&#41;
- *     .consumerGroup&#40;&quot;consumer-group-name&quot;&#41;
- *     .buildAsyncConsumerClient&#40;&#41;;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventHubProducerAsyncClient producer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .buildAsyncProducerClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct -->
  *
  * <p><strong>Consuming events a single partition from Event Hub</strong></p>
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition -->

@@ -157,9 +157,9 @@ TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
 // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
-    EventHubProducerClient producer = new EventHubClientBuilder()
+EventHubProducerClient producer = new EventHubClientBuilder()
     .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
-    credential)
+        credential)
     .buildProducerClient();
 ```
 

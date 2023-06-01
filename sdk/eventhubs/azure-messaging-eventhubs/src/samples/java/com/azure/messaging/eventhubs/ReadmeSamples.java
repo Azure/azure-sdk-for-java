@@ -21,22 +21,6 @@ import java.util.concurrent.TimeUnit;
 public class ReadmeSamples {
 
     /**
-     * Code sample for creating a synchronous Event Hub producer.
-     */
-    public void createSynchronousEventHubProducer() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.construct
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-
-        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
-        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
-        EventHubProducerClient producer = new EventHubClientBuilder()
-            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
-                credential)
-            .buildProducerClient();
-        // END: com.azure.messaging.eventhubs.eventhubproducerclient.construct
-    }
-
-    /**
      * Code sample for publishing events.
      * @throws IllegalArgumentException if the event data is bigger than max batch size.
      */

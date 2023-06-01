@@ -30,19 +30,32 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * A <b>synchronous</b> consumer responsible for reading {@link EventData} from an Event Hub partition in the context of
  * a specific consumer group.
  *
- * <p><strong>Creating a synchronous consumer</strong></p>
- * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
+ * <p><strong>Sample: Creating a synchronous consumer</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of the synchronous client {@link EventHubConsumerClient}.
+ * The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name. It is listed under the "Essentials"
+ * panel after navigating to the Event Hubs Namespace via Azure Portal. The {@code consumerGroup} is found by
+ * navigating to the Event Hub instance, and selecting "Consumer groups" under the "Entities" panel.  The
+ * {@link EventHubClientBuilder#consumerGroup(String)} is required for creating consumer clients. The credential used
+ * is {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
+ * chooses the credential to used based on its running environment.</p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.construct -->
  * <pre>
- * &#47;&#47; The required parameters are `consumerGroup`, and a way to authenticate with Event Hubs using credentials.
- * EventHubConsumerClient consumer = new EventHubClientBuilder&#40;&#41;
- *     .connectionString&#40;&quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;&quot;
- *         + &quot;SharedAccessKey=&#123;key&#125;;Entity-Path=&#123;hub-name&#125;&quot;&#41;
- *     .consumerGroup&#40;&quot;$DEFAULT&quot;&#41;
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventHubConsumerClient Consumer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
  *     .buildConsumerClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.eventhubconsumerclient.construct -->
  *
- * <p><strong>Consuming events from a single partition</strong></p>
+ * <p><strong>Sample: Consuming events from a single partition</strong></p>
+ *
  * <p>Events from a single partition can be consumed using {@link #receiveFromPartition(String, int, EventPosition)} or
  * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to {@code receiveFromPartition}
  * completes and returns an {@link IterableStream} when either the maximum number of events is received, or the

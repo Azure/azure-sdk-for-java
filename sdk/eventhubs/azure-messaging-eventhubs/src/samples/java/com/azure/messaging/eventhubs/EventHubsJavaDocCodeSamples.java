@@ -3,6 +3,9 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.amqp.AmqpRetryMode;
+import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -40,6 +43,94 @@ public class EventHubsJavaDocCodeSamples {
         .buildAsyncConsumerClient();
 
     /**
+     * Code sample for creating a synchronous Event Hub producer.
+     */
+    public void createProducer() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.construct
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+        EventHubProducerClient producer = new EventHubClientBuilder()
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
+            .buildProducerClient();
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.construct
+    }
+
+    /**
+     * Code sample for creating an async Event Hub producer.
+     */
+    public void createProducerAsync() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
+            .buildAsyncProducerClient();
+        // END: com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct
+    }
+
+    /**
+     * Code sample for creating a synchronous Event Hub Consumer.
+     */
+    public void createConsumer() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.construct
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+        EventHubConsumerClient Consumer = new EventHubClientBuilder()
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .buildConsumerClient();
+        // END: com.azure.messaging.eventhubs.eventhubconsumerclient.construct
+    }
+
+    /**
+     * Code sample for creating an async Event Hub Consumer.
+     */
+    public void createConsumerAsync() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.construct
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+        EventHubConsumerAsyncClient Consumer = new EventHubClientBuilder()
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .buildAsyncConsumerClient();
+        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.construct
+    }
+
+    /**
+     * Code sample for creating a producer client with web sockets.
+     */
+    public void createProducerWebSockets() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubproducerclient.websockets.construct
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        AmqpRetryOptions customRetryOptions = new AmqpRetryOptions()
+            .setMaxRetries(5)
+            .setMode(AmqpRetryMode.FIXED)
+            .setTryTimeout(Duration.ofSeconds(60));
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+        EventHubProducerClient producer = new EventHubClientBuilder()
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
+            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+            .buildProducerClient();
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.websockets.construct
+    }
+
+    /**
      * Creates an EventData using application properties.
      */
     public void createEventData() {
@@ -56,11 +147,14 @@ public class EventHubsJavaDocCodeSamples {
      * Code snippet for {@link EventHubClientBuilder#shareConnection()}.
      */
     public void sharingConnection() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation
-        // Toggling `shareConnection` instructs the builder to use the same underlying connection
-        // for each consumer or producer created using the same builder instance.
+        // BEGIN: com.azure.messaging.eventhubs.eventhubclientbuilder.shareconnection.construct
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubClientBuilder builder = new EventHubClientBuilder()
-            .connectionString("event-hubs-instance-connection-string")
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .shareConnection();
 
         // Both the producer and consumer created share the same underlying connection.
@@ -68,22 +162,9 @@ public class EventHubsJavaDocCodeSamples {
         EventHubConsumerAsyncClient consumer = builder
             .consumerGroup("my-consumer-group")
             .buildAsyncConsumerClient();
-        // END: com.azure.messaging.eventhubs.eventhubclientbuilder.instantiation
+        // END: com.azure.messaging.eventhubs.eventhubclientbuilder.shareconnection.construct
 
         producer.close();
-        consumer.close();
-    }
-
-    public void instantiateConsumerAsyncClient() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
-        // The required parameters are `consumerGroup` and a way to authenticate with Event Hubs using credentials.
-        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
-            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-                + "SharedAccessKey={key};EntityPath={eh-name}")
-            .consumerGroup("consumer-group-name")
-            .buildAsyncConsumerClient();
-        // END: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.instantiation
-
         consumer.close();
     }
 
@@ -197,22 +278,6 @@ public class EventHubsJavaDocCodeSamples {
     }
 
     /**
-     * Code snippet for creating an EventHubConsumer
-     */
-    public void instantiateConsumerClient() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
-        // The required parameters are `consumerGroup`, and a way to authenticate with Event Hubs using credentials.
-        EventHubConsumerClient consumer = new EventHubClientBuilder()
-            .connectionString("Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};"
-                + "SharedAccessKey={key};Entity-Path={hub-name}")
-            .consumerGroup("$DEFAULT")
-            .buildConsumerClient();
-        // END: com.azure.messaging.eventhubs.eventhubconsumerclient.instantiation
-
-        consumer.close();
-    }
-
-    /**
      * Receives event data from a single partition.
      */
     public void receiveFromSinglePartition() {
@@ -248,23 +313,6 @@ public class EventHubsJavaDocCodeSamples {
                 nextPosition, Duration.ofSeconds(30));
         }
         // END: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
-    }
-
-    /**
-     * Code snippet demonstrating how to create an {@link EventHubProducerAsyncClient}.
-     */
-    public void instantiateProducerAsyncClient() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
-        // The required parameter is a way to authenticate with Event Hubs using credentials.
-        // The connectionString provides a way to authenticate with Event Hub.
-        EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(
-                "Endpoint={fully-qualified-namespace};SharedAccessKeyName={policy-name};SharedAccessKey={key}",
-                "event-hub-name")
-            .buildAsyncProducerClient();
-        // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.instantiation
-
-        producer.close();
     }
 
     /**
