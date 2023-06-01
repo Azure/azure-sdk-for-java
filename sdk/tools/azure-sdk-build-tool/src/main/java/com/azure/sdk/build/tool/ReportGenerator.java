@@ -1,5 +1,7 @@
 package com.azure.sdk.build.tool;
 
+import com.azure.sdk.build.tool.models.BuildError;
+import com.azure.sdk.build.tool.models.BuildErrorLevel;
 import com.azure.sdk.build.tool.models.BuildReport;
 import com.azure.sdk.build.tool.mojo.AzureSdkMojo;
 import com.azure.sdk.build.tool.util.AnnotatedMethodCallerResult;
@@ -35,23 +37,14 @@ public class ReportGenerator {
         this.report = report;
     }
 
+    public BuildReport getReport() {
+        return this.report;
+    }
+
     public void generateReport() {
-        if (!report.getWarningMessages().isEmpty() && LOGGER.isWarnEnabled()) {
-            report.getWarningMessages().forEach(LOGGER::warn);
-        }
-        if (!report.getErrorMessages().isEmpty() && LOGGER.isErrorEnabled()) {
-            report.getErrorMessages().forEach(LOGGER::error);
-        }
         report.setBomVersion(computeBomVersion());
         report.setAzureDependencies(computeAzureDependencies());
-
         createJsonReport();
-        // we throw a single runtime exception encapsulating all failure messages into one
-        if (!report.getFailureMessages().isEmpty()) {
-            StringBuilder sb = new StringBuilder("Build failure for the following reasons:\n");
-            report.getFailureMessages().forEach(s -> sb.append(" - " + s + "\n"));
-            throw new RuntimeException(sb.toString());
-        }
     }
 
     private String computeBomVersion() {
@@ -94,16 +87,9 @@ public class ReportGenerator {
                 writeArray(generator, "betaMethodCalls", report.getBetaMethodCalls());
             }
 
-            if (!report.getErrorMessages().isEmpty()) {
-                writeArray("errorMessages", report.getErrorMessages(), generator);
-            }
 
-            if (!report.getWarningMessages().isEmpty()) {
-                writeArray("warningMessages", report.getWarningMessages(), generator);
-            }
-
-            if (!report.getFailureMessages().isEmpty()) {
-                writeArray("failureMessages", report.getFailureMessages(), generator);
+            if(!report.getErrors().isEmpty()) {
+                writeErrors(generator, "errors", report.getErrors());
             }
 
             generator.writeEndObject();
@@ -121,6 +107,26 @@ public class ReportGenerator {
         } catch (IOException exception) {
 
         }
+    }
+
+    private void writeErrors(JsonGenerator generator, String key, List<BuildError> errors)  throws IOException {
+        generator.writeFieldName(key);
+        generator.writeStartArray();
+
+        errors.forEach(error -> {
+            try {
+                generator.writeStartObject();
+                generator.writeStringField("code", error.getCode().toString());
+                generator.writeStringField("level", error.getLevel().toString());
+                if (error.getAdditionalDetails() != null && !error.getAdditionalDetails().isEmpty()) {
+                    writeArray("additionalDetails", error.getAdditionalDetails(), generator);
+                }
+                generator.writeEndObject();
+            } catch (IOException e) {
+                throw new UncheckedIOException(e);
+            }
+        });
+        generator.writeEndArray();
     }
 
     private void writeArray(JsonGenerator generator, String serviceMethodCalls, Set<AnnotatedMethodCallerResult> report) throws IOException {
@@ -146,7 +152,6 @@ public class ReportGenerator {
         });
         generator.writeEndArray();
     }
-
     private void writeArray(String fieldName, Collection<String> values, JsonGenerator generator) throws IOException {
         generator.writeFieldName(fieldName);
         generator.writeStartArray();

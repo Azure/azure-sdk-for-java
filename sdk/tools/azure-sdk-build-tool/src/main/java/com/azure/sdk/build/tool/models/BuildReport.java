@@ -1,7 +1,6 @@
 package com.azure.sdk.build.tool.models;
 
 import com.azure.sdk.build.tool.util.AnnotatedMethodCallerResult;
-import com.azure.sdk.build.tool.util.logging.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,9 +11,7 @@ import java.util.Set;
  * changes and Azure SDK usage.
  */
 public class BuildReport {
-    private final List<String> warningMessages;
-    private final List<String> errorMessages;
-    private final List<String> failureMessages;
+    private final List<BuildError> errors;
 
     private List<String> azureDependencies;
     private Set<AnnotatedMethodCallerResult> serviceMethodCalls;
@@ -24,22 +21,12 @@ public class BuildReport {
     private String bomVersion;
     private String jsonReport;
 
-    public List<String> getWarningMessages() {
-        return warningMessages;
-    }
-
-    public List<String> getErrorMessages() {
-        return errorMessages;
-    }
-
-    public List<String> getFailureMessages() {
-        return failureMessages;
-    }
-
     public BuildReport() {
-        this.warningMessages = new ArrayList<>();
-        this.errorMessages = new ArrayList<>();
-        this.failureMessages = new ArrayList<>();
+        this.errors = new ArrayList<>();
+    }
+
+    public List<BuildError> getErrors() {
+        return errors;
     }
 
     public String getBomVersion() {
@@ -50,16 +37,8 @@ public class BuildReport {
         return this.azureDependencies;
     }
 
-    public void addWarningMessage(String message) {
-        warningMessages.add(message);
-    }
-
-    public void addErrorMessage(String message) {
-        errorMessages.add(message);
-    }
-
-    public void addFailureMessage(String message) {
-        failureMessages.add(message);
+    public void addError(BuildError error) {
+        errors.add(error);
     }
 
     public void setServiceMethodCalls(Set<AnnotatedMethodCallerResult> serviceMethodCalls) {
