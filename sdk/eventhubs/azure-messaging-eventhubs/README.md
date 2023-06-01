@@ -209,7 +209,7 @@ Hubs service to hash the events and send them to the same partition.
 The snippet below creates a synchronous producer and sends events to any partition, allowing Event Hubs service to route
 the event to an available partition.
 
-```java readme-sample-publishEvents
+```java com.azure.messaging.eventhubs.eventhubproducerclient.createBatch
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 EventHubProducerClient producer = new EventHubClientBuilder()
@@ -232,6 +232,7 @@ for (EventData eventData : allEvents) {
         }
     }
 }
+
 // send the last batch of remaining events
 if (eventDataBatch.getCount() > 0) {
     producer.send(eventDataBatch);
@@ -246,7 +247,7 @@ Many Event Hub operations take place within the scope of a specific partition. A
 `getPartitionIds()` or `getEventHubProperties()` to get the partition ids and metadata about in their Event Hub
 instance.
 
-```java readme-sample-publishEventsToPartition
+```java com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionId
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 EventHubProducerClient producer = new EventHubClientBuilder()
@@ -254,6 +255,7 @@ EventHubProducerClient producer = new EventHubClientBuilder()
         credential)
     .buildProducerClient();
 
+// Creating a batch with partitionId set will route all events in that batch to partition `0`.
 CreateBatchOptions options = new CreateBatchOptions().setPartitionId("0");
 EventDataBatch batch = producer.createBatch(options);
 
@@ -265,9 +267,9 @@ producer.send(batch);
 
 When a set of events are not associated with any specific partition, it may be desirable to request that the Event
 Hubs service keep different events or batches of events together on the same partition. This can be accomplished by
-setting a `partition key` when publishing the events.
+setting a `partition key` when publishing the events.  In the scenario below, all the events are related to cities, so they are sent with the partition key set to "cities".
 
-```java readme-sample-publishEventsWithPartitionKey
+```java com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable-SendOptions
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
 EventHubProducerClient producer = new EventHubClientBuilder()
@@ -275,11 +277,11 @@ EventHubProducerClient producer = new EventHubClientBuilder()
         credential)
     .buildProducerClient();
 
-CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey("grouping-key");
-EventDataBatch eventDataBatch = producer.createBatch(batchOptions);
+List<EventData> events = Arrays.asList(new EventData("Melbourne"), new EventData("London"),
+    new EventData("New York"));
 
-// Add events to batch and when you want to send the batch, send it using the producer.
-producer.send(eventDataBatch);
+SendOptions sendOptions = new SendOptions().setPartitionKey("cities");
+producer.send(events, sendOptions);
 ```
 
 ### Consume events from an Event Hub partition

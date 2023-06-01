@@ -6,95 +6,16 @@ package com.azure.messaging.eventhubs;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.PartitionEvent;
 
 import java.time.Duration;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
-
-    /**
-     * Code sample for publishing events.
-     * @throws IllegalArgumentException if the event data is bigger than max batch size.
-     */
-    public void publishEvents() {
-        // BEGIN: readme-sample-publishEvents
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-
-        EventHubProducerClient producer = new EventHubClientBuilder()
-            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
-                credential)
-            .buildProducerClient();
-
-        List<EventData> allEvents = Arrays.asList(new EventData("Foo"), new EventData("Bar"));
-        EventDataBatch eventDataBatch = producer.createBatch();
-
-        for (EventData eventData : allEvents) {
-            if (!eventDataBatch.tryAdd(eventData)) {
-                producer.send(eventDataBatch);
-                eventDataBatch = producer.createBatch();
-
-                // Try to add that event that couldn't fit before.
-                if (!eventDataBatch.tryAdd(eventData)) {
-                    throw new IllegalArgumentException("Event is too large for an empty batch. Max size: "
-                        + eventDataBatch.getMaxSizeInBytes());
-                }
-            }
-        }
-        // send the last batch of remaining events
-        if (eventDataBatch.getCount() > 0) {
-            producer.send(eventDataBatch);
-        }
-        // END: readme-sample-publishEvents
-    }
-
-    /**
-     * Code sample for publishing events to a specific partition.
-     */
-    public void publishEventsToPartition() {
-        // BEGIN: readme-sample-publishEventsToPartition
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-
-        EventHubProducerClient producer = new EventHubClientBuilder()
-            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
-                credential)
-            .buildProducerClient();
-
-        CreateBatchOptions options = new CreateBatchOptions().setPartitionId("0");
-        EventDataBatch batch = producer.createBatch(options);
-
-        // Add events to batch and when you want to send the batch, send it using the producer.
-        producer.send(batch);
-        // END: readme-sample-publishEventsToPartition
-    }
-
-    /**
-     * Code sample for publishing events with a partition key.
-     */
-    public void publishEventsWithPartitionKey() {
-        // BEGIN: readme-sample-publishEventsWithPartitionKey
-        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
-
-        EventHubProducerClient producer = new EventHubClientBuilder()
-            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
-                credential)
-            .buildProducerClient();
-
-        CreateBatchOptions batchOptions = new CreateBatchOptions().setPartitionKey("grouping-key");
-        EventDataBatch eventDataBatch = producer.createBatch(batchOptions);
-
-        // Add events to batch and when you want to send the batch, send it using the producer.
-        producer.send(eventDataBatch);
-        // END: readme-sample-publishEventsWithPartitionKey
-    }
-
     /**
      * Code sample for consuming events from a specific partition.
      */
