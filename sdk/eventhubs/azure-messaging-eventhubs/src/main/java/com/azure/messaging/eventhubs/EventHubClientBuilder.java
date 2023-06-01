@@ -98,7 +98,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNE
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
  * </p>
  *
- * <p><strong>Sample: Construct an {@link EventHubProducerAsyncClient asyc producer client}</strong></p>
+ * <p><strong>Sample: Construct a {@link EventHubProducerAsyncClient}</strong></p>
  *
  * <p>The following code sample demonstrates the creation of the asynchronous client
  * {@link EventHubProducerAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.
@@ -119,7 +119,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNE
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubproducerasyncclient.construct -->
  *
- * <p><strong>Sample: Create an {@link EventHubConsumerAsyncClient async consumer client}</strong></p>
+ * <p><strong>Sample: Create a {@link EventHubConsumerAsyncClient}</strong></p>
  *
  * <p>The following code sample demonstrates the creation of the asynchronous client
  * {@link EventHubConsumerAsyncClient}.  The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.
@@ -193,6 +193,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNE
  *     .buildAsyncConsumerClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubclientbuilder.shareconnection.construct -->
+ *
  * @see EventHubProducerAsyncClient
  * @see EventHubProducerClient
  * @see EventHubConsumerAsyncClient
