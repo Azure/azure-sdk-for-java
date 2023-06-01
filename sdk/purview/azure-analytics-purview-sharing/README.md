@@ -397,6 +397,28 @@ ReceivedSharesClient receivedSharesClient =
 receivedSharesClient.beginDeleteReceivedShare("<received-share-id>", new RequestOptions()); 
 ```
 
+## Share Resource Examples
+
+The following code examples demonstrate how to use the Microsoft Azure Java SDK for Purview Sharing to view share resources.  A share resource is the underlying resource from which a provider shares data or the destination where a consumer attaches data shared with them.
+
+### Get All Share Resources
+
+A list of share resources can be retrieved to view all resources within an account where sharing activities have taken place.
+
+```java com.azure.analytics.purview.sharing.getAllShareResources
+ShareResourcesClient shareResourcesClient =
+        new ShareResourcesClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("https://<my-account-name>.purview.azure.com/share")
+                .buildClient();
+
+PagedIterable<BinaryData> shareResourceResults = shareResourcesClient.getAllShareResources(new RequestOptions());
+
+List<ShareResource> shareResources = shareResourceResults.stream()
+    .map(binaryData -> binaryData.toObject(ShareResource.class))
+    .collect(Collectors.toList());
+```
+
 ## Troubleshooting
 
 ### Enabling Logging

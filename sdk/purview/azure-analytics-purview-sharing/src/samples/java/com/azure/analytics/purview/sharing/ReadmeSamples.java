@@ -18,6 +18,7 @@ import com.azure.analytics.purview.sharing.models.ReceivedShare;
 import com.azure.analytics.purview.sharing.models.ReferenceNameType;
 import com.azure.analytics.purview.sharing.models.SentShare;
 import com.azure.analytics.purview.sharing.models.ServiceInvitation;
+import com.azure.analytics.purview.sharing.models.ShareResource;
 import com.azure.analytics.purview.sharing.models.StorageAccountPath;
 import com.azure.analytics.purview.sharing.models.StoreReference;
 import com.azure.analytics.purview.sharing.models.UserInvitation;
@@ -338,5 +339,21 @@ public final class ReadmeSamples {
 
         receivedSharesClient.beginDeleteReceivedShare("<received-share-id>", new RequestOptions()); 
         // END: com.azure.analytics.purview.sharing.deleteReceivedShare
+    }
+
+    public void getAllShareResourcesSample() {
+        // BEGIN: com.azure.analytics.purview.sharing.getAllShareResources
+        ShareResourcesClient shareResourcesClient =
+                new ShareResourcesClientBuilder()
+                        .credential(new DefaultAzureCredentialBuilder().build())
+                        .endpoint("https://<my-account-name>.purview.azure.com/share")
+                        .buildClient();
+
+        PagedIterable<BinaryData> shareResourceResults = shareResourcesClient.getAllShareResources(new RequestOptions());
+        
+        List<ShareResource> shareResources = shareResourceResults.stream()
+            .map(binaryData -> binaryData.toObject(ShareResource.class))
+            .collect(Collectors.toList());
+        // END: com.azure.analytics.purview.sharing.getAllShareResources
     }
 }
