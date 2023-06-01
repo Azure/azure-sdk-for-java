@@ -746,7 +746,8 @@ public class EventHubsJavaDocCodeSamples {
      */
     public void eventHubConnectionStringProperties() {
         // BEGIN: com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct
-        String connectionString = "Endpoint=sb://demo-hub.servicebus.windows.net/;SharedAccessKeyName=TestAccessKey;SharedAccessKey=TestAccessKeyValue;EntityPath=MyEventHub";
+        String connectionString = "Endpoint=sb://demo-hub.servicebus.windows.net/;SharedAccessKeyName=TestAccessKey;"
+            + "SharedAccessKey=TestAccessKeyValue;EntityPath=MyEventHub";
 
         EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse(connectionString);
         AzureNamedKeyCredential credential = new AzureNamedKeyCredential(properties.getSharedAccessKeyName(),
@@ -763,7 +764,8 @@ public class EventHubsJavaDocCodeSamples {
      */
     public void eventHubConnectionStringPropertiesNamespace() {
         // BEGIN: com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct.namespace
-        String connectionString = "Endpoint=sb://demo-hub.servicebus.windows.net/;SharedAccessKeyName=NamespaceAccessKey;SharedAccessKey=NamespaceAccessKeyValue";
+        String connectionString = "Endpoint=sb://demo-hub.servicebus.windows.net/;"
+            + "SharedAccessKeyName=NamespaceAccessKey;SharedAccessKey=NamespaceAccessKeyValue";
 
         String eventHubName = "my-event-hub";
 
@@ -785,10 +787,11 @@ public class EventHubsJavaDocCodeSamples {
         // "sr" is the URI of the resource being accessed.
         // "se" is the expiration date of the signature.
         // "skn" is name of the authorization policy used to create the SAS
-        String sharedAccessSignature = "SharedAccessSignature sr={0}&sig={1}&se={2}&skn={3}";
+        String connectionString = "Endpoint={endpoint};EntityPath={entityPath};SharedAccessSignature="
+            + "SharedAccessSignature sr={fullyQualifiedNamespace}&sig={signature}&se={expiry}&skn={policyName}";
 
-        EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse(sharedAccessSignature);
-        AzureSasCredential credential = new AzureSasCredential(sharedAccessSignature);
+        EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse(connectionString);
+        AzureSasCredential credential = new AzureSasCredential(connectionString);
 
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .credential(properties.getFullyQualifiedNamespace(), properties.getEntityPath(), credential)

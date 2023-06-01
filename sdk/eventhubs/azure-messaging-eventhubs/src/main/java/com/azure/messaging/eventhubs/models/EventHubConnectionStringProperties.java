@@ -42,7 +42,8 @@ import java.net.URI;
  *
  * <!-- src_embed com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct -->
  * <pre>
- * String connectionString = &quot;Endpoint=sb:&#47;&#47;demo-hub.servicebus.windows.net&#47;;SharedAccessKeyName=TestAccessKey;SharedAccessKey=TestAccessKeyValue;EntityPath=MyEventHub&quot;;
+ * String connectionString = &quot;Endpoint=sb:&#47;&#47;demo-hub.servicebus.windows.net&#47;;SharedAccessKeyName=TestAccessKey;&quot;
+ *     + &quot;SharedAccessKey=TestAccessKeyValue;EntityPath=MyEventHub&quot;;
  *
  * EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse&#40;connectionString&#41;;
  * AzureNamedKeyCredential credential = new AzureNamedKeyCredential&#40;properties.getSharedAccessKeyName&#40;&#41;,
@@ -62,8 +63,22 @@ import java.net.URI;
  * specific namespace connection string is the absence of the "EntityPath" section.  Namespace connection strings have
  * access to <i>all</i> Event Hub instances in that namespace.</p>
  *
- * <!-- src_embed com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct.instance -->
- * <!-- end com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct.instance -->
+ * <!-- src_embed com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct.namespace -->
+ * <pre>
+ * String connectionString = &quot;Endpoint=sb:&#47;&#47;demo-hub.servicebus.windows.net&#47;;&quot;
+ *     + &quot;SharedAccessKeyName=NamespaceAccessKey;SharedAccessKey=NamespaceAccessKeyValue&quot;;
+ *
+ * String eventHubName = &quot;my-event-hub&quot;;
+ *
+ * EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse&#40;connectionString&#41;;
+ * AzureNamedKeyCredential credential = new AzureNamedKeyCredential&#40;properties.getSharedAccessKeyName&#40;&#41;,
+ *     properties.getSharedAccessKey&#40;&#41;&#41;;
+ *
+ * EventHubProducerClient producer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;properties.getFullyQualifiedNamespace&#40;&#41;, eventHubName, credential&#41;
+ *     .buildProducerClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.models.eventhubconnectionstringproperties.construct.namespace -->
  *
  * <p><strong>Sample: Construct a producer using a shared access signature (SAS)</strong></p>
  *
@@ -78,10 +93,11 @@ import java.net.URI;
  * &#47;&#47; &quot;sr&quot; is the URI of the resource being accessed.
  * &#47;&#47; &quot;se&quot; is the expiration date of the signature.
  * &#47;&#47; &quot;skn&quot; is name of the authorization policy used to create the SAS
- * String sharedAccessSignature = &quot;SharedAccessSignature sr=&#123;0&#125;&amp;sig=&#123;1&#125;&amp;se=&#123;2&#125;&amp;skn=&#123;3&#125;&quot;;
+ * String connectionString = &quot;Endpoint=&#123;endpoint&#125;;EntityPath=&#123;entityPath&#125;;SharedAccessSignature=&quot;
+ *     + &quot;SharedAccessSignature sr=&#123;fullyQualifiedNamespace&#125;&amp;sig=&#123;signature&#125;&amp;se=&#123;expiry&#125;&amp;skn=&#123;policyName&#125;&quot;;
  *
- * EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse&#40;sharedAccessSignature&#41;;
- * AzureSasCredential credential = new AzureSasCredential&#40;sharedAccessSignature&#41;;
+ * EventHubConnectionStringProperties properties = EventHubConnectionStringProperties.parse&#40;connectionString&#41;;
+ * AzureSasCredential credential = new AzureSasCredential&#40;connectionString&#41;;
  *
  * EventHubConsumerClient consumer = new EventHubClientBuilder&#40;&#41;
  *     .credential&#40;properties.getFullyQualifiedNamespace&#40;&#41;, properties.getEntityPath&#40;&#41;, credential&#41;
