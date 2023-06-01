@@ -73,7 +73,7 @@ public final class ShareResourcesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> list(RequestOptions requestOptions) {
-        return this.serviceClient.listAsync(requestOptions);
+    public PagedFlux<BinaryData> getAllShareResources(RequestOptions requestOptions) {
+        return this.serviceClient.getAllShareResourcesAsync(requestOptions);
     }
 }

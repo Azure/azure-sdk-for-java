@@ -44,5 +44,7 @@ directive:
       to: "ReceivedShares_GetAllAttachedReceivedShares",
       from: "ReceivedShares_ListDetached",
       to: "ReceivedShares_GetAllDetachedReceivedShares",
+      from: "ShareResources_List",
+      to: "ShareResources_GetAllShareResources",
     ]
 ```

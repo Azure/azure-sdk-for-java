@@ -72,7 +72,7 @@ public final class ShareResourcesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> list(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.list(requestOptions));
+    public PagedIterable<BinaryData> getAllShareResources(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.getAllShareResources(requestOptions));
     }
 }
