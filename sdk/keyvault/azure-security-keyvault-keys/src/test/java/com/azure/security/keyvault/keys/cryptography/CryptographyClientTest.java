@@ -5,6 +5,7 @@ package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.security.keyvault.keys.KeyClient;
 import com.azure.security.keyvault.keys.KeyClientBuilder;
@@ -34,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import static com.azure.security.keyvault.keys.TestUtils.buildSyncAssertingClient;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,7 +51,8 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     private void initializeKeyClient(HttpClient httpClient) {
-        pipeline = getHttpPipeline(httpClient);
+        pipeline = getHttpPipeline(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient));
         client = new KeyClientBuilder()
             .pipeline(pipeline)
             .vaultUrl(getEndpoint())
@@ -57,7 +60,8 @@ public class CryptographyClientTest extends CryptographyClientTestBase {
     }
 
     private CryptographyClient initializeCryptographyClient(String keyId, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
-        pipeline = getHttpPipeline(httpClient);
+        pipeline = getHttpPipeline(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient));
 
         return new CryptographyClientBuilder()
             .pipeline(pipeline)

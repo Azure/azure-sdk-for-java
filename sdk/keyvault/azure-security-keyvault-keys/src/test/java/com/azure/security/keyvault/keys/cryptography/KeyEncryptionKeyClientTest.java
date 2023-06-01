@@ -20,6 +20,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.util.Arrays;
 import java.util.Base64;
 
+import static com.azure.security.keyvault.keys.TestUtils.buildSyncAssertingClient;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
@@ -33,7 +34,8 @@ public class KeyEncryptionKeyClientTest extends KeyEncryptionKeyClientTestBase {
     }
 
     private void setupSecretKeyAndClient(byte[] kek, HttpClient httpClient, CryptographyServiceVersion serviceVersion) {
-        HttpPipeline pipeline = getHttpPipeline(httpClient);
+        HttpPipeline pipeline = getHttpPipeline(buildSyncAssertingClient(
+            interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient));
 
         if (secretKey == null) {
             CryptographyServiceClient serviceClient =

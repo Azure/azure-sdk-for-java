@@ -63,15 +63,8 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        //skip paging requests until #30031 resolved
-        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return (callerMethod.contains("list") || callerMethod.contains("getSecrets")
-                || callerMethod.contains("getSecretVersions") || callerMethod.contains("delete")
-                || callerMethod.contains("recover"));
-        };
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
+            .skipRequest((ignored1, ignored2) -> true)
             .assertAsync()
             .build();
     }

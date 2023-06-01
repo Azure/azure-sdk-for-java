@@ -76,17 +76,8 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
-        //skip paging requests until #30031 resolved
-        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return (callerMethod.contains("list") || callerMethod.contains("getCertificates")
-                || callerMethod.contains("getCertificateVersions") || callerMethod.contains("delete")
-                || callerMethod.contains("recover") || callerMethod.contains("setCertificateContacts")
-                || callerMethod.contains("deleteCertificateContacts") || callerMethod.contains("getCertificateContacts")
-                || callerMethod.contains("getCertificateIssuers"));
-        };
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
+            .skipRequest((ignored1, ignored2) -> true)
             .assertAsync()
             .build();
     }

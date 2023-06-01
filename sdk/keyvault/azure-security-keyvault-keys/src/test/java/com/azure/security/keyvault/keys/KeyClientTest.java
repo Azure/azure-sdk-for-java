@@ -40,6 +40,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.function.BiFunction;
 
+import static com.azure.security.keyvault.keys.TestUtils.buildSyncAssertingClient;
 import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_NAME_WITH_ARGUMENTS;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,20 +74,6 @@ public class KeyClientTest extends KeyClientTestBase {
         }
 
         keyClient = new KeyClient(implClient);
-    }
-
-    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        //skip paging and polling requests until their sync stack support is landed in azure-core.
-        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return (callerMethod.contains("list") || callerMethod.contains("getKeys")
-                || callerMethod.contains("getKeyVersions") || callerMethod.contains("delete")
-                || callerMethod.contains("recover") || callerMethod.contains("Cryptography"));
-        };
-        return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
-            .assertSync()
-            .build();
     }
 
     /**

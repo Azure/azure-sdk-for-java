@@ -58,16 +58,8 @@ public class SecretClientTest extends SecretClientTestBase {
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
-        //skip paging and polling requests until their sync stack support is landed in azure-core.
-        BiFunction<HttpRequest, Context, Boolean> skipRequestFunction = (request, context) -> {
-            String callerMethod = (String) context.getData("caller-method").orElse("");
-            return (callerMethod.contains("list") || callerMethod.contains("getSecrets")
-                || callerMethod.contains("getSecretVersions") || callerMethod.contains("delete")
-                || callerMethod.contains("getDeletedSecrets")
-                || callerMethod.contains("recover"));
-        };
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest(skipRequestFunction)
+            .skipRequest((ignored1, ignored2) -> true)
             .assertSync()
             .build();
     }
