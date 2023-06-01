@@ -8,6 +8,10 @@ import java.util.Collection;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
+/**
+ * This class represents diagnostic information for transport requests (calls to a replica in direct mode, calls to
+ * the Gateway for example to get metadata like physical addresses of replica for a partition.
+ */
 public final class CosmosDiagnosticsRequestInfo {
 
     private final String activityId;

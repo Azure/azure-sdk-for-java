@@ -194,18 +194,11 @@ public final class CosmosDiagnostics {
      * @return the UserAgent header value used for the client that issued this operation
      */
     public String getUserAgent() {
-        String userAgent = null;
         if (this.feedResponseDiagnostics != null) {
-            userAgent = this.feedResponseDiagnostics.getUserAgent();
-        } else if (this.clientSideRequestStatistics != null) {
-            userAgent = this.clientSideRequestStatistics.getUserAgent();
+            return this.feedResponseDiagnostics.getUserAgent();
         }
 
-        if (userAgent != null) {
-            return userAgent;
-        }
-
-        return "";
+        return this.clientSideRequestStatistics.getUserAgent();
     }
 
     FeedResponseDiagnostics getFeedResponseDiagnostics() {

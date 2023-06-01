@@ -594,16 +594,12 @@ public final class CosmosDiagnosticsContext {
      * @return the UserAgent header value used for the client that issued this operation
      */
     public String getUserAgent() {
-        if (this.diagnostics == null) {
+        CosmosDiagnostics firstDiagnostics = this.diagnostics.peekFirst();
+        if (firstDiagnostics == null) {
             return "";
         }
 
-        CosmosDiagnostics diagnostics = this.diagnostics.peekFirst();
-        if (diagnostics == null) {
-            return "";
-        }
-
-        return diagnostics.getUserAgent();
+        return firstDiagnostics.getUserAgent();
     }
 
     /**
@@ -615,10 +611,6 @@ public final class CosmosDiagnosticsContext {
      * @return the set of contacted regions
      */
     public String getConnectionMode() {
-        if (this.diagnostics == null) {
-            return "";
-        }
-
         for (CosmosDiagnostics d: this.diagnostics) {
             Collection<ClientSideRequestStatistics> clientStatsList = d.getClientSideRequestStatistics();
             if (clientStatsList == null) {
@@ -726,7 +718,6 @@ public final class CosmosDiagnosticsContext {
         Map<String, ClientSideRequestStatistics.AddressResolutionStatistics> addressResolutionStatisticsMap
     ) {
         if (addressResolutionStatisticsMap == null || addressResolutionStatisticsMap.size() == 0) {
-
             return;
         }
 
