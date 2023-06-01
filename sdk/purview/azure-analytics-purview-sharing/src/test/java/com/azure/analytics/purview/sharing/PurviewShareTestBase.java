@@ -36,6 +36,8 @@ class PurviewShareTestBase extends TestBase {
 
     protected SentSharesClient sentSharesClient;
 
+    protected ShareResourcesClient shareResourcesClient;
+
     protected String clientId;
 
     protected String targetActiveDirectoryId;
@@ -53,6 +55,7 @@ class PurviewShareTestBase extends TestBase {
 
         this.initializeSentShareClient();
         this.initializeReceivedShareClient();
+        this.initializeShareResourceClient();
 
         clientId = Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID", "6a2919d0-880a-4ed8-B50d-7abe4d74291c");
         targetActiveDirectoryId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID", "4653a7b2-02ff-4155-8e55-2d0c7f3178a1");
@@ -144,5 +147,26 @@ class PurviewShareTestBase extends TestBase {
         }
 
         sentSharesClient = sentSharesClientbuilder.buildClient();
+    }
+
+    private void initializeShareResourceClient() {
+        ShareResourcesClientBuilder shareResourcesClientbuilder =
+                new ShareResourcesClientBuilder()
+                        .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                        .httpClient(HttpClient.createDefault())
+                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            shareResourcesClientbuilder
+                    .httpClient(interceptorManager.getPlaybackClient())
+                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            shareResourcesClientbuilder
+                    .addPolicy(interceptorManager.getRecordPolicy())
+                    .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            shareResourcesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+
+        shareResourcesClient = shareResourcesClientbuilder.buildClient();
     }
 }
