@@ -139,7 +139,21 @@ public class CosmosContainer {
 
     /**
      * Sets the throughput for the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.replaceThroughput -->
+     * <pre>
+     * ThroughputProperties throughputProperties =
+     *     ThroughputProperties.createAutoscaledThroughput&#40;1000&#41;;
+     * try &#123;
+     *     ThroughputResponse throughputResponse =
+     *         cosmosContainer.replaceThroughput&#40;throughputProperties&#41;;
+     *     System.out.println&#40;throughputResponse&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     ce.printStackTrace&#40;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     e.printStackTrace&#40;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.replaceThroughput -->
      * @param throughputProperties the throughput properties.
      * @return the throughput response.
      */

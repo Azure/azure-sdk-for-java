@@ -1,6 +1,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.models.ThroughputResponse;
 import reactor.core.publisher.Mono;
 
@@ -72,6 +73,37 @@ public class ContainerAsyncCodeSnippets {
             e.printStackTrace();
         }
         // END: com.azure.cosmos.CosmosContainer.readThroughput
+    }
+
+    public void replaceThroughputAsyncSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.replaceThroughput
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createAutoscaledThroughput(1000);
+
+        cosmosAsyncContainer.replaceThroughput(throughputProperties)
+            .subscribe(throughputResponse -> {
+                    System.out.println(throughputResponse);
+                },
+                throwable -> {
+                    throwable.printStackTrace();
+                });
+        // END: com.azure.cosmos.CosmosAsyncContainer.replaceThroughput
+    }
+
+    public void replaceThroughputSample() {
+        // BEGIN: com.azure.cosmos.CosmosContainer.replaceThroughput
+        ThroughputProperties throughputProperties =
+            ThroughputProperties.createAutoscaledThroughput(1000);
+        try {
+            ThroughputResponse throughputResponse =
+                cosmosContainer.replaceThroughput(throughputProperties);
+            System.out.println(throughputResponse);
+        } catch (CosmosException ce) {
+            ce.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // END: com.azure.cosmos.CosmosContainer.replaceThroughput
     }
 
 }
