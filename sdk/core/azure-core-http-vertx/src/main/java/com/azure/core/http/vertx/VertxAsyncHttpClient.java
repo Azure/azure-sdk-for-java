@@ -8,8 +8,8 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.vertx.implementation.AzureReactiveReadStreamWrapper;
 import com.azure.core.http.vertx.implementation.BufferedVertxHttpResponse;
+import com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
@@ -29,7 +29,6 @@ import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.RequestOptions;
-import io.vertx.ext.reactivestreams.ReactiveReadStream;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 import reactor.core.scheduler.Scheduler;
@@ -164,22 +163,8 @@ class VertxAsyncHttpClient implements HttpClient {
             });
         } else {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
-            ReactiveReadStream<Buffer> readStream = new AzureReactiveReadStreamWrapper(ReactiveReadStream.readStream(1),
-                sink);
-
-            azureRequest.getBody().map(buffer -> {
-                reportProgress(buffer.remaining(), progressReporter);
-                return Buffer.buffer(Unpooled.wrappedBuffer(buffer));
-            }).subscribeOn(scheduler).subscribe(readStream);
-
-            vertxRequest.send(readStream, result -> {
-                if (result.failed()) {
-                    sink.error(result.cause());
-                    readStream.onError(result.cause());
-                } else {
-                    readStream.onComplete();
-                }
-            });
+            azureRequest.getBody().subscribeOn(scheduler)
+                .subscribe(new VertxRequestWriteSubscriber(vertxRequest, sink, progressReporter));
         }
     }
 
