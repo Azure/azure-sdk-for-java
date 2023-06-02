@@ -1,14 +1,16 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2023-06-02)
 
 ### Features Added
 
-### Breaking Changes
+- Added new APIs to `XmlSerializable` to support cases where the object could be used with different root XML element
+  names. ([#35225](https://github.com/Azure/azure-sdk-for-java/pull/35225))
 
 ### Bugs Fixed
 
-### Other Changes
+- Fixed a bug in reading the XML element value when it took multiple reads to fully consume it where null would 
+  accidentally be appended to the final result for each unused segment tracker.
 
 ## 1.0.0-beta.1 (2022-09-22)
 

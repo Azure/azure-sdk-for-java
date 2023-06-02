@@ -13,15 +13,19 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ClassificationRulesCreateOrUpdate {
     public static void main(String[] args) {
-        ClassificationRulesClient client =
+        ClassificationRulesClient classificationRulesClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClassificationRulesClient();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setBody(
-                BinaryData.fromString(
-                        "{\"kind\":\"Custom\",\"properties\":{\"description\":\"Let's put a cool desc here\",\"classificationName\":\"MICROSOFT.FINANCIAL.AUSTRALIA.BANK_ACCOUNT_NUMBER\",\"columnPatterns\":[{\"kind\":\"Regex\",\"pattern\":\"^data$\"}],\"dataPatterns\":[{\"kind\":\"Regex\",\"pattern\":\"^[0-9]{2}-[0-9]{4}-[0-9]{6}-[0-9]{3}$\"}],\"minimumPercentageMatch\":60,\"ruleStatus\":\"Enabled\"}}"));
-        Response<BinaryData> response = client.createOrUpdateWithResponse("ClassificationRule1", requestOptions);
+        // BEGIN:com.azure.analytics.purview.scanning.generated.classificationrulescreateorupdate.classificationrulescreateorupdate
+        RequestOptions requestOptions =
+                new RequestOptions()
+                        .setBody(
+                                BinaryData.fromString(
+                                        "{\"kind\":\"Custom\",\"properties\":{\"description\":\"Let's put a cool desc here\",\"classificationName\":\"MICROSOFT.FINANCIAL.AUSTRALIA.BANK_ACCOUNT_NUMBER\",\"columnPatterns\":[{\"kind\":\"Regex\",\"pattern\":\"^data$\"}],\"dataPatterns\":[{\"kind\":\"Regex\",\"pattern\":\"^[0-9]{2}-[0-9]{4}-[0-9]{6}-[0-9]{3}$\"}],\"minimumPercentageMatch\":60,\"ruleStatus\":\"Enabled\"}}"));
+        Response<BinaryData> response =
+                classificationRulesClient.createOrUpdateWithResponse("ClassificationRule1", requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.classificationrulescreateorupdate.classificationrulescreateorupdate
     }
 }
