@@ -4,15 +4,12 @@
 
 ### Features
 
-- Added new customer enum type `ContainerType`.
-    - This property determines the container technology to be used.
-    - Possible values: docker_compatible, cri_compatible.
+- Added a new enum `CriCompatible` to type `ContainerType`.
 - Added boolean property `enableAutomaticUpgrade` to the `VMExtension` model to determine whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available.
 - Added boolean property `enableAcceleratedNetworking` to the `NetworkConfiguration` model to determine whether this pool should enable accelerated networking.
 
 ### Breaking Changes
 
-- Changed property `type` in `ContainerConfiguration` from string type to enum type `ContainerType`.
 - Remove the following methods in `JobOperations`.
    - `getAllJobsLifetimeStatistics()`.
    - `getAllJobsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors)`.
