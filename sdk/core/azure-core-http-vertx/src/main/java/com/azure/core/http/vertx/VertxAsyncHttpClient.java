@@ -175,6 +175,9 @@ class VertxAsyncHttpClient implements HttpClient {
             vertxRequest.send(readStream, result -> {
                 if (result.failed()) {
                     sink.error(result.cause());
+                    readStream.onError(result.cause());
+                } else {
+                    readStream.onComplete();
                 }
             });
         }
