@@ -177,12 +177,10 @@ public class ReadmeSamples {
     public void deleteItemAsyncSample() {
         Passenger passenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
         // BEGIN: com.azure.cosmos.CosmosAsyncContainer.deleteItem
-        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
 
         cosmosAsyncContainer.deleteItem(
             passenger.getId(),
-            new PartitionKey(passenger.getId()),
-            options
+            new PartitionKey(passenger.getId())
         ).subscribe(response -> {
             System.out.println(response);
         }, throwable -> {

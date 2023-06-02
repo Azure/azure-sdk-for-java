@@ -1527,7 +1527,20 @@ public class CosmosAsyncContainer {
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.deleteItem -->
+     * <pre>
      *
+     * cosmosAsyncContainer.deleteItem&#40;
+     *     passenger.getId&#40;&#41;,
+     *     new PartitionKey&#40;passenger.getId&#40;&#41;&#41;
+     * &#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.println&#40;response&#41;;
+     * &#125;, throwable -&gt; &#123;
+     *     CosmosException cosmosException = &#40;CosmosException&#41; throwable;
+     *     cosmosException.printStackTrace&#40;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.deleteItem -->
      * @param itemId the item id.
      * @param partitionKey the partition key.
      * @return an {@link Mono} containing the Cosmos item resource response.
@@ -1584,23 +1597,8 @@ public class CosmosAsyncContainer {
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
-     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.deleteItem -->
-     * <pre>
-     * CosmosItemRequestOptions options = new CosmosItemRequestOptions&#40;&#41;;
      *
-     * cosmosAsyncContainer.deleteItem&#40;
-     *     passenger.getId&#40;&#41;,
-     *     new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
-     *     options
-     * &#41;.subscribe&#40;response -&gt; &#123;
-     *     System.out.println&#40;response&#41;;
-     * &#125;, throwable -&gt; &#123;
-     *     CosmosException cosmosException = &#40;CosmosException&#41; throwable;
-     *     cosmosException.printStackTrace&#40;&#41;;
-     * &#125;&#41;;
-     * </pre>
-     * <!-- end com.azure.cosmos.CosmosAsyncContainer.deleteItem -->
-     * @param <T> the type parameter.
+     *  @param <T> the type parameter.
      * @param item item to be deleted.
      * @param options the request options (Optional).
      * @return an {@link Mono} containing the Cosmos item resource response.
