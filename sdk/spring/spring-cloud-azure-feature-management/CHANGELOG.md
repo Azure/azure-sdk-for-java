@@ -1,39 +1,18 @@
 # Release History
 
-## 5.2.0-beta.1 (Unreleased)
+## 5.3.0-beta.1 (Unreleased)
 
 ### Features Added
-
-* Added Deny List for Targeting Filter.
-
- ```yml
- feature-management:
-   TargetingTest:
-     enabled-for:
-       -
-         name: Microsoft.Targeting
-         parameters:
-           users:
-             - Jeff
-             - Alicia
-           groups:
-             -
-               name: Ring0
-               rolloutPercentage: 100
-             -
-               name: Ring1
-               rolloutPercentage: 100
-           defaultRolloutPercentage: 50
-           exclusion:
-             users:
-               - Ross
- ```
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.2.0 (2023-06-02)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#520-2023-06-02) for more details.
 
 ## 5.1.0 (2023-04-26)
 
