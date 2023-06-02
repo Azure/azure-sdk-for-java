@@ -1002,7 +1002,8 @@ public final class QueueClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueMessageItem receiveMessage() {
-        List<QueueMessageItem> result = receiveMessages(1).stream().collect(Collectors.toList());
+        List<QueueMessageItem> result = receiveMessagesWithOptionalTimeout(1, null, null, Context.NONE).stream()
+            .collect(Collectors.toList());
         return result.size() == 0 ? null : result.get(0);
     }
 
