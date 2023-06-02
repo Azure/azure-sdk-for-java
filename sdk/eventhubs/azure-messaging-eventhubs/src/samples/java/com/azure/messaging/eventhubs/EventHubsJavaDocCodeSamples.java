@@ -762,7 +762,7 @@ public class EventHubsJavaDocCodeSamples {
 
     //region EventHubBufferedProducerAsyncClient snippets
 
-    public void createBufferedAsyncProducer() {
+    public void createBufferedProducerAsync() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.construct
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
@@ -781,6 +781,48 @@ public class EventHubsJavaDocCodeSamples {
             .maxEventBufferLengthPerPartition(1500)
             .buildAsyncClient();
         // END: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.construct
+    }
+
+    public void enqueueBufferedMessagesAsync() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.enqueueEvents-iterable
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+        EventHubBufferedProducerAsyncClient client = new EventHubBufferedProducerClientBuilder()
+            .credential("fully-qualified-namespace", "event-hub-name", credential)
+            .onSendBatchSucceeded(succeededContext -> {
+                System.out.println("Successfully published events to: " + succeededContext.getPartitionId());
+            })
+            .onSendBatchFailed(failedContext -> {
+                System.out.printf("Failed to published events to %s. Error: %s%n",
+                    failedContext.getPartitionId(), failedContext.getThrowable());
+            })
+            .buildAsyncClient();
+
+        List<EventData> events = Arrays.asList(new EventData("maple"), new EventData("aspen"),
+            new EventData("oak"));
+
+        // Enqueues the events to be published.
+        client.enqueueEvents(events).subscribe(numberOfEvents -> {
+                System.out.printf("There are currently: %d events in buffer.%n", numberOfEvents);
+            }, error -> {
+                System.err.println("Error occurred enqueueing events: " + error);
+            },
+            () -> {
+                System.out.println("Events successfully enqueued.");
+            });
+
+        // Seconds later, enqueue another event.
+        client.enqueueEvent(new EventData("bonsai")).subscribe(numberOfEvents -> {
+                System.out.printf("There are %d events in the buffer.%n", numberOfEvents);
+            }, error -> {
+                System.err.println("Error occurred enqueueing events: " + error);
+            },
+            () -> {
+                System.out.println("Event successfully enqueued.");
+            });
+        // END: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.enqueueEvents-iterable
     }
 
     //endregion

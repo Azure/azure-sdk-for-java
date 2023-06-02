@@ -71,7 +71,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNA
  *
  * <p>The code sample below demonstrates receiving events from partition "0" of an Event Hub starting from
  * {@link EventPosition#latest()}.  {@link EventPosition#latest()} points to the end of the partition stream.  The
- * consumer receives events received <i>after</i> it started subscribing for events.</p>
+ * consumer receives events enqueued <i>after</i> it started subscribing for events.</p>
  *
  * <p>{@link #receiveFromPartition(String, EventPosition)} is a non-blocking call.  After setting up the operation,
  * its async representation is returned. The {@code Flux<PartitionEvent>} must be subscribed to, like the sample below,
@@ -114,11 +114,11 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNA
  *
  * <p><strong>Sample: Including latest partition information in received events</strong></p>
  *
- * <p>Latest partition information as events are received can by setting
- * {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean)} to {@code true}. As events come in, explore the
- * {@link PartitionEvent} object.  This is useful in scenarios where customers want to constant up-to-date information
- * about their Event Hub. This does take a performance hit as the extra partition information must be sent over the
- * wire with every event.</p>
+ * <p>{@link EventData} can be decorated with the latest partition information and sent to consumers. Enable this by
+ * setting {@link ReceiveOptions#setTrackLastEnqueuedEventProperties(boolean)} to {@code true}. As events come in,
+ * explore the {@link PartitionEvent} object.  This is useful in scenarios where customers want to constant up-to-date
+ * information about their Event Hub. This does take a performance hit as the extra partition information must be sent
+ * over the wire with every event.</p>
  *
  * <p>{@link #receiveFromPartition(String, EventPosition, ReceiveOptions)} is a non-blocking call.  After setting up the
  * operation, its async representation is returned. The {@code Flux<PartitionEvent>} must be subscribed to, like
