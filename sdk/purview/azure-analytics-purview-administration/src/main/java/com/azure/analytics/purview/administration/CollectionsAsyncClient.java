@@ -41,21 +41,21 @@ public final class CollectionsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
+     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     name: String (Optional)
+     *     parentCollection (Optional): {
+     *         referenceName: String (Optional)
+     *         type: String (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      * }
      * }</pre>
@@ -81,21 +81,21 @@ public final class CollectionsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
+     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     name: String (Optional)
+     *     parentCollection (Optional): {
+     *         referenceName: String (Optional)
+     *         type: String (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      * }
      * }</pre>
@@ -104,21 +104,21 @@ public final class CollectionsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *     description: String
-     *     friendlyName: String
-     *     name: String
-     *     parentCollection: {
-     *         referenceName: String
-     *         type: String
+     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     name: String (Optional)
+     *     parentCollection (Optional): {
+     *         referenceName: String (Optional)
+     *         type: String (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
      * }
      * }</pre>
@@ -167,32 +167,28 @@ public final class CollectionsAsyncClient {
      *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     count: Long
-     *     nextLink: String
-     *     value: [
-     *         {
-     *             collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded)
-     *             description: String
-     *             friendlyName: String
-     *             name: String
-     *             parentCollection: {
-     *                 referenceName: String
-     *                 type: String
-     *             }
-     *             systemData: {
-     *                 createdAt: OffsetDateTime
-     *                 createdBy: String
-     *                 createdByType: String(User/Application/ManagedIdentity/Key)
-     *                 lastModifiedAt: OffsetDateTime
-     *                 lastModifiedBy: String
-     *                 lastModifiedByType: String(User/Application/ManagedIdentity/Key)
-     *             }
-     *         }
-     *     ]
+     *     collectionProvisioningState: String(Unknown/Creating/Moving/Deleting/Failed/Succeeded) (Optional)
+     *     description: String (Optional)
+     *     friendlyName: String (Optional)
+     *     name: String (Optional)
+     *     parentCollection (Optional): {
+     *         referenceName: String (Optional)
+     *         type: String (Optional)
+     *     }
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *     }
      * }
      * }</pre>
      *
@@ -220,18 +216,14 @@ public final class CollectionsAsyncClient {
      *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
      *
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     count: Long
-     *     nextLink: String
-     *     value: [
-     *         {
-     *             friendlyName: String
-     *             name: String
-     *         }
-     *     ]
+     *     friendlyName: String (Optional)
+     *     name: String (Optional)
      * }
      * }</pre>
      *
@@ -256,11 +248,11 @@ public final class CollectionsAsyncClient {
      *
      * <pre>{@code
      * {
-     *     parentFriendlyNameChain: [
-     *         String
+     *     parentFriendlyNameChain (Optional): [
+     *         String (Optional)
      *     ]
-     *     parentNameChain: [
-     *         String
+     *     parentNameChain (Optional): [
+     *         String (Optional)
      *     ]
      * }
      * }</pre>

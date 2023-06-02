@@ -23,6 +23,8 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
     private EnumSet<TagName> defaultTagNames = TagName.DEFAULT_TAGS.clone();
     private double[] defaultPercentiles = { 0.95, 0.99 };
     private boolean defaultShouldPublishHistograms = true;
+
+    private boolean defaultApplyDiagnosticThresholdsForTransportLevelMeters = false;
     private final ConcurrentHashMap<CosmosMetricName, CosmosMeterOptions> effectiveOptions = new ConcurrentHashMap<>();
 
     /**
@@ -119,6 +121,28 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
      */
     public CosmosMicrometerMetricsOptions enableHistogramsByDefault(boolean publishHistograms) {
         this.defaultShouldPublishHistograms = publishHistograms;
+
+        return this;
+    }
+
+    /**
+     * Sets a flag indicating whether for transport level (rntbd) meters should only be emitted when diagnostic
+     * thresholds are violated. This can be enabled to reduce the cardinality of dimensions (and the number of time
+     * series being stored) especially when the partition/replica-level dimensions are enabled and the workload
+     * is dealing with containers having a high number of physical partitions.
+     * Request-level metrics usually are used to capture metrics per backend endpoint/replica - a high cardinality
+     * dimension. Filtering by diagnostic thresholds reduces the overhead - but also means request-level metrics
+     * can only be used for debugging purposes - not for monitoring purposes. So, it is important to use the unfiltered
+     * operation-level metrics for health monitoring in this case.
+     * By default, no filtering happens and diagnostic thresholds are not applied.
+     *
+     * @param isEnabled -  a flag indicating whether for transport level (rntbd) meters should only be emitted when
+     * diagnostic thresholds are violated. (when they are applicable to a specific meter and there is no
+     * override in {@link CosmosMicrometerMeterOptions#applyDiagnosticThresholds(boolean)} for that meter.
+     * @return current CosmosMicrometerMetricsOptions instance
+     */
+    public CosmosMicrometerMetricsOptions applyDiagnosticThresholdsForTransportLevelMeters(boolean isEnabled) {
+        this.defaultApplyDiagnosticThresholdsForTransportLevelMeters = isEnabled;
 
         return this;
     }
@@ -251,7 +275,12 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
                                 this.defaultShouldPublishHistograms,
                             options.getSuppressedTagNames() != null ?
                                 options.getSuppressedTagNames() :
-                                EnumSet.noneOf(TagName.class)
+                                EnumSet.noneOf(TagName.class),
+                            options.getApplyDiagnosticThresholdsEnabled() != null ?
+                                options.getApplyDiagnosticThresholdsEnabled() :
+                                this.defaultApplyDiagnosticThresholdsForTransportLevelMeters && (
+                                    meterName.getCategory() == CosmosMetricCategory.REQUEST_SUMMARY ||
+                                        meterName.getCategory() == CosmosMetricCategory.REQUEST_DETAILS)
                         );
                     }
 
@@ -268,7 +297,8 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
                             valueBeforeUpdate.isHistogramPublishingEnabled(),
                         options.getSuppressedTagNames() != null ?
                             options.getSuppressedTagNames() :
-                            valueBeforeUpdate.getSuppressedTagNames()
+                            valueBeforeUpdate.getSuppressedTagNames(),
+                        valueBeforeUpdate.isDiagnosticThresholdsFilteringEnabled()
                     );
                 });
 
@@ -291,7 +321,8 @@ public final class CosmosMicrometerMetricsOptions extends MetricsOptions {
                 true,
                 this.defaultPercentiles,
                 this.defaultShouldPublishHistograms,
-                EnumSet.noneOf(TagName.class)
+                EnumSet.noneOf(TagName.class),
+                this.defaultApplyDiagnosticThresholdsForTransportLevelMeters
             ));
     }
 

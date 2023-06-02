@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -74,6 +75,8 @@ public class InterceptorManager implements AutoCloseable {
     private TestProxyPlaybackClient testProxyPlaybackClient;
     private final Queue<String> proxyVariableQueue = new LinkedList<>();
     private HttpClient httpClient;
+    private final Path testClassPath;
+
 
     /**
      * Creates a new InterceptorManager that either replays test-session records or saves them.
@@ -96,7 +99,7 @@ public class InterceptorManager implements AutoCloseable {
      */
     @Deprecated
     public InterceptorManager(String testName, TestMode testMode) {
-        this(testName, testName, testMode, false, false, false);
+        this(testName, testName, testMode, false, false, false, null);
     }
 
     /**
@@ -122,10 +125,10 @@ public class InterceptorManager implements AutoCloseable {
     public InterceptorManager(TestContextManager testContextManager) {
         this(testContextManager.getTestName(), testContextManager.getTestPlaybackRecordingName(),
             testContextManager.getTestMode(), testContextManager.doNotRecordTest(),
-            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody());
+            testContextManager.isTestProxyEnabled(), testContextManager.skipRecordingRequestBody(), testContextManager.getTestClassPath());
     }
 
-    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy, boolean skipRecordingRequestBody) {
+    private InterceptorManager(String testName, String playbackRecordName, TestMode testMode, boolean doNotRecord, boolean enableTestProxy, boolean skipRecordingRequestBody, Path testClassPath) {
         this.testProxyEnabled = enableTestProxy;
         Objects.requireNonNull(testName, "'testName' cannot be null.");
 
@@ -134,6 +137,7 @@ public class InterceptorManager implements AutoCloseable {
         this.testMode = testMode;
         this.textReplacementRules = new HashMap<>();
         this.skipRecordingRequestBody = skipRecordingRequestBody;
+        this.testClassPath = testClassPath;
 
         this.allowedToReadRecordedValues = (testMode == TestMode.PLAYBACK && !doNotRecord);
         this.allowedToRecordValues = (testMode == TestMode.RECORD && !doNotRecord);
@@ -215,6 +219,7 @@ public class InterceptorManager implements AutoCloseable {
         this.allowedToRecordValues = false;
         this.testProxyEnabled = false;
         this.skipRecordingRequestBody = false;
+        this.testClassPath = null;
 
         this.recordedData = allowedToReadRecordedValues ? readDataFromFile() : null;
         this.textReplacementRules = textReplacementRules;
@@ -325,7 +330,7 @@ public class InterceptorManager implements AutoCloseable {
             }
             if (testProxyPlaybackClient == null) {
                 testProxyPlaybackClient = new TestProxyPlaybackClient(httpClient, skipRecordingRequestBody);
-                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile()));
+                proxyVariableQueue.addAll(testProxyPlaybackClient.startPlayback(getTestProxyRecordFile(), testClassPath));
             }
             return testProxyPlaybackClient;
         } else {
@@ -373,7 +378,7 @@ public class InterceptorManager implements AutoCloseable {
                 throw new IllegalStateException("A recording policy can only be requested in RECORD mode.");
             }
             testProxyRecordPolicy = new TestProxyRecordPolicy(httpClient, skipRecordingRequestBody);
-            testProxyRecordPolicy.startRecording(getTestProxyRecordFile());
+            testProxyRecordPolicy.startRecording(getTestProxyRecordFile(), testClassPath);
         }
         return testProxyRecordPolicy;
     }
@@ -383,10 +388,10 @@ public class InterceptorManager implements AutoCloseable {
      * @return A {@link File} with the partial path to where the record file lives.
      */
     private File getTestProxyRecordFile() {
-        Path recordFolder = TestUtils.getRecordFolder().toPath();
-        Path repoRoot = TestUtils.getRepoRoot();
-        File recordFile = new File(recordFolder.toFile(), playbackRecordName + ".json");
-        return repoRoot.relativize(recordFile.toPath()).toFile();
+        Path repoRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
+        Path targetFolderRoot = TestUtils.getRepoRootResolveUntil(testClassPath, "target");
+        Path filePath = Paths.get(targetFolderRoot.toString(), "src/test/resources/session-records", playbackRecordName + ".json");
+        return repoRoot.relativize(filePath).toFile();
     }
 
     /*

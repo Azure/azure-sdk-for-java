@@ -88,6 +88,10 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
 
     private String name;
 
+    private String createIfMatch;
+
+    private String updateIfMatch;
+
     public ScheduledActionImpl withExistingScope(String scope) {
         this.scope = scope;
         return this;
@@ -98,7 +102,7 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
             serviceManager
                 .serviceClient()
                 .getScheduledActions()
-                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), Context.NONE)
+                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), createIfMatch, Context.NONE)
                 .getValue();
         return this;
     }
@@ -108,7 +112,7 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
             serviceManager
                 .serviceClient()
                 .getScheduledActions()
-                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), context)
+                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), createIfMatch, context)
                 .getValue();
         return this;
     }
@@ -117,9 +121,11 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
         this.innerObject = new ScheduledActionInner();
         this.serviceManager = serviceManager;
         this.name = name;
+        this.createIfMatch = null;
     }
 
     public ScheduledActionImpl update() {
+        this.updateIfMatch = null;
         return this;
     }
 
@@ -128,7 +134,7 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
             serviceManager
                 .serviceClient()
                 .getScheduledActions()
-                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), Context.NONE)
+                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), updateIfMatch, Context.NONE)
                 .getValue();
         return this;
     }
@@ -138,7 +144,7 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
             serviceManager
                 .serviceClient()
                 .getScheduledActions()
-                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), context)
+                .createOrUpdateByScopeWithResponse(scope, name, this.innerModel(), updateIfMatch, context)
                 .getValue();
         return this;
     }
@@ -229,5 +235,19 @@ public final class ScheduledActionImpl implements ScheduledAction, ScheduledActi
     public ScheduledActionImpl withViewId(String viewId) {
         this.innerModel().withViewId(viewId);
         return this;
+    }
+
+    public ScheduledActionImpl withIfMatch(String ifMatch) {
+        if (isInCreateMode()) {
+            this.createIfMatch = ifMatch;
+            return this;
+        } else {
+            this.updateIfMatch = ifMatch;
+            return this;
+        }
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

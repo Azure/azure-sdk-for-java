@@ -13,13 +13,15 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ClassificationRulesListVersionsByClassificationRuleName {
     public static void main(String[] args) {
-        ClassificationRulesClient client =
+        ClassificationRulesClient classificationRulesClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildClassificationRulesClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.classificationruleslistversionsbyclassificationrulename.classificationruleslistversionsbyclassificationrulename
         RequestOptions requestOptions = new RequestOptions();
         PagedIterable<BinaryData> response =
-                client.listVersionsByClassificationRuleName("ClassificationRule1", requestOptions);
+                classificationRulesClient.listVersionsByClassificationRuleName("ClassificationRule1", requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.classificationruleslistversionsbyclassificationrulename.classificationruleslistversionsbyclassificationrulename
     }
 }

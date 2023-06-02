@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.administration.models.AccessRights;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
-
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;

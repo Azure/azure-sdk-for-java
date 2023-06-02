@@ -181,7 +181,7 @@ public final class DataBoxManagementClientImpl implements DataBoxManagementClien
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-03-01";
+        this.apiVersion = "2022-12-01";
         this.operations = new OperationsClientImpl(this);
         this.jobs = new JobsClientImpl(this);
         this.resourceProviders = new ResourceProvidersClientImpl(this);

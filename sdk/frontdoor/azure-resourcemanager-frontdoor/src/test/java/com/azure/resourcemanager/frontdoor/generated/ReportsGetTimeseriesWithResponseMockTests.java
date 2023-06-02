@@ -34,7 +34,7 @@ public final class ReportsGetTimeseriesWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"endpoint\":\"jnaeois\",\"startDateTimeUTC\":\"hmgorffukiscv\",\"endDateTimeUTC\":\"zhwplefaxvxilc\",\"aggregationInterval\":\"Hourly\",\"timeseriesType\":\"MeasurementCounts\",\"country\":\"zeyqxtjjfzqlqhyc\",\"timeseriesData\":[]},\"location\":\"dggxdbeesmi\",\"tags\":{\"gy\":\"lrariaawiu\",\"ojocqwogf\":\"wqfbylyrfgiagt\",\"uxylfsbtkadpy\":\"zjvusfzldmo\",\"tgkbugrjqctojc\":\"own\"},\"id\":\"isofieypefojyqd\",\"name\":\"cuplcplcwkhih\",\"type\":\"hlhzdsqtzbsrgno\"}";
+            "{\"properties\":{\"endpoint\":\"sjhoiftxfkfwegpr\",\"startDateTimeUTC\":\"tillucbiqtg\",\"endDateTimeUTC\":\"ohmcwsld\",\"aggregationInterval\":\"Hourly\",\"timeseriesType\":\"MeasurementCounts\",\"country\":\"wbralllibphbqzm\",\"timeseriesData\":[]},\"location\":\"kakankjpdnjzhaj\",\"tags\":{\"y\":\"hjlmu\",\"opteecj\":\"primr\",\"zaum\":\"eislstvasylwx\",\"thwtzol\":\"eoohguufuzboyj\"},\"id\":\"a\",\"name\":\"mwmdxmebwjscjpa\",\"type\":\"lxveabfqx\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,25 +66,25 @@ public final class ReportsGetTimeseriesWithResponseMockTests {
             manager
                 .reports()
                 .getTimeseriesWithResponse(
-                    "hrv",
-                    "bunzozudh",
-                    "xg",
-                    OffsetDateTime.parse("2021-11-17T23:45:40Z"),
-                    OffsetDateTime.parse("2021-01-27T11:12:08Z"),
+                    "wxezwzhok",
+                    "bwnhhtql",
+                    "ehgpp",
+                    OffsetDateTime.parse("2021-06-28T11:23:36Z"),
+                    OffsetDateTime.parse("2021-01-18T15:46:05Z"),
                     TimeseriesAggregationInterval.DAILY,
                     TimeseriesType.LATENCY_P95,
-                    "cdyuibhmfdnbzyd",
-                    "f",
+                    "pfeoajvgcxtxjcsh",
+                    "afidltugsres",
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("dggxdbeesmi", response.location());
-        Assertions.assertEquals("lrariaawiu", response.tags().get("gy"));
-        Assertions.assertEquals("jnaeois", response.endpoint());
-        Assertions.assertEquals("hmgorffukiscv", response.startDateTimeUtc());
-        Assertions.assertEquals("zhwplefaxvxilc", response.endDateTimeUtc());
+        Assertions.assertEquals("kakankjpdnjzhaj", response.location());
+        Assertions.assertEquals("hjlmu", response.tags().get("y"));
+        Assertions.assertEquals("sjhoiftxfkfwegpr", response.endpoint());
+        Assertions.assertEquals("tillucbiqtg", response.startDateTimeUtc());
+        Assertions.assertEquals("ohmcwsld", response.endDateTimeUtc());
         Assertions.assertEquals(AggregationInterval.HOURLY, response.aggregationInterval());
         Assertions.assertEquals(TimeseriesType.MEASUREMENT_COUNTS, response.timeseriesType());
-        Assertions.assertEquals("zeyqxtjjfzqlqhyc", response.country());
+        Assertions.assertEquals("wbralllibphbqzm", response.country());
     }
 }

@@ -25,6 +25,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
@@ -215,6 +216,7 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         premiumCache.importData(Arrays.asList("snapshot1"));*/
     }
 
+    @Disabled("Cannot create cache. Redis version 4.0 is retiring.")
     @Test
     public void canRedisVersionUpdate() {
         RedisCache.RedisVersion redisVersion = RedisCache.RedisVersion.V4;

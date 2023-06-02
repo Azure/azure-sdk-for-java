@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Fixes bug where errors claiming ownership were not propagated.
+- Fixes bug where error not returned when creating partition ownerships.
+
 ### Other Changes
 
 ## 1.0.0-beta.1 (2023-02-13)
