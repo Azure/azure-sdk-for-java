@@ -21,9 +21,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import io.netty.buffer.Unpooled;
-import io.vertx.core.Future;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
+import io.vertx.core.file.AsyncFile;
 import io.vertx.core.file.OpenOptions;
 import io.vertx.core.http.HttpClientRequest;
 import io.vertx.core.http.HttpClientResponse;
@@ -72,26 +72,43 @@ class VertxAsyncHttpClient implements HttpClient {
             .setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
             .setAbsoluteURI(request.getUrl());
 
-        return Mono.create(sink -> client.request(options).compose(vertxRequest -> {
+        return Mono.create(sink -> client.request(options, requestResult -> {
+            if (requestResult.failed()) {
+                sink.error(requestResult.cause());
+                return;
+            }
+
+            HttpClientRequest vertxRequest = requestResult.result();
             for (HttpHeader header : request.getHeaders()) {
                 // Potential optimization here would be creating a MultiMap wrapper around azure-core's
                 // HttpHeaders and using RequestOptions.setHeaders(MultiMap)
                 vertxRequest.putHeader(header.getName(), header.getValuesList());
             }
-
             if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
                 vertxRequest.setChunked(true);
             }
 
-            return sendBodyFuture(sink, request, progressReporter, vertxRequest);
-        }).compose(vertxResponse -> vertxResponse.body()
-            .map(body -> new BufferedVertxHttpResponse(request, vertxResponse, body)))
-        .andThen(result -> {
-            if (result.succeeded()) {
-                sink.success(result.result());
-            } else {
-                sink.error(result.cause());
-            }
+            vertxRequest.response(event -> {
+                if (event.succeeded()) {
+                    HttpClientResponse vertxHttpResponse = event.result();
+                    vertxHttpResponse.exceptionHandler(sink::error);
+
+                    // TODO (alzimmer)
+                    // For now Vertx will always use a buffered response until reliability issues when using streaming
+                    // can be resolved.
+                    vertxHttpResponse.body(bodyEvent -> {
+                        if (bodyEvent.succeeded()) {
+                            sink.success(new BufferedVertxHttpResponse(request, vertxHttpResponse, bodyEvent.result()));
+                        } else {
+                            sink.error(bodyEvent.cause());
+                        }
+                    });
+                } else {
+                    sink.error(event.cause());
+                }
+            });
+
+            sendBody(sink, request, progressReporter, vertxRequest);
         }));
     }
 
@@ -100,11 +117,16 @@ class VertxAsyncHttpClient implements HttpClient {
         return send(request, context).block();
     }
 
-    private Future<HttpClientResponse> sendBodyFuture(MonoSink<HttpResponse> sink, HttpRequest azureRequest,
+    private void sendBody(MonoSink<HttpResponse> sink, HttpRequest azureRequest,
         ProgressReporter progressReporter, HttpClientRequest vertxRequest) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
         if (body == null) {
-            return vertxRequest.send();
+            vertxRequest.send(result -> {
+                if (result.failed()) {
+                    sink.error(result.cause());
+                }
+            });
+            return;
         }
 
         BinaryDataContent bodyContent = BinaryDataHelper.getContent(body);
@@ -112,17 +134,34 @@ class VertxAsyncHttpClient implements HttpClient {
             || bodyContent instanceof StringContent
             || bodyContent instanceof SerializableContent) {
             byte[] content = bodyContent.toBytes();
-            return vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(content)))
-                .onSuccess(ignored -> reportProgress(content.length, progressReporter));
+            vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(content)), result -> {
+                if (result.succeeded()) {
+                    reportProgress(content.length, progressReporter);
+                } else {
+                    sink.error(result.cause());
+                }
+            });
         } else if (bodyContent instanceof FileContent) {
             FileContent fileContent = (FileContent) bodyContent;
-            return vertx.fileSystem().open(fileContent.getFile().toString(), new OpenOptions().setRead(true))
-                .compose(file -> {
-                    file.setReadPos(fileContent.getPosition()).setReadLength(fileContent.getLength());
+            vertx.fileSystem().open(fileContent.getFile().toString(), new OpenOptions().setRead(true), event -> {
+                if (event.succeeded()) {
+                    AsyncFile file = event.result();
+                    file.setReadPos(fileContent.getPosition());
+                    if (fileContent.getLength() != null) {
+                        file.setReadLength(fileContent.getLength());
+                    }
 
-                    return vertxRequest.send(file)
-                        .onSuccess(ignored -> reportProgress(fileContent.getLength(), progressReporter));
-                });
+                    vertxRequest.send(file, result -> {
+                        if (result.succeeded()) {
+                            reportProgress(fileContent.getLength(), progressReporter);
+                        } else {
+                            sink.error(result.cause());
+                        }
+                    });
+                } else {
+                    sink.error(event.cause());
+                }
+            });
         } else {
             // Right now both Flux<ByteBuffer> and InputStream bodies are being handled reactively.
             ReactiveReadStream<Buffer> readStream = new AzureReactiveReadStreamWrapper(ReactiveReadStream.readStream(1),
@@ -133,7 +172,11 @@ class VertxAsyncHttpClient implements HttpClient {
                 return Buffer.buffer(Unpooled.wrappedBuffer(buffer));
             }).subscribeOn(scheduler).subscribe(readStream);
 
-            return vertxRequest.send(readStream);
+            vertxRequest.send(readStream, result -> {
+                if (result.failed()) {
+                    sink.error(result.cause());
+                }
+            });
         }
     }
 
