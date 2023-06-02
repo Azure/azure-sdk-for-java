@@ -54,7 +54,7 @@ Various documentation is available to help you get started
 
 ## Key concepts
 
-__Data Provider:__ A data provider is the individual who creates a share by selecting a data source that is registered in Microsoft Purview, choosing which files and folders to share, and who to share them with. Microsoft Purview then sends an invitation to each data consumer.
+__Data Provider:__ A data provider is the individual who creates a share by selecting a data source, choosing which files and folders to share, and who to share them with. Microsoft Purview then sends an invitation to each data consumer.
 
 __Data Consumer:__ A data consumer is the individual who accepts the invitation by specifying a target storage account in their own Azure subscription that they'll use to access the shared data.
 
