@@ -158,5 +158,5 @@
 
 ### 1.0.0-beta.1 (2021-04-06)
 #### New Features
-* Added Azure Cosmos encryption used for encrypting data with user provided key before saving into CosmosDB and decrypting it when reading back from the database.
+* Added Azure Cosmos encryption used for encrypting data with user provided key before saving into Cosmos DB and decrypting it when reading back from the database.
 

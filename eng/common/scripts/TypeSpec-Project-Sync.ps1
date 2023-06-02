@@ -33,7 +33,6 @@ function CopySpecToProjectIfNeeded([string]$specCloneRoot, [string]$mainSpecDir,
 function UpdateSparseCheckoutFile([string]$mainSpecDir, [string[]]$specAdditionalSubDirectories) {
     AddSparseCheckoutPath $mainSpecDir
     foreach ($subDir in $specAdditionalSubDirectories) {
-        Write-Host "Adding $subDir to sparse checkout"
         AddSparseCheckoutPath $subDir
     }
 }
@@ -44,12 +43,11 @@ function GetGitRemoteValue([string]$repo) {
     try {
         $gitRemotes = (git remote -v)
         foreach ($remote in $gitRemotes) {
-            Write-Host "Checking remote $remote"
-            if ($remote.StartsWith("origin") -or $remote.StartsWith("main")) {
-                if ($remote -match 'https://(.*)?github.com/\S+') {
+            if ($remote.StartsWith("origin")) {
+                if ($remote -match 'https://github.com/\S+') {
                     $result = "https://github.com/$repo.git"
                     break
-                } elseif ($remote -match "(.*)?git@github.com:\S+"){
+                } elseif ($remote -match "git@github.com:\S+"){
                     $result = "git@github.com:$repo.git"
                     break
                 } else {
@@ -61,7 +59,7 @@ function GetGitRemoteValue([string]$repo) {
     finally {
         Pop-Location
     }
-    Write-Host "Found git remote $result"
+
     return $result
 }
 
@@ -101,19 +99,14 @@ if ( $configuration["repo"] -and $configuration["commit"]) {
     $specCloneDir = GetSpecCloneDir $projectName
     $gitRemoteValue = GetGitRemoteValue $configuration["repo"]
 
-    Write-Host "from tsplocation.yaml 'repo' is:"$configuration["repo"]
     Write-Host "Setting up sparse clone for $projectName at $specCloneDir"
 
     Push-Location $specCloneDir.Path
     try {
         if (!(Test-Path ".git")) {
-            Write-Host "Initializing sparse clone for repo: $gitRemoteValue"
             InitializeSparseGitClone $gitRemoteValue
-            Write-Host "Updating sparse checkout file with directory:$specSubDirectory"
-            UpdateSparseCheckoutFile $specSubDirectory $configuration["additionalDirectories"]
         }
-        $commit = $configuration["commit"]
-        Write-Host "git checkout commit: $commit"
+        UpdateSparseCheckoutFile $specSubDirectory $configuration["additionalDirectories"]
         git checkout $configuration["commit"]
         if ($LASTEXITCODE) { exit $LASTEXITCODE }
     }

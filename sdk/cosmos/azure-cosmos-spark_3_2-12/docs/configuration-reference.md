@@ -8,10 +8,10 @@
 | `spark.cosmos.accountKey`        | None    | Cosmos DB Account Key                                                                                      |
 | `spark.cosmos.database`          | None    | Cosmos DB database name                                                                                    |
 | `spark.cosmos.container`         | None    | Cosmos DB container name                                                                                   |
-| `spark.cosmos.account.subscriptionId`    | None    | The subscriptionId of the CosmosDB account. Required for `ServicePrinciple` authentication.                |
-| `spark.cosmos.account.tenantId`          | None    | The tenantId of the CosmosDB account. Required for `ServicePrinciple` authentication.                      |
-| `spark.cosmos.account.resourceGroupName` | None    | The resource group of the CosmosDB account. Required for `ServicePrinciple` authentication.                |
-| `spark.cosmos.account.azureEnvironment`    | `Azure`    | The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`. |
+| `spark.cosmos.account.subscriptionId`    | None    | The subscriptionId of the Cosmos DB account. Required for `ServicePrinciple` authentication.                |
+| `spark.cosmos.account.tenantId`          | None    | The tenantId of the Cosmos DB account. Required for `ServicePrinciple` authentication.                      |
+| `spark.cosmos.account.resourceGroupName` | None    | The resource group of the Cosmos DB account. Required for `ServicePrinciple` authentication.                |
+| `spark.cosmos.account.azureEnvironment`    | `Azure`    | The azure environment of the Cosmos DB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`. |
 
 ### AAD Auth Config
 | Config Property Name                 | Default | Description                                                                                                                                                             |

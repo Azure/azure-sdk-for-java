@@ -1247,10 +1247,25 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Reads an item.
+     * Reads an item by itemId.
+     * <br/>
+     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
+     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain an item response with the read item.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readItem -->
+     * <pre>
+     * &#47;&#47; Read an item
+     * cosmosAsyncContainer.readItem&#40;passenger.getId&#40;&#41;, new PartitionKey&#40;passenger.getId&#40;&#41;&#41;, Passenger.class&#41;
+     *     .flatMap&#40;response -&gt; Mono.just&#40;response.getItem&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;passengerItem -&gt; System.out.println&#40;passengerItem&#41;, throwable -&gt; &#123;
+     *         CosmosException cosmosException = &#40;CosmosException&#41; throwable;
+     *         cosmosException.printStackTrace&#40;&#41;;
+     *     &#125;&#41;;
+     * &#47;&#47; ...
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readItem -->
      *
      * @param <T> the type parameter.
      * @param itemId the item id.
@@ -1263,7 +1278,10 @@ public class CosmosAsyncContainer {
     }
 
     /**
-     * Reads an item using a configured {@link CosmosItemRequestOptions}.
+     * Reads an item by itemId using a configured {@link CosmosItemRequestOptions}.
+     * <br/>
+     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
+     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a Cosmos item response with the read item.
@@ -1271,7 +1289,7 @@ public class CosmosAsyncContainer {
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param options the request {@link CosmosItemRequestOptions}.
+     * @param options the request (Optional) {@link CosmosItemRequestOptions}.
      * @param itemType the item type.
      * @return an {@link Mono} containing the Cosmos item response with the read item or an error.
      */
@@ -1289,6 +1307,8 @@ public class CosmosAsyncContainer {
 
     /**
      * Reads many documents.
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
      *
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
@@ -1304,12 +1324,14 @@ public class CosmosAsyncContainer {
 
     /**
      * Reads many documents.
+     * Useful for reading many documents with a particular id and partition key in a single request.
+     * If any document from the list is missing, no exception will be thrown.
      *
      * @param <T> the type parameter
      * @param itemIdentityList CosmosItem id and partition key tuple of items that that needs to be read
      * @param sessionToken the optional Session token - null if the read can be made without specific session token
      * @param classType   class type
-     * @return a Mono with feed response of cosmos items
+     * @return a Mono with feed response of cosmos items or error
      */
     public <T> Mono<FeedResponse<T>> readMany(
         List<CosmosItemIdentity> itemIdentityList,
@@ -1359,7 +1381,7 @@ public class CosmosAsyncContainer {
      *
      * @param <T> the type parameter.
      * @param partitionKey the partition key value of the documents that need to be read
-     * @param options the feed options.
+     * @param options the feed options (Optional).
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages
      * of the read Cosmos items or an error.
@@ -1425,7 +1447,7 @@ public class CosmosAsyncContainer {
      * @param item the item to replace (containing the item id).
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param options the request comosItemRequestOptions.
+     * @param options the request comosItemRequestOptions (Optional).
      * @return an {@link Mono} containing the Cosmos item resource response with the replaced item or an error.
      */
     public <T> Mono<CosmosItemResponse<T>> replaceItem(
