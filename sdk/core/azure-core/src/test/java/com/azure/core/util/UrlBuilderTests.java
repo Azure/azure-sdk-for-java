@@ -13,6 +13,7 @@ import reactor.test.StepVerifier;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.time.Duration;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
@@ -810,12 +811,10 @@ public class UrlBuilderTests {
                 callCount.incrementAndGet();
                 return UrlBuilder.parse("https://example" + i + ".com");
             })
-            .then();
+            .then()
+            .timeout(Duration.ofSeconds(10));
 
-        StepVerifier.create(mono)
-            .expectComplete()
-            .verify();
-
+        StepVerifier.create(mono).verifyComplete();
         assertEquals(20000, callCount.get());
     }
 
