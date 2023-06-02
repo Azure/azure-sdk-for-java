@@ -1,11 +1,13 @@
 package com.azure.cosmos;
 
-import com.azure.cosmos.models.FeedRange;
-import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.models.ThroughputResponse;
+import com.azure.cosmos.models.*;
 import reactor.core.publisher.Mono;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class ContainerAsyncCodeSnippets {
     private final String serviceEndpoint = "<service-endpoint>";
@@ -104,6 +106,50 @@ public class ContainerAsyncCodeSnippets {
             e.printStackTrace();
         }
         // END: com.azure.cosmos.CosmosContainer.replaceThroughput
+    }
+
+    public void queryConflictsAsyncSample() {
+        List<String> conflictIds = Collections.emptyList();
+        String query = "SELECT * from c where c.id in (%s)";
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.queryConflicts
+        try {
+            cosmosAsyncContainer.queryConflicts(query).
+                byPage(100)
+                .subscribe(response -> {
+                    for (CosmosConflictProperties conflictProperties : response.getResults()) {
+                        System.out.println(conflictProperties);
+                    }
+                }, throwable -> {
+                    throwable.printStackTrace();
+                });
+        } catch (CosmosException ce) {
+            ce.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // END: com.azure.cosmos.CosmosAsyncContainer.queryConflicts
+    }
+
+    public void readAllConflictsAsyncSample() {
+        List<String> conflictIds = Collections.emptyList();
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.readAllConflicts
+        try {
+            cosmosAsyncContainer.readAllConflicts(options).
+                byPage(100)
+                .subscribe(response -> {
+                    for (CosmosConflictProperties conflictProperties : response.getResults()) {
+                        System.out.println(conflictProperties);
+                    }
+                }, throwable -> {
+                    throwable.printStackTrace();
+                });
+        } catch (CosmosException ce) {
+            ce.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // END: com.azure.cosmos.CosmosAsyncContainer.readAllConflicts
     }
 
 }

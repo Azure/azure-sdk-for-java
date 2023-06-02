@@ -1625,7 +1625,25 @@ public class CosmosAsyncContainer {
 
     /**
      * Lists all the conflicts in the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readAllConflicts -->
+     * <pre>
+     * try &#123;
+     *     cosmosAsyncContainer.readAllConflicts&#40;options&#41;.
+     *         byPage&#40;100&#41;
+     *         .subscribe&#40;response -&gt; &#123;
+     *             for &#40;CosmosConflictProperties conflictProperties : response.getResults&#40;&#41;&#41; &#123;
+     *                 System.out.println&#40;conflictProperties&#41;;
+     *             &#125;
+     *         &#125;, throwable -&gt; &#123;
+     *             throwable.printStackTrace&#40;&#41;;
+     *         &#125;&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     ce.printStackTrace&#40;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     e.printStackTrace&#40;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readAllConflicts -->
      * @param options the query request options
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
@@ -1658,7 +1676,25 @@ public class CosmosAsyncContainer {
 
     /**
      * Queries all the conflicts in the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryConflicts -->
+     * <pre>
+     * try &#123;
+     *     cosmosAsyncContainer.queryConflicts&#40;query&#41;.
+     *         byPage&#40;100&#41;
+     *         .subscribe&#40;response -&gt; &#123;
+     *             for &#40;CosmosConflictProperties conflictProperties : response.getResults&#40;&#41;&#41; &#123;
+     *                 System.out.println&#40;conflictProperties&#41;;
+     *             &#125;
+     *         &#125;, throwable -&gt; &#123;
+     *             throwable.printStackTrace&#40;&#41;;
+     *         &#125;&#41;;
+     * &#125; catch &#40;CosmosException ce&#41; &#123;
+     *     ce.printStackTrace&#40;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     e.printStackTrace&#40;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.queryConflicts -->
      * @param query the query.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
