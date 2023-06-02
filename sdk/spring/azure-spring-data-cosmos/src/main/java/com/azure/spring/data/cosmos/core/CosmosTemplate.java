@@ -355,7 +355,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         if (containerProperties != null) {
             String containerPartitionKey = containerProperties.getPartitionKeyDefinition()
                 .getPaths().iterator().next().replaceAll("^/|/$", "");
-            if (containerPartitionKey.equals("id")) {
+            if ("id".equals(containerPartitionKey)) {
                 return findById(id, domainType, new PartitionKey(CosmosUtils.getStringIDValue(id)));
             }
         }
