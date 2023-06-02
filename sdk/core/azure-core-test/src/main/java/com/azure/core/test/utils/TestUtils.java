@@ -123,7 +123,7 @@ public final class TestUtils {
         if (folderUrl != null) {
             // Use toURI as getResource will return a URL encoded file path that can only be cleaned up using the
             // URI-based constructor of File.
-            return new File(toURI(folderUrl, LOGGER));
+            return new File(toURI(folderUrl));
         }
 
         throw new IllegalStateException("Unable to locate session-records folder. Please create a session-records "
@@ -135,14 +135,13 @@ public final class TestUtils {
     /**
      *  Returns a {@link java.net.URI} equivalent to this URL.
      * @param url the url to be converted to URI
-     * @param logger the respective logger
      * @return the URI
      */
-    public static URI toURI(URL url, ClientLogger logger) {
+    public static URI toURI(URL url) {
         try {
             return url.toURI();
         } catch (URISyntaxException ex) {
-            throw logger.logExceptionAsError(new IllegalStateException(ex));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(ex));
         }
     }
 
