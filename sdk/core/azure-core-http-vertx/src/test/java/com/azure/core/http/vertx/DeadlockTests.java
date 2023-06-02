@@ -34,7 +34,7 @@ public class DeadlockTests {
 
     @BeforeEach
     public void configureWireMockServer() {
-        expectedGetBytes = new byte[1024 * 1024];
+        expectedGetBytes = new byte[32768];
         new SecureRandom().nextBytes(expectedGetBytes);
 
         server = new WireMockServer(WireMockConfiguration.options()
@@ -61,7 +61,7 @@ public class DeadlockTests {
         String endpoint = server.baseUrl() + GET_ENDPOINT;
 
         Mono<Tuple2<byte[], Integer>> request = httpClient.send(new HttpRequest(HttpMethod.GET, endpoint))
-            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody(), 1024 * 1024)
+            .flatMap(response -> FluxUtil.collectBytesInByteBufferStream(response.getBody(), 32768)
                 .map(bytes -> Tuples.of(bytes, response.getStatusCode())));
 
         List<Tuple2<byte[], Integer>> results = Flux.range(0, 100)

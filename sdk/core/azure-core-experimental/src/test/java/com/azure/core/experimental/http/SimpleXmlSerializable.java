@@ -3,6 +3,7 @@
 
 package com.azure.core.experimental.http;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
@@ -30,7 +31,13 @@ public final class SimpleXmlSerializable implements XmlSerializable<SimpleXmlSer
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        xmlWriter.writeStartElement("SimpleXml");
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SimpleXml" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
 
         xmlWriter.writeBooleanAttribute("boolean", aBooleanAsAttribute);
         xmlWriter.writeDoubleAttribute("decimal", aDecimalAsAttribute);
@@ -42,7 +49,12 @@ public final class SimpleXmlSerializable implements XmlSerializable<SimpleXmlSer
     }
 
     public static SimpleXmlSerializable fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return xmlReader.readObject("SimpleXml", reader -> {
+        return fromXml(xmlReader, null);
+    }
+
+    public static SimpleXmlSerializable fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SimpleXml" : rootElementName;
+        return xmlReader.readObject(rootElementName, reader -> {
             boolean aBooleanAsAttribute = xmlReader.getBooleanAttribute(null, "boolean");
             double aDecimalAsAttribute = xmlReader.getDoubleAttribute(null, "decimal");
             int anInt = 0;
