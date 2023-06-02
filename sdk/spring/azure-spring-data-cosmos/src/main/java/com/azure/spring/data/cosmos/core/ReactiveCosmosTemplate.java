@@ -325,13 +325,10 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     public <T> Mono<T> findById(String containerName, Object id, Class<T> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
-        CosmosContainerProperties containerProperties = getContainerProperties(containerName).block();
-        if (containerProperties != null) {
-            String containerPartitionKey = containerProperties.getPartitionKeyDefinition()
-                .getPaths().iterator().next().replaceAll("^/|/$", "");
-            if ("id".equals(containerPartitionKey)) {
-                return findById(id, domainType, new PartitionKey(CosmosUtils.getStringIDValue(id)));
-            }
+        CosmosEntityInformation cosmosEntityInformation = CosmosEntityInformation.getInstance(domainType);
+        String containerPartitionKey = cosmosEntityInformation.getPartitionKeyFieldName();
+        if ("id".equals(containerPartitionKey) && id != null) {
+            return findById(id, domainType, new PartitionKey(CosmosUtils.getStringIDValue(id)));
         }
         LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead. See https://aka.ms/PointReadsInSpring for more info.");
         final String finalContainerName = getContainerNameOverride(containerName);
