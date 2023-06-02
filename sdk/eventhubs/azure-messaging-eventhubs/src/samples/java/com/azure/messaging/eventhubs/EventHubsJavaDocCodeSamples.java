@@ -549,9 +549,11 @@ public class EventHubsJavaDocCodeSamples {
         if (eventDataBatch.getCount() > 0) {
             producer.send(eventDataBatch);
         }
-        // END: com.azure.messaging.eventhubs.eventhubproducerclient.createBatch
 
+        // Clients are expected to be long-lived objects.
+        // Dispose of the producer to close any underlying resources when we are finished with it.
         producer.close();
+        // END: com.azure.messaging.eventhubs.eventhubproducerclient.createBatch
     }
 
     /**
@@ -705,12 +707,13 @@ public class EventHubsJavaDocCodeSamples {
      * Code snippet to show creation of an event processor that receives events in batches.
      */
     public void receiveBatchSample() {
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
-
         // BEGIN: com.azure.messaging.eventhubs.eventprocessorclientbuilder.batchreceive
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-            .consumerGroup("consumer-group")
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .checkpointStore(new SampleCheckpointStore())
             .processEventBatch(eventBatchContext -> {
                 eventBatchContext.getEvents().forEach(eventData -> {
@@ -724,7 +727,6 @@ public class EventHubsJavaDocCodeSamples {
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
-            .connectionString(connectionString)
             .buildEventProcessorClient();
         // END: com.azure.messaging.eventhubs.eventprocessorclientbuilder.batchreceive
     }
@@ -733,10 +735,15 @@ public class EventHubsJavaDocCodeSamples {
      * Code snippet for showing how to start and stop an {@link EventProcessorClient}.
      */
     public void startStopSample() {
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+        // BEGIN: com.azure.messaging.eventhubs.eventprocessorclient.startstop
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-            .connectionString(connectionString)
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .processEvent(eventContext -> {
                 System.out.printf("Partition id = %s and sequence number of event = %s%n",
                     eventContext.getPartitionContext().getPartitionId(),
@@ -747,13 +754,14 @@ public class EventHubsJavaDocCodeSamples {
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
-            .consumerGroup("consumer-group")
             .checkpointStore(new SampleCheckpointStore())
             .buildEventProcessorClient();
 
-        // BEGIN: com.azure.messaging.eventhubs.eventprocessorclient.startstop
         eventProcessorClient.start();
+
         // Continue to perform other tasks while the processor is running in the background.
+        //
+        // Finally, stop the processor client when application is finished.
         eventProcessorClient.stop();
         // END: com.azure.messaging.eventhubs.eventprocessorclient.startstop
     }

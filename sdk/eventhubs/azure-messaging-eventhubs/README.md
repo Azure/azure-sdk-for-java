@@ -237,6 +237,10 @@ for (EventData eventData : allEvents) {
 if (eventDataBatch.getCount() > 0) {
     producer.send(eventDataBatch);
 }
+
+// Clients are expected to be long-lived objects.
+// Dispose of the producer to close any underlying resources when we are finished with it.
+producer.close();
 ```
 Note that `EventDataBatch.tryAdd(EventData)` is not thread-safe. Please make sure to synchronize the method access
 when using multiple threads to add events.

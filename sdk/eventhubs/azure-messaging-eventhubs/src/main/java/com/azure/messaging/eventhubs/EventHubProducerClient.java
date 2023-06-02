@@ -36,13 +36,20 @@ import java.util.Objects;
  *      message to another available partition.</li>
  * </ol>
  *
+ * <p>The examples shown in this document use a credential object named DefaultAzureCredential for authentication,
+ * which is appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments. You can find more information on different ways of authenticating and
+ * their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
  * <p><strong>Sample: Construct a {@link EventHubProducerClient}</strong></p>
  *
  * <p>The following code sample demonstrates the creation of the synchronous client {@link EventHubProducerClient}.
  * The {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.  It is listed under the "Essentials"
- * panel after navigating to the Event Hubs Namespace via Azure Portal. The credential used is
- * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
- * chooses the credential to used based on its running environment.</p>
+ * panel after navigating to the Event Hubs Namespace via Azure Portal. </p>
  *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.construct -->
  * <pre>
@@ -91,6 +98,10 @@ import java.util.Objects;
  * if &#40;eventDataBatch.getCount&#40;&#41; &gt; 0&#41; &#123;
  *     producer.send&#40;eventDataBatch&#41;;
  * &#125;
+ *
+ * &#47;&#47; Clients are expected to be long-lived objects.
+ * &#47;&#47; Dispose of the producer to close any underlying resources when we are finished with it.
+ * producer.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.createBatch -->
  *
