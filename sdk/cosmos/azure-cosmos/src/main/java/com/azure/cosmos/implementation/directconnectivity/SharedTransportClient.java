@@ -143,9 +143,4 @@ public class SharedTransportClient extends TransportClient {
     public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
         this.transportClient.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
-
-    @Override
-    public IRntbdServerErrorInjector getRntbdServerErrorInjector() {
-        return this.transportClient.getRntbdServerErrorInjector();
-    }
 }

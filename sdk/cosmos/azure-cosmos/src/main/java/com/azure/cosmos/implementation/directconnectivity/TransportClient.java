@@ -58,8 +58,6 @@ public abstract class TransportClient implements AutoCloseable {
 
     public abstract void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities);
 
-    public abstract IRntbdServerErrorInjector getRntbdServerErrorInjector();
-
     private Mono<StoreResponse> invokeStoreWithThroughputControlAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return this.throughputControlStore.processRequest(
             request,

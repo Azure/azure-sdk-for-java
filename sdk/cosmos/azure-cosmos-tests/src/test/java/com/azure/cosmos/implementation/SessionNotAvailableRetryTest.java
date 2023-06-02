@@ -549,11 +549,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
         public void recordOpenConnectionsAndInitCachesStarted(List<CosmosContainerIdentity> cosmosContainerIdentities) {
             throw new NotImplementedException("recordOpenConnectionsAndInitCachesStarted is not supported in RntbdTransportClientTest");
         }
-
-        @Override
-        public IRntbdServerErrorInjector getRntbdServerErrorInjector() {
-            throw new NotImplementedException("getRntbdServerErrorInjector is not supported in RntbdTransportClientTest");
-        }
     }
 
     private class TestItem {

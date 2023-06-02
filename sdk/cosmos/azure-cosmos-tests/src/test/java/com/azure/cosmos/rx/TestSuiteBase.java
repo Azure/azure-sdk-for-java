@@ -970,6 +970,13 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         };
     }
 
+    @DataProvider
+    public static Object[][] clientBuilderSolelyDirectWithSessionConsistency() {
+        return new Object[][]{
+                {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)}
+        };
+    }
+
     static ConsistencyLevel parseConsistency(String consistency) {
         if (consistency != null) {
             consistency = CaseFormat.UPPER_CAMEL.to(CaseFormat.UPPER_UNDERSCORE, consistency).trim();

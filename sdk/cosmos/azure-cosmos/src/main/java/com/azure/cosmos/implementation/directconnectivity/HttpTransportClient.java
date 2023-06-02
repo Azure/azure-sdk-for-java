@@ -268,11 +268,6 @@ public class HttpTransportClient extends TransportClient {
         throw new NotImplementedException("recordOpenConnectionsAndInitCachesStarted is not supported in httpTransportClient");
     }
 
-    @Override
-    public IRntbdServerErrorInjector getRntbdServerErrorInjector() {
-        throw new NotImplementedException("getRntbdServerErrorInjector is not supported in httpTransportClient");
-    }
-
     private void beforeRequest(String activityId, URI uri, ResourceType resourceType, HttpHeaders requestHeaders) {
         // TODO: perf counters
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/258624

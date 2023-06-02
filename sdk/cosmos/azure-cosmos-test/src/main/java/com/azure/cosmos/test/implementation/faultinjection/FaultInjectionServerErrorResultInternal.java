@@ -129,6 +129,16 @@ public class FaultInjectionServerErrorResultInternal {
                 cosmosException = new PartitionKeyRangeIsSplittingException(null, lsn, partitionKeyRangeId, responseHeaders);
                 break;
 
+            case BAD_SESSION_TOKEN:
+
+                final String badSessionToken = "1:1#1#1=1#1=1";
+
+                responseHeaders.put(WFConstants.BackendHeaders.SUB_STATUS,
+                        Integer.toString(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE));
+                responseHeaders.put(HttpConstants.HttpHeaders.SESSION_TOKEN, badSessionToken);
+                cosmosException = new NotFoundException(null, lsn, partitionKeyRangeId, responseHeaders);
+                break;
+
             default:
                 throw new IllegalArgumentException("Server error type " + this.serverErrorType + " is not supported");
         }

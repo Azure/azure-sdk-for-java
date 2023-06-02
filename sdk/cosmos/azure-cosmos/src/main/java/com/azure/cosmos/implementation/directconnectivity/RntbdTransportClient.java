@@ -235,11 +235,6 @@ public class RntbdTransportClient extends TransportClient {
         this.proactiveOpenConnectionsProcessor.recordOpenConnectionsAndInitCachesStarted(cosmosContainerIdentities);
     }
 
-    @Override
-    public IRntbdServerErrorInjector getRntbdServerErrorInjector() {
-        return this.serverErrorInjector;
-    }
-
     /**
      * The number of {@linkplain RntbdEndpoint endpoints} allocated to this {@linkplain RntbdTransportClient client}.
      *

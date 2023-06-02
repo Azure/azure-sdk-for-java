@@ -39,7 +39,8 @@ public enum FaultInjectionServerErrorType {
     CONNECTION_DELAY,
 
     /**
-     * Injects a bad session token into the StoreResponse.
+     * Injects a bad session token into the {@link com.azure.cosmos.implementation.NotFoundException} instance. It can
+     * be used to mimic READ_SESSION_NOT_AVAILABLE scenarios.
      * */
     BAD_SESSION_TOKEN
 }

@@ -50,7 +50,6 @@ public class StoreReader {
     private final TransportClient transportClient;
     private final AddressSelector addressSelector;
     private final ISessionContainer sessionContainer;
-    private IRntbdServerErrorInjector rntbdServerErrorInjector;
     private String lastReadAddress;
 
     public StoreReader(
@@ -60,10 +59,6 @@ public class StoreReader {
         this.transportClient = transportClient;
         this.addressSelector = addressSelector;
         this.sessionContainer = sessionContainer;
-    }
-
-    public void init(IRntbdServerErrorInjector rntbdServerErrorInjector) {
-        this.rntbdServerErrorInjector = rntbdServerErrorInjector;
     }
 
     public Mono<List<StoreResult>> readMultipleReplicaAsync(
@@ -151,8 +146,7 @@ public class StoreReader {
         Pair<Flux<StoreResponse>, Uri> storeRespAndURI,
         ReadMode readMode,
         boolean requiresValidLsn,
-        List<String> replicaStatusList,
-        boolean useSessionToken) {
+        List<String> replicaStatusList) {
 
         return storeRespAndURI.getLeft()
                 .flatMap(storeResponse -> {
@@ -165,10 +159,6 @@ public class StoreReader {
                                         readMode != ReadMode.Strong,
                                         storeRespAndURI.getRight(),
                                         replicaStatusList);
-
-                                if (useSessionToken && readMode == ReadMode.Any && rntbdServerErrorInjector != null) {
-                                    rntbdServerErrorInjector.injectBadSessionTokenIntoStoreResult(storeResult);
-                                }
 
                                 BridgeInternal.getContactedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                                 return Flux.just(storeResult);
@@ -264,7 +254,7 @@ public class StoreReader {
 
         List<Flux<StoreResult>> storeResult = readStoreTasks
                 .stream()
-                .map(item -> toStoreResult(entity, item, readMode, requiresValidLsn, replicaStatusList, useSessionToken))
+                .map(item -> toStoreResult(entity, item, readMode, requiresValidLsn, replicaStatusList))
                 .collect(Collectors.toList());
         Flux<StoreResult> allStoreResults = Flux.merge(storeResult);
 
