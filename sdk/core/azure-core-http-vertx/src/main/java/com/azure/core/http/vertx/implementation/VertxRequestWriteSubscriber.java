@@ -40,9 +40,11 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
         = AtomicIntegerFieldUpdater.newUpdater(VertxRequestWriteSubscriber.class, "done");
     private volatile int done;
 
+    private volatile Throwable error;
+
     public VertxRequestWriteSubscriber(HttpClientRequest request, MonoSink<HttpResponse> emitter,
         ProgressReporter progressReporter) {
-        this.request = request;
+        this.request = request.exceptionHandler(this::onError);
         this.emitter = emitter;
         this.progressReporter = progressReporter;
     }
@@ -82,12 +84,17 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
                     progressReporter.reportProgress(remaining);
                 }
 
-                if (DONE.get(this) != 1) {
+                int doneState = DONE.get(this);
+                if (doneState == 0) {
                     if (request.writeQueueFull()) {
                         request.drainHandler(ignored -> subscription.request(1));
                     } else {
                         subscription.request(1);
                     }
+                } else if (doneState == 1) {
+                    endRequest();
+                } else {
+                    resetRequest(error);
                 }
             } else {
                 onError(result.cause());
@@ -97,14 +104,21 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
 
     @Override
     public void onError(Throwable throwable) {
-        if (!DONE.compareAndSet(this, 0, 1)) {
+        if (!DONE.compareAndSet(this, 0, 2)) {
             Operators.onErrorDropped(throwable, Context.of(emitter.contextView()));
-            return;
         }
 
+        if (WRITING.get(this) == 1) {
+            error = throwable;
+        } else {
+            resetRequest(throwable);
+        }
+    }
+
+    private void resetRequest(Throwable throwable) {
         subscription.cancel();
         emitter.error(LOGGER.logThrowableAsError(throwable));
-        request.reset();
+        request.reset(0, throwable);
     }
 
     @Override
@@ -114,10 +128,17 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
             return;
         }
 
+        if (WRITING.get(this) != 1) {
+            endRequest();
+        }
+    }
+
+    private void endRequest() {
         request.end(result -> {
             if (result.failed()) {
                 emitter.error(result.cause());
             }
         });
     }
+
 }
