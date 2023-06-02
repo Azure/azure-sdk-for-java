@@ -753,7 +753,14 @@ public class CosmosContainer {
     /**
      * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
      * operations.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.getFeedRanges -->
+     * <pre>
+     * List&lt;FeedRange&gt; feedRanges = cosmosContainer.getFeedRanges&#40;&#41;;
+     * for &#40;FeedRange feedRange : feedRanges&#41; &#123;
+     *     System.out.println&#40;&quot;Feed range: &quot; + feedRange&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.getFeedRanges -->
      * @return An unmodifiable list of {@link FeedRange}
      */
     public List<FeedRange> getFeedRanges() {

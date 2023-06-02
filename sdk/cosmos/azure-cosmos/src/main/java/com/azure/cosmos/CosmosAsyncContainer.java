@@ -2202,6 +2202,16 @@ public class CosmosAsyncContainer {
     /**
      * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
      * operations.
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.getFeedRanges -->
+     * <pre>
+     * cosmosAsyncContainer.getFeedRanges&#40;&#41;
+     *     .subscribe&#40;feedRanges -&gt; &#123;
+     *         for &#40;FeedRange feedRange : feedRanges&#41; &#123;
+     *             System.out.println&#40;&quot;Feed range: &quot; + feedRange&#41;;
+     *         &#125;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.getFeedRanges -->
      *
      * @return An unmodifiable list of {@link FeedRange}
      */
