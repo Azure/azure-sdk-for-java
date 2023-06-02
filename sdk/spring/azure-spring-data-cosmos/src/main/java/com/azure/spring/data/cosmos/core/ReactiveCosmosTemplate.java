@@ -5,9 +5,11 @@ package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
@@ -45,6 +47,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.ReflectionUtils;
+import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -648,9 +651,35 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container name should not be null, empty or only whitespaces");
 
+        CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(domainType);
+
         final Flux<JsonNode> results = findItems(query, finalContainerName, domainType);
 
-        return results.flatMap(d -> deleteItem(d, finalContainerName, domainType));
+        if (entityInfo.getPartitionKeyFieldName() != null) {
+            Flux<CosmosItemOperation> cosmosItemOperationFlux = results.map(item -> {
+                String type = entityInfo.getPartitionKeyFieldType().toString().toLowerCase();
+                if (type.contains("integer")) {
+                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
+                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asInt()));
+                } else if (type.contains("boolean")) {
+                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
+                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asBoolean()));
+                } else {
+                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
+                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asText()));
+                }
+            });
+            return this.getCosmosAsyncClient()
+                .getDatabase(this.getDatabaseName())
+                .getContainer(containerName)
+                .executeBulkOperations(cosmosItemOperationFlux)
+                .publishOn(Schedulers.parallel())
+                .flatMap(r -> {
+                    return Flux.just(r.getResponse().getItem(domainType));
+                });
+        } else {
+            return results.flatMap(d -> deleteItem(d, finalContainerName, domainType));
+        }
     }
 
     /**

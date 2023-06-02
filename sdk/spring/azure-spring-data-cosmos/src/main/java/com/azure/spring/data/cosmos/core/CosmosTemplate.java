@@ -6,9 +6,11 @@ package com.azure.spring.data.cosmos.core;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
@@ -59,12 +61,14 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * Template class for cosmos db
@@ -237,6 +241,19 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
 
         assert response != null;
         return toDomainObject(domainType, response.getItem());
+    }
+
+    public <S extends T, T> Iterable<T> insertAll(String containerName, Class<T> domainType, Flux<CosmosItemOperation> cosmosItemOperationFlux) {
+        Assert.notNull(cosmosItemOperationFlux, "entities to be deleted should not be null");
+
+        return this.getCosmosAsyncClient()
+            .getDatabase(this.getDatabaseName())
+            .getContainer(containerName)
+            .executeBulkOperations(cosmosItemOperationFlux)
+            .flatMap(r -> {
+                return Flux.just(r.getResponse().getItem(domainType));
+            })
+            .collectList().block();
     }
 
     /**
@@ -672,6 +689,24 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         deleteItem(originalItem, containerName, domainType);
     }
 
+    /**
+     * Deletes the entities
+     *
+     * @param <T> type class of domain type
+     * @param containerName the container name
+     * @param cosmosItemOperations the Flux of the CosmosItemOperation's to delete
+     */
+    @Override
+    public <T> void deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations) {
+        Assert.notNull(cosmosItemOperations, "entities to be deleted should not be null");
+
+        this.getCosmosAsyncClient()
+                .getDatabase(this.getDatabaseName())
+                .getContainer(containerName)
+                .executeBulkOperations(cosmosItemOperations)
+                .blockLast();
+    }
+
     private void deleteById(String containerName, Object id, PartitionKey partitionKey,
                             CosmosItemRequestOptions options) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
@@ -762,11 +797,38 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
         String finalContainerName = getContainerNameOverride(containerName);
 
+        CosmosEntityInformation<?, ?> entityInfo = CosmosEntityInformation.getInstance(domainType);
+
         final List<JsonNode> results = findItemsAsFlux(query, finalContainerName, domainType).collectList().block();
         assert results != null;
-        return results.stream()
-            .map(item -> deleteItem(item, finalContainerName, domainType))
-            .collect(Collectors.toList());
+
+        if (entityInfo.getPartitionKeyFieldName() != null) {
+            Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(results).map(item -> {
+                String type = entityInfo.getPartitionKeyFieldType().toString().toLowerCase();
+                if (type.contains("integer")) {
+                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
+                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asInt()));
+                } else if (type.contains("boolean")) {
+                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
+                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asBoolean()));
+                } else {
+                    return CosmosBulkOperations.getDeleteItemOperation(item.get(entityInfo.getIdFieldName()).asText(),
+                        new PartitionKey(item.get(entityInfo.getPartitionKeyFieldName()).asText()));
+                }
+            });
+
+            return this.getCosmosAsyncClient()
+                .getDatabase(this.getDatabaseName())
+                .getContainer(containerName)
+                .executeBulkOperations(cosmosItemOperationFlux)
+                .flatMap(r -> {
+                    return Flux.just(r.getResponse().getItem(domainType));
+                }).toIterable();
+        } else {
+            return results.stream()
+                .map(item -> deleteItem(item, finalContainerName, domainType))
+                .collect(Collectors.toList());
+        }
     }
 
     @Override

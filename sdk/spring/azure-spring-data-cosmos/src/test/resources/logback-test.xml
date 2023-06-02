@@ -12,4 +12,6 @@
   <logger name="com.azure.cosmos" level="info"/>
   <logger name="org.springframework" level="error"/>
   <logger name="io.netty" level="error"/>
+  <!-- This will enable query logging, to include query parameter logging, set this logger to TRACE -->
+  <logger name="com.azure.cosmos.implementation.SqlQuerySpecLogger" level="TRACE"/>
 </configuration>

@@ -277,6 +277,13 @@ public class CosmosEntityInformation<T, ID> extends AbstractEntityInformation<T,
     }
 
     /**
+     * @eturn the partition key field type
+     */
+    public Object getPartitionKeyFieldType() {
+        return partitionKeyField == null ? null : partitionKeyField.getType();
+    }
+
+    /**
      * Check if auto creating container is allowed
      *
      * @return boolean

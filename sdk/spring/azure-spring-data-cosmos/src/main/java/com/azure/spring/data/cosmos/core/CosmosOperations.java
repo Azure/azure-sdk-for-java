@@ -4,6 +4,7 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
@@ -15,6 +16,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.data.domain.Sort;
+import reactor.core.publisher.Flux;
+
+import java.util.List;
 
 /**
  * Interface for cosmosDB operations
@@ -147,6 +151,7 @@ public interface CosmosOperations {
      * @return the patched item
      */
     <T> T patch(Object id, PartitionKey partitionKey, Class<T> domainType, CosmosPatchOperations patchOperations, CosmosPatchItemRequestOptions options);
+
     /**
      * Inserts item
      *
@@ -157,6 +162,17 @@ public interface CosmosOperations {
      * @return the inserted item
      */
     <T> T insert(String containerName, T objectToSave, PartitionKey partitionKey);
+
+    /**
+     * Inserts item
+     *
+     * @param containerName must not be {@literal null}
+     * @param objectToSave must not be {@literal null}
+     * @param partitionKey must not be {@literal null}
+     * @param <T> type class of domain type
+     * @return the inserted item
+     */
+    <S extends T, T> Iterable<T> insertAll(String containerName, Class<T> domainType, Flux<CosmosItemOperation> cosmosItemOperationFlux);
 
     /**
      * Inserts item
@@ -211,6 +227,15 @@ public interface CosmosOperations {
      * @param entity the entity object
      */
     <T> void deleteEntity(String containerName, T entity);
+
+    /**
+     * Delete using a list of entities
+     *
+     * @param <T> type class of domain type
+     * @param containerName the container name
+     * @param cosmosItemOperations the Flux of the CosmosItemOperation's to delete
+     */
+    <T> void deleteEntities(String containerName, Flux<CosmosItemOperation> cosmosItemOperations);
 
     /**
      * Delete all items in a container
@@ -386,5 +411,4 @@ public interface CosmosOperations {
      * @return the Page
      */
     <T> Page<T> runPaginationQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType);
-
 }

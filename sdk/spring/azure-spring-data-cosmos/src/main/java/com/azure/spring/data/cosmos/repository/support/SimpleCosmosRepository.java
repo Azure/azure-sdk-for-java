@@ -4,7 +4,9 @@
 package com.azure.spring.data.cosmos.repository.support;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
+import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
@@ -19,10 +21,10 @@ import org.springframework.data.domain.Sort;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import reactor.core.publisher.Flux;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 
@@ -146,13 +148,18 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public <S extends T> Iterable<S> saveAll(Iterable<S> entities) {
         Assert.notNull(entities, "Iterable entities should not be null");
 
-        final List<S> savedEntities = new ArrayList<>();
-        entities.forEach(entity -> {
-            final S savedEntity = this.save(entity);
-            savedEntities.add(savedEntity);
+        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity -> {
+            if (information.isNew(entity)) {
+                return CosmosBulkOperations.getCreateItemOperation(entity,
+                    new PartitionKey(information.getPartitionKeyFieldValue(entity)));
+            } else {
+                return CosmosBulkOperations.getReplaceItemOperation(this.information.getId(entity).toString(),
+                    entity, new PartitionKey(information.getPartitionKeyFieldValue(entity)));
+            }
         });
 
-        return savedEntities;
+        return (Iterable<S>) operation.insertAll(this.information.getContainerName(), this.information.getJavaType(),
+            cosmosItemOperationFlux);
     }
 
     /**
@@ -274,7 +281,12 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
     public void deleteAll(Iterable<? extends T> entities) {
         Assert.notNull(entities, "Iterable entities should not be null");
 
-        StreamSupport.stream(entities.spliterator(), true).forEach(this::delete);
+        Flux<CosmosItemOperation> cosmosItemOperationFlux = Flux.fromIterable(entities).map(entity -> {
+            return CosmosBulkOperations.getDeleteItemOperation(information.getId(entity).toString(),
+                new PartitionKey(information.getPartitionKeyFieldValue(entity)));
+        });
+
+        this.operation.deleteEntities(this.information.getContainerName(), cosmosItemOperationFlux);
     }
 
     /**
