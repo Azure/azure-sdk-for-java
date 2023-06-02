@@ -1,6 +1,8 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.FeedRange;
+import com.azure.cosmos.models.ThroughputResponse;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -46,6 +48,30 @@ public class ContainerAsyncCodeSnippets {
             System.out.println("Feed range: " + feedRange);
         }
         // END: com.azure.cosmos.CosmosContainer.getFeedRanges
+    }
+
+    public void readThroughputAsyncSample() {
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.readThroughput
+        Mono<ThroughputResponse> throughputResponseMono = cosmosAsyncContainer.readThroughput();
+        throughputResponseMono.subscribe(throughputResponse -> {
+            System.out.println(throughputResponse);
+        }, throwable -> {
+            throwable.printStackTrace();
+        });
+        // END: com.azure.cosmos.CosmosAsyncContainer.readThroughput
+    }
+
+    public void readThroughputSample() {
+        // BEGIN: com.azure.cosmos.CosmosContainer.readThroughput
+        try {
+            ThroughputResponse throughputResponse = cosmosContainer.readThroughput();
+            System.out.println(throughputResponse);
+        } catch (CosmosException ce) {
+            ce.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // END: com.azure.cosmos.CosmosContainer.readThroughput
     }
 
 }
