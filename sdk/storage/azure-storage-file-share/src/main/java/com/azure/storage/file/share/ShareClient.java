@@ -8,19 +8,37 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.implementation.AzureFileStorageImpl;
+import com.azure.storage.file.share.implementation.models.ServicesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.ServicesSetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.SharePermission;
+import com.azure.storage.file.share.implementation.models.ShareStats;
+import com.azure.storage.file.share.implementation.models.SharesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.SharesCreatePermissionHeaders;
+import com.azure.storage.file.share.implementation.models.SharesGetAccessPolicyHeaders;
+import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
+import com.azure.storage.file.share.implementation.models.SharesSetAccessPolicyHeaders;
+import com.azure.storage.file.share.implementation.models.SharesSetMetadataHeaders;
+import com.azure.storage.file.share.implementation.models.SharesSetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.util.ModelHelper;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareRequestConditions;
+import com.azure.storage.file.share.models.ShareServiceProperties;
 import com.azure.storage.file.share.models.ShareSignedIdentifier;
 import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareStatistics;
@@ -38,10 +56,16 @@ import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
+import static com.azure.storage.common.implementation.StorageImplUtils.THREAD_POOL;
 import static com.azure.storage.common.implementation.StorageImplUtils.blockWithOptionalTimeout;
 
 /**
@@ -96,7 +120,7 @@ public class ShareClient {
      * @return the URL of the storage account
      */
     public String getAccountUrl() {
-        return client.getAccountUrl();
+        return azureFileStorageClient.getUrl();
     }
 
     /**
@@ -105,7 +129,11 @@ public class ShareClient {
      * @return the url of the Storage Share.
      */
     public String getShareUrl() {
-        return client.getShareUrl();
+        StringBuilder shareUrlString = new StringBuilder(azureFileStorageClient.getUrl()).append("/").append(shareName);
+        if (snapshot != null) {
+            shareUrlString.append("?sharesnapshot=").append(snapshot);
+        }
+        return shareUrlString.toString();
     }
 
     /**
@@ -114,7 +142,7 @@ public class ShareClient {
      * @return the service version the client is using.
      */
     public ShareServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
+        return this.serviceVersion;
     }
 
     /**
@@ -275,9 +303,8 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> createWithResponse(Map<String, String> metadata, Integer quotaInGB, Duration timeout,
         Context context) {
-        Mono<Response<ShareInfo>> response = client.createWithResponse(new ShareCreateOptions().setQuotaInGb(quotaInGB)
-            .setMetadata(metadata), context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return createWithResponse(new ShareCreateOptions().setQuotaInGb(quotaInGB).setMetadata(metadata), timeout,
+            context);
     }
 
     /**
@@ -309,8 +336,26 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> createWithResponse(ShareCreateOptions options, Duration timeout,
         Context context) {
-        Mono<Response<ShareInfo>> response = client.createWithResponse(options, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareCreateOptions finalOptions = options == null ? new ShareCreateOptions() : options;
+        String enabledProtocol = finalOptions.getProtocols() == null ? null : finalOptions.getProtocols().toString();
+        String finalEnabledProtocol = "".equals(enabledProtocol) ? null : enabledProtocol;
+        try {
+            Supplier<ResponseBase<SharesCreateHeaders, Void>> operation = () ->
+                azureFileStorageClient.getShares()
+                    .createWithResponse(shareName, null, finalOptions.getMetadata(), finalOptions.getQuotaInGb(),
+                        finalOptions.getAccessTier(), finalEnabledProtocol, finalOptions.getRootSquash(), finalContext);
+
+            ResponseBase<SharesCreateHeaders, Void> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return ModelHelper.mapToShareInfoResponse(response);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -368,8 +413,20 @@ public class ShareClient {
      * share was successfully created. If status code is 409, a share already existed at this location.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ShareInfo> createIfNotExistsWithResponse(ShareCreateOptions options, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(client.createIfNotExistsWithResponse(options, context), timeout);
+    public Response<ShareInfo> createIfNotExistsWithResponse(ShareCreateOptions options, Duration timeout,
+        Context context) {
+        try {
+            return createWithResponse(options, timeout, context);
+        } catch (ShareStorageException e) {
+            if (e.getStatusCode() == 409) {
+                HttpResponse res = e.getResponse();
+                return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), null);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
     }
 
     /**
@@ -667,8 +724,24 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareProperties> getPropertiesWithResponse(ShareGetPropertiesOptions options, Duration timeout,
         Context context) {
-        Mono<Response<ShareProperties>> response = client.getPropertiesWithResponse(options, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        try {
+            Supplier<ResponseBase<SharesGetPropertiesHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getShares()
+                    .getPropertiesWithResponse(shareName, snapshot, null, requestConditions.getLeaseId(), finalContext);
+
+            ResponseBase<SharesGetPropertiesHeaders, Void> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return ModelHelper.mapGetPropertiesResponse(response);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -780,8 +853,25 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> setPropertiesWithResponse(ShareSetPropertiesOptions options, Duration timeout,
         Context context) {
-        Mono<Response<ShareInfo>> response = client.setPropertiesWithResponse(options, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        StorageImplUtils.assertNotNull("options", options);
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        Context finalContext = context == null ? Context.NONE : context;
+
+        try {
+            Supplier<ResponseBase<SharesSetPropertiesHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getShares().setPropertiesWithResponse(shareName, null,
+                    options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(),
+                    options.getRootSquash(), finalContext);
+
+            return ModelHelper.mapToShareInfoResponse((timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get()));
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -890,8 +980,24 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> setMetadataWithResponse(ShareSetMetadataOptions options, Duration timeout,
         Context context) {
-        Mono<Response<ShareInfo>> response = client.setMetadataWithResponse(options, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        StorageImplUtils.assertNotNull("options", options);
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        Context finalContext = context == null ? Context.NONE : context;
+
+        try {
+            Supplier<ResponseBase<SharesSetMetadataHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getShares().setMetadataWithResponse(shareName, null, options.getMetadata(),
+                    requestConditions.getLeaseId(), finalContext);
+
+            return ModelHelper.mapToShareInfoResponse((timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get()));
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -948,7 +1054,23 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ShareSignedIdentifier> getAccessPolicy(ShareGetAccessPolicyOptions options) {
-        return new PagedIterable<>(client.getAccessPolicy(options));
+        ShareGetAccessPolicyOptions finalOptions = options == null ? new ShareGetAccessPolicyOptions() : options;
+        ShareRequestConditions requestConditions = finalOptions.getRequestConditions() == null
+            ? new ShareRequestConditions() : finalOptions.getRequestConditions();
+
+        ResponseBase<SharesGetAccessPolicyHeaders, List<ShareSignedIdentifier>> responseBase =
+            this.azureFileStorageClient.getShares()
+                .getAccessPolicyWithResponse(shareName, null, requestConditions.getLeaseId(), Context.NONE);
+
+        Supplier<PagedResponse<ShareSignedIdentifier>> response = () -> new PagedResponseBase<>(
+            responseBase.getRequest(),
+            responseBase.getStatusCode(),
+            responseBase.getHeaders(),
+            responseBase.getValue(),
+            null,
+            responseBase.getDeserializedHeaders());
+
+        return new PagedIterable<>(response);
     }
 
     /**
@@ -1020,7 +1142,7 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> setAccessPolicyWithResponse(List<ShareSignedIdentifier> permissions, Duration timeout,
-                                                           Context context) {
+        Context context) {
         return setAccessPolicyWithResponse(new ShareSetAccessPolicyOptions().setPermissions(permissions), timeout,
             context);
     }
@@ -1064,8 +1186,47 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareInfo> setAccessPolicyWithResponse(ShareSetAccessPolicyOptions options, Duration timeout,
         Context context) {
-        Mono<Response<ShareInfo>> response = client.setAccessPolicyWithResponse(options, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        options = options == null ? new ShareSetAccessPolicyOptions() : options;
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        List<ShareSignedIdentifier> permissions = options.getPermissions();
+        Context finalContext = context == null ? Context.NONE : context;
+
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
+        if (permissions != null) {
+            for (ShareSignedIdentifier permission : permissions) {
+                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getStartsOn() != null) {
+                    permission.getAccessPolicy().setStartsOn(
+                        permission.getAccessPolicy().getStartsOn().truncatedTo(ChronoUnit.SECONDS));
+                }
+                if (permission.getAccessPolicy() != null && permission.getAccessPolicy().getExpiresOn() != null) {
+                    permission.getAccessPolicy().setExpiresOn(
+                        permission.getAccessPolicy().getExpiresOn().truncatedTo(ChronoUnit.SECONDS));
+                }
+            }
+        }
+
+        try {
+            Supplier<ResponseBase<SharesSetAccessPolicyHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getShares()
+                    .setAccessPolicyWithResponse(shareName, null, requestConditions.getLeaseId(), permissions,
+                        finalContext);
+
+            ResponseBase<SharesSetAccessPolicyHeaders, Void> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return ModelHelper.mapToShareInfoResponse(response);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -1150,8 +1311,26 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareStatistics> getStatisticsWithResponse(ShareGetStatisticsOptions options, Duration timeout,
         Context context) {
-        Mono<Response<ShareStatistics>> response = client.getStatisticsWithResponse(options, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        options = options == null ? new ShareGetStatisticsOptions() : options;
+        ShareRequestConditions requestConditions = options.getRequestConditions() == null
+            ? new ShareRequestConditions() : options.getRequestConditions();
+        Context finalContext = context == null ? Context.NONE : context;
+
+        try {
+            Supplier<ResponseBase<SharesGetStatisticsHeaders, ShareStats>> operation = () ->
+                this.azureFileStorageClient.getShares().getStatisticsWithResponse(shareName, null,
+                    requestConditions.getLeaseId(), finalContext);
+
+            ResponseBase<SharesGetStatisticsHeaders, ShareStats> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return ModelHelper.mapGetStatisticsResponse(response);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -1779,7 +1958,13 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> createPermissionWithResponse(String filePermission, Context context) {
-        return client.createPermissionWithResponse(filePermission, context).block();
+        Context finalContext = context == null ? Context.NONE : context;
+        SharePermission sharePermission = new SharePermission().setPermission(filePermission);
+        ResponseBase<SharesCreatePermissionHeaders, Void> response = this.azureFileStorageClient.getShares()
+            .createPermissionWithResponse(shareName, sharePermission, null, finalContext);
+
+        return new SimpleResponse<>(response,
+            response.getDeserializedHeaders().getXMsFilePermissionKey());
     }
 
     /**

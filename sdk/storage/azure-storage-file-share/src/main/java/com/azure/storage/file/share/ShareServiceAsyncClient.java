@@ -830,8 +830,8 @@ public final class ShareServiceAsyncClient {
         }
     }
 
-    Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(
-        String deletedShareName, String deletedShareVersion, Context context) {
+    Mono<Response<ShareAsyncClient>> undeleteShareWithResponse(String deletedShareName, String deletedShareVersion,
+        Context context) {
         return this.azureFileStorageClient.getShares().restoreWithResponseAsync(
             deletedShareName, null, null, deletedShareName, deletedShareVersion, context)
         .map(response -> new SimpleResponse<>(response, getShareAsyncClient(deletedShareName)));

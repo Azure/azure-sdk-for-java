@@ -1297,6 +1297,15 @@ class ShareAPITests extends APISpec {
         permission == filePermission
     }
 
+    def "Create permission with null and empty key"() {
+        given:
+        primaryShareClient.create()
+
+        expect:
+        FileTestHelper.assertResponseStatusCode(
+            primaryShareClient.createPermissionWithResponse(null, null), 201)
+    }
+
     @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "V2021_04_10")
     def "Create and get permission oAuth"() {
         setup:

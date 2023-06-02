@@ -2476,7 +2476,7 @@ public class ShareFileAsyncClient {
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.CLEAR,
                 0L, null, null, requestConditions.getLeaseId(), null, (Flux<ByteBuffer>) null, context)
-            .map(ShareFileAsyncClient::uploadResponse);
+            .map(ModelHelper::transformUploadResponse);
     }
 
     /**

@@ -9,6 +9,7 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
@@ -23,10 +24,14 @@ import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
+import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
+import com.azure.storage.file.share.implementation.models.ShareStats;
+import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
 import com.azure.storage.file.share.models.CopyStatusType;
 import com.azure.storage.file.share.models.CopyableFileSmbPropertiesList;
@@ -40,10 +45,13 @@ import com.azure.storage.file.share.models.ShareFileInfo;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
+import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
 
@@ -62,6 +70,7 @@ public class ModelHelper {
     private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
 
     private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
+    private static final HttpHeaderName LAST_MODIFIED = HttpHeaderName.fromString("Last-Modified");
 
     /**
      * Fills in default values for a ParallelTransferOptions where no value has been set. This will construct a new
@@ -363,9 +372,11 @@ public class ModelHelper {
         return new SimpleResponse<>(response, shareFileMetadataInfo);
     }
 
-    public static void validateCopyFlagAndSmbProperties(ShareFileCopyOptions options,FileSmbProperties tempSmbProperties) {
+    public static void validateCopyFlagAndSmbProperties(ShareFileCopyOptions options,
+        FileSmbProperties tempSmbProperties) {
         // check if only copy flag or smb properties are set (not both)
-        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy()  == null ? new CopyableFileSmbPropertiesList() : options.getSmbPropertiesToCopy();
+        CopyableFileSmbPropertiesList list = options.getSmbPropertiesToCopy()  == null
+            ? new CopyableFileSmbPropertiesList() : options.getSmbPropertiesToCopy();
         if (list.isFileAttributes() && tempSmbProperties.getNtfsFileAttributes() != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetFileAttributes and smbProperties.ntfsFileAttributes cannot be set."));
         }
@@ -378,5 +389,60 @@ public class ModelHelper {
         if (list.isChangedOn() && tempSmbProperties.getFileChangeTime() != null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("Both CopyableFileSmbPropertiesList.isSetChangedOn and smbProperties.fileChangeTime cannot be set."));
         }
+    }
+
+    public static Response<ShareFileUploadInfo> transformUploadResponse(ResponseBase<FilesUploadRangeHeaders, Void> response) {
+        FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
+        String eTag = headers.getETag();
+        OffsetDateTime lastModified = headers.getLastModified();
+        byte[] contentMD5;
+        try {
+            contentMD5 = headers.getContentMD5();
+        } catch (NullPointerException e) {
+            contentMD5 = null;
+        }
+        Boolean isServerEncrypted = headers.isXMsRequestServerEncrypted();
+        ShareFileUploadInfo shareFileUploadInfo = new ShareFileUploadInfo(eTag, lastModified, contentMD5,
+            isServerEncrypted);
+        return new SimpleResponse<>(response, shareFileUploadInfo);
+    }
+
+    public static Response<ShareInfo> mapToShareInfoResponse(Response<?> response) {
+        String eTag = getETag(response.getHeaders());
+        OffsetDateTime lastModified = new DateTimeRfc1123(response.getHeaders().getValue(LAST_MODIFIED)).getDateTime();
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            new ShareInfo(eTag, lastModified));
+    }
+
+    public static Response<ShareProperties> mapGetPropertiesResponse(ResponseBase<SharesGetPropertiesHeaders, Void> response) {
+        SharesGetPropertiesHeaders headers = response.getDeserializedHeaders();
+        ShareProperties shareProperties = new ShareProperties()
+            .setETag(headers.getETag())
+            .setLastModified(headers.getLastModified())
+            .setMetadata(headers.getXMsMeta())
+            .setQuota(headers.getXMsShareQuota())
+            .setNextAllowedQuotaDowngradeTime(headers.getXMsShareNextAllowedQuotaDowngradeTime())
+            .setProvisionedEgressMBps(headers.getXMsShareProvisionedEgressMbps())
+            .setProvisionedIngressMBps(headers.getXMsShareProvisionedIngressMbps())
+            .setProvisionedBandwidthMiBps(headers.getXMsShareProvisionedBandwidthMibps())
+            .setProvisionedIops(headers.getXMsShareProvisionedIops())
+            .setLeaseDuration(headers.getXMsLeaseDuration())
+            .setLeaseState(headers.getXMsLeaseState())
+            .setLeaseStatus(headers.getXMsLeaseStatus())
+            .setAccessTier(headers.getXMsAccessTier())
+            .setAccessTierChangeTime(headers.getXMsAccessTierChangeTime())
+            .setAccessTierTransitionState(headers.getXMsAccessTierTransitionState())
+            .setProtocols(ModelHelper.parseShareProtocols(headers.getXMsEnabledProtocols()))
+            .setRootSquash(headers.getXMsRootSquash());
+
+        return new SimpleResponse<>(response, shareProperties);
+    }
+
+    public static Response<ShareStatistics> mapGetStatisticsResponse(
+        ResponseBase<SharesGetStatisticsHeaders, ShareStats> response) {
+        ShareStatistics shareStatistics =
+            new ShareStatistics(response.getValue().getShareUsageBytes());
+
+        return new SimpleResponse<>(response, shareStatistics);
     }
 }

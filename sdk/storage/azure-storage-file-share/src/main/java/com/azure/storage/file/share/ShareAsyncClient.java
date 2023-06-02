@@ -376,7 +376,7 @@ public class ShareAsyncClient {
         return azureFileStorageClient.getShares()
             .createWithResponseAsync(shareName, null, options.getMetadata(), options.getQuotaInGb(),
                 options.getAccessTier(), enabledProtocol, options.getRootSquash(), context)
-            .map(this::mapToShareInfoResponse);
+            .map(ModelHelper::mapToShareInfoResponse);
     }
 
     /**
@@ -809,7 +809,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares()
             .getPropertiesWithResponseAsync(shareName, snapshot, null, requestConditions.getLeaseId(), context)
-            .map(this::mapGetPropertiesResponse);
+            .map(ModelHelper::mapGetPropertiesResponse);
     }
 
     /**
@@ -934,7 +934,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().setPropertiesWithResponseAsync(shareName, null,
             options.getQuotaInGb(), options.getAccessTier(), requestConditions.getLeaseId(), options.getRootSquash(), context)
-            .map(this::mapToShareInfoResponse);
+            .map(ModelHelper::mapToShareInfoResponse);
     }
 
     /**
@@ -1058,7 +1058,7 @@ public class ShareAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getShares().setMetadataWithResponseAsync(shareName, null,
             options.getMetadata(), requestConditions.getLeaseId(), context)
-            .map(this::mapToShareInfoResponse);
+            .map(ModelHelper::mapToShareInfoResponse);
     }
 
     /**
@@ -1268,7 +1268,7 @@ public class ShareAsyncClient {
 
         return azureFileStorageClient.getShares()
             .setAccessPolicyWithResponseAsync(shareName, null, requestConditions.getLeaseId(), permissions, context)
-            .map(this::mapToShareInfoResponse);
+            .map(ModelHelper::mapToShareInfoResponse);
     }
 
     /**
