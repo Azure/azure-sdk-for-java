@@ -29,7 +29,6 @@ import com.azure.spring.data.cosmos.core.convert.MappingCosmosConverter;
 import com.azure.spring.data.cosmos.core.generator.CountQueryGenerator;
 import com.azure.spring.data.cosmos.core.generator.FindQuerySpecGenerator;
 import com.azure.spring.data.cosmos.core.generator.NativeQueryGenerator;
-import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.event.AfterLoadEvent;
 import com.azure.spring.data.cosmos.core.mapping.event.CosmosMappingEvent;
 import com.azure.spring.data.cosmos.core.query.CosmosPageImpl;
@@ -354,7 +353,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(domainType, "domainType should not be null");
         String containerPartitionKey = getContainerProperties(containerName).getPartitionKeyDefinition()
             .getPaths().iterator().next().replaceAll("^/|/$", "");
-        if (containerPartitionKey.equals("id")) {
+        if (containerPartitionKey!=null && containerPartitionKey.equals("id")) {
             return findById(id, domainType, new PartitionKey(CosmosUtils.getStringIDValue(id)));
         }
         LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead. See https://aka.ms/PointReadsInSpring for more info.");
