@@ -62,8 +62,8 @@ stages:
       ResourceGroupName: 'oltp-spark-ci'
       ClientId: $(spark-databricks-cosmos-spn-clientId)
       ClientSecret: $(spark-databricks-cosmos-spn-clientSecret)
-      CosmosContainerName: 'sampleContainer3'
-      CosmosDatabaseName: 'sampleDB3'
+      CosmosContainerName: 'sampleContainer4'
+      CosmosDatabaseName: 'sampleDB4'
       DatabricksToken: $(spark-databricks-token)
       SparkVersion: 'azure-cosmos-spark_3-4_2-12'
       ClusterName: 'oltp-ci-spark34-2workers-ds3v2'
