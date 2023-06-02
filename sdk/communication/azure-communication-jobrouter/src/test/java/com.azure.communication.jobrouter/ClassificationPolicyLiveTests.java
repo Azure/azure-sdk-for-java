@@ -76,13 +76,12 @@ public class ClassificationPolicyLiveTests extends JobRouterTestBase {
          * Create classification policy
          */
         CreateClassificationPolicyOptions createClassificationPolicyOptions = new CreateClassificationPolicyOptions(
-            classificationPolicyId,
-            classificationPolicyName,
-            new StaticRule().setValue(1),
-            workerSelectors,
-            queueSelectors,
-            jobQueue.getId()
-        );
+            classificationPolicyId)
+            .setName(classificationPolicyName)
+            .setPrioritizationRule(new StaticRule().setValue(1))
+            .setWorkerSelectors(workerSelectors)
+            .setQueueSelectors(queueSelectors)
+            .setFallbackQueueId(jobQueue.getId());
 
         // Action
         ClassificationPolicy result = routerAdminClient.createClassificationPolicy(createClassificationPolicyOptions);

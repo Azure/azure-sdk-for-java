@@ -27,6 +27,10 @@ public final class VirtualNetworkLinkInner extends Resource {
     @JsonProperty(value = "properties")
     private VirtualNetworkLinkProperties innerProperties;
 
+    /** Creates an instance of VirtualNetworkLinkInner class. */
+    public VirtualNetworkLinkInner() {
+    }
+
     /**
      * Get the etag property: The ETag of the virtual network link.
      *

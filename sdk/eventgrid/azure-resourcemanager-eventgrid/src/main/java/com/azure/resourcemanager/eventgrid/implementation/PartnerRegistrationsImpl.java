@@ -27,16 +27,6 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
         this.serviceManager = serviceManager;
     }
 
-    public PartnerRegistration getByResourceGroup(String resourceGroupName, String partnerRegistrationName) {
-        PartnerRegistrationInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, partnerRegistrationName);
-        if (inner != null) {
-            return new PartnerRegistrationImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PartnerRegistration> getByResourceGroupWithResponse(
         String resourceGroupName, String partnerRegistrationName, Context context) {
         Response<PartnerRegistrationInner> inner =
@@ -47,6 +37,16 @@ public final class PartnerRegistrationsImpl implements PartnerRegistrations {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PartnerRegistrationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PartnerRegistration getByResourceGroup(String resourceGroupName, String partnerRegistrationName) {
+        PartnerRegistrationInner inner =
+            this.serviceClient().getByResourceGroup(resourceGroupName, partnerRegistrationName);
+        if (inner != null) {
+            return new PartnerRegistrationImpl(inner, this.manager());
         } else {
             return null;
         }

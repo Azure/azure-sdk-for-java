@@ -32,7 +32,7 @@ public final class OperationsListMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"name\":\"ienjbdlwtgr\",\"isDataAction\":true,\"display\":{\"provider\":\"jumasx\",\"resource\":\"jpqyegu\",\"operation\":\"hb\",\"description\":\"hejjz\"},\"origin\":\"dudgwdslfhot\"}]}";
+            "{\"value\":[{\"name\":\"umasxazjpq\",\"isDataAction\":false,\"display\":{\"provider\":\"lhbxxhejjzzvdud\",\"resource\":\"dslfhotwmcy\",\"operation\":\"wlbjnpgacftade\",\"description\":\"nltyfsoppusuesnz\"},\"origin\":\"ej\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,12 +62,12 @@ public final class OperationsListMockTests {
 
         PagedIterable<OperationResult> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ienjbdlwtgr", response.iterator().next().name());
-        Assertions.assertEquals(true, response.iterator().next().isDataAction());
-        Assertions.assertEquals("jumasx", response.iterator().next().display().provider());
-        Assertions.assertEquals("jpqyegu", response.iterator().next().display().resource());
-        Assertions.assertEquals("hb", response.iterator().next().display().operation());
-        Assertions.assertEquals("hejjz", response.iterator().next().display().description());
-        Assertions.assertEquals("dudgwdslfhot", response.iterator().next().origin());
+        Assertions.assertEquals("umasxazjpq", response.iterator().next().name());
+        Assertions.assertEquals(false, response.iterator().next().isDataAction());
+        Assertions.assertEquals("lhbxxhejjzzvdud", response.iterator().next().display().provider());
+        Assertions.assertEquals("dslfhotwmcy", response.iterator().next().display().resource());
+        Assertions.assertEquals("wlbjnpgacftade", response.iterator().next().display().operation());
+        Assertions.assertEquals("nltyfsoppusuesnz", response.iterator().next().display().description());
+        Assertions.assertEquals("ej", response.iterator().next().origin());
     }
 }

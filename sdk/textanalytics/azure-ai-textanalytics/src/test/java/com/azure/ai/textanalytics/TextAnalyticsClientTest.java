@@ -3,7 +3,7 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.models.AbstractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -13,7 +13,8 @@ import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityConditionality;
-import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
 import com.azure.ai.textanalytics.models.LinkedEntity;
@@ -26,19 +27,18 @@ import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesOptions;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyOptions;
-import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
-import com.azure.ai.textanalytics.util.AbstractSummaryPagedIterable;
-import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryPagedIterable;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
-import com.azure.ai.textanalytics.util.ExtractSummaryPagedIterable;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizePiiEntitiesResultCollection;
@@ -73,7 +73,7 @@ import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.TIME_NOW;
-import static com.azure.ai.textanalytics.TestUtils.getAbstractSummaryActionResult;
+import static com.azure.ai.textanalytics.TestUtils.getAbstractiveSummaryActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getAnalyzeSentimentResultCollectionForActions;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
@@ -96,13 +96,13 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchPiiEntitiesFo
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchTextSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedDocumentSentiment;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractKeyPhrasesActionResult;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultCollection;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractSummaryResultSortByOffset;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractiveSummaryResultCollection;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedExtractiveSummaryResultSortByOffset;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizeLinkedEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedRecognizePiiEntitiesActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExtractKeyPhrasesResultCollection;
-import static com.azure.ai.textanalytics.TestUtils.getExtractSummaryActionResult;
+import static com.azure.ai.textanalytics.TestUtils.getExtractiveSummaryActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getLinkedEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1;
 import static com.azure.ai.textanalytics.TestUtils.getPiiEntitiesList1ForDomainFilter;
@@ -116,7 +116,6 @@ import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_C
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT_BATCH;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_PARAMETER_VALUE;
-import static com.azure.ai.textanalytics.models.WarningCode.LONG_WORDS_IN_DOCUMENT;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -1200,30 +1199,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
         extractBatchStringKeyPhrasesShowStatsRunner((inputs, options) ->
             validateExtractKeyPhrasesResultCollection(true, getExpectedBatchKeyPhrases(), client.extractKeyPhrasesBatch(inputs, null, options)));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractKeyPhrasesWarningRunner(input ->
-            client.extractKeyPhrases(input).getWarnings().forEach(warning -> {
-                assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
-            }));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void extractKeyPhrasesBatchWarning(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractKeyPhrasesBatchWarningRunner(inputs ->
-            client.extractKeyPhrasesBatchWithResponse(inputs, null, Context.NONE).getValue().forEach(keyPhrasesResult ->
-                keyPhrasesResult.getKeyPhrases().getWarnings().forEach(warning -> {
-                    assertTrue(WARNING_TOO_LONG_DOCUMENT_INPUT_MESSAGE.equals(warning.getMessage()));
-                    assertTrue(LONG_WORDS_IN_DOCUMENT.equals(warning.getWarningCode()));
-                })
-            ));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2664,7 +2639,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeExtractSummaryActionWithDefaultParameterValues(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractSummaryActionRunner((documents, tasks) -> {
+        extractiveSummaryActionRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
             syncPoller = setPollInterval(syncPoller);
@@ -2679,9 +2654,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(null),
                     IterableStream.of(null),
                     IterableStream.of(null),
-                    IterableStream.of(asList(getExtractSummaryActionResult(false, null,
+                    IterableStream.of(asList(getExtractiveSummaryActionResult(false, null,
                         TIME_NOW,
-                        getExpectedExtractSummaryResultCollection(getExpectedExtractSummaryResultSortByOffset()),
+                        getExpectedExtractiveSummaryResultCollection(getExpectedExtractiveSummaryResultSortByOffset()),
                         null))),
                     IterableStream.of(null)
                 )),
@@ -2694,7 +2669,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeExtractSummaryActionSortedByOffset(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractSummaryActionRunner((documents, tasks) -> {
+        extractiveSummaryActionRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
             syncPoller = setPollInterval(syncPoller);
@@ -2703,11 +2678,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
             List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
             actionsResults.forEach(
-                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
-                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
+                actionsResult -> actionsResult.getExtractiveSummaryResults().forEach(
+                    extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults().forEach(
                         documentResult -> assertTrue(isAscendingOrderByOffSet(
                             documentResult.getSentences().stream().collect(Collectors.toList()))))));
-        }, 4, SummarySentencesOrder.OFFSET);
+        }, 4, ExtractiveSummarySentencesOrder.OFFSET);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2715,7 +2690,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeExtractSummaryActionSortedByRankScore(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractSummaryActionRunner((documents, tasks) -> {
+        extractiveSummaryActionRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
             syncPoller = setPollInterval(syncPoller);
@@ -2723,11 +2698,11 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
             final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
             actionsResults.forEach(
-                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
-                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
+                actionsResult -> actionsResult.getExtractiveSummaryResults().forEach(
+                    extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults().forEach(
                         documentResult -> assertTrue(isDescendingOrderByRankScore(
                             documentResult.getSentences().stream().collect(Collectors.toList()))))));
-        }, 4, SummarySentencesOrder.RANK);
+        }, 4, ExtractiveSummarySentencesOrder.RANK);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2735,7 +2710,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeExtractSummaryActionWithSentenceCountLessThanMaxCount(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractSummaryActionRunner((documents, tasks) -> {
+        extractiveSummaryActionRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
             syncPoller = setPollInterval(syncPoller);
@@ -2743,8 +2718,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
 
             result.stream().collect(Collectors.toList()).forEach(
-                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
-                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
+                actionsResult -> actionsResult.getExtractiveSummaryResults().forEach(
+                    extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults().forEach(
                         documentResult -> assertTrue(
                             documentResult.getSentences().stream().collect(Collectors.toList()).size() < 20))));
         }, 20, null);
@@ -2755,7 +2730,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeExtractSummaryActionWithNonDefaultSentenceCount(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractSummaryActionRunner((documents, tasks) -> {
+        extractiveSummaryActionRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
             syncPoller = setPollInterval(syncPoller);
@@ -2765,8 +2740,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             final List<AnalyzeActionsResult> actionsResults = result.stream().collect(Collectors.toList());
 
             actionsResults.forEach(
-                actionsResult -> actionsResult.getExtractSummaryResults().forEach(
-                    extractSummaryActionResult -> extractSummaryActionResult.getDocumentsResults().forEach(
+                actionsResult -> actionsResult.getExtractiveSummaryResults().forEach(
+                    extractiveSummaryActionResult -> extractiveSummaryActionResult.getDocumentsResults().forEach(
                         documentResult -> assertEquals(
                             documentResult.getSentences().stream().collect(Collectors.toList()).size(), 5))));
         }, 5, null);
@@ -2781,7 +2756,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         int[] invalidMaxSentenceCounts = {0, 21};
 
         for (int invalidCount: invalidMaxSentenceCounts) {
-            extractSummaryActionRunner(
+            extractiveSummaryActionRunner(
                 (documents, tasks) -> {
                     HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
                         SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
@@ -2802,7 +2777,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void analyzeAbstractiveSummaryActionWithDefaultParameterValues(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        abstractSummaryActionRunner((documents, tasks) -> {
+        abstractiveSummaryActionRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
             syncPoller = setPollInterval(syncPoller);
@@ -2818,9 +2793,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(null),
                     IterableStream.of(null),
                     IterableStream.of(null),
-                    IterableStream.of(asList(getAbstractSummaryActionResult(false, null,
+                    IterableStream.of(asList(getAbstractiveSummaryActionResult(false, null,
                         TIME_NOW,
-                        new AbstractSummaryResultCollection(asList(getExpectedAbstractiveSummaryResult())),
+                        new AbstractiveSummaryResultCollection(asList(getExpectedAbstractiveSummaryResult())),
                         null
                     )))
                 )),
@@ -2874,15 +2849,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void beginAbstractSummaryStringInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        abstractSummaryRunner((documents, options) -> {
-            SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
+        abstractiveSummaryRunner((documents, options) -> {
+            SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable> syncPoller =
                 client.beginAbstractSummary(documents);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            AbstractSummaryPagedIterable result = syncPoller.getFinalResult();
+            AbstractiveSummaryPagedIterable result = syncPoller.getFinalResult();
             result.stream().collect(Collectors.toList()).forEach(
                 documentResult -> validateAbstractiveSummaryResultCollection(false,
-                    new AbstractSummaryResultCollection(asList(getExpectedAbstractiveSummaryResult())),
+                    new AbstractiveSummaryResultCollection(asList(getExpectedAbstractiveSummaryResult())),
                     documentResult));
         }, 4);
     }
@@ -2891,15 +2866,15 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void beginAbstractSummaryMaxOverload(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        abstractSummaryMaxOverloadRunner((documents, options) -> {
-            SyncPoller<AbstractSummaryOperationDetail, AbstractSummaryPagedIterable> syncPoller =
+        abstractiveSummaryMaxOverloadRunner((documents, options) -> {
+            SyncPoller<AbstractiveSummaryOperationDetail, AbstractiveSummaryPagedIterable> syncPoller =
                 client.beginAbstractSummary(documents, options, Context.NONE);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            AbstractSummaryPagedIterable result = syncPoller.getFinalResult();
+            AbstractiveSummaryPagedIterable result = syncPoller.getFinalResult();
             result.stream().collect(Collectors.toList()).forEach(
                 documentResult -> validateAbstractiveSummaryResultCollection(false,
-                    new AbstractSummaryResultCollection(asList(getExpectedAbstractiveSummaryResult())),
+                    new AbstractiveSummaryResultCollection(asList(getExpectedAbstractiveSummaryResult())),
                     documentResult));
         }, 4);
     }
@@ -2909,18 +2884,18 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void beginExtractSummarySortedByOffset(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractSummaryRunner((documents, options) -> {
-            SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> syncPoller =
+        extractiveSummaryRunner((documents, options) -> {
+            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> syncPoller =
                 client.beginExtractSummary(documents, "en", options);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            ExtractSummaryPagedIterable result = syncPoller.getFinalResult();
+            ExtractiveSummaryPagedIterable result = syncPoller.getFinalResult();
             result.stream().collect(Collectors.toList()).forEach(
                 documentResultCollection -> documentResultCollection.forEach(
                     documentResult -> assertTrue(
                         isAscendingOrderByOffSet(documentResult.getSentences().stream().collect(Collectors.toList())))
                 ));
-        }, 4, SummarySentencesOrder.OFFSET);
+        }, 4, ExtractiveSummarySentencesOrder.OFFSET);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2928,19 +2903,19 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void beginExtractSummarySortedByRankScore(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractSummaryRunner((documents, options) -> {
-            SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> syncPoller =
+        extractiveSummaryRunner((documents, options) -> {
+            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> syncPoller =
                 client.beginExtractSummary(documents, "en", options);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            ExtractSummaryPagedIterable result = syncPoller.getFinalResult();
+            ExtractiveSummaryPagedIterable result = syncPoller.getFinalResult();
             result.stream().collect(Collectors.toList()).forEach(
                 documentResultCollection -> documentResultCollection.forEach(
                     documentResult -> assertTrue(
                         isDescendingOrderByRankScore(
                             documentResult.getSentences().stream().collect(Collectors.toList())))
                 ));
-        }, 4, SummarySentencesOrder.RANK);
+        }, 4, ExtractiveSummarySentencesOrder.RANK);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2948,13 +2923,13 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void beginExtractSummarySentenceCountLessThanMaxCount(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractSummaryRunner((documents, options) -> {
-            SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> syncPoller =
+        extractiveSummaryRunner((documents, options) -> {
+            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> syncPoller =
                 client.beginExtractSummary(documents, "en", options);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
 
-            ExtractSummaryPagedIterable result = syncPoller.getFinalResult();
+            ExtractiveSummaryPagedIterable result = syncPoller.getFinalResult();
             result.stream().collect(Collectors.toList()).forEach(
                 documentResultCollection -> documentResultCollection.forEach(
                     documentResult -> assertTrue(
@@ -2967,12 +2942,12 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
     public void beginExtractSummaryNonDefaultSentenceCount(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        extractSummaryRunner((documents, options) -> {
-            SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> syncPoller =
+        extractiveSummaryRunner((documents, options) -> {
+            SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> syncPoller =
                 client.beginExtractSummary(documents, "en", options);
             syncPoller = setPollInterval(syncPoller);
             syncPoller.waitForCompletion();
-            ExtractSummaryPagedIterable result = syncPoller.getFinalResult();
+            ExtractiveSummaryPagedIterable result = syncPoller.getFinalResult();
             result.stream().collect(Collectors.toList()).forEach(
                 documentResultCollection -> documentResultCollection.forEach(
                     documentResult -> assertEquals(
@@ -2989,14 +2964,14 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         int[] invalidMaxSentenceCounts = {0, 21};
 
         for (int invalidCount: invalidMaxSentenceCounts) {
-            extractSummaryRunner(
+            extractiveSummaryRunner(
                 (documents, options) -> {
                     HttpResponseException exception = assertThrows(HttpResponseException.class, () -> {
-                        SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> syncPoller =
+                        SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> syncPoller =
                             client.beginExtractSummary(documents, "en", options);
                         syncPoller = setPollInterval(syncPoller);
                         syncPoller.waitForCompletion();
-                        ExtractSummaryPagedIterable result = syncPoller.getFinalResult();
+                        ExtractiveSummaryPagedIterable result = syncPoller.getFinalResult();
                     });
                     assertEquals(
                         INVALID_PARAMETER_VALUE,

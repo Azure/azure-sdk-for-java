@@ -135,7 +135,7 @@ public class RestProxyUtilsTests {
             ),
             Arguments.of(
                 Named.of("stream", new HttpRequest(HttpMethod.GET, "http://localhost")
-                    .setBody(BinaryData.fromStream(new ByteArrayInputStream(EXPECTED)))
+                    .setBody(BinaryData.fromStream(new ByteArrayInputStream(EXPECTED), (long) EXPECTED.length))
                     .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)))
             ),
             Arguments.of(
@@ -227,7 +227,7 @@ public class RestProxyUtilsTests {
     public void expectedBodyLengthSync() throws IOException {
         try (InputStream byteArrayInputStream = new ByteArrayInputStream(EXPECTED)) {
             HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost")
-                .setBody(BinaryData.fromStream(byteArrayInputStream))
+                .setBody(BinaryData.fromStream(byteArrayInputStream, (long) EXPECTED.length))
                 .setHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(EXPECTED.length));
             assertArraysEqual(EXPECTED, validateAndCollectRequestSync(httpRequest));
         }

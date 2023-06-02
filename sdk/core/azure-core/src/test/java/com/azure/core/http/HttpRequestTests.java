@@ -177,7 +177,8 @@ public class HttpRequestTests {
             Arguments.of(BinaryData.fromString(BODY), BODY_LENGTH),
             Arguments.of(BinaryData.fromBytes(BODY_BYTES), BODY_LENGTH),
             Arguments.of(BinaryData.fromFlux(BODY_FLUX, null, false).block(), null),
-            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(BODY_BYTES)), null)
+            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(BODY_BYTES)), null),
+            Arguments.of(BinaryData.fromStream(new ByteArrayInputStream(BODY_BYTES), BODY_LENGTH), BODY_LENGTH)
         );
     }
 

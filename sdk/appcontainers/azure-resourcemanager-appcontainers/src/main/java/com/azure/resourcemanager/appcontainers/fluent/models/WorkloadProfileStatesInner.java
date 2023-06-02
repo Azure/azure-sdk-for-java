@@ -10,7 +10,7 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appcontainers.models.WorkloadProfileStatesProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Collection of all the workload Profile States for a Premium Managed Environment.. */
+/** Collection of all the workload Profile States for a Managed Environment.. */
 @Fluent
 public final class WorkloadProfileStatesInner extends ProxyResource {
     /*

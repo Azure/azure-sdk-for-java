@@ -97,8 +97,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/listUpgradeNotifications")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/listUpgradeNotifications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NotificationListResponse>> listUpgradeNotifications(
@@ -194,8 +193,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/listKeys")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/listKeys")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisAccessKeysInner>> listKeys(
@@ -209,8 +207,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/regenerateKey")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/regenerateKey")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisAccessKeysInner>> regenerateKey(
@@ -225,8 +222,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/forceReboot")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/forceReboot")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RedisForceRebootResponseInner>> forceReboot(
@@ -241,8 +237,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/import")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/import")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> importData(
@@ -257,8 +252,7 @@ public final class RedisClientImpl
 
         @Headers({"Content-Type: application/json"})
         @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}"
-                + "/export")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/export")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> exportData(
@@ -799,7 +793,7 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginCreate(
         String resourceGroupName, String name, RedisCreateParameters parameters) {
-        return beginCreateAsync(resourceGroupName, name, parameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
@@ -817,7 +811,7 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginCreate(
         String resourceGroupName, String name, RedisCreateParameters parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1065,7 +1059,7 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginUpdate(
         String resourceGroupName, String name, RedisUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
@@ -1083,7 +1077,7 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RedisResourceInner>, RedisResourceInner> beginUpdate(
         String resourceGroupName, String name, RedisUpdateParameters parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**
@@ -1304,7 +1298,7 @@ public final class RedisClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
-        return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
 
     /**
@@ -1320,7 +1314,7 @@ public final class RedisClientImpl
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
     /**
@@ -2469,7 +2463,7 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportData(
         String resourceGroupName, String name, ImportRdbParameters parameters) {
-        return beginImportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
+        return this.beginImportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
@@ -2487,7 +2481,7 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginImportData(
         String resourceGroupName, String name, ImportRdbParameters parameters, Context context) {
-        return beginImportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
+        return this.beginImportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**
@@ -2725,7 +2719,7 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportData(
         String resourceGroupName, String name, ExportRdbParameters parameters) {
-        return beginExportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
+        return this.beginExportDataAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
@@ -2743,7 +2737,7 @@ public final class RedisClientImpl
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginExportData(
         String resourceGroupName, String name, ExportRdbParameters parameters, Context context) {
-        return beginExportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
+        return this.beginExportDataAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**

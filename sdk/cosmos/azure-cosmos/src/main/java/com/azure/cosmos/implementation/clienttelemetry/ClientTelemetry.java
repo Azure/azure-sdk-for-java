@@ -109,6 +109,7 @@ public class ClientTelemetry {
     private static final double PERCENTILE_95 = 95.0;
     private static final double PERCENTILE_99 = 99.0;
     private static final double PERCENTILE_999 = 99.9;
+    private static final String USER_AGENT = Utils.getUserAgent();
     private final int clientTelemetrySchedulingSec;
 
     private final IAuthorizationTokenProvider tokenProvider;
@@ -118,7 +119,6 @@ public class ClientTelemetry {
                            Boolean acceleratedNetworking,
                            String clientId,
                            String processId,
-                           String userAgent,
                            ConnectionMode connectionMode,
                            String globalDatabaseAccountName,
                            String applicationRegion,
@@ -132,7 +132,7 @@ public class ClientTelemetry {
             getMachineId(diagnosticsClientContext.getConfig()),
             clientId,
             processId,
-            userAgent,
+            USER_AGENT,
             connectionMode,
             globalDatabaseAccountName,
             applicationRegion,
@@ -214,7 +214,10 @@ public class ClientTelemetry {
 
     public void init() {
         loadAzureVmMetaData();
-        sendClientTelemetry().subscribe();
+
+        if (this.isClientTelemetryEnabled()) {
+            sendClientTelemetry().subscribe();
+        }
     }
 
     public void close() {
@@ -264,8 +267,12 @@ public class ClientTelemetry {
                 try {
                     String endpoint = Configs.getClientTelemetryEndpoint();
                     if (StringUtils.isEmpty(endpoint)) {
-                        logger.info("ClientTelemetry {}",
-                            OBJECT_MAPPER.writeValueAsString(this.clientTelemetryInfo));
+                        //  This is the case where customer has enabled the client telemetry
+                        //  but has not provided the endpoint
+                        if (logger.isInfoEnabled()) {
+                            logger.info("ClientTelemetry {}",
+                                OBJECT_MAPPER.writeValueAsString(this.clientTelemetryInfo));
+                        }
                         clearDataForNextRun();
                         return this.sendClientTelemetry();
                     } else {

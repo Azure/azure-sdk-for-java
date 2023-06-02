@@ -62,7 +62,7 @@ import com.azure.ai.textanalytics.implementation.models.SentimentTaskResult;
 import com.azure.ai.textanalytics.implementation.models.TargetConfidenceScoreLabel;
 import com.azure.ai.textanalytics.implementation.models.TargetRelationType;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
-import com.azure.ai.textanalytics.models.AbstractSummaryResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
@@ -80,7 +80,7 @@ import com.azure.ai.textanalytics.models.EntityCertainty;
 import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.EntityDataSource;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
 import com.azure.ai.textanalytics.models.HealthcareEntity;
 import com.azure.ai.textanalytics.models.HealthcareEntityAssertion;
 import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
@@ -100,8 +100,8 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
-import com.azure.ai.textanalytics.models.SummaryContext;
-import com.azure.ai.textanalytics.models.SummarySentence;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryContext;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
 import com.azure.ai.textanalytics.models.TargetSentiment;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
@@ -112,13 +112,13 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.WarningCode;
-import com.azure.ai.textanalytics.util.AbstractSummaryResultCollection;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
-import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeCustomEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
@@ -1278,44 +1278,43 @@ public final class Utility {
         return classifications;
     }
 
-    public static AbstractSummaryResultCollection toAbstractiveSummaryResultCollection(
+    public static AbstractiveSummaryResultCollection toAbstractiveSummaryResultCollection(
         AbstractiveSummarizationResult abstractiveSummarizationResult) {
         List<AbstractiveSummaryDocumentResult> documentResults = abstractiveSummarizationResult.getDocuments();
-        List<AbstractSummaryResult> summaryResults = new ArrayList<>();
+        List<AbstractiveSummaryResult> summaryResults = new ArrayList<>();
         for (AbstractiveSummaryDocumentResult documentResult : documentResults) {
             summaryResults.add(toAbstractiveSummaryResult(documentResult));
         }
 
         // Document errors
         for (DocumentError documentError : abstractiveSummarizationResult.getErrors()) {
-            summaryResults.add(new AbstractSummaryResult(documentError.getId(), null,
+            summaryResults.add(new AbstractiveSummaryResult(documentError.getId(), null,
                     toTextAnalyticsError(documentError.getError())));
         }
 
-        final AbstractSummaryResultCollection resultCollection = new AbstractSummaryResultCollection(summaryResults);
-        AbstractSummaryResultCollectionPropertiesHelper.setModelVersion(resultCollection,
+        final AbstractiveSummaryResultCollection resultCollection = new AbstractiveSummaryResultCollection(summaryResults);
+        AbstractiveSummaryResultCollectionPropertiesHelper.setModelVersion(resultCollection,
             abstractiveSummarizationResult.getModelVersion());
-        AbstractSummaryResultCollectionPropertiesHelper.setStatistics(resultCollection,
+        AbstractiveSummaryResultCollectionPropertiesHelper.setStatistics(resultCollection,
             abstractiveSummarizationResult.getStatistics() == null ? null
                 : toBatchStatistics(abstractiveSummarizationResult.getStatistics()));
         return resultCollection;
     }
 
-    public static AbstractSummaryResult toAbstractiveSummaryResult(
+    public static AbstractiveSummaryResult toAbstractiveSummaryResult(
         AbstractiveSummaryDocumentResult documentResult) {
-        AbstractSummaryResult summaryResult = new AbstractSummaryResult(
+        AbstractiveSummaryResult summaryResult = new AbstractiveSummaryResult(
             documentResult.getId(),
             documentResult.getStatistics() == null ? null : toTextDocumentStatistics(documentResult.getStatistics()),
             null
         );
 
-        AbstractSummaryResultPropertiesHelper.setSummaries(summaryResult,
+        AbstractiveSummaryResultPropertiesHelper.setSummaries(summaryResult,
             new IterableStream<>(toAbstractiveSummaries(documentResult.getSummaries())));
-
         // Warnings
         final List<TextAnalyticsWarning> warnings = documentResult.getWarnings().stream().map(
                 warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
-        AbstractSummaryResultPropertiesHelper.setWarnings(summaryResult, IterableStream.of(warnings));
+        AbstractiveSummaryResultPropertiesHelper.setWarnings(summaryResult, IterableStream.of(warnings));
 
         return summaryResult;
     }
@@ -1336,70 +1335,74 @@ public final class Utility {
         return abstractiveSummary;
     }
 
-    public static IterableStream<SummaryContext> toSummaryContexts(
+    public static IterableStream<AbstractiveSummaryContext> toSummaryContexts(
         List<com.azure.ai.textanalytics.implementation.models.SummaryContext> contexts) {
-        List<SummaryContext> summaryContexts = new ArrayList<>();
+        List<AbstractiveSummaryContext> abstractiveSummaryContexts = new ArrayList<>();
         contexts.forEach(context -> {
-            SummaryContext summaryContext = new SummaryContext();
-            SummaryContextPropertiesHelper.setOffset(summaryContext, context.getOffset());
-            SummaryContextPropertiesHelper.setLength(summaryContext, context.getLength());
-            summaryContexts.add(summaryContext);
+            AbstractiveSummaryContext abstractiveSummaryContext = new AbstractiveSummaryContext();
+            AbstractiveSummaryContextPropertiesHelper.setOffset(abstractiveSummaryContext, context.getOffset());
+            AbstractiveSummaryContextPropertiesHelper.setLength(abstractiveSummaryContext, context.getLength());
+            abstractiveSummaryContexts.add(abstractiveSummaryContext);
         });
-        return IterableStream.of(summaryContexts);
+        return IterableStream.of(abstractiveSummaryContexts);
     }
 
     /**
-     * Helper method to convert {@link ExtractiveSummarizationResult} to {@link ExtractSummaryResultCollection}.
+     * Helper method to convert {@link ExtractiveSummarizationResult} to {@link ExtractiveSummaryResultCollection}.
      *
      * @param extractiveSummarizationResult The {@link ExtractiveSummarizationResult}.
      *
-     * @return A {@link ExtractSummaryResultCollection}.
+     * @return A {@link ExtractiveSummaryResultCollection}.
      */
-    public static ExtractSummaryResultCollection toExtractSummaryResultCollection(
+    public static ExtractiveSummaryResultCollection toExtractiveSummaryResultCollection(
         ExtractiveSummarizationResult extractiveSummarizationResult) {
-        final List<ExtractSummaryResult> extractSummaryResults = new ArrayList<>();
-        final List<ExtractedSummaryDocumentResult> extractedDocumentSummaries = extractiveSummarizationResult.getDocuments();
+        final List<ExtractiveSummaryResult> extractiveSummaryResults = new ArrayList<>();
+        final List<ExtractedSummaryDocumentResult> extractedDocumentSummaries =
+            extractiveSummarizationResult.getDocuments();
 
         for (ExtractedSummaryDocumentResult documentSummary : extractedDocumentSummaries) {
-            extractSummaryResults.add(toExtractSummaryResult(documentSummary));
+            extractiveSummaryResults.add(toExtractiveSummaryResult(documentSummary));
         }
         for (DocumentError documentError : extractiveSummarizationResult.getErrors()) {
-            extractSummaryResults.add(new ExtractSummaryResult(documentError.getId(), null,
+            extractiveSummaryResults.add(new ExtractiveSummaryResult(documentError.getId(), null,
                 toTextAnalyticsError(documentError.getError())));
         }
-        final ExtractSummaryResultCollection resultCollection = new ExtractSummaryResultCollection(extractSummaryResults);
-        ExtractSummaryResultCollectionPropertiesHelper.setModelVersion(resultCollection,
+        final ExtractiveSummaryResultCollection resultCollection =
+            new ExtractiveSummaryResultCollection(extractiveSummaryResults);
+        ExtractiveSummaryResultCollectionPropertiesHelper.setModelVersion(resultCollection,
             extractiveSummarizationResult.getModelVersion());
-        ExtractSummaryResultCollectionPropertiesHelper.setStatistics(resultCollection,
+        ExtractiveSummaryResultCollectionPropertiesHelper.setStatistics(resultCollection,
             extractiveSummarizationResult.getStatistics() == null ? null
                 : toBatchStatistics(extractiveSummarizationResult.getStatistics()));
         return resultCollection;
     }
 
-    private static ExtractSummaryResult toExtractSummaryResult(
+    private static ExtractiveSummaryResult toExtractiveSummaryResult(
         ExtractedSummaryDocumentResult documentSummary) {
         final List<ExtractedSummarySentence> sentences = documentSummary.getSentences();
-        final List<SummarySentence> summarySentences = sentences.stream().map(sentence -> {
-            final SummarySentence summarySentence = new SummarySentence();
-            SummarySentencePropertiesHelper.setText(summarySentence, sentence.getText());
-            SummarySentencePropertiesHelper.setRankScore(summarySentence, sentence.getRankScore());
-            SummarySentencePropertiesHelper.setLength(summarySentence, sentence.getLength());
-            SummarySentencePropertiesHelper.setOffset(summarySentence, sentence.getOffset());
-            return summarySentence;
+        final List<ExtractiveSummarySentence> extractiveSummarySentences = sentences.stream().map(sentence -> {
+            final ExtractiveSummarySentence extractiveSummarySentence = new ExtractiveSummarySentence();
+            ExtractiveSummarySentencePropertiesHelper.setText(extractiveSummarySentence, sentence.getText());
+            ExtractiveSummarySentencePropertiesHelper.setRankScore(extractiveSummarySentence, sentence.getRankScore());
+            ExtractiveSummarySentencePropertiesHelper.setLength(extractiveSummarySentence, sentence.getLength());
+            ExtractiveSummarySentencePropertiesHelper.setOffset(extractiveSummarySentence, sentence.getOffset());
+            return extractiveSummarySentence;
         }).collect(Collectors.toList());
 
         // Warnings
         final List<TextAnalyticsWarning> warnings = documentSummary.getWarnings().stream().map(
             warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
 
-        final ExtractSummaryResult extractSummaryResult = new ExtractSummaryResult(documentSummary.getId(),
+        final ExtractiveSummaryResult extractiveSummaryResult = new ExtractiveSummaryResult(documentSummary.getId(),
             documentSummary.getStatistics() == null
                 ? null : toTextDocumentStatistics(documentSummary.getStatistics()),
             null
         );
-        ExtractSummaryResultPropertiesHelper.setSentences(extractSummaryResult, new IterableStream<>(summarySentences));
-        ExtractSummaryResultPropertiesHelper.setWarnings(extractSummaryResult,  new IterableStream<>(warnings));
-        return extractSummaryResult;
+        ExtractiveSummaryResultPropertiesHelper.setSentences(extractiveSummaryResult,
+            new IterableStream<>(extractiveSummarySentences));
+        ExtractiveSummaryResultPropertiesHelper.setWarnings(extractiveSummaryResult,
+            new IterableStream<>(warnings));
+        return extractiveSummaryResult;
     }
 
     /*

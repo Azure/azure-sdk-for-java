@@ -4,14 +4,13 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.models.RedisKeyType;
 import com.azure.resourcemanager.redis.models.RedisRegenerateKeyParameters;
 
 /** Samples for Redis RegenerateKey. */
 public final class RedisRegenerateKeySamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheRegenerateKey.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheRegenerateKey.json
      */
     /**
      * Sample code: RedisCacheRegenerateKey.
@@ -25,6 +24,9 @@ public final class RedisRegenerateKeySamples {
             .serviceClient()
             .getRedis()
             .regenerateKeyWithResponse(
-                "rg1", "cache1", new RedisRegenerateKeyParameters().withKeyType(RedisKeyType.PRIMARY), Context.NONE);
+                "rg1",
+                "cache1",
+                new RedisRegenerateKeyParameters().withKeyType(RedisKeyType.PRIMARY),
+                com.azure.core.util.Context.NONE);
     }
 }

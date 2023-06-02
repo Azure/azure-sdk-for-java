@@ -13,7 +13,7 @@ public final class SkuInformationInnerTests {
         SkuInformationInner model =
             BinaryData
                 .fromString(
-                    "{\"sku\":{\"name\":\"DataBoxDisk\",\"displayName\":\"xmzsbbzogg\",\"family\":\"rxwburv\"},\"enabled\":false,\"properties\":{\"dataLocationToServiceLocationMap\":[{\"dataLocation\":\"ydptkoen\",\"serviceLocation\":\"uknvudwti\"}],\"capacity\":{\"usable\":\"ldngkpoci\",\"maximum\":\"z\"},\"costs\":[{\"meterId\":\"gukgjnpiucgygevq\",\"meterType\":\"typmrbpizcdrqjsd\",\"multiplier\":98.3329583727786}],\"apiVersions\":[\"hxdeoejz\",\"cwif\",\"jttgzf\",\"ishc\"],\"disabledReason\":\"OfferType\",\"disabledReasonMessage\":\"jdeyeamdpha\",\"requiredFeature\":\"lpbuxwgipwhonowk\"}}")
+                    "{\"sku\":{\"name\":\"DataBox\",\"displayName\":\"kbeype\",\"family\":\"mjmwvvjektcx\"},\"enabled\":true,\"properties\":{\"dataLocationToServiceLocationMap\":[{\"dataLocation\":\"s\",\"serviceLocation\":\"rzpwvlqdqgbiq\"}],\"capacity\":{\"usable\":\"hkaetcktvfc\",\"maximum\":\"fsnkymuctq\"},\"costs\":[{\"meterId\":\"ebrjcxe\",\"meterType\":\"uwutttxfvjrbi\",\"multiplier\":78.79260273148051},{\"meterId\":\"pcyvahfnljkyqx\",\"meterType\":\"uujqgidokgjljyo\",\"multiplier\":65.1236532515971},{\"meterId\":\"tbgsncghkj\",\"meterType\":\"zz\",\"multiplier\":35.789364440261664}],\"apiVersions\":[\"xfvgxbfsmxne\",\"mpvecxgodebfqk\"],\"disabledReason\":\"Country\",\"disabledReasonMessage\":\"pukgriwflzlfb\",\"requiredFeature\":\"puz\",\"countriesWithinCommerceBoundary\":[\"spnqzahmgkb\",\"pyydhi\",\"nuqqkpikadrgvt\",\"agnb\"]}}")
                 .toObject(SkuInformationInner.class);
     }
 

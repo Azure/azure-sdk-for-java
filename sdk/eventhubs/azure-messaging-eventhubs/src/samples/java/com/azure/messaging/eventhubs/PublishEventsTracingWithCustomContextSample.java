@@ -3,6 +3,8 @@
 
 package com.azure.messaging.eventhubs;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
@@ -24,9 +26,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
  * setting context manually should not be necessary.
  */
 public class PublishEventsTracingWithCustomContextSample {
-
     private static final Tracer TRACER = configureJaegerExporter();
-    private static final String CONNECTION_STRING = "<YOUR_CONNECTION_STRING>";
 
     /**
      * The main method to run the application.
@@ -58,8 +58,18 @@ public class PublishEventsTracingWithCustomContextSample {
      * telemetry events.
      */
     private static void doClientWork() {
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        // Create a producer.
+        //
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(CONNECTION_STRING, "<eventHub Name>")
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                tokenCredential)
             .buildAsyncProducerClient();
 
         // BEGIN: sample-trace-context-manual-propagation

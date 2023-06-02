@@ -38,7 +38,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
 
@@ -157,7 +157,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
 
@@ -200,7 +200,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
         for (int i = 0; i < 10; i++) {
@@ -231,7 +231,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
 
@@ -295,7 +295,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Upsert, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
         for (int i = 0; i < 10; i++) {
@@ -327,7 +327,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Upsert, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
 
@@ -361,7 +361,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Delete, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
         for (int i = 0; i < 10; i++) {
@@ -393,7 +393,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Delete, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
 
@@ -428,7 +428,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.QueryPlan, "/dbs/db/colls/col/docs/", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
 
@@ -463,7 +463,7 @@ public class ClientRetryPolicyTest {
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
             OperationType.Read, "/dbs/db/colls/col/docs/", ResourceType.Document);
         dsr.setAddressRefresh(true, false);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         clientRetryPolicy.onBeforeSendRequest(dsr);
 
@@ -501,7 +501,7 @@ public class ClientRetryPolicyTest {
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Create, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
 
         Mono<ShouldRetryResult> shouldRetry = clientRetryPolicy.shouldRetry(exception);
         validateSuccess(shouldRetry, ShouldRetryValidator.builder()

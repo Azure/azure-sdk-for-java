@@ -8,12 +8,51 @@
 
 ### Breaking Changes
 > These changes do not impact the API of stable versions such as `5.2.0`. Only code written against the beta versions such as `5.3.0-beta.1` may be affected.
-- Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resoluton`, and `Healthcare FHIR` features, 
+- Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resoluton`, and `Healthcare FHIR` features,
   which were introduced in the previous beta releases.
+- Renamed class:
+  `SummaryContext` to `AbstractiveSummaryContext`,
+  `SummarySentence` to `ExtractiveSummarySentence`,
+  `SummarySentencesOrder` to `ExtractiveSummarySentencesOrder`,
+  `ExtractSummaryOptions` to `ExtractiveSummaryOptions`,
+  `ExtractSummaryAction` to `ExtractiveSummaryAction`,
+  `ExtractSummaryActionResult` to `ExtractiveSummaryActionResult`,
+  `ExtractSummaryResult` to `ExtractiveSummaryResult`,
+  `ExtractSummaryResultCollection` to `ExtractiveSummaryResultCollection`,
+  `ExtractSummaryOperationDetail` to `ExtractiveSummaryOperationDetail`,
+  `ExtractSummaryPagedFlux` to `ExtractiveSummaryPagedFlux`,
+  `ExtractSummaryPagedIterable` to `ExtractiveSummaryPagedIterable`,
+  `AbstractSummaryOptions` to `AbstractiveSummaryOptions`,
+  `AbstractSummaryAction` to `AbstractiveSummaryAction`,
+  `AbstractSummaryActionResult` to `AbtractiveSummaryActionResult`,
+  `AbstractSummaryResultCollection` to `AbstractiveSummaryResultCollection`
+  `AbstractSummaryResult` to `AbstractiveSummaryResult`,
+  `AbstractSummaryOperationDetail` to `AbstractiveSummaryOperationDetail`,
+  `AbstractSummaryPagedFlux` to `AbstractiveSummaryPagedFlux`,
+  `AbstractSummaryPagedIterable` to `AbstractiveSummaryPagedIterable`,
+- Renamed methods:
+  `getExtractSummaryActions()` to `getExtractiveSummaryActions()`,
+  `getAbstractSummaryActions()` to `getAbstractiveSummaryActions()`,
+  `setAbstractSummaryActions(AbstractSummaryAction... abstractSummaryActions)` to 
+  `setAbstractiveSummaryActions(AbstractiveSummaryAction... abstractiveSummaryActions)`,
+  `setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions)` to
+  `setExtractiveSummaryActions(ExtractiveSummaryAction... extractiveSummaryActions)`,
+  `getAbstractSummaryResults` to `getAbstractiveSummaryResults`,
+  `getExtractSummaryResults` to `getExtractiveSummaryResults`
 
 ### Bugs Fixed
 
 ### Other Changes
+- Migrate test recordings to assets repo.
+
+## 5.2.7 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
 
 ## 5.2.6 (2023-04-21)
 

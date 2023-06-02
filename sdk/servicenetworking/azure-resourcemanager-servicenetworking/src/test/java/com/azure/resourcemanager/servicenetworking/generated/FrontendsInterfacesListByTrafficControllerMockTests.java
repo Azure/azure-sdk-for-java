@@ -12,11 +12,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.TrafficControllerManager;
 import com.azure.resourcemanager.servicenetworking.models.Frontend;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -35,7 +32,7 @@ public final class FrontendsInterfacesListByTrafficControllerMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"mode\":\"public\",\"ipAddressVersion\":\"IPv6\",\"publicIPAddress\":{\"id\":\"txfvjrbirph\"},\"provisioningState\":\"Succeeded\"},\"location\":\"yva\",\"tags\":{\"gidokgjljyoxgvcl\":\"ljkyqxjvuuj\",\"jhtxfvgxbfsmxne\":\"bgsncghkjeszzhb\"},\"id\":\"mpvecxgodebfqk\",\"name\":\"rbmpukgri\",\"type\":\"flz\"}]}";
+            "{\"value\":[{\"properties\":{\"fqdn\":\"czfc\",\"provisioningState\":\"Succeeded\"},\"location\":\"xdbabphlwr\",\"tags\":{\"azt\":\"ktsthsucocmny\"},\"id\":\"bt\",\"name\":\"wrqpue\",\"type\":\"ckzywbiexzfeyue\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,12 +61,11 @@ public final class FrontendsInterfacesListByTrafficControllerMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Frontend> response =
-            manager.frontendsInterfaces().listByTrafficController("jf", "ebrjcxe", Context.NONE);
+            manager
+                .frontendsInterfaces()
+                .listByTrafficController("nkxmyskpbhenbtk", "xywnytnrsynlqidy", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yva", response.iterator().next().location());
-        Assertions.assertEquals("ljkyqxjvuuj", response.iterator().next().tags().get("gidokgjljyoxgvcl"));
-        Assertions.assertEquals(FrontendMode.PUBLIC, response.iterator().next().mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV6, response.iterator().next().ipAddressVersion());
-        Assertions.assertEquals("txfvjrbirph", response.iterator().next().publicIpAddress().id());
+        Assertions.assertEquals("xdbabphlwr", response.iterator().next().location());
+        Assertions.assertEquals("ktsthsucocmny", response.iterator().next().tags().get("azt"));
     }
 }

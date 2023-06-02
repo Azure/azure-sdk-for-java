@@ -66,11 +66,10 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerAppsApiClie")
-    private interface ConnectedEnvironmentsCertificatesService {
+    public interface ConnectedEnvironmentsCertificatesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments/{connectedEnvironmentName}/certificates")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateCollection>> list(
@@ -84,8 +83,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> get(
@@ -100,8 +98,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> createOrUpdate(
@@ -117,8 +114,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> delete(
@@ -133,8 +129,7 @@ public final class ConnectedEnvironmentsCertificatesClientImpl implements Connec
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App"
-                + "/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.App/connectedEnvironments/{connectedEnvironmentName}/certificates/{certificateName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<CertificateInner>> update(

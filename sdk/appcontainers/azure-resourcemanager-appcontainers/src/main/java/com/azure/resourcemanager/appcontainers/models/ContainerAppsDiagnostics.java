@@ -133,7 +133,10 @@ public interface ContainerAppsDiagnostics {
      * @param containerAppName Name of the Container App.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App along with {@link Response}.
      */
@@ -145,7 +148,10 @@ public interface ContainerAppsDiagnostics {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     *     status code 404.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a Container App.
      */

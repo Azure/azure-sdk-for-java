@@ -22,6 +22,9 @@ public final class MediaJobErrorDetail {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
+    /** Creates an instance of MediaJobErrorDetail class. */
+    public MediaJobErrorDetail() {}
+
     /**
      * Get the code property: Code describing the error detail.
      *

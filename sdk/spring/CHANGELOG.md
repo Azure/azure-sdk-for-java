@@ -1,6 +1,72 @@
 # Release History
 
-## 4.8.0-beta.1 (unreleased)
+## 5.2.0 (2023-06-02)
+- This release is compatible with Spring Boot 3.0.0-3.0.5. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2022.0.0-2022.0.2. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.13.
+- Upgrade `azure-resourcemanager` to 2.27.0.
+
+#### Features Added
+- Added the following artifacts into current bom file:
+    - spring-cloud-azure-starter-appconfiguration-config
+    - spring-cloud-azure-appconfiguration-config
+    - spring-cloud-azure-appconfiguration-config-web
+    - spring-cloud-azure-feature-management
+    - spring-cloud-azure-feature-management-web
+
+### Spring Cloud Azure Actuator Autoconfigure
+This section includes changes in `spring-cloud-azure-actuator-autoconfigure` module.
+
+#### Bugs Fixed
+- Make `spring-cloud-azure-appconfiguration-config-web` optional [#34980](https://github.com/Azure/azure-sdk-for-java/pull/34980).
+
+### Spring Cloud Azure Appconfiguration Config
+This section includes changes in `spring-cloud-azure-starter-appconfiguration-config`, `spring-cloud-azure-appconfiguration-config*`, and `spring-cloud-azure-feature-management*` modules.
+
+#### Features Added
+* Added Deny List for Targeting Filter [#34437](https://github.com/Azure/azure-sdk-for-java/pull/34437).
+```yml
+feature-management:
+  TargetingTest:
+    enabled-for:
+      -
+        name: Microsoft.Targeting
+        parameters:
+          users:
+            - Jeff
+            - Alicia
+          groups:
+            -
+              name: Ring0
+              rolloutPercentage: 100
+            -
+              name: Ring1
+              rolloutPercentage: 100
+          defaultRolloutPercentage: 50
+          exclusion:
+            users:
+              - Ross
+```
+
+#### Bugs Fixed
+
+- Fixes issue where credential from Azure Spring global properties was being overridden [#34694](https://github.com/Azure/azure-sdk-for-java/pull/34694).
+- Fixes bug where Http Response wasn't checked before trying to use response [#35086](https://github.com/Azure/azure-sdk-for-java/pull/35086).
+- Fixes Tracing info for ContainerApp [#35086](https://github.com/Azure/azure-sdk-for-java/pull/35086).
+
+## 4.8.0 (2023-05-25)
+- This release is compatible with Spring Boot 2.5.0-2.5.15, 2.6.0-2.6.15, 2.7.0-2.7.11. (Note: 2.5.x (x>15), 2.6.y (y>15) and 2.7.z (z>11) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.7. (Note: 2020.0.x (x>6) and 2021.0.y (y>7) should be supported, but they aren't tested with this release.)
+
+### Spring Cloud Azure Dependencies (BOM)
+
+#### Dependency Updates
+- Upgrade `azure-sdk-bom` to 1.2.13.
+- Upgrade `azure-resourcemanager` to 2.26.0.
 
 ### Spring Cloud Azure Core
 This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-service`, and `spring-cloud-azure-resourcemanager` modules.
@@ -14,6 +80,45 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Breaking Changes
 - Deprecated `SERVICE_BUS_SCOPE_AZURE_GERMANY` [#34682](https://github.com/Azure/azure-sdk-for-java/pull/34682).
 
+### Spring Cloud Azure Actuator Autoconfigure
+This section includes changes in `spring-cloud-azure-actuator-autoconfigure` module.
+
+#### Bugs Fixed
+- Make `spring-cloud-azure-appconfiguration-config-web` optional [#34980](https://github.com/Azure/azure-sdk-for-java/pull/34980).
+
+### Spring Cloud Azure Appconfiguration Config
+This section includes changes in `spring-cloud-azure-starter-appconfiguration-config`, `spring-cloud-azure-appconfiguration-config*`, and `spring-cloud-azure-feature-management*` modules.
+
+#### Features Added
+* Added Deny List for Targeting Filter [#34437](https://github.com/Azure/azure-sdk-for-java/pull/34437).
+```yml
+feature-management:
+  TargetingTest:
+    enabled-for:
+      -
+        name: Microsoft.Targeting
+        parameters:
+          users:
+            - Jeff
+            - Alicia
+          groups:
+            -
+              name: Ring0
+              rolloutPercentage: 100
+            -
+              name: Ring1
+              rolloutPercentage: 100
+          defaultRolloutPercentage: 50
+          exclusion:
+            users:
+              - Ross
+```
+
+#### Bugs Fixed
+- Fixes issue where credential from Azure Spring global properties was being overridden [#34694](https://github.com/Azure/azure-sdk-for-java/pull/34694).
+- Fixes bug where Http Response wasn't checked before trying to use response [#35086](https://github.com/Azure/azure-sdk-for-java/pull/35086).
+- Fixes Tracing info for ContainerApp [#35086](https://github.com/Azure/azure-sdk-for-java/pull/35086).
+
 ## 5.1.0 (2023-04-26)
 - This release is compatible with Spring Boot 3.0.0-3.0.5. (Note: 3.0.x (x>1) should be supported, but they aren't tested with this release.)
 - This release is compatible with Spring Cloud 2022.0.0-2022.0.2. (Note: 2022.0.x (x>0) should be supported, but they aren't tested with this release.)
@@ -23,14 +128,6 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 #### Dependency Updates
 - Upgrade `azure-sdk-bom` to 1.2.12.
 - Upgrade `azure-resourcemanager` to 2.25.0.
-
-#### Features Added
-- Added the following artifacts into current bom file:
-    - spring-cloud-azure-starter-appconfiguration-config
-    - spring-cloud-azure-appconfiguration-config
-    - spring-cloud-azure-appconfiguration-config-web
-    - spring-cloud-azure-feature-management
-    - spring-cloud-azure-feature-management-web
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
@@ -68,7 +165,15 @@ This section includes changes in `spring-cloud-azure-core`, `spring-cloud-azure-
 - Deprecated `CloudType.AZURE_GERMANY` and remove `AzureEnvironmentProperties.AZURE_GERMANY` [#34663](https://github.com/Azure/azure-sdk-for-java/pull/34663).
 
 ### Spring Cloud Azure Appconfiguration Config
-This section includes changes in `spring-cloud-azure-appconfiguration-config` and `spring-cloud-azure-appconfiguration-config-web` modules.
+This section includes changes in `spring-cloud-azure-starter-appconfiguration-config`, `spring-cloud-azure-appconfiguration-config*`, and `spring-cloud-azure-feature-management*` modules.
+
+#### Features Added
+First release of the Spring Cloud Azure Appconfiguration Config, to support Spring Boot 3. The modules are:
+  - spring-cloud-azure-starter-appconfiguration-config
+  - spring-cloud-azure-appconfiguration-config
+  - spring-cloud-azure-appconfiguration-config-web
+  - spring-cloud-azure-feature-management
+  - spring-cloud-azure-feature-management-web
 
 #### Bugs Fixed
 - Fixes issue where credential from Azure Spring global properties was being overridden [#34695](https://github.com/Azure/azure-sdk-for-java/pull/34695).

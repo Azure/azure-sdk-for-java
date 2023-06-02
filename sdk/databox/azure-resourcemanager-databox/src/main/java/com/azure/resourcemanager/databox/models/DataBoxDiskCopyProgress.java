@@ -6,6 +6,7 @@ package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** DataBox Disk Copy Progress. */
 @Immutable
@@ -33,6 +34,18 @@ public final class DataBoxDiskCopyProgress {
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private CopyStatus status;
+
+    /*
+     * Error, if any, in the stage
+     */
+    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
+    private CloudError error;
+
+    /*
+     * Available actions on the job.
+     */
+    @JsonProperty(value = "actions", access = JsonProperty.Access.WRITE_ONLY)
+    private List<CustomerResolutionCode> actions;
 
     /** Creates an instance of DataBoxDiskCopyProgress class. */
     public DataBoxDiskCopyProgress() {
@@ -75,10 +88,31 @@ public final class DataBoxDiskCopyProgress {
     }
 
     /**
+     * Get the error property: Error, if any, in the stage.
+     *
+     * @return the error value.
+     */
+    public CloudError error() {
+        return this.error;
+    }
+
+    /**
+     * Get the actions property: Available actions on the job.
+     *
+     * @return the actions value.
+     */
+    public List<CustomerResolutionCode> actions() {
+        return this.actions;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (error() != null) {
+            error().validate();
+        }
     }
 }

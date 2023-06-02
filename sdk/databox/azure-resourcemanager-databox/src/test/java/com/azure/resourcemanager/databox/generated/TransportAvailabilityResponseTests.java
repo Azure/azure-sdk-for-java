@@ -13,7 +13,7 @@ public final class TransportAvailabilityResponseTests {
         TransportAvailabilityResponse model =
             BinaryData
                 .fromString(
-                    "{\"transportAvailabilityDetails\":[{\"shipmentType\":\"CustomerManaged\"},{\"shipmentType\":\"CustomerManaged\"}]}")
+                    "{\"transportAvailabilityDetails\":[{\"shipmentType\":\"MicrosoftManaged\"},{\"shipmentType\":\"CustomerManaged\"},{\"shipmentType\":\"MicrosoftManaged\"},{\"shipmentType\":\"CustomerManaged\"}]}")
                 .toObject(TransportAvailabilityResponse.class);
     }
 

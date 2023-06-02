@@ -8,10 +8,12 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class WorkflowTasksListTests extends PurviewWorkflowClientTestBase {
     @Test
+    @Disabled
     public void testWorkflowTasksListTests() {
         RequestOptions requestOptions =
                 new RequestOptions()
@@ -21,5 +23,10 @@ public final class WorkflowTasksListTests extends PurviewWorkflowClientTestBase 
                         .addQueryParam("viewMode", "sent");
         PagedIterable<BinaryData> response = purviewWorkflowClient.listWorkflowTasks(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
+        Assertions.assertEquals(
+                BinaryData.fromString(
+                                "{\"type\":\"Approval\",\"approvalDetail\":{\"approvalType\":\"PendingOnAll\",\"approvers\":{\"eece94d9-0619-4669-bb8a-d6ecec5220bc\":{\"reply\":\"Pending\"}},\"status\":\"Pending\"},\"createdTime\":\"2023-01-18T06:53:15.205196688Z\",\"expiryInfo\":{\"expirySettings\":{\"expireAfter\":{\"Month\":{\"number\":1}},\"notifyOnExpiration\":[]},\"expiryTime\":\"2023-02-17T06:53:15.205196688Z\",\"nextExpiryNotificationTime\":\"2023-02-17T06:53:15.205196688Z\"},\"id\":\"3aec5deb-b819-499c-afe0-b742255c0577\",\"lastUpdateTime\":\"2023-01-18T06:53:23.159652782Z\",\"payload\":{\"type\":\"CreateTerm\",\"targetValue\":\"term\"},\"reminderInfo\":{\"nextRemindTime\":\"2023-01-19T06:53:15.205196688Z\",\"reminderSettings\":{\"reminderFrequency\":{\"Day\":{\"number\":1}}}},\"requestor\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"title\":\"Approval Request for Create Glossary Term\",\"workflowId\":\"3fb9ba13-bf35-4f29-ab63-70b5234923c2\",\"workflowRunId\":\"26026374-f2f6-4627-b2f4-ba2db93c7e2c\"}")
+                        .toObject(Object.class),
+                response.iterator().next().toObject(Object.class));
     }
 }

@@ -69,8 +69,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     public interface AssociationsInterfacesService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}/associations")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssociationListResult>> listByTrafficController(
@@ -84,8 +83,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
 
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}/associations/{associationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssociationInner>> get(
@@ -100,8 +98,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
 
         @Headers({"Content-Type: application/json"})
         @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}/associations/{associationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
@@ -117,8 +114,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
 
         @Headers({"Content-Type: application/json"})
         @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}/associations/{associationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AssociationInner>> update(
@@ -134,8 +130,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
 
         @Headers({"Content-Type: application/json"})
         @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking"
-                + "/trafficControllers/{trafficControllerName}/associations/{associationName}")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceNetworking/trafficControllers/{trafficControllerName}/associations/{associationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(
@@ -167,8 +162,8 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the response of a Association list operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssociationInner>> listByTrafficControllerSinglePageAsync(
@@ -227,8 +222,8 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the response of a Association list operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssociationInner>> listByTrafficControllerSinglePageAsync(
@@ -283,8 +278,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response of a Association list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AssociationInner> listByTrafficControllerAsync(
@@ -303,8 +297,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response of a Association list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AssociationInner> listByTrafficControllerAsync(
@@ -322,8 +315,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssociationInner> listByTrafficController(
@@ -340,8 +332,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AssociationInner> listByTrafficController(
@@ -350,7 +341,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -358,7 +349,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Association along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssociationInner>> getWithResponseAsync(
@@ -405,7 +396,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -414,7 +405,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association along with {@link Response} on successful completion of {@link Mono}.
+     * @return a Association along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AssociationInner>> getWithResponseAsync(
@@ -458,7 +449,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -466,7 +457,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association on successful completion of {@link Mono}.
+     * @return a Association on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AssociationInner> getAsync(
@@ -476,7 +467,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -485,7 +476,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association along with {@link Response}.
+     * @return a Association along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AssociationInner> getWithResponse(
@@ -494,7 +485,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Get a Traffic Controller Association.
+     * Get a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -502,7 +493,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Controller Association.
+     * @return a Association.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AssociationInner get(String resourceGroupName, String trafficControllerName, String associationName) {
@@ -510,7 +501,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -573,7 +564,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -638,7 +629,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -665,7 +656,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -695,7 +686,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -709,12 +700,13 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AssociationInner>, AssociationInner> beginCreateOrUpdate(
         String resourceGroupName, String trafficControllerName, String associationName, AssociationInner resource) {
-        return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource)
             .getSyncPoller();
     }
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -733,12 +725,13 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
         String associationName,
         AssociationInner resource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource, context)
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, trafficControllerName, associationName, resource, context)
             .getSyncPoller();
     }
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -758,7 +751,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -783,7 +776,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -801,7 +794,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Create a Traffic Controller Association.
+     * Create a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -825,7 +818,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Update a Traffic Controller Association.
+     * Update a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -888,7 +881,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Update a Traffic Controller Association.
+     * Update a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -953,7 +946,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Update a Traffic Controller Association.
+     * Update a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -972,7 +965,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Update a Traffic Controller Association.
+     * Update a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -996,7 +989,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Update a Traffic Controller Association.
+     * Update a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1015,7 +1008,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1070,7 +1063,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1123,7 +1116,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1145,7 +1138,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1168,7 +1161,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1181,11 +1174,11 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String trafficControllerName, String associationName) {
-        return beginDeleteAsync(resourceGroupName, trafficControllerName, associationName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, trafficControllerName, associationName).getSyncPoller();
     }
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1199,11 +1192,13 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String trafficControllerName, String associationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, trafficControllerName, associationName, context).getSyncPoller();
+        return this
+            .beginDeleteAsync(resourceGroupName, trafficControllerName, associationName, context)
+            .getSyncPoller();
     }
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1221,7 +1216,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1241,7 +1236,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1256,7 +1251,7 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
     }
 
     /**
-     * Delete a Traffic Controller Association.
+     * Delete a Association.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
@@ -1280,8 +1275,8 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the response of a Association list operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssociationInner>> listByTrafficControllerNextSinglePageAsync(String nextLink) {
@@ -1319,8 +1314,8 @@ public final class AssociationsInterfacesClientImpl implements AssociationsInter
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a Traffic Controller Association list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * @return the response of a Association list operation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AssociationInner>> listByTrafficControllerNextSinglePageAsync(
