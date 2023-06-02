@@ -363,14 +363,8 @@ public final class CosmosDiagnosticsContext {
      * @return the system usage
      */
     public CosmosDiagnosticsSystemUsageSnapshot getSystemUsage() {
-
-        CosmosDiagnosticsSystemUsageSnapshot snapshot = this.systemUsage;
-        if (snapshot != null) {
-            return snapshot;
-        }
-
         synchronized (this.spanName) {
-            snapshot = this.systemUsage;
+            CosmosDiagnosticsSystemUsageSnapshot snapshot = this.systemUsage;
             if (snapshot != null) {
                 return snapshot;
             }
@@ -659,7 +653,7 @@ public final class CosmosDiagnosticsContext {
 
             String partitionId = null;
             String[] partitionAndReplicaId = resultDiagnostics.getPartitionAndReplicaId();
-            if (partitionAndReplicaId != null) {
+            if (partitionAndReplicaId.length == 2) {
                 partitionId = partitionAndReplicaId[0];
             }
 
@@ -782,14 +776,10 @@ public final class CosmosDiagnosticsContext {
      * individual requests issued in the transport layer to process this operation.
      */
     public Collection<CosmosDiagnosticsRequestInfo> getRequestInfo() {
-        ArrayList<CosmosDiagnosticsRequestInfo> snapshot = this.requestInfo;
-        if (snapshot != null) {
-            return snapshot;
-        }
-
         synchronized (this.spanName) {
-            if (this.requestInfo != null) {
-                return this.requestInfo;
+            ArrayList<CosmosDiagnosticsRequestInfo> snapshot = this.requestInfo;
+            if (snapshot != null) {
+                return snapshot;
             }
 
             snapshot = new ArrayList<>();

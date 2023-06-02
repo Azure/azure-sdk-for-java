@@ -666,7 +666,7 @@ public final class ClientTelemetryMetrics {
 
                 String[] partitionAndReplicaId =
                     StoreResultDiagnostics.getPartitionAndReplicaId(effectiveServiceAddress);
-                if (partitionAndReplicaId != null) {
+                if (partitionAndReplicaId.length == 2) {
                     partitionId = partitionAndReplicaId[0];
                     replicaId = partitionAndReplicaId[1];
                 }
