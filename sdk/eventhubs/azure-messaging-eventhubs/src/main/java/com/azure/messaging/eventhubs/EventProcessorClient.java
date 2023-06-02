@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
  * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
  * chooses the credential to used based on its running environment.  The {@code consumerGroup} is found by navigating
  * to the Event Hub instance, and selecting "Consumer groups" under the "Entities" panel. The {@code consumerGroup} is
- * required for creating consumer clients.  The credential used is {@code DefaultAzureCredential} because it combines
+ * required.  The credential used is {@code DefaultAzureCredential} because it combines
  * commonly used credentials in deployment and development and chooses the credential to used based on its running
  * environment.</p>
  *
