@@ -40,8 +40,6 @@ public class StoreResponse {
     private String faultInjectionRuleId;
     private List<String> faultInjectionRuleEvaluationResults;
 
-    private RntbdRequestArgs requestArgs;
-
     public StoreResponse(
             int status,
             Map<String, String> headerMap,
