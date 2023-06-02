@@ -351,7 +351,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     public <T> T findById(String containerName, Object id, Class<T> domainType) {
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
-        CosmosEntityInformation cosmosEntityInformation = CosmosEntityInformation.getInstance(domainType);
+        CosmosEntityInformation<?, ?> cosmosEntityInformation = CosmosEntityInformation.getInstance(domainType);
         String containerPartitionKey = cosmosEntityInformation.getPartitionKeyFieldName();
         if ("id".equals(containerPartitionKey) && id != null) {
             return findById(id, domainType, new PartitionKey(CosmosUtils.getStringIDValue(id)));
