@@ -45,6 +45,10 @@ public final class CosmosDiagnosticsContext {
     private final CosmosDiagnosticsThresholds thresholds;
     private final String operationId;
     private final String trackingId;
+
+    private final String connectionMode;
+
+    private final String userAgent;
     private Throwable finalError;
     private Instant startTime = null;
     private Duration duration = null;
@@ -75,7 +79,9 @@ public final class CosmosDiagnosticsContext {
         ConsistencyLevel consistencyLevel,
         Integer maxItemCount,
         CosmosDiagnosticsThresholds thresholds,
-        String trackingId) {
+        String trackingId,
+        String connectionMode,
+        String userAgent) {
 
         checkNotNull(spanName, "Argument 'spanName' must not be null.");
         checkNotNull(accountName, "Argument 'accountName' must not be null.");
@@ -84,6 +90,8 @@ public final class CosmosDiagnosticsContext {
         checkNotNull(operationType, "Argument 'operationType' must not be null.");
         checkNotNull(consistencyLevel, "Argument 'consistencyLevel' must not be null.");
         checkNotNull(thresholds, "Argument 'thresholds' must not be null.");
+        checkNotNull(connectionMode, "Argument 'connectionMode' must not be null.");
+        checkNotNull(userAgent, "Argument 'userAgent' must not be null.");
 
         this.spanName = spanName;
         this.accountName = accountName;
@@ -100,6 +108,8 @@ public final class CosmosDiagnosticsContext {
         this.maxItemCount = maxItemCount;
         this.thresholds = thresholds;
         this.trackingId = trackingId;
+        this.userAgent = userAgent;
+        this.connectionMode = connectionMode;
     }
 
     /**
@@ -591,12 +601,7 @@ public final class CosmosDiagnosticsContext {
      * @return the UserAgent header value used for the client that issued this operation
      */
     public String getUserAgent() {
-        CosmosDiagnostics firstDiagnostics = this.diagnostics.peekFirst();
-        if (firstDiagnostics == null) {
-            return "";
-        }
-
-        return firstDiagnostics.getUserAgent();
+        return this.userAgent;
     }
 
     /**
@@ -608,26 +613,7 @@ public final class CosmosDiagnosticsContext {
      * @return the set of contacted regions
      */
     public String getConnectionMode() {
-        for (CosmosDiagnostics d: this.diagnostics) {
-            Collection<ClientSideRequestStatistics> clientStatsList = d.getClientSideRequestStatistics();
-            if (clientStatsList == null) {
-                continue;
-            }
-
-            Iterator<ClientSideRequestStatistics> iterator = clientStatsList.iterator();
-            if (!iterator.hasNext()) {
-                continue;
-            }
-
-            ClientSideRequestStatistics clientStats = iterator.next();
-            if (clientStats.getDiagnosticsClientConfig() == null) {
-                continue;
-            }
-
-            return clientStats.getDiagnosticsClientConfig().getConnectionMode().toString();
-        }
-
-        return "";
+        return this.connectionMode;
     }
 
     private static void addRequestInfoForGatewayStatistics(
@@ -849,7 +835,8 @@ public final class CosmosDiagnosticsContext {
                                                            ResourceType resourceType, OperationType operationType,
                                                            String operationId,
                                                            ConsistencyLevel consistencyLevel, Integer maxItemCount,
-                                                           CosmosDiagnosticsThresholds thresholds, String trackingId) {
+                                                           CosmosDiagnosticsThresholds thresholds, String trackingId,
+                                                           String connectionMode, String userAgent) {
 
                         return new CosmosDiagnosticsContext(
                             spanName,
@@ -863,7 +850,9 @@ public final class CosmosDiagnosticsContext {
                             consistencyLevel,
                             maxItemCount,
                             thresholds,
-                            trackingId);
+                            trackingId,
+                            connectionMode,
+                            userAgent);
                     }
 
                     @Override

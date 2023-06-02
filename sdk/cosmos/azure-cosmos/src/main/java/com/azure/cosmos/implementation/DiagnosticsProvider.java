@@ -697,7 +697,9 @@ public final class DiagnosticsProvider {
             clientAccessor.getEffectiveConsistencyLevel(client, operationType, consistencyLevel),
             maxItemCount,
             thresholds,
-            trackingId);
+            trackingId,
+            clientAccessor.getConnectionMode(client),
+            clientAccessor.getUserAgent(client));
 
         return diagnosticsEnabledPublisher(
             cosmosCtx,

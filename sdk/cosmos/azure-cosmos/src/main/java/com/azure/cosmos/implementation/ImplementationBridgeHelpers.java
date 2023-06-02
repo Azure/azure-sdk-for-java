@@ -750,7 +750,9 @@ public class ImplementationBridgeHelpers {
                 ConsistencyLevel consistencyLevel,
                 Integer maxItemCount,
                 CosmosDiagnosticsThresholds thresholds,
-                String trackingId);
+                String trackingId,
+                String connectionMode,
+                String userAgent);
 
             CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
                 String cpu,
@@ -1195,6 +1197,8 @@ public class ImplementationBridgeHelpers {
             boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
+            String getConnectionMode(CosmosAsyncClient client);
+            String getUserAgent(CosmosAsyncClient client);
             CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name);
             boolean isEffectiveContentResponseOnWriteEnabled(
                 CosmosAsyncClient client,
