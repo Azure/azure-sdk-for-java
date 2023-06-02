@@ -56,6 +56,4 @@ public interface IRntbdServerErrorInjector {
     boolean injectRntbdServerConnectionDelay(
         IRequestRecord requestRecord,
         Consumer<Duration> openConnectionWithDelayConsumer);
-
-    boolean injectBadSessionTokenIntoStoreResult(StoreResult storeResult);
 }

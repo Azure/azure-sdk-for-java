@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import reactor.core.publisher.Mono;

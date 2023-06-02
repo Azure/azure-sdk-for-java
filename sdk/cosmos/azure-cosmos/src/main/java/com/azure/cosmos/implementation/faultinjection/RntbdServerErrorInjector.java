@@ -75,16 +75,4 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
 
         return false;
     }
-
-    @Override
-    public boolean injectBadSessionTokenIntoStoreResult(StoreResult storeResult) {
-
-        for (IRntbdServerErrorInjector injector : this.faultInjectors) {
-            if (injector.injectBadSessionTokenIntoStoreResult(storeResult)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
 }

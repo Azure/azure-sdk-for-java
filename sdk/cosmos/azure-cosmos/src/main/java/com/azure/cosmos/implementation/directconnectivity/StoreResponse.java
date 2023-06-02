@@ -223,14 +223,6 @@ public class StoreResponse {
         this.faultInjectionRuleEvaluationResults = results;
     }
 
-    public RntbdRequestArgs getRequestArgs() {
-        return this.requestArgs;
-    }
-
-    public void setRequestArgs(RntbdRequestArgs requestArgs) {
-        this.requestArgs = requestArgs;
-    }
-
     public StoreResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
 
         Map<String, String> headers = new HashMap<>();

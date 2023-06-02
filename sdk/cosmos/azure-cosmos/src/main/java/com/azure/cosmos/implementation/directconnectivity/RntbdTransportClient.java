@@ -26,7 +26,6 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdServiceEndpoint;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
-import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.RntbdServerErrorInjector;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -318,7 +317,6 @@ public class RntbdTransportClient extends TransportClient {
                 request.faultInjectionRequestContext.getFaultInjectionRuleId(record.transportRequestId()));
             storeResponse.setFaultInjectionRuleEvaluationResults(
                 request.faultInjectionRequestContext.getFaultInjectionRuleEvaluationResults(record.transportRequestId()));
-            storeResponse.setRequestArgs(requestArgs);
             if (this.channelAcquisitionContextEnabled) {
                 storeResponse.setChannelAcquisitionTimeline(record.getChannelAcquisitionTimeline());
             }
