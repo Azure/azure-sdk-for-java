@@ -4,6 +4,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import reactor.core.publisher.Mono;
@@ -171,6 +172,45 @@ public class ReadmeSamples {
 
         // ...
         // END: com.azure.cosmos.CosmosContainer.readItem
+    }
+
+    public void deleteItemAsyncSample() {
+        Passenger passenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        // BEGIN: com.azure.cosmos.CosmosAsyncContainer.deleteItem
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+
+        cosmosAsyncContainer.deleteItem(
+            passenger.getId(),
+            new PartitionKey(passenger.getId()),
+            options
+        ).subscribe(response -> {
+            System.out.println(response);
+        }, throwable -> {
+            CosmosException cosmosException = (CosmosException) throwable;
+            cosmosException.printStackTrace();
+        });
+        // END: com.azure.cosmos.CosmosAsyncContainer.deleteItem
+    }
+
+    public void deleteItemSample() {
+        Passenger passenger = new Passenger("carla.davis@outlook.com", "Carla Davis", "SEA", "IND");
+        // BEGIN: com.azure.cosmos.CosmosContainer.deleteItem
+        try {
+            CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+            CosmosItemResponse<Object> deleteItemResponse = cosmosContainer.deleteItem(
+                passenger.getId(),
+                new PartitionKey(passenger.getId()),
+                options
+            );
+            System.out.println(deleteItemResponse);
+        } catch (NotFoundException e) {
+            // catch exception if item not found
+            System.out.printf("Passenger with item id %s not found\n",
+                passenger.getId());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        // END: com.azure.cosmos.CosmosContainer.deleteItem
     }
 
 

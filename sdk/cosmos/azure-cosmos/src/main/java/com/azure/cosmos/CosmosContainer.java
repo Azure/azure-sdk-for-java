@@ -595,7 +595,25 @@ public class CosmosContainer {
 
     /**
      * Deletes an item in the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.deleteItem -->
+     * <pre>
+     * try &#123;
+     *     CosmosItemRequestOptions options = new CosmosItemRequestOptions&#40;&#41;;
+     *     CosmosItemResponse&lt;Object&gt; deleteItemResponse = cosmosContainer.deleteItem&#40;
+     *         passenger.getId&#40;&#41;,
+     *         new PartitionKey&#40;passenger.getId&#40;&#41;&#41;,
+     *         options
+     *     &#41;;
+     *     System.out.println&#40;deleteItemResponse&#41;;
+     * &#125; catch &#40;NotFoundException e&#41; &#123;
+     *     &#47;&#47; catch exception if item not found
+     *     System.out.printf&#40;&quot;Passenger with item id %s not found&#92;n&quot;,
+     *         passenger.getId&#40;&#41;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     System.out.println&#40;e.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.cosmos.CosmosContainer.deleteItem -->
      * @param itemId the item id.
      * @param partitionKey the partition key.
      * @param options the options.
