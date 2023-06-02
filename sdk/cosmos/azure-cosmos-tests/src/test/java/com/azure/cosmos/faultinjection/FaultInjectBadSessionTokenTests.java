@@ -23,7 +23,6 @@ import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRuleBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResult;
-import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorResultBuilder;
 import com.azure.cosmos.test.faultinjection.FaultInjectionServerErrorType;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -68,8 +67,8 @@ public class FaultInjectBadSessionTokenTests extends TestSuiteBase {
         this.writeRegionMap = this.getRegionMap(databaseAccount, true);
     }
 
-    @Test(groups = {"multi-region"}, timeOut = 120000)
-    public void sessionTokenUnavailable_regionWide_test() {
+    @Test(groups = {"multi-region"}, timeOut = 60000)
+    public void readSessionUnavailable_regionWide_test() {
 
         List<String> preferredLocations = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
 
@@ -104,6 +103,69 @@ public class FaultInjectBadSessionTokenTests extends TestSuiteBase {
 
         FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
                 .getResultBuilder(FaultInjectionServerErrorType.BAD_SESSION_TOKEN)
+                .build();
+
+        FaultInjectionRule badSessionTokenRule = badSessionTokenRuleBuilder
+                .condition(faultInjectionConditionForReadsInPrimaryRegion)
+                .result(badSessionTokenServerErrorResult)
+                .duration(Duration.ofSeconds(10))
+                .build();
+
+        CosmosFaultInjectionHelper
+                .configureFaultInjectionRules(containerForClientWithPreferredRegions, Arrays.asList(badSessionTokenRule))
+                .block();
+
+        CosmosItemResponse<TestItem> itemResponse = containerForClientWithPreferredRegions.readItem(
+                createdItem.getId(),
+                new PartitionKey(createdItem.getId()),
+                TestItem.class).block();
+
+        assertThat(itemResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
+
+        safeDeleteCollection(containerForClientWithPreferredRegions);
+        safeCloseAsync(clientWithPreferredRegions);
+    }
+
+    @Test(groups = {"multi-region"}, timeOut = 60000)
+    public void readSessionUnavailable_oneReplica_test() {
+
+        List<String> preferredLocations = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
+
+        assertThat(preferredLocations).isNotNull();
+        assertThat(preferredLocations.size()).isEqualTo(2);
+
+        CosmosAsyncClient clientWithPreferredRegions = null;
+
+        clientWithPreferredRegions = new CosmosClientBuilder()
+                .endpoint(TestConfigurations.HOST)
+                .key(TestConfigurations.MASTER_KEY)
+                .contentResponseOnWriteEnabled(true)
+                .consistencyLevel(BridgeInternal.getContextClient(this.cosmosAsyncClient).getConsistencyLevel())
+                .preferredRegions(preferredLocations)
+                .directMode()
+                .buildAsyncClient();
+
+        CosmosAsyncContainer containerForClientWithPreferredRegions = clientWithPreferredRegions
+                .getDatabase(this.cosmosAsyncContainer.getDatabase().getId())
+                .getContainer(this.cosmosAsyncContainer.getId());
+
+        TestItem createdItem = TestItem.createNewItem();
+        containerForClientWithPreferredRegions.createItem(createdItem).block();
+
+        FaultInjectionRuleBuilder badSessionTokenRuleBuilder = new FaultInjectionRuleBuilder("serverErrorRule-bad-session-token-" + UUID.randomUUID());
+
+        FaultInjectionCondition faultInjectionConditionForReadsInPrimaryRegion = new FaultInjectionConditionBuilder()
+                .operationType(FaultInjectionOperationType.READ_ITEM)
+                .connectionType(FaultInjectionConnectionType.DIRECT)
+                .region(preferredLocations.get(0))
+                .build();
+
+        // a lagging replica can be simulated by fault-injecting once
+        // internally a replica will be chosen at random for which fault
+        // is injected but no more fault injections thereafter
+        FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
+                .getResultBuilder(FaultInjectionServerErrorType.BAD_SESSION_TOKEN)
+                .times(1)
                 .build();
 
         FaultInjectionRule badSessionTokenRule = badSessionTokenRuleBuilder
