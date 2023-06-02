@@ -224,6 +224,7 @@ public class CosmosTemplateIT {
             BASIC_ITEM.getId(), BasicItem.class);
         assertEquals(result, BASIC_ITEM);
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
         final BasicItem nullResult = cosmosTemplate.findById(BasicItem.class.getSimpleName(),
             NOT_EXIST_ID, BasicItem.class);
         assertThat(nullResult).isNull();

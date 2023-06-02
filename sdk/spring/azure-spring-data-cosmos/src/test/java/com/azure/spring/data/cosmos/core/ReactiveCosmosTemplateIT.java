@@ -206,6 +206,7 @@ public class ReactiveCosmosTemplateIT {
             .consumeNextWith(actual -> Assert.assertEquals(actual, BASIC_ITEM))
             .verifyComplete();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
     }
 
     @Test
