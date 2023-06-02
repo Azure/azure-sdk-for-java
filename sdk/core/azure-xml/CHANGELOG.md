@@ -12,8 +12,6 @@
 - Fixed a bug in reading the XML element value when it took multiple reads to fully consume it where null would 
   accidentally be appended to the final result for each unused segment tracker.
 
-### Other Changes
-
 ## 1.0.0-beta.1 (2022-09-22)
 
 - Initial release. Please see the README for more information.
