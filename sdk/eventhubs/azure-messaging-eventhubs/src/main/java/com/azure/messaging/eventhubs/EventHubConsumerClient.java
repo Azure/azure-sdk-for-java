@@ -27,8 +27,14 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
 /**
- * A <b>synchronous</b> consumer responsible for reading {@link EventData} from an Event Hub partition in the context of
- * a specific consumer group.
+ * <p>A <b>synchronous</b> consumer responsible for reading {@link EventData} from an Event Hub partition in the context of
+ * a specific consumer group.</p>
+ *
+ * <p>Most receive operations contain a parameter {@code maxWaitTime}.  The iterable is returned when either
+ * {@code maxWaitTime} has elapsed or {@code numberOfEvents} have been received.  It is possible to have an empty
+ * iterable if no events were received in that time frame.  {@link #receiveFromPartition(String, int, EventPosition)}
+ * does not have a parameter for {@code maxWaitTime}, consequently, it can take a long time to return results if
+ * {@code numberOfEvents} is too high and there is low traffic in that Event Hub.</p>
  *
  * <p><strong>Sample: Creating a synchronous consumer</strong></p>
  *
@@ -59,10 +65,21 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  * <p>Events from a single partition can be consumed using {@link #receiveFromPartition(String, int, EventPosition)} or
  * {@link #receiveFromPartition(String, int, EventPosition, Duration)}. The call to {@code receiveFromPartition}
  * completes and returns an {@link IterableStream} when either the maximum number of events is received, or the
- * timeout has elapsed.</p>
+ * timeout has elapsed.  It is possible to have an empty iterable returned if there were no events received in that
+ * duration.</p>
  *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration -->
  * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventHubConsumerClient consumer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+ *     .buildConsumerClient&#40;&#41;;
+ *
  * Instant twelveHoursAgo = Instant.now&#40;&#41;.minus&#40;Duration.ofHours&#40;12&#41;&#41;;
  * EventPosition startingPosition = EventPosition.fromEnqueuedTime&#40;twelveHoursAgo&#41;;
  * String partitionId = &quot;0&quot;;

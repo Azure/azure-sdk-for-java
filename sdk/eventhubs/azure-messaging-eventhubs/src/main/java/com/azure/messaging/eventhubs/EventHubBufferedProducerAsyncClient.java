@@ -65,11 +65,14 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </p>
  *
  * <p><strong>Creating an {@link EventHubBufferedProducerAsyncClient}</strong></p>
- * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.instantiation -->
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.construct -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
  * EventHubBufferedProducerAsyncClient client = new EventHubBufferedProducerClientBuilder&#40;&#41;
- *     .credential&#40;&quot;fully-qualifed-namespace&quot;, &quot;event-hub-name&quot;, credential&#41;
+ *     .credential&#40;&quot;fully-qualified-namespace&quot;, &quot;event-hub-name&quot;, credential&#41;
  *     .onSendBatchSucceeded&#40;succeededContext -&gt; &#123;
  *         System.out.println&#40;&quot;Successfully published events to: &quot; + succeededContext.getPartitionId&#40;&#41;&#41;;
  *     &#125;&#41;
@@ -81,7 +84,7 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     .maxEventBufferLengthPerPartition&#40;1500&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.instantiation -->
+ * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.construct -->
  */
 @ServiceClient(builder = EventHubBufferedProducerClientBuilder.class, isAsync = true)
 public final class EventHubBufferedProducerAsyncClient implements Closeable {

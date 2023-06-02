@@ -79,12 +79,22 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.SIGNA
  *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition -->
  * <pre>
+ * EventHubConsumerAsyncClient consumer = new EventHubClientBuilder&#40;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+ *     .buildAsyncConsumerClient&#40;&#41;;
+ *
  * &#47;&#47; Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds&#40;&#41;
  * String partitionId = &quot;0&quot;;
  * EventPosition startingPosition = EventPosition.latest&#40;&#41;;
  *
  * &#47;&#47; Keep a reference to `subscription`. When the program is finished receiving events, call
  * &#47;&#47; subscription.dispose&#40;&#41;. This will stop fetching events from the Event Hub.
+ * &#47;&#47;
+ * &#47;&#47; NOTE: This is a non-blocking call and will move to the next line of code after setting up the async
+ * &#47;&#47; operation.  If the program ends after this, or the class is immediately disposed, no events will be
+ * &#47;&#47; received.
  * Disposable subscription = consumer.receiveFromPartition&#40;partitionId, startingPosition&#41;
  *     .subscribe&#40;partitionEvent -&gt; &#123;
  *         PartitionContext partitionContext = partitionEvent.getPartitionContext&#40;&#41;;

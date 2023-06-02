@@ -177,12 +177,22 @@ public class EventHubsJavaDocCodeSamples {
      */
     public void receiveAsync() {
         // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerasyncclient.receive#string-eventposition
+        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                new DefaultAzureCredentialBuilder().build())
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+            .buildAsyncConsumerClient();
+
         // Obtain partitionId from EventHubConsumerAsyncClient.getPartitionIds()
         String partitionId = "0";
         EventPosition startingPosition = EventPosition.latest();
 
         // Keep a reference to `subscription`. When the program is finished receiving events, call
         // subscription.dispose(). This will stop fetching events from the Event Hub.
+        //
+        // NOTE: This is a non-blocking call and will move to the next line of code after setting up the async
+        // operation.  If the program ends after this, or the class is immediately disposed, no events will be
+        // received.
         Disposable subscription = consumer.receiveFromPartition(partitionId, startingPosition)
             .subscribe(partitionEvent -> {
                 PartitionContext partitionContext = partitionEvent.getPartitionContext();
@@ -303,12 +313,17 @@ public class EventHubsJavaDocCodeSamples {
      * Receives event data from a single partition.
      */
     public void receiveFromSinglePartition() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubConsumerClient consumer = new EventHubClientBuilder()
-            .connectionString("event-hub-instance-connection-string")
-            .consumerGroup("consumer-group-name")
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
+            .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .buildConsumerClient();
 
-        // BEGIN: com.azure.messaging.eventhubs.eventhubconsumerclient.receive#string-int-eventposition-duration
         Instant twelveHoursAgo = Instant.now().minus(Duration.ofHours(12));
         EventPosition startingPosition = EventPosition.fromEnqueuedTime(twelveHoursAgo);
         String partitionId = "0";
@@ -661,13 +676,16 @@ public class EventHubsJavaDocCodeSamples {
      *
      * @return A new instance of {@link EventProcessorClient}
      */
-    // BEGIN: com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation
-    public EventProcessorClient createEventProcessor() {
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};"
-            + "SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+    public void createEventProcessor() {
+        // BEGIN: com.azure.messaging.eventhubs.eventprocessorclientbuilder.construct
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
-            .consumerGroup("consumer-group")
+            .consumerGroup("<< CONSUMER GROUP NAME >>")
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
             .checkpointStore(new SampleCheckpointStore())
             .processEvent(eventContext -> {
                 System.out.printf("Partition id = %s and sequence number of event = %s%n",
@@ -679,11 +697,9 @@ public class EventHubsJavaDocCodeSamples {
                     errorContext.getPartitionContext().getPartitionId(),
                     errorContext.getThrowable());
             })
-            .connectionString(connectionString)
             .buildEventProcessorClient();
-        return eventProcessorClient;
+        // END: com.azure.messaging.eventhubs.eventprocessorclientbuilder.construct
     }
-    // END: com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation
 
     /**
      * Code snippet to show creation of an event processor that receives events in batches.
@@ -747,10 +763,13 @@ public class EventHubsJavaDocCodeSamples {
     //region EventHubBufferedProducerAsyncClient snippets
 
     public void createBufferedAsyncProducer() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.instantiation
+        // BEGIN: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.construct
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubBufferedProducerAsyncClient client = new EventHubBufferedProducerClientBuilder()
-            .credential("fully-qualifed-namespace", "event-hub-name", credential)
+            .credential("fully-qualified-namespace", "event-hub-name", credential)
             .onSendBatchSucceeded(succeededContext -> {
                 System.out.println("Successfully published events to: " + succeededContext.getPartitionId());
             })
@@ -761,7 +780,7 @@ public class EventHubsJavaDocCodeSamples {
             .maxWaitTime(Duration.ofSeconds(60))
             .maxEventBufferLengthPerPartition(1500)
             .buildAsyncClient();
-        // END: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.instantiation
+        // END: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.construct
     }
 
     //endregion
@@ -769,10 +788,13 @@ public class EventHubsJavaDocCodeSamples {
     //region EventHubBufferedProducerClient snippets
 
     public void createBufferedProducer() {
-        // BEGIN: com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation
+        // BEGIN: com.azure.messaging.eventhubs.eventhubbufferedproducerclient.construct
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubBufferedProducerClient client = new EventHubBufferedProducerClientBuilder()
-            .connectionString("event-hub-namespace-connection-string", "event-hub-name")
+            .credential("fully-qualified-namespace", "event-hub-name", credential)
             .onSendBatchSucceeded(succeededContext -> {
                 System.out.println("Successfully published events to: " + succeededContext.getPartitionId());
             })
@@ -781,7 +803,35 @@ public class EventHubsJavaDocCodeSamples {
                     failedContext.getPartitionId(), failedContext.getThrowable());
             })
             .buildClient();
-        // END: com.azure.messaging.eventhubs.eventhubbufferedproducerclient.instantiation
+        // END: com.azure.messaging.eventhubs.eventhubbufferedproducerclient.construct
+    }
+
+    public void enqueueBufferedMessages() {
+        // BEGIN: com.azure.messaging.eventhubs.eventhubbufferedproducerclient.enqueueEvents-iterable
+        TokenCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+        EventHubBufferedProducerClient client = new EventHubBufferedProducerClientBuilder()
+            .credential("fully-qualified-namespace", "event-hub-name", credential)
+            .onSendBatchSucceeded(succeededContext -> {
+                System.out.println("Successfully published events to: " + succeededContext.getPartitionId());
+            })
+            .onSendBatchFailed(failedContext -> {
+                System.out.printf("Failed to published events to %s. Error: %s%n",
+                    failedContext.getPartitionId(), failedContext.getThrowable());
+            })
+            .buildClient();
+
+        List<EventData> events = Arrays.asList(new EventData("maple"), new EventData("aspen"),
+            new EventData("oak"));
+
+        // Enqueues the events to be published.
+        client.enqueueEvents(events);
+
+        // Seconds later, enqueue another event.
+        client.enqueueEvent(new EventData("bonsai"));
+        // END: com.azure.messaging.eventhubs.eventhubbufferedproducerclient.enqueueEvents-iterable
     }
 
     //endregion
