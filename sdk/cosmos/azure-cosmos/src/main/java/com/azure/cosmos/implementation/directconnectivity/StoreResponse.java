@@ -9,7 +9,6 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
