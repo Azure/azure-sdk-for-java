@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.data.cosmos.domain;
 
 import com.azure.spring.data.cosmos.core.mapping.Container;
@@ -38,6 +40,11 @@ public class BasicItem {
         }
         final BasicItem item = (BasicItem) o;
         return Objects.equals(id, item.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
