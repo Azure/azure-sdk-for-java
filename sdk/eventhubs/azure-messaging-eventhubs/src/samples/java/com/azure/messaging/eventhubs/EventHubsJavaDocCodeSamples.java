@@ -822,6 +822,9 @@ public class EventHubsJavaDocCodeSamples {
             () -> {
                 System.out.println("Event successfully enqueued.");
             });
+
+        // Causes any buffered events to be flushed before closing underlying connection.
+        client.close();
         // END: com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.enqueueEvents-iterable
     }
 
@@ -873,6 +876,9 @@ public class EventHubsJavaDocCodeSamples {
 
         // Seconds later, enqueue another event.
         client.enqueueEvent(new EventData("bonsai"));
+
+        // Causes any buffered events to be flushed before closing underlying connection.
+        client.close();
         // END: com.azure.messaging.eventhubs.eventhubbufferedproducerclient.enqueueEvents-iterable
     }
 

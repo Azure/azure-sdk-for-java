@@ -105,6 +105,9 @@ import java.util.function.Consumer;
  *
  * &#47;&#47; Seconds later, enqueue another event.
  * client.enqueueEvent&#40;new EventData&#40;&quot;bonsai&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Causes any buffered events to be flushed before closing underlying connection.
+ * client.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerclient.enqueueEvents-iterable -->
  */

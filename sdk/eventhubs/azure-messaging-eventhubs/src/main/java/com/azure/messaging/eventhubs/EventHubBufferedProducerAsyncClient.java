@@ -101,6 +101,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * {@link EventHubBufferedProducerClientBuilder#maxWaitTime(Duration)} has elapsed, the buffer is full, or no more
  * events can fit into a batch.</p>
  *
+ * <p>NOTE that {@code Mono<Integer>} returned must be subscribed to, or eventually subscribed to if chained to
+ * reactive operators in order to start the operation.</p>
+ *
  * <!-- src_embed com.azure.messaging.eventhubs.eventhubbufferedproducerasyncclient.enqueueEvents-iterable -->
  * <pre>
  * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
@@ -140,6 +143,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  *     &#40;&#41; -&gt; &#123;
  *         System.out.println&#40;&quot;Event successfully enqueued.&quot;&#41;;
  *     &#125;&#41;;
+ *
+ * &#47;&#47; Causes any buffered events to be flushed before closing underlying connection.
+ * client.close&#40;&#41;;
  * </pre>
  * <!-- end com.azure.messaging.eventhubs.eventhubbufferedproducerclient.enqueueEvents-iterable -->
  */
