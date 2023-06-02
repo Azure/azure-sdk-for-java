@@ -45,21 +45,16 @@ public class DownloadToFileStressScenario extends BlobStressScenario<DownloadToF
                 Context context = new Context(FAULT_TRACKING_CONTEXT_KEY, faultTypes);
                 BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(downloadPath.toString());
 
-                try {
-                    getSyncBlobClient().downloadToFileWithResponse(options, Duration.ofNanos(timeoutNano), context);
-                } catch (IllegalStateException e) {
-                    // TODO can we better detect this?
-                    if (e.getMessage().contains("Timeout on blocking read")) {
-                        // test timed out, so break out of loop instead of validating the incomplete operation.
-                        break;
-                    } else {
-                        throw e;
-                    }
-                }
+                getSyncBlobClient().downloadToFileWithResponse(options, Duration.ofNanos(timeoutNano), context);
 
                 validateDownloadedContents(downloadPath);
+                logSuccess();
             } catch (Exception e) {
-                System.err.println(e);
+                if (e.getMessage().contains("Timeout on blocking read")) {
+                    // test timed out, so break out of loop instead of counting as a failure
+                    break;
+                }
+                logFailure(e.getMessage());
             }
         }
     }
