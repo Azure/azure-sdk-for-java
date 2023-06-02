@@ -16,8 +16,10 @@ spec:
           set -a &&
           source $ENV_FILE &&
           export CONTAINER_NAME=sender &&
+          export AZURE_LOG_LEVEL=1 &&
           export APPLICATIONINSIGHTS_ROLE_NAME=sender &&
-          export OTEL_RESOURCE_ATTRIBUTES=runId={{ .Stress.BaseName }} &&
+          export APPLICATIONINSIGHTS_ROLE_INSTANCE=sender-{{ .Stress.BaseName }} &&
+          export APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL=DEBUG &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.13.jar \
           "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=MessageSenderAsync
@@ -38,8 +40,10 @@ spec:
           set -a &&
           source $ENV_FILE &&
           export CONTAINER_NAME=receiver &&
+          export AZURE_LOG_LEVEL=1 &&
           export APPLICATIONINSIGHTS_ROLE_NAME=receiver &&
-          export OTEL_RESOURCE_ATTRIBUTES=runId={{ .Stress.BaseName }} &&
+          export APPLICATIONINSIGHTS_ROLE_INSTANCE=receiver-{{ .Stress.BaseName }} &&
+          export APPLICATIONINSIGHTS_INSTRUMENTATION_LOGGING_LEVEL=DEBUG &&
           java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.13.jar \
           -Dreactor.schedulers.defaultBoundedElasticSize=100 \
           "org.springframework.boot.loader.JarLauncher" \
@@ -68,7 +72,7 @@ spec:
   mode: all
   action: loss
   loss:
-    loss: '40'
+    loss: '20'
     correlation: '95'
   direction: to
   target:

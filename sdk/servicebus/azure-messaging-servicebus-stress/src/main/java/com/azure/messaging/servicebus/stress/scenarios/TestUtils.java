@@ -23,7 +23,8 @@ final class TestUtils {
     private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions().setTryTimeout(Duration.ofSeconds(10));
     private static final ClientLogger LOGGER = new ClientLogger(TestUtils.class);
     static ServiceBusClientBuilder.ServiceBusSenderClientBuilder getSenderBuilder(ScenarioOptions options, boolean session) {
-        ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = getBuilder(options).sender();
+        ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder = getBuilder(options)
+            .sender();
 
         if (options.getServiceBusEntityType() == EntityType.QUEUE) {
             builder.queueName(session ? options.getServiceBusSessionQueueName() : options.getServiceBusQueueName());
