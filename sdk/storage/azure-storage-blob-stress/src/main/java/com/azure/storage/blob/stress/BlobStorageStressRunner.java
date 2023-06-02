@@ -13,7 +13,6 @@ import java.nio.file.Paths;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 
@@ -23,14 +22,18 @@ public class BlobStorageStressRunner {
         FaultInjectionProbabilities probabilities = getDefaultFaultProbabilities();
         DownloadToFileScenarioBuilder builder = new DownloadToFileScenarioBuilder();
         builder.setBlobPrefix("foo");
-        builder.setBlobSize(100 * 1024 * 1024);
+        builder.setBlobSize(10 * 1024 * 1024);
         builder.setDirectoryPath(Paths.get("C:\\Users\\jaschrep\\temp"));
-        builder.setParallel(10);
-        builder.setTestTimeSeconds(60);
+        builder.setParallel(100);
+        builder.setTestTimeSeconds(30);
         builder.setFaultInjectingClient(new HttpFaultInjectingHttpClient(
             HttpClient.createDefault(), false, probabilities));
 
-        run(builder, true);
+        try {
+            run(builder, true);
+        } catch (Exception e) {
+            System.err.println("Critical failure.");
+        }
     }
 
     public static void run(StressScenarioBuilder builder, boolean sync) {
@@ -47,7 +50,7 @@ public class BlobStorageStressRunner {
                 forkJoinPool.execute(() -> s.run(Duration.ofSeconds(builder.getTestTimeSeconds())));
             }
             System.out.println("scenarios started: " + java.time.LocalTime.now());
-            forkJoinPool.awaitQuiescence(builder.getTestTimeSeconds(), TimeUnit.SECONDS);
+            forkJoinPool.awaitQuiescence(builder.getTestTimeSeconds() + 1, TimeUnit.SECONDS);
             System.out.println("awaited: " + java.time.LocalTime.now());
         } else {
             // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
@@ -64,9 +67,13 @@ public class BlobStorageStressRunner {
                 .runOn(Schedulers.parallel())
                 .flatMap(StorageStressScenario::runAsync)
                 .sequential()
+                .timeout(Duration.ofSeconds(builder.getTestTimeSeconds()))
                 .then()
                 .block();
         }
+
+        System.out.println("Success: " + scenarios.stream().mapToInt(StorageStressScenario::getSuccessfulRunCount).sum());
+        System.out.println("failed: " + scenarios.stream().mapToInt(StorageStressScenario::getFailedRunCount).sum());
 
         for (StorageStressScenario s : scenarios) {
             s.teardown();
