@@ -326,15 +326,14 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         Assert.hasText(containerName, "containerName should not be null, empty or only whitespaces");
         Assert.notNull(domainType, "domainType should not be null");
         CosmosContainerProperties containerProperties = getContainerProperties(containerName).block();
-        String containerPartitionKey = containerProperties.getPartitionKeyDefinition()
-            .getPaths().iterator().next().replaceAll("^/|/$", "");
-        if (containerPartitionKey != null) {
+        if (containerProperties != null) {
+            String containerPartitionKey = containerProperties.getPartitionKeyDefinition()
+                .getPaths().iterator().next().replaceAll("^/|/$", "");
             if (containerPartitionKey.equals("id")) {
                 return findById(id, domainType, new PartitionKey(CosmosUtils.getStringIDValue(id)));
             }
         }
         LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead. See https://aka.ms/PointReadsInSpring for more info.");
-
         final String finalContainerName = getContainerNameOverride(containerName);
         final String query = "select * from root where root.id = @ROOT_ID";
         final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
