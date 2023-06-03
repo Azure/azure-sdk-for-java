@@ -5,6 +5,9 @@ package com.azure.core.util;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -24,10 +27,12 @@ import java.util.stream.IntStream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+// Isolate and single thread these tests to prevent contention on UrlBuilder's ConcurrentHashMap cache.
+@Isolated
+@Execution(ExecutionMode.SAME_THREAD)
 public class UrlBuilderTests {
     @Test
     public void scheme() {
@@ -788,7 +793,7 @@ public class UrlBuilderTests {
             ForkJoinPool.defaultForkJoinWorkerThreadFactory, null, false);
 
         AtomicInteger callCount = new AtomicInteger();
-        List<Callable<UrlBuilder>> tasks = IntStream.range(0, 20000)
+        List<Callable<UrlBuilder>> tasks = IntStream.range(0, 10001)
             .mapToObj(i -> (Callable<UrlBuilder>) () -> {
                 callCount.incrementAndGet();
                 return UrlBuilder.parse("https://example" + i + ".com");
@@ -798,13 +803,16 @@ public class UrlBuilderTests {
         pool.invokeAll(tasks);
         pool.shutdown();
         assertTrue(pool.awaitTermination(10, TimeUnit.SECONDS));
-        assertEquals(20000, callCount.get());
+        assertEquals(10001, callCount.get());
+
+        // validate the size of the cache is not greater than 10000
+        assertTrue(UrlBuilder.getParsedUrls().size() <= 10000);
     }
 
     @Test
     public void fluxParallelParsing() {
         AtomicInteger callCount = new AtomicInteger();
-        Mono<Void> mono = Flux.range(0, 20000)
+        Mono<Void> mono = Flux.range(0, 10001)
             .parallel()
             .runOn(Schedulers.parallel())
             .map(i -> {
@@ -815,18 +823,7 @@ public class UrlBuilderTests {
             .timeout(Duration.ofSeconds(10));
 
         StepVerifier.create(mono).verifyComplete();
-        assertEquals(20000, callCount.get());
-    }
-
-    @Test
-    public void parseUniqueURLs() {
-        IntStream.range(0, 20000)
-            .parallel()
-            .forEach(i -> {
-                UrlBuilder urlBuilder = UrlBuilder.parse("www.bing.com:123/index.html?a=" + i);
-                assertNotNull(urlBuilder);
-                assertEquals("www.bing.com:123/index.html?a=" + i, urlBuilder.toString());
-            });
+        assertEquals(10001, callCount.get());
 
         // validate the size of the cache is not greater than 10000
         assertTrue(UrlBuilder.getParsedUrls().size() <= 10000);

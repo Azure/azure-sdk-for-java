@@ -61,7 +61,7 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     }
 
     @Override
-    public void onNext(ByteBuffer bytes) {
+    public synchronized void onNext(ByteBuffer bytes) {
         try {
             if (!WRITING.compareAndSet(this, 0, 1)) {
                 onError(new IllegalStateException("Received onNext while processing another write operation."));
@@ -78,13 +78,13 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     private void write(ByteBuffer bytes) {
         int remaining = bytes.remaining();
         request.write(Buffer.buffer(Unpooled.wrappedBuffer(bytes)), result -> {
-            WRITING.set(this, 0);
             if (result.succeeded()) {
                 if (progressReporter != null) {
                     progressReporter.reportProgress(remaining);
                 }
 
                 int doneState = DONE.get(this);
+                WRITING.set(this, 0);
                 if (doneState == 0) {
                     if (request.writeQueueFull()) {
                         request.drainHandler(ignored -> subscription.request(1));
@@ -97,13 +97,14 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
                     resetRequest(error);
                 }
             } else {
+                WRITING.set(this, 0);
                 onError(result.cause());
             }
         });
     }
 
     @Override
-    public void onError(Throwable throwable) {
+    public synchronized void onError(Throwable throwable) {
         if (!DONE.compareAndSet(this, 0, 2)) {
             Operators.onErrorDropped(throwable, Context.of(emitter.contextView()));
         }
@@ -122,7 +123,7 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     }
 
     @Override
-    public void onComplete() {
+    public synchronized void onComplete() {
         if (!DONE.compareAndSet(this, 0, 1)) {
             // Already completed, just return as there is no cleanup processing to do.
             return;
