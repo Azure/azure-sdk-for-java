@@ -11,11 +11,11 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.apachecommons.math.util.Pair;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -2685,7 +2685,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         .toRequestOptions(queryRequestOptions);
                     requestOptions.setPartitionKey(firstIdentity.getPartitionKey());
                     return this.readDocument((resourceLink + firstIdentity.getId()), requestOptions)
-                            .flatMap(resourceResponse -> Mono.just(new Pair<ResourceResponse<Document>, CosmosException>(resourceResponse, null)))
+                            .flatMap(resourceResponse -> Mono.just(
+                                    new ImmutablePair<ResourceResponse<Document>, CosmosException>(
+                                                    resourceResponse, null)
+                                    )
+                            )
                             .onErrorResume(throwable -> {
 
                                 Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
@@ -2698,7 +2702,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     int subStatusCode = cosmosException.getSubStatusCode();
 
                                     if (statusCode == HttpConstants.StatusCodes.NOTFOUND && subStatusCode == HttpConstants.SubStatusCodes.UNKNOWN) {
-                                        return Mono.just(new Pair<ResourceResponse<Document>, CosmosException>(null, cosmosException));
+                                        return Mono.just(new ImmutablePair<ResourceResponse<Document>, CosmosException>(null, cosmosException));
                                     }
                                 }
 
@@ -2709,8 +2713,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             })
             .flatMap(resourceResponseToExceptionPair -> {
 
-                ResourceResponse<Document> resourceResponse = resourceResponseToExceptionPair.getFirst();
-                CosmosException cosmosException = resourceResponseToExceptionPair.getSecond();
+                ResourceResponse<Document> resourceResponse = resourceResponseToExceptionPair.getLeft();
+                CosmosException cosmosException = resourceResponseToExceptionPair.getRight();
                 FeedResponse<Document> feedResponse;
 
                 if (cosmosException != null) {
