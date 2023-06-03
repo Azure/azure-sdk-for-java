@@ -184,7 +184,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         // no particular reason to look for a CosmosException type since
                                                         // any error thrown in the connection warmup flow is eventually swallowed
                                                         // downstream
-                                                        // onErrorContinue helps to log gateway issues when doing address requests
+                                                        // onErrorResume helps to log gateway issues when doing address requests
                                                         // for a specific region and also ensure connection warm up can move onto
                                                         // subsequent regions if configured
                                                         Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
