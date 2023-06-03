@@ -30,6 +30,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
@@ -403,6 +404,7 @@ public class CosmosItemTest extends TestSuiteBase {
         // extract 1 partition key val from 2nd physical partition
         // to create non-existent CosmosItemIdentity instance
         AtomicReference<String> pkValItem2 = new AtomicReference<>("");
+        AtomicReference<String> itemId2 = new AtomicReference<>("");
 
         CosmosQueryRequestOptions cosmosQueryRequestOptions2 = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions2.setFeedRange(feedRanges.get(1));
@@ -417,6 +419,7 @@ public class CosmosItemTest extends TestSuiteBase {
                     assertThat(results).isNotEmpty();
                     assertThat(results.size()).isEqualTo(1);
 
+                    itemId2.set(results.get(0).getId());
                     pkValItem2.set(results.get(0).getString("mypk"));
                 });
 
@@ -427,10 +430,11 @@ public class CosmosItemTest extends TestSuiteBase {
 
         FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
 
-        assertThat(feedResponse).isNotNull();
-        assertThat(feedResponse.getResults()).isNotNull();
-        // there could be a case where 0 items were created in physical partition 1
-        assertThat(feedResponse.getResults().size()).isLessThanOrEqualTo(1);
+        if (!pkValItem1.get().isEmpty() && !pkValItem2.get().isEmpty()) {
+            assertThat(feedResponse).isNotNull();
+            assertThat(feedResponse.getResults()).isNotNull();
+            assertThat(feedResponse.getResults().size()).isEqualTo(1);
+        }
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

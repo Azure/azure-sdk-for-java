@@ -180,7 +180,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                                 containerLinkToCollection.getRight(),
                                                                 connectionsPerEndpointCountForContainer).then();
                                                     })
-                                                    .onErrorContinue((throwable, o) -> {
+                                                    .onErrorResume((throwable) -> {
                                                         // no particular reason to look for a CosmosException type since
                                                         // any error thrown in the connection warmup flow is eventually swallowed
                                                         // downstream
@@ -190,6 +190,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
                                                         logger.warn("An exception occurred when resolving addresses for region : {}",
                                                                 readEndpoint, unwrappedThrowable);
+                                                        return Flux.empty();
                                                     });
                                             }
 
