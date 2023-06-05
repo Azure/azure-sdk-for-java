@@ -278,7 +278,7 @@ public final class JavaDocCodeSnippets {
      */
     public void workloadIdentityCredentialCodeSnippets() {
         // BEGIN: com.azure.identity.credential.workloadidentitycredential.construct
-        TokenCredential onBehalfOfCredential = new WorkloadIdentityCredentialBuilder()
+        TokenCredential workloadIdentityCredential = new WorkloadIdentityCredentialBuilder()
             .clientId("<clientID>")
             .tenantId("<tenantID>")
             .tokenFilePath("<token-file-path>")
