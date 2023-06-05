@@ -59,8 +59,8 @@ Querying API's
 & [ListsAnomaliesForAlertsAsyncSample][list_anomaly_alert_async_sample] | List anomalies triggered for an anomaly alert|
 |[ListsAnomaliesForDetectionConfigSample][list_anomalies_detection_config_sample]
 & [ListsAnomaliesForDetectionConfigAsyncSample][list_anomalies_detection_config_async_sample] | List anomalies identified by a detection configuration|
-|[ListSeriesDataForMetricAsyncSample][list_series_data_sample]
-& [ListSeriesDataForMetricSample][list_series_data_async_sample] | List metric series data for a metric|
+|[ListSeriesDataForMetricSample][list_series_data_sample]
+& [ListSeriesDataForMetricAsyncSample][list_series_data_async_sample] | List metric series data for a metric|
 |[ListSeriesDefinitionsForMetricSample][list_series_def_sample]
 & [ListSeriesDefinitionsForMetricAsyncSample][list_series_def_async_sample] | List series definition for a metric|
 
@@ -109,8 +109,8 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [list_incidents_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListIncidentsDetectedAsyncSample.java
 [list_series_def_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListSeriesDefinitionsForMetricSample.java
 [list_series_def_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListSeriesDefinitionsForMetricAsyncSample.java
-[list_series_data_sample]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListSeriesDataForMetricAsyncSample.java
-[list_series_data_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListSeriesDataForMetricSample.java
+[list_series_data_sample]:https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListSeriesDataForMetricSample.java
+[list_series_data_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListSeriesDataForMetricAsyncSample.java
 [list_anomalies_detection_config_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListsAnomaliesForDetectionConfigSample.java
 [list_anomalies_detection_config_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListsAnomaliesForDetectionConfigAsyncSample.java
 [list_anomaly_alert_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListsAnomaliesForAlertsSample.java
