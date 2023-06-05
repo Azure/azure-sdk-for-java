@@ -9,7 +9,6 @@
 ### Bugs Fixed
 
 ### Other Changes
-- Migrate test recordings to assets repo.
 
 ## 1.2.0 (2023-05-09)
 
