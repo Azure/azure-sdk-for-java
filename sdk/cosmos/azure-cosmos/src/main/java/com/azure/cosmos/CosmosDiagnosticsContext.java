@@ -614,8 +614,7 @@ public final class CosmosDiagnosticsContext {
      * Returns the connection mode used in the client.
      * NOTE: this information is not included in the json representation returned from {@link #toJson()} because it
      * is usually only relevant when thresholds are violated, in which case the entire diagnostics json-string is
-     * included. Calling this method will lazily collect the user agent - which can be useful when writing
-     * a custom {@link CosmosDiagnosticsHandler}
+     * included.
      * @return the connection mode used in the client.
      */
     public String getConnectionMode() {

@@ -776,7 +776,7 @@ public class ImplementationBridgeHelpers {
                 String cpu,
                 String used,
                 String available,
-               int cpuCount);
+                int cpuCount);
 
             void startOperation(CosmosDiagnosticsContext ctx);
 
