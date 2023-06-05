@@ -450,12 +450,16 @@ public class CosmosContainer {
 
     /**
      * Reads an item in the current container.
-     *
-     * @param <T> the type parameter. Required.
-     * @param itemId the item id. Required.
-     * @param partitionKey the partition key. Required.
-     * @param itemType the class type of item. Required.
+     * <br/>
+     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
+     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
+     * 
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param itemType the class type of item.
      * @return the Cosmos item response.
+     * @throws com.azure.cosmos.implementation.NotFoundException if document with the specified itemId does not exist
      *
      * @exception com.azure.cosmos.implementation.NotFoundException When there is no item in the database with a given itemId
      * @exception com.azure.cosmos.CosmosException On trying to read an item after closing <code>CosmosClient</code>
@@ -472,13 +476,17 @@ public class CosmosContainer {
 
     /**
      * Reads an item in the current container while specifying additional options.
+     * <br/>
+     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
+     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
      *
-     * @param <T> the type parameter. Required.
-     * @param itemId the item id in Cosmos Database. Required.
-     * @param partitionKey the partition key which identifies item's container in Cosmos Database. Required.
-     * @param options the options. Optional.
-     * @param itemType the class type of item. Required.
+     * @param <T> the type parameter.
+     * @param itemId the item id in Cosmos Database.
+     * @param partitionKey the partition key which identifies item's container in Cosmos Database.
+     * @param options the options (Optional).
+     * @param itemType the class type of item.
      * @return the Cosmos item response.
+     * @throws com.azure.cosmos.implementation.NotFoundException if document with the specified itemId does not exist
      *
      * @exception com.azure.cosmos.implementation.NotFoundException When there is no item in the database with a given itemId
      * @exception com.azure.cosmos.implementation.BadRequestException On passing invalid options (for example, session token in a wrong format)
