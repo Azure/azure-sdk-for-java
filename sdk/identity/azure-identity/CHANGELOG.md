@@ -1,14 +1,14 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.9.1 (2023-06-06)
 
 ### Other Changes
+#### Behavioral breaking change 
+- Moved `AzureDeveloperCliCredential` to the end of the `DefaultAzureCredential` chain.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
 
 ## 1.9.0 (2023-05-08)
 
