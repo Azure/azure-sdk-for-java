@@ -6,43 +6,28 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /** Contains configuration options specific to the algorithm used during indexing time. */
-@Fluent
-public final class VectorSearchAlgorithmConfiguration implements JsonSerializable<VectorSearchAlgorithmConfiguration> {
+@Immutable
+public class VectorSearchAlgorithmConfiguration implements JsonSerializable<VectorSearchAlgorithmConfiguration> {
     /*
      * The name to associate with this particular configuration.
      */
     private final String name;
 
-    /*
-     * The name of the kind of algorithm being configured for use with vector search. Only `hnsw` is supported in the
-     * current preview.
-     */
-    private final String kind;
-
-    /*
-     * Contains the parameters specific to hnsw algorithm.
-     */
-    private HnswParameters hnswParameters;
-
     /**
      * Creates an instance of VectorSearchAlgorithmConfiguration class.
      *
      * @param name the name value to set.
-     * @param kind the kind value to set.
      */
-    public VectorSearchAlgorithmConfiguration(String name, String kind) {
+    public VectorSearchAlgorithmConfiguration(String name) {
         this.name = name;
-        this.kind = kind;
     }
 
     /**
@@ -54,42 +39,10 @@ public final class VectorSearchAlgorithmConfiguration implements JsonSerializabl
         return this.name;
     }
 
-    /**
-     * Get the kind property: The name of the kind of algorithm being configured for use with vector search. Only `hnsw`
-     * is supported in the current preview.
-     *
-     * @return the kind value.
-     */
-    public String getKind() {
-        return this.kind;
-    }
-
-    /**
-     * Get the hnswParameters property: Contains the parameters specific to hnsw algorithm.
-     *
-     * @return the hnswParameters value.
-     */
-    public HnswParameters getHnswParameters() {
-        return this.hnswParameters;
-    }
-
-    /**
-     * Set the hnswParameters property: Contains the parameters specific to hnsw algorithm.
-     *
-     * @param hnswParameters the hnswParameters value to set.
-     * @return the VectorSearchAlgorithmConfiguration object itself.
-     */
-    public VectorSearchAlgorithmConfiguration setHnswParameters(HnswParameters hnswParameters) {
-        this.hnswParameters = hnswParameters;
-        return this;
-    }
-
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("kind", this.kind);
-        jsonWriter.writeJsonField("hnswParameters", this.hnswParameters);
         return jsonWriter.writeEndObject();
     }
 
@@ -99,50 +52,38 @@ public final class VectorSearchAlgorithmConfiguration implements JsonSerializabl
      * @param jsonReader The JsonReader being read.
      * @return An instance of VectorSearchAlgorithmConfiguration if the JsonReader was pointing to an instance of it, or
      *     null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
+     *     polymorphic discriminator.
      * @throws IOException If an error occurs while reading the VectorSearchAlgorithmConfiguration.
      */
     public static VectorSearchAlgorithmConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    boolean kindFound = false;
-                    String kind = null;
-                    HnswParameters hnswParameters = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+                    String discriminatorValue = null;
+                    JsonReader readerToUse = reader.bufferObject();
 
-                        if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("kind".equals(fieldName)) {
-                            kind = reader.getString();
-                            kindFound = true;
-                        } else if ("hnswParameters".equals(fieldName)) {
-                            hnswParameters = HnswParameters.fromJson(reader);
+                    readerToUse.nextToken(); // Prepare for reading
+                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                        String fieldName = readerToUse.getFieldName();
+                        readerToUse.nextToken();
+                        if ("kind".equals(fieldName)) {
+                            discriminatorValue = readerToUse.getString();
+                            break;
                         } else {
-                            reader.skipChildren();
+                            readerToUse.skipChildren();
                         }
                     }
-                    if (nameFound && kindFound) {
-                        VectorSearchAlgorithmConfiguration deserializedVectorSearchAlgorithmConfiguration =
-                                new VectorSearchAlgorithmConfiguration(name, kind);
-                        deserializedVectorSearchAlgorithmConfiguration.hnswParameters = hnswParameters;
 
-                        return deserializedVectorSearchAlgorithmConfiguration;
+                    if (discriminatorValue != null) {
+                        readerToUse = readerToUse.reset();
                     }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
+                    // Use the discriminator value to determine which subtype should be deserialized.
+                    if ("hnsw".equals(discriminatorValue)) {
+                        return HnswVectorSearchAlgorithmConfiguration.fromJson(readerToUse);
+                    } else {
+                        throw new IllegalStateException(
+                                "Discriminator field 'kind' didn't match one of the expected values 'hnsw'");
                     }
-                    if (!kindFound) {
-                        missingProperties.add("kind");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
                 });
     }
 }

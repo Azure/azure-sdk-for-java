@@ -53,7 +53,7 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e7e775e2f3fe00f25fbd0e7ca0d953e22eef93ff/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0cfd102a6ecb172f04ec915732bd8ca6f6b2a7af/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchindex.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: AnswerResult,AutocompleteItem,AutocompleteMode,AutocompleteOptions,AutocompleteResult,CaptionResult,FacetResult,IndexActionType,IndexDocumentsResult,IndexingResult,QueryAnswerType,QueryCaptionType,QueryLanguage,QuerySpellerType,QueryType,ScoringStatistics,SearchMode,SuggestOptions,DocumentDebugInfo,SemanticDebugInfo,QueryResultDocumentSemanticField,QueryResultDocumentRerankerInput,SemanticPartialResponseReason,SemanticPartialResponseType,SemanticErrorHandling,QueryDebugMode
@@ -67,7 +67,7 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/e7e775e2f3fe00f25fbd0e7ca0d953e22eef93ff/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/0cfd102a6ecb172f04ec915732bd8ca6f6b2a7af/specification/search/data-plane/Azure.Search/preview/2023-07-01-Preview/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
 custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames

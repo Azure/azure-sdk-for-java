@@ -6,7 +6,7 @@
 
 package com.azure.search.documents.indexes.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 /** Represents service-level resource counters and quotas. */
-@Fluent
+@Immutable
 public final class SearchServiceCounters implements JsonSerializable<SearchServiceCounters> {
     /*
      * Total number of aliases.
      */
-    private ResourceCounter aliasCounter;
+    private final ResourceCounter aliasCounter;
 
     /*
      * Total number of documents across all indexes in the service.
@@ -56,31 +56,45 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
     /*
      * Total number of skillsets.
      */
-    private ResourceCounter skillsetCounter;
+    private final ResourceCounter skillsetCounter;
+
+    /*
+     * Total memory consumption of all vector indexes within the service, in bytes.
+     */
+    private final ResourceCounter vectorIndexSizeCounter;
 
     /**
      * Creates an instance of SearchServiceCounters class.
      *
+     * @param aliasCounter the aliasCounter value to set.
      * @param documentCounter the documentCounter value to set.
      * @param indexCounter the indexCounter value to set.
      * @param indexerCounter the indexerCounter value to set.
      * @param dataSourceCounter the dataSourceCounter value to set.
      * @param storageSizeCounter the storageSizeCounter value to set.
      * @param synonymMapCounter the synonymMapCounter value to set.
+     * @param skillsetCounter the skillsetCounter value to set.
+     * @param vectorIndexSizeCounter the vectorIndexSizeCounter value to set.
      */
     public SearchServiceCounters(
+            ResourceCounter aliasCounter,
             ResourceCounter documentCounter,
             ResourceCounter indexCounter,
             ResourceCounter indexerCounter,
             ResourceCounter dataSourceCounter,
             ResourceCounter storageSizeCounter,
-            ResourceCounter synonymMapCounter) {
+            ResourceCounter synonymMapCounter,
+            ResourceCounter skillsetCounter,
+            ResourceCounter vectorIndexSizeCounter) {
+        this.aliasCounter = aliasCounter;
         this.documentCounter = documentCounter;
         this.indexCounter = indexCounter;
         this.indexerCounter = indexerCounter;
         this.dataSourceCounter = dataSourceCounter;
         this.storageSizeCounter = storageSizeCounter;
         this.synonymMapCounter = synonymMapCounter;
+        this.skillsetCounter = skillsetCounter;
+        this.vectorIndexSizeCounter = vectorIndexSizeCounter;
     }
 
     /**
@@ -90,17 +104,6 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
      */
     public ResourceCounter getAliasCounter() {
         return this.aliasCounter;
-    }
-
-    /**
-     * Set the aliasCounter property: Total number of aliases.
-     *
-     * @param aliasCounter the aliasCounter value to set.
-     * @return the SearchServiceCounters object itself.
-     */
-    public SearchServiceCounters setAliasCounter(ResourceCounter aliasCounter) {
-        this.aliasCounter = aliasCounter;
-        return this;
     }
 
     /**
@@ -167,27 +170,27 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
     }
 
     /**
-     * Set the skillsetCounter property: Total number of skillsets.
+     * Get the vectorIndexSizeCounter property: Total memory consumption of all vector indexes within the service, in
+     * bytes.
      *
-     * @param skillsetCounter the skillsetCounter value to set.
-     * @return the SearchServiceCounters object itself.
+     * @return the vectorIndexSizeCounter value.
      */
-    public SearchServiceCounters setSkillsetCounter(ResourceCounter skillsetCounter) {
-        this.skillsetCounter = skillsetCounter;
-        return this;
+    public ResourceCounter getVectorIndexSizeCounter() {
+        return this.vectorIndexSizeCounter;
     }
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("aliasesCount", this.aliasCounter);
         jsonWriter.writeJsonField("documentCount", this.documentCounter);
         jsonWriter.writeJsonField("indexesCount", this.indexCounter);
         jsonWriter.writeJsonField("indexersCount", this.indexerCounter);
         jsonWriter.writeJsonField("dataSourcesCount", this.dataSourceCounter);
         jsonWriter.writeJsonField("storageSize", this.storageSizeCounter);
         jsonWriter.writeJsonField("synonymMaps", this.synonymMapCounter);
-        jsonWriter.writeJsonField("aliasesCount", this.aliasCounter);
         jsonWriter.writeJsonField("skillsetCount", this.skillsetCounter);
+        jsonWriter.writeJsonField("vectorIndexSize", this.vectorIndexSizeCounter);
         return jsonWriter.writeEndObject();
     }
 
@@ -203,6 +206,8 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
     public static SearchServiceCounters fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(
                 reader -> {
+                    boolean aliasCounterFound = false;
+                    ResourceCounter aliasCounter = null;
                     boolean documentCounterFound = false;
                     ResourceCounter documentCounter = null;
                     boolean indexCounterFound = false;
@@ -215,13 +220,18 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                     ResourceCounter storageSizeCounter = null;
                     boolean synonymMapCounterFound = false;
                     ResourceCounter synonymMapCounter = null;
-                    ResourceCounter aliasCounter = null;
+                    boolean skillsetCounterFound = false;
                     ResourceCounter skillsetCounter = null;
+                    boolean vectorIndexSizeCounterFound = false;
+                    ResourceCounter vectorIndexSizeCounter = null;
                     while (reader.nextToken() != JsonToken.END_OBJECT) {
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
-                        if ("documentCount".equals(fieldName)) {
+                        if ("aliasesCount".equals(fieldName)) {
+                            aliasCounter = ResourceCounter.fromJson(reader);
+                            aliasCounterFound = true;
+                        } else if ("documentCount".equals(fieldName)) {
                             documentCounter = ResourceCounter.fromJson(reader);
                             documentCounterFound = true;
                         } else if ("indexesCount".equals(fieldName)) {
@@ -239,34 +249,43 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                         } else if ("synonymMaps".equals(fieldName)) {
                             synonymMapCounter = ResourceCounter.fromJson(reader);
                             synonymMapCounterFound = true;
-                        } else if ("aliasesCount".equals(fieldName)) {
-                            aliasCounter = ResourceCounter.fromJson(reader);
                         } else if ("skillsetCount".equals(fieldName)) {
                             skillsetCounter = ResourceCounter.fromJson(reader);
+                            skillsetCounterFound = true;
+                        } else if ("vectorIndexSize".equals(fieldName)) {
+                            vectorIndexSizeCounter = ResourceCounter.fromJson(reader);
+                            vectorIndexSizeCounterFound = true;
                         } else {
                             reader.skipChildren();
                         }
                     }
-                    if (documentCounterFound
+                    if (aliasCounterFound
+                            && documentCounterFound
                             && indexCounterFound
                             && indexerCounterFound
                             && dataSourceCounterFound
                             && storageSizeCounterFound
-                            && synonymMapCounterFound) {
+                            && synonymMapCounterFound
+                            && skillsetCounterFound
+                            && vectorIndexSizeCounterFound) {
                         SearchServiceCounters deserializedSearchServiceCounters =
                                 new SearchServiceCounters(
+                                        aliasCounter,
                                         documentCounter,
                                         indexCounter,
                                         indexerCounter,
                                         dataSourceCounter,
                                         storageSizeCounter,
-                                        synonymMapCounter);
-                        deserializedSearchServiceCounters.aliasCounter = aliasCounter;
-                        deserializedSearchServiceCounters.skillsetCounter = skillsetCounter;
+                                        synonymMapCounter,
+                                        skillsetCounter,
+                                        vectorIndexSizeCounter);
 
                         return deserializedSearchServiceCounters;
                     }
                     List<String> missingProperties = new ArrayList<>();
+                    if (!aliasCounterFound) {
+                        missingProperties.add("aliasesCount");
+                    }
                     if (!documentCounterFound) {
                         missingProperties.add("documentCount");
                     }
@@ -284,6 +303,12 @@ public final class SearchServiceCounters implements JsonSerializable<SearchServi
                     }
                     if (!synonymMapCounterFound) {
                         missingProperties.add("synonymMaps");
+                    }
+                    if (!skillsetCounterFound) {
+                        missingProperties.add("skillsetCount");
+                    }
+                    if (!vectorIndexSizeCounterFound) {
+                        missingProperties.add("vectorIndexSize");
                     }
 
                     throw new IllegalStateException(
