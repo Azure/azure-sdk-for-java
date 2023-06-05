@@ -5,12 +5,12 @@ package com.azure.ai.textanalytics.lro;
 
 import com.azure.ai.textanalytics.TextAnalyticsClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.models.ExtractSummaryOperationDetail;
-import com.azure.ai.textanalytics.models.ExtractSummaryOptions;
-import com.azure.ai.textanalytics.models.ExtractSummaryResult;
-import com.azure.ai.textanalytics.models.SummarySentence;
-import com.azure.ai.textanalytics.models.SummarySentencesOrder;
-import com.azure.ai.textanalytics.util.ExtractSummaryPagedIterable;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOperationDetail;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryOptions;
+import com.azure.ai.textanalytics.models.ExtractiveSummaryResult;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentence;
+import com.azure.ai.textanalytics.models.ExtractiveSummarySentencesOrder;
+import com.azure.ai.textanalytics.util.ExtractiveSummaryPagedIterable;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -52,20 +52,20 @@ public class ExtractiveSummarization {
                 + "foundational component of this aspiration, if grounded with external knowledge sources in "
                 + "the downstream AI tasks.");
 
-        SyncPoller<ExtractSummaryOperationDetail, ExtractSummaryPagedIterable> syncPoller =
+        SyncPoller<ExtractiveSummaryOperationDetail, ExtractiveSummaryPagedIterable> syncPoller =
             client.beginExtractSummary(documents,
                 "en",
-                new ExtractSummaryOptions().setMaxSentenceCount(4).setOrderBy(SummarySentencesOrder.RANK));
+                new ExtractiveSummaryOptions().setMaxSentenceCount(4).setOrderBy(ExtractiveSummarySentencesOrder.RANK));
         syncPoller.waitForCompletion();
         syncPoller.getFinalResult().forEach(resultCollection -> {
-            for (ExtractSummaryResult documentResult : resultCollection) {
+            for (ExtractiveSummaryResult documentResult : resultCollection) {
                 if (!documentResult.isError()) {
                     System.out.println("\tExtracted summary sentences:");
-                    for (SummarySentence summarySentence : documentResult.getSentences()) {
+                    for (ExtractiveSummarySentence extractiveSummarySentence : documentResult.getSentences()) {
                         System.out.printf(
                             "\t\t Sentence text: %s, length: %d, offset: %d, rank score: %f.%n",
-                            summarySentence.getText(), summarySentence.getLength(),
-                            summarySentence.getOffset(), summarySentence.getRankScore());
+                            extractiveSummarySentence.getText(), extractiveSummarySentence.getLength(),
+                            extractiveSummarySentence.getOffset(), extractiveSummarySentence.getRankScore());
                     }
                 } else {
                     System.out.printf("\tCannot extract summary sentences. Error: %s%n",

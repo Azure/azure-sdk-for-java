@@ -1,17 +1,21 @@
 # Release History
 
-## 12.22.0-beta.1 (Unreleased)
+## 12.22.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added `ServiceTimeoutPolicy` which allows for service level timeouts to be set on client builders through `HttpPipelinePolicy`. If the
-server timeout interval elapses before the service has finished processing the request, the service returns an error.
-- Added support for 2023-01-03 service version.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
 
+## 12.22.0-beta.1 (2023-05-30)
+
+### Features Added
+- Added `ServiceTimeoutPolicy` which allows for service level timeouts to be set on client builders through `HttpPipelinePolicy`. If the
+server timeout interval elapses before the service has finished processing the request, the service returns an error.
+- Added support for 2023-01-03 service version.
 ## 12.21.1 (2023-05-23)
 
 ### Other Changes

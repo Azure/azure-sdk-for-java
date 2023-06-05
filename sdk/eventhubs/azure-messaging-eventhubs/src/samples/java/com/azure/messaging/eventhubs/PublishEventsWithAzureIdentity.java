@@ -26,19 +26,14 @@ public class PublishEventsWithAzureIdentity {
             new EventData("Tofu".getBytes(UTF_8)),
             new EventData("Turkey".getBytes(UTF_8)));
 
-        // The default azure credential checks multiple locations for credentials and determines the best one to use.
-        // For the purpose of this sample, create a service principal and set the following environment variables.
-        // See https://docs.microsoft.com/azure/active-directory/develop/howto-create-service-principal-portal for
-        // information on how to create a service principal.
-        System.setProperty("AZURE_CLIENT_ID", "<<insert-service-principal-client-id>>");
-        System.setProperty("AZURE_CLIENT_SECRET", "<<insert-service-principal-client-application-secret>>");
-        System.setProperty("AZURE_TENANT_ID", "<<insert-service-principal-tenant-id>>");
-
-        // DefaultAzureCredentialBuilder exists inside the azure-identity package.
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
 
         // Create a producer.
+        //
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerClient producer = new EventHubClientBuilder()
