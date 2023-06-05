@@ -114,7 +114,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  *     batch.tryAdd&#40;new EventData&#40;&quot;test-event-2&quot;&#41;&#41;;
  *     return producer.send&#40;batch&#41;;
  * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
- *     &#125;,
+ * &#125;,
  *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
  * </pre>
@@ -139,7 +139,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  *     batch.tryAdd&#40;new EventData&#40;&quot;test-event-2&quot;&#41;&#41;;
  *     return producer.send&#40;batch&#41;;
  * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
- *     &#125;,
+ * &#125;,
  *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch to partition 1:&quot; + error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send to partition 1 complete.&quot;&#41;&#41;;
  * </pre>
@@ -165,7 +165,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  *     batch.tryAdd&#40;new EventData&#40;&quot;rye&quot;&#41;&#41;;
  *     return producer.send&#40;batch&#41;;
  * &#125;&#41;.subscribe&#40;unused -&gt; &#123;
- *     &#125;,
+ * &#125;,
  *     error -&gt; System.err.println&#40;&quot;Error occurred while sending batch:&quot; + error&#41;,
  *     &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
  * </pre>
@@ -454,7 +454,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      *
      * producer.send&#40;events&#41;
      *     .subscribe&#40;unused -&gt; &#123;
-     *         &#125;,
+     *     &#125;,
      *         error -&gt; System.err.println&#40;&quot;Error occurred while sending events:&quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
      * </pre>
@@ -492,7 +492,7 @@ public class EventHubProducerAsyncClient implements Closeable {
      * SendOptions sendOptions = new SendOptions&#40;&#41;.setPartitionKey&#40;&quot;cities&quot;&#41;;
      * producer.send&#40;events, sendOptions&#41;
      *     .subscribe&#40;unused -&gt; &#123;
-     *         &#125;,
+     *     &#125;,
      *         error -&gt; System.err.println&#40;&quot;Error occurred while sending events:&quot; + error&#41;,
      *         &#40;&#41; -&gt; System.out.println&#40;&quot;Send complete.&quot;&#41;&#41;;
      * </pre>

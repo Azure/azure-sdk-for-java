@@ -126,8 +126,8 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * &#47;&#47; Enqueues the events to be published.
  * client.enqueueEvents&#40;events&#41;.subscribe&#40;numberOfEvents -&gt; &#123;
- *         System.out.printf&#40;&quot;There are currently: %d events in buffer.%n&quot;, numberOfEvents&#41;;
- *     &#125;, error -&gt; &#123;
+ *     System.out.printf&#40;&quot;There are currently: %d events in buffer.%n&quot;, numberOfEvents&#41;;
+ * &#125;, error -&gt; &#123;
  *         System.err.println&#40;&quot;Error occurred enqueueing events: &quot; + error&#41;;
  *     &#125;,
  *     &#40;&#41; -&gt; &#123;
@@ -136,8 +136,8 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * &#47;&#47; Seconds later, enqueue another event.
  * client.enqueueEvent&#40;new EventData&#40;&quot;bonsai&quot;&#41;&#41;.subscribe&#40;numberOfEvents -&gt; &#123;
- *         System.out.printf&#40;&quot;There are %d events in the buffer.%n&quot;, numberOfEvents&#41;;
- *     &#125;, error -&gt; &#123;
+ *     System.out.printf&#40;&quot;There are %d events in the buffer.%n&quot;, numberOfEvents&#41;;
+ * &#125;, error -&gt; &#123;
  *         System.err.println&#40;&quot;Error occurred enqueueing events: &quot; + error&#41;;
  *     &#125;,
  *     &#40;&#41; -&gt; &#123;
