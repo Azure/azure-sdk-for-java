@@ -1087,7 +1087,10 @@ public final class SearchAsyncClient {
 
         String answerString = answer.toString();
 
-        // No count, just send the QueryAnswer.
+        if (answersCount != null && answerThreshold != null) {
+            return answerString + "|count-" + answersCount + ",threshold-" + answerThreshold;
+        }
+
         if (answersCount != null) {
             answerString = answerString + "|count-" + answersCount;
         }
