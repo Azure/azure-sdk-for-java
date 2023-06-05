@@ -11,11 +11,13 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsGet
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsListingByResourceGroup;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasManager;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsBatchCreation;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreating;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 
 public interface WebApplicationFirewallPolicies
-    extends SupportsListing<WebApplicationFirewallPolicy>,
+    extends SupportsCreating<WebApplicationFirewallPolicy.DefinitionStages.Blank>,
+    SupportsListing<WebApplicationFirewallPolicy>,
     SupportsListingByResourceGroup<WebApplicationFirewallPolicy>,
     SupportsGettingByResourceGroup<WebApplicationFirewallPolicy>,
     SupportsGettingById<WebApplicationFirewallPolicy>,

@@ -183,6 +183,9 @@ public interface ApplicationGateway
      */
     ApplicationGatewayListener listenerByPortNumber(int portNumber);
 
+    /** @return Web Application Firewall Policy associated with the application gateway */
+    WebApplicationFirewallPolicy webApplicationFirewallPolicy();
+
     /** Grouping of application gateway definition stages. */
     interface DefinitionStages {
         /** The first stage of an application gateway definition. */
@@ -553,6 +556,43 @@ public interface ApplicationGateway
         }
 
         /**
+         * The stage of the application gateway definition allowing to associate a Web Application Firewall Policy.
+         */
+        interface WithWebApplicationFirewallPolicy {
+            /**
+             * Associates an existing Web Application Firewall Policy.
+             *
+             * @param wafPolicy existing Web Application Firewall Policy
+             * @return the next stage of the definition
+             */
+            WithCreate withExistingWebApplicationFirewallPolicy(WebApplicationFirewallPolicy wafPolicy);
+
+            /**
+             * Associates an existing Web Application Firewall Policy.
+             *
+             * @param resourceId existing Web Application Firewall Policy
+             * @return the next stage of the definition
+             */
+            WithCreate withExistingWebApplicationFirewallPolicy(String resourceId);
+
+            /**
+             * Associates a new Web Application Firewall Policy.
+             *
+             * @param name name of the new Web Application Firewall Policy
+             * @return the next stage of the definition
+             */
+            WithCreate withNewWebApplicationFirewallPolicy(String name);
+
+            /**
+             * Associates a new Web Application Firewall Policy.
+             *
+             * @param creatable full definition of the new Web Application Firewall Policy
+             * @return the next stage of the definition
+             */
+            WithCreate withNewWebApplicationFirewallPolicy(Creatable<WebApplicationFirewallPolicy> creatable);
+        }
+
+        /**
          * The stage of an application gateway definition containing all the required inputs for the resource to be
          * created, but also allowing for any other optional settings to be specified.
          */
@@ -578,7 +618,8 @@ public interface ApplicationGateway
                 WithRedirectConfiguration,
                 WithAvailabilityZone,
                 WithManagedServiceIdentity,
-                WithHttp2 {
+                WithHttp2,
+                WithWebApplicationFirewallPolicy {
         }
     }
 
@@ -1207,6 +1248,47 @@ public interface ApplicationGateway
              */
             Update withoutHttp2();
         }
+
+        /**
+         * The stage of the application gateway update allowing to associate a Web Application Firewall Policy.
+         */
+        interface WithWebApplicationFirewallPolicy {
+            /**
+             * Associates an existing Web Application Firewall Policy.
+             * The newly associated policy will replace the previous associated one(if any) on the gateway.
+             *
+             * @param wafPolicy existing Web Application Firewall Policy
+             * @return the next stage of the update
+             */
+            Update withExistingWebApplicationFirewallPolicy(WebApplicationFirewallPolicy wafPolicy);
+
+            /**
+             * Associates an existing Web Application Firewall Policy.
+             * The newly associated policy will replace the previous associated one(if any) on the gateway.
+             *
+             * @param resourceId existing Web Application Firewall Policy
+             * @return the next stage of the update
+             */
+            Update withExistingWebApplicationFirewallPolicy(String resourceId);
+
+            /**
+             * Associates a new Web Application Firewall Policy.
+             * The newly associated policy will replace the previous associated one(if any) on the gateway.
+             *
+             * @param name name of the new Web Application Firewall Policy
+             * @return the next stage of the update
+             */
+            Update withNewWebApplicationFirewallPolicy(String name);
+
+            /**
+             * Associates a new Web Application Firewall Policy.
+             * The newly associated policy will replace the previous associated one(if any) on the gateway.
+             *
+             * @param creatable full definition of the new Web Application Firewall Policy
+             * @return the next stage of the update
+             */
+            Update withNewWebApplicationFirewallPolicy(Creatable<WebApplicationFirewallPolicy> creatable);
+        }
     }
 
     /** The template for an application gateway update operation, containing all the settings that can be modified. */
@@ -1232,6 +1314,7 @@ public interface ApplicationGateway
             UpdateStages.WithRedirectConfiguration,
             UpdateStages.WithUrlPathMap,
             UpdateStages.WithManagedServiceIdentity,
-            UpdateStages.WithHttp2 {
+            UpdateStages.WithHttp2,
+            UpdateStages.WithWebApplicationFirewallPolicy {
     }
 }

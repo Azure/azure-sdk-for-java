@@ -23,6 +23,7 @@ import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssign
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.security.keyvault.certificates.models.CertificatePolicy;
@@ -503,6 +504,63 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                     .withoutIPAddress(addr.ipAddress())
                     .parent()
                     .apply()));
+    }
+
+    @Test
+    public void canAssociateWafPolicy() {
+        String appGatewayName = generateRandomResourceName("agwaf", 15);
+        String appPublicIp = generateRandomResourceName("pip", 15);
+        String wafPolicyName = generateRandomResourceName("waf", 15);
+        String wafPolicyName2 = generateRandomResourceName("waf", 15);
+
+        PublicIpAddress pip =
+            networkManager
+                .publicIpAddresses()
+                .define(appPublicIp)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withSku(PublicIPSkuType.STANDARD)
+                .withStaticIP()
+                .create();
+
+        WebApplicationFirewallPolicy wafPolicy =
+            networkManager
+                .webApplicationFirewallPolicies()
+                .define(wafPolicyName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .create();
+
+        ApplicationGateway appGateway =
+            networkManager
+                .applicationGateways()
+                .define(appGatewayName)
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                // Request routing rules
+                .defineRequestRoutingRule("rule1")
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .toBackendIPAddress("11.1.1.2")
+                .attach()
+                .withExistingPublicIpAddress(pip)
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                .withExistingWebApplicationFirewallPolicy(wafPolicy)
+                .create();
+
+        Assertions.assertNotNull(appGateway.webApplicationFirewallPolicy());
+        Assertions.assertEquals(wafPolicy.id(), appGateway.webApplicationFirewallPolicy().id());
+        Assertions.assertNull(appGateway.webApplicationFirewallConfiguration());
+
+        appGateway.update()
+            .withNewWebApplicationFirewallPolicy(wafPolicyName2)
+            .apply();
+
+        Assertions.assertNotNull(appGateway.webApplicationFirewallPolicy());
+        Assertions.assertNotEquals(appGateway.webApplicationFirewallPolicy().id(), wafPolicy.id());
     }
 
     private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {
