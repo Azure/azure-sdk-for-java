@@ -135,7 +135,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONNE
  *
  * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
  * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
- * EventHubConsumerAsyncClient Consumer = new EventHubClientBuilder&#40;&#41;
+ * EventHubConsumerAsyncClient consumer = new EventHubClientBuilder&#40;&#41;
  *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
  *         credential&#41;
  *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;

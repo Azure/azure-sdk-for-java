@@ -85,7 +85,7 @@ public class EventHubsJavaDocCodeSamples {
 
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
-        EventHubConsumerClient Consumer = new EventHubClientBuilder()
+        EventHubConsumerClient consumer = new EventHubClientBuilder()
             .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
                 credential)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
@@ -102,7 +102,7 @@ public class EventHubsJavaDocCodeSamples {
 
         // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
         // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
-        EventHubConsumerAsyncClient Consumer = new EventHubClientBuilder()
+        EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
                 credential)
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
