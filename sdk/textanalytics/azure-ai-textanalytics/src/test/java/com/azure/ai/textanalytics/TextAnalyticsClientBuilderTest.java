@@ -263,6 +263,7 @@ public class TextAnalyticsClientBuilderTest extends TestProxyTestBase {
         });
     }
 
+    @Disabled("Waiting for service to enable it")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithAAD(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
