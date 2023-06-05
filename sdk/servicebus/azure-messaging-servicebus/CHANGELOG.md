@@ -7,6 +7,8 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed `NullPointerException` when ending span when `AmqpException` is thrown, but its `AmqpErrorCondition` is `null`.
+  ([#35299](https://github.com/Azure/azure-sdk-for-java/issues/35299))
 
 ### Other Changes
 
