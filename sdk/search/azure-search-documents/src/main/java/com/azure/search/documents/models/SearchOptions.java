@@ -705,7 +705,7 @@ public final class SearchOptions {
     /**
      * Get the answer threshold property: This parameter is only valid if the query type is 'semantic'.
      * The confidence threshold can be configured by appending the pipe
-     * character '|' followed by the 'threshold-<confidence threshold>'
+     * character '|' followed by the 'threshold-&lt;confidence threshold&gt;'
      * option after the answers parameter value, such as 
      * 'extractive|threshold-0.9'. Default threshold is 0.7.
      * 
@@ -718,7 +718,7 @@ public final class SearchOptions {
     /**
      * Set the answer threshold property: This parameter is only valid if the query type is 'semantic'.
      * The confidence threshold can be configured by appending the pipe
-     * character '|' followed by the 'threshold-<confidence threshold>'
+     * character '|' followed by the 'threshold-&lt;confidence threshold&gt;'
      * option after the answers parameter value, such as 
      * 'extractive|threshold-0.9'. Default threshold is 0.7.
      * @param answerThreshold the answer threshold value to set.
