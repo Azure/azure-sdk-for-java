@@ -29,3 +29,6 @@ com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.AzureService
 com.azure.spring.cloud.autoconfigure.implementation.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.compatibility.AzureCompatibilityVerifierAutoConfiguration
 com.azure.spring.cloud.autoconfigure.implementation.jdbc.AzureJdbcAutoConfiguration
+com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosDataAutoConfiguration
+com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosRepositoriesAutoConfiguration
+com.azure.spring.cloud.autoconfigure.implementation.data.cosmos.CosmosReactiveRepositoriesAutoConfiguration
