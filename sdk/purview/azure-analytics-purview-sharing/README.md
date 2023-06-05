@@ -2,7 +2,7 @@
 
 Microsoft Purview Data Sharing allows data to be shared in-place from Azure Data Lake Storage Gen2 and Azure Storage accounts, both within and across organizations.
 
-Data providers may use Microsoft Purview Data Sharing to share their data directly with users and partners (known as data consumers) without data duplication, while centrally managing their sharing activities from within Microsoft Purview.
+Data providers may use Microsoft Purview Data Sharing to share their data directly with other users and partners (known as data consumers) without data duplication, while centrally managing their sharing activities from within Microsoft Purview.
 
 For data consumers, Microsoft Purview Data Sharing provides near real-time access to data shared with them by a provider.
 
