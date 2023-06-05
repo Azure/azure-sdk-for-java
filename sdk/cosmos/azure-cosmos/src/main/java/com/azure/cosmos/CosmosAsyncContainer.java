@@ -1527,7 +1527,8 @@ public class CosmosAsyncContainer {
      * <p>
      * After subscription the operation will be performed.
      * The {@link Mono} upon successful completion will contain a single Cosmos item response for the deleted item.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.deleteItem -->
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.deleteItem -->
      * @param itemId the item id.
      * @param partitionKey the partition key.
      * @return an {@link Mono} containing the Cosmos item resource response.
@@ -1544,7 +1545,7 @@ public class CosmosAsyncContainer {
      *
      * @param itemId id of the item.
      * @param partitionKey partitionKey of the item.
-     * @param options the request options.
+     * @param options the request options (Optional).
      * @return an {@link Mono} containing the Cosmos item resource response.
      */
     public Mono<CosmosItemResponse<Object>> deleteItem(
@@ -1625,7 +1626,8 @@ public class CosmosAsyncContainer {
 
     /**
      * Lists all the conflicts in the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readAllConflicts -->
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readAllConflicts -->
      * @param options the query request options
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
@@ -1658,7 +1660,8 @@ public class CosmosAsyncContainer {
 
     /**
      * Queries all the conflicts in the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.queryConflicts -->
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.queryConflicts -->
      * @param query the query.
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
@@ -1671,7 +1674,7 @@ public class CosmosAsyncContainer {
      * Queries all the conflicts in the current container.
      *
      * @param query the query.
-     * @param options the query request options.
+     * @param options the query request options (Optional).
      * @return a {@link CosmosPagedFlux} containing one or several feed response pages of the
      * obtained conflicts or an error.
      */
@@ -1711,7 +1714,8 @@ public class CosmosAsyncContainer {
 
     /**
      * Replace the throughput.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.replaceThroughput -->
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.replaceThroughput -->
      * @param throughputProperties the throughput properties.
      * @return the mono containing throughput response.
      */
@@ -1721,7 +1725,8 @@ public class CosmosAsyncContainer {
 
     /**
      * Read the throughput provisioned for the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.readThroughput -->
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.readThroughput -->
      * @return the mono containing throughput response.
      */
     public Mono<ThroughputResponse> readThroughput() {
@@ -2202,7 +2207,8 @@ public class CosmosAsyncContainer {
     /**
      * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
      * operations.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosAsyncContainer.getFeedRanges -->
+     * <!-- end com.azure.cosmos.CosmosAsyncContainer.getFeedRanges -->
      * @return An unmodifiable list of {@link FeedRange}
      */
     public Mono<List<FeedRange>> getFeedRanges() {

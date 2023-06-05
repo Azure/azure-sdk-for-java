@@ -139,8 +139,9 @@ public class CosmosContainer {
 
     /**
      * Sets the throughput for the current container.
-     *
-     * @param throughputProperties the throughput properties.
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.replaceThroughput -->
+     * <!-- end com.azure.cosmos.CosmosContainer.replaceThroughput -->
+     * @param throughputProperties the throughput properties (Optional).
      * @return the throughput response.
      */
     public ThroughputResponse replaceThroughput(ThroughputProperties throughputProperties) {
@@ -149,7 +150,8 @@ public class CosmosContainer {
 
     /**
      * Gets the throughput for the current container.
-     *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readThroughput -->
+     * <!-- end com.azure.cosmos.CosmosContainer.readThroughput -->
      * @return the throughput response.
      */
     public ThroughputResponse readThroughput() {
@@ -453,7 +455,8 @@ public class CosmosContainer {
      * <br/>
      * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
      * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
-     * 
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.readItem -->
+     * <!-- end com.azure.cosmos.CosmosContainer.readItem -->
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
@@ -550,6 +553,8 @@ public class CosmosContainer {
     /**
      * Deletes an item in the current container.
      *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.deleteItem -->
+     * <!-- end com.azure.cosmos.CosmosContainer.deleteItem -->
      * @param itemId the item id.
      * @param partitionKey the partition key.
      * @param options the options.
@@ -733,6 +738,8 @@ public class CosmosContainer {
      * Obtains a list of {@link FeedRange} that can be used to parallelize Feed
      * operations.
      *
+     * <!-- src_embed com.azure.cosmos.CosmosContainer.getFeedRanges -->
+     * <!-- end com.azure.cosmos.CosmosContainer.getFeedRanges -->
      * @return An unmodifiable list of {@link FeedRange}
      */
     public List<FeedRange> getFeedRanges() {
