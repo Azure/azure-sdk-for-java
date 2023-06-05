@@ -7,20 +7,19 @@ package com.azure.resourcemanager.resourcehealth.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcehealth.models.ServiceImpactingEventStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ServiceImpactingEventStatusTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         ServiceImpactingEventStatus model =
-            BinaryData.fromString("{\"value\":\"waopvkmijcmmxd\"}").toObject(ServiceImpactingEventStatus.class);
-        Assertions.assertEquals("waopvkmijcmmxd", model.value());
+            BinaryData.fromString("{\"value\":\"ckyfih\"}").toObject(ServiceImpactingEventStatus.class);
+        Assertions.assertEquals("ckyfih", model.value());
     }
 
-    @Test
-    public void testSerialize() {
-        ServiceImpactingEventStatus model = new ServiceImpactingEventStatus().withValue("waopvkmijcmmxd");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ServiceImpactingEventStatus model = new ServiceImpactingEventStatus().withValue("ckyfih");
         model = BinaryData.fromObject(model).toObject(ServiceImpactingEventStatus.class);
-        Assertions.assertEquals("waopvkmijcmmxd", model.value());
+        Assertions.assertEquals("ckyfih", model.value());
     }
 }

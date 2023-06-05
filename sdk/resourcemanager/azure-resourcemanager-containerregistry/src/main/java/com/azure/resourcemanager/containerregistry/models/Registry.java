@@ -103,7 +103,7 @@ public interface Registry
     /** @return the network rule set for the container registry */
     NetworkRuleSet networkRuleSet();
 
-    /** @return whether the container registries dedicated data points can be accessed from public network */
+    /** @return whether the container registries dedicated data endpoints can be accessed from public network */
     boolean isDedicatedDataEndpointsEnabled();
 
     /** @return list of host names that will serve data when isDedicatedDataEndpointsEnabled is true */
@@ -225,11 +225,11 @@ public interface Registry
         }
 
         /**
-         * The stage of the container registry definition allowing to configure dedicated data points.
+         * The stage of the container registry definition allowing to configure dedicated data endpoints.
          */
         interface WithDedicatedDataEndpoints {
             /**
-             * Enables dedicated data points for the container registry.
+             * Enables dedicated data endpoints for the container registry.
              *
              * @return the next stage of the definition
              * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-firewall-access-rules#enable-dedicated-data-endpoints">
@@ -420,11 +420,11 @@ public interface Registry
         }
 
         /**
-         * The stage of the container registry definition allowing to configure dedicated data points.
+         * The stage of the container registry definition allowing to configure dedicated data endpoints.
          */
         interface WithDedicatedDataEndpoints {
             /**
-             * Enables dedicated data points for the container registry.
+             * Enables dedicated data endpoints for the container registry.
              *
              * @return the next stage of the definition
              * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-firewall-access-rules#enable-dedicated-data-endpoints">
@@ -434,7 +434,7 @@ public interface Registry
             Update enableDedicatedDataEndpoints();
 
             /**
-             * Disables dedicated data points for the container registry.
+             * Disables dedicated data endpoints for the container registry.
              *
              * @return the next stage of the definition
              */
