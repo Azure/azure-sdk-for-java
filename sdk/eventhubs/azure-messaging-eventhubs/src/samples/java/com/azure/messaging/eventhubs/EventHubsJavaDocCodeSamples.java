@@ -373,7 +373,7 @@ public class EventHubsJavaDocCodeSamples {
             batch.tryAdd(new EventData("test-event-2"));
             return producer.send(batch);
         }).subscribe(unused -> {
-            },
+        },
             error -> System.err.println("Error occurred while sending batch:" + error),
             () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch
@@ -394,7 +394,7 @@ public class EventHubsJavaDocCodeSamples {
             batch.tryAdd(new EventData("test-event-2"));
             return producer.send(batch);
         }).subscribe(unused -> {
-            },
+        },
             error -> System.err.println("Error occurred while sending batch to partition 1:" + error),
             () -> System.out.println("Send to partition 1 complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionId
@@ -416,7 +416,7 @@ public class EventHubsJavaDocCodeSamples {
             batch.tryAdd(new EventData("rye"));
             return producer.send(batch);
         }).subscribe(unused -> {
-            },
+        },
             error -> System.err.println("Error occurred while sending batch:" + error),
             () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.createBatch#CreateBatchOptions-partitionKey
@@ -485,7 +485,7 @@ public class EventHubsJavaDocCodeSamples {
 
         producer.send(events)
             .subscribe(unused -> {
-                },
+            },
                 error -> System.err.println("Error occurred while sending events:" + error),
                 () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable
@@ -505,7 +505,7 @@ public class EventHubsJavaDocCodeSamples {
         SendOptions sendOptions = new SendOptions().setPartitionKey("cities");
         producer.send(events, sendOptions)
             .subscribe(unused -> {
-                },
+            },
                 error -> System.err.println("Error occurred while sending events:" + error),
                 () -> System.out.println("Send complete."));
         // END: com.azure.messaging.eventhubs.eventhubasyncproducerclient.send#Iterable-SendOptions
@@ -675,8 +675,6 @@ public class EventHubsJavaDocCodeSamples {
 
     /**
      * Code snippet for showing how to create a new instance of {@link EventProcessorClient}.
-     *
-     * @return A new instance of {@link EventProcessorClient}
      */
     public void createEventProcessor() {
         // BEGIN: com.azure.messaging.eventhubs.eventprocessorclientbuilder.construct
@@ -813,8 +811,8 @@ public class EventHubsJavaDocCodeSamples {
 
         // Enqueues the events to be published.
         client.enqueueEvents(events).subscribe(numberOfEvents -> {
-                System.out.printf("There are currently: %d events in buffer.%n", numberOfEvents);
-            }, error -> {
+            System.out.printf("There are currently: %d events in buffer.%n", numberOfEvents);
+        }, error -> {
                 System.err.println("Error occurred enqueueing events: " + error);
             },
             () -> {
@@ -823,8 +821,8 @@ public class EventHubsJavaDocCodeSamples {
 
         // Seconds later, enqueue another event.
         client.enqueueEvent(new EventData("bonsai")).subscribe(numberOfEvents -> {
-                System.out.printf("There are %d events in the buffer.%n", numberOfEvents);
-            }, error -> {
+            System.out.printf("There are %d events in the buffer.%n", numberOfEvents);
+        }, error -> {
                 System.err.println("Error occurred enqueueing events: " + error);
             },
             () -> {
