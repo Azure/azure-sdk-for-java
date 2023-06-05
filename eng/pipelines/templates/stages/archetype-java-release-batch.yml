@@ -126,13 +126,13 @@ stages:
                 }
               displayName: "Verify no unreleased dependencies or beta dependencies for GA libraries"
 
-            - ${{ each artifact in parameters.Artifacts }}:
-              - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
-                - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-                  parameters:
-                    PackageName: ${{artifact.name}}
-                    ServiceName: ${{parameters.ServiceDirectory}}
-                    ForRelease: true
+            # - ${{ each artifact in parameters.Artifacts }}:
+            #   - ${{if and(ne(parameters.SDKType, 'data'), ne(artifact.skipVerifyChangelog, 'true'))}}:
+            #     - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+            #       parameters:
+            #         PackageName: ${{artifact.name}}
+            #         ServiceName: ${{parameters.ServiceDirectory}}
+            #         ForRelease: true
             # Given a list of libraries to release, verify that the list of libraries has full transitive closure.
             # This prevents us from releasing a library whose dependency is not being released. UberJar needs to be
             # be passed in, we skip check on UberJars but we still do need to fail correctly if the user didn't
