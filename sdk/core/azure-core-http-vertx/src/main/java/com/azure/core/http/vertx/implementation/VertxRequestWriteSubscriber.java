@@ -16,7 +16,6 @@ import reactor.core.publisher.Operators;
 import reactor.util.context.Context;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 
 /**
  * Subscriber that writes a stream of {@link ByteBuffer ByteBuffers} to a {@link HttpClientRequest Vertx Request}.
@@ -32,14 +31,7 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     // This subscriber is effectively synchronous so there is no need for these fields to be volatile.
     private Subscription subscription;
 
-    private static final AtomicIntegerFieldUpdater<VertxRequestWriteSubscriber> WRITING
-        = AtomicIntegerFieldUpdater.newUpdater(VertxRequestWriteSubscriber.class, "writing");
-    private volatile int writing;
-
-    private static final AtomicIntegerFieldUpdater<VertxRequestWriteSubscriber> DONE
-        = AtomicIntegerFieldUpdater.newUpdater(VertxRequestWriteSubscriber.class, "done");
-    private volatile int done;
-
+    private volatile State state = State.UNINITIALIZED;
     private volatile Throwable error;
 
     public VertxRequestWriteSubscriber(HttpClientRequest request, MonoSink<HttpResponse> emitter,
@@ -63,15 +55,16 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     @Override
     public synchronized void onNext(ByteBuffer bytes) {
         try {
-            if (!WRITING.compareAndSet(this, 0, 1)) {
-                onError(new IllegalStateException("Received onNext while processing another write operation."));
+            if (state == State.WRITING) {
+                onErrorInternal(new IllegalStateException("Received onNext while processing another write operation."));
             } else {
+                state = State.WRITING;
                 write(bytes);
             }
         } catch (Exception ex) {
             // If writing has an error, and it isn't caught, there is a possibility for it to deadlock the reactive
             // stream. Catch the exception and propagate it manually so that doesn't happen.
-            onError(ex);
+            onErrorInternal(ex);
         }
     }
 
@@ -83,35 +76,44 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
                     progressReporter.reportProgress(remaining);
                 }
 
-                int doneState = DONE.get(this);
-                WRITING.set(this, 0);
-                if (doneState == 0) {
+                State state = this.state;
+                if (state == State.WRITING) {
+                    this.state = State.UNINITIALIZED;
                     if (request.writeQueueFull()) {
                         request.drainHandler(ignored -> subscription.request(1));
                     } else {
                         subscription.request(1);
                     }
-                } else if (doneState == 1) {
+                } else if (state == State.COMPLETE_DURING_WRITE) {
+                    this.state = State.COMPLETE;
                     endRequest();
-                } else {
+                } else if (state == State.ERROR_DURING_WRITE) {
+                    this.state = State.ERROR;
                     resetRequest(error);
                 }
             } else {
-                WRITING.set(this, 0);
-                onError(result.cause());
+                this.state = State.ERROR;
+                onErrorInternal(result.cause());
             }
         });
     }
 
     @Override
     public synchronized void onError(Throwable throwable) {
-        if (!DONE.compareAndSet(this, 0, 2)) {
+        onErrorInternal(throwable);
+    }
+
+    private void onErrorInternal(Throwable throwable) {
+        State state = this.state;
+        if (state.code >= 2) {
             Operators.onErrorDropped(throwable, Context.of(emitter.contextView()));
         }
 
-        if (WRITING.get(this) == 1) {
+        if (state == State.WRITING) {
+            this.state = State.ERROR_DURING_WRITE;
             error = throwable;
         } else {
+            this.state = State.ERROR;
             resetRequest(throwable);
         }
     }
@@ -124,12 +126,16 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
 
     @Override
     public synchronized void onComplete() {
-        if (!DONE.compareAndSet(this, 0, 1)) {
+        State state = this.state;
+        if (state.code >= 2) {
             // Already completed, just return as there is no cleanup processing to do.
             return;
         }
 
-        if (WRITING.get(this) != 1) {
+        if (state == State.WRITING) {
+            this.state = State.COMPLETE_DURING_WRITE;
+        } else {
+            this.state = State.COMPLETE;
             endRequest();
         }
     }
@@ -142,4 +148,18 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
         });
     }
 
+    private enum State {
+        UNINITIALIZED(0),
+        WRITING(1),
+        COMPLETE_DURING_WRITE(2),
+        ERROR_DURING_WRITE(3),
+        COMPLETE(4),
+        ERROR(5);
+
+        private final int code;
+
+        State(int code) {
+            this.code = code;
+        }
+    }
 }
