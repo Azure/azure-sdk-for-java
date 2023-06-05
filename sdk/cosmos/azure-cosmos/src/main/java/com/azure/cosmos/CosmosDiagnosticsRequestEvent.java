@@ -10,7 +10,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 /**
  * This class represents diagnostic information for different steps in the request pipeline when
  * processing a data plane request (for example to issue a point operation against a certain replica). This information
- * can be useful to identify where in teh request pipeline an error happened or latency was spent - for example whether
+ * can be useful to identify where in the request pipeline an error happened or latency was spent - for example whether
  * high latency was due to the fact that a new channel (TCP connection with SSL handshake) needed to be created
  * or because the transport took a long time due to network issues etc.
  */

@@ -3,16 +3,29 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.ClientSideRequestStatistics;
+import com.azure.cosmos.implementation.DistinctClientSideRequestStatisticsCollection;
+import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.RequestTimeline;
+import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponseDiagnostics;
 import com.azure.cosmos.implementation.directconnectivity.StoreResultDiagnostics;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+
 import java.time.Duration;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -358,7 +371,7 @@ public final class CosmosDiagnosticsContext {
      * Returns the system usage
      * NOTE: this information is not included in the json representation returned from {@link #toJson()} because it
      * is usually only relevant when thresholds are violated, in which case the entire diagnostics json-string is
-     * included. Calling this method will lazily collect the user agent - which can be useful when writing
+     * included. Calling this method will lazily collect the system usage - which can be useful when writing
      * a custom {@link CosmosDiagnosticsHandler}
      * @return the system usage
      */
@@ -587,11 +600,10 @@ public final class CosmosDiagnosticsContext {
     }
 
     /**
-     * Gets the UserAgent header value used by the client issueing this operation
+     * Gets the UserAgent header value used by the client issuing this operation
      * NOTE: this information is not included in the json representation returned from {@link #toJson()} because it
      * is usually only relevant when thresholds are violated, in which case the entire diagnostics json-string is
-     * included. Calling this method will lazily collect the user agent - which can be useful when writing
-     * a custom {@link CosmosDiagnosticsHandler}
+     * included.
      * @return the UserAgent header value used for the client that issued this operation
      */
     public String getUserAgent() {
@@ -612,8 +624,9 @@ public final class CosmosDiagnosticsContext {
 
     private static void addRequestInfoForGatewayStatistics(
         ClientSideRequestStatistics requestStats,
-        ArrayList<CosmosDiagnosticsRequestInfo> requestInfo,
-        ClientSideRequestStatistics.GatewayStatistics gatewayStats) {
+        List<CosmosDiagnosticsRequestInfo> requestInfo) {
+
+        ClientSideRequestStatistics.GatewayStatistics gatewayStats = requestStats.getGatewayStatistics();
 
         if (gatewayStats == null) {
             return;
@@ -639,7 +652,7 @@ public final class CosmosDiagnosticsContext {
 
     private static void addRequestInfoForStoreResponses(
         ClientSideRequestStatistics requestStats,
-        ArrayList<CosmosDiagnosticsRequestInfo> requestInfo,
+        List<CosmosDiagnosticsRequestInfo> requestInfo,
         List<ClientSideRequestStatistics.StoreResponseStatistics> storeResponses) {
 
         for (ClientSideRequestStatistics.StoreResponseStatistics responseStats: storeResponses) {
@@ -657,7 +670,7 @@ public final class CosmosDiagnosticsContext {
                 partitionId = partitionAndReplicaId[0];
             }
 
-            Collection<CosmosDiagnosticsRequestEvent> events = new ArrayList<>();
+            List<CosmosDiagnosticsRequestEvent> events = new ArrayList<>();
             String pkRangeId = "";
             double requestCharge = 0;
             int responsePayloadLength = 0;
@@ -707,15 +720,18 @@ public final class CosmosDiagnosticsContext {
 
     private void addRequestInfoForAddressResolution(
         ClientSideRequestStatistics requestStats,
-        ArrayList<CosmosDiagnosticsRequestInfo> requestInfo,
+        List<CosmosDiagnosticsRequestInfo> requestInfo,
         Map<String, ClientSideRequestStatistics.AddressResolutionStatistics> addressResolutionStatisticsMap
     ) {
-        if (addressResolutionStatisticsMap == null || addressResolutionStatisticsMap.size() == 0) {
+        if (addressResolutionStatisticsMap == null || addressResolutionStatisticsMap.isEmpty()) {
             return;
         }
 
-        for (ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics
-            : addressResolutionStatisticsMap.values()) {
+        for (Map.Entry<String, ClientSideRequestStatistics.AddressResolutionStatistics> current
+            : addressResolutionStatisticsMap.entrySet()) {
+
+            ClientSideRequestStatistics.AddressResolutionStatistics addressResolutionStatistics = current.getValue();
+            String addressResolutionActivityId = current.getKey();
 
             if (addressResolutionStatistics.isInflightRequest() ||
                 addressResolutionStatistics.getEndTimeUTC() == null) {
@@ -747,7 +763,7 @@ public final class CosmosDiagnosticsContext {
             }
 
             CosmosDiagnosticsRequestInfo info = new CosmosDiagnosticsRequestInfo(
-                requestStats.getActivityId(),
+                addressResolutionActivityId,
                 null,
                 null,
                 sb.toString(),
@@ -794,7 +810,7 @@ public final class CosmosDiagnosticsContext {
                     snapshot,
                     requestStats.getSupplementalResponseStatisticsList());
 
-                addRequestInfoForGatewayStatistics(requestStats, snapshot, requestStats.getGatewayStatistics());
+                addRequestInfoForGatewayStatistics(requestStats, snapshot);
 
                 addRequestInfoForAddressResolution(
                     requestStats,

@@ -161,7 +161,7 @@ public class StoreResultDiagnostics {
         // Sample value for serviceAddress
         // /apps/f88bfdf4-2954-4324-aad3-f1686668076d/services/3359112a-719d-474e-aa51-e89a142ae1b3/partitions/512fe816-24fa-4fbb-bbb1-587d2ce19851/replicas/133038444008943156p/
         if (serviceAddressParts.length != 9) {
-            return null;
+            return ArrayUtils.EMPTY_STRING_ARRAY;
         }
         String[] result = new String[2];
         result[0] = serviceAddressParts[6];

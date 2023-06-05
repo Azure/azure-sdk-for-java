@@ -745,7 +745,7 @@ public class ClientSideRequestStatistics {
 
 
         // TODO: other system related info also can be captured using a similar approach
-        String  systemCpu = CpuMemoryMonitor
+        String systemCpu = CpuMemoryMonitor
             .getCpuLoad()
             .toString();
 
