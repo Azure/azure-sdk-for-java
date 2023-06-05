@@ -330,7 +330,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         String containerPartitionKey = cosmosEntityInformation.getPartitionKeyFieldName();
         if ("id".equals(containerPartitionKey) && id != null) {
             try {
-                return findById(id, domainType, new PartitionKey(CosmosUtils.getStringIDValue(id)));
+                return findById(id, domainType, new PartitionKey(id));
             } catch (CosmosAccessException e) {
                 LOGGER.warn(e.getMessage());
                 return null;
