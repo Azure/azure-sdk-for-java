@@ -49,22 +49,9 @@ public class ServiceBusTracerTests {
         assertTrue(closed.get());
     }
 
-    @Test
-    public void testSpanEndException() {
-        Tracer inner = mock(Tracer.class);
-        when(inner.isEnabled()).thenReturn(true);
-
-        ServiceBusTracer tracer = new ServiceBusTracer(inner, "fqdn", "entityPath");
-
-        Exception ex = new RuntimeException("foo");
-        tracer.endSpan(ex, Context.NONE, null);
-
-        verify(inner, times(1)).end(isNull(), eq(ex), same(Context.NONE));
-    }
-
     @ParameterizedTest
     @MethodSource("getAmqpException")
-    public void testSpanEndAmqpException(AmqpException amqpException, String expectedStatus) {
+    public void testSpanEndException(Exception amqpException, String expectedStatus) {
         Tracer inner = mock(Tracer.class);
         when(inner.isEnabled()).thenReturn(true);
 
@@ -77,6 +64,7 @@ public class ServiceBusTracerTests {
 
     public static Stream<Arguments> getAmqpException() {
         return Stream.of(
+            Arguments.of(new RuntimeException("foo"), null),
             Arguments.of(new AmqpException(false, "foo", null, null), null),
             Arguments.of(new AmqpException(false, AmqpErrorCondition.NOT_FOUND, "foo", null), AmqpErrorCondition.NOT_FOUND.getErrorCondition()),
             Arguments.of(new AmqpException(false, AmqpErrorCondition.TIMEOUT_ERROR, "", null), AmqpErrorCondition.TIMEOUT_ERROR.getErrorCondition()),
