@@ -18,12 +18,40 @@ import java.util.List;
 @Fluent
 public final class SemanticSettings implements JsonSerializable<SemanticSettings> {
     /*
+     * Allows you to set the name of a default semantic configuration in your index, making it optional to pass it on
+     * as a query parameter every time.
+     */
+    private String defaultConfiguration;
+
+    /*
      * The semantic configurations for the index.
      */
     private List<SemanticConfiguration> configurations;
 
     /** Creates an instance of SemanticSettings class. */
     public SemanticSettings() {}
+
+    /**
+     * Get the defaultConfiguration property: Allows you to set the name of a default semantic configuration in your
+     * index, making it optional to pass it on as a query parameter every time.
+     *
+     * @return the defaultConfiguration value.
+     */
+    public String getDefaultConfiguration() {
+        return this.defaultConfiguration;
+    }
+
+    /**
+     * Set the defaultConfiguration property: Allows you to set the name of a default semantic configuration in your
+     * index, making it optional to pass it on as a query parameter every time.
+     *
+     * @param defaultConfiguration the defaultConfiguration value to set.
+     * @return the SemanticSettings object itself.
+     */
+    public SemanticSettings setDefaultConfiguration(String defaultConfiguration) {
+        this.defaultConfiguration = defaultConfiguration;
+        return this;
+    }
 
     /**
      * Get the configurations property: The semantic configurations for the index.
@@ -48,6 +76,7 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("defaultConfiguration", this.defaultConfiguration);
         jsonWriter.writeArrayField(
                 "configurations", this.configurations, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -69,7 +98,9 @@ public final class SemanticSettings implements JsonSerializable<SemanticSettings
                         String fieldName = reader.getFieldName();
                         reader.nextToken();
 
-                        if ("configurations".equals(fieldName)) {
+                        if ("defaultConfiguration".equals(fieldName)) {
+                            deserializedSemanticSettings.defaultConfiguration = reader.getString();
+                        } else if ("configurations".equals(fieldName)) {
                             List<SemanticConfiguration> configurations =
                                     reader.readArray(reader1 -> SemanticConfiguration.fromJson(reader1));
                             deserializedSemanticSettings.configurations = configurations;

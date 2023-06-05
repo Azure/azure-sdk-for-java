@@ -857,7 +857,8 @@ public final class SearchAsyncClient {
                 SearchPagedResponse page = new SearchPagedResponse(
                     new SimpleResponse<>(response, getSearchResults(result, serializer)),
                     createContinuationToken(result, serviceVersion), result.getFacets(), result.getCount(),
-                    result.getCoverage(), result.getAnswers());
+                    result.getCoverage(), result.getAnswers(), result.getSemanticPartialResponseReason(),
+                    result.getSemanticPartialResponseType());
                 if (continuationToken == null) {
                     firstPageResponseWrapper.setFirstPageResponse(page);
                 }
@@ -1077,19 +1078,24 @@ public final class SearchAsyncClient {
     static String createSearchRequestAnswers(SearchOptions searchOptions) {
         QueryAnswerType answer = searchOptions.getAnswers();
         Integer answersCount = searchOptions.getAnswersCount();
+        Double answerThreshold = searchOptions.getAnswerThreshold();
 
         // No answer has been defined.
         if (answer == null) {
             return null;
         }
 
+        String answerString = answer.toString();
+
         // No count, just send the QueryAnswer.
-        if (answersCount == null) {
-            return answer.toString();
+        if (answersCount != null) {
+            answerString = answerString + "|count-" + answersCount;
         }
 
-        // Answer and count, format it as the service expects.
-        return answer + "|count-" + answersCount;
+        if (answerThreshold != null) {
+            answerString = answerString + "|threshold-" + answerThreshold;
+        }
+        return answerString;
     }
 
     static String createSearchRequestCaptions(SearchOptions searchOptions) {
