@@ -11,7 +11,6 @@ import com.azure.core.util.BinaryData;
 import com.azure.monitor.ingestion.models.LogsUploadException;
 import com.azure.monitor.ingestion.models.LogsUploadOptions;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -140,7 +139,6 @@ public class LogsIngestionClientTest extends LogsIngestionTestBase {
 
     @Test
     @RecordWithoutRequestBody
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "Test proxy network connection is timing out for this test in playback mode.")
     public void testUploadLargeLogsProtocolMethod() {
         List<Object> logs = getObjects(375000);
         LogsIngestionClient client = clientBuilder.buildClient();
