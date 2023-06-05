@@ -359,6 +359,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 return findById(id, domainType, new PartitionKey(CosmosUtils.getStringIDValue(id)));
             } catch (CosmosAccessException e) {
                 LOGGER.warn(e.getMessage());
+                return null;
             }
         }
         LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead. See https://aka.ms/PointReadsInSpring for more info.");
