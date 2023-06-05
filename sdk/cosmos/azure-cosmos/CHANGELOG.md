@@ -3,12 +3,19 @@
 ### 4.46.0-beta.1 (Unreleased)
 
 #### Features Added
-
+* Added the capability to filter request-level metrics based on diagnostic thresholds. Request-level metrics usually are used to capture metrics per backend endpoint/replica - a high cardinality dimension. Filtering by diagnostic thresholds reduces the overhead - but also means request-level metrics can only be used for debugging purposes - not for monitoring purposes. So, it is important to use the unfiltered operation-level metrics for health monitoring in this case. - See [PR 35114](https://github.com/Azure/azure-sdk-for-java/pull/35114)
+* Added optional tags/dimensions for PartitionId/ReplicaId as alternative to ServiceAddress for direct-mode (rntbd) request-level metrics. - See [PR 35164](https://github.com/Azure/azure-sdk-for-java/pull/35164) 
 #### Breaking Changes
 
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.45.1 (2023-05-19)
+
+#### Bugs Fixed
+* Fixed an issue where status code & sub-status code `408/20008` will always be populated in the CosmosDiagnostics in case of `RNTBD` request failures - See [PR 34999](https://github.com/Azure/azure-sdk-for-java/pull/34999)
+* Fixed `readMany` API bug to enable swallowing of `404 Not Found` exceptions for 404/0 scenarios when `readMany` performs point-reads internally - See [PR 34966](https://github.com/Azure/azure-sdk-for-java/pull/34966)
 
 ### 4.45.0 (2023-05-12)
 
@@ -31,6 +38,7 @@
 * Disabled initialization of client telemetry background threads if client telemetry is disabled - See [PR 34889](https://github.com/Azure/azure-sdk-for-java/pull/34889)
 * Removed synchronized locking on generating random UUIDs - See [PR 34879](https://github.com/Azure/azure-sdk-for-java/pull/34879)
 * Capture diagnostics for cancelled `RNTBD` requests - See [PR 34912](https://github.com/Azure/azure-sdk-for-java/pull/34912)
+* Added support for threshold based speculative processing - See [PR 34686](https://github.com/Azure/azure-sdk-for-java/pull/34686)
 
 ### 4.44.0 (2023-04-21)
 

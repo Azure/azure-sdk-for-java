@@ -20,20 +20,9 @@ import com.azure.resourcemanager.eventgrid.models.TopicUpdateParameters;
 /** An instance of this class provides access to all the operations defined in TopicsClient. */
 public interface TopicsClient {
     /**
-     * Get properties of a topic.
+     * Get a topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TopicInner getByResourceGroup(String resourceGroupName, String topicName);
-
-    /**
-     * Get properties of a topic.
+     * <p>Get properties of a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -47,7 +36,24 @@ public interface TopicsClient {
     Response<TopicInner> getByResourceGroupWithResponse(String resourceGroupName, String topicName, Context context);
 
     /**
-     * Asynchronously creates a new topic with the specified parameters.
+     * Get a topic.
+     *
+     * <p>Get properties of a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TopicInner getByResourceGroup(String resourceGroupName, String topicName);
+
+    /**
+     * Create a topic.
+     *
+     * <p>Asynchronously creates a new topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -62,7 +68,9 @@ public interface TopicsClient {
         String resourceGroupName, String topicName, TopicInner topicInfo);
 
     /**
-     * Asynchronously creates a new topic with the specified parameters.
+     * Create a topic.
+     *
+     * <p>Asynchronously creates a new topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -78,7 +86,9 @@ public interface TopicsClient {
         String resourceGroupName, String topicName, TopicInner topicInfo, Context context);
 
     /**
-     * Asynchronously creates a new topic with the specified parameters.
+     * Create a topic.
+     *
+     * <p>Asynchronously creates a new topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -92,7 +102,9 @@ public interface TopicsClient {
     TopicInner createOrUpdate(String resourceGroupName, String topicName, TopicInner topicInfo);
 
     /**
-     * Asynchronously creates a new topic with the specified parameters.
+     * Create a topic.
+     *
+     * <p>Asynchronously creates a new topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -107,7 +119,9 @@ public interface TopicsClient {
     TopicInner createOrUpdate(String resourceGroupName, String topicName, TopicInner topicInfo, Context context);
 
     /**
-     * Delete existing topic.
+     * Delete a topic.
+     *
+     * <p>Delete existing topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -120,7 +134,9 @@ public interface TopicsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName);
 
     /**
-     * Delete existing topic.
+     * Delete a topic.
+     *
+     * <p>Delete existing topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -134,7 +150,9 @@ public interface TopicsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String topicName, Context context);
 
     /**
-     * Delete existing topic.
+     * Delete a topic.
+     *
+     * <p>Delete existing topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -146,7 +164,9 @@ public interface TopicsClient {
     void delete(String resourceGroupName, String topicName);
 
     /**
-     * Delete existing topic.
+     * Delete a topic.
+     *
+     * <p>Delete existing topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -159,7 +179,9 @@ public interface TopicsClient {
     void delete(String resourceGroupName, String topicName, Context context);
 
     /**
-     * Asynchronously updates a topic with the specified parameters.
+     * Update a topic.
+     *
+     * <p>Asynchronously updates a topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -174,7 +196,9 @@ public interface TopicsClient {
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters);
 
     /**
-     * Asynchronously updates a topic with the specified parameters.
+     * Update a topic.
+     *
+     * <p>Asynchronously updates a topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -190,7 +214,9 @@ public interface TopicsClient {
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters, Context context);
 
     /**
-     * Asynchronously updates a topic with the specified parameters.
+     * Update a topic.
+     *
+     * <p>Asynchronously updates a topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -204,7 +230,9 @@ public interface TopicsClient {
     TopicInner update(String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters);
 
     /**
-     * Asynchronously updates a topic with the specified parameters.
+     * Update a topic.
+     *
+     * <p>Asynchronously updates a topic with the specified parameters.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -220,7 +248,9 @@ public interface TopicsClient {
         String resourceGroupName, String topicName, TopicUpdateParameters topicUpdateParameters, Context context);
 
     /**
-     * List all the topics under an Azure subscription.
+     * List topics under an Azure subscription.
+     *
+     * <p>List all the topics under an Azure subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -230,7 +260,9 @@ public interface TopicsClient {
     PagedIterable<TopicInner> list();
 
     /**
-     * List all the topics under an Azure subscription.
+     * List topics under an Azure subscription.
+     *
+     * <p>List all the topics under an Azure subscription.
      *
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
      *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
@@ -250,7 +282,9 @@ public interface TopicsClient {
     PagedIterable<TopicInner> list(String filter, Integer top, Context context);
 
     /**
-     * List all the topics under a resource group.
+     * List topics under a resource group.
+     *
+     * <p>List all the topics under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -262,7 +296,9 @@ public interface TopicsClient {
     PagedIterable<TopicInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List all the topics under a resource group.
+     * List topics under a resource group.
+     *
+     * <p>List all the topics under a resource group.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
@@ -284,20 +320,9 @@ public interface TopicsClient {
         String resourceGroupName, String filter, Integer top, Context context);
 
     /**
-     * List the two keys used to publish to a topic.
+     * List keys for a topic.
      *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param topicName Name of the topic.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return shared access keys of the Topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TopicSharedAccessKeysInner listSharedAccessKeys(String resourceGroupName, String topicName);
-
-    /**
-     * List the two keys used to publish to a topic.
+     * <p>List the two keys used to publish to a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -312,7 +337,24 @@ public interface TopicsClient {
         String resourceGroupName, String topicName, Context context);
 
     /**
-     * Regenerate a shared access key for a topic.
+     * List keys for a topic.
+     *
+     * <p>List the two keys used to publish to a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param topicName Name of the topic.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return shared access keys of the Topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TopicSharedAccessKeysInner listSharedAccessKeys(String resourceGroupName, String topicName);
+
+    /**
+     * Regenerate key for a topic.
+     *
+     * <p>Regenerate a shared access key for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -327,7 +369,9 @@ public interface TopicsClient {
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest);
 
     /**
-     * Regenerate a shared access key for a topic.
+     * Regenerate key for a topic.
+     *
+     * <p>Regenerate a shared access key for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -343,7 +387,9 @@ public interface TopicsClient {
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**
-     * Regenerate a shared access key for a topic.
+     * Regenerate key for a topic.
+     *
+     * <p>Regenerate a shared access key for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -358,7 +404,9 @@ public interface TopicsClient {
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest);
 
     /**
-     * Regenerate a shared access key for a topic.
+     * Regenerate key for a topic.
+     *
+     * <p>Regenerate a shared access key for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param topicName Name of the topic.
@@ -374,7 +422,9 @@ public interface TopicsClient {
         String resourceGroupName, String topicName, TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**
-     * List event types for a topic.
+     * List topic event types.
+     *
+     * <p>List event types for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -390,7 +440,9 @@ public interface TopicsClient {
         String resourceGroupName, String providerNamespace, String resourceTypeName, String resourceName);
 
     /**
-     * List event types for a topic.
+     * List topic event types.
+     *
+     * <p>List event types for a topic.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.

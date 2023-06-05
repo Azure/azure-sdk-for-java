@@ -5,6 +5,7 @@
 ### Breaking Changes
 
 - Merged the `Context` parameter into the `RequestOptions` parameter in methods of clients.
+- Modified `tagClassificationVersion` method, method takes one more `action` parameter.
 
 ### Other Changes
 

@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for ManagedEnvironments GetAuthToken. */
 public final class ManagedEnvironmentsGetAuthTokenSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ManagedEnvironments_GetAuthToken.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-11-01-preview/examples/ManagedEnvironments_GetAuthToken.json
      */
     /**
      * Sample code: Get Managed Environment Auth Token.
@@ -18,6 +16,6 @@ public final class ManagedEnvironmentsGetAuthTokenSamples {
      */
     public static void getManagedEnvironmentAuthToken(
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironments().getAuthTokenWithResponse("rg", "testenv", Context.NONE);
+        manager.managedEnvironments().getAuthTokenWithResponse("rg", "testenv", com.azure.core.util.Context.NONE);
     }
 }

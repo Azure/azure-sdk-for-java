@@ -17,25 +17,27 @@ public final class RepositoryRefDefinition {
     private String branch;
 
     /*
-     * The git repository tag name to checkout. This takes precedence over
-     * branch.
+     * The git repository tag name to checkout. This takes precedence over branch.
      */
     @JsonProperty(value = "tag")
     private String tag;
 
     /*
-     * The semver range used to match against git repository tags. This takes
-     * precedence over tag.
+     * The semver range used to match against git repository tags. This takes precedence over tag.
      */
     @JsonProperty(value = "semver")
     private String semver;
 
     /*
-     * The commit SHA to checkout. This value must be combined with the branch
-     * name to be valid. This takes precedence over semver.
+     * The commit SHA to checkout. This value must be combined with the branch name to be valid. This takes precedence
+     * over semver.
      */
     @JsonProperty(value = "commit")
     private String commit;
+
+    /** Creates an instance of RepositoryRefDefinition class. */
+    public RepositoryRefDefinition() {
+    }
 
     /**
      * Get the branch property: The git repository branch name to checkout.

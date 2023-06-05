@@ -25,6 +25,10 @@ public final class DomainTopicInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of DomainTopicInner class. */
+    public DomainTopicInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Domain Topic.
      *

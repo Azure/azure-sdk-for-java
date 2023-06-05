@@ -121,11 +121,13 @@
     <module>sdk/mysql</module>
     <module>sdk/mysqlflexibleserver</module>
     <module>sdk/netapp</module>
+    <module>sdk/networkcloud</module>
     <module>sdk/networkfunction</module>
     <module>sdk/newrelicobservability</module>
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>
     <module>sdk/oep</module>
+    <module>sdk/openai</module>
     <module>sdk/operationsmanagement</module>
     <module>sdk/orbital</module>
     <module>sdk/paloaltonetworks</module>

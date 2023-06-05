@@ -6,20 +6,19 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.GalleryListResult;
-import org.junit.jupiter.api.Test;
 
 public final class GalleryListResultTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         GalleryListResult model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"galleryResourceId\":\"cyshurzafbljjgp\"},\"id\":\"oq\",\"name\":\"jmkljavbqidtqajz\",\"type\":\"ulpkudjkrl\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"galleryResourceId\":\"hfepgzgqex\"},\"id\":\"ocxscpaierhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}],\"nextLink\":\"nbdxk\"}")
+                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"galleryResourceId\":\"rzafbljjgpbtoqcj\"},\"id\":\"ljavbqid\",\"name\":\"qajzyulpkudjkr\",\"type\":\"khbzhfepgzg\"}],\"nextLink\":\"xzlocxscp\"}")
                 .toObject(GalleryListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         GalleryListResult model = new GalleryListResult();
         model = BinaryData.fromObject(model).toObject(GalleryListResult.class);
     }

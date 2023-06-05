@@ -12,24 +12,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class VnetConfiguration {
     /*
      * Boolean indicating the environment only has an internal load balancer. These environments do not have a public
-     * static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property
+     * static IP resource. They must provide infrastructureSubnetId if enabling this property
      */
     @JsonProperty(value = "internal")
     private Boolean internal;
 
     /*
-     * Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet
-     * defined in runtimeSubnetId. Must not overlap with any other provided IP ranges.
+     * Resource ID of a subnet for infrastructure components. Must not overlap with any other provided IP ranges.
      */
     @JsonProperty(value = "infrastructureSubnetId")
     private String infrastructureSubnetId;
-
-    /*
-     * Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as
-     * the subnet defined in infrastructureSubnetId. Must not overlap with any other provided IP ranges.
-     */
-    @JsonProperty(value = "runtimeSubnetId")
-    private String runtimeSubnetId;
 
     /*
      * CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP
@@ -52,20 +44,14 @@ public final class VnetConfiguration {
     @JsonProperty(value = "platformReservedDnsIP")
     private String platformReservedDnsIp;
 
-    /*
-     * Configuration used to control the Environment Egress outbound traffic
-     */
-    @JsonProperty(value = "outboundSettings")
-    private ManagedEnvironmentOutboundSettings outboundSettings;
-
     /** Creates an instance of VnetConfiguration class. */
     public VnetConfiguration() {
     }
 
     /**
      * Get the internal property: Boolean indicating the environment only has an internal load balancer. These
-     * environments do not have a public static IP resource. They must provide runtimeSubnetId and
-     * infrastructureSubnetId if enabling this property.
+     * environments do not have a public static IP resource. They must provide infrastructureSubnetId if enabling this
+     * property.
      *
      * @return the internal value.
      */
@@ -75,8 +61,8 @@ public final class VnetConfiguration {
 
     /**
      * Set the internal property: Boolean indicating the environment only has an internal load balancer. These
-     * environments do not have a public static IP resource. They must provide runtimeSubnetId and
-     * infrastructureSubnetId if enabling this property.
+     * environments do not have a public static IP resource. They must provide infrastructureSubnetId if enabling this
+     * property.
      *
      * @param internal the internal value to set.
      * @return the VnetConfiguration object itself.
@@ -87,8 +73,8 @@ public final class VnetConfiguration {
     }
 
     /**
-     * Get the infrastructureSubnetId property: Resource ID of a subnet for infrastructure components. This subnet must
-     * be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges.
+     * Get the infrastructureSubnetId property: Resource ID of a subnet for infrastructure components. Must not overlap
+     * with any other provided IP ranges.
      *
      * @return the infrastructureSubnetId value.
      */
@@ -97,38 +83,14 @@ public final class VnetConfiguration {
     }
 
     /**
-     * Set the infrastructureSubnetId property: Resource ID of a subnet for infrastructure components. This subnet must
-     * be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges.
+     * Set the infrastructureSubnetId property: Resource ID of a subnet for infrastructure components. Must not overlap
+     * with any other provided IP ranges.
      *
      * @param infrastructureSubnetId the infrastructureSubnetId value to set.
      * @return the VnetConfiguration object itself.
      */
     public VnetConfiguration withInfrastructureSubnetId(String infrastructureSubnetId) {
         this.infrastructureSubnetId = infrastructureSubnetId;
-        return this;
-    }
-
-    /**
-     * Get the runtimeSubnetId property: Resource ID of a subnet that Container App containers are injected into. This
-     * subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other
-     * provided IP ranges.
-     *
-     * @return the runtimeSubnetId value.
-     */
-    public String runtimeSubnetId() {
-        return this.runtimeSubnetId;
-    }
-
-    /**
-     * Set the runtimeSubnetId property: Resource ID of a subnet that Container App containers are injected into. This
-     * subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other
-     * provided IP ranges.
-     *
-     * @param runtimeSubnetId the runtimeSubnetId value to set.
-     * @return the VnetConfiguration object itself.
-     */
-    public VnetConfiguration withRuntimeSubnetId(String runtimeSubnetId) {
-        this.runtimeSubnetId = runtimeSubnetId;
         return this;
     }
 
@@ -199,33 +161,10 @@ public final class VnetConfiguration {
     }
 
     /**
-     * Get the outboundSettings property: Configuration used to control the Environment Egress outbound traffic.
-     *
-     * @return the outboundSettings value.
-     */
-    public ManagedEnvironmentOutboundSettings outboundSettings() {
-        return this.outboundSettings;
-    }
-
-    /**
-     * Set the outboundSettings property: Configuration used to control the Environment Egress outbound traffic.
-     *
-     * @param outboundSettings the outboundSettings value to set.
-     * @return the VnetConfiguration object itself.
-     */
-    public VnetConfiguration withOutboundSettings(ManagedEnvironmentOutboundSettings outboundSettings) {
-        this.outboundSettings = outboundSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (outboundSettings() != null) {
-            outboundSettings().validate();
-        }
     }
 }

@@ -21,8 +21,8 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         manager
             .trafficControllerInterfaces()
-            .define("TC1")
-            .withRegion("West US")
+            .define("tc1")
+            .withRegion("NorthCentralUS")
             .withExistingResourceGroup("rg1")
             .withTags(mapOf("key1", "value1"))
             .create();

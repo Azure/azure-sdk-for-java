@@ -61,6 +61,13 @@ public class ReadmeSamples {
         return roomsClient;
     }
 
+    public RoomsClientBuilder createRoomsClientBuilder() {
+        // BEGIN: readme-sample-createRoomsCLientBuilder
+        RoomsClientBuilder builder = new RoomsClientBuilder();
+        // END: readme-sample-createRoomsCLientBuilder
+        return builder;
+    }
+
     public RoomsClient createRoomsClientWithAAD() {
         // You can find your endpoint and access key from your resource in the Azure
         // Portal

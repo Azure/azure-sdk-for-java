@@ -89,10 +89,12 @@ class AppConfigurationReplicaClient {
             this.failedAttempts = 0;
             return watchKey;
         } catch (HttpResponseException e) {
-            int statusCode = e.getResponse().getStatusCode();
+            if (e.getResponse() != null) {
+                int statusCode = e.getResponse().getStatusCode();
 
-            if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
-                throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
+                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
+                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
+                }
             }
             throw e;
         } catch (Exception e) { // TODO (mametcal) This should be an UnknownHostException, but currently it isn't
@@ -123,10 +125,12 @@ class AppConfigurationReplicaClient {
             settings.forEach(setting -> configurationSettings.add(NormalizeNull.normalizeNullLabel(setting)));
             return configurationSettings;
         } catch (HttpResponseException e) {
-            int statusCode = e.getResponse().getStatusCode();
+            if (e.getResponse() != null) {
+                int statusCode = e.getResponse().getStatusCode();
 
-            if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
-                throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
+                if (statusCode == 429 || statusCode == 408 || statusCode >= 500) {
+                    throw new AppConfigurationStatusException(e.getMessage(), e.getResponse(), e.getValue());
+                }
             }
             throw e;
         } catch (Exception e) { // TODO (mametcal) This should be an UnknownHostException, but currently it isn't
