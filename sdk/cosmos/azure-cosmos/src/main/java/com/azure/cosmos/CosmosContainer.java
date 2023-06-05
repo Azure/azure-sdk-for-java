@@ -450,12 +450,16 @@ public class CosmosContainer {
 
     /**
      * Reads an item in the current container.
-     *
+     * <br/>
+     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
+     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
+     * 
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
      * @param itemType the class type of item.
      * @return the Cosmos item response.
+     * @throws com.azure.cosmos.implementation.NotFoundException if document with the specified itemId does not exist
      */
     public <T> CosmosItemResponse<T> readItem(String itemId, PartitionKey partitionKey, Class<T> itemType) {
         return this.blockItemResponse(asyncContainer.readItem(itemId,
@@ -466,13 +470,17 @@ public class CosmosContainer {
 
     /**
      * Reads an item in the current container while specifying additional options.
+     * <br/>
+     * This operation is used to retrieve a single item from a container based on its unique identifier (ID) and partition key.
+     * The readItem operation provides direct access to a specific item using its unique identifier, which consists of the item's ID and the partition key value. This operation is efficient for retrieving a known item by its ID and partition key without the need for complex querying.
      *
      * @param <T> the type parameter.
      * @param itemId the item id.
      * @param partitionKey the partition key.
-     * @param options the options.
+     * @param options the options (Optional).
      * @param itemType the class type of item.
      * @return the Cosmos item response.
+     * @throws com.azure.cosmos.implementation.NotFoundException if document with the specified itemId does not exist
      */
     public <T> CosmosItemResponse<T> readItem(
         String itemId, PartitionKey partitionKey,

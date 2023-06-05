@@ -14,7 +14,7 @@ import java.util.List;
  * with credentials that are used to authenticate in a development environment. The DefaultAzureCredential will
  * attempt to authenticate via the following mechanisms in order.</p>
  *
- * <img src="doc-files/DefaultAzureCredentialAuthFlow.svg" alt="">
+ * <img src="doc-files/DefaultAzureCredentialAuthFlow.png" alt="">
  *
  * <ol>
  * <li>{@link EnvironmentCredential} - The DefaultAzureCredential will read account information specified via
