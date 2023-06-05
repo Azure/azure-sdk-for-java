@@ -35,6 +35,6 @@ public class LargeQuerySample {
     }
 
     public static LogsBatchQuery getBatchQueryByRowCount(String query, int maxRowCountPerQuery, String timeColumn) {
-
+        throw new UnsupportedOperationException("Not implemented yet");
     }
 }
