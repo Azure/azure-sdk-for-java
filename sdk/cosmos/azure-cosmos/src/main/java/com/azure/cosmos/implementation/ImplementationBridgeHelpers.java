@@ -17,6 +17,7 @@ import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsHandler;
+import com.azure.cosmos.CosmosDiagnosticsSystemUsageSnapshot;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
@@ -767,7 +768,15 @@ public class ImplementationBridgeHelpers {
                 ConsistencyLevel consistencyLevel,
                 Integer maxItemCount,
                 CosmosDiagnosticsThresholds thresholds,
-                String trackingId);
+                String trackingId,
+                String connectionMode,
+                String userAgent);
+
+            CosmosDiagnosticsSystemUsageSnapshot createSystemUsageSnapshot(
+                String cpu,
+                String used,
+                String available,
+                int cpuCount);
 
             void startOperation(CosmosDiagnosticsContext ctx);
 
@@ -1206,6 +1215,8 @@ public class ImplementationBridgeHelpers {
             boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
+            String getConnectionMode(CosmosAsyncClient client);
+            String getUserAgent(CosmosAsyncClient client);
             CosmosMeterOptions getMeterOptions(CosmosAsyncClient client, CosmosMetricName name);
             boolean isEffectiveContentResponseOnWriteEnabled(
                 CosmosAsyncClient client,

@@ -40,6 +40,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Migrate test recordings to assets repo.
 
 ## 5.2.7 (2023-05-23)
 
