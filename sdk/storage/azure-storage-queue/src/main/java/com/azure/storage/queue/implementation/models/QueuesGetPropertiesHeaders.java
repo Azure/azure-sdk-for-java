@@ -5,49 +5,40 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.HeaderCollection;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
 /** The QueuesGetPropertiesHeaders model. */
-@JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class QueuesGetPropertiesHeaders {
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The x-ms-approximate-messages-count property.
      */
-    @JsonProperty(value = "x-ms-approximate-messages-count")
     private Integer xMsApproximateMessagesCount;
 
     /*
      * The x-ms-meta- property.
      */
-    @HeaderCollection("x-ms-meta-")
     private Map<String, String> xMsMeta;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
 
     private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");

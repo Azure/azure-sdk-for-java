@@ -33,6 +33,7 @@ customization-class: src/main/java/QueueStorageCustomization.java
 generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true
+stream-style-serialization: true
 ```
 
 ### Rename MessageItems
@@ -143,6 +144,17 @@ directive:
   where: $["x-ms-paths"]["/?comp=list"].get
   transform: >
     $["x-ms-pageable"].itemName = "QueueItems";
+```
+
+### Remove Incorrect Wrapped Configurations
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions
+    transform: >
+      $.DequeuedMessageItem.xml.wrapped;
+      $.PeekedMessageItem.xml.wrapped;
+      $.EnqueuedMessage.xml.wrapped;
 ```
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-queue%2Fswagger%2FREADME.png)

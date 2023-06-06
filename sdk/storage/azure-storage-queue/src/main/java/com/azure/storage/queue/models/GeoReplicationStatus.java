@@ -5,7 +5,6 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** The status of the secondary location. */
@@ -33,7 +32,6 @@ public final class GeoReplicationStatus extends ExpandableStringEnum<GeoReplicat
      * @param name a name to look for.
      * @return the corresponding GeoReplicationStatus.
      */
-    @JsonCreator
     public static GeoReplicationStatus fromString(String name) {
         return fromString(name, GeoReplicationStatus.class);
     }

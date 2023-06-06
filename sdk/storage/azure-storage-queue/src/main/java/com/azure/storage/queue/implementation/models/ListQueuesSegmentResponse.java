@@ -5,62 +5,101 @@
 package com.azure.storage.queue.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.queue.models.QueueItem;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.namespace.QName;
+import javax.xml.stream.XMLStreamException;
 
 /** The object returned when calling List Queues on a Queue Service. */
-@JacksonXmlRootElement(localName = "EnumerationResults")
 @Fluent
-public final class ListQueuesSegmentResponse {
+public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueuesSegmentResponse> {
     /*
      * The ServiceEndpoint property.
      */
-    @JacksonXmlProperty(localName = "ServiceEndpoint", isAttribute = true)
     private String serviceEndpoint;
 
     /*
      * The Prefix property.
      */
-    @JsonProperty(value = "Prefix", required = true)
     private String prefix;
 
     /*
      * The Marker property.
      */
-    @JsonProperty(value = "Marker")
     private String marker;
 
     /*
      * The MaxResults property.
      */
-    @JsonProperty(value = "MaxResults", required = true)
     private int maxResults;
 
-    private static final class QueuesWrapper {
-        @JacksonXmlProperty(localName = "Queue")
+    static final class QueuesWrapper implements XmlSerializable<QueuesWrapper> {
         private final List<QueueItem> items;
 
-        @JsonCreator
-        private QueuesWrapper(@JacksonXmlProperty(localName = "Queue") List<QueueItem> items) {
+        private QueuesWrapper(List<QueueItem> items) {
             this.items = items;
+        }
+
+        @Override
+        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+            return toXml(xmlWriter, null);
+        }
+
+        @Override
+        public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Queues" : rootElementName;
+            xmlWriter.writeStartElement(rootElementName);
+            if (items != null) {
+                for (QueueItem element : items) {
+                    xmlWriter.writeXml(element, "Queue");
+                }
+            }
+            return xmlWriter.writeEndElement();
+        }
+
+        public static QueuesWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
+            return fromXml(xmlReader, null);
+        }
+
+        public static QueuesWrapper fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Queues" : rootElementName;
+            return xmlReader.readObject(
+                    rootElementName,
+                    reader -> {
+                        List<QueueItem> items = null;
+
+                        while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                            String elementName = reader.getElementName().getLocalPart();
+
+                            if ("Queue".equals(elementName)) {
+                                if (items == null) {
+                                    items = new ArrayList<>();
+                                }
+
+                                items.add(QueueItem.fromXml(reader));
+                            } else {
+                                reader.nextElement();
+                            }
+                        }
+                        return new QueuesWrapper(items);
+                    });
         }
     }
 
     /*
      * The QueueItems property.
      */
-    @JsonProperty(value = "Queues")
     private QueuesWrapper queueItems;
 
     /*
      * The NextMarker property.
      */
-    @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
     /** Creates an instance of ListQueuesSegmentResponse class. */
@@ -187,5 +226,88 @@ public final class ListQueuesSegmentResponse {
     public ListQueuesSegmentResponse setNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        xmlWriter.writeStringAttribute("ServiceEndpoint", this.serviceEndpoint);
+        xmlWriter.writeStringElement("Prefix", this.prefix);
+        xmlWriter.writeStringElement("Marker", this.marker);
+        xmlWriter.writeIntElement("MaxResults", this.maxResults);
+        xmlWriter.writeXml(this.queueItems);
+        xmlWriter.writeStringElement("NextMarker", this.nextMarker);
+        return xmlWriter.writeEndElement();
+    }
+
+    /**
+     * Reads an instance of ListQueuesSegmentResponse from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @return An instance of ListQueuesSegmentResponse if the XmlReader was pointing to an instance of it, or null if
+     *     it was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ListQueuesSegmentResponse.
+     */
+    public static ListQueuesSegmentResponse fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    /**
+     * Reads an instance of ListQueuesSegmentResponse from the XmlReader.
+     *
+     * @param xmlReader The XmlReader being read.
+     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
+     *     cases where the model can deserialize from different root element names.
+     * @return An instance of ListQueuesSegmentResponse if the XmlReader was pointing to an instance of it, or null if
+     *     it was pointing to XML null.
+     * @throws IllegalStateException If the deserialized XML object was missing any required properties.
+     * @throws XMLStreamException If an error occurs while reading the ListQueuesSegmentResponse.
+     */
+    public static ListQueuesSegmentResponse fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "EnumerationResults" : rootElementName;
+        return xmlReader.readObject(
+                finalRootElementName,
+                reader -> {
+                    String serviceEndpoint = reader.getStringAttribute(null, "ServiceEndpoint");
+                    String prefix = null;
+                    String marker = null;
+                    int maxResults = 0;
+                    QueuesWrapper queueItems = null;
+                    String nextMarker = null;
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        QName elementName = reader.getElementName();
+
+                        if ("Prefix".equals(elementName.getLocalPart())) {
+                            prefix = reader.getStringElement();
+                        } else if ("Marker".equals(elementName.getLocalPart())) {
+                            marker = reader.getStringElement();
+                        } else if ("MaxResults".equals(elementName.getLocalPart())) {
+                            maxResults = reader.getIntElement();
+                        } else if ("Queues".equals(elementName.getLocalPart())) {
+                            queueItems = QueuesWrapper.fromXml(reader);
+                        } else if ("NextMarker".equals(elementName.getLocalPart())) {
+                            nextMarker = reader.getStringElement();
+                        } else {
+                            reader.skipElement();
+                        }
+                    }
+                    ListQueuesSegmentResponse deserializedListQueuesSegmentResponse = new ListQueuesSegmentResponse();
+                    deserializedListQueuesSegmentResponse.serviceEndpoint = serviceEndpoint;
+                    deserializedListQueuesSegmentResponse.prefix = prefix;
+                    deserializedListQueuesSegmentResponse.maxResults = maxResults;
+                    deserializedListQueuesSegmentResponse.nextMarker = nextMarker;
+                    deserializedListQueuesSegmentResponse.marker = marker;
+                    deserializedListQueuesSegmentResponse.queueItems = queueItems;
+
+                    return deserializedListQueuesSegmentResponse;
+                });
     }
 }

@@ -4,17 +4,18 @@
 
 package com.azure.storage.queue.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+import com.azure.xml.XmlReader;
+import com.azure.xml.XmlSerializable;
+import com.azure.xml.XmlToken;
+import com.azure.xml.XmlWriter;
+import java.util.ArrayList;
 import java.util.List;
+import javax.xml.stream.XMLStreamException;
 
 /** A wrapper around List&lt;QueueSignedIdentifier&gt; which provides top-level metadata for serialization. */
-@JacksonXmlRootElement(localName = "SignedIdentifiers")
-public final class SignedIdentifiersWrapper {
-    @JacksonXmlProperty(localName = "SignedIdentifier")
+public final class SignedIdentifiersWrapper implements XmlSerializable<SignedIdentifiersWrapper> {
     private final List<QueueSignedIdentifier> signedIdentifiers;
 
     /**
@@ -22,8 +23,7 @@ public final class SignedIdentifiersWrapper {
      *
      * @param signedIdentifiers the list.
      */
-    @JsonCreator
-    public SignedIdentifiersWrapper(@JsonProperty("SignedIdentifier") List<QueueSignedIdentifier> signedIdentifiers) {
+    public SignedIdentifiersWrapper(List<QueueSignedIdentifier> signedIdentifiers) {
         this.signedIdentifiers = signedIdentifiers;
     }
 
@@ -34,5 +34,51 @@ public final class SignedIdentifiersWrapper {
      */
     public List<QueueSignedIdentifier> items() {
         return signedIdentifiers;
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifiers" : rootElementName;
+        xmlWriter.writeStartElement(rootElementName);
+        if (signedIdentifiers != null) {
+            for (QueueSignedIdentifier element : signedIdentifiers) {
+                xmlWriter.writeXml(element, "SignedIdentifier");
+            }
+        }
+        return xmlWriter.writeEndElement();
+    }
+
+    public static SignedIdentifiersWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
+        return fromXml(xmlReader, null);
+    }
+
+    public static SignedIdentifiersWrapper fromXml(XmlReader xmlReader, String rootElementName)
+            throws XMLStreamException {
+        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "SignedIdentifiers" : rootElementName;
+        return xmlReader.readObject(
+                rootElementName,
+                reader -> {
+                    List<QueueSignedIdentifier> items = null;
+
+                    while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                        String elementName = reader.getElementName().getLocalPart();
+
+                        if ("SignedIdentifier".equals(elementName)) {
+                            if (items == null) {
+                                items = new ArrayList<>();
+                            }
+
+                            items.add(QueueSignedIdentifier.fromXml(reader));
+                        } else {
+                            reader.nextElement();
+                        }
+                    }
+                    return new SignedIdentifiersWrapper(items);
+                });
     }
 }

@@ -5,7 +5,6 @@
 package com.azure.storage.queue.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /** Error codes returned by the service. */
@@ -198,7 +197,6 @@ public final class QueueErrorCode extends ExpandableStringEnum<QueueErrorCode> {
      * @param name a name to look for.
      * @return the corresponding QueueErrorCode.
      */
-    @JsonCreator
     public static QueueErrorCode fromString(String name) {
         return fromString(name, QueueErrorCode.class);
     }
