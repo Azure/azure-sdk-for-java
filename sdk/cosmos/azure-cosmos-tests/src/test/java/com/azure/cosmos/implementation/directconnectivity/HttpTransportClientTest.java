@@ -378,7 +378,7 @@ public class HttpTransportClientTest {
                                 .withHeaderSubStatusCode(HttpConstants.SubStatusCodes.NAME_CACHE_IS_STALE),
 
                         FailureValidator.builder()
-                                .instanceOf(InvalidPartitionException.class)
+                                .instanceOf(ServiceUnavailableException.class)
                                 .resourceAddress("dbs/db/colls/col")
                                 .lsn(lsn)
                                 .partitionKeyRangeId(partitionKeyRangeId)
@@ -392,7 +392,7 @@ public class HttpTransportClientTest {
                                 .withHeaderSubStatusCode(HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE),
 
                         FailureValidator.builder()
-                                .instanceOf(PartitionKeyRangeGoneException.class)
+                                .instanceOf(ServiceUnavailableException.class)
                                 .resourceAddress("dbs/db/colls/col")
                                 .lsn(lsn)
                                 .partitionKeyRangeId(partitionKeyRangeId)
@@ -406,7 +406,7 @@ public class HttpTransportClientTest {
                                 .withHeaderSubStatusCode(HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE),
 
                         FailureValidator.builder()
-                                .instanceOf(PartitionKeyRangeIsSplittingException.class)
+                                .instanceOf(ServiceUnavailableException.class)
                                 .resourceAddress("dbs/db/colls/col")
                                 .lsn(lsn)
                                 .partitionKeyRangeId(partitionKeyRangeId)
@@ -420,7 +420,7 @@ public class HttpTransportClientTest {
                                 .withHeaderSubStatusCode(HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION),
 
                         FailureValidator.builder()
-                                .instanceOf(PartitionIsMigratingException.class)
+                                .instanceOf(ServiceUnavailableException.class)
                                 .resourceAddress("dbs/db/colls/col")
                                 .lsn(lsn)
                                 .partitionKeyRangeId(partitionKeyRangeId)
@@ -434,7 +434,7 @@ public class HttpTransportClientTest {
                                 .withHeaderSubStatusCode(0),
 
                         FailureValidator.builder()
-                                .instanceOf(GoneException.class)
+                                .instanceOf(ServiceUnavailableException.class)
                                 .resourceAddress("dbs/db/colls/col")
                                 .lsn(lsn)
                                 .partitionKeyRangeId(partitionKeyRangeId)
