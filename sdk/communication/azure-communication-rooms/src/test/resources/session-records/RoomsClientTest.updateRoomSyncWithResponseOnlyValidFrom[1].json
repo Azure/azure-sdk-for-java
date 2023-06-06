@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/rooms?api-version=2023-03-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/rooms?api-version=2023-06-14",
     "Headers" : {
       "content-type" : "application/json",
       "x-ms-client-request-id" : "0a9312f4-1893-4712-a7d4-308f5f404bd4",
@@ -10,7 +10,7 @@
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2022-02-01, 2023-03-31-preview",
+      "api-supported-versions" : "2022-02-01, 2023-06-14",
       "Repeatability-Result" : "accepted",
       "retry-after" : "0",
       "StatusCode" : "201",
@@ -27,7 +27,7 @@
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.communication.azure.com/rooms/99492279869257121?api-version=2023-03-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/rooms/99492279869257121?api-version=2023-06-14",
     "Headers" : {
       "content-type" : "application/merge-patch+json",
       "x-ms-client-request-id" : "8106cf46-0573-419c-8dcb-33bf84d9accf",
@@ -50,14 +50,14 @@
     "Exception" : null
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://REDACTED.communication.azure.com/rooms/99492279869257121?api-version=2023-03-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/rooms/99492279869257121?api-version=2023-06-14",
     "Headers" : {
       "x-ms-client-request-id" : "bb050606-5f82-40dd-961e-c5d91b999322",
       "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)"
     },
     "Response" : {
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2022-02-01, 2023-03-31-preview",
+      "api-supported-versions" : "2022-02-01, 2023-06-14",
       "MS-CV" : "UzjKTaCIzkiuy7gyrM7+aQ.0",
       "api-deprecated-versions" : "2021-04-07",
       "retry-after" : "0",

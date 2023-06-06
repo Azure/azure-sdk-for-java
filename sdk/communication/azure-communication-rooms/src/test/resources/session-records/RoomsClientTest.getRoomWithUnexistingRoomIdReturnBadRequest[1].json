@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/rooms/NotExistingRoomID?api-version=2023-03-31-preview",
+    "Uri" : "https://REDACTED.communication.azure.com/rooms/NotExistingRoomID?api-version=2023-06-14",
     "Headers" : {
       "x-ms-client-request-id" : "ba82ca04-33a6-46fb-a037-be73b0cb2731",
       "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)"
@@ -9,7 +9,7 @@
     "Response" : {
       "Transfer-Encoding" : "chunked",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2022-02-01, 2023-03-31-preview",
+      "api-supported-versions" : "2022-02-01, 2023-06-14",
       "retry-after" : "0",
       "StatusCode" : "400",
       "Date" : "Mon, 15 May 2023 19:30:16 GMT",
