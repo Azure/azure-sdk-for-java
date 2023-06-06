@@ -99,7 +99,7 @@ If you are using Maven, add the following dependency.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-spring-data-cosmos</artifactId>
-    <version>3.34.0</version>
+    <version>3.35.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -540,7 +540,7 @@ public class MyItem {
 - Azure-spring-data-cosmos supports [spring data custom queries][spring_data_custom_query]
 - Example, find operation, e.g., `findByAFieldAndBField`
 - Supports [Spring Data Pageable, Slice and Sort](https://docs.spring.io/spring-data/commons/docs/current/reference/html/#repositories.special-parameters).
-  - Based on available RUs on the database account, cosmosDB can return items less than or equal to the requested size.
+  - Based on available RUs on the database account, Cosmos DB can return items less than or equal to the requested size.
   - Due to this variable number of returned items in every iteration, user should not rely on the totalPageSize, and instead iterating over pageable should be done in this way.
 ```java readme-sample-findAllWithPageSize
 private List<T> findAllWithPageSize(int pageSize) {
@@ -1007,7 +1007,7 @@ For example, if you want to use spring logback as logging framework, add the fol
 
 ## Next steps
 - Read more about azure spring data cosmos [here][azure_spring_data_cosmos_docs].
-- [Read more about Azure CosmosDB Service][cosmos_docs]
+- [Read more about Azure Cosmos DB Service][cosmos_docs]
 
 ## Contributing
 

@@ -4,6 +4,8 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.amqp.AmqpTransportType;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
 
 import java.util.Collections;
@@ -19,13 +21,15 @@ public class PublishEventsCustomEndpoint {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal.
-        // 3. Creating a "Shared access policy" for your Event Hubs namespace.
-        // 4. Copying the connection string from the policy's properties.
-        //    (The default policy name is "RootManageSharedAccessKey".)
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey={sharedAccessKey}";
-        String eventHubName = "<< my-event-hub-name >>";
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+        String fullyQualifiedNamespace = "<<fully-qualified-namespace>>";
+        String eventHubName = "<<event-hub-name>>";
 
         // The address of our intermediary service.
         String customEndpoint = "<< https://my-application-gateway.cloudapp.azure.com >>";
@@ -33,7 +37,7 @@ public class PublishEventsCustomEndpoint {
         // Instantiate a client that will be used to call the service.
         // We are using WEB_SOCKETS.
         EventHubProducerClient producer = new EventHubClientBuilder()
-            .connectionString(connectionString, eventHubName)
+            .credential(fullyQualifiedNamespace, eventHubName, tokenCredential)
             .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
             .customEndpointAddress(customEndpoint)
             .buildProducerClient();

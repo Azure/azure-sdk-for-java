@@ -22,20 +22,19 @@ import java.util.Map;
  */
 public class TestProxyManager {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyManager.class);
-    private final Path recordingPath;
     private Process proxy;
+    private final Path testClassPath;
 
     /**
      * Construct a {@link TestProxyManager} for controlling the external test proxy.
-     * @param recordingPath The local path in the file system where recordings are saved.
+     * @param testClassPath the test class path
      */
-    public TestProxyManager(Path recordingPath) {
-        this.recordingPath = recordingPath;
-
+    public TestProxyManager(Path testClassPath) {
+        this.testClassPath = testClassPath;
         // This is necessary to stop the proxy when the debugger is stopped.
         Runtime.getRuntime().addShutdownHook(new Thread(this::stopProxy));
         if (runningLocally()) {
-            TestProxyDownloader.installTestProxy();
+            TestProxyDownloader.installTestProxy(testClassPath);
         }
     }
 
@@ -53,7 +52,7 @@ public class TestProxyManager {
 
                 ProcessBuilder builder = new ProcessBuilder(commandLine,
                     "--storage-location",
-                    recordingPath.toString());
+                    TestUtils.getRepoRootResolveUntil(testClassPath, "eng").toString());
                 Map<String, String> environment = builder.environment();
                 environment.put("LOGGING__LOGLEVEL", "Information");
                 environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Warning");
@@ -100,14 +99,6 @@ public class TestProxyManager {
             proxy.destroy();
         }
     }
-
-    /**
-     * Get the proxy URL.
-     *
-     * @return A string containing the proxy URL.
-     * @throws RuntimeException The proxy URL could not be constructed.
-     */
-
 
     /**
      * Checks the environment variables commonly set in CI to determine if the run is local.

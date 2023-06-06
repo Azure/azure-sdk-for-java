@@ -21,17 +21,17 @@ public final class TransferConfigurationTransferFilterDetailsTests {
         TransferConfigurationTransferFilterDetails model =
             BinaryData
                 .fromString(
-                    "{\"include\":{\"dataAccountType\":\"ManagedDisk\",\"blobFilterDetails\":{\"blobPrefixList\":[\"uexhdzx\"],\"blobPathList\":[\"eojnxqbzvddn\",\"wndeicbtwnp\",\"aoqvuh\",\"hcffcyddglmjthjq\"],\"containerList\":[\"yeicxmqciwqvhk\",\"ixuigdtopbobj\"]},\"azureFileFilterDetails\":{\"filePrefixList\":[\"e\"],\"filePathList\":[\"m\"],\"fileShareList\":[\"rzayv\",\"t\",\"gvdfgiotkftutq\",\"ln\"]},\"filterFileDetails\":[{\"filterFileType\":\"AzureBlob\",\"filterFilePath\":\"fgugnxkrxdqmid\"},{\"filterFileType\":\"AzureBlob\",\"filterFilePath\":\"hzrvqd\"},{\"filterFileType\":\"AzureBlob\",\"filterFilePath\":\"bhj\"}]}}")
+                    "{\"include\":{\"dataAccountType\":\"ManagedDisk\",\"blobFilterDetails\":{\"blobPrefixList\":[\"ddtocjjxhvp\",\"o\"],\"blobPathList\":[\"hd\",\"xibqeojnx\",\"bzv\",\"dntwndeicbtw\"],\"containerList\":[\"aoqvuh\"]},\"azureFileFilterDetails\":{\"filePrefixList\":[\"fcyddg\"],\"filePathList\":[\"t\",\"jqkwpyeicx\",\"qciwqvhkhixuigdt\"],\"fileShareList\":[\"objoghmewu\"]},\"filterFileDetails\":[{\"filterFileType\":\"AzureFile\",\"filterFilePath\":\"hrzayvvtpgvdf\"}]}}")
                 .toObject(TransferConfigurationTransferFilterDetails.class);
         Assertions.assertEquals(DataAccountType.MANAGED_DISK, model.include().dataAccountType());
-        Assertions.assertEquals("uexhdzx", model.include().blobFilterDetails().blobPrefixList().get(0));
-        Assertions.assertEquals("eojnxqbzvddn", model.include().blobFilterDetails().blobPathList().get(0));
-        Assertions.assertEquals("yeicxmqciwqvhk", model.include().blobFilterDetails().containerList().get(0));
-        Assertions.assertEquals("e", model.include().azureFileFilterDetails().filePrefixList().get(0));
-        Assertions.assertEquals("m", model.include().azureFileFilterDetails().filePathList().get(0));
-        Assertions.assertEquals("rzayv", model.include().azureFileFilterDetails().fileShareList().get(0));
-        Assertions.assertEquals(FilterFileType.AZURE_BLOB, model.include().filterFileDetails().get(0).filterFileType());
-        Assertions.assertEquals("fgugnxkrxdqmid", model.include().filterFileDetails().get(0).filterFilePath());
+        Assertions.assertEquals("ddtocjjxhvp", model.include().blobFilterDetails().blobPrefixList().get(0));
+        Assertions.assertEquals("hd", model.include().blobFilterDetails().blobPathList().get(0));
+        Assertions.assertEquals("aoqvuh", model.include().blobFilterDetails().containerList().get(0));
+        Assertions.assertEquals("fcyddg", model.include().azureFileFilterDetails().filePrefixList().get(0));
+        Assertions.assertEquals("t", model.include().azureFileFilterDetails().filePathList().get(0));
+        Assertions.assertEquals("objoghmewu", model.include().azureFileFilterDetails().fileShareList().get(0));
+        Assertions.assertEquals(FilterFileType.AZURE_FILE, model.include().filterFileDetails().get(0).filterFileType());
+        Assertions.assertEquals("hrzayvvtpgvdf", model.include().filterFileDetails().get(0).filterFilePath());
     }
 
     @org.junit.jupiter.api.Test
@@ -43,36 +43,29 @@ public final class TransferConfigurationTransferFilterDetailsTests {
                         .withDataAccountType(DataAccountType.MANAGED_DISK)
                         .withBlobFilterDetails(
                             new BlobFilterDetails()
-                                .withBlobPrefixList(Arrays.asList("uexhdzx"))
-                                .withBlobPathList(
-                                    Arrays.asList("eojnxqbzvddn", "wndeicbtwnp", "aoqvuh", "hcffcyddglmjthjq"))
-                                .withContainerList(Arrays.asList("yeicxmqciwqvhk", "ixuigdtopbobj")))
+                                .withBlobPrefixList(Arrays.asList("ddtocjjxhvp", "o"))
+                                .withBlobPathList(Arrays.asList("hd", "xibqeojnx", "bzv", "dntwndeicbtw"))
+                                .withContainerList(Arrays.asList("aoqvuh")))
                         .withAzureFileFilterDetails(
                             new AzureFileFilterDetails()
-                                .withFilePrefixList(Arrays.asList("e"))
-                                .withFilePathList(Arrays.asList("m"))
-                                .withFileShareList(Arrays.asList("rzayv", "t", "gvdfgiotkftutq", "ln")))
+                                .withFilePrefixList(Arrays.asList("fcyddg"))
+                                .withFilePathList(Arrays.asList("t", "jqkwpyeicx", "qciwqvhkhixuigdt"))
+                                .withFileShareList(Arrays.asList("objoghmewu")))
                         .withFilterFileDetails(
                             Arrays
                                 .asList(
                                     new FilterFileDetails()
-                                        .withFilterFileType(FilterFileType.AZURE_BLOB)
-                                        .withFilterFilePath("fgugnxkrxdqmid"),
-                                    new FilterFileDetails()
-                                        .withFilterFileType(FilterFileType.AZURE_BLOB)
-                                        .withFilterFilePath("hzrvqd"),
-                                    new FilterFileDetails()
-                                        .withFilterFileType(FilterFileType.AZURE_BLOB)
-                                        .withFilterFilePath("bhj"))));
+                                        .withFilterFileType(FilterFileType.AZURE_FILE)
+                                        .withFilterFilePath("hrzayvvtpgvdf"))));
         model = BinaryData.fromObject(model).toObject(TransferConfigurationTransferFilterDetails.class);
         Assertions.assertEquals(DataAccountType.MANAGED_DISK, model.include().dataAccountType());
-        Assertions.assertEquals("uexhdzx", model.include().blobFilterDetails().blobPrefixList().get(0));
-        Assertions.assertEquals("eojnxqbzvddn", model.include().blobFilterDetails().blobPathList().get(0));
-        Assertions.assertEquals("yeicxmqciwqvhk", model.include().blobFilterDetails().containerList().get(0));
-        Assertions.assertEquals("e", model.include().azureFileFilterDetails().filePrefixList().get(0));
-        Assertions.assertEquals("m", model.include().azureFileFilterDetails().filePathList().get(0));
-        Assertions.assertEquals("rzayv", model.include().azureFileFilterDetails().fileShareList().get(0));
-        Assertions.assertEquals(FilterFileType.AZURE_BLOB, model.include().filterFileDetails().get(0).filterFileType());
-        Assertions.assertEquals("fgugnxkrxdqmid", model.include().filterFileDetails().get(0).filterFilePath());
+        Assertions.assertEquals("ddtocjjxhvp", model.include().blobFilterDetails().blobPrefixList().get(0));
+        Assertions.assertEquals("hd", model.include().blobFilterDetails().blobPathList().get(0));
+        Assertions.assertEquals("aoqvuh", model.include().blobFilterDetails().containerList().get(0));
+        Assertions.assertEquals("fcyddg", model.include().azureFileFilterDetails().filePrefixList().get(0));
+        Assertions.assertEquals("t", model.include().azureFileFilterDetails().filePathList().get(0));
+        Assertions.assertEquals("objoghmewu", model.include().azureFileFilterDetails().fileShareList().get(0));
+        Assertions.assertEquals(FilterFileType.AZURE_FILE, model.include().filterFileDetails().get(0).filterFileType());
+        Assertions.assertEquals("hrzayvvtpgvdf", model.include().filterFileDetails().get(0).filterFilePath());
     }
 }

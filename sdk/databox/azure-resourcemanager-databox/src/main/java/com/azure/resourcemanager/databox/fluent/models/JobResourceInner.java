@@ -13,6 +13,8 @@ import com.azure.resourcemanager.databox.models.JobDeliveryInfo;
 import com.azure.resourcemanager.databox.models.JobDeliveryType;
 import com.azure.resourcemanager.databox.models.JobDetails;
 import com.azure.resourcemanager.databox.models.ResourceIdentity;
+import com.azure.resourcemanager.databox.models.ReverseShippingDetailsEditStatus;
+import com.azure.resourcemanager.databox.models.ReverseTransportPreferenceEditStatus;
 import com.azure.resourcemanager.databox.models.Sku;
 import com.azure.resourcemanager.databox.models.StageName;
 import com.azure.resourcemanager.databox.models.TransferType;
@@ -216,6 +218,24 @@ public final class JobResourceInner extends Resource {
      */
     public Boolean isShippingAddressEditable() {
         return this.innerProperties() == null ? null : this.innerProperties().isShippingAddressEditable();
+    }
+
+    /**
+     * Get the reverseShippingDetailsUpdate property: The Editable status for Reverse Shipping Address and Contact Info.
+     *
+     * @return the reverseShippingDetailsUpdate value.
+     */
+    public ReverseShippingDetailsEditStatus reverseShippingDetailsUpdate() {
+        return this.innerProperties() == null ? null : this.innerProperties().reverseShippingDetailsUpdate();
+    }
+
+    /**
+     * Get the reverseTransportPreferenceUpdate property: The Editable status for Reverse Transport preferences.
+     *
+     * @return the reverseTransportPreferenceUpdate value.
+     */
+    public ReverseTransportPreferenceEditStatus reverseTransportPreferenceUpdate() {
+        return this.innerProperties() == null ? null : this.innerProperties().reverseTransportPreferenceUpdate();
     }
 
     /**

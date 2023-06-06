@@ -8,31 +8,30 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.resourcehealth.models.AvailabilityStatusPropertiesRecentlyResolved;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AvailabilityStatusPropertiesRecentlyResolvedTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         AvailabilityStatusPropertiesRecentlyResolved model =
             BinaryData
                 .fromString(
-                    "{\"unavailableOccuredTime\":\"2021-07-31T13:17:09Z\",\"resolvedTime\":\"2021-11-11T16:20:30Z\",\"unavailableSummary\":\"lyxwjkcprbnwbx\"}")
+                    "{\"unavailableOccuredTime\":\"2021-03-20T08:29Z\",\"resolvedTime\":\"2021-05-05T10:20:27Z\",\"unavailableSummary\":\"ddgmb\"}")
                 .toObject(AvailabilityStatusPropertiesRecentlyResolved.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T13:17:09Z"), model.unavailableOccuredTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T16:20:30Z"), model.resolvedTime());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.unavailableSummary());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T08:29Z"), model.unavailableOccuredTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T10:20:27Z"), model.resolvedTime());
+        Assertions.assertEquals("ddgmb", model.unavailableSummary());
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AvailabilityStatusPropertiesRecentlyResolved model =
             new AvailabilityStatusPropertiesRecentlyResolved()
-                .withUnavailableOccuredTime(OffsetDateTime.parse("2021-07-31T13:17:09Z"))
-                .withResolvedTime(OffsetDateTime.parse("2021-11-11T16:20:30Z"))
-                .withUnavailableSummary("lyxwjkcprbnwbx");
+                .withUnavailableOccuredTime(OffsetDateTime.parse("2021-03-20T08:29Z"))
+                .withResolvedTime(OffsetDateTime.parse("2021-05-05T10:20:27Z"))
+                .withUnavailableSummary("ddgmb");
         model = BinaryData.fromObject(model).toObject(AvailabilityStatusPropertiesRecentlyResolved.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T13:17:09Z"), model.unavailableOccuredTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-11T16:20:30Z"), model.resolvedTime());
-        Assertions.assertEquals("lyxwjkcprbnwbx", model.unavailableSummary());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-20T08:29Z"), model.unavailableOccuredTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T10:20:27Z"), model.resolvedTime());
+        Assertions.assertEquals("ddgmb", model.unavailableSummary());
     }
 }
