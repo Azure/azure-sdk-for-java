@@ -39,8 +39,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
             new TextDocumentInput("B", "The cat is 1 year old and weighs 10 pounds.").setLanguage("en")
         );
 
-        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true)
-                .setModelVersion("2022-10-01-preview");
+        TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true);
 
         // Recognizing entities for each document in a batch of documents
         client.recognizeEntitiesBatchWithResponse(documents, requestOptions).subscribe(

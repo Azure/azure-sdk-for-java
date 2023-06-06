@@ -736,16 +736,6 @@ final class TestUtils {
         getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage() {
         return asList(
             getExpectedAnalyzeHealthcareEntitiesResultCollection(2,
-                asList(getRecognizeHealthcareEntitiesResult1("0"), getRecognizeHealthcareEntitiesResult2())));
-    }
-
-    /**
-     * Helper method that add FHIR expected result to the AnalyzeHealthcareEntitiesResult
-     */
-    static List<AnalyzeHealthcareEntitiesResultCollection>
-        getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePageWithFhir() {
-        return asList(
-            getExpectedAnalyzeHealthcareEntitiesResultCollection(2,
                 asList(getRecognizeHealthcareEntitiesResult1("0"),
                     getRecognizeHealthcareEntitiesResult2())));
     }

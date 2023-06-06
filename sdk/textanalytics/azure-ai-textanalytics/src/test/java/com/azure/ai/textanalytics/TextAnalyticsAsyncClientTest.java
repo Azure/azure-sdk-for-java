@@ -78,7 +78,6 @@ import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareE
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForMultiplePages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage;
-import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePageWithFhir;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeSentimentActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchCategorizedEntities;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedBatchDetectedLanguages;
@@ -1828,7 +1827,7 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
 
             validateAnalyzeHealthcareEntitiesResultCollectionList(
                 options.isIncludeStatistics(),
-                getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePageWithFhir(),
+                getExpectedAnalyzeHealthcareEntitiesResultCollectionListForSinglePage(),
                 analyzeHealthcareEntitiesPagedFlux.toStream().collect(Collectors.toList()));
         });
     }
