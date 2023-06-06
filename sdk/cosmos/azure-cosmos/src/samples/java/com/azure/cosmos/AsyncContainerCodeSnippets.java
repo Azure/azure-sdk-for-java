@@ -6,12 +6,7 @@ import reactor.core.publisher.Mono;
 import java.util.Collections;
 import java.util.List;
 
-public class ContainerAsyncCodeSnippets {
-    private final String serviceEndpoint = "<service-endpoint>";
-    private final String key = "<key>";
-    private final DirectConnectionConfig directConnectionConfig = new DirectConnectionConfig();
-    private final GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
-
+public class AsyncContainerCodeSnippets {
     private final CosmosAsyncClient cosmosAsyncClient = new CosmosClientBuilder()
         .endpoint("<YOUR ENDPOINT HERE>")
         .key("<YOUR KEY HERE>")
