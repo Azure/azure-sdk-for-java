@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to AzureDatabricksManager. The Microsoft Azure management APIs allow end users to operate on Azure
- * Databricks Workspace resources.
+ * Databricks Workspace / Access Connector resources.
  */
 public final class AzureDatabricksManager {
     private Workspaces workspaces;
@@ -226,7 +226,7 @@ public final class AzureDatabricksManager {
                 .append("-")
                 .append("com.azure.resourcemanager.databricks")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
