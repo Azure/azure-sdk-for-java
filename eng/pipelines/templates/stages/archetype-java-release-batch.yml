@@ -261,14 +261,14 @@ stages:
 
                   # JRS - See if the issue with Spring happens if the entire repository
                   # is pulled down instead of doing a sparse-checkout
-                  - checkout: self
-                  # - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                  #   parameters:
-                  #     Paths:
-                  #       - '${{ parameters.ServiceDirectory }}'
-                  #       - '**/*.xml'
-                  #       - '!sdk/**/test-recordings'
-                  #       - '!sdk/**/session-records'
+                  # - checkout: self
+                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                    parameters:
+                      Paths:
+                        - '${{ parameters.ServiceDirectory }}'
+                        - '**/*.xml'
+                        - '!sdk/**/test-recordings'
+                        - '!sdk/**/session-records'
 
                   - task: UsePythonVersion@0
                     displayName: 'Use Python $(PythonVersion)'
@@ -277,7 +277,11 @@ stages:
 
                   # Apply the version increment to each library, which only updates the version_client.txt file,
                   # and then call to update_versions will then apply all of the updates.
+                  # JRS - checkout: self, does a git config gc.auto 0 as part of its checkout. This might need to
+                  # be part of the sparse-checkout. Right now, just run that as part of the increment to see if
+                  # it helps
                   - pwsh: |
+                      git config gc.auto 0
                       $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
                       $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                       python --version
