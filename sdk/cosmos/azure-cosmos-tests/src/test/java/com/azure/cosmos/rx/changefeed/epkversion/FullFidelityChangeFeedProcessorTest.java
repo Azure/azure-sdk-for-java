@@ -93,8 +93,8 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                                   .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                                   .subscribe();
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
                 logger.info("Starting ChangeFeed processor");
 
                 // Wait for the feed processor to receive and process the documents.
@@ -156,8 +156,132 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                                   .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                                   .subscribe();
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
+                logger.info("Starting ChangeFeed processor");
+
+                // Wait for the feed processor to receive and process the documents.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+                logger.info("Finished starting ChangeFeed processor");
+
+                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+                logger.info("Set up read feed documents");
+
+                // Wait for the feed processor to receive and process the documents.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                logger.info("Validating changes now");
+
+                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+                changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+                // Wait for the feed processor to shut down.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start and stopped in the expected time", ex);
+                throw ex;
+            }
+
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void fullFidelityChangeFeedProcessorStartFromNowSubpartitioned() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollectionSubpartitioned(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .options(changeFeedProcessorOptions)
+                .hostName(hostName)
+                .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
+                    log.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (ChangeFeedProcessorItem item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+                    log.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
+                logger.info("Starting ChangeFeed processor");
+
+                // Wait for the feed processor to receive and process the documents.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+                logger.info("Finished starting ChangeFeed processor");
+
+                setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
+                logger.info("Set up read feed documents");
+
+                // Wait for the feed processor to receive and process the documents.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+                logger.info("Validating changes now");
+
+                validateChangeFeedProcessing(changeFeedProcessor, createdDocuments, receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+                changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+
+                // Wait for the feed processor to shut down.
+                Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
+
+            } catch (Exception ex) {
+                log.error("Change feed processor did not start and stopped in the expected time", ex);
+                throw ex;
+            }
+
+        } finally {
+            safeDeleteCollection(createdFeedCollection);
+            safeDeleteCollection(createdLeaseCollection);
+            // Allow some time for the collections to be deleted before exiting.
+            Thread.sleep(500);
+        }
+    }
+
+
+    // Using this test to verify basic functionality
+    @Test(groups = { "emulator" }, timeOut = 50 * CHANGE_FEED_PROCESSOR_TIMEOUT)
+    public void fullFidelityChangeFeedProcessorStartFromContinuationTokenSubpartitioned() throws InterruptedException {
+        CosmosAsyncContainer createdFeedCollection = createFeedCollectionSubpartitioned(FEED_COLLECTION_THROUGHPUT);
+        CosmosAsyncContainer createdLeaseCollection = createLeaseCollection(LEASE_COLLECTION_THROUGHPUT);
+
+        try {
+            List<InternalObjectNode> createdDocuments = new ArrayList<>();
+            Map<String, ChangeFeedProcessorItem> receivedDocuments = new ConcurrentHashMap<>();
+            ChangeFeedProcessorOptions changeFeedProcessorOptions = new ChangeFeedProcessorOptions();
+            ChangeFeedProcessor changeFeedProcessor = new ChangeFeedProcessorBuilder()
+                .options(changeFeedProcessorOptions)
+                .hostName(hostName)
+                .handleAllVersionsAndDeletesChanges((List<ChangeFeedProcessorItem> docs) -> {
+                    log.info("START processing from thread {}", Thread.currentThread().getId());
+                    for (ChangeFeedProcessorItem item : docs) {
+                        processItem(item, receivedDocuments);
+                    }
+                    log.info("END processing from thread {}", Thread.currentThread().getId());
+                })
+                .feedContainer(createdFeedCollection)
+                .leaseContainer(createdLeaseCollection)
+                .buildChangeFeedProcessor();
+
+            try {
+                changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
                 logger.info("Starting ChangeFeed processor");
 
                 // Wait for the feed processor to receive and process the documents.
@@ -224,14 +348,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             try {
                 changeFeedProcessorMain.start().subscribeOn(Schedulers.boundedElastic())
-                                       .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                                       .then(Mono.just(changeFeedProcessorMain)
-                                                 .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                                                 .flatMap(value -> changeFeedProcessorMain.stop()
-                                                                                          .subscribeOn(Schedulers.boundedElastic())
-                                                                                          .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                                                 ))
-                                       .subscribe();
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .then(Mono.just(changeFeedProcessorMain)
+                        .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        .flatMap(value -> changeFeedProcessorMain.stop()
+                            .subscribeOn(Schedulers.boundedElastic())
+                            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                        ))
+                    .subscribe();
             } catch (Exception ex) {
                 log.error("Change feed processor did not start and stopped in the expected time", ex);
                 throw ex;
@@ -241,14 +365,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             // Test for "zero" lag
             List<ChangeFeedProcessorState> cfpCurrentState = changeFeedProcessorMain.getCurrentState()
-                                                                                    .map(state -> {
-                                                                                        try {
-                                                                                            log.info(OBJECT_MAPPER.writeValueAsString(state));
-                                                                                        } catch (JsonProcessingException ex) {
-                                                                                            log.error("Unexpected", ex);
-                                                                                        }
-                                                                                        return state;
-                                                                                    }).block();
+                .map(state -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
 
             assertThat(cfpCurrentState.size()).isNotZero().as("Change Feed Processor number of leases should not be 0.");
 
@@ -261,14 +385,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             // check the side cart CFP instance
             List<ChangeFeedProcessorState> cfpCurrentStateSideCart = changeFeedProcessorSideCart.getCurrentState()
-                                                                                                .map(state -> {
-                                                                                                    try {
-                                                                                                        log.info(OBJECT_MAPPER.writeValueAsString(state));
-                                                                                                    } catch (JsonProcessingException ex) {
-                                                                                                        log.error("Unexpected", ex);
-                                                                                                    }
-                                                                                                    return state;
-                                                                                                }).block();
+                .map(state -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
 
             assertThat(cfpCurrentStateSideCart.size()).isNotZero().as("Change Feed Processor side cart number of leases should not be 0.");
 
@@ -284,14 +408,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
 
             cfpCurrentState = changeFeedProcessorMain.getCurrentState()
-                                                     .map(state -> {
-                                                         try {
-                                                             log.info(OBJECT_MAPPER.writeValueAsString(state));
-                                                         } catch (JsonProcessingException ex) {
-                                                             log.error("Unexpected", ex);
-                                                         }
-                                                         return state;
-                                                     }).block();
+                .map(state -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
 
             totalLag = 0;
             for (ChangeFeedProcessorState item : cfpCurrentState) {
@@ -302,14 +426,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             // check the side cart CFP instance
             cfpCurrentStateSideCart = changeFeedProcessorSideCart.getCurrentState()
-                                                                 .map(state -> {
-                                                                     try {
-                                                                         log.info(OBJECT_MAPPER.writeValueAsString(state));
-                                                                     } catch (JsonProcessingException ex) {
-                                                                         log.error("Unexpected", ex);
-                                                                     }
-                                                                     return state;
-                                                                 }).block();
+                .map(state -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
 
             assertThat(cfpCurrentStateSideCart.size()).isNotZero().as("Change Feed Processor side cart number of leases should not be 0.");
 
@@ -362,8 +486,8 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             try {
                 changeFeedProcessorMain.start().subscribeOn(Schedulers.boundedElastic())
-                                       .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                                       .subscribe();
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
             } catch (Exception ex) {
                 log.error("Change feed processor did not start and stopped in the expected time", ex);
                 throw ex;
@@ -373,14 +497,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             // Test for "zero" lag
             List<ChangeFeedProcessorState> cfpCurrentState = changeFeedProcessorMain.getCurrentState()
-                                                                                    .map(state -> {
-                                                                                        try {
-                                                                                            log.info(OBJECT_MAPPER.writeValueAsString(state));
-                                                                                        } catch (JsonProcessingException ex) {
-                                                                                            log.error("Unexpected", ex);
-                                                                                        }
-                                                                                        return state;
-                                                                                    }).block();
+                .map(state -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
 
             assertThat(cfpCurrentState.size()).isNotZero().as("Change Feed Processor number of leases should not be 0.");
 
@@ -393,14 +517,14 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             // check the side cart CFP instance
             List<ChangeFeedProcessorState> cfpCurrentStateSideCart = changeFeedProcessorSideCart.getCurrentState()
-                                                                                                .map(state -> {
-                                                                                                    try {
-                                                                                                        log.info(OBJECT_MAPPER.writeValueAsString(state));
-                                                                                                    } catch (JsonProcessingException ex) {
-                                                                                                        log.error("Unexpected", ex);
-                                                                                                    }
-                                                                                                    return state;
-                                                                                                }).block();
+                .map(state -> {
+                    try {
+                        log.info(OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
 
             assertThat(cfpCurrentStateSideCart.size()).isNotZero().as("Change Feed Processor side cart number of leases should not be 0.");
 
@@ -419,15 +543,15 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
 
             cfpCurrentState = changeFeedProcessorMain.getCurrentState()
-                                                     .map(state -> {
-                                                         try {
-                                                             log.info("Current state of main after inserting documents is : {}",
-                                                                 OBJECT_MAPPER.writeValueAsString(state));
-                                                         } catch (JsonProcessingException ex) {
-                                                             log.error("Unexpected", ex);
-                                                         }
-                                                         return state;
-                                                     }).block();
+                .map(state -> {
+                    try {
+                        log.info("Current state of main after inserting documents is : {}",
+                            OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
 
             totalLag = 0;
             for (ChangeFeedProcessorState item : cfpCurrentState) {
@@ -438,15 +562,15 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             // check the side cart CFP instance
             cfpCurrentStateSideCart = changeFeedProcessorSideCart.getCurrentState()
-                                                                 .map(state -> {
-                                                                     try {
-                                                                         log.info("Current state of side cart after inserting documents is : {}",
-                                                                             OBJECT_MAPPER.writeValueAsString(state));
-                                                                     } catch (JsonProcessingException ex) {
-                                                                         log.error("Unexpected", ex);
-                                                                     }
-                                                                     return state;
-                                                                 }).block();
+                .map(state -> {
+                    try {
+                        log.info("Current state of side cart after inserting documents is : {}",
+                            OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
 
             assertThat(cfpCurrentStateSideCart.size()).isNotZero().as("Change Feed Processor side cart number of leases should not be 0.");
 
@@ -466,15 +590,15 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             setupReadFeedDocuments(createdDocuments, receivedDocuments, createdFeedCollection, FEED_COUNT);
 
             cfpCurrentState = changeFeedProcessorMain.getCurrentState()
-                                                     .map(state -> {
-                                                         try {
-                                                             log.info("Current state of main after stopping is : {}",
-                                                                 OBJECT_MAPPER.writeValueAsString(state));
-                                                         } catch (JsonProcessingException ex) {
-                                                             log.error("Unexpected", ex);
-                                                         }
-                                                         return state;
-                                                     }).block();
+                .map(state -> {
+                    try {
+                        log.info("Current state of main after stopping is : {}",
+                            OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
 
             totalLag = 0;
             for (ChangeFeedProcessorState item : cfpCurrentState) {
@@ -485,15 +609,15 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             // check the side cart CFP instance
             cfpCurrentStateSideCart = changeFeedProcessorSideCart.getCurrentState()
-                                                                 .map(state -> {
-                                                                     try {
-                                                                         log.info("Current state of side cart after stopping is : {}",
-                                                                             OBJECT_MAPPER.writeValueAsString(state));
-                                                                     } catch (JsonProcessingException ex) {
-                                                                         log.error("Unexpected", ex);
-                                                                     }
-                                                                     return state;
-                                                                 }).block();
+                .map(state -> {
+                    try {
+                        log.info("Current state of side cart after stopping is : {}",
+                            OBJECT_MAPPER.writeValueAsString(state));
+                    } catch (JsonProcessingException ex) {
+                        log.error("Unexpected", ex);
+                    }
+                    return state;
+                }).block();
 
             assertThat(cfpCurrentStateSideCart.size()).isNotZero().as("Change Feed Processor side cart number of leases should not be 0.");
 
@@ -565,12 +689,12 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                 .subscribeOn(Schedulers.boundedElastic())
                 .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
                 .then(Mono.just(changeFeedProcessorFirst)
-                          .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                          .flatMap(value ->
-                              changeFeedProcessorFirst.stop()
-                                                      .subscribeOn(Schedulers.boundedElastic())
-                                                      .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                          ))
+                    .delayElement(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .flatMap(value ->
+                        changeFeedProcessorFirst.stop()
+                            .subscribeOn(Schedulers.boundedElastic())
+                            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    ))
                 .subscribe();
 
             try {
@@ -597,7 +721,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                     leaseDocument.setOwner("TEMP_OWNER");
                     CosmosItemRequestOptions options = new CosmosItemRequestOptions();
                     return createdLeaseCollection.replaceItem(leaseDocument, leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), options)
-                                                 .map(CosmosItemResponse::getItem);
+                        .map(CosmosItemResponse::getItem);
                 })
                 .map(leaseDocument -> {
                     log.info("QueryItems after Change feed processor processing; found host {}", leaseDocument.getOwner());
@@ -697,7 +821,7 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                     .flatMap(cosmosItemResponse -> {
                         logger.info("Start first Change feed processor");
                         return changeFeedProcessorFirst.start().subscribeOn(Schedulers.boundedElastic())
-                                                       .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
+                            .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
                     })
                     .then(
                         Mono.just(changeFeedProcessorFirst)
@@ -723,30 +847,30 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
                                 CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
                                 return createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class).byPage()
-                                                             .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
-                                                             .flatMap(doc -> {
-                                                                 ServiceItemLeaseV1 leaseDocument = ServiceItemLeaseV1.fromDocument(doc);
-                                                                 leaseDocument.setOwner(null);
-                                                                 CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-                                                                 return createdLeaseCollection.replaceItem(leaseDocument, leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), options)
-                                                                                              .map(CosmosItemResponse::getItem);
-                                                             })
-                                                             .map(leaseDocument -> {
-                                                                 logger.info("QueryItems after Change feed processor processing; current Owner is'{}'", leaseDocument.getOwner());
-                                                                 return leaseDocument;
-                                                             })
-                                                             .last()
-                                                             .flatMap(leaseDocument -> {
-                                                                 logger.info("Start creating more documents");
-                                                                 List<InternalObjectNode> docDefList1 = new ArrayList<>();
+                                    .flatMap(documentFeedResponse -> reactor.core.publisher.Flux.fromIterable(documentFeedResponse.getResults()))
+                                    .flatMap(doc -> {
+                                        ServiceItemLeaseV1 leaseDocument = ServiceItemLeaseV1.fromDocument(doc);
+                                        leaseDocument.setOwner(null);
+                                        CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+                                        return createdLeaseCollection.replaceItem(leaseDocument, leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), options)
+                                            .map(CosmosItemResponse::getItem);
+                                    })
+                                    .map(leaseDocument -> {
+                                        logger.info("QueryItems after Change feed processor processing; current Owner is'{}'", leaseDocument.getOwner());
+                                        return leaseDocument;
+                                    })
+                                    .last()
+                                    .flatMap(leaseDocument -> {
+                                        logger.info("Start creating more documents");
+                                        List<InternalObjectNode> docDefList1 = new ArrayList<>();
 
-                                                                 for (int i = 0; i < FEED_COUNT; i++) {
-                                                                     docDefList1.add(getDocumentDefinition());
-                                                                 }
+                                        for (int i = 0; i < FEED_COUNT; i++) {
+                                            docDefList1.add(getDocumentDefinition());
+                                        }
 
-                                                                 return bulkInsert(createdFeedCollection, docDefList1, FEED_COUNT)
-                                                                     .last();
-                                                             });
+                                        return bulkInsert(createdFeedCollection, docDefList1, FEED_COUNT)
+                                            .last();
+                                    });
                             }))
                     .subscribe();
             } catch (Exception ex) {
@@ -813,8 +937,8 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
 
             try {
                 changeFeedProcessor.start().subscribeOn(Schedulers.boundedElastic())
-                                   .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
-                                   .subscribe();
+                    .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT))
+                    .subscribe();
 
                 // Wait for the feed processor to receive and process the documents.
                 Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
@@ -844,21 +968,21 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
             CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
 
             createdLeaseCollection.queryItems(querySpec, cosmosQueryRequestOptions, InternalObjectNode.class).byPage()
-                                  .flatMap(documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
-                                  .flatMap(doc -> {
-                                      ServiceItemLeaseV1 leaseDocument = ServiceItemLeaseV1.fromDocument(doc);
-                                      leaseDocument.setOwner(RandomStringUtils.randomAlphabetic(10));
-                                      CosmosItemRequestOptions options = new CosmosItemRequestOptions();
-                                      return createdLeaseCollection.replaceItem(leaseDocument, leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), options)
-                                                                   .map(CosmosItemResponse::getItem);
-                                  })
-                                  .flatMap(leaseDocument -> createdLeaseCollection.readItem(leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), InternalObjectNode.class))
-                                  .map(doc -> {
-                                      ServiceItemLeaseV1 leaseDocument = ServiceItemLeaseV1.fromDocument(doc.getItem());
-                                      log.info("Change feed processor current Owner is'{}'", leaseDocument.getOwner());
-                                      return leaseDocument;
-                                  })
-                                  .blockLast();
+                .flatMap(documentFeedResponse -> Flux.fromIterable(documentFeedResponse.getResults()))
+                .flatMap(doc -> {
+                    ServiceItemLeaseV1 leaseDocument = ServiceItemLeaseV1.fromDocument(doc);
+                    leaseDocument.setOwner(RandomStringUtils.randomAlphabetic(10));
+                    CosmosItemRequestOptions options = new CosmosItemRequestOptions();
+                    return createdLeaseCollection.replaceItem(leaseDocument, leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), options)
+                        .map(CosmosItemResponse::getItem);
+                })
+                .flatMap(leaseDocument -> createdLeaseCollection.readItem(leaseDocument.getId(), new PartitionKey(leaseDocument.getId()), InternalObjectNode.class))
+                .map(doc -> {
+                    ServiceItemLeaseV1 leaseDocument = ServiceItemLeaseV1.fromDocument(doc.getItem());
+                    log.info("Change feed processor current Owner is'{}'", leaseDocument.getOwner());
+                    return leaseDocument;
+                })
+                .blockLast();
 
             createdDocuments.clear();
             receivedDocuments.clear();
@@ -977,6 +1101,11 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     private CosmosAsyncContainer createFeedCollection(int provisionedThroughput) {
         CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
         return createCollection(createdDatabase, getCollectionDefinitionWithFullFidelity(), optionsFeedCollection, provisionedThroughput);
+    }
+
+    private CosmosAsyncContainer createFeedCollectionSubpartitioned(int provisionedThroughput) {
+        CosmosContainerRequestOptions optionsFeedCollection = new CosmosContainerRequestOptions();
+        return createCollection(createdDatabase, getMultiHashCollectionDefinitionFFCF(UUID.randomUUID().toString()), optionsFeedCollection, provisionedThroughput);
     }
 
     private CosmosAsyncContainer createLeaseCollection(int provisionedThroughput) {

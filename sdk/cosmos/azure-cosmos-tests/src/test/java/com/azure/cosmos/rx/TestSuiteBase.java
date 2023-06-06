@@ -54,6 +54,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
+import com.azure.cosmos.models.PartitionKind;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -555,6 +556,30 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosContainerProperties collectionDefinition = new CosmosContainerProperties(collectionId, partitionKeyDef);
 
         return collectionDefinition;
+    }
+
+    static protected CosmosContainerProperties getMultiHashCollectionDefinition(String collectionId) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+        partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/mypk");
+        paths.add("/prop");
+        partitionKeyDef.setPaths(paths);
+
+        return new CosmosContainerProperties(collectionId, partitionKeyDef);
+    }
+
+    static protected CosmosContainerProperties getMultiHashCollectionDefinitionFFCF(String collectionId) {
+        PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
+        partitionKeyDef.setKind(PartitionKind.MULTI_HASH);
+        partitionKeyDef.setVersion(PartitionKeyDefinitionVersion.V2);
+        ArrayList<String> paths = new ArrayList<>();
+        paths.add("/id");
+        paths.add("/mypk");
+        partitionKeyDef.setPaths(paths);
+
+        return new CosmosContainerProperties(collectionId, partitionKeyDef);
     }
 
     static protected CosmosContainerProperties getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey() {
