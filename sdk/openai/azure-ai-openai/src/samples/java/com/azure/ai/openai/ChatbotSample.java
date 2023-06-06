@@ -9,7 +9,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * A sample demonstrating the minimal usage with default credentials 
+ * A sample demonstrating the minimal usage with default credentials
  * where we only need to pass a prompt and the deploymentId
  */
 public class ChatbotSample {
