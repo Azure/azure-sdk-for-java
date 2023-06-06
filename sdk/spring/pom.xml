@@ -34,9 +34,7 @@
         <module>spring-cloud-azure-starter-actuator</module>
         <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
-        <!--
-        Due to compatibility with Spring Boot 3, temporarily excluded in 'feature/spring-cloud-azure-6.x' branch.
-        <module>spring-cloud-azure-starter-data-cosmos</module>-->
+        <module>spring-cloud-azure-starter-data-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
@@ -94,9 +92,7 @@
         <module>spring-cloud-azure-starter-actuator</module>
         <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
-        <!--
-        Due to compatibility with Spring Boot 3, temporarily excluded in 'feature/spring-cloud-azure-6.x' branch.
-        <module>spring-cloud-azure-starter-data-cosmos</module>-->
+        <module>spring-cloud-azure-starter-data-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
