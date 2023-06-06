@@ -70,7 +70,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private final int responseContinuationTokenLimitInKb;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
     private final DatabaseThroughputConfig databaseThroughputConfig;
-
+    private Boolean pointReadWarningLogged = false;
     private ApplicationContext applicationContext;
 
     /**
@@ -329,14 +329,12 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
         CosmosEntityInformation<?, ?> cosmosEntityInformation = CosmosEntityInformation.getInstance(domainType);
         String containerPartitionKey = cosmosEntityInformation.getPartitionKeyFieldName();
         if ("id".equals(containerPartitionKey) && id != null) {
-            try {
-                return findById(id, domainType, new PartitionKey(id));
-            } catch (CosmosAccessException e) {
-                LOGGER.warn(e.getMessage());
-                return null;
-            }
+            return findById(id, domainType, new PartitionKey(id));
         }
-        LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead. See https://aka.ms/PointReadsInSpring for more info.");
+        if (!this.pointReadWarningLogged){
+            LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead. See https://aka.ms/PointReadsInSpring for more info.");
+            this.pointReadWarningLogged = true;
+        }
         final String finalContainerName = getContainerNameOverride(containerName);
         final String query = "select * from root where root.id = @ROOT_ID";
         final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
@@ -780,6 +778,10 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                    .onErrorResume(throwable ->
                                       CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
                                           this.responseDiagnosticsProcessor));
+    }
+
+    public Boolean getPointReadWarningLogged() {
+        return pointReadWarningLogged;
     }
 
     private Mono<Long> getCountValue(SqlQuerySpec querySpec, String containerName) {

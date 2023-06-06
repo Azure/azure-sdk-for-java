@@ -219,9 +219,12 @@ public class CosmosTemplateIT {
     }
 
     @Test
-    public void testFindByIdPointRead() {
+    public void testFindByIdPointRead() throws ClassNotFoundException {
+        cosmosTemplate = createCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
+        assertThat(cosmosTemplate.getPointReadWarningLogged()).isFalse();
         final BasicItem result = cosmosTemplate.findById(BasicItem.class.getSimpleName(),
             BASIC_ITEM.getId(), BasicItem.class);
+        assertThat(cosmosTemplate.getPointReadWarningLogged()).isFalse();
         assertEquals(result, BASIC_ITEM);
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
@@ -232,9 +235,12 @@ public class CosmosTemplateIT {
     }
 
     @Test
-    public void testFindById() {
+    public void testFindById() throws ClassNotFoundException {
+        cosmosTemplate = createCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
+        assertThat(cosmosTemplate.getPointReadWarningLogged()).isFalse();
         final Person result = cosmosTemplate.findById(Person.class.getSimpleName(),
             TEST_PERSON.getId(), Person.class);
+        assertThat(cosmosTemplate.getPointReadWarningLogged()).isTrue();
         assertEquals(result, TEST_PERSON);
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();

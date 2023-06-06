@@ -198,10 +198,13 @@ public class ReactiveCosmosTemplateIT {
     }
 
     @Test
-    public void testFindByIdPointRead() {
+    public void testFindByIdPointRead() throws ClassNotFoundException {
+        cosmosTemplate = createReactiveCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
+        assertThat(cosmosTemplate.getPointReadWarningLogged()).isFalse();
         final Mono<BasicItem> findById = cosmosTemplate.findById(BasicItem.class.getSimpleName(),
             BASIC_ITEM.getId(),
             BasicItem.class);
+        assertThat(cosmosTemplate.getPointReadWarningLogged()).isFalse();
         StepVerifier.create(findById)
             .consumeNextWith(actual -> Assert.assertEquals(actual, BASIC_ITEM))
             .verifyComplete();
@@ -210,10 +213,13 @@ public class ReactiveCosmosTemplateIT {
     }
 
     @Test
-    public void testFindByID() {
+    public void testFindByID() throws ClassNotFoundException {
+        cosmosTemplate = createReactiveCosmosTemplate(cosmosConfig, TestConstants.DB_NAME);
+        assertThat(cosmosTemplate.getPointReadWarningLogged()).isFalse();
         final Mono<Person> findById = cosmosTemplate.findById(Person.class.getSimpleName(),
             TEST_PERSON.getId(),
             Person.class);
+        assertThat(cosmosTemplate.getPointReadWarningLogged()).isTrue();
         StepVerifier.create(findById)
                     .consumeNextWith(actual -> Assert.assertEquals(actual, TEST_PERSON))
                     .verifyComplete();

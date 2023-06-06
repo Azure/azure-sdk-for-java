@@ -78,6 +78,13 @@ public class AddressRepositoryIT {
     }
 
     @Test
+    public void testFindById() {
+        // test findById (ID id) cross partition
+        final Address result = repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode()).get();
+        assertThat(result).isEqualTo(TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
     public void testFindAll() {
         // findAll cross partition
         final List<Address> result = TestUtils.toList(repository.findAll());

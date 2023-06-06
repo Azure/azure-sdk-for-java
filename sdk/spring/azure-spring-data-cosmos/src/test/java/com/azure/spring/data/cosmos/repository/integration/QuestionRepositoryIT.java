@@ -29,6 +29,8 @@ public class QuestionRepositoryIT {
 
     private static final String QUESTION_URL = "http://xxx.html";
 
+    private static final String NULL_ID = "null-id";
+
     private static final Question QUESTION = new Question(QUESTION_ID, QUESTION_URL);
 
     @ClassRule
@@ -49,14 +51,13 @@ public class QuestionRepositoryIT {
     @Test
     public void testFindById() {
         final Optional<Question> optional = this.repository.findById(QUESTION_ID);
-
         Assert.assertTrue(optional.isPresent());
         Assert.assertEquals(QUESTION, optional.get());
     }
 
     @Test
     public void testFindByIdNull() {
-        final Optional<Question> byId = this.repository.findById(QUESTION_URL);
+        final Optional<Question> byId = this.repository.findById(NULL_ID);
         Assert.assertFalse(byId.isPresent());
     }
 

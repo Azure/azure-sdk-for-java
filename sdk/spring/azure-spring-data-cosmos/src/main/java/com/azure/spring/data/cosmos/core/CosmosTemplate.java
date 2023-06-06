@@ -85,6 +85,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final int responseContinuationTokenLimitInKb;
     private final DatabaseThroughputConfig databaseThroughputConfig;
 
+    private Boolean pointReadWarningLogged = false;
+
     private ApplicationContext applicationContext;
 
     /**
@@ -355,14 +357,12 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         CosmosEntityInformation<?, ?> cosmosEntityInformation = CosmosEntityInformation.getInstance(domainType);
         String containerPartitionKey = cosmosEntityInformation.getPartitionKeyFieldName();
         if ("id".equals(containerPartitionKey) && id != null) {
-            try {
-                return findById(id, domainType, new PartitionKey(id));
-            } catch (CosmosAccessException e) {
-                LOGGER.warn(e.getMessage());
-                return null;
-            }
+            return findById(id, domainType, new PartitionKey(id));
         }
-        LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead. See https://aka.ms/PointReadsInSpring for more info.");
+        if (!this.pointReadWarningLogged){
+            LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead. See https://aka.ms/PointReadsInSpring for more info.");
+            this.pointReadWarningLogged = true;
+        }
         String finalContainerName = getContainerNameOverride(containerName);
         final String query = "select * from root where root.id = @ROOT_ID";
         final SqlParameter param = new SqlParameter("@ROOT_ID", CosmosUtils.getStringIDValue(id));
@@ -988,6 +988,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         }
     }
 
+    public Boolean getPointReadWarningLogged() {
+        return pointReadWarningLogged;
+    }
     private Long getCountValue(CosmosQuery query, String containerName) {
         final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
         return getCountValue(querySpec, containerName);
