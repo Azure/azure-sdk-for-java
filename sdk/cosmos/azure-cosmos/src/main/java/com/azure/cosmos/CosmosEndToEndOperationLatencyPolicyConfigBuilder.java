@@ -3,7 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.availabilitystrategy.AvailabilityStrategy;
 import com.azure.cosmos.implementation.OperationCancelledException;
 
 import java.time.Duration;
@@ -14,6 +13,7 @@ import java.time.Duration;
 public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
     private boolean isEnabled = true;
     private final Duration endToEndOperationTimeout;
+    private Duration endToEndFeedOperationTimeout;
     private AvailabilityStrategy availabilityStrategy;
 
     /**
@@ -23,6 +23,7 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      */
     public CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration endToEndOperationTimeout) {
         this.endToEndOperationTimeout = endToEndOperationTimeout;
+        endToEndFeedOperationTimeout = endToEndOperationTimeout;
     }
 
     /**
@@ -31,7 +32,7 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
      * @return the {@link CosmosEndToEndOperationLatencyPolicyConfig}
      */
     public CosmosEndToEndOperationLatencyPolicyConfig build() {
-        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout, availabilityStrategy);
+        return new CosmosEndToEndOperationLatencyPolicyConfig(isEnabled, endToEndOperationTimeout, endToEndFeedOperationTimeout, availabilityStrategy);
     }
 
     /**
@@ -59,4 +60,18 @@ public class CosmosEndToEndOperationLatencyPolicyConfigBuilder {
         return this;
     }
 
+    public Duration getEndToEndFeedOperationTimeout() {
+        return endToEndFeedOperationTimeout;
+    }
+
+    /**
+     * Sets the feed operation timeout. Defaults to endToEndOperationTimeout. Use this if you need to set a different timeout
+     * for feed operations
+     * @param endToEndFeedOperationTimeout feed operatoin timeout Duration
+     * @return current CosmosEndToEndOperationConfigBuilder
+     */
+    public CosmosEndToEndOperationLatencyPolicyConfigBuilder setEndToEndFeedOperationTimeout(Duration endToEndFeedOperationTimeout) {
+        this.endToEndFeedOperationTimeout = endToEndFeedOperationTimeout;
+        return this;
+    }
 }

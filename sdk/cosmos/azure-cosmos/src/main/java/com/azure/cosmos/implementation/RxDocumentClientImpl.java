@@ -981,7 +981,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
     private static <T> Flux<FeedResponse<T>> getFeedResponseFluxWithTimeout(Flux<FeedResponse<T>> feedResponseFlux, CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig) {
         return feedResponseFlux
-            .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
+            .timeout(endToEndPolicyConfig.getEndToEndFeedOperationTimeout())
             .onErrorMap(throwable -> {
                 if (throwable instanceof TimeoutException) {
                     CosmosException exception = new OperationCancelledException();
@@ -2275,6 +2275,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
+            request.requestContext.setExcludeRegions(options.getExcludeRegions());
             return requestObs.flatMap(req -> {
                 Mono<ResourceResponse<Document>> resourceResponseMono = this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
                 return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, resourceResponseMono);

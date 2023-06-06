@@ -3,8 +3,6 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.availabilitystrategy.AvailabilityStrategy;
-
 import java.time.Duration;
 
 /**
@@ -16,23 +14,26 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
     private final Duration endToEndOperationTimeout;
 
     private final AvailabilityStrategy availabilityStrategy;
+    private final Duration endToEndFeedOperationTimeout;
 
     /**
      * Constructor
      *
-     * @param isEnabled                toggle if the policy should be enabled or disabled
-     * @param endToEndOperationTimeout the timeout for request cancellation in {@link Duration}. Setting very low timeouts
-     *                                 can cause the request to never succeed.
-     * @param availabilityStrategy    the availability strategy to be used for the policy
+     * @param isEnabled                    toggle if the policy should be enabled or disabled
+     * @param endToEndOperationTimeout     the timeout for request cancellation in {@link Duration}. Setting very low timeouts
+     *                                     can cause the request to never succeed.
+     * @param endToEndFeedOperationTimeout
+     * @param availabilityStrategy         the availability strategy to be used for the policy
      */
     CosmosEndToEndOperationLatencyPolicyConfig(
         boolean isEnabled,
         Duration endToEndOperationTimeout,
-        AvailabilityStrategy availabilityStrategy) {
+        Duration endToEndFeedOperationTimeout, AvailabilityStrategy availabilityStrategy) {
 
         this.isEnabled = isEnabled;
         this.endToEndOperationTimeout = endToEndOperationTimeout;
         this.availabilityStrategy = availabilityStrategy;
+        this.endToEndFeedOperationTimeout = endToEndFeedOperationTimeout;
     }
 
     /**
@@ -60,6 +61,10 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
      */
     public AvailabilityStrategy getAvailabilityStrategy() {
         return availabilityStrategy;
+    }
+
+    public Duration getEndToEndFeedOperationTimeout() {
+        return this.endToEndFeedOperationTimeout;
     }
 
 }

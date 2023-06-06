@@ -3,11 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosContainerProactiveInitConfig;
-import com.azure.cosmos.CosmosDiagnostics;
-import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.availabilitystrategy.AvailabilityStrategy;
+import com.azure.cosmos.*;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
@@ -29,10 +25,10 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -55,7 +51,7 @@ public class ReplicatedResourceClient {
     private final boolean enableReadRequestsFallback;
     private final GatewayServiceConfigurationReader serviceConfigReader;
     private final Configs configs;
-    private final SpeculativeProcessor speculativeProcessor;
+    private SpeculativeProcessor speculativeProcessor;
 
     public ReplicatedResourceClient(
             DiagnosticsClientContext diagnosticsClientContext,
@@ -93,12 +89,6 @@ public class ReplicatedResourceClient {
             serviceConfigReader,
             useMultipleWriteLocations);
         this.enableReadRequestsFallback = enableReadRequestsFallback;
-
-        if (Configs.getSpeculationType() == SpeculativeProcessor.THRESHOLD_BASED) {
-            this.speculativeProcessor = new ThresholdBasedSpeculation();
-        } else {
-            this.speculativeProcessor = null;
-        }
 
     }
 
@@ -161,23 +151,37 @@ public class ReplicatedResourceClient {
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
         CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
         AvailabilityStrategy strategy = config.getAvailabilityStrategy();
+        if (strategy instanceof ThresholdBasedAvailabilityStrategy) {
+                speculativeProcessor = new ThresholdBasedSpeculation();
+        }
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
         List<RxDocumentServiceRequest> requests = new ArrayList<>();
 
-        strategy.getEffectiveRetryRegions(request.requestContext.getPreferredRegions(),
-            request.requestContext.getExcludeRegions())
-            .forEach(s -> {
-                if (getLocationIndex(s) != null) {
-                    RxDocumentServiceRequest newRequest = request.clone();
-                    newRequest.requestContext.locationIndexToRoute = getLocationIndex(s);
-                    requests.add(newRequest);
-                    // TODO: Change this to use the threshold values from the strategy
-                    monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
-                    .delaySubscription(speculativeProcessor.getThreshold(config).plus(speculativeProcessor.getThresholdStepDuration(config, monoList.size() - 1))));
-                }
-            });
+        if (speculativeProcessor != null) {
+            strategy.getEffectiveRetryRegions(request.requestContext.getPreferredRegions(),
+                    request.requestContext.getExcludeRegions())
+                .forEach(s -> {
+                    if (getLocationIndex(s) != null) {
+                        RxDocumentServiceRequest newRequest = request.clone();
+                        newRequest.requestContext.locationIndexToRoute = getLocationIndex(s);
+                        requests.add(newRequest);
+                        monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
+                            .delaySubscription(speculativeProcessor.getThreshold(config).plus(speculativeProcessor.getThresholdStepDuration(config, monoList.size() - 1))));
+                    }
+                });
+        } else {
+            Optional<String> first = strategy.getEffectiveRetryRegions(request.requestContext.getPreferredRegions(),
+                request.requestContext.getExcludeRegions()).stream().findFirst();
+            if ( first.isPresent()) {
+                RxDocumentServiceRequest newRequest = request.clone();
+                newRequest.requestContext.locationIndexToRoute = getLocationIndex(first.get());
+                requests.add(newRequest);
+                monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
+            }
 
-        if (monoList.isEmpty() || speculativeProcessor.shouldIncludeOriginalRequestRegion()) {
+        }
+
+        if (monoList.isEmpty()) {
             monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
             requests.add(request);
         }
@@ -197,7 +201,7 @@ public class ReplicatedResourceClient {
     }
 
     private Integer getLocationIndex(String s) {
-        // return the index of the region in the preferred regions list
+        //TODO: return the index of the region in the preferred regions list
         return null;
     }
 

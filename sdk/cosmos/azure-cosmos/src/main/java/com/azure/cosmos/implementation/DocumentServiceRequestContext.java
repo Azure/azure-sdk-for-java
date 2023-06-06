@@ -47,6 +47,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
+    private volatile List<String> excludeRegions;
 
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
@@ -144,11 +145,15 @@ public class DocumentServiceRequestContext implements Cloneable {
     }
 
     public List<String> getExcludeRegions() {
-        return ImmutableList.of();
+        return this.excludeRegions;
     }
 
     public List<String> getPreferredRegions() {
         return ImmutableList.of();
+    }
+
+    public void setExcludeRegions(List<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
     }
 }
 
