@@ -226,7 +226,7 @@ public final class AzureDatabricksManager {
                 .append("-")
                 .append("com.azure.resourcemanager.databricks")
                 .append("/")
-                .append("1.0.0-beta.4");
+                .append("1.0.0-beta.3");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
