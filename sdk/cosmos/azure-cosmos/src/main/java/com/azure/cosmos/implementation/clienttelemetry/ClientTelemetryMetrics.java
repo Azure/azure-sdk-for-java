@@ -650,10 +650,41 @@ public final class ClientTelemetryMetrics {
                     serviceEndpoint != null ? escape(serviceEndpoint) : "NONE"));
             }
 
+            String effectiveServiceAddress = serviceAddress != null ? escape(serviceAddress) : "NONE";
             if (metricTagNames.contains(TagName.ServiceAddress)) {
                 effectiveTags.add(Tag.of(
                     TagName.ServiceAddress.toString(),
-                    serviceAddress != null ? escape(serviceAddress) : "NONE"));
+                    effectiveServiceAddress));
+            }
+
+            boolean containsPartitionId = metricTagNames.contains(TagName.PartitionId);
+            boolean containsReplicaId = metricTagNames.contains(TagName.ReplicaId);
+            if (containsPartitionId || containsReplicaId) {
+
+                String partitionId = "NONE";
+                String replicaId = "NONE";
+
+                if (serviceAddress != null) {
+                    String[] serviceAddressParts = effectiveServiceAddress.split("/");
+                    // Sample value for serviceAddress
+                    // /apps/f88bfdf4-2954-4324-aad3-f1686668076d/services/3359112a-719d-474e-aa51-e89a142ae1b3/partitions/512fe816-24fa-4fbb-bbb1-587d2ce19851/replicas/133038444008943156p/
+                    if (serviceAddressParts.length == 9) {
+                        partitionId = serviceAddressParts[6];
+                        replicaId = serviceAddressParts[8];
+                    }
+                }
+
+                if (containsPartitionId) {
+                    effectiveTags.add(Tag.of(
+                        TagName.PartitionId.toString(),
+                        partitionId));
+                }
+
+                if (containsReplicaId) {
+                    effectiveTags.add(Tag.of(
+                        TagName.ReplicaId.toString(),
+                        replicaId));
+                }
             }
 
             return Tags.of(effectiveTags);
@@ -934,6 +965,8 @@ public final class ClientTelemetryMetrics {
             metricTagNamesForGateway.remove(TagName.RegionName);
             metricTagNamesForGateway.remove(TagName.ServiceAddress);
             metricTagNamesForGateway.remove(TagName.ServiceEndpoint);
+            metricTagNamesForGateway.remove(TagName.PartitionId);
+            metricTagNamesForGateway.remove(TagName.ReplicaId);
 
             Tags requestTags = operationTags.and(
                 createRequestTags(
