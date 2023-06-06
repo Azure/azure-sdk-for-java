@@ -1,51 +1,51 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/rooms?api-version=2023-06-14",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
     "Headers" : {
       "content-type" : "application/json",
-      "x-ms-client-request-id" : "9d399e03-1ee3-4ac6-a92e-39d72877c7f1",
-      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)"
+      "x-ms-client-request-id" : "f3bc7d8b-bb02-46dc-a1ea-751bece115e1",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.4 (11.0.19; Windows 11; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
+      "x-azure-ref" : "20230606T221130Z-sn0k94edxp56v1h5fgummcn9wc00000006tg0000000007wb",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2022-02-01, 2023-06-14",
+      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
       "Repeatability-Result" : "accepted",
+      "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "201",
-      "Date" : "Mon, 15 May 2023 19:30:43 GMT",
-      "MS-CV" : "JdFh3OspI0yMY/7Lo0MTgg.0",
+      "Date" : "Tue, 06 Jun 2023 22:11:30 GMT",
+      "MS-CV" : "lgoFQKiXtk2zlZzkvzG3uQ.0",
       "api-deprecated-versions" : "2021-04-07",
-      "X-Azure-Ref" : "0Y4hiZAAAAADLXtKxO+OIS5d6nTi/QmCoWVZSMzExMDAwMTE1MDIxADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "Content-Length" : "171",
-      "Body" : "{\"id\":\"99481216455164922\",\"createdAt\":\"2023-05-15T19:30:43.9122279+00:00\",\"validFrom\":\"2023-05-15T19:29:53.8190484+00:00\",\"validUntil\":\"2023-06-14T19:29:53.8190484+00:00\"}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Location" : "99481216455164922",
-      "Request-Context" : "appId="
+      "Body" : "{\"id\":\"99523307486696306\",\"createdAt\":\"2023-06-06T22:11:30.6627231+00:00\",\"validFrom\":\"2023-06-06T22:10:19.6425516+00:00\",\"validUntil\":\"2023-07-06T22:10:19.6425516+00:00\"}",
+      "Request-Context" : "appId=",
+      "Location" : "99523307486696306",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   }, {
     "Method" : "PATCH",
-    "Uri" : "https://REDACTED.communication.azure.com/rooms/99481216455164922?api-version=2023-06-14",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/99523307486696306?api-version=2023-06-14",
     "Headers" : {
       "content-type" : "application/merge-patch+json",
-      "x-ms-client-request-id" : "6499183b-717f-4c8a-ac43-10ca8d73e710",
-      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)"
+      "x-ms-client-request-id" : "ff82563b-db06-4b0a-bd3c-18de216cce9c",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.4 (11.0.19; Windows 11; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
+      "x-azure-ref" : "20230606T221130Z-2hvmh2cfnx71mb760nyv67q8qg00000000n0000000003rw7",
       "X-Cache" : "CONFIG_NOCACHE",
-      "MS-CV" : "ONp4p7Cb7EmDaRwSgPA6lA.0",
+      "Connection" : "keep-alive",
+      "MS-CV" : "k/FXh+ZmokWt4tBIpR98/A.0",
       "x-ms-error-code" : "BadRequest",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0ZIhiZAAAAAA5EYxC9MxkT7DZ0I84sZk1WVZSMzExMDAwMTE1MDE3ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "Content-Length" : "353",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"BadRequest\",\"message\":\"The request could not be understood by the server due to malformed syntax.\",\"details\":[{\"code\":\"BadArgument\",\"message\":\"Value is incorrect or more than 180 days in the future.\",\"target\":\"ValidFrom\"},{\"code\":\"BadArgument\",\"message\":\"The time range is incorrect, or larger than 180 days.\",\"target\":\"ValidUntil\"}]}}",
-      "Date" : "Mon, 15 May 2023 19:30:43 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Request-Context" : "appId="
+      "Date" : "Tue, 06 Jun 2023 22:11:31 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],

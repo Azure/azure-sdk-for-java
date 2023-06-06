@@ -1,26 +1,26 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.communication.azure.com/rooms/NotExistingRoomID?api-version=2023-06-14",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms/NotExistingRoomID?api-version=2023-06-14",
     "Headers" : {
-      "x-ms-client-request-id" : "fd83169b-8908-4235-ac83-d84c1e81eda6",
-      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)"
+      "x-ms-client-request-id" : "b10110bd-95e2-4ebd-87ed-3bbc24b9e4af",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.4 (11.0.19; Windows 11; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
+      "x-azure-ref" : "20230606T221028Z-2hvmh2cfnx71mb760nyv67q8qg00000000n0000000003mct",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2022-02-01, 2023-06-14",
+      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
+      "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Mon, 15 May 2023 19:30:00 GMT",
-      "MS-CV" : "JbqnL0OreUu9CbUg0+89zA.0",
+      "Date" : "Tue, 06 Jun 2023 22:10:29 GMT",
+      "MS-CV" : "Zg9AIc/eMkiSYDNUFBaAEw.0",
       "x-ms-error-code" : "BadRequest",
       "api-deprecated-versions" : "2021-04-07",
-      "X-Azure-Ref" : "0OIhiZAAAAABU9wPMiTK0R4bRXVYYxhQqWVZSMzExMDAwMTE1MDE3ADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "Content-Length" : "60",
       "Body" : "{\"error\":{\"code\":\"BadRequest\",\"message\":\"Invalid room ID.\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Request-Context" : "appId="
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],

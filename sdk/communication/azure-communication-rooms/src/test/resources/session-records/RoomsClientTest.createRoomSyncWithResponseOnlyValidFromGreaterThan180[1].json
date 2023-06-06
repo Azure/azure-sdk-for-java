@@ -1,25 +1,25 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/rooms?api-version=2023-06-14",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
     "Headers" : {
       "content-type" : "application/json",
-      "x-ms-client-request-id" : "dddfd7b2-b955-4ce4-bec9-3eabd191d618",
-      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)"
+      "x-ms-client-request-id" : "f95b80b8-7ea0-496d-9e8d-e55282800a1e",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.4 (11.0.19; Windows 11; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
+      "x-azure-ref" : "20230606T221105Z-2hvmh2cfnx71mb760nyv67q8qg00000000n0000000003pzb",
       "X-Cache" : "CONFIG_NOCACHE",
-      "MS-CV" : "ldWNNZKCLU2C7pFXlbJ8oQ.0",
+      "Connection" : "keep-alive",
+      "MS-CV" : "ANrOP/xcWkGQ4Kyfl+mSeA.0",
       "x-ms-error-code" : "BadRequest",
       "retry-after" : "0",
-      "X-Azure-Ref" : "0UIhiZAAAAADUWbT8QBOTQbnp8HB6pbiIWVZSMzExMDAwMTE1MDIxADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "Content-Length" : "242",
       "StatusCode" : "400",
       "Body" : "{\"error\":{\"code\":\"BadRequest\",\"message\":\"The request could not be understood by the server due to malformed syntax.\",\"details\":[{\"code\":\"BadArgument\",\"message\":\"Value is incorrect or more than 180 days in the future.\",\"target\":\"ValidFrom\"}]}}",
-      "Date" : "Mon, 15 May 2023 19:30:24 GMT",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Request-Context" : "appId="
+      "Date" : "Tue, 06 Jun 2023 22:11:05 GMT",
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],

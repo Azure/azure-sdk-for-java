@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.communication.azure.com/rooms?api-version=2023-06-14",
+    "Uri" : "https://REDACTED.ppe.communication.azure.net/rooms?api-version=2023-06-14",
     "Headers" : {
       "content-type" : "application/json",
-      "x-ms-client-request-id" : "79a57651-0605-4875-bbd1-68eb41d9a234",
-      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.3 (11.0.18; Windows 11; 10.0)"
+      "x-ms-client-request-id" : "07029cac-7916-4c5b-83db-0b36ab0b39fd",
+      "user-agent" : "azsdk-java-azure-communication-rooms/1.0.0-beta.4 (11.0.19; Windows 11; 10.0)"
     },
     "Response" : {
       "Transfer-Encoding" : "chunked",
+      "x-azure-ref" : "20230606T221107Z-2hvmh2cfnx71mb760nyv67q8qg00000000n0000000003q45",
       "X-Cache" : "CONFIG_NOCACHE",
-      "api-supported-versions" : "2022-02-01, 2023-06-14",
+      "api-supported-versions" : "2022-02-01, 2023-03-31-preview, 2023-06-14",
+      "Connection" : "keep-alive",
       "retry-after" : "0",
       "StatusCode" : "400",
-      "Date" : "Mon, 15 May 2023 19:30:26 GMT",
-      "MS-CV" : "16svXsBBCkec6OCGU0Ml1g.0",
+      "Date" : "Tue, 06 Jun 2023 22:11:07 GMT",
+      "MS-CV" : "woJSEMjyL0adjxX0YuAMpA.0",
       "x-ms-error-code" : "BadRequest",
       "api-deprecated-versions" : "2021-04-07",
-      "X-Azure-Ref" : "0UohiZAAAAAAPvr5LXXtlSoHhrzpcITWcWVZSMzExMDAwMTE1MDIxADlmYzdiNTE5LWE4Y2MtNGY4OS05MzVlLWM5MTQ4YWUwOWU4MQ==",
-      "Content-Length" : "88",
       "Body" : "{\"error\":{\"code\":\"BadRequest\",\"message\":\"Invalid format for communication identifier.\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "Request-Context" : "appId="
+      "Request-Context" : "appId=",
+      "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null
   } ],
