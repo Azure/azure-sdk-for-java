@@ -40,7 +40,7 @@ public abstract class TestProxyTestBase extends TestBase {
     @BeforeAll
     public static void setupTestProxy(TestInfo testInfo) {
         testMode = initializeTestMode();
-        Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class"), LOGGER));
+        Path testClassPath = Paths.get(toURI(testInfo.getTestClass().get().getResource(testInfo.getTestClass().get().getSimpleName() + ".class")));
         if (isTestProxyEnabled() && (testMode == TestMode.PLAYBACK || testMode == TestMode.RECORD)) {
             testProxyManager = new TestProxyManager(testClassPath);
             testProxyManager.startProxy();

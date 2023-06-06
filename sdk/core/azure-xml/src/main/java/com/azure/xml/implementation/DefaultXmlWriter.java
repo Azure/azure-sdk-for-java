@@ -93,6 +93,20 @@ public final class DefaultXmlWriter extends XmlWriter {
     }
 
     @Override
+    public XmlWriter writeNamespace(String namespacePrefix, String namespaceUri) throws XMLStreamException {
+        if (namespacePrefix == null || "xmlns".equals(namespacePrefix)) {
+            return writeNamespace(namespacePrefix);
+        }
+
+        if (Objects.equals(writer.getNamespaceContext().getNamespaceURI(namespacePrefix), namespaceUri)) {
+            return this;
+        }
+
+        writer.writeNamespace(namespacePrefix, namespaceUri);
+        return this;
+    }
+
+    @Override
     public XmlWriter writeEndElement() throws XMLStreamException {
         writer.writeEndElement();
         return this;
