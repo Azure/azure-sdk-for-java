@@ -62,8 +62,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
     public interface OutboundNetworkDependenciesEndpointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/outboundNetworkDependenciesEndpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/outboundNetworkDependenciesEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<List<OutboundEnvironmentEndpointInner>>> list(
