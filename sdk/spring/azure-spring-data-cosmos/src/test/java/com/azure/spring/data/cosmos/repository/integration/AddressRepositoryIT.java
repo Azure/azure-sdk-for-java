@@ -6,6 +6,7 @@ import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
+import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.common.TestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
@@ -52,6 +53,9 @@ public class AddressRepositoryIT {
     @Autowired
     private CosmosTemplate template;
 
+    @Autowired
+    private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
+
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
@@ -81,6 +85,7 @@ public class AddressRepositoryIT {
     public void testFindById() {
         // test findById (ID id) cross partition
         final Address result = repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode()).get();
+        assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         assertThat(result).isEqualTo(TEST_ADDRESS1_PARTITION1);
     }
 
