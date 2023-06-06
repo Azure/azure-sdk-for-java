@@ -23,7 +23,6 @@ stages:
         - spring/spring-cloud-azure-integration-tests/test-resources/storage
         - spring/spring-cloud-azure-integration-tests/test-resources/keyvault
         - spring/spring-cloud-azure-integration-tests/test-resources/dummy
-        - spring/spring-cloud-azure-integration-tests/test-resources/cosmos-spring
       Artifacts:
         - name: spring-cloud-azure-integration-tests
           groupId: com.azure.spring
