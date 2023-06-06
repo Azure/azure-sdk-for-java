@@ -111,4 +111,4 @@ In pull request, comment `/azp run java - <service> - mgmt - tests` to run it ma
 ## Troubleshoot
 
 - Sometimes, the CI could be cancelled due to EngSys problem, please re-run it.
-- Resource under test may not have been [registered](https://learn.microsoft.com/azure/azure-resource-manager/troubleshooting/error-register-resource-provider?tabs=azure-cli) under "Azure SDK Test Resources" subscription. Developer need to register it first, then re-run the CI.
+- Resource under test may not have been [registered](https://learn.microsoft.com/azure/azure-resource-manager/troubleshooting/error-register-resource-provider) under "Azure SDK Test Resources" subscription. Developer needs to register the resource provider namespace first, then re-run the CI.
