@@ -52,6 +52,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
@@ -1212,7 +1213,10 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             changeFeedProcessor = new ChangeFeedProcessorBuilder()
                 .hostName(hostName)
-                .handleChanges(changeFeedProcessorInvokeHandler(receivedDocuments, invokeTimeList))
+                .handleChanges(
+                    changeFeedProcessorHandlerWithCallback(
+                        receivedDocuments,
+                        () -> invokeTimeList.add(Instant.now())))
                 .feedContainer(createdFeedCollection)
                 .leaseContainer(createdLeaseCollection)
                 .options(new ChangeFeedProcessorOptions()
@@ -1238,10 +1242,12 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
 
             // Wait for the feed processor to receive and process the documents.
             Thread.sleep(2 * CHANGE_FEED_PROCESSOR_TIMEOUT);
-
             assertThat(changeFeedProcessor.isStarted()).as("Change Feed Processor instance is running").isTrue();
-
-            changeFeedProcessor.stop().subscribeOn(Schedulers.boundedElastic()).timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT)).subscribe();
+            changeFeedProcessor
+                .stop()
+                .subscribeOn(Schedulers.boundedElastic())
+                .timeout(Duration.ofMillis(CHANGE_FEED_PROCESSOR_TIMEOUT))
+                .subscribe();
 
             for (InternalObjectNode item : createdDocuments) {
                 assertThat(receivedDocuments.containsKey(item.getId())).as("Document with getId: " + item.getId()).isTrue();
@@ -1306,21 +1312,23 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
     }
 
     private Consumer<List<JsonNode>> changeFeedProcessorHandler(Map<String, JsonNode> receivedDocuments) {
-        return docs -> {
-            log.info("START processing from thread in test {}", Thread.currentThread().getId());
-            for (JsonNode item : docs) {
-                processItem(item, receivedDocuments);
-            }
-            log.info("END processing from thread {}", Thread.currentThread().getId());
-        };
+        return changeFeedProcessorHandlerWithCallback(receivedDocuments, null);
     }
 
-    private Consumer<List<JsonNode>> changeFeedProcessorInvokeHandler(
+    private Consumer<List<JsonNode>> changeFeedProcessorHandlerWithCallback(
         Map<String, JsonNode> receivedDocuments,
-        List<Instant> invokeTimeList) {
+        Callable<Boolean> callBackFunc) {
 
         return docs -> {
-            invokeTimeList.add(Instant.now());
+
+            if (callBackFunc != null) {
+                try {
+                    callBackFunc.call();
+                } catch (Exception e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
             log.info("START processing from thread in test {}", Thread.currentThread().getId());
             for (JsonNode item : docs) {
                 processItem(item, receivedDocuments);

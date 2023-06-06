@@ -4,10 +4,12 @@
 
 #### Features Added
 * Added the capability to filter request-level metrics based on diagnostic thresholds. Request-level metrics usually are used to capture metrics per backend endpoint/replica - a high cardinality dimension. Filtering by diagnostic thresholds reduces the overhead - but also means request-level metrics can only be used for debugging purposes - not for monitoring purposes. So, it is important to use the unfiltered operation-level metrics for health monitoring in this case. - See [PR 35114](https://github.com/Azure/azure-sdk-for-java/pull/35114)
-* Added optional tags/dimensions for PartitionId/ReplicaId as alternative to ServiceAddress for direct-mode (rntbd) request-level metrics. - See [PR 35164](https://github.com/Azure/azure-sdk-for-java/pull/35164) 
+* Added optional tags/dimensions for PartitionId/ReplicaId as alternative to ServiceAddress for direct-mode (rntbd) request-level metrics. - See [PR 35164](https://github.com/Azure/azure-sdk-for-java/pull/35164)
+
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue for `ChangeFeedProcessor` that it should fetch all changes before delay the fetch based on configured `PollDelay`. - See [PR 35324](https://github.com/Azure/azure-sdk-for-java/pull/35324)
 
 #### Other Changes
 
