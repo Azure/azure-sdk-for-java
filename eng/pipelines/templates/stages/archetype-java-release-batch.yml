@@ -259,13 +259,16 @@ stages:
                 steps:
                   - download: none
 
-                  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-                    parameters:
-                      Paths:
-                        - '${{ parameters.ServiceDirectory }}'
-                        - '**/*.xml'
-                        - '!sdk/**/test-recordings'
-                        - '!sdk/**/session-records'
+                  # JRS - See if the issue with Spring happens if the entire repository
+                  # is pulled down instead of doing a sparse-checkout
+                  - checkout: self
+                  # - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+                  #   parameters:
+                  #     Paths:
+                  #       - '${{ parameters.ServiceDirectory }}'
+                  #       - '**/*.xml'
+                  #       - '!sdk/**/test-recordings'
+                  #       - '!sdk/**/session-records'
 
                   - task: UsePythonVersion@0
                     displayName: 'Use Python $(PythonVersion)'
