@@ -105,6 +105,8 @@ public class ReactiveCosmosTemplateIT {
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final JsonNode NEW_PASSPORT_IDS_BY_COUNTRY_JSON = OBJECT_MAPPER.convertValue(NEW_PASSPORT_IDS_BY_COUNTRY, JsonNode.class);
 
+    private static final String INVALID_ID = "http://xxx.html";
+
     private static final CosmosPatchOperations operations = CosmosPatchOperations
         .create()
         .replace("/age", PATCH_AGE_1);
@@ -195,6 +197,15 @@ public class ReactiveCosmosTemplateIT {
                     .verify();
 
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+    }
+
+    @Test
+    public void testFindByIdWithInvalidId() {
+        final Mono<BasicItem> readMono = cosmosTemplate.findById(BasicItem.class.getSimpleName(),
+                INVALID_ID, BasicItem.class);
+        StepVerifier.create(readMono)
+            .expectErrorMatches(ex -> ex instanceof CosmosAccessException)
+            .verify();
     }
 
     @Test

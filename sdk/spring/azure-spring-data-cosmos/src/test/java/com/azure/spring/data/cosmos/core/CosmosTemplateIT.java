@@ -110,6 +110,8 @@ public class CosmosTemplateIT {
 
     private static final String WRONG_ETAG = "WRONG_ETAG";
 
+    private static final String INVALID_ID = "http://xxx.html";
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final JsonNode NEW_PASSPORT_IDS_BY_COUNTRY_JSON = OBJECT_MAPPER.convertValue(NEW_PASSPORT_IDS_BY_COUNTRY, JsonNode.class);
 
@@ -193,6 +195,7 @@ public class CosmosTemplateIT {
         }
     }
 
+
     @Test(expected = CosmosAccessException.class)
     public void testInsertShouldFailIfColumnNotAnnotatedWithAutoGenerate() {
         final Person person = new Person(null, FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES, AGE, PASSPORT_IDS_BY_COUNTRY);
@@ -244,6 +247,17 @@ public class CosmosTemplateIT {
             NOT_EXIST_ID, Person.class);
         assertThat(nullResult).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+    }
+
+    @Test
+    public void testFindByIdWithInvalidId() {
+        try {
+            cosmosTemplate.findById(BasicItem.class.getSimpleName(),
+                INVALID_ID, BasicItem.class);
+            fail();
+        } catch (CosmosAccessException ex) {
+            assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        }
     }
 
     @Test
