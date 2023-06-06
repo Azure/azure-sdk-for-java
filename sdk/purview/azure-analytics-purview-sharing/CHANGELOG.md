@@ -1,6 +1,10 @@
 # Release History
 
-## 1.0.0-beta.2 (Unreleased)
+## 1.0.0-beta.2 (2023-05-30)
+
+### Features Added
+
+- Added the new share resource capability that allows listing resources associated with sent and received shares.
 
 ### Other Changes
 

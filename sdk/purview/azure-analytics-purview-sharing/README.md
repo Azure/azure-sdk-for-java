@@ -268,7 +268,7 @@ SentSharesClient sentSharesClient =
 
 String sentShareId = "<sent-share-id>";
 String sentShareInvitationId = "<sent-share-invitation-id>";
- 
+
 sentSharesClient.beginDeleteSentShareInvitation(sentShareId, sentShareInvitationId, new RequestOptions());
 ```
 
@@ -415,7 +415,7 @@ ShareResourcesClient shareResourcesClient =
                 .buildClient();
 
 PagedIterable<BinaryData> shareResourceResults = shareResourcesClient.getAllShareResources(new RequestOptions());
-
+ 
 List<ShareResource> shareResources = shareResourceResults.stream()
     .map(binaryData -> binaryData.toObject(ShareResource.class))
     .collect(Collectors.toList());
