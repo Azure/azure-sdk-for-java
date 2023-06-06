@@ -164,7 +164,7 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
@@ -189,7 +189,7 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.createCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
@@ -340,7 +340,7 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.answerCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context)
                 .map(response -> {
                     try {
@@ -404,7 +404,7 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.redirectCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -451,7 +451,7 @@ public final class CallAutomationAsyncClient {
             return azureCommunicationCallAutomationServiceInternal.rejectCallWithResponseAsync(
                     request,
                     UUID.randomUUID(),
-                    DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
+                    OffsetDateTime.now(),
                     context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);

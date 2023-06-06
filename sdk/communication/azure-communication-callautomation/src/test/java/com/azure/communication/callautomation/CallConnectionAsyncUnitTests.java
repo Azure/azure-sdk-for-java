@@ -12,7 +12,6 @@ import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantOptions;
@@ -31,6 +30,7 @@ import java.util.AbstractMap.SimpleEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -145,32 +145,10 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             )))
             .getCallConnectionAsync(CALL_CONNECTION_ID);
 
-        ListParticipantsResult listParticipants = callConnectionAsync.listParticipants().block();
+        List<CallParticipant> listParticipants = callConnectionAsync.listParticipants().log().collectList().block();
 
         assertNotNull(listParticipants);
-        assertNotNull(listParticipants.getValues());
-        assertEquals(CALL_CALLER_ID, ((CommunicationUserIdentifier) listParticipants.getValues().get(0).getIdentifier()).getId());
-    }
-
-    @Test
-    public void listParticipantsWithResponse() {
-        CallConnectionAsync callConnectionAsync = getCallAutomationAsyncClient(new ArrayList<>(
-            Collections.singletonList(
-                new SimpleEntry<>(generateListParticipantsResponse(), 200)
-            )))
-            .getCallConnectionAsync(CALL_CONNECTION_ID);
-
-        Response<ListParticipantsResult> listParticipantsResultResponse = callConnectionAsync.listParticipantsWithResponse().block();
-
-        assertNotNull(listParticipantsResultResponse);
-        assertEquals(200, listParticipantsResultResponse.getStatusCode());
-        assertNotNull(listParticipantsResultResponse.getValue());
-        assertEquals(CALL_TARGET_ID, ((CommunicationUserIdentifier) listParticipantsResultResponse
-            .getValue()
-            .getValues()
-            .get(1)
-            .getIdentifier())
-            .getId());
+        assertEquals(CALL_CALLER_ID, ((CommunicationUserIdentifier) listParticipants.get(0).getIdentifier()).getId());
     }
 
     @Test
