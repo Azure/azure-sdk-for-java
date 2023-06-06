@@ -1040,28 +1040,32 @@ public final class RntbdRequestManager implements ChannelHandler, ChannelInbound
                 case StatusCodes.GONE:
 
                     final int subStatusCode = Math.toIntExact(response.getHeader(RntbdResponseHeader.SubStatus));
+                    final CosmosException goneCause;
 
                     switch (subStatusCode) {
                         case SubStatusCodes.COMPLETING_SPLIT_OR_MERGE:
-                            cause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            goneCause = new PartitionKeyRangeIsSplittingException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         case SubStatusCodes.COMPLETING_PARTITION_MIGRATION:
-                            cause = new PartitionIsMigratingException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            goneCause = new PartitionIsMigratingException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         case SubStatusCodes.NAME_CACHE_IS_STALE:
-                            cause = new InvalidPartitionException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            goneCause = new InvalidPartitionException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         case SubStatusCodes.PARTITION_KEY_RANGE_GONE:
-                            cause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
+                            goneCause = new PartitionKeyRangeGoneException(error, lsn, partitionKeyRangeId, responseHeaders);
                             break;
                         default:
                             GoneException goneExceptionFromService =
                                 new GoneException(error, lsn, partitionKeyRangeId, responseHeaders,
                                     SubStatusCodes.SERVER_GENERATED_410);
                             goneExceptionFromService.setIsBasedOn410ResponseFromService();
-                            cause = goneExceptionFromService;
+                            goneCause = goneExceptionFromService;
                             break;
                     }
+
+                    cause = new ServiceUnavailableException(goneCause.getMessage(), goneCause, null, null,
+                        subStatusCode);
                     break;
 
                 case StatusCodes.INTERNAL_SERVER_ERROR:

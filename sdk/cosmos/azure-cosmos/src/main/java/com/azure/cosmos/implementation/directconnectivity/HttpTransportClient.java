@@ -869,7 +869,6 @@ public class HttpTransportClient extends TransportClient {
                                                 Strings.isNullOrEmpty(errorMessage) ? RMResources.Gone : errorMessage),
                                         response.headers(),
                                         request.uri().toString());
-                                break;
                             } else if (nSubStatus == HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE) {
                                 exception = new PartitionKeyRangeGoneException(
                                         String.format(
@@ -877,7 +876,6 @@ public class HttpTransportClient extends TransportClient {
                                                 Strings.isNullOrEmpty(errorMessage) ? RMResources.Gone : errorMessage),
                                         response.headers(),
                                         request.uri().toString());
-                                break;
                             } else if (nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_SPLIT_OR_MERGE) {
                                 exception = new PartitionKeyRangeIsSplittingException(
                                         String.format(
@@ -885,7 +883,6 @@ public class HttpTransportClient extends TransportClient {
                                                 Strings.isNullOrEmpty(errorMessage) ? RMResources.Gone : errorMessage),
                                         response.headers(),
                                         request.uri().toString());
-                                break;
                             } else if (nSubStatus == HttpConstants.SubStatusCodes.COMPLETING_PARTITION_MIGRATION) {
                                 exception = new PartitionIsMigratingException(
                                         String.format(
@@ -893,7 +890,6 @@ public class HttpTransportClient extends TransportClient {
                                                 Strings.isNullOrEmpty(errorMessage) ? RMResources.Gone : errorMessage),
                                         response.headers(),
                                         request.uri().toString());
-                                break;
                             } else {
                                 // Have the request URL in the exception message for debugging purposes.
                                 GoneException goneExceptionFromService = new GoneException(
@@ -911,8 +907,15 @@ public class HttpTransportClient extends TransportClient {
                                     activityId);
 
                                 exception = goneExceptionFromService;
-                                break;
                             }
+
+                            exception = new ServiceUnavailableException(
+                                exception.getMessage(),
+                                exception,
+                                null,
+                                null,
+                                nSubStatus);
+                            break;
                         }
 
                         case HttpConstants.StatusCodes.CONFLICT:
