@@ -69,6 +69,11 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private final int responseContinuationTokenLimitInKb;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
     private final DatabaseThroughputConfig databaseThroughputConfig;
+
+    public Boolean getPointReadWarningLogged() {
+        return pointReadWarningLogged;
+    }
+
     private Boolean pointReadWarningLogged = false;
     private ApplicationContext applicationContext;
 
@@ -777,13 +782,6 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
                    .onErrorResume(throwable ->
                                       CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
                                           this.responseDiagnosticsProcessor));
-    }
-
-    /**
-     * Get point read warning logged
-     */
-    public Boolean getPointReadWarningLogged() {
-        return pointReadWarningLogged;
     }
 
     private Mono<Long> getCountValue(SqlQuerySpec querySpec, String containerName) {

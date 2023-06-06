@@ -84,6 +84,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final int responseContinuationTokenLimitInKb;
     private final DatabaseThroughputConfig databaseThroughputConfig;
 
+    public Boolean getPointReadWarningLogged() {
+        return pointReadWarningLogged;
+    }
+
     private Boolean pointReadWarningLogged = false;
 
     private ApplicationContext applicationContext;
@@ -987,12 +991,6 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         }
     }
 
-    /**
-     * Get point read warning logged
-     */
-    public Boolean getPointReadWarningLogged() {
-        return pointReadWarningLogged;
-    }
     private Long getCountValue(CosmosQuery query, String containerName) {
         final SqlQuerySpec querySpec = new CountQueryGenerator().generateCosmos(query);
         return getCountValue(querySpec, containerName);
