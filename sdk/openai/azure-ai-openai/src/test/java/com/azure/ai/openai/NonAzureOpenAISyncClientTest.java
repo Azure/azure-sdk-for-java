@@ -45,7 +45,6 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         });
     }
 
-    @Disabled("onError(com.fasterxml.jackson.databind.exc.MismatchedInputException: Missing required creator property 'usage'")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -145,7 +144,6 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         });
     }
 
-    @Disabled("onError(com.fasterxml.jackson.databind.exc.MismatchedInputException: Missing required creator property 'usage'")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
