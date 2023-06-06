@@ -180,13 +180,13 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                                 containerLinkToCollection.getRight(),
                                                                 connectionsPerEndpointCountForContainer).then();
                                                     })
+                                                    // onErrorResume helps to log gateway issues when doing address requests
+                                                    // for a specific region and also ensure connection warm up can move onto
+                                                    // subsequent regions if configured
                                                     .onErrorResume(throwable -> {
                                                         // no particular reason to have specific handling for a CosmosException type
                                                         // since any error thrown in the connection warmup flow is eventually swallowed
                                                         // downstream
-                                                        // onErrorResume helps to log gateway issues when doing address requests
-                                                        // for a specific region and also ensure connection warm up can move onto
-                                                        // subsequent regions if configured
                                                         Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
                                                         logger.warn("An exception occurred when resolving addresses for region : {}",
                                                                 readEndpoint, unwrappedThrowable);
