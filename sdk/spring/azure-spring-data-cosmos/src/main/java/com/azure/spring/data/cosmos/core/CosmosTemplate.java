@@ -37,7 +37,6 @@ import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import com.azure.spring.data.cosmos.core.query.CosmosSliceImpl;
 import com.azure.spring.data.cosmos.core.query.Criteria;
 import com.azure.spring.data.cosmos.core.query.CriteriaType;
-import com.azure.spring.data.cosmos.exception.CosmosAccessException;
 import com.azure.spring.data.cosmos.exception.CosmosExceptionUtils;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -359,7 +358,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         if ("id".equals(containerPartitionKey) && id != null) {
             return findById(id, domainType, new PartitionKey(id));
         }
-        if (!this.pointReadWarningLogged){
+        if (!this.pointReadWarningLogged) {
             LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead. See https://aka.ms/PointReadsInSpring for more info.");
             this.pointReadWarningLogged = true;
         }
@@ -988,6 +987,9 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         }
     }
 
+    /**
+     * Get point read warning logged
+     */
     public Boolean getPointReadWarningLogged() {
         return pointReadWarningLogged;
     }
