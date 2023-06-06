@@ -174,8 +174,8 @@ public final class DefaultXmlReader extends XmlReader {
             return firstRead;
         } else {
             StringBuilder finalText = new StringBuilder(stringBufferSize);
-            for (String str : buffer) {
-                finalText.append(str);
+            for (int i = 0; i < readCount; i++) {
+                finalText.append(buffer[i]);
             }
 
             return finalText.toString();
