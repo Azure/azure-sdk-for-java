@@ -46,7 +46,7 @@ import java.util.stream.Collectors;
 
 /**
  * Entry point to AzureDatabricksManager. The Microsoft Azure management APIs allow end users to operate on Azure
- * Databricks Workspace resources.
+ * Databricks Workspace / Access Connector resources.
  */
 public final class AzureDatabricksManager {
     private Workspaces workspaces;
