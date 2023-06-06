@@ -70,7 +70,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
     private final DatabaseThroughputConfig databaseThroughputConfig;
 
-    public Boolean getPointReadWarningLogged() {
+    private Boolean getPointReadWarningLogged() {
         return pointReadWarningLogged;
     }
 

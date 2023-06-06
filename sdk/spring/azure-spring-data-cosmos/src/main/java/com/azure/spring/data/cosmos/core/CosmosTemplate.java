@@ -84,7 +84,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final int responseContinuationTokenLimitInKb;
     private final DatabaseThroughputConfig databaseThroughputConfig;
 
-    public Boolean getPointReadWarningLogged() {
+    private Boolean getPointReadWarningLogged() {
         return pointReadWarningLogged;
     }
 
