@@ -211,10 +211,10 @@ chatMessages.add(new ChatMessage(ChatRole.USER).setContent("Can you help me?"));
 chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
 chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
 
-IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
+Flux<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
     new ChatCompletionsOptions(chatMessages));
-
-chatCompletionsStream.forEach(chatCompletions -> {
+CountDownLatch cdl = new CountDownLatch(1); 
+chatCompletionsStream.subscribe(chatCompletions -> {
     System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
     for (ChatChoice choice : chatCompletions.getChoices()) {
         ChatMessageDelta message = choice.getDelta();
@@ -231,7 +231,14 @@ chatCompletionsStream.forEach(chatCompletions -> {
                 + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
             usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
     }
+}, error -> {
+    System.err.println("There was an error getting chat completions: " + error);
+    cdl.countDown();
+}, () -> {
+    System.out.println("Chat completions stream completed.");
+    cdl.countDown();
 });
+
 ```
 
 ### Text embeddings

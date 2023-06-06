@@ -26,11 +26,12 @@ import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
+import reactor.core.publisher.Flux;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
@@ -162,10 +163,10 @@ public final class ReadmeSamples {
         chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
 
-        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
+        Flux<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream("{deploymentOrModelId}",
             new ChatCompletionsOptions(chatMessages));
-
-        chatCompletionsStream.forEach(chatCompletions -> {
+        CountDownLatch cdl = new CountDownLatch(1); 
+        chatCompletionsStream.subscribe(chatCompletions -> {
             System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
             for (ChatChoice choice : chatCompletions.getChoices()) {
                 ChatMessageDelta message = choice.getDelta();
@@ -182,7 +183,14 @@ public final class ReadmeSamples {
                         + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
                     usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
             }
+        }, error -> {
+            System.err.println("There was an error getting chat completions: " + error);
+            cdl.countDown();
+        }, () -> {
+            System.out.println("Chat completions stream completed.");
+            cdl.countDown();
         });
+
         // END: readme-sample-getChatCompletionsStream
     }
 

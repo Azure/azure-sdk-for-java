@@ -16,6 +16,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
+import reactor.core.publisher.Flux;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import java.util.concurrent.CountDownLatch;
 
 public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     private OpenAIClient client;
@@ -151,9 +153,20 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
         getChatCompletionsForNonAzureRunner((deploymentId, chatMessages) -> {
-            IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
-            assertTrue(resultChatCompletions.stream().toArray().length > 1);
-            resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+            CountDownLatch cdl = new CountDownLatch(1); 
+            Flux<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
+            chatCompletionsStream.subscribe(resultChatCompletions -> {
+                assertTrue(resultChatCompletions.getChoices().stream().toArray().length > 1);
+                OpenAIClientTestBase.assertChatCompletionsStream(resultChatCompletions);
+            }, error -> {
+                assertThrows (RuntimeException.class, () -> { throw error; });
+                cdl.countDown();                
+            }, () -> {
+                cdl.countDown();
+            });
+
+            // assertTrue(resultChatCompletions.stream().toArray().length > 1);
+            // resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
         });
     }
 

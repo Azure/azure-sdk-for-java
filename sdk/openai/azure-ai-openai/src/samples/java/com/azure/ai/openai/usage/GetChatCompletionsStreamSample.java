@@ -14,9 +14,10 @@ import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.IterableStream;
-
+import reactor.core.publisher.Flux;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Sample demonstrates how to get chat completions for the provided chat messages.
@@ -48,9 +49,9 @@ public class GetChatCompletionsStreamSample {
         chatMessages.add(new ChatMessage(ChatRole.ASSISTANT).setContent("Of course, me hearty! What can I do for ye?"));
         chatMessages.add(new ChatMessage(ChatRole.USER).setContent("What's the best way to train a parrot?"));
 
-        IterableStream<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages));
-
-        chatCompletionsStream.forEach(chatCompletions -> {
+        Flux<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentOrModelId, new ChatCompletionsOptions(chatMessages));
+        CountDownLatch cdl = new CountDownLatch(1);  
+        chatCompletionsStream.subscribe(chatCompletions ->{
             System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
             for (ChatChoice choice : chatCompletions.getChoices()) {
                 ChatMessageDelta message = choice.getDelta();
@@ -67,6 +68,31 @@ public class GetChatCompletionsStreamSample {
                         + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
                     usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
             }
+        }, error -> {
+            System.out.println("Error: " + error);
+            cdl.countDown();
+        }, () -> {
+            System.out.println("Completed");
+            cdl.countDown();
         });
+
+        // chatCompletionsStream.forEach(chatCompletions -> {
+        //     System.out.printf("Model ID=%s is created at %d.%n", chatCompletions.getId(), chatCompletions.getCreated());
+        //     for (ChatChoice choice : chatCompletions.getChoices()) {
+        //         ChatMessageDelta message = choice.getDelta();
+        //         if (message != null) {
+        //             System.out.printf("Index: %d, Chat Role: %s.%n", choice.getIndex(), message.getRole());
+        //             System.out.println("Message:");
+        //             System.out.println(message.getContent());
+        //         }
+        //     }
+
+        //     CompletionsUsage usage = chatCompletions.getUsage();
+        //     if (usage != null) {
+        //         System.out.printf("Usage: number of prompt token is %d, "
+        //                 + "number of completion token is %d, and number of total tokens in request and response is %d.%n",
+        //             usage.getPromptTokens(), usage.getCompletionTokens(), usage.getTotalTokens());
+        //     }
+        // });
     }
 }

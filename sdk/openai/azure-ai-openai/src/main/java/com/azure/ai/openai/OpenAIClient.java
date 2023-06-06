@@ -27,6 +27,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the synchronous OpenAIClient type. */
 @ServiceClient(builder = OpenAIClientBuilder.class)
@@ -255,6 +256,96 @@ public final class OpenAIClient {
                 : serviceClient.getChatCompletionsWithResponse(deploymentId, chatCompletionsOptions, requestOptions);
     }
 
+        /**
+         * Gets chat completions for the provided chat messages. Completions support a wide variety
+         * of tasks and generate text that continues from or "completes" provided prompt data.
+         *
+         * <p>
+         * <strong>Request Body Schema</strong>
+         *
+         * <pre>{@code
+         * {
+         *     messages (Required): [
+         *          (Required){
+         *             role: String(system/assistant/user) (Required)
+         *             content: String (Optional)
+         *         }
+         *     ]
+         *     max_tokens: Integer (Optional)
+         *     temperature: Double (Optional)
+         *     top_p: Double (Optional)
+         *     logit_bias (Optional): {
+         *         String: int (Optional)
+         *     }
+         *     user: String (Optional)
+         *     n: Integer (Optional)
+         *     stop (Optional): [
+         *         String (Optional)
+         *     ]
+         *     presence_penalty: Double (Optional)
+         *     frequency_penalty: Double (Optional)
+         *     stream: Boolean (Optional)
+         *     model: String (Optional)
+         * }
+         * }</pre>
+         *
+         * <p>
+         * <strong>Response Body Schema</strong>
+         *
+         * <pre>{@code
+         * {
+         *     id: String (Required)
+         *     created: int (Required)
+         *     choices (Required): [
+         *          (Required){
+         *             message (Optional): {
+         *                 role: String(system/assistant/user) (Required)
+         *                 content: String (Optional)
+         *             }
+         *             index: int (Required)
+         *             finish_reason: String(stopped/tokenLimitReached/contentFiltered) (Required)
+         *             delta (Optional): {
+         *                 role: String(system/assistant/user) (Optional)
+         *                 content: String (Optional)
+         *             }
+         *         }
+         *     ]
+         *     usage (Required): {
+         *         completion_tokens: int (Required)
+         *         prompt_tokens: int (Required)
+         *         total_tokens: int (Required)
+         *     }
+         * }
+         * }</pre>
+         *
+         * @param deploymentId deployment id of the deployed model.
+         * @param chatCompletionsOptions The configuration information for a chat completions
+         *        request. Completions support a wide variety of tasks and generate text that
+         *        continues from or "completes" provided prompt data.
+         * @param requestOptions The options to configure the HTTP request before HTTP client sends
+         *        it.
+         * @throws HttpResponseException thrown if the request is rejected by server.
+         * @throws ClientAuthenticationException thrown if the request is rejected by server on
+         *         status code 401.
+         * @throws ResourceNotFoundException thrown if the request is rejected by server on status
+         *         code 404.
+         * @throws ResourceModifiedException thrown if the request is rejected by server on status
+         *         code 409.
+         * @return chat completions for the provided chat messages. Completions support a wide
+         *         variety of tasks and generate text that continues from or "completes" provided
+         *         prompt data along with {@link Response}.
+         */
+        @ServiceMethod(returns = ReturnType.SINGLE)
+        public Mono<Response<BinaryData>> getChatCompletionsWithResponseAsync(String deploymentId,
+                        BinaryData chatCompletionsOptions, RequestOptions requestOptions) {
+                return openAIServiceClient != null
+                                ? openAIServiceClient.getChatCompletionsWithResponseAsync(
+                                                deploymentId, chatCompletionsOptions,
+                                                requestOptions)
+                                : serviceClient.getChatCompletionsWithResponseAsync(deploymentId,
+                                                chatCompletionsOptions, requestOptions);
+        }
+
     /**
      * Return the embeddings for a given prompt.
      *
@@ -401,18 +492,26 @@ public final class OpenAIClient {
      *     generate text that continues from or "completes" provided prompt data.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public IterableStream<ChatCompletions> getChatCompletionsStream(
-            String deploymentId, ChatCompletionsOptions chatCompletionsOptions) {
-        chatCompletionsOptions.setStream(true);
-        RequestOptions requestOptions = new RequestOptions();
-        Flux<ByteBuffer> responseStream =
-                getChatCompletionsWithResponse(
-                                deploymentId, BinaryData.fromObject(chatCompletionsOptions), requestOptions)
-                        .getValue()
-                        .toFluxByteBuffer();
-        OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
-                new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
-        return new IterableStream<ChatCompletions>(chatCompletionsStream.getEvents());
+    public Flux<ChatCompletions> getChatCompletionsStream(String deploymentId,
+                    ChatCompletionsOptions chatCompletionsOptions) {
+            chatCompletionsOptions.setStream(true);
+            RequestOptions requestOptions = new RequestOptions();
+            Mono<Response<BinaryData>> monoResponse = getChatCompletionsWithResponseAsync(
+                            deploymentId, BinaryData.fromObject(chatCompletionsOptions),
+                            requestOptions);
+
+            Flux<ByteBuffer> responseStream = monoResponse.flatMapMany(response -> {
+                    if (response != null && response.getStatusCode() == 200) {
+                            return response.getValue().toFluxByteBuffer();
+                    } else {
+                            Throwable throwable = new RuntimeException(
+                                            "Service has failed to return a valid response.");
+                            return Flux.error(throwable);
+                    }
+            });
+            OpenAIServerSentEvents<ChatCompletions> chatCompletionsStream =
+                            new OpenAIServerSentEvents<>(responseStream, ChatCompletions.class);
+            return chatCompletionsStream.getEvents();
     }
 
     @Generated private final OpenAIClientImpl serviceClient;

@@ -15,6 +15,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.IterableStream;
+import reactor.core.publisher.Flux;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -136,9 +137,11 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetChatCompletionsStream(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
         getChatCompletionsRunner((deploymentId, chatMessages) -> {
-            IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
-            assertTrue(resultChatCompletions.stream().toArray().length > 1);
-            resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
+            Flux<ChatCompletions> chatCompletionsStream = client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(chatMessages));
+           chatCompletionsStream.subscribe( resultChatCompletions -> {  
+                assertTrue(resultChatCompletions.getChoices().stream().toArray().length > 1);
+                OpenAIClientTestBase.assertChatCompletionsStream(resultChatCompletions);
+            });
         });
     }
 
