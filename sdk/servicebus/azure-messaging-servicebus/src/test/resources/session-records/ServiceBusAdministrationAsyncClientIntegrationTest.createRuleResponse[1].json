@@ -1,23 +1,29 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/topic-13/subscriptions/subscription/rules/rule32301?api-version=2021-05",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.0.0-beta.7 (11.0.5; Windows 10; 10.0)",
-      "Content-Type" : "application/atom+xml"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "ETag" : "637362112606900000",
-      "retry-after" : "0",
-      "StatusCode" : "201",
-      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://sb-java-conniey-4.servicebus.windows.net/topic-13/subscriptions/subscription/rules/rule32301?api-version=2021-05</id><title type=\"text\">rule32301</title><published>2020-10-30T06:14:46Z</published><updated>2020-10-30T06:14:46Z</updated><link rel=\"self\" href=\"https://sb-java-conniey-4.servicebus.windows.net/topic-13/subscriptions/subscription/rules/rule32301?api-version=2021-05\"/><content type=\"application/xml\"><RuleDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><Filter i:type=\"SqlFilter\"><SqlExpression>sys.To=[parameters('bar')] OR sys.MessageId IS NULL</SqlExpression><CompatibilityLevel>20</CompatibilityLevel><Parameters/></Filter><Action i:type=\"EmptyRuleAction\"/><CreatedAt>2020-10-30T06:14:46.2709954Z</CreatedAt><Name>rule32301</Name></RuleDescription></content></entry>",
-      "Date" : "Fri, 30 Oct 2020 06:14:46 GMT",
-      "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "rule32301" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/topic-13/subscriptions/subscription/rules/rule75962?api-version=2021-05",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml, application/atom\u002Bxml",
+        "Authorization": "Sanitized",
+        "Content-Length": "705",
+        "Content-Type": "application/atom\u002Bxml",
+        "User-Agent": "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (17.0.3.1; Windows 11; 10.0)"
+      },
+      "RequestBody": "\u003C?xml version=\u00271.0\u0027 encoding=\u0027UTF-8\u0027?\u003E\u003Centry xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Ccontent type=\u0022application/xml\u0022\u003E\u003CRuleDescription xmlns=\u0022http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\u0022\u003E\u003CFilter xmlns:ns0=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022 ns0:type=\u0022SqlFilter\u0022\u003E\u003CSqlExpression\u003Esys.To=[parameters(\u0027bar\u0027)] OR sys.MessageId IS NULL\u003C/SqlExpression\u003E\u003CParameters\u003E\u003CKeyValueOfstringanyType\u003E\u003CKey\u003Ebar\u003C/Key\u003E\u003CValue xmlns:d6p1=\u0022http://www.w3.org/2001/XMLSchema\u0022 ns0:type=\u0022d6p1:string\u0022\u003Efoo\u003C/Value\u003E\u003C/KeyValueOfstringanyType\u003E\u003C/Parameters\u003E\u003C/Filter\u003E\u003CAction xmlns:ns0=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022 ns0:type=\u0022EmptyRuleAction\u0022/\u003E\u003CName\u003Erule75962\u003C/Name\u003E\u003C/RuleDescription\u003E\u003C/content\u003E\u003C/entry\u003E",
+      "StatusCode": 400,
+      "ResponseHeaders": {
+        "Content-Type": "application/xml; charset=utf-8",
+        "Date": "Mon, 05 Jun 2023 22:26:31 GMT",
+        "ETag": "638215992546400000",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": "\u003CError\u003E\u003CCode\u003E400\u003C/Code\u003E\u003CDetail\u003EThe specified parameter (bar) in Parameters property was not used in the expression specified in SqlExpression. TrackingId:22d9572b-ec90-4951-a15f-9096819bf483_B23, SystemTracker:NoSystemTracker, Timestamp:2023-06-05T22:26:30\u003C/Detail\u003E\u003C/Error\u003E"
+    }
+  ],
+  "Variables": {
+    "0": "rule75962"
+  }
 }

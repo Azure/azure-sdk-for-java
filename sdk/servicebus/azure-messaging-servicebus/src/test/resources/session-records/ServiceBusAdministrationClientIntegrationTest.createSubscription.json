@@ -1,23 +1,31 @@
 {
-  "networkCallRecords" : [ {
-    "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/topic-2/subscriptions/15b3069b73?api-version=2021-05",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.13.0-beta.1 (11.0.11; Windows 10; 10.0)",
-      "Content-Type" : "application/atom+xml"
-    },
-    "Response" : {
-      "Transfer-Encoding" : "chunked",
-      "Strict-Transport-Security" : "max-age=31536000",
-      "Server" : "Microsoft-HTTPAPI/2.0",
-      "ETag" : "638025851438830000",
-      "retry-after" : "0",
-      "StatusCode" : "201",
-      "Body" : "<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>https://foo.servicebus.windows.net/topic-2/subscriptions/15b3069b73?api-version=2021-05</id><title type=\"text\">15b3069b73</title><published>2022-10-29T04:50:45Z</published><updated>2022-10-29T04:50:45Z</updated><link rel=\"self\" href=\"https://foo.servicebus.windows.net/topic-2/subscriptions/15b3069b73?api-version=2021-05\"/><content type=\"application/xml\"><SubscriptionDescription xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\" xmlns:i=\"http://www.w3.org/2001/XMLSchema-instance\"><LockDuration>PT45S</LockDuration><RequiresSession>false</RequiresSession><DefaultMessageTimeToLive>P10675199DT2H48M5.477S</DefaultMessageTimeToLive><DeadLetteringOnMessageExpiration>false</DeadLetteringOnMessageExpiration><DeadLetteringOnFilterEvaluationExceptions>true</DeadLetteringOnFilterEvaluationExceptions><MessageCount>0</MessageCount><MaxDeliveryCount>7</MaxDeliveryCount><EnableBatchedOperations>true</EnableBatchedOperations><Status>Active</Status><ForwardTo>https://foo.servicebus.windows.net/topic-1</ForwardTo><CreatedAt>2022-10-29T04:50:45.1296655Z</CreatedAt><UpdatedAt>2022-10-29T04:50:45.1296655Z</UpdatedAt><AccessedAt>0001-01-01T00:00:00</AccessedAt><UserMetadata>some-metadata-for-testing-subscriptions</UserMetadata><ForwardDeadLetteredMessagesTo>https://foo.servicebus.windows.net/topic-1</ForwardDeadLetteredMessagesTo><AutoDeleteOnIdle>P10675199DT2H48M5.4775807S</AutoDeleteOnIdle><EntityAvailabilityStatus>Available</EntityAvailabilityStatus><IsClientAffine>false</IsClientAffine></SubscriptionDescription></content></entry>",
-      "Date" : "Sat, 29 Oct 2022 04:50:44 GMT",
-      "Content-Type" : "application/atom+xml;type=entry;charset=utf-8"
-    },
-    "Exception" : null
-  } ],
-  "variables" : [ "15b3069b73" ]
+  "Entries": [
+    {
+      "RequestUri": "https://REDACTED/topic-2/subscriptions/04df459fd8?api-version=2021-05",
+      "RequestMethod": "PUT",
+      "RequestHeaders": {
+        "Accept": "application/xml, application/atom\u002Bxml",
+        "Authorization": "Sanitized",
+        "Content-Length": "1017",
+        "Content-Type": "application/atom\u002Bxml",
+        "ServiceBusDlqSupplementaryAuthorization": "SharedAccessSignature sr=https%3A%2F%2Fsb-java-conniey-sb4.servicebus.windows.net\u0026sig=W1DOnlom8wiFXwVj6A5fOzOoDE1LA3Hq8%2FxYGBJt6CQ%3D\u0026se=1686005189\u0026skn=RootManageSharedAccessKey",
+        "ServiceBusSupplementaryAuthorization": "SharedAccessSignature sr=https%3A%2F%2Fsb-java-conniey-sb4.servicebus.windows.net\u0026sig=W1DOnlom8wiFXwVj6A5fOzOoDE1LA3Hq8%2FxYGBJt6CQ%3D\u0026se=1686005189\u0026skn=RootManageSharedAccessKey",
+        "User-Agent": "azsdk-java-azure-messaging-servicebus/7.15.0-beta.1 (17.0.3.1; Windows 11; 10.0)"
+      },
+      "RequestBody": "\u003C?xml version=\u00271.0\u0027 encoding=\u0027UTF-8\u0027?\u003E\u003Centry xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Ccontent type=\u0022application/xml\u0022\u003E\u003CSubscriptionDescription xmlns=\u0022http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\u0022\u003E\u003CLockDuration\u003EPT45S\u003C/LockDuration\u003E\u003CRequiresSession\u003Efalse\u003C/RequiresSession\u003E\u003CDefaultMessageTimeToLive\u003EP10675199DT2H48M5.477S\u003C/DefaultMessageTimeToLive\u003E\u003CDeadLetteringOnMessageExpiration\u003Efalse\u003C/DeadLetteringOnMessageExpiration\u003E\u003CDeadLetteringOnFilterEvaluationExceptions\u003Etrue\u003C/DeadLetteringOnFilterEvaluationExceptions\u003E\u003CMaxDeliveryCount\u003E7\u003C/MaxDeliveryCount\u003E\u003CEnableBatchedOperations\u003Etrue\u003C/EnableBatchedOperations\u003E\u003CStatus\u003EActive\u003C/Status\u003E\u003CForwardTo\u003Ehttps://sb-java-conniey-sb4.servicebus.windows.net/topic-1\u003C/ForwardTo\u003E\u003CUserMetadata\u003Esome-metadata-for-testing-subscriptions\u003C/UserMetadata\u003E\u003CForwardDeadLetteredMessagesTo\u003Ehttps://sb-java-conniey-sb4.servicebus.windows.net/topic-1\u003C/ForwardDeadLetteredMessagesTo\u003E\u003CAutoDeleteOnIdle\u003EP10675199DT2H48M5.477S\u003C/AutoDeleteOnIdle\u003E\u003C/SubscriptionDescription\u003E\u003C/content\u003E\u003C/entry\u003E",
+      "StatusCode": 201,
+      "ResponseHeaders": {
+        "Content-Type": "application/atom\u002Bxml; type=entry; charset=utf-8",
+        "Date": "Mon, 05 Jun 2023 22:26:30 GMT",
+        "ETag": "638215992550200000",
+        "Server": "Microsoft-HTTPAPI/2.0",
+        "Strict-Transport-Security": "max-age=31536000",
+        "Transfer-Encoding": "chunked"
+      },
+      "ResponseBody": "\u003Centry xmlns=\u0022http://www.w3.org/2005/Atom\u0022\u003E\u003Cid\u003Ehttps://sb-java-conniey-sb4.servicebus.windows.net/topic-2/subscriptions/04df459fd8?api-version=2021-05\u003C/id\u003E\u003Ctitle type=\u0022text\u0022\u003E04df459fd8\u003C/title\u003E\u003Cpublished\u003E2023-06-05T22:26:30Z\u003C/published\u003E\u003Cupdated\u003E2023-06-05T22:26:30Z\u003C/updated\u003E\u003Clink rel=\u0022self\u0022 href=\u0022https://sb-java-conniey-sb4.servicebus.windows.net/topic-2/subscriptions/04df459fd8?api-version=2021-05\u0022/\u003E\u003Ccontent type=\u0022application/xml\u0022\u003E\u003CSubscriptionDescription xmlns=\u0022http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\u0022 xmlns:i=\u0022http://www.w3.org/2001/XMLSchema-instance\u0022\u003E\u003CLockDuration\u003EPT45S\u003C/LockDuration\u003E\u003CRequiresSession\u003Efalse\u003C/RequiresSession\u003E\u003CDefaultMessageTimeToLive\u003EP10675199DT2H48M5.477S\u003C/DefaultMessageTimeToLive\u003E\u003CDeadLetteringOnMessageExpiration\u003Efalse\u003C/DeadLetteringOnMessageExpiration\u003E\u003CDeadLetteringOnFilterEvaluationExceptions\u003Etrue\u003C/DeadLetteringOnFilterEvaluationExceptions\u003E\u003CMessageCount\u003E0\u003C/MessageCount\u003E\u003CMaxDeliveryCount\u003E7\u003C/MaxDeliveryCount\u003E\u003CEnableBatchedOperations\u003Etrue\u003C/EnableBatchedOperations\u003E\u003CStatus\u003EActive\u003C/Status\u003E\u003CForwardTo\u003Ehttps://sb-java-conniey-sb4.servicebus.windows.net/topic-1\u003C/ForwardTo\u003E\u003CCreatedAt\u003E2023-06-05T22:26:30.1771496Z\u003C/CreatedAt\u003E\u003CUpdatedAt\u003E2023-06-05T22:26:30.1771496Z\u003C/UpdatedAt\u003E\u003CAccessedAt\u003E0001-01-01T00:00:00\u003C/AccessedAt\u003E\u003CUserMetadata\u003Esome-metadata-for-testing-subscriptions\u003C/UserMetadata\u003E\u003CForwardDeadLetteredMessagesTo\u003Ehttps://sb-java-conniey-sb4.servicebus.windows.net/topic-1\u003C/ForwardDeadLetteredMessagesTo\u003E\u003CAutoDeleteOnIdle\u003EP10675199DT2H48M5.4775807S\u003C/AutoDeleteOnIdle\u003E\u003CEntityAvailabilityStatus\u003EAvailable\u003C/EntityAvailabilityStatus\u003E\u003CIsClientAffine\u003Efalse\u003C/IsClientAffine\u003E\u003C/SubscriptionDescription\u003E\u003C/content\u003E\u003C/entry\u003E"
+    }
+  ],
+  "Variables": {
+    "0": "04df459fd8"
+  }
 }

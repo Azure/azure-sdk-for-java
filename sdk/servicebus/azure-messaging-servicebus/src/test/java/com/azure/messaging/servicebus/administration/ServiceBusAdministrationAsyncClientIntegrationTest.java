@@ -12,7 +12,7 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.test.TestBase;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.messaging.servicebus.TestUtils;
@@ -65,7 +65,7 @@ import static org.junit.jupiter.api.Assumptions.assumeTrue;
  * Tests {@link ServiceBusAdministrationAsyncClient}.
  */
 @Tag("integration")
-class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
+class ServiceBusAdministrationAsyncClientIntegrationTest extends TestProxyTestBase {
     private static final Duration TIMEOUT = Duration.ofSeconds(20);
 
     @BeforeAll
