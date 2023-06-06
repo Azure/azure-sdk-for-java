@@ -44,7 +44,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.util.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
