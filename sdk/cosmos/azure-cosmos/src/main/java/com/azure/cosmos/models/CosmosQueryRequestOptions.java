@@ -12,7 +12,6 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
-import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -60,7 +59,7 @@ public class CosmosQueryRequestOptions {
     private String queryName;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
-    private ImmutableList<String> excludeRegions;
+    private List<String> excludeRegions;
 
     /**
      * Instantiates a new query request options.
@@ -350,7 +349,7 @@ public class CosmosQueryRequestOptions {
      * @param excludeRegions the regions to exclude
      * @return the CosmosQueryRequestOptions
      */
-    public CosmosQueryRequestOptions setExcludeRegions(ImmutableList<String> excludeRegions) {
+    public CosmosQueryRequestOptions setExcludeRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
         return this;
     }
@@ -360,7 +359,7 @@ public class CosmosQueryRequestOptions {
      *
      * @return the regions to exclude
      */
-    ImmutableList<String> getExcludeRegions() {
+    List<String> getExcludeRegions() {
         return this.excludeRegions;
     }
 
@@ -875,7 +874,7 @@ public class CosmosQueryRequestOptions {
                 }
 
                 @Override
-                public ImmutableList<String> getExcludeRegions(CosmosQueryRequestOptions options) {
+                public List<String> getExcludeRegions(CosmosQueryRequestOptions options) {
                     return options.getExcludeRegions();
                 }
             });

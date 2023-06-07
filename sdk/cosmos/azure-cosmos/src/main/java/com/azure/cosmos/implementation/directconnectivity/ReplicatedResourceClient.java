@@ -155,7 +155,7 @@ public class ReplicatedResourceClient {
 
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
         CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
-        ImmutableList<String> preferredRegions = ImmutableList.copyOf(this.transportClient.getGlobalEndpointManager().getPreferredRegions());
+        List<String> preferredRegions = this.transportClient.getGlobalEndpointManager().getPreferredRegions();
         AvailabilityStrategy strategy = config.getAvailabilityStrategy();
         if (strategy == null){
             strategy = new AvailabilityStrategy() {
@@ -205,7 +205,6 @@ public class ReplicatedResourceClient {
                     monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
                 }
             }
-
         }
 
         // If the above conditions are not met, then we will just return the original request
