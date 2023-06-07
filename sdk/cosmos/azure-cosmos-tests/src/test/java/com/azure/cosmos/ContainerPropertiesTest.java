@@ -2,12 +2,14 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.models.ComputedProperty;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
@@ -115,6 +117,24 @@ public class ContainerPropertiesTest extends TestSuiteBase {
             assertThat(cosmosItemPropertiesFeedResponse.get("lowerName").toString()).isEqualTo("mike");
             assertThat(cosmosItemPropertiesFeedResponse.get("upperName").toString()).isEqualTo("MIKE");
         });
+    }
+
+    @Test(groups = { "unit" }, timeOut = TIMEOUT)
+    public void testComputedProperty_SerializationAndDeserialization() {
+        ComputedProperty computedProperty = new ComputedProperty("lowerName", "SELECT VALUE LOWER(IS_DEFINED(c.lastName) ? c.lastName : c.parents[0].familyName) FROM c");
+        String collectionName = UUID.randomUUID().toString();
+
+        CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
+        containerProperties.setComputedProperties(Arrays.asList(computedProperty));
+        DocumentCollection documentCollection = ModelBridgeInternal.getV2Collection(containerProperties);
+
+        String json = documentCollection.toJson();
+        DocumentCollection documentCollectionPostSerialization = new DocumentCollection(json);
+
+        Collection<ComputedProperty> computedPropertiesPostSerialization = documentCollectionPostSerialization.getComputedProperties();
+        assertThat(computedPropertiesPostSerialization).isNotNull();
+
+        validateContainerProperties(Arrays.asList(computedProperty), computedPropertiesPostSerialization);
     }
 
     private InternalObjectNode getDocumentDefinition(String firstName, String lastName) {

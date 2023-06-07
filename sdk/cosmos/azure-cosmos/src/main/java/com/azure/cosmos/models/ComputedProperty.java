@@ -16,14 +16,7 @@ public final class ComputedProperty {
     @JsonProperty("query")
     private String query;
 
-    private JsonSerializable jsonSerializable;
-
-    /**
-     * Instantiates a new Computed properties.
-     */
-    ComputedProperty() {
-        this.jsonSerializable = new JsonSerializable();
-    }
+    private ComputedProperty() { }
 
     /**
      * Instantiates a new Computed properties with name and query.
@@ -51,11 +44,5 @@ public final class ComputedProperty {
      */
     public String getQuery() {
         return query;
-    }
-
-    JsonSerializable getJsonSerializable() { return this.jsonSerializable; }
-
-    void populatePropertyBag() {
-        this.jsonSerializable.populatePropertyBag();
     }
 }
