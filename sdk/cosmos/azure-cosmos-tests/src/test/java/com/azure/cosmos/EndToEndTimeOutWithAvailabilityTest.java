@@ -144,6 +144,7 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
         FaultInjectionRule faultInjectionRule = injectFailure(createdContainer, FaultInjectionOperationType.QUERY_ITEM, null);
         CosmosPagedFlux<TestObject> queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
 
+        // Should get an error since we are injecting fault
         StepVerifier.create(queryPagedFlux)
             .expectErrorMatches(throwable -> throwable instanceof OperationCancelledException
                 && ((OperationCancelledException) throwable).getSubStatusCode()
