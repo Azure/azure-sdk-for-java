@@ -17,7 +17,6 @@ public class KeyVaultSettingsClientTest extends KeyVaultSettingsClientTestBase {
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> true)
             .assertSync()
             .build();
     }

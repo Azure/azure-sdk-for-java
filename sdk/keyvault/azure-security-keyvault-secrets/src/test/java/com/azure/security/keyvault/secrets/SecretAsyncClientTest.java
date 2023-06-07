@@ -64,7 +64,6 @@ public class SecretAsyncClientTest extends SecretClientTestBase {
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> true)
             .assertAsync()
             .build();
     }

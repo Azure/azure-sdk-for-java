@@ -33,7 +33,6 @@ public class KeyVaultAccessControlAsyncClientTest extends KeyVaultAccessControlC
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
-            .skipRequest((ignored1, ignored2) -> false)
             .assertAsync()
             .build();
     }
