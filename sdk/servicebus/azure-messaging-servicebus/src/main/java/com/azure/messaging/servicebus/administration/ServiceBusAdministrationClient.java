@@ -33,11 +33,9 @@ import com.azure.messaging.servicebus.administration.implementation.models.Creat
 import com.azure.messaging.servicebus.administration.implementation.models.NamespacePropertiesEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.QueueDescriptionFeedImpl;
-import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.RuleDescriptionImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
-import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.SubscriptionDescriptionFeedImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionEntryImpl;
 import com.azure.messaging.servicebus.administration.implementation.models.TopicDescriptionFeedImpl;
@@ -155,7 +153,7 @@ public final class ServiceBusAdministrationClient {
      * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
      */
     ServiceBusAdministrationClient(ServiceBusManagementClientImpl managementClient,
-                                   ServiceBusManagementSerializer serializer) {
+        ServiceBusManagementSerializer serializer) {
         this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
@@ -216,7 +214,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueProperties> createQueueWithResponse(String queueName, CreateQueueOptions queueOptions,
-                                                             Context context) {
+        Context context) {
         validateQueueName(queueName);
         if (queueOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'queueOptions' cannot be null."));
@@ -277,7 +275,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RuleProperties createRule(String topicName, String ruleName, String subscriptionName,
-                                     CreateRuleOptions ruleOptions) {
+        CreateRuleOptions ruleOptions) {
         return createRuleWithResponse(topicName, subscriptionName, ruleName, ruleOptions, null).getValue();
     }
 
@@ -300,8 +298,8 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleProperties> createRuleWithResponse(String topicName, String subscriptionName,
-                                                           String ruleName, CreateRuleOptions ruleOptions,
-                                                           Context context) {
+        String ruleName, CreateRuleOptions ruleOptions,
+        Context context) {
         validateTopicName(topicName);
         validateSubscriptionName(subscriptionName);
         validateRuleName(ruleName);
@@ -309,9 +307,8 @@ public final class ServiceBusAdministrationClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'ruleOptions' cannot be null."));
         }
         final CreateRuleBodyImpl createEntity = getCreateRuleBody(ruleName, ruleOptions);
-        return deserializeRule(
-            managementClient.getRules().putWithResponse(topicName, subscriptionName, ruleName, createEntity,
-                null, enableSyncContext(context)));
+        return getRulePropertiesSimpleResponse(managementClient.getRules()
+            .putWithResponse(topicName, subscriptionName, ruleName, createEntity, null, enableSyncContext(context)));
     }
 
     /**
@@ -378,8 +375,8 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SubscriptionProperties createSubscription(String topicName, String subscriptionName, String ruleName,
-                                                     CreateSubscriptionOptions subscriptionOptions,
-                                                     CreateRuleOptions ruleOptions) {
+        CreateSubscriptionOptions subscriptionOptions,
+        CreateRuleOptions ruleOptions) {
         return createSubscriptionWithResponse(topicName, subscriptionName, ruleName, subscriptionOptions,
             ruleOptions, null).getValue();
     }
@@ -424,9 +421,8 @@ public final class ServiceBusAdministrationClient {
 
         final CreateSubscriptionBodyImpl createEntity =
             getCreateSubscriptionBody(EntityHelper.getSubscriptionDescription(subscriptionOptions));
-        return deserializeSubscription(topicName,
-            managementClient.getSubscriptions().putWithResponse(topicName, subscriptionName, createEntity,
-                null, contextWithHeaders));
+        return getSubscriptionPropertiesSimpleResponse(topicName, managementClient.getSubscriptions()
+            .putWithResponse(topicName, subscriptionName, createEntity, null, contextWithHeaders));
 
     }
 
@@ -453,10 +449,10 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionProperties> createSubscriptionWithResponse(String topicName, String subscriptionName,
-                                                                           String ruleName,
-                                                                           CreateSubscriptionOptions subscriptionOptions,
-                                                                           CreateRuleOptions ruleOptions,
-                                                                           Context context) {
+        String ruleName,
+        CreateSubscriptionOptions subscriptionOptions,
+        CreateRuleOptions ruleOptions,
+        Context context) {
         if (ruleOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'CreateRuleOptions' cannot be null."));
         }
@@ -528,7 +524,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TopicProperties> createTopicWithResponse(String topicName, CreateTopicOptions topicOptions,
-                                                             Context context) {
+        Context context) {
         validateTopicName(topicName);
         if (topicOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'topicOptions' cannot be null."));
@@ -611,15 +607,14 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRuleWithResponse(String topicName, String subscriptionName,
-                                                 String ruleName, Context context) {
+        String ruleName, Context context) {
         validateTopicName(topicName);
         validateSubscriptionName(subscriptionName);
         validateRuleName(ruleName);
 
-        final Response<Object> response =
-            rulesClient.deleteWithResponse(topicName, subscriptionName, ruleName, enableSyncContext(context));
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), null);
+        final Response<?> response = rulesClient.deleteWithResponse(topicName, subscriptionName, ruleName,
+            enableSyncContext(context));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
     }
 
     /**
@@ -657,11 +652,9 @@ public final class ServiceBusAdministrationClient {
     public Response<Void> deleteSubscriptionWithResponse(String topicName, String subscriptionName, Context context) {
         validateSubscriptionName(subscriptionName);
         validateTopicName(topicName);
-        final Response<Object> response =
-            managementClient.getSubscriptions().deleteWithResponse(topicName, subscriptionName,
-                enableSyncContext(context));
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), null);
+        final Response<?> response = managementClient.getSubscriptions().deleteWithResponse(topicName, subscriptionName,
+            enableSyncContext(context));
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), null);
     }
 
     /**
@@ -886,11 +879,9 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleProperties> getRuleWithResponse(String topicName, String subscriptionName,
-                                                        String ruleName, Context context) {
-        final Response<Object> objectResponse =
-            rulesClient.getWithResponse(topicName, subscriptionName, ruleName, true,
-                enableSyncContext(context));
-        return deserializeRule(objectResponse);
+        String ruleName, Context context) {
+        return getRulePropertiesSimpleResponse(rulesClient.getWithResponse(topicName, subscriptionName, ruleName, true,
+            enableSyncContext(context)));
     }
 
 
@@ -927,18 +918,17 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionProperties> getSubscriptionWithResponse(String topicName,
-                                                                        String subscriptionName, Context context) {
+        String subscriptionName, Context context) {
         return getSubscriptionInternal(topicName, subscriptionName, context);
     }
 
     private Response<SubscriptionProperties> getSubscriptionInternal(String topicName,
-                                                                     String subscriptionName, Context context) {
+        String subscriptionName, Context context) {
         validateTopicName(topicName);
         validateSubscriptionName(subscriptionName);
 
-        final Response<Object> response = managementClient.getSubscriptions()
-            .getWithResponse(topicName, subscriptionName, true, enableSyncContext(context));
-        return deserializeSubscription(topicName, response);
+        return getSubscriptionPropertiesSimpleResponse(topicName, managementClient.getSubscriptions()
+            .getWithResponse(topicName, subscriptionName, true, enableSyncContext(context)));
     }
 
     /**
@@ -972,7 +962,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> getSubscriptionExistsWithResponse(String topicName, String subscriptionName,
-                                                               Context context) {
+        Context context) {
         final Response<SubscriptionProperties> subscriptionWithResponse =
             getSubscriptionInternal(topicName, subscriptionName, context);
         return getEntityExistsWithResponse(subscriptionWithResponse);
@@ -1261,11 +1251,10 @@ public final class ServiceBusAdministrationClient {
     }
 
     private PagedResponse<RuleProperties> listRules(String topicName, String subscriptionName, int skip,
-                                                    Context context) {
-        final Response<Object> response =
-            managementClient.listRulesWithResponse(topicName, subscriptionName, skip, NUMBER_OF_ELEMENTS,
-                enableSyncContext(context));
-        final RuleDescriptionFeedImpl feed = deserialize(response.getValue(), RuleDescriptionFeedImpl.class);
+        Context context) {
+        final Response<RuleDescriptionFeedImpl> response = managementClient.listRulesWithResponse(topicName,
+            subscriptionName, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context));
+        final RuleDescriptionFeedImpl feed = response.getValue();
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip,
@@ -1326,11 +1315,10 @@ public final class ServiceBusAdministrationClient {
     }
 
     private PagedResponse<SubscriptionProperties> listSubscriptions(String topicName, int skip,
-                                                                    Context context) {
-        final Response<Object> response =
-            managementClient.listSubscriptionsWithResponse(topicName, skip, NUMBER_OF_ELEMENTS,
-                enableSyncContext(context));
-        final SubscriptionDescriptionFeedImpl feed = deserialize(response.getValue(), SubscriptionDescriptionFeedImpl.class);
+        Context context) {
+        final Response<SubscriptionDescriptionFeedImpl> response = managementClient.listSubscriptionsWithResponse(
+            topicName, skip, NUMBER_OF_ELEMENTS, enableSyncContext(context));
+        final SubscriptionDescriptionFeedImpl feed = response.getValue();
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip,
@@ -1557,16 +1545,14 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RuleProperties> updateRuleWithResponse(String topicName, String subscriptionName,
-                                                           RuleProperties rule, Context context) {
+        RuleProperties rule, Context context) {
         if (rule == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'rule' cannot be null"));
         }
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
-        final Response<Object> response =
-            managementClient.getRules().putWithResponse(topicName, subscriptionName, rule.getName(),
-                getUpdateRuleBody(rule), "*", enableSyncContext(context));
-        return deserializeRule(response);
+        return getRulePropertiesSimpleResponse(managementClient.getRules().putWithResponse(topicName, subscriptionName,
+            rule.getName(), getUpdateRuleBody(rule), "*", enableSyncContext(context)));
     }
 
     /**
@@ -1663,11 +1649,8 @@ public final class ServiceBusAdministrationClient {
         final CreateSubscriptionBodyImpl createEntity = getUpdateSubscriptionBody(subscription);
 
         // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
-        Response<Object> response =
-            managementClient.getSubscriptions()
-                .putWithResponse(topicName, subscription.getSubscriptionName(), createEntity,
-                    "*", contextWithHeaders);
-        return deserializeSubscription(topicName, response);
+        return getSubscriptionPropertiesSimpleResponse(topicName, managementClient.getSubscriptions()
+            .putWithResponse(topicName, subscription.getSubscriptionName(), createEntity, "*", contextWithHeaders));
     }
 
     /**
@@ -1772,17 +1755,6 @@ public final class ServiceBusAdministrationClient {
 
         final QueueProperties result = getQueueProperties(entry);
         return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), result);
-    }
-
-    private Response<RuleProperties> deserializeRule(Response<Object> response) {
-        final RuleDescriptionEntryImpl entry = deserialize(response.getValue(), RuleDescriptionEntryImpl.class);
-
-        return getRulePropertiesSimpleResponse(response, entry);
-    }
-
-    private Response<SubscriptionProperties> deserializeSubscription(String topicName, Response<Object> response) {
-        final SubscriptionDescriptionEntryImpl entry = deserialize(response.getValue(), SubscriptionDescriptionEntryImpl.class);
-        return getSubscriptionPropertiesSimpleResponse(topicName, response, entry);
     }
 
     private Response<TopicProperties> deserializeTopic(Response<Object> response) {

@@ -75,7 +75,7 @@ async function readPom(artifact, version) {
         console.log("[WARN] no package tag found in version %s for service %s.", version, artifact);
     } else {
         var tag = match[1];
-        var service = artifact.split("-").pop();
+        var service = artifact.split("azure-resourcemanager-").pop();
         if (!data[service]) {
             data[service] = {};
         }
@@ -208,8 +208,21 @@ function getSpecsMapping() {
     const data = fs.readFileSync(api_specs_file, "utf-8");
     let specs = { managedapplications: "resources" };
     Object.entries(yaml.parse(data))
-        .filter(([, service]) => service.hasOwnProperty("service"))
-        .forEach(([rp, service]) => (specs[service["service"]] = rp));
+        .forEach(([rp, service]) => {
+            // e.g.
+            // web: (rp)
+            //   service: appservice (service["service"])
+            //   suffix: generated (service["suffix"])
+            let serviceName = rp
+            if (service.hasOwnProperty("service")) {
+                serviceName = service["service"]
+            }
+            if (service.hasOwnProperty("suffix")) {
+                serviceName = serviceName + "-" + service["suffix"];
+            }
+            console.log(serviceName)
+            specs[serviceName] = rp;
+        });
     return specs;
 }
 

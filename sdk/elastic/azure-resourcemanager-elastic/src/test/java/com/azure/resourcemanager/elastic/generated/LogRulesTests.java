@@ -17,13 +17,13 @@ public final class LogRulesTests {
         LogRules model =
             BinaryData
                 .fromString(
-                    "{\"sendAadLogs\":false,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":false,\"filteringTags\":[{\"name\":\"jkrlkhbzhfepg\",\"value\":\"qex\",\"action\":\"Exclude\"}]}")
+                    "{\"sendAadLogs\":true,\"sendSubscriptionLogs\":true,\"sendActivityLogs\":true,\"filteringTags\":[{\"name\":\"stxgc\",\"value\":\"dg\",\"action\":\"Exclude\"}]}")
                 .toObject(LogRules.class);
-        Assertions.assertEquals(false, model.sendAadLogs());
+        Assertions.assertEquals(true, model.sendAadLogs());
         Assertions.assertEquals(true, model.sendSubscriptionLogs());
-        Assertions.assertEquals(false, model.sendActivityLogs());
-        Assertions.assertEquals("jkrlkhbzhfepg", model.filteringTags().get(0).name());
-        Assertions.assertEquals("qex", model.filteringTags().get(0).value());
+        Assertions.assertEquals(true, model.sendActivityLogs());
+        Assertions.assertEquals("stxgc", model.filteringTags().get(0).name());
+        Assertions.assertEquals("dg", model.filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.EXCLUDE, model.filteringTags().get(0).action());
     }
 
@@ -31,22 +31,17 @@ public final class LogRulesTests {
     public void testSerialize() throws Exception {
         LogRules model =
             new LogRules()
-                .withSendAadLogs(false)
+                .withSendAadLogs(true)
                 .withSendSubscriptionLogs(true)
-                .withSendActivityLogs(false)
+                .withSendActivityLogs(true)
                 .withFilteringTags(
-                    Arrays
-                        .asList(
-                            new FilteringTag()
-                                .withName("jkrlkhbzhfepg")
-                                .withValue("qex")
-                                .withAction(TagAction.EXCLUDE)));
+                    Arrays.asList(new FilteringTag().withName("stxgc").withValue("dg").withAction(TagAction.EXCLUDE)));
         model = BinaryData.fromObject(model).toObject(LogRules.class);
-        Assertions.assertEquals(false, model.sendAadLogs());
+        Assertions.assertEquals(true, model.sendAadLogs());
         Assertions.assertEquals(true, model.sendSubscriptionLogs());
-        Assertions.assertEquals(false, model.sendActivityLogs());
-        Assertions.assertEquals("jkrlkhbzhfepg", model.filteringTags().get(0).name());
-        Assertions.assertEquals("qex", model.filteringTags().get(0).value());
+        Assertions.assertEquals(true, model.sendActivityLogs());
+        Assertions.assertEquals("stxgc", model.filteringTags().get(0).name());
+        Assertions.assertEquals("dg", model.filteringTags().get(0).value());
         Assertions.assertEquals(TagAction.EXCLUDE, model.filteringTags().get(0).action());
     }
 }

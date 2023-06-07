@@ -76,6 +76,15 @@ public final class SkuInformationImpl implements SkuInformation {
         return this.innerModel().requiredFeature();
     }
 
+    public List<String> countriesWithinCommerceBoundary() {
+        List<String> inner = this.innerModel().countriesWithinCommerceBoundary();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public SkuInformationInner innerModel() {
         return this.innerObject;
     }

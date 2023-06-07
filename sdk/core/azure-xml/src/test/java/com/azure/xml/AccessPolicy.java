@@ -3,9 +3,10 @@
 
 package com.azure.xml;
 
-import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
 import java.time.OffsetDateTime;
+
+import static com.azure.xml.AzureXmlTestUtils.getRootElementName;
 
 public class AccessPolicy implements XmlSerializable<AccessPolicy> {
     private OffsetDateTime startsOn;
@@ -41,7 +42,12 @@ public class AccessPolicy implements XmlSerializable<AccessPolicy> {
 
     @Override
     public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return xmlWriter.writeStartElement("AccessPolicy")
+        return toXml(xmlWriter, null);
+    }
+
+    @Override
+    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
+        return xmlWriter.writeStartElement(getRootElementName(rootElementName, "AccessPolicy"))
             .writeStringElement("Start", startsOn == null ? null : startsOn.toString())
             .writeStringElement("Expiry", expiresOn == null ? null : expiresOn.toString())
             .writeStringElement("Permission", permissions)
@@ -49,40 +55,28 @@ public class AccessPolicy implements XmlSerializable<AccessPolicy> {
     }
 
     public static AccessPolicy fromXml(XmlReader xmlReader) throws XMLStreamException {
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            // Since AccessPolicy only cares about XML elements use nextElement()
-            xmlReader.nextElement();
-        }
+        return fromXml(xmlReader, null);
+    }
 
-        if (xmlReader.currentToken() != XmlToken.START_ELEMENT) {
-            throw new IllegalStateException("Illegal start of XML deserialization. "
-                + "Expected 'XmlToken.START_ELEMENT' but it was: 'XmlToken." + xmlReader.currentToken() + "'.");
-        }
+    public static AccessPolicy fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
+        return xmlReader.readObject(getRootElementName(rootElementName, "AccessPolicy"), reader -> {
+            OffsetDateTime startsOn = null;
+            OffsetDateTime expiresOn = null;
+            String permissions = null;
 
-        QName elementQName = xmlReader.getElementName();
-        String elementName = elementQName.toString();
-        if (!"AccessPolicy".equals(elementName)) {
-            throw new IllegalStateException("Expected XML element to be 'SignedIdentifiers' but it was: "
-                + "'" + elementName + "'.");
-        }
+            while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
+                String elementName = xmlReader.getElementName().getLocalPart();
 
-        OffsetDateTime startsOn = null;
-        OffsetDateTime expiresOn = null;
-        String permissions = null;
-
-        while (xmlReader.nextElement() != XmlToken.END_ELEMENT) {
-            elementQName = xmlReader.getElementName();
-            elementName = elementQName.toString();
-
-            if ("Start".equals(elementName)) {
-                startsOn = OffsetDateTime.parse(xmlReader.getStringElement());
-            } else if ("Expiry".equals(elementName)) {
-                expiresOn = OffsetDateTime.parse(xmlReader.getStringElement());
-            } else if ("Permission".equals(elementName)) {
-                permissions = xmlReader.getStringElement();
+                if ("Start".equals(elementName)) {
+                    startsOn = OffsetDateTime.parse(xmlReader.getStringElement());
+                } else if ("Expiry".equals(elementName)) {
+                    expiresOn = OffsetDateTime.parse(xmlReader.getStringElement());
+                } else if ("Permission".equals(elementName)) {
+                    permissions = xmlReader.getStringElement();
+                }
             }
-        }
 
-        return new AccessPolicy().setStartsOn(startsOn).setExpiresOn(expiresOn).setPermissions(permissions);
+            return new AccessPolicy().setStartsOn(startsOn).setExpiresOn(expiresOn).setPermissions(permissions);
+        });
     }
 }

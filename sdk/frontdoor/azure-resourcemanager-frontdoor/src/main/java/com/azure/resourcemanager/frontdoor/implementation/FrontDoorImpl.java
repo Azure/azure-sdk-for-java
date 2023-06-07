@@ -87,6 +87,15 @@ public final class FrontDoorImpl implements FrontDoor, FrontDoor.Definition, Fro
         }
     }
 
+    public Map<String, String> extendedProperties() {
+        Map<String, String> inner = this.innerModel().extendedProperties();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String friendlyName() {
         return this.innerModel().friendlyName();
     }

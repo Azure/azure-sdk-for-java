@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databox.generated;
 /** Samples for Jobs ListCredentials. */
 public final class JobsListCredentialsSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsListCredentials.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsListCredentials.json
      */
     /**
      * Sample code: JobsListCredentials.
@@ -15,6 +15,6 @@ public final class JobsListCredentialsSamples {
      * @param manager Entry point to DataBoxManager.
      */
     public static void jobsListCredentials(com.azure.resourcemanager.databox.DataBoxManager manager) {
-        manager.jobs().listCredentials("bvttoolrg6", "TJ-636646322037905056", com.azure.core.util.Context.NONE);
+        manager.jobs().listCredentials("YourResourceGroupName", "TestJobName1", com.azure.core.util.Context.NONE);
     }
 }

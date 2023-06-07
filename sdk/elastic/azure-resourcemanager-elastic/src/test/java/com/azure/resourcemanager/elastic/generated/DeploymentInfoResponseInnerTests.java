@@ -13,7 +13,7 @@ public final class DeploymentInfoResponseInnerTests {
         DeploymentInfoResponseInner model =
             BinaryData
                 .fromString(
-                    "{\"status\":\"Unhealthy\",\"version\":\"jaoyfhrtx\",\"memoryCapacity\":\"n\",\"diskCapacity\":\"kujysvlejuvfq\",\"deploymentUrl\":\"rlyxwjkcprbnw\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"vtb\"},\"marketplaceName\":\"ysszdnrujqguh\",\"marketplaceResourceId\":\"ouqfprwz\"}}")
+                    "{\"status\":\"Unhealthy\",\"version\":\"b\",\"memoryCapacity\":\"jvtbvpyss\",\"diskCapacity\":\"nruj\",\"deploymentUrl\":\"uhmuouqfprwzwbn\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"nwui\"},\"marketplaceName\":\"a\",\"marketplaceResourceId\":\"ufizuckyf\"}}")
                 .toObject(DeploymentInfoResponseInner.class);
     }
 

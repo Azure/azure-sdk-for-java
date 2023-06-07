@@ -3,15 +3,18 @@
 
 package com.azure.messaging.eventhubs;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.messaging.eventhubs.models.SendOptions;
+import reactor.core.publisher.Flux;
+
 import java.time.Duration;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import reactor.core.publisher.Flux;
+
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Sample demonstrates how to send an iterable of events to specific event hub partition by defining partition id using
@@ -26,12 +29,11 @@ public class PublishIterableEvents {
      * @throws InterruptedException If the program was interrupted before completion.
      */
     public static void main(String[] args) throws InterruptedException {
-        // The connection string value can be obtained by:
-        // 1. Going to your Event Hubs namespace in Azure Portal.
-        // 2. Creating an Event Hub instance.
-        // 3. Creating a "Shared access policy" for your Event Hub instance.
-        // 4. Copying the connection string from the policy's properties.
-        String connectionString = "Endpoint={endpoint};SharedAccessKeyName={sharedAccessKeyName};SharedAccessKey={sharedAccessKey};EntityPath={eventHubName}";
+        // The credential used is DefaultAzureCredential because it combines commonly used credentials
+        // in deployment and development and chooses the credential to used based on its running environment.
+        // More information can be found at: https://learn.microsoft.com/java/api/overview/azure/identity-readme
+        TokenCredential credential = new DefaultAzureCredentialBuilder()
+            .build();
 
         // Set some custom retry options other than the default set.
         AmqpRetryOptions retryOptions = new AmqpRetryOptions()
@@ -39,10 +41,14 @@ public class PublishIterableEvents {
             .setMaxRetries(2)
             .setMode(AmqpRetryMode.EXPONENTIAL);
 
-        // Instantiate a client that will be used to call the service.
+        // Create a producer.
+        //
+        // "<<fully-qualified-namespace>>" will look similar to "{your-namespace}.servicebus.windows.net"
+        // "<<event-hub-name>>" will be the name of the Event Hub instance you created inside the Event Hubs namespace.
         EventHubProducerAsyncClient producer = new EventHubClientBuilder()
-            .connectionString(connectionString)
-            .retry(retryOptions)
+            .credential("<<fully-qualified-namespace>>", "<<event-hub-name>>",
+                credential)
+            .retryOptions(retryOptions)
             .buildAsyncProducerClient();
 
         // Create an iterable of events to send. Note that the events in iterable should

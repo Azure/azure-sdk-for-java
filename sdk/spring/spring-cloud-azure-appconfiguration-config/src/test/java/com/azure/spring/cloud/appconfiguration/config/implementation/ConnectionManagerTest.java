@@ -153,4 +153,12 @@ public class ConnectionManagerTest {
 
         verify(replicaClient1, times(1)).updateSyncToken(Mockito.eq(fakeToken));
     }
+    
+    @Test
+    public void getAvailableClientsNotLoadedTest() {
+        ConnectionManager manager = new ConnectionManager(clientBuilderMock, configStore);
+        
+        assertEquals(0, manager.getAvailableClients().size());
+        assertEquals(AppConfigurationStoreHealth.NOT_LOADED, manager.getHealth());
+    }
 }
