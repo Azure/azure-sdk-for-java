@@ -46,7 +46,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
-
+    private RetryStrategyConfiguration retryStrategyConfiguration;
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
@@ -138,8 +138,16 @@ public class DocumentServiceRequestContext implements Cloneable {
         return endToEndOperationLatencyPolicyConfig;
     }
 
+    public RetryStrategyConfiguration getRetryStrategyConfiguration() {
+        return retryStrategyConfiguration;
+    }
+
     public void setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
         this.endToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
+    }
+
+    public void setRetryStrategyConfiguration(RetryStrategyConfiguration retryStrategyConfiguration) {
+        this.retryStrategyConfiguration = retryStrategyConfiguration;
     }
 }
 

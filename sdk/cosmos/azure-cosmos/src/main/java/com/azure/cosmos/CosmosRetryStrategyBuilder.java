@@ -7,11 +7,11 @@ import java.util.Map;
 
 public final class CosmosRetryStrategyBuilder {
 
-    private Map<CosmosRetryStrategy.OperationType, RetryStrategyConfiguration> retryStrategies = new HashMap<>();
+    private final Map<CosmosRetryStrategy.OperationType, RetryStrategyConfiguration> retryStrategyConfigs = new HashMap<>();
 
-    public CosmosRetryStrategyBuilder withRetryStrategy(CosmosRetryStrategy.OperationType operationType, CosmosRetryStrategy.RegionSwitchHint regionSwitchHint) {
+    public CosmosRetryStrategyBuilder withRegionSwitchHint(CosmosRetryStrategy.OperationType operationType, CosmosRetryStrategy.RegionSwitchHint regionSwitchHint) {
 
-        retryStrategies.compute(operationType, (cosmosItemOperationType, retryStrategyConfiguration) -> {
+        retryStrategyConfigs.compute(operationType, (cosmosItemOperationType, retryStrategyConfiguration) -> {
             if (retryStrategyConfiguration == null) {
                 retryStrategyConfiguration = new RetryStrategyConfiguration();
             }
@@ -23,7 +23,7 @@ public final class CosmosRetryStrategyBuilder {
     }
 
     public CosmosRetryStrategy build() {
-        CosmosRetryStrategy cosmosRetryStrategy = new CosmosRetryStrategy(retryStrategies);
+        CosmosRetryStrategy cosmosRetryStrategy = new CosmosRetryStrategy(retryStrategyConfigs);
         return cosmosRetryStrategy;
     }
 }

@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.policy.RetryStrategy;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosRetryStrategy;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,25 +17,24 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(SessionTokenMismatchRetryPolicy.class);
-
     private static final int BACKOFF_MULTIPLIER = 2;
-
     private final Duration maximumBackoff;
     private final TimeoutHelper waitTimeTimeoutHelper;
     private final AtomicInteger retryCount;
-
     private Duration currentBackoff;
     private RetryContext retryContext;
 
-    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliSeconds)
-    {
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliSeconds, RetryStrategyConfiguration retryStrategyConfiguration) {
         this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(waitTimeInMilliSeconds));
         this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
-
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
         this.retryContext = retryContext;
+    }
+
+    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliSeconds) {
+        this(retryContext, waitTimeInMilliSeconds, null);
     }
 
     public SessionTokenMismatchRetryPolicy(RetryContext retryContext) {

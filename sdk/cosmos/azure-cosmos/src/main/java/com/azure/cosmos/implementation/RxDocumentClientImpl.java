@@ -1980,6 +1980,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                                                   CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig,
                                                                                                   Mono<T> rxDocumentServiceResponseMono) {
         if (endToEndPolicyConfig != null && endToEndPolicyConfig.isEnabled()) {
+
+            RetryStrategyConfiguration retryStrategyConfiguration = request.requestContext.getRetryStrategyConfiguration();
+
+            if (retryStrategyConfiguration != null) {
+                retryStrategyConfiguration.setEndToEndOperationTimeout(endToEndPolicyConfig.getEndToEndOperationTimeout());
+            }
+
             return rxDocumentServiceResponseMono
                 .timeout(endToEndPolicyConfig.getEndToEndOperationTimeout())
                 .onErrorMap(throwable -> getCancellationException(request, throwable));
@@ -2145,6 +2152,34 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(RequestOptions options) {
         return (options != null && options.getCosmosEndToEndLatencyPolicyConfig() != null) ?
             options.getCosmosEndToEndLatencyPolicyConfig() : this.cosmosEndToEndOperationLatencyPolicyConfig;
+    }
+
+    private RetryStrategyConfiguration getRetryStrategyConfiguration(RxDocumentServiceRequest request, RequestOptions options) {
+        if (options != null && options.getRetryStrategy() != null) {
+
+            Map<CosmosRetryStrategy.OperationType, RetryStrategyConfiguration> retryStrategyConfigs = options
+                    .getRetryStrategy()
+                    .getRetryStrategyConfigs();
+
+            if (request.isReadOnly()) {
+                return retryStrategyConfigs.getOrDefault(CosmosRetryStrategy.OperationType.READ, new RetryStrategyConfiguration());
+            }
+
+            return retryStrategyConfigs.getOrDefault(CosmosRetryStrategy.OperationType.WRITE, new RetryStrategyConfiguration());
+
+        } else if (this.retryStrategy != null) {
+
+            Map<CosmosRetryStrategy.OperationType, RetryStrategyConfiguration> retryStrategyConfigs = this.retryStrategy
+                    .getRetryStrategyConfigs();
+
+            if (request.isReadOnly()) {
+                return retryStrategyConfigs.getOrDefault(CosmosRetryStrategy.OperationType.READ, new RetryStrategyConfiguration());
+            }
+
+            return retryStrategyConfigs.getOrDefault(CosmosRetryStrategy.OperationType.WRITE, new RetryStrategyConfiguration());
+        }
+
+        return new RetryStrategyConfiguration();
     }
 
     @Override
@@ -2324,8 +2359,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(request, null, null, options, collectionObs);
+
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+            RetryStrategyConfiguration retryStrategyConfig = getRetryStrategyConfiguration(request, options);
+
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndPolicyConfig);
+            request.requestContext.setRetryStrategyConfiguration(retryStrategyConfig);
+
             return requestObs.flatMap(req -> {
                 Mono<ResourceResponse<Document>> resourceResponseMono = this.read(request, retryPolicyInstance).map(serviceResponse -> toResourceResponse(serviceResponse, Document.class));
                 return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, resourceResponseMono);
