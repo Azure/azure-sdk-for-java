@@ -5,6 +5,7 @@
 #### Features Added
 
 #### Breaking Changes
+* Addressed `NullPointerException` in `CosmosDataItemSource` constructor when Spark runtime initialization hasn't completed yet. - See [PR 35201](https://github.com/Azure/azure-sdk-for-java/pull/35201)
 
 #### Bugs Fixed
 
@@ -14,7 +15,6 @@
 
 #### Bugs Fixed
 * Fixed `IllegalArgumentException` when different throughput control group is defined on the same container - See [PR 34702](https://github.com/Azure/azure-sdk-for-java/pull/34702)
-* Addressed `NullPointerException` in `CosmosDataItemSource` constructor when Spark runtime initialization hasn't completed yet. - See [PR 35201](https://github.com/Azure/azure-sdk-for-java/pull/35201)
 
 ### 4.18.1 (2023-04-10)
 
