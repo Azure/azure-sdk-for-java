@@ -23,13 +23,13 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.storage.queue.implementation.models.QueueSignedIdentifierWrapper;
 import com.azure.storage.queue.implementation.models.QueuesCreateHeaders;
 import com.azure.storage.queue.implementation.models.QueuesDeleteHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetAccessPolicyHeaders;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.models.QueuesSetAccessPolicyHeaders;
 import com.azure.storage.queue.implementation.models.QueuesSetMetadataHeaders;
-import com.azure.storage.queue.implementation.models.SignedIdentifiers;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
 import com.azure.storage.queue.models.QueueStorageException;
 import java.util.List;
@@ -168,7 +168,7 @@ public final class QueuesImpl {
         @Get("/{queueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ResponseBase<QueuesGetAccessPolicyHeaders, SignedIdentifiers>> getAccessPolicy(
+        Mono<ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper>> getAccessPolicy(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("comp") String comp,
@@ -181,7 +181,7 @@ public final class QueuesImpl {
         @Get("/{queueName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<Response<SignedIdentifiers>> getAccessPolicyNoCustomHeaders(
+        Mono<Response<QueueSignedIdentifierWrapper>> getAccessPolicyNoCustomHeaders(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("comp") String comp,
@@ -201,7 +201,7 @@ public final class QueuesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @BodyParam("application/xml") SignedIdentifiersWrapper queueAcl,
+                @BodyParam("application/xml") QueueSignedIdentifierWrapper queueAcl,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -215,7 +215,7 @@ public final class QueuesImpl {
                 @QueryParam("timeout") Integer timeout,
                 @HeaderParam("x-ms-version") String version,
                 @HeaderParam("x-ms-client-request-id") String requestId,
-                @BodyParam("application/xml") SignedIdentifiersWrapper queueAcl,
+                @BodyParam("application/xml") QueueSignedIdentifierWrapper queueAcl,
                 @HeaderParam("Accept") String accept,
                 Context context);
     }
@@ -922,8 +922,8 @@ public final class QueuesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<QueuesGetAccessPolicyHeaders, SignedIdentifiers>> getAccessPolicyWithResponseAsync(
-            String queueName, Integer timeout, String requestId) {
+    public Mono<ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper>>
+            getAccessPolicyWithResponseAsync(String queueName, Integer timeout, String requestId) {
         final String comp = "acl";
         final String accept = "application/xml";
         return FluxUtil.withContext(
@@ -957,8 +957,8 @@ public final class QueuesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<QueuesGetAccessPolicyHeaders, SignedIdentifiers>> getAccessPolicyWithResponseAsync(
-            String queueName, Integer timeout, String requestId, Context context) {
+    public Mono<ResponseBase<QueuesGetAccessPolicyHeaders, QueueSignedIdentifierWrapper>>
+            getAccessPolicyWithResponseAsync(String queueName, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
         return service.getAccessPolicy(
@@ -981,7 +981,8 @@ public final class QueuesImpl {
      * @return a collection of signed identifiers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SignedIdentifiers> getAccessPolicyAsync(String queueName, Integer timeout, String requestId) {
+    public Mono<QueueSignedIdentifierWrapper> getAccessPolicyAsync(
+            String queueName, Integer timeout, String requestId) {
         return getAccessPolicyWithResponseAsync(queueName, timeout, requestId)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1003,7 +1004,7 @@ public final class QueuesImpl {
      * @return a collection of signed identifiers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SignedIdentifiers> getAccessPolicyAsync(
+    public Mono<QueueSignedIdentifierWrapper> getAccessPolicyAsync(
             String queueName, Integer timeout, String requestId, Context context) {
         return getAccessPolicyWithResponseAsync(queueName, timeout, requestId, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -1025,7 +1026,7 @@ public final class QueuesImpl {
      * @return a collection of signed identifiers along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SignedIdentifiers>> getAccessPolicyNoCustomHeadersWithResponseAsync(
+    public Mono<Response<QueueSignedIdentifierWrapper>> getAccessPolicyNoCustomHeadersWithResponseAsync(
             String queueName, Integer timeout, String requestId) {
         final String comp = "acl";
         final String accept = "application/xml";
@@ -1059,7 +1060,7 @@ public final class QueuesImpl {
      * @return a collection of signed identifiers along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SignedIdentifiers>> getAccessPolicyNoCustomHeadersWithResponseAsync(
+    public Mono<Response<QueueSignedIdentifierWrapper>> getAccessPolicyNoCustomHeadersWithResponseAsync(
             String queueName, Integer timeout, String requestId, Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
@@ -1087,7 +1088,7 @@ public final class QueuesImpl {
             String queueName, Integer timeout, String requestId, List<QueueSignedIdentifier> queueAcl) {
         final String comp = "acl";
         final String accept = "application/xml";
-        SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
+        QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
         return FluxUtil.withContext(
                 context ->
                         service.setAccessPolicy(
@@ -1127,7 +1128,7 @@ public final class QueuesImpl {
             Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
-        SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
+        QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
         return service.setAccessPolicy(
                 this.client.getUrl(),
                 queueName,
@@ -1209,7 +1210,7 @@ public final class QueuesImpl {
             String queueName, Integer timeout, String requestId, List<QueueSignedIdentifier> queueAcl) {
         final String comp = "acl";
         final String accept = "application/xml";
-        SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
+        QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
         return FluxUtil.withContext(
                 context ->
                         service.setAccessPolicyNoCustomHeaders(
@@ -1249,7 +1250,7 @@ public final class QueuesImpl {
             Context context) {
         final String comp = "acl";
         final String accept = "application/xml";
-        SignedIdentifiersWrapper queueAclConverted = new SignedIdentifiersWrapper(queueAcl);
+        QueueSignedIdentifierWrapper queueAclConverted = new QueueSignedIdentifierWrapper(queueAcl);
         return service.setAccessPolicyNoCustomHeaders(
                 this.client.getUrl(),
                 queueName,

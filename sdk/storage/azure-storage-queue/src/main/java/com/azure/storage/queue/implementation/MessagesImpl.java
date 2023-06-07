@@ -23,14 +23,14 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.storage.queue.implementation.models.DequeuedMessagesList;
-import com.azure.storage.queue.implementation.models.EnqueuedMessageList;
 import com.azure.storage.queue.implementation.models.MessagesClearHeaders;
 import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
 import com.azure.storage.queue.implementation.models.MessagesEnqueueHeaders;
 import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
-import com.azure.storage.queue.implementation.models.PeekedMessagesList;
+import com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper;
 import com.azure.storage.queue.implementation.models.QueueMessage;
+import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper;
+import com.azure.storage.queue.implementation.models.SendMessageResultWrapper;
 import com.azure.storage.queue.models.QueueStorageException;
 import reactor.core.publisher.Mono;
 
@@ -62,7 +62,7 @@ public final class MessagesImpl {
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ResponseBase<MessagesDequeueHeaders, DequeuedMessagesList>> dequeue(
+        Mono<ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper>> dequeue(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("numofmessages") Integer numberOfMessages,
@@ -76,7 +76,7 @@ public final class MessagesImpl {
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<Response<DequeuedMessagesList>> dequeueNoCustomHeaders(
+        Mono<Response<QueueMessageItemInternalWrapper>> dequeueNoCustomHeaders(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("numofmessages") Integer numberOfMessages,
@@ -114,7 +114,7 @@ public final class MessagesImpl {
         @Post("/{queueName}/messages")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ResponseBase<MessagesEnqueueHeaders, EnqueuedMessageList>> enqueue(
+        Mono<ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper>> enqueue(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("visibilitytimeout") Integer visibilitytimeout,
@@ -129,7 +129,7 @@ public final class MessagesImpl {
         @Post("/{queueName}/messages")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<Response<EnqueuedMessageList>> enqueueNoCustomHeaders(
+        Mono<Response<SendMessageResultWrapper>> enqueueNoCustomHeaders(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("visibilitytimeout") Integer visibilitytimeout,
@@ -144,7 +144,7 @@ public final class MessagesImpl {
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ResponseBase<MessagesPeekHeaders, PeekedMessagesList>> peek(
+        Mono<ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper>> peek(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("peekonly") String peekonly,
@@ -158,7 +158,7 @@ public final class MessagesImpl {
         @Get("/{queueName}/messages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<Response<PeekedMessagesList>> peekNoCustomHeaders(
+        Mono<Response<PeekedMessageItemInternalWrapper>> peekNoCustomHeaders(
                 @HostParam("url") String url,
                 @PathParam("queueName") String queueName,
                 @QueryParam("peekonly") String peekonly,
@@ -193,7 +193,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesDequeueHeaders, DequeuedMessagesList>> dequeueWithResponseAsync(
+    public Mono<ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper>> dequeueWithResponseAsync(
             String queueName, Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId) {
         final String accept = "application/xml";
         return FluxUtil.withContext(
@@ -234,7 +234,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesDequeueHeaders, DequeuedMessagesList>> dequeueWithResponseAsync(
+    public Mono<ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper>> dequeueWithResponseAsync(
             String queueName,
             Integer numberOfMessages,
             Integer visibilitytimeout,
@@ -276,7 +276,7 @@ public final class MessagesImpl {
      * @return the object returned when calling Get Messages on a Queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DequeuedMessagesList> dequeueAsync(
+    public Mono<QueueMessageItemInternalWrapper> dequeueAsync(
             String queueName, Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId) {
         return dequeueWithResponseAsync(queueName, numberOfMessages, visibilitytimeout, timeout, requestId)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -305,7 +305,7 @@ public final class MessagesImpl {
      * @return the object returned when calling Get Messages on a Queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DequeuedMessagesList> dequeueAsync(
+    public Mono<QueueMessageItemInternalWrapper> dequeueAsync(
             String queueName,
             Integer numberOfMessages,
             Integer visibilitytimeout,
@@ -339,7 +339,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DequeuedMessagesList>> dequeueNoCustomHeadersWithResponseAsync(
+    public Mono<Response<QueueMessageItemInternalWrapper>> dequeueNoCustomHeadersWithResponseAsync(
             String queueName, Integer numberOfMessages, Integer visibilitytimeout, Integer timeout, String requestId) {
         final String accept = "application/xml";
         return FluxUtil.withContext(
@@ -380,7 +380,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DequeuedMessagesList>> dequeueNoCustomHeadersWithResponseAsync(
+    public Mono<Response<QueueMessageItemInternalWrapper>> dequeueNoCustomHeadersWithResponseAsync(
             String queueName,
             Integer numberOfMessages,
             Integer visibilitytimeout,
@@ -574,7 +574,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesEnqueueHeaders, EnqueuedMessageList>> enqueueWithResponseAsync(
+    public Mono<ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper>> enqueueWithResponseAsync(
             String queueName,
             QueueMessage queueMessage,
             Integer visibilitytimeout,
@@ -627,7 +627,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesEnqueueHeaders, EnqueuedMessageList>> enqueueWithResponseAsync(
+    public Mono<ResponseBase<MessagesEnqueueHeaders, SendMessageResultWrapper>> enqueueWithResponseAsync(
             String queueName,
             QueueMessage queueMessage,
             Integer visibilitytimeout,
@@ -677,7 +677,7 @@ public final class MessagesImpl {
      * @return the object returned when calling Put Message on a Queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EnqueuedMessageList> enqueueAsync(
+    public Mono<SendMessageResultWrapper> enqueueAsync(
             String queueName,
             QueueMessage queueMessage,
             Integer visibilitytimeout,
@@ -718,7 +718,7 @@ public final class MessagesImpl {
      * @return the object returned when calling Put Message on a Queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<EnqueuedMessageList> enqueueAsync(
+    public Mono<SendMessageResultWrapper> enqueueAsync(
             String queueName,
             QueueMessage queueMessage,
             Integer visibilitytimeout,
@@ -760,7 +760,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EnqueuedMessageList>> enqueueNoCustomHeadersWithResponseAsync(
+    public Mono<Response<SendMessageResultWrapper>> enqueueNoCustomHeadersWithResponseAsync(
             String queueName,
             QueueMessage queueMessage,
             Integer visibilitytimeout,
@@ -813,7 +813,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<EnqueuedMessageList>> enqueueNoCustomHeadersWithResponseAsync(
+    public Mono<Response<SendMessageResultWrapper>> enqueueNoCustomHeadersWithResponseAsync(
             String queueName,
             QueueMessage queueMessage,
             Integer visibilitytimeout,
@@ -855,7 +855,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesPeekHeaders, PeekedMessagesList>> peekWithResponseAsync(
+    public Mono<ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper>> peekWithResponseAsync(
             String queueName, Integer numberOfMessages, Integer timeout, String requestId) {
         final String peekonly = "true";
         final String accept = "application/xml";
@@ -894,7 +894,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<MessagesPeekHeaders, PeekedMessagesList>> peekWithResponseAsync(
+    public Mono<ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper>> peekWithResponseAsync(
             String queueName, Integer numberOfMessages, Integer timeout, String requestId, Context context) {
         final String peekonly = "true";
         final String accept = "application/xml";
@@ -929,7 +929,7 @@ public final class MessagesImpl {
      * @return the object returned when calling Peek Messages on a Queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PeekedMessagesList> peekAsync(
+    public Mono<PeekedMessageItemInternalWrapper> peekAsync(
             String queueName, Integer numberOfMessages, Integer timeout, String requestId) {
         return peekWithResponseAsync(queueName, numberOfMessages, timeout, requestId)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -955,7 +955,7 @@ public final class MessagesImpl {
      * @return the object returned when calling Peek Messages on a Queue on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PeekedMessagesList> peekAsync(
+    public Mono<PeekedMessageItemInternalWrapper> peekAsync(
             String queueName, Integer numberOfMessages, Integer timeout, String requestId, Context context) {
         return peekWithResponseAsync(queueName, numberOfMessages, timeout, requestId, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
@@ -981,7 +981,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PeekedMessagesList>> peekNoCustomHeadersWithResponseAsync(
+    public Mono<Response<PeekedMessageItemInternalWrapper>> peekNoCustomHeadersWithResponseAsync(
             String queueName, Integer numberOfMessages, Integer timeout, String requestId) {
         final String peekonly = "true";
         final String accept = "application/xml";
@@ -1020,7 +1020,7 @@ public final class MessagesImpl {
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PeekedMessagesList>> peekNoCustomHeadersWithResponseAsync(
+    public Mono<Response<PeekedMessageItemInternalWrapper>> peekNoCustomHeadersWithResponseAsync(
             String queueName, Integer numberOfMessages, Integer timeout, String requestId, Context context) {
         final String peekonly = "true";
         final String accept = "application/xml";

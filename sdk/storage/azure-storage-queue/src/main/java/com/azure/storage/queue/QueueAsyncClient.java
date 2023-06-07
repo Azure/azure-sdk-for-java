@@ -21,14 +21,14 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.models.DequeuedMessagesList;
 import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
 import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
-import com.azure.storage.queue.implementation.models.PeekedMessagesList;
+import com.azure.storage.queue.implementation.models.PeekedMessageItemInternalWrapper;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
+import com.azure.storage.queue.implementation.models.QueueMessageItemInternalWrapper;
 import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
@@ -47,6 +47,7 @@ import reactor.core.scheduler.Schedulers;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -625,7 +626,7 @@ public final class QueueAsyncClient {
                     .map(response -> new PagedResponseBase<>(response.getRequest(),
                         response.getStatusCode(),
                         response.getHeaders(),
-                        response.getValue().getQueueSignedIdentifier(),
+                        response.getValue().items(),
                         null,
                         response.getDeserializedHeaders()));
 
@@ -983,7 +984,7 @@ public final class QueueAsyncClient {
                 return client.getMessages()
                     .enqueueWithResponseAsync(queueName, queueMessage, visibilityTimeoutInSeconds, timeToLiveInSeconds,
                         null, null, finalContext)
-                    .map(response -> new SimpleResponse<>(response, response.getValue().getSendMessageResult().get(0)));
+                    .map(response -> new SimpleResponse<>(response, response.getValue().items().get(0)));
             });
 
     }
@@ -1129,8 +1130,13 @@ public final class QueueAsyncClient {
     }
 
     private Mono<PagedResponseBase<MessagesDequeueHeaders, QueueMessageItem>> transformMessagesDequeueResponse(
-        ResponseBase<MessagesDequeueHeaders, DequeuedMessagesList> response) {
-        return Flux.fromIterable(response.getValue().getQueueMessageItemInternal())
+        ResponseBase<MessagesDequeueHeaders, QueueMessageItemInternalWrapper> response) {
+        List<QueueMessageItemInternal> messages = response.getValue().items();
+        if (messages == null) {
+            messages = Collections.emptyList();
+        }
+
+        return Flux.fromIterable(messages)
             .flatMapSequential(queueMessageItemInternal ->
                 transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding)
                 .onErrorResume(IllegalArgumentException.class, e -> {
@@ -1286,8 +1292,13 @@ public final class QueueAsyncClient {
     }
 
     private Mono<PagedResponseBase<MessagesPeekHeaders, PeekedMessageItem>> transformMessagesPeekResponse(
-        ResponseBase<MessagesPeekHeaders, PeekedMessagesList> response) {
-        return Flux.fromIterable(response.getValue().getPeekedMessageItemInternal())
+        ResponseBase<MessagesPeekHeaders, PeekedMessageItemInternalWrapper> response) {
+        List<PeekedMessageItemInternal> messages = response.getValue().items();
+        if (messages == null) {
+            messages = Collections.emptyList();
+        }
+
+        return Flux.fromIterable(messages)
             .flatMapSequential(peekedMessageItemInternal ->
                 transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding)
                     .onErrorResume(IllegalArgumentException.class, e -> {
