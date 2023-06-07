@@ -83,8 +83,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     private final int maxBufferedItemCount;
     private final int responseContinuationTokenLimitInKb;
     private final DatabaseThroughputConfig databaseThroughputConfig;
-    private Boolean pointReadWarningLogged = false;
-
+    private boolean pointReadWarningLogged = false;
     private ApplicationContext applicationContext;
 
     /**

@@ -69,7 +69,7 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     private final int responseContinuationTokenLimitInKb;
     private final IsNewAwareAuditingHandler cosmosAuditingHandler;
     private final DatabaseThroughputConfig databaseThroughputConfig;
-    private Boolean pointReadWarningLogged = false;
+    private boolean pointReadWarningLogged = false;
     private ApplicationContext applicationContext;
 
     /**
