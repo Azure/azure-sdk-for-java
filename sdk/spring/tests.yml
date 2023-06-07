@@ -55,6 +55,8 @@ stages:
       ServiceDirectory: spring
       TestName: Spring_App_Config_IT
       TestGoals: 'verify'
+      MatrixFilters:
+        - JavaTestVersion=^(?!1.8|1.11).*
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       SupportedClouds: 'Public,UsGov,China'
