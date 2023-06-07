@@ -303,6 +303,26 @@
           "code" : "java.method.removed",
           "old" : "method void com.mysql.cj.protocol.ServerSession::setOldStatusFlags(int)",
           "justification" : "Fix method removed."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method void com.azure.core.util.MetricsOptions::<init>(java.lang.Class<? extends com.azure.core.util.metrics.MeterProvider>)",
+          "justification" : "Fix method removed."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method java.lang.Class<? extends com.azure.core.util.metrics.MeterProvider> com.azure.core.util.MetricsOptions::getMeterProvider()",
+          "justification" : "Fix method removed."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method void com.azure.core.util.TracingOptions::<init>(java.lang.Class<? extends com.azure.core.util.tracing.TracerProvider>)",
+          "justification" : "Fix method removed."
+        },
+        {
+          "code" : "java.method.removed",
+          "old" : "method java.lang.Class<? extends com.azure.core.util.tracing.TracerProvider> com.azure.core.util.TracingOptions::getTracerProvider()",
+          "justification" : "Fix method removed."
         }
       ]
     }
