@@ -357,7 +357,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
             return findById(id, domainType, new PartitionKey(id));
         }
         if (!this.pointReadWarningLogged) {
-            LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead. See https://aka.ms/PointReadsInSpring for more info.");
+            LOGGER.warn("The partitionKey is not id!! Consider using findById(ID id, PartitionKey partitionKey) instead to avoid the need for using a cross partition query which results in higher latency and cost than necessary. See https://aka.ms/PointReadsInSpring for more info.");
             this.pointReadWarningLogged = true;
         }
         String finalContainerName = getContainerNameOverride(containerName);

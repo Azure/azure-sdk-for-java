@@ -5,9 +5,9 @@
 #### Features Added
 
 #### Breaking Changes
-* Optimization for `findById(ID id)` so that it will execute point reads where id is also the partition key, and log a warning where it is not. Technically a breaking change, but new behaviour is more optimal, especially for large containers with many partitions - see [PR 35261](https://github.com/Azure/azure-sdk-for-java/pull/35261).
 
 #### Bugs Fixed
+* Optimization for `findById(ID id)` so that it will execute point reads where id is also the partition key, and log a warning where it is not. The new behaviour is more optimal, especially for large containers with many partitions - see [PR 35261](https://github.com/Azure/azure-sdk-for-java/pull/35261).
 
 #### Other Changes
 
