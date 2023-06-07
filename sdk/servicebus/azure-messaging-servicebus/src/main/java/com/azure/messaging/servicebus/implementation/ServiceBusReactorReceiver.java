@@ -172,7 +172,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     protected Message decodeDelivery(Delivery delivery) {
         if (isV2) {
-            throw new IllegalStateException("decodeDelivery should not be called in V2 route.");
+            throw logger.logExceptionAsError(new IllegalStateException("decodeDelivery should not be called in V2 route."));
         }
         final byte[] deliveryTag = delivery.getTag();
         final UUID lockToken;
@@ -210,7 +210,7 @@ public class ServiceBusReactorReceiver extends ReactorReceiver implements Servic
     @Override
     protected void onHandlerClose() {
         if (isV2) {
-            throw new IllegalStateException("onHandlerClose should not be called in V2 route.");
+            throw logger.logExceptionAsError(new IllegalStateException("onHandlerClose should not be called in V2 route."));
         }
         // See the code comment in ReactorReceiver.onHandlerClose(), [temporary method, tobe removed.]
         receiverUnsettledDeliveries.close();
