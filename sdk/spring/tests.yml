@@ -51,7 +51,7 @@ stages:
           safeName: springcloudazureintegrationtestappconfigurationconfig
       TimeoutInMinutes: 60
       ServiceDirectory: spring
-      TestName: Appconfiguration_Config_IT
+      TestName: Spring_App_Config_IT
       TestGoals: 'verify'
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
