@@ -279,6 +279,86 @@ public class PoolTests extends BatchIntegrationTestBase {
     }
 
     @Test
+    public void canCreateContainerPool() throws Exception {
+        String poolId = getStringIdWithUserNamePrefix("-createContainerPool");
+
+        // Create a pool with 0 Small VMs
+        String POOL_VM_SIZE = "STANDARD_D1_V2";
+        int POOL_VM_COUNT = 1;
+
+        // 10 minutes
+        long POOL_STEADY_TIMEOUT_IN_MILLISECONDS = 10 * 60 * 1000;
+        TimeUnit.SECONDS.toMillis(30);
+
+        if (!batchClient.poolOperations().existsPool(poolId)){
+            List<String> images = new ArrayList<String>();
+            images.add("tensorflow/tensorflow:latest-gpu");
+            VirtualMachineConfiguration configuration = new VirtualMachineConfiguration();
+            configuration
+                .withImageReference(
+                    new ImageReference().withPublisher("microsoft-azure-batch").withOffer("ubuntu-server-container").withSku("20-04-lts"))
+                .withNodeAgentSKUId("batch.node.ubuntu 20.04")
+                .withContainerConfiguration(new ContainerConfiguration().withContainerImageNames(images).withType(ContainerType.DOCKER_COMPATIBLE));
+            PoolAddParameter addParameter = new PoolAddParameter()
+                .withId(poolId)
+                .withVmSize(POOL_VM_SIZE)
+                .withTargetDedicatedNodes(POOL_VM_COUNT)
+                .withVirtualMachineConfiguration(configuration)
+                .withNetworkConfiguration(networkConfiguration);
+            batchClient.poolOperations().createPool(addParameter);
+        }
+
+
+        try {
+            // GET
+            Assert.assertTrue(batchClient.poolOperations().existsPool(poolId));
+
+            long startTime = System.currentTimeMillis();
+            long elapsedTime = 0L;
+
+            // Wait for the VM to be allocated
+            CloudPool pool = waitForPoolState(poolId, AllocationState.STEADY, POOL_STEADY_TIMEOUT_IN_MILLISECONDS);
+
+            Assert.assertEquals(POOL_VM_COUNT, (long) pool.currentDedicatedNodes());
+            // Check container type
+            Assert.assertEquals(ContainerType.DOCKER_COMPATIBLE,pool.virtualMachineConfiguration().containerConfiguration().type());
+            // DELETE
+            boolean deleted = false;
+            elapsedTime = 0L;
+            batchClient.poolOperations().deletePool(poolId);
+
+            // Wait for the VM to be deallocated
+            while (elapsedTime < POOL_STEADY_TIMEOUT_IN_MILLISECONDS) {
+                try {
+                    batchClient.poolOperations().getPool(poolId);
+                } catch (BatchErrorException err) {
+                    if (err.body().code().equals(BatchErrorCodeStrings.PoolNotFound)) {
+                        deleted = true;
+                        break;
+                    } else {
+                        throw err;
+                    }
+                }
+
+                System.out.println("wait 15 seconds for pool delete...");
+                threadSleepInRecordMode(15 * 1000);
+                elapsedTime = (new Date()).getTime() - startTime;
+            }
+            Assert.assertTrue(deleted);
+        }
+        finally {
+            try {
+                if (batchClient.poolOperations().existsPool(poolId)) {
+                    batchClient.poolOperations().deletePool(poolId);
+                }
+            } catch (Exception e) {
+                // Ignore exception
+            }
+        }
+
+    }
+
+    @Test
     public void canCreateDataDisk() throws Exception {
         String poolId = getStringIdWithUserNamePrefix("-testpool3");
 

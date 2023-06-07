@@ -8,46 +8,34 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for ContainerType.
  */
-public enum ContainerType {
-    /** A Docker compatible container technology will be used to launch the containers. */
-    DOCKER_COMPATIBLE("dockerCompatible"),
+public final class ContainerType extends ExpandableStringEnum<ContainerType> {
+    /** Static value dockerCompatible for ContainerType. */
+    public static final ContainerType DOCKER_COMPATIBLE = fromString("dockerCompatible");
 
-    /** A CRI based technology will be used to launch the containers. */
-    CRI_COMPATIBLE("criCompatible");
+    /** Static value criCompatible for ContainerType. */
+    public static final ContainerType CRI_COMPATIBLE = fromString("criCompatible");
 
-    /** The actual serialized value for a ContainerType instance. */
-    private String value;
-
-    ContainerType(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a ContainerType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding ContainerType
+     */
+    @JsonCreator
+    public static ContainerType fromString(String name) {
+        return fromString(name, ContainerType.class);
     }
 
     /**
-     * Parses a serialized value to a ContainerType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ContainerType object, or null if unable to parse.
+     * @return known ContainerType values
      */
-    @JsonCreator
-    public static ContainerType fromString(String value) {
-        ContainerType[] items = ContainerType.values();
-        for (ContainerType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ContainerType> values() {
+        return values(ContainerType.class);
     }
 }
