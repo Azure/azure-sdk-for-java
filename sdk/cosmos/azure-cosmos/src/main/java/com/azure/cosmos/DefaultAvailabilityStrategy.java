@@ -4,20 +4,28 @@
 package com.azure.cosmos;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The type Availability strategy.
  */
-public abstract class AvailabilityStrategy {
+public class DefaultAvailabilityStrategy extends AvailabilityStrategy {
     /**
      * The Effective retry regions.
      */
     /**
      * The Number of regions to try.
      */
-    int numberOfRegionsToTry;
+    int numberOfRegionsToTry = 1;
 
-    public abstract List<String> getEffectiveRetryRegions(List<String> preferredRegions, List<String> excludeRegions);
+    @Override
+    public List<String> getEffectiveRetryRegions(List<String> preferredRegions, List<String> excludeRegions) {
+        if (excludeRegions == null) {
+            return preferredRegions;
+        }
+        // return preferredRegions without excludeRegions
+        return preferredRegions.stream().filter(region -> !excludeRegions.contains(region)).collect(Collectors.toList());
+    }
 
     int getNumberOfRegionsToTry() {
         return numberOfRegionsToTry;

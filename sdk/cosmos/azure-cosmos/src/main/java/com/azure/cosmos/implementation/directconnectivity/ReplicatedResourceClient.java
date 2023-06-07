@@ -158,16 +158,7 @@ public class ReplicatedResourceClient {
         List<String> preferredRegions = this.transportClient.getGlobalEndpointManager().getPreferredRegions();
         AvailabilityStrategy strategy = config.getAvailabilityStrategy();
         if (strategy == null){
-            strategy = new AvailabilityStrategy() {
-                @Override
-                public List<String> getEffectiveRetryRegions(List<String> preferredRegions, List<String> excludeRegions) {
-                    if (excludeRegions == null) {
-                        return preferredRegions;
-                    }
-                    // return preferredRegions without excludeRegions
-                    return preferredRegions.stream().filter(region -> !excludeRegions.contains(region)).collect(Collectors.toList());
-                }
-            };
+            strategy = new DefaultAvailabilityStrategy();
         }
         if (strategy instanceof ThresholdBasedAvailabilityStrategy) {
                 speculativeProcessor = new ThresholdBasedSpeculation();
@@ -179,8 +170,8 @@ public class ReplicatedResourceClient {
         if (speculativeProcessor != null) {
             List<String> effectiveRetryRegions = strategy.getEffectiveRetryRegions(preferredRegions,
                 request.requestContext.getExcludeRegions());
-            if (effectiveRetryRegions.size() > strategy.getNumberOfRegionsToTry()){
-                effectiveRetryRegions = effectiveRetryRegions.subList(0, strategy.getNumberOfRegionsToTry());
+            if (effectiveRetryRegions.size() > BridgeInternal.getNumberOfRegionsToTry(strategy)){
+                effectiveRetryRegions = effectiveRetryRegions.subList(0, BridgeInternal.getNumberOfRegionsToTry(strategy));
             }
             effectiveRetryRegions
                 .forEach(regionName -> {
@@ -190,7 +181,8 @@ public class ReplicatedResourceClient {
                         newRequest.requestContext.routeToLocation(locationURI);
                         requests.add(newRequest);
                         monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
-                            .delaySubscription(speculativeProcessor.getThreshold(config).plus(speculativeProcessor.getThresholdStepDuration(config, monoList.size() - 1))));
+                            .delaySubscription(speculativeProcessor.getThreshold(config)
+                                .plus(speculativeProcessor.getThresholdStepDuration(config, monoList.size() - 1))));
                     }
                 });
         } else {
