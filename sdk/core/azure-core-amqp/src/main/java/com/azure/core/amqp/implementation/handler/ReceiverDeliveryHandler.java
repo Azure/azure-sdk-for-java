@@ -364,7 +364,8 @@ final class ReceiverDeliveryHandler {
                 .addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, receiveLinkName)
                 .addKeyValue(EMIT_RESULT_KEY, emitResult)
-                .log("Could not emit delivery. {}", delivery);
+                .addKeyValue("delivery", delivery)
+                .log("Could not emit delivery.");
 
             final Link link = delivery.getLink();
             if (emitResult == Sinks.EmitResult.FAIL_OVERFLOW

@@ -426,7 +426,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
             logger.atVerbose()
-                .addKeyValue("lockToken", lockToken)
+                .addKeyValue(ServiceBusConstants.LOCK_TOKEN_KEY, lockToken)
                 .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
                 .addKeyValue(SESSION_ID_KEY, sessionId)
                 .log("Scheduling disposition.");
