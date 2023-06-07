@@ -1089,16 +1089,13 @@ public final class SearchAsyncClient {
 
         if (answersCount != null && answerThreshold != null) {
             return answerString + "|count-" + answersCount + ",threshold-" + answerThreshold;
+        } else if (answersCount != null && answerThreshold == null) {
+            return answerString + "|count-" + answersCount;
+        } else if (answersCount == null && answerThreshold != null) {
+            return answerString + "|threshold-" + answerThreshold;
+        } else {
+            return answerString;
         }
-
-        if (answersCount != null) {
-            answerString = answerString + "|count-" + answersCount;
-        }
-
-        if (answerThreshold != null) {
-            answerString = answerString + "|threshold-" + answerThreshold;
-        }
-        return answerString;
     }
 
     static String createSearchRequestCaptions(SearchOptions searchOptions) {
