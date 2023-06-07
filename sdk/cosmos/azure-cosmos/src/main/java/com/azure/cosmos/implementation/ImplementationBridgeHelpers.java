@@ -32,6 +32,7 @@ import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
@@ -267,6 +268,7 @@ public class ImplementationBridgeHelpers {
             CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptions options);
             void applyMaxItemCount(CosmosQueryRequestOptions requestOptions, CosmosPagedFluxOptions fluxOptions);
             CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options);
+            ImmutableList<String> getExcludeRegions(CosmosQueryRequestOptions options);
         }
     }
 

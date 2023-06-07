@@ -15,9 +15,11 @@ import com.azure.cosmos.implementation.Quadruple;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.SpeculativeProcessor;
 import com.azure.cosmos.implementation.directconnectivity.speculativeprocessors.ThresholdBasedSpeculation;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
@@ -25,12 +27,15 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * ReplicatedResourceClient uses the ConsistencyReader to make requests to
@@ -150,63 +155,90 @@ public class ReplicatedResourceClient {
 
     private Mono<StoreResponse> getStoreResponseMonoWithSpeculation(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {
         CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
+        ImmutableList<String> preferredRegions = ImmutableList.copyOf(this.transportClient.getGlobalEndpointManager().getPreferredRegions());
         AvailabilityStrategy strategy = config.getAvailabilityStrategy();
+        if (strategy == null){
+            strategy = new AvailabilityStrategy() {
+                @Override
+                public List<String> getEffectiveRetryRegions(List<String> preferredRegions, List<String> excludeRegions) {
+                    if (excludeRegions == null) {
+                        return preferredRegions;
+                    }
+                    // return preferredRegions without excludeRegions
+                    return preferredRegions.stream().filter(region -> !excludeRegions.contains(region)).collect(Collectors.toList());
+                }
+            };
+        }
         if (strategy instanceof ThresholdBasedAvailabilityStrategy) {
                 speculativeProcessor = new ThresholdBasedSpeculation();
         }
+
         List<Mono<StoreResponse>> monoList = new ArrayList<>();
         List<RxDocumentServiceRequest> requests = new ArrayList<>();
 
         if (speculativeProcessor != null) {
-            strategy.getEffectiveRetryRegions(request.requestContext.getPreferredRegions(),
-                    request.requestContext.getExcludeRegions())
-                .forEach(s -> {
-                    if (getLocationIndex(s) != null) {
+            List<String> effectiveRetryRegions = strategy.getEffectiveRetryRegions(preferredRegions,
+                request.requestContext.getExcludeRegions());
+            if (effectiveRetryRegions.size() > strategy.getNumberOfRegionsToTry()){
+                effectiveRetryRegions = effectiveRetryRegions.subList(0, strategy.getNumberOfRegionsToTry());
+            }
+            effectiveRetryRegions
+                .forEach(regionName -> {
+                    URI locationURI = getLocationURIFromAvailableEndPoints(regionName, request);
+                    if (locationURI != null) {
                         RxDocumentServiceRequest newRequest = request.clone();
-                        newRequest.requestContext.locationIndexToRoute = getLocationIndex(s);
+                        newRequest.requestContext.routeToLocation(locationURI);
                         requests.add(newRequest);
                         monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout)
                             .delaySubscription(speculativeProcessor.getThreshold(config).plus(speculativeProcessor.getThresholdStepDuration(config, monoList.size() - 1))));
                     }
                 });
         } else {
-            Optional<String> first = strategy.getEffectiveRetryRegions(request.requestContext.getPreferredRegions(),
+            Optional<String> first = strategy.getEffectiveRetryRegions(preferredRegions,
                 request.requestContext.getExcludeRegions()).stream().findFirst();
-            if ( first.isPresent()) {
-                RxDocumentServiceRequest newRequest = request.clone();
-                newRequest.requestContext.locationIndexToRoute = getLocationIndex(first.get());
-                requests.add(newRequest);
-                monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
+            if (first.isPresent()) {
+                URI locationURI = getLocationURIFromAvailableEndPoints(first.get(), request);
+                if (locationURI != null) {
+                    RxDocumentServiceRequest newRequest = request.clone();
+                    newRequest.requestContext.routeToLocation(locationURI);
+                    requests.add(newRequest);
+                    monoList.add(getStoreResponseMono(newRequest, forceRefreshAndTimeout));
+                }
             }
 
         }
 
+        // If the above conditions are not met, then we will just return the original request
         if (monoList.isEmpty()) {
             monoList.add(getStoreResponseMono(request, forceRefreshAndTimeout));
             requests.add(request);
         }
 
-        return Mono.firstWithValue(monoList).map(storeResponse ->
-            {
-                for (RxDocumentServiceRequest r : requests) {
-                    CosmosDiagnostics diagnostics = r.requestContext.cosmosDiagnostics;
-                    // for the successful request region, we will use the actual latency
-                    if (r.getActivityId().toString().equals(storeResponse.getActivityId())) {
-                        speculativeProcessor.onResponseReceived(r.requestContext.locationEndpointToRoute,
-                            diagnostics.getDuration());
-                    }
-                }
-                return storeResponse;
-            });
+        return Mono.firstWithValue(monoList);
     }
 
-    private Integer getLocationIndex(String s) {
+    private URI getLocationURIFromAvailableEndPoints(String regionName, RxDocumentServiceRequest request) {
         //TODO: return the index of the region in the preferred regions list
+        List<URI> availableWriteEndpoints = this.transportClient.getGlobalEndpointManager().getAvailableWriteEndpoints();
+        List<URI> availableReadEndpoints = this.transportClient.getGlobalEndpointManager().getAvailableReadEndpoints();
+        if (request.isReadOnlyRequest()) {
+            return getEndPoint(availableReadEndpoints, regionName);
+        } else {
+            return getEndPoint(availableWriteEndpoints, regionName);
+        }
+    }
+
+    private URI getEndPoint(List<URI> availableReadEndpoints, String regionName) {
+        for (URI uri : availableReadEndpoints) {
+            if (uri.getHost().contains(StringUtils.deleteWhitespace(regionName.toLowerCase(Locale.ROOT)))) {
+                return uri;
+            }
+        }
         return null;
     }
 
     private boolean shouldSpeculate(RxDocumentServiceRequest request) {
-        if (speculativeProcessor == null) {
+        if (request.requestContext.getEndToEndOperationLatencyPolicyConfig() == null) {
             return false;
         }
         if (request.getResourceType() != ResourceType.Document) {
@@ -219,7 +251,8 @@ public class ReplicatedResourceClient {
         }
 
         CosmosEndToEndOperationLatencyPolicyConfig config = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
-        return config != null && config.isEnabled() && config.getAvailabilityStrategy() != null;
+
+        return config != null && config.isEnabled();
     }
 
     private Mono<StoreResponse> getStoreResponseMono(RxDocumentServiceRequest request, Quadruple<Boolean, Boolean, Duration, Integer> forceRefreshAndTimeout) {

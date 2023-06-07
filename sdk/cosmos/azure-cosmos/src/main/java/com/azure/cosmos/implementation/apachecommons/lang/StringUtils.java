@@ -1392,4 +1392,28 @@ public class StringUtils {
     public static String defaultString(final String str, final String defaultStr) {
         return str == null ? defaultStr : str;
     }
+
+    public static String deleteWhitespace(String str) {
+        if (isEmpty(str)) {
+            return str;
+        } else {
+            int sz = str.length();
+            char[] chs = new char[sz];
+            int count = 0;
+
+            for(int i = 0; i < sz; ++i) {
+                if (!Character.isWhitespace(str.charAt(i))) {
+                    chs[count++] = str.charAt(i);
+                }
+            }
+
+            if (count == sz) {
+                return str;
+            } else if (count == 0) {
+                return "";
+            } else {
+                return new String(chs, 0, count);
+            }
+        }
+    }
 }

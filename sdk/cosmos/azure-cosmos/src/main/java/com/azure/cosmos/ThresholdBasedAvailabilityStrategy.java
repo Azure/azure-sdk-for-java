@@ -45,6 +45,7 @@ public class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy{
         return this.threshold;
     }
 
+
     /**
      * Gets threshold step.
      *

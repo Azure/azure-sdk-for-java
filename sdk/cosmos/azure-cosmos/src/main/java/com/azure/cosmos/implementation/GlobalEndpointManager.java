@@ -193,6 +193,10 @@ public class GlobalEndpointManager implements AutoCloseable {
         return this.connectionPolicy.getPreferredRegions() != null ? this.connectionPolicy.getPreferredRegions().size() : 0;
     }
 
+    public List<String> getPreferredRegions() {
+        return this.connectionPolicy.getPreferredRegions();
+    }
+
     private Mono<Void> refreshLocationPrivateAsync(DatabaseAccount databaseAccount) {
         return Mono.defer(() -> {
             logger.debug("refreshLocationPrivateAsync() refreshing locations");

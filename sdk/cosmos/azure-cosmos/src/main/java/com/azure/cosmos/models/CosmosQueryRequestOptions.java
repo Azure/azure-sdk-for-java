@@ -11,6 +11,7 @@ import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.fasterxml.jackson.databind.JsonNode;
 
@@ -55,6 +56,7 @@ public class CosmosQueryRequestOptions {
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+    private ImmutableList<String> excludeRegions;
 
     /**
      * Instantiates a new query request options.
@@ -98,6 +100,7 @@ public class CosmosQueryRequestOptions {
         this.feedRange = options.feedRange;
         this.thresholds = options.thresholds;
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
+        this.excludeRegions = options.excludeRegions;
     }
 
     void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -334,6 +337,26 @@ public class CosmosQueryRequestOptions {
     public CosmosQueryRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         return this;
+    }
+
+    /**
+     * Sets the regions to exclude as a hint for retries
+     *
+     * @param excludeRegions the regions to exclude
+     * @return the CosmosQueryRequestOptions
+     */
+    public CosmosQueryRequestOptions setExcludeRegions(ImmutableList<String> excludeRegions) {
+        this.excludeRegions = excludeRegions;
+        return this;
+    }
+
+    /**
+     * Gets the regions to exclude as a hint for retries
+     *
+     * @return the regions to exclude
+     */
+    ImmutableList<String> getExcludeRegions() {
+        return this.excludeRegions;
     }
 
     /**
@@ -789,6 +812,7 @@ public class CosmosQueryRequestOptions {
                         requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
                     }
                     requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationLatencyPolicyConfig);
+                    requestOptions.setExcludeRegions(queryRequestOptions.excludeRegions);
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
@@ -824,6 +848,11 @@ public class CosmosQueryRequestOptions {
                 public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptions options) {
                     return options.getEndToEndOperationLatencyConfig();
                 }
+
+                @Override
+                public ImmutableList<String> getExcludeRegions(CosmosQueryRequestOptions options) {
+                    return options.getExcludeRegions();
+                }
             });
     }
 
@@ -832,4 +861,5 @@ public class CosmosQueryRequestOptions {
     }
 
     static { initialize(); }
+
 }

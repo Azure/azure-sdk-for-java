@@ -148,10 +148,6 @@ public class DocumentServiceRequestContext implements Cloneable {
         return this.excludeRegions;
     }
 
-    public List<String> getPreferredRegions() {
-        return ImmutableList.of();
-    }
-
     public void setExcludeRegions(List<String> excludeRegions) {
         this.excludeRegions = excludeRegions;
     }
