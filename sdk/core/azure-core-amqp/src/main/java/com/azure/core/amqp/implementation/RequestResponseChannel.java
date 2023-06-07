@@ -103,6 +103,7 @@ public class RequestResponseChannel implements AsyncCloseable {
     // those subscriptions should be disposed when the request-response-channel terminates.
     private final Disposable.Composite subscriptions;
 
+    private final String connectionId;
     private final AmqpRetryOptions retryOptions;
     private final String replyTo;
     private final String activeEndpointTimeoutMessage;
@@ -143,6 +144,7 @@ public class RequestResponseChannel implements AsyncCloseable {
         loggingContext.put(LINK_NAME_KEY, linkName);
         this.logger = new ClientLogger(RequestResponseChannel.class, loggingContext);
 
+        this.connectionId = connectionId;
         this.retryOptions = retryOptions;
         this.provider = provider;
         this.senderSettleMode = senderSettleMode;
@@ -289,6 +291,10 @@ public class RequestResponseChannel implements AsyncCloseable {
         return isDisposed.get();
     }
 
+    boolean isDisposedOrDisposalInInProgress() {
+        return isDisposed() || hasError.get() || pendingLinkTerminations.get() <= 1;
+    }
+
     /**
      * Sends a message to the message broker using the {@code dispatcher} and gets the response.
      *
@@ -310,7 +316,7 @@ public class RequestResponseChannel implements AsyncCloseable {
      */
     public Mono<Message> sendWithAck(final Message message, DeliveryState deliveryState) {
         if (isDisposed()) {
-            return monoError(logger, new RequestResponseChannelClosedException());
+            return monoError(logger, new RequestResponseChannelClosedException(connectionId));
         }
 
         if (message == null) {
@@ -342,7 +348,7 @@ public class RequestResponseChannel implements AsyncCloseable {
                     // Schedule API calls on proton-j entities on the ReactorThread associated with the connection.
                     provider.getReactorDispatcher().invoke(() -> {
                         if (isDisposed()) {
-                            sink.error(new RequestResponseChannelClosedException(sendLink.getLocalState(),
+                            sink.error(new RequestResponseChannelClosedException(connectionId, sendLink.getLocalState(),
                                 receiveLink.getLocalState()));
                             return;
                         }
