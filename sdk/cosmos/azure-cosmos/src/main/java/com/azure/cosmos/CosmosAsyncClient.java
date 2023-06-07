@@ -119,6 +119,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
+        CosmosRetryStrategy retryStrategy = builder.getRetryStrategy();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(
@@ -161,6 +162,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withClientTelemetryConfig(this.clientTelemetryConfig)
                                        .withClientCorrelationId(clientCorrelationId)
                                        .withEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
+                                       .withRetryStrategy(retryStrategy)
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();

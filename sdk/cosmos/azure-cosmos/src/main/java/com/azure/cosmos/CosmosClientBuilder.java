@@ -133,6 +133,7 @@ public class CosmosClientBuilder implements
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
+    private CosmosRetryStrategy retryStrategy;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -797,6 +798,15 @@ public class CosmosClientBuilder implements
     public CosmosClientBuilder endToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig){
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
         return this;
+    }
+
+    public CosmosClientBuilder retryStrategy(CosmosRetryStrategy retryStrategy) {
+        this.retryStrategy = retryStrategy;
+        return this;
+    }
+
+    CosmosRetryStrategy getRetryStrategy() {
+        return this.retryStrategy;
     }
 
     /**

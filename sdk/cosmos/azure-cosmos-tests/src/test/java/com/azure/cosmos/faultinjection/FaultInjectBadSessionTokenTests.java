@@ -44,8 +44,6 @@ public class FaultInjectBadSessionTokenTests extends TestSuiteBase {
 
     private CosmosAsyncClient cosmosAsyncClient;
     private CosmosAsyncContainer cosmosAsyncContainer;
-    private DatabaseAccount databaseAccount;
-    private Map<String, String> readRegionMap;
     private Map<String, String> writeRegionMap;
 
     @Factory(dataProvider = "clientBuilderSolelyDirectWithSessionConsistency")
@@ -53,21 +51,18 @@ public class FaultInjectBadSessionTokenTests extends TestSuiteBase {
         super(cosmosClientBuilder);
     }
 
-
-    @BeforeClass(groups = {"multi-region"})
+    @BeforeClass(groups = {"multi-master"})
     public void beforeClass() {
         cosmosAsyncClient = getClientBuilder().buildAsyncClient();
         AsyncDocumentClient asyncDocumentClient = BridgeInternal.getContextClient(cosmosAsyncClient);
         GlobalEndpointManager globalEndpointManager = asyncDocumentClient.getGlobalEndpointManager();
 
         DatabaseAccount databaseAccount = globalEndpointManager.getLatestDatabaseAccount();
-        this.databaseAccount = databaseAccount;
         this.cosmosAsyncContainer = getSharedMultiPartitionCosmosContainerWithIdAsPartitionKey(cosmosAsyncClient);
-        this.readRegionMap = this.getRegionMap(databaseAccount, false);
         this.writeRegionMap = this.getRegionMap(databaseAccount, true);
     }
 
-    @Test(groups = {"multi-region"}, timeOut = 60000)
+    @Test(groups = {"multi-master"}, timeOut = 60000)
     public void readSessionUnavailable_regionWide_test() {
 
         List<String> preferredLocations = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
@@ -108,7 +103,7 @@ public class FaultInjectBadSessionTokenTests extends TestSuiteBase {
         FaultInjectionRule badSessionTokenRule = badSessionTokenRuleBuilder
                 .condition(faultInjectionConditionForReadsInPrimaryRegion)
                 .result(badSessionTokenServerErrorResult)
-                .duration(Duration.ofSeconds(10))
+                .duration(Duration.ofMinutes(10))
                 .build();
 
         CosmosFaultInjectionHelper
@@ -122,11 +117,10 @@ public class FaultInjectBadSessionTokenTests extends TestSuiteBase {
 
         assertThat(itemResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
 
-        safeDeleteCollection(containerForClientWithPreferredRegions);
         safeCloseAsync(clientWithPreferredRegions);
     }
 
-    @Test(groups = {"multi-region"}, timeOut = 60000)
+    @Test(groups = {"multi-master"}, timeOut = 60000)
     public void readSessionUnavailable_oneReplica_test() {
 
         List<String> preferredLocations = this.writeRegionMap.keySet().stream().collect(Collectors.toList());
@@ -185,8 +179,13 @@ public class FaultInjectBadSessionTokenTests extends TestSuiteBase {
 
         assertThat(itemResponse.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.OK);
 
-        safeDeleteCollection(containerForClientWithPreferredRegions);
         safeCloseAsync(clientWithPreferredRegions);
+    }
+
+    @AfterClass(groups = {"multi-master"})
+    public void afterClass() {
+        safeDeleteCollection(cosmosAsyncContainer);
+        safeCloseAsync(cosmosAsyncClient);
     }
 
     private Map<String, String> getRegionMap(DatabaseAccount databaseAccount, boolean writeOnly) {
@@ -200,11 +199,5 @@ public class FaultInjectBadSessionTokenTests extends TestSuiteBase {
         }
 
         return regionMap;
-    }
-
-    @AfterClass(groups = {"multi-group"})
-    public void afterClass() {
-        safeDeleteCollection(cosmosAsyncContainer);
-        safeCloseAsync(cosmosAsyncClient);
     }
 }
