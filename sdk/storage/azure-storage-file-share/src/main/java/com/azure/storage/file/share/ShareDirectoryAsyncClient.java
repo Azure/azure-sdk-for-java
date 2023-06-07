@@ -332,7 +332,7 @@ public class ShareDirectoryAsyncClient {
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        validateFilePermissionAndKey(filePermission, properties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, properties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = properties.setFilePermission(filePermission, FileConstants.FILE_PERMISSION_INHERIT);
@@ -347,7 +347,7 @@ public class ShareDirectoryAsyncClient {
         return azureFileStorageClient.getDirectories()
             .createWithResponseAsync(shareName, directoryPath, fileAttributes, null, metadata, filePermission,
                 filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
-            .map(ShareDirectoryAsyncClient::createWithRestResponse);
+            .map(ModelHelper::mapShareDirectoryInfo);
     }
 
     /**
@@ -639,7 +639,7 @@ public class ShareDirectoryAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .getPropertiesWithResponseAsync(shareName, directoryPath, snapshot, null, context)
-            .map(ShareDirectoryAsyncClient::getPropertiesResponse);
+            .map(ModelHelper::mapShareDirectoryPropertiesResponse);
     }
 
     /**
@@ -706,12 +706,12 @@ public class ShareDirectoryAsyncClient {
     }
 
     Mono<Response<ShareDirectoryInfo>> setPropertiesWithResponse(FileSmbProperties smbProperties, String filePermission,
-                                                                 Context context) {
+        Context context) {
 
         FileSmbProperties properties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        validateFilePermissionAndKey(filePermission, properties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, properties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = properties.setFilePermission(filePermission, FileConstants.PRESERVE);
@@ -726,7 +726,7 @@ public class ShareDirectoryAsyncClient {
         return azureFileStorageClient.getDirectories()
             .setPropertiesWithResponseAsync(shareName, directoryPath, fileAttributes, null, filePermission,
                 filePermissionKey, fileCreationTime, fileLastWriteTime, fileChangeTime, context)
-            .map(ShareDirectoryAsyncClient::setPropertiesResponse);
+            .map(ModelHelper::mapSetPropertiesResponse);
     }
 
     /**
@@ -816,7 +816,7 @@ public class ShareDirectoryAsyncClient {
         context = context == null ? Context.NONE : context;
         return azureFileStorageClient.getDirectories()
             .setMetadataWithResponseAsync(shareName, directoryPath, null, metadata, context)
-            .map(ShareDirectoryAsyncClient::setMetadataResponse);
+            .map(ModelHelper::setShareDirectoryMetadataResponse);
     }
 
     /**
@@ -948,7 +948,7 @@ public class ShareDirectoryAsyncClient {
                 .map(response -> new PagedResponseBase<>(response.getRequest(),
                     response.getStatusCode(),
                     response.getHeaders(),
-                    convertResponseAndGetNumOfResults(response),
+                    ModelHelper.convertResponseAndGetNumOfResults(response),
                     response.getValue().getNextMarker(),
                     response.getDeserializedHeaders()));
 
@@ -2080,92 +2080,5 @@ public class ShareDirectoryAsyncClient {
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getDirectoryPath())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
-    }
-
-    private static Response<ShareDirectoryInfo> createWithRestResponse(
-        final ResponseBase<DirectoriesCreateHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        ShareDirectoryInfo shareDirectoryInfo = new ShareDirectoryInfo(eTag, lastModified, smbProperties);
-        return new SimpleResponse<>(response, shareDirectoryInfo);
-    }
-
-    private static Response<ShareDirectoryProperties> getPropertiesResponse(
-        ResponseBase<DirectoriesGetPropertiesHeaders, Void> response) {
-        Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        ShareDirectoryProperties shareDirectoryProperties =
-            new ShareDirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
-        return new SimpleResponse<>(response, shareDirectoryProperties);
-    }
-
-    private static Response<ShareDirectoryInfo> setPropertiesResponse(
-        final ResponseBase<DirectoriesSetPropertiesHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        ShareDirectoryInfo shareDirectoryInfo = new ShareDirectoryInfo(eTag, lastModified, smbProperties);
-        return new SimpleResponse<>(response, shareDirectoryInfo);
-    }
-
-    private static Response<ShareDirectorySetMetadataInfo> setMetadataResponse(
-        final ResponseBase<DirectoriesSetMetadataHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
-        ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo = new ShareDirectorySetMetadataInfo(eTag,
-            isServerEncrypted);
-        return new SimpleResponse<>(response, shareDirectorySetMetadataInfo);
-    }
-
-    private static List<ShareFileItem> convertResponseAndGetNumOfResults(
-        ResponseBase<DirectoriesListFilesAndDirectoriesSegmentHeaders, ListFilesAndDirectoriesSegmentResponse> res) {
-        Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
-        if (res.getValue().getSegment() != null) {
-            res.getValue().getSegment().getDirectoryItems()
-                .forEach(directoryItem -> {
-                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()),
-                        true,
-                        directoryItem.getFileId(),
-                        ModelHelper.transformFileProperty(directoryItem.getProperties()),
-                        NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
-                        directoryItem.getPermissionKey(),
-                        null));
-                });
-            res.getValue().getSegment().getFileItems()
-                .forEach(fileItem -> {
-                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
-                        false,
-                        fileItem.getFileId(),
-                        ModelHelper.transformFileProperty(fileItem.getProperties()),
-                        NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
-                        fileItem.getPermissionKey(),
-                        fileItem.getProperties().getContentLength()));
-                });
-        }
-
-        return new ArrayList<>(shareFileItems);
-    }
-
-    /**
-     * Verifies that the file permission and file permission key are not both set and if the file permission is set,
-     * the file permission is of valid length.
-     * @param filePermission The file permission.
-     * @param filePermissionKey The file permission key.
-     * @throws IllegalArgumentException for invalid file permission or file permission keys.
-     */
-    private static void validateFilePermissionAndKey(String filePermission, String filePermissionKey) {
-        if (filePermission != null && filePermissionKey != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));
-        }
-
-        if (filePermission != null) {
-            StorageImplUtils.assertInBounds("filePermission",
-                filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
-        }
     }
 }

@@ -26,6 +26,8 @@ import com.azure.storage.file.share.implementation.models.SharePermission;
 import com.azure.storage.file.share.implementation.models.ShareStats;
 import com.azure.storage.file.share.implementation.models.SharesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.SharesCreatePermissionHeaders;
+import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
+import com.azure.storage.file.share.implementation.models.SharesDeleteHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetAccessPolicyHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
@@ -488,8 +490,21 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ShareSnapshotInfo> createSnapshotWithResponse(Map<String, String> metadata, Duration timeout,
         Context context) {
-        Mono<Response<ShareSnapshotInfo>> response = client.createSnapshotWithResponse(metadata, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        try {
+            Supplier<ResponseBase<SharesCreateSnapshotHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getShares().createSnapshotWithResponse(shareName, null, metadata, finalContext);
+
+            ResponseBase<SharesCreateSnapshotHeaders, Void> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return ModelHelper.mapCreateSnapshotResponse(response);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -574,8 +589,28 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(ShareDeleteOptions options, Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.deleteWithResponse(options, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareDeleteOptions finalOptions = options == null ? new ShareDeleteOptions() : options;
+        ShareRequestConditions requestConditions = finalOptions.getRequestConditions() == null
+            ? new ShareRequestConditions() : finalOptions.getRequestConditions();
+
+        try {
+            Supplier<ResponseBase<SharesDeleteHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getShares()
+                    .deleteWithResponse(shareName, snapshot, null,
+                        ModelHelper.toDeleteSnapshotsOptionType(finalOptions.getDeleteSnapshotsOptions()),
+                        requestConditions.getLeaseId(), finalContext);
+
+            ResponseBase<SharesDeleteHeaders, Void> response = timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+            return new SimpleResponse<>(response, null);
+
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -633,7 +668,34 @@ public class ShareClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> deleteIfExistsWithResponse(ShareDeleteOptions options, Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(client.deleteIfExistsWithResponse(options, context), timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareDeleteOptions finalOptions = options == null ? new ShareDeleteOptions() : options;
+        ShareRequestConditions requestConditions = finalOptions.getRequestConditions() == null
+            ? new ShareRequestConditions() : finalOptions.getRequestConditions();
+
+        try {
+            Supplier<ResponseBase<SharesDeleteHeaders, Void>> operation = () ->
+                this.azureFileStorageClient.getShares()
+                    .deleteWithResponse(shareName, snapshot, null,
+                        ModelHelper.toDeleteSnapshotsOptionType(finalOptions.getDeleteSnapshotsOptions()),
+                        requestConditions.getLeaseId(), finalContext);
+
+            Response<Void> response = timeout != null ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(),
+                TimeUnit.MILLISECONDS) : operation.get();
+            return new SimpleResponse<>(response, true);
+
+        } catch (ShareStorageException e) {
+            if (e.getStatusCode() == 404) {
+                HttpResponse res = e.getResponse();
+                return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
     }
 
     /**
@@ -1849,8 +1911,7 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteFileWithResponse(String fileName, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        Mono<Response<Void>> response = client.deleteFileWithResponse(fileName, requestConditions, context);
-        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+        return getFileClient(fileName).deleteWithResponse(requestConditions, timeout, context);
     }
 
     /**
@@ -1914,8 +1975,23 @@ public class ShareClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions,
         Duration timeout, Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(client.deleteFileIfExistsWithResponse(fileName,
-            requestConditions, context), timeout);
+        Context finalContext = context == null ? Context.NONE : context;
+        ShareRequestConditions finalRequestConditions = requestConditions == null ? new ShareRequestConditions() : requestConditions;
+
+        try {
+            Response<Void> response = this.deleteFileWithResponse(fileName, finalRequestConditions, timeout, finalContext);
+            return new SimpleResponse<>(response, true);
+
+        } catch (ShareStorageException e) {
+            if (e.getStatusCode() == 404) {
+                HttpResponse res = e.getResponse();
+                return new SimpleResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), false);
+            } else {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(e);
+        }
     }
 
     /**

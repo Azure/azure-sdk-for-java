@@ -18,18 +18,26 @@ import com.azure.storage.file.share.FileConstants;
 import com.azure.storage.file.share.FileSmbProperties;
 import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
+import com.azure.storage.file.share.implementation.models.DirectoriesCreateHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesGetPropertiesHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesListFilesAndDirectoriesSegmentHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetMetadataHeaders;
+import com.azure.storage.file.share.implementation.models.DirectoriesSetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FileProperty;
 import com.azure.storage.file.share.implementation.models.FilesCreateHeaders;
 import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.FilesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetHttpHeadersHeaders;
 import com.azure.storage.file.share.implementation.models.FilesSetMetadataHeaders;
+import com.azure.storage.file.share.implementation.models.FilesUploadRangeFromURLHeaders;
 import com.azure.storage.file.share.implementation.models.FilesUploadRangeHeaders;
 import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
+import com.azure.storage.file.share.implementation.models.ListFilesAndDirectoriesSegmentResponse;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
 import com.azure.storage.file.share.implementation.models.SharePropertiesInternal;
 import com.azure.storage.file.share.implementation.models.ShareStats;
+import com.azure.storage.file.share.implementation.models.SharesCreateSnapshotHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetPropertiesHeaders;
 import com.azure.storage.file.share.implementation.models.SharesGetStatisticsHeaders;
 import com.azure.storage.file.share.implementation.models.StringEncoded;
@@ -39,35 +47,55 @@ import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
 import com.azure.storage.file.share.models.LeaseStatusType;
+import com.azure.storage.file.share.models.NtfsFileAttributes;
+import com.azure.storage.file.share.models.ShareDirectoryInfo;
+import com.azure.storage.file.share.models.ShareDirectoryProperties;
+import com.azure.storage.file.share.models.ShareDirectorySetMetadataInfo;
 import com.azure.storage.file.share.models.ShareErrorCode;
 import com.azure.storage.file.share.models.ShareFileDownloadHeaders;
 import com.azure.storage.file.share.models.ShareFileInfo;
+import com.azure.storage.file.share.models.ShareFileItem;
 import com.azure.storage.file.share.models.ShareFileItemProperties;
 import com.azure.storage.file.share.models.ShareFileMetadataInfo;
 import com.azure.storage.file.share.models.ShareFileProperties;
+import com.azure.storage.file.share.models.ShareFileRange;
 import com.azure.storage.file.share.models.ShareFileUploadInfo;
+import com.azure.storage.file.share.models.ShareFileUploadRangeFromUrlInfo;
 import com.azure.storage.file.share.models.ShareInfo;
 import com.azure.storage.file.share.models.ShareItem;
 import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
+import com.azure.storage.file.share.models.ShareSnapshotInfo;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 import com.azure.storage.file.share.models.ShareStatistics;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.options.ShareFileCopyOptions;
+import reactor.core.Exceptions;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.OpenOption;
+import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 public class ModelHelper {
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
     private static final int FILE_DEFAULT_NUMBER_OF_BUFFERS = 8;
+    static final long FILE_DEFAULT_BLOCK_SIZE = 4 * 1024 * 1024L;
+    static final long FILE_MAX_PUT_RANGE_SIZE = 4 * Constants.MB;
 
     private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
     private static final HttpHeaderName LAST_MODIFIED = HttpHeaderName.fromString("Last-Modified");
@@ -444,5 +472,139 @@ public class ModelHelper {
             new ShareStatistics(response.getValue().getShareUsageBytes());
 
         return new SimpleResponse<>(response, shareStatistics);
+    }
+
+    public static Response<ShareFileUploadInfo> uploadRangeHeadersToShareFileInfo(ResponseBase<FilesUploadRangeHeaders, Void> response) {
+        FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
+        String eTag = headers.getETag();
+        OffsetDateTime lastModified = headers.getLastModified();
+        byte[] contentMD5;
+        try {
+            contentMD5 = headers.getContentMD5();
+        } catch (NullPointerException e) {
+            contentMD5 = null;
+        }
+        Boolean isServerEncrypted = headers.isXMsRequestServerEncrypted();
+        ShareFileUploadInfo shareFileUploadInfo = new ShareFileUploadInfo(eTag, lastModified, contentMD5,
+            isServerEncrypted);
+        return new SimpleResponse<>(response, shareFileUploadInfo);
+    }
+
+    public static Response<ShareFileUploadRangeFromUrlInfo> mapUploadRangeFromUrlResponse(
+        final ResponseBase<FilesUploadRangeFromURLHeaders, Void> response) {
+        FilesUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
+        String eTag = headers.getETag();
+        OffsetDateTime lastModified = headers.getLastModified();
+        Boolean isServerEncrypted = headers.isXMsRequestServerEncrypted();
+        ShareFileUploadRangeFromUrlInfo shareFileUploadRangeFromUrlInfo =
+            new ShareFileUploadRangeFromUrlInfo(eTag, lastModified, isServerEncrypted);
+        return new SimpleResponse<>(response, shareFileUploadRangeFromUrlInfo);
+    }
+
+    public static Response<ShareSnapshotInfo> mapCreateSnapshotResponse(
+        ResponseBase<SharesCreateSnapshotHeaders, Void> response) {
+        SharesCreateSnapshotHeaders headers = response.getDeserializedHeaders();
+        ShareSnapshotInfo snapshotInfo =
+            new ShareSnapshotInfo(headers.getXMsSnapshot(), headers.getETag(), headers.getLastModified());
+
+        return new SimpleResponse<>(response, snapshotInfo);
+    }
+
+    public static Response<ShareDirectoryInfo> mapShareDirectoryInfo(
+        final ResponseBase<DirectoriesCreateHeaders, Void> response) {
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
+        ShareDirectoryInfo shareDirectoryInfo = new ShareDirectoryInfo(eTag, lastModified, smbProperties);
+        return new SimpleResponse<>(response, shareDirectoryInfo);
+    }
+
+    public static Response<ShareDirectoryProperties> mapShareDirectoryPropertiesResponse(
+        ResponseBase<DirectoriesGetPropertiesHeaders, Void> response) {
+        Map<String, String> metadata = response.getDeserializedHeaders().getXMsMeta();
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime offsetDateTime = response.getDeserializedHeaders().getLastModified();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsServerEncrypted();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
+        ShareDirectoryProperties shareDirectoryProperties =
+            new ShareDirectoryProperties(metadata, eTag, offsetDateTime, isServerEncrypted, smbProperties);
+        return new SimpleResponse<>(response, shareDirectoryProperties);
+    }
+
+    public static Response<ShareDirectoryInfo> mapSetPropertiesResponse(
+        final ResponseBase<DirectoriesSetPropertiesHeaders, Void> response) {
+        String eTag = response.getDeserializedHeaders().getETag();
+        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
+        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
+        ShareDirectoryInfo shareDirectoryInfo = new ShareDirectoryInfo(eTag, lastModified, smbProperties);
+        return new SimpleResponse<>(response, shareDirectoryInfo);
+    }
+
+    public static Response<ShareDirectorySetMetadataInfo> setShareDirectoryMetadataResponse(
+        final ResponseBase<DirectoriesSetMetadataHeaders, Void> response) {
+        String eTag = response.getDeserializedHeaders().getETag();
+        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
+        ShareDirectorySetMetadataInfo shareDirectorySetMetadataInfo = new ShareDirectorySetMetadataInfo(eTag,
+            isServerEncrypted);
+        return new SimpleResponse<>(response, shareDirectorySetMetadataInfo);
+    }
+
+    public static List<ShareFileItem> convertResponseAndGetNumOfResults(
+        ResponseBase<DirectoriesListFilesAndDirectoriesSegmentHeaders, ListFilesAndDirectoriesSegmentResponse> res) {
+        Set<ShareFileItem> shareFileItems = new TreeSet<>(Comparator.comparing(ShareFileItem::getName));
+        if (res.getValue().getSegment() != null) {
+            res.getValue().getSegment().getDirectoryItems()
+                .forEach(directoryItem -> {
+                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(directoryItem.getName()),
+                        true,
+                        directoryItem.getFileId(),
+                        ModelHelper.transformFileProperty(directoryItem.getProperties()),
+                        NtfsFileAttributes.toAttributes(directoryItem.getAttributes()),
+                        directoryItem.getPermissionKey(),
+                        null));
+                });
+            res.getValue().getSegment().getFileItems()
+                .forEach(fileItem -> {
+                    shareFileItems.add(new ShareFileItem(ModelHelper.decodeName(fileItem.getName()),
+                        false,
+                        fileItem.getFileId(),
+                        ModelHelper.transformFileProperty(fileItem.getProperties()),
+                        NtfsFileAttributes.toAttributes(fileItem.getAttributes()),
+                        fileItem.getPermissionKey(),
+                        fileItem.getProperties().getContentLength()));
+                });
+        }
+
+        return new ArrayList<>(shareFileItems);
+    }
+
+    public static List<ShareFileRange> sliceFile(String path) {
+        File file = new File(path);
+        assert file.exists();
+        List<ShareFileRange> ranges = new ArrayList<>();
+        for (long pos = 0; pos < file.length(); pos += FILE_DEFAULT_BLOCK_SIZE) {
+            long count = FILE_DEFAULT_BLOCK_SIZE;
+            if (pos + count > file.length()) {
+                count = file.length() - pos;
+            }
+            ranges.add(new ShareFileRange(pos, pos + count - 1));
+        }
+        return ranges;
+    }
+
+    public static AsynchronousFileChannel channelSetup(String filePath, OpenOption... options) {
+        try {
+            return AsynchronousFileChannel.open(Paths.get(filePath), options);
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
+        }
+    }
+
+    public static void channelCleanUp(AsynchronousFileChannel channel) {
+        try {
+            channel.close();
+        } catch (IOException e) {
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(e)));
+        }
     }
 }

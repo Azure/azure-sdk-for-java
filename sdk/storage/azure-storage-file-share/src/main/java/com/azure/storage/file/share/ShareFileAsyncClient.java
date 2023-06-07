@@ -1668,7 +1668,7 @@ public class ShareFileAsyncClient {
         smbProperties = smbProperties == null ? new FileSmbProperties() : smbProperties;
 
         // Checks that file permission and file permission key are valid
-        validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
+        ModelHelper.validateFilePermissionAndKey(filePermission, smbProperties.getFilePermissionKey());
 
         // If file permission and file permission key are both not set then set default value
         filePermission = smbProperties.setFilePermission(filePermission, FileConstants.PRESERVE);
@@ -2200,7 +2200,7 @@ public class ShareFileAsyncClient {
         return azureFileStorageClient.getFiles()
             .uploadRangeWithResponseAsync(shareName, filePath, range.toString(), ShareFileRangeWriteType.UPDATE,
                 options.getLength(), null, null, requestConditions.getLeaseId(), options.getLastWrittenMode(), data, context)
-            .map(ShareFileAsyncClient::uploadResponse);
+            .map(ModelHelper::uploadRangeHeadersToShareFileInfo);
     }
 
     /**
@@ -2365,7 +2365,7 @@ public class ShareFileAsyncClient {
             .uploadRangeFromURLWithResponseAsync(shareName, filePath, destinationRange.toString(), copySource, 0,
                 null, sourceRange.toString(), null, modifiedRequestConditions.getLeaseId(), sourceAuth,
                 options.getLastWrittenMode(), null, context)
-            .map(ShareFileAsyncClient::uploadRangeFromUrlResponse);
+            .map(ModelHelper::mapUploadRangeFromUrlResponse);
     }
 
     /**
@@ -2546,6 +2546,7 @@ public class ShareFileAsyncClient {
                     .flatMap(chunk -> uploadWithResponse(FluxUtil.readFile(channel, chunk.getStart(),
                         chunk.getEnd() - chunk.getStart() + 1), chunk.getEnd() - chunk.getStart() + 1,
                         chunk.getStart(), requestConditions)
+                        // can remove retry here since RequestRetryPolicy already retries
                         .retryWhen(Retry.max(3).filter(throwable -> throwable instanceof IOException
                             || throwable instanceof TimeoutException)))
                     .then(), this::channelCleanUp);
@@ -3210,114 +3211,5 @@ public class ShareFileAsyncClient {
     public String generateSas(ShareServiceSasSignatureValues shareServiceSasSignatureValues, Context context) {
         return new ShareSasImplUtil(shareServiceSasSignatureValues, getShareName(), getFilePath())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
-    }
-
-    private static Response<ShareFileInfo> createFileInfoResponse(ResponseBase<FilesCreateHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        ShareFileInfo shareFileInfo = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
-        return new SimpleResponse<>(response, shareFileInfo);
-    }
-
-    private static Response<ShareFileInfo> setPropertiesResponse(
-        final ResponseBase<FilesSetHttpHeadersHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        OffsetDateTime lastModified = response.getDeserializedHeaders().getLastModified();
-        boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        ShareFileInfo shareFileInfo = new ShareFileInfo(eTag, lastModified, isServerEncrypted, smbProperties);
-        return new SimpleResponse<>(response, shareFileInfo);
-    }
-
-    private static Response<ShareFileProperties> getPropertiesResponse(
-        final ResponseBase<FilesGetPropertiesHeaders, Void> response) {
-        FilesGetPropertiesHeaders headers = response.getDeserializedHeaders();
-        String eTag = headers.getETag();
-        OffsetDateTime lastModified = headers.getLastModified();
-        Map<String, String> metadata = headers.getXMsMeta();
-        String fileType = headers.getXMsType();
-        Long contentLength = headers.getContentLength();
-        String contentType = headers.getContentType();
-        byte[] contentMD5;
-        try {
-            contentMD5 = headers.getContentMD5();
-        } catch (NullPointerException e) {
-            contentMD5 = null;
-        }
-        String contentEncoding = headers.getContentEncoding();
-        String cacheControl = headers.getCacheControl();
-        String contentDisposition = headers.getContentDisposition();
-        LeaseStatusType leaseStatusType = headers.getXMsLeaseStatus();
-        LeaseStateType leaseStateType = headers.getXMsLeaseState();
-        LeaseDurationType leaseDurationType = headers.getXMsLeaseDuration();
-        OffsetDateTime copyCompletionTime = headers.getXMsCopyCompletionTime();
-        String copyStatusDescription = headers.getXMsCopyStatusDescription();
-        String copyId = headers.getXMsCopyId();
-        String copyProgress = headers.getXMsCopyProgress();
-        String copySource = headers.getXMsCopySource();
-        CopyStatusType copyStatus = headers.getXMsCopyStatus();
-        Boolean isServerEncrypted = headers.isXMsServerEncrypted();
-        FileSmbProperties smbProperties = new FileSmbProperties(response.getHeaders());
-        ShareFileProperties shareFileProperties = new ShareFileProperties(eTag, lastModified, metadata, fileType,
-            contentLength, contentType, contentMD5, contentEncoding, cacheControl, contentDisposition,
-            leaseStatusType, leaseStateType, leaseDurationType, copyCompletionTime, copyStatusDescription, copyId,
-            copyProgress, copySource, copyStatus, isServerEncrypted, smbProperties);
-        return new SimpleResponse<>(response, shareFileProperties);
-    }
-
-    private static Response<ShareFileUploadInfo> uploadResponse(ResponseBase<FilesUploadRangeHeaders, Void> response) {
-        FilesUploadRangeHeaders headers = response.getDeserializedHeaders();
-        String eTag = headers.getETag();
-        OffsetDateTime lastModified = headers.getLastModified();
-        byte[] contentMD5;
-        try {
-            contentMD5 = headers.getContentMD5();
-        } catch (NullPointerException e) {
-            contentMD5 = null;
-        }
-        Boolean isServerEncrypted = headers.isXMsRequestServerEncrypted();
-        ShareFileUploadInfo shareFileUploadInfo = new ShareFileUploadInfo(eTag, lastModified, contentMD5,
-            isServerEncrypted);
-        return new SimpleResponse<>(response, shareFileUploadInfo);
-    }
-
-    private static Response<ShareFileUploadRangeFromUrlInfo> uploadRangeFromUrlResponse(
-        final ResponseBase<FilesUploadRangeFromURLHeaders, Void> response) {
-        FilesUploadRangeFromURLHeaders headers = response.getDeserializedHeaders();
-        String eTag = headers.getETag();
-        OffsetDateTime lastModified = headers.getLastModified();
-        Boolean isServerEncrypted = headers.isXMsRequestServerEncrypted();
-        ShareFileUploadRangeFromUrlInfo shareFileUploadRangeFromUrlInfo =
-            new ShareFileUploadRangeFromUrlInfo(eTag, lastModified, isServerEncrypted);
-        return new SimpleResponse<>(response, shareFileUploadRangeFromUrlInfo);
-    }
-
-    private static Response<ShareFileMetadataInfo> setMetadataResponse(
-        final ResponseBase<FilesSetMetadataHeaders, Void> response) {
-        String eTag = response.getDeserializedHeaders().getETag();
-        Boolean isServerEncrypted = response.getDeserializedHeaders().isXMsRequestServerEncrypted();
-        ShareFileMetadataInfo shareFileMetadataInfo = new ShareFileMetadataInfo(eTag, isServerEncrypted);
-        return new SimpleResponse<>(response, shareFileMetadataInfo);
-    }
-
-    /**
-     * Verifies that the file permission and file permission key are not both set and if the file permission is set,
-     * the file permission is of valid length.
-     * @param filePermission The file permission.
-     * @param filePermissionKey The file permission key.
-     * @throws IllegalArgumentException for invalid file permission or file permission keys.
-     */
-    private static void validateFilePermissionAndKey(String filePermission, String  filePermissionKey) {
-        if (filePermission != null && filePermissionKey != null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                FileConstants.MessageConstants.FILE_PERMISSION_FILE_PERMISSION_KEY_INVALID));
-        }
-
-        if (filePermission != null) {
-            StorageImplUtils.assertInBounds("filePermission",
-                filePermission.getBytes(StandardCharsets.UTF_8).length, 0, 8 * Constants.KB);
-        }
     }
 }

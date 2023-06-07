@@ -134,7 +134,8 @@ public class ShareDirectoryJavaDocCodeSamples {
 
     /**
      * Generates a code sample for using {@link ShareDirectoryClient#createWithResponse(FileSmbProperties, String, Map,
-     * Duration, Context)}
+     * Duration, Context)} and
+     * {@link ShareDirectoryClient#createWithResponse(ShareDirectoryCreateOptions, Duration, Context)}
      */
     public void createWithResponse() {
         ShareDirectoryClient shareDirectoryClient = createClientWithSASToken();
@@ -145,6 +146,16 @@ public class ShareDirectoryJavaDocCodeSamples {
             Collections.singletonMap("directory", "metadata"), Duration.ofSeconds(1), new Context(key1, value1));
         System.out.println("Completed creating the directory with status code: " + response.getStatusCode());
         // END: com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#FileSmbProperties-String-Map-Duration-Context
+
+        // BEGIN: com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#ShareDirectoryCreateOptions-Duration-Context
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions()
+            .setSmbProperties(new FileSmbProperties())
+            .setFilePermission("filePermission")
+            .setMetadata(Collections.singletonMap("directory", "metadata"));
+        Response<ShareDirectoryInfo> res = shareDirectoryClient.createWithResponse(options, Duration.ofSeconds(1),
+            new Context(key1, value1));
+        System.out.println("Completed creating the directory with status code: " + res.getStatusCode());
+        // END: com.azure.storage.file.share.ShareDirectoryClient.createWithResponse#ShareDirectoryCreateOptions-Duration-Context
     }
 
     /**
