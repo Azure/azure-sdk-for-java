@@ -34,6 +34,21 @@ public class TableServiceAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Generates a code sample for creating a {@link TableServiceAsyncClient} using a connection string.
+     * 
+     * @return An instance of {@link TableServiceAsyncClient}.
+     */
+    public TableServiceAsyncClient createAsyncWithConnectionString() {
+        // BEGIN: com.azure.data.tables.tableServiceAsyncClient.instantiation.connectionstring
+        TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder()
+            .connectionString("connectionstring")
+            .buildAsyncClient();
+        // END: com.azure.data.tables.tableServiceAsyncClient.instantiation.connectionstring
+
+        return tableServiceAsyncClient;
+    }
+
+    /**
      * Generates code samples for using {@link TableServiceAsyncClient#createTable(String)} and
      * {@link TableServiceAsyncClient#createTableWithResponse(String)}.
      */

@@ -42,6 +42,22 @@ public class TableAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Generates a code sample for creating a {@link TableAsyncClient} using a connection string.
+     *
+     * @return An instance of {@link TableAsyncClient}.
+     */
+    public TableAsyncClient createAsyncClientWithConnectionString() {
+        // BEGIN: com.azure.data.tables.tableAsyncClient.instantiation.connectionstring
+        TableAsyncClient tableAsyncClient = new TableClientBuilder()
+            .connectionString("connectionstring")
+            .tableName("myTable")
+            .buildAsyncClient();
+        // END: com.azure.data.tables.tableAsyncClient.instantiation.connectionstring
+
+        return tableAsyncClient;
+    }
+
+    /**
      * Generates code samples for using {@link TableAsyncClient#createTable()} and
      * {@link TableAsyncClient#createTableWithResponse()}.
      */
@@ -266,7 +282,6 @@ public class TableAsyncClientJavaDocCodeSnippets {
 
         // BEGIN: com.azure.data.tables.tableAsyncClient.listEntities
         tableAsyncClient.listEntities()
-            .contextWrite(Context.of("key1", "value1", "key2", "value2"))
             .subscribe(tableEntity ->
                 System.out.printf("Retrieved entity with partition key '%s' and row key '%s'.%n",
                     tableEntity.getPartitionKey(), tableEntity.getRowKey()));
@@ -284,7 +299,6 @@ public class TableAsyncClientJavaDocCodeSnippets {
             .setSelect(propertiesToSelect);
 
         tableAsyncClient.listEntities(listEntitiesOptions)
-            .contextWrite(Context.of("key1", "value1", "key2", "value2"))
             .subscribe(tableEntity -> {
                 System.out.printf("Retrieved entity with partition key '%s', row key '%s' and properties:%n",
                     tableEntity.getPartitionKey(), tableEntity.getRowKey());

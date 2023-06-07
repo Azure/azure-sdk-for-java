@@ -40,6 +40,21 @@ public class TableServiceClientJavaDocCodeSnippets {
     }
 
     /**
+     * Generates a code sample for creating a {@link TableServiceClient} using a connection string.
+     *
+     * @return An instance of {@link TableServiceClient}.
+     */
+    public TableServiceClient createClientWithConnectionString() {
+        // BEGIN: com.azure.data.tables.tableServiceClient.connectionstring.instantiation
+        TableServiceClient tableServiceClient = new TableServiceClientBuilder()
+            .connectionString("connectionstring")
+            .buildClient();
+        // END: com.azure.data.tables.tableServiceClient.connectionstring.instantiation
+
+        return tableServiceClient;
+    }
+
+    /**
      * Generates code samples for using {@link TableServiceClient#getTableClient(String)}.
      */
     public void getTableClient() {

@@ -57,25 +57,28 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
  * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
- * <h2> Creating an Asynchronous Table Service Client </h2>
+ * <h2>Getting Started</h2>
  * 
- * <p>Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildAsyncClient()} method
- * on a {@link TableServiceClientBuilder} object.</p>
+ * <p>The building and authenticating of instances of this client are handled by {@link TableServiceClientBuilder} instances. The sample below
+ * shows how to authenticate and build a TableServiceAsyncClient using a connection string.</p>
  *
- * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.instantiation -->
+ * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.instantiation.connectionstring -->
  * <pre>
  * TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder&#40;&#41;
- *     .endpoint&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
- *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
+ *     .connectionString&#40;&quot;connectionstring&quot;&#41;
  *     .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.instantiation -->
  * 
- * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing a client.</p>
+ * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing and authenticating a client.</p>
  * 
  * <h2>Usage Code Samples</h2>
  * 
+ * <p>The following code samples show the various ways you can interact with the tables service using this client.</p>
+ * 
  * <strong>Creating a Table</strong>
+ * 
+ * The following sample creates a table with the name "myTable".
  * 
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.createTable#String -->
  * <pre>
@@ -87,6 +90,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.createTable#String -->
  * 
  * <strong>Deleting a Table</strong>
+ * 
+ * The following sample deletes the table with the name "myTable".
  * 
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.deleteTable#String -->
  * <pre>
@@ -101,6 +106,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * 
  * <strong>Getting a {@link TableServiceAsyncClient}</strong>
  * 
+ * The following sample gets a {@link TableServiceAsyncClient} using the table name "myTable".
+ * 
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.getTableClient#String -->
  * <pre>
  * TableAsyncClient tableAsyncClient = tableServiceAsyncClient.getTableClient&#40;&quot;myTable&quot;&#41;;
@@ -111,7 +118,9 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * 
  * <strong>Listing Tables</strong>
  * 
- * <p>Without filtering:</p>
+ * The following samples list the tables in the Table service account.
+ * 
+ * <p>Without filtering, returning all tables:</p>
  * 
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.listTables -->
  * <pre>
@@ -133,6 +142,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * 
  * <strong>Getting Table Properties</strong>
  * 
+ * The following sample gets the properties of the Table service account.
+ * 
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.getProperties -->
  * <pre>
  * tableServiceAsyncClient.getProperties&#40;&#41;
@@ -142,6 +153,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.getProperties -->
  * 
  * <strong>Setting Table Properties</strong>
+ * 
+ * The following sample sets the properties of the Table service account.
  * 
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties -->
  * <pre>
@@ -163,6 +176,8 @@ import static com.azure.data.tables.implementation.TableUtils.swallowExceptionFo
  * <!-- end com.azure.data.tables.tableServiceAsyncClient.setProperties#TableServiceProperties -->
  * 
  * <strong>Getting Table Statistics</strong>
+ * 
+ * The following sample gets the statistics of the Table service account.
  * 
  * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.getStatistics -->
  * <pre>

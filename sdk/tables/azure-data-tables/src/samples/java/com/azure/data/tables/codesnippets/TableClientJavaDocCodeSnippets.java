@@ -48,6 +48,23 @@ public class TableClientJavaDocCodeSnippets {
     }
 
     /**
+     * Generates a code sample for creating a {@link TableClient} using a connection string.
+     *
+     * @return An instance of {@link TableClient}.
+     */
+    public TableClient createClientWithConnectionString() {
+        // BEGIN: com.azure.data.tables.tableClient.connectionstring.instantiation
+        TableClient tableClient = new TableClientBuilder()
+            .connectionString("connectionstring")
+            .tableName("myTable")
+            .buildClient();
+        // END: com.azure.data.tables.tableClient.connectionstring.instantiation
+
+        return tableClient;
+    }
+
+
+    /**
      * Generates code samples for using {@link TableClient#createTable()} and
      * {@link TableClient#createTableWithResponse(Duration, Context)}.
      */
@@ -279,7 +296,7 @@ public class TableClientJavaDocCodeSnippets {
             .setSelect(propertiesToSelect);
 
         PagedIterable<TableEntity> myTableEntities = tableClient.listEntities(listEntitiesOptions,
-            Duration.ofSeconds(5), new Context("key1", "value1"));
+            Duration.ofSeconds(5), null);
 
         myTableEntities.forEach(tableEntity -> {
             System.out.printf("Retrieved entity with partition key '%s', row key '%s' and properties:%n",

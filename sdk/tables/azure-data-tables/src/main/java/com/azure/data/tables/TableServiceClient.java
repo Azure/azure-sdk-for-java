@@ -61,16 +61,28 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * CosmosDB table API account. It provides methods to create, delete, and list tables within the account. These methods
  * invoke REST API operations to make the requests and obtain the results that are returned.</p>
  *
- * <h2>Creating a Synchronous Table Service Client</h2>
+ * <h2>Getting Started</h2>
  * 
- * <p>Instances of this client are obtained by calling the {@link TableServiceClientBuilder#buildClient()} method on a
- * {@link TableServiceClientBuilder} object.</p>
- *
- * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing a client.</p>
+ * <p>The building and authenticating of instances of this client are handled by {@link TableServiceClientBuilder} instances. The following
+ * sample shows how to authenticate and build a TableServiceClient using a connection string.</p>
+ * 
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.connectionstring.instantiation -->
+ * <pre>
+ * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;connectionstring&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.connectionstring.instantiation -->
+ * 
+ * <p>See {@link TableServiceClientBuilder} documentation for more information on constructing and authenticating a client.</p>
  * 
  * <h2>Usage Code Samples</h2>
  *
- * <strong>Creating a Table</strong>
+ * <p>The following samples show the various ways you can interact with the tables service using this client.</p>
+ * 
+ * <strong>Creating a Table</strong> 
+ * 
+ * The following sample creates a table with the name "myTable".
  * 
  * <!-- src_embed com.azure.data.tables.tableServiceClient.createTable#String -->
  * <pre>
@@ -81,6 +93,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * <!-- end com.azure.data.tables.tableServiceClient.createTable#String -->
  * 
  * <strong>Deleting a Table</strong>
+ * 
+ * The following sample deletes the table with the name "myTable".
  * 
  * <!-- src_embed com.azure.data.tables.tableServiceClient.deleteTable#String -->
  * <pre>
@@ -94,6 +108,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * 
  * <strong>Getting a {@link TableClient}</strong>
  * 
+ * The following sample gets a {@link TableClient} for the table with the name "myTable".
+ * 
  * <!-- src_embed com.azure.data.tables.tableServiceClient.getTableClient#String -->
  * <pre>
  * TableClient tableClient = tableServiceClient.getTableClient&#40;&quot;myTable&quot;&#41;;
@@ -104,7 +120,9 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * 
  * <strong>Listing Tables</strong>
  * 
- * <p>Without filtering:</p>
+ * The following samples lists the tables in the Tables service account.
+ * 
+ * <p>Without filtering, returning all tables:</p>
  * 
  * <!-- src_embed com.azure.data.tables.tableServiceClient.listTables -->
  * <pre>
@@ -114,7 +132,9 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  *     System.out.printf&#40;&quot;Retrieved table with name '%s'.%n&quot;, tableItem.getName&#40;&#41;&#41;&#41;;
  * </pre>
  * <!-- end com.azure.data.tables.tableServiceClient.listTables -->
+ * 
  * <p>With filtering:</p>
+ * 
  * <!-- src_embed com.azure.data.tables.tableServiceClient.listTables#ListTablesOptions-Duration-Context -->
  * <pre>
  * ListTablesOptions options = new ListTablesOptions&#40;&#41;.setFilter&#40;&quot;TableName eq 'myTable'&quot;&#41;;
@@ -129,6 +149,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * 
  * <strong>Getting Properties</strong>
  * 
+ * The following sample gets the properties of the Tables service account.
+ * 
  * <!-- src_embed com.azure.data.tables.tableServiceClient.getProperties -->
  * <pre>
  * TableServiceProperties properties = tableServiceClient.getProperties&#40;&#41;;
@@ -138,6 +160,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * <!-- end com.azure.data.tables.tableServiceClient.getProperties -->
  * 
  * <strong>Setting Properties</strong>
+ * 
+ * The following sample sets the properties of the Tables service account.
  * 
  * <!-- src_embed com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
  * <pre>
@@ -159,6 +183,8 @@ import static com.azure.data.tables.implementation.TableUtils.hasTimeout;
  * <!-- end com.azure.data.tables.tableServiceClient.setProperties#TableServiceProperties -->
  * 
  * <strong>Getting Statistics</strong>
+ * 
+ * The following sample gets the statistics of the Tables service account.
  * 
  * <!-- src_embed com.azure.data.tables.tableServiceClient.getStatistics -->
  * <pre>
