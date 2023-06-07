@@ -250,7 +250,8 @@ public final class CommunicationIdentityAsyncClient {
         try {
             Objects.requireNonNull(communicationUser);
             return client.revokeAccessTokensWithResponseAsync(communicationUser.getId())
-                .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException);
+                .onErrorMap(CommunicationErrorResponseException.class, IdentityErrorConverter::translateException)
+                .map(response -> response);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
