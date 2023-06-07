@@ -459,6 +459,18 @@ public class ReactorConnection implements AmqpConnection {
             .subscribeWith(new AmqpChannelProcessor<>(getFullyQualifiedNamespace(), channel -> channel.getEndpointStates(), retryPolicy, loggingContext));
     }
 
+    // Note: The V1 'createRequestResponseChannel(...)' internal API will be removed once entirely on the V2 stack.
+    Mono<RequestResponseChannel> newRequestResponseChannel(String sessionName, String linksNamePrefix, String entityPath) {
+        assert isV2;
+        Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+
+        return createSession(sessionName)
+            .cast(ReactorSession.class)
+            .map(reactorSession -> new RequestResponseChannel(this, getId(), getFullyQualifiedNamespace(), linksNamePrefix,
+                entityPath, reactorSession.session(), connectionOptions.getRetry(), handlerProvider, reactorProvider,
+                messageSerializer, senderSettleMode, receiverSettleMode, handlerProvider.getMetricProvider(getFullyQualifiedNamespace(), entityPath), isV2));
+    }
+
     @Override
     public Mono<Void> closeAsync() {
         if (isDisposed.getAndSet(true)) {
