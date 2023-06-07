@@ -1502,7 +1502,7 @@ public class IncrementalChangeFeedProcessorTest extends TestSuiteBase {
         InternalObjectNode doc = new InternalObjectNode(String.format("{ "
                 + "\"id\": \"%s\", "
                 + "\"mypk\": \"%s\", "
-                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
+                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]],"
                 + "\"prop\": \"%s\", "
                 + "}"
             , uuid, uuid, uuid));
