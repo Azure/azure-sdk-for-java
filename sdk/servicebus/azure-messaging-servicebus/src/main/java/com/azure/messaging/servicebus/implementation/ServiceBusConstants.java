@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 
@@ -21,8 +22,10 @@ public class ServiceBusConstants {
     // for more information on Azure resource provider namespaces.
     public static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
 
-    public static final String SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusSupplementaryAuthorization";
-    public static final String SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusDlqSupplementaryAuthorization";
+    public static final HttpHeaderName SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME
+        = HttpHeaderName.fromString("ServiceBusSupplementaryAuthorization");
+    public static final HttpHeaderName SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME
+        = HttpHeaderName.fromString("ServiceBusDlqSupplementaryAuthorization");
 
     /**
      * Represents the maximum ttl for a message or entity.

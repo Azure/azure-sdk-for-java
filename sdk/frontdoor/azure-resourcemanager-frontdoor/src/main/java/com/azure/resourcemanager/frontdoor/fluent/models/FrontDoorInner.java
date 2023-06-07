@@ -104,6 +104,15 @@ public final class FrontDoorInner extends Resource {
     }
 
     /**
+     * Get the extendedProperties property: Key-Value pair representing additional properties for frontdoor.
+     *
+     * @return the extendedProperties value.
+     */
+    public Map<String, String> extendedProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().extendedProperties();
+    }
+
+    /**
      * Get the friendlyName property: A friendly name for the frontDoor.
      *
      * @return the friendlyName value.

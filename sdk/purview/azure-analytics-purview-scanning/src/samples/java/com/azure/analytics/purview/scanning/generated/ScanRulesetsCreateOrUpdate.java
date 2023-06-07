@@ -13,15 +13,19 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScanRulesetsCreateOrUpdate {
     public static void main(String[] args) {
-        ScanRulesetsClient client =
+        ScanRulesetsClient scanRulesetsClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildScanRulesetsClient();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setBody(
-                BinaryData.fromString(
-                        "{\"kind\":\"AzureStorage\",\"properties\":{\"description\":null,\"excludedSystemClassifications\":[\"MICROSOFT.FINANCIAL.AUSTRALIA.BANK_ACCOUNT_NUMBER\",\"MICROSOFT.MISCELLANEOUS.IPADDRESS\"],\"includedCustomClassificationRuleNames\":[\"BF_PII\",\"Dummy_Rule2\"],\"scanningRule\":{\"customFileExtensions\":[{\"description\":\"model file type\",\"customFileType\":{\"builtInType\":null,\"customDelimiter\":\"$\"},\"enabled\":true,\"fileExtension\":\".model\"},{\"description\":\"mdoel1 type\",\"customFileType\":{\"builtInType\":\"JSON\",\"customDelimiter\":null},\"enabled\":true,\"fileExtension\":\".model1\"}],\"fileExtensions\":[\"CSV\",\"JSON\",\"PSV\",\"SSV\",\"TSV\",\"TXT\",\"XML\",\"PARQUET\"]}},\"scanRulesetType\":\"Custom\"}"));
-        Response<BinaryData> response = client.createOrUpdateWithResponse("nyScanRulesetName", requestOptions);
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scanrulesetscreateorupdate.scanrulesetscreateorupdate
+        RequestOptions requestOptions =
+                new RequestOptions()
+                        .setBody(
+                                BinaryData.fromString(
+                                        "{\"kind\":\"AzureStorage\",\"properties\":{\"description\":null,\"excludedSystemClassifications\":[\"MICROSOFT.FINANCIAL.AUSTRALIA.BANK_ACCOUNT_NUMBER\",\"MICROSOFT.MISCELLANEOUS.IPADDRESS\"],\"includedCustomClassificationRuleNames\":[\"BF_PII\",\"Dummy_Rule2\"],\"scanningRule\":{\"customFileExtensions\":[{\"description\":\"model file type\",\"customFileType\":{\"builtInType\":null,\"customDelimiter\":\"$\"},\"enabled\":true,\"fileExtension\":\".model\"},{\"description\":\"mdoel1 type\",\"customFileType\":{\"builtInType\":\"JSON\",\"customDelimiter\":null},\"enabled\":true,\"fileExtension\":\".model1\"}],\"fileExtensions\":[\"CSV\",\"JSON\",\"PSV\",\"SSV\",\"TSV\",\"TXT\",\"XML\",\"PARQUET\"]}},\"scanRulesetType\":\"Custom\"}"));
+        Response<BinaryData> response =
+                scanRulesetsClient.createOrUpdateWithResponse("nyScanRulesetName", requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.scanrulesetscreateorupdate.scanrulesetscreateorupdate
     }
 }

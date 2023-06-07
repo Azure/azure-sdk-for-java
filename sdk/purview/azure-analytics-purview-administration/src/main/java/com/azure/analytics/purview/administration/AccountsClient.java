@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.administration;
 
+import com.azure.analytics.purview.administration.implementation.AccountsImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -19,16 +20,16 @@ import com.azure.core.util.BinaryData;
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
 @ServiceClient(builder = AccountsClientBuilder.class)
 public final class AccountsClient {
-    @Generated private final AccountsAsyncClient client;
+    @Generated private final AccountsImpl serviceClient;
 
     /**
      * Initializes an instance of AccountsClient class.
      *
-     * @param client the async client.
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    AccountsClient(AccountsAsyncClient client) {
-        this.client = client;
+    AccountsClient(AccountsImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
@@ -38,70 +39,70 @@ public final class AccountsClient {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     identity: {
-     *         principalId: String
-     *         tenantId: String
-     *         type: String(SystemAssigned)
+     *     id: String (Optional)
+     *     identity (Optional): {
+     *         principalId: String (Optional)
+     *         tenantId: String (Optional)
+     *         type: String(SystemAssigned) (Optional)
      *     }
-     *     location: String
-     *     name: String
-     *     properties: {
-     *         cloudConnectors: {
-     *             awsExternalId: String
+     *     location: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         cloudConnectors (Optional): {
+     *             awsExternalId: String (Optional)
      *         }
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByObjectId: String
-     *         endpoints: {
-     *             catalog: String
-     *             guardian: String
-     *             scan: String
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByObjectId: String (Optional)
+     *         endpoints (Optional): {
+     *             catalog: String (Optional)
+     *             guardian: String (Optional)
+     *             scan: String (Optional)
      *         }
-     *         friendlyName: String
-     *         managedResourceGroupName: String
-     *         managedResources: {
-     *             eventHubNamespace: String
-     *             resourceGroup: String
-     *             storageAccount: String
+     *         friendlyName: String (Optional)
+     *         managedResourceGroupName: String (Optional)
+     *         managedResources (Optional): {
+     *             eventHubNamespace: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             storageAccount: String (Optional)
      *         }
-     *         privateEndpointConnections: [
-     *             {
-     *                 id: String
-     *                 name: String
-     *                 properties: {
-     *                     privateEndpoint: {
-     *                         id: String
+     *         privateEndpointConnections (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 properties (Optional): {
+     *                     privateEndpoint (Optional): {
+     *                         id: String (Optional)
      *                     }
-     *                     privateLinkServiceConnectionState: {
-     *                         actionsRequired: String
-     *                         description: String
-     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     privateLinkServiceConnectionState (Optional): {
+     *                         actionsRequired: String (Optional)
+     *                         description: String (Optional)
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected) (Optional)
      *                     }
-     *                     provisioningState: String
+     *                     provisioningState: String (Optional)
      *                 }
-     *                 type: String
+     *                 type: String (Optional)
      *             }
      *         ]
-     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
-     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled) (Optional)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled) (Optional)
      *     }
-     *     sku: {
-     *         capacity: Integer
-     *         name: String(Standard)
+     *     sku (Optional): {
+     *         capacity: Integer (Optional)
+     *         name: String(Standard) (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
-     *     tags: {
-     *         String: String
+     *     tags (Optional): {
+     *         String: String (Optional)
      *     }
-     *     type: String
+     *     type: String (Optional)
      * }
      * }</pre>
      *
@@ -115,7 +116,7 @@ public final class AccountsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAccountPropertiesWithResponse(RequestOptions requestOptions) {
-        return this.client.getAccountPropertiesWithResponse(requestOptions).block();
+        return this.serviceClient.getAccountPropertiesWithResponse(requestOptions);
     }
 
     /**
@@ -125,7 +126,7 @@ public final class AccountsClient {
      *
      * <pre>{@code
      * {
-     *     friendlyName: String
+     *     friendlyName: String (Optional)
      * }
      * }</pre>
      *
@@ -133,70 +134,70 @@ public final class AccountsClient {
      *
      * <pre>{@code
      * {
-     *     id: String
-     *     identity: {
-     *         principalId: String
-     *         tenantId: String
-     *         type: String(SystemAssigned)
+     *     id: String (Optional)
+     *     identity (Optional): {
+     *         principalId: String (Optional)
+     *         tenantId: String (Optional)
+     *         type: String(SystemAssigned) (Optional)
      *     }
-     *     location: String
-     *     name: String
-     *     properties: {
-     *         cloudConnectors: {
-     *             awsExternalId: String
+     *     location: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         cloudConnectors (Optional): {
+     *             awsExternalId: String (Optional)
      *         }
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByObjectId: String
-     *         endpoints: {
-     *             catalog: String
-     *             guardian: String
-     *             scan: String
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByObjectId: String (Optional)
+     *         endpoints (Optional): {
+     *             catalog: String (Optional)
+     *             guardian: String (Optional)
+     *             scan: String (Optional)
      *         }
-     *         friendlyName: String
-     *         managedResourceGroupName: String
-     *         managedResources: {
-     *             eventHubNamespace: String
-     *             resourceGroup: String
-     *             storageAccount: String
+     *         friendlyName: String (Optional)
+     *         managedResourceGroupName: String (Optional)
+     *         managedResources (Optional): {
+     *             eventHubNamespace: String (Optional)
+     *             resourceGroup: String (Optional)
+     *             storageAccount: String (Optional)
      *         }
-     *         privateEndpointConnections: [
-     *             {
-     *                 id: String
-     *                 name: String
-     *                 properties: {
-     *                     privateEndpoint: {
-     *                         id: String
+     *         privateEndpointConnections (Optional): [
+     *              (Optional){
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 properties (Optional): {
+     *                     privateEndpoint (Optional): {
+     *                         id: String (Optional)
      *                     }
-     *                     privateLinkServiceConnectionState: {
-     *                         actionsRequired: String
-     *                         description: String
-     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected)
+     *                     privateLinkServiceConnectionState (Optional): {
+     *                         actionsRequired: String (Optional)
+     *                         description: String (Optional)
+     *                         status: String(Unknown/Pending/Approved/Rejected/Disconnected) (Optional)
      *                     }
-     *                     provisioningState: String
+     *                     provisioningState: String (Optional)
      *                 }
-     *                 type: String
+     *                 type: String (Optional)
      *             }
      *         ]
-     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled)
-     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled)
+     *         provisioningState: String(Unknown/Creating/Moving/Deleting/SoftDeleting/SoftDeleted/Failed/Succeeded/Canceled) (Optional)
+     *         publicNetworkAccess: String(NotSpecified/Enabled/Disabled) (Optional)
      *     }
-     *     sku: {
-     *         capacity: Integer
-     *         name: String(Standard)
+     *     sku (Optional): {
+     *         capacity: Integer (Optional)
+     *         name: String(Standard) (Optional)
      *     }
-     *     systemData: {
-     *         createdAt: OffsetDateTime
-     *         createdBy: String
-     *         createdByType: String(User/Application/ManagedIdentity/Key)
-     *         lastModifiedAt: OffsetDateTime
-     *         lastModifiedBy: String
-     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key)
+     *     systemData (Optional): {
+     *         createdAt: OffsetDateTime (Optional)
+     *         createdBy: String (Optional)
+     *         createdByType: String(User/Application/ManagedIdentity/Key) (Optional)
+     *         lastModifiedAt: OffsetDateTime (Optional)
+     *         lastModifiedBy: String (Optional)
+     *         lastModifiedByType: String(User/Application/ManagedIdentity/Key) (Optional)
      *     }
-     *     tags: {
-     *         String: String
+     *     tags (Optional): {
+     *         String: String (Optional)
      *     }
-     *     type: String
+     *     type: String (Optional)
      * }
      * }</pre>
      *
@@ -212,7 +213,7 @@ public final class AccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAccountPropertiesWithResponse(
             BinaryData accountUpdateParameters, RequestOptions requestOptions) {
-        return this.client.updateAccountPropertiesWithResponse(accountUpdateParameters, requestOptions).block();
+        return this.serviceClient.updateAccountPropertiesWithResponse(accountUpdateParameters, requestOptions);
     }
 
     /**
@@ -222,8 +223,8 @@ public final class AccountsClient {
      *
      * <pre>{@code
      * {
-     *     atlasKafkaPrimaryEndpoint: String
-     *     atlasKafkaSecondaryEndpoint: String
+     *     atlasKafkaPrimaryEndpoint: String (Optional)
+     *     atlasKafkaSecondaryEndpoint: String (Optional)
      * }
      * }</pre>
      *
@@ -237,7 +238,7 @@ public final class AccountsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAccessKeysWithResponse(RequestOptions requestOptions) {
-        return this.client.getAccessKeysWithResponse(requestOptions).block();
+        return this.serviceClient.getAccessKeysWithResponse(requestOptions);
     }
 
     /**
@@ -247,7 +248,7 @@ public final class AccountsClient {
      *
      * <pre>{@code
      * {
-     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey)
+     *     keyType: String(PrimaryAtlasKafkaKey/SecondaryAtlasKafkaKey) (Optional)
      * }
      * }</pre>
      *
@@ -255,8 +256,8 @@ public final class AccountsClient {
      *
      * <pre>{@code
      * {
-     *     atlasKafkaPrimaryEndpoint: String
-     *     atlasKafkaSecondaryEndpoint: String
+     *     atlasKafkaPrimaryEndpoint: String (Optional)
+     *     atlasKafkaSecondaryEndpoint: String (Optional)
      * }
      * }</pre>
      *
@@ -271,6 +272,6 @@ public final class AccountsClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> regenerateAccessKeyWithResponse(BinaryData keyOptions, RequestOptions requestOptions) {
-        return this.client.regenerateAccessKeyWithResponse(keyOptions, requestOptions).block();
+        return this.serviceClient.regenerateAccessKeyWithResponse(keyOptions, requestOptions);
     }
 }

@@ -4,6 +4,7 @@
 package com.azure.core.test.http;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedList;
@@ -31,6 +33,7 @@ import java.util.Queue;
 
 import static com.azure.core.test.implementation.TestingHelpers.X_RECORDING_ID;
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
+import static com.azure.core.test.utils.TestProxyUtils.getAssetJsonFile;
 import static com.azure.core.test.utils.TestProxyUtils.getMatcherRequests;
 import static com.azure.core.test.utils.TestProxyUtils.getSanitizerRequests;
 import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
@@ -66,16 +69,22 @@ public class TestProxyPlaybackClient implements HttpClient {
 
     /**
      * Starts playback of a test recording.
+     *
      * @param recordFile The name of the file to read.
      * @return A {@link Queue} representing the variables in the recording.
+     * @param testClassPath the test class path
      * @throws UncheckedIOException if an {@link IOException} is thrown.
      * @throws RuntimeException Failed to serialize body payload.
      */
-    public Queue<String> startPlayback(File recordFile) {
+    public Queue<String> startPlayback(File recordFile, Path testClassPath) {
         HttpRequest request = null;
+        String assetJsonPath = getAssetJsonFile(recordFile, testClassPath);
         try {
             request = new HttpRequest(HttpMethod.POST, String.format("%s/playback/start", proxyUrl))
-                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString()), SerializerEncoding.JSON));
+                .setBody(SERIALIZER.serialize(new RecordFilePayload(recordFile.toString(), assetJsonPath),
+                    SerializerEncoding.JSON))
+                .setHeader(HttpHeaderName.ACCEPT, "application/json")
+                .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -91,16 +100,21 @@ public class TestProxyPlaybackClient implements HttpClient {
             // the key. See TestProxyRecordPolicy.serializeVariables.
             // This deserializes the map returned from the test proxy and creates an ordered list
             // based on the key.
+            Map<String, String> variables = SERIALIZER.deserialize(body, Map.class, SerializerEncoding.JSON);
             List<Map.Entry<String, String>> toSort;
-            toSort = new ArrayList<>(SERIALIZER.<Map<String, String>>deserialize(body, Map.class, SerializerEncoding.JSON).entrySet());
-            toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
+            if (variables == null) {
+                toSort = new ArrayList<>();
+            } else {
+                toSort = new ArrayList<>(variables.entrySet());
+                toSort.sort(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())));
+            }
+
             LinkedList<String> strings = new LinkedList<>();
             for (Map.Entry<String, String> stringStringEntry : toSort) {
                 String value = stringStringEntry.getValue();
                 strings.add(value);
             }
             return strings;
-
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

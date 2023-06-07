@@ -754,7 +754,7 @@ public class RoomsClientTest extends RoomsTestBase {
 
     private RoomsClient setupSyncClient(HttpClient httpClient, String testName) {
         RoomsClientBuilder builder = getRoomsClientWithConnectionString(httpClient,
-                RoomsServiceVersion.V2023_03_31_PREVIEW);
+                RoomsServiceVersion.V2023_06_14);
 
         communicationClient = getCommunicationIdentityClientBuilder(httpClient).buildClient();
 

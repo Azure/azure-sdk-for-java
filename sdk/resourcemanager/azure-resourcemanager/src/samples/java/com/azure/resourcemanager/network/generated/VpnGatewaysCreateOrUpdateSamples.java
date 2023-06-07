@@ -22,7 +22,7 @@ import java.util.Map;
 /** Samples for VpnGateways CreateOrUpdate. */
 public final class VpnGatewaysCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-09-01/examples/VpnGatewayPut.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-11-01/examples/VpnGatewayPut.json
      */
     /**
      * Sample code: VpnGatewayPut.

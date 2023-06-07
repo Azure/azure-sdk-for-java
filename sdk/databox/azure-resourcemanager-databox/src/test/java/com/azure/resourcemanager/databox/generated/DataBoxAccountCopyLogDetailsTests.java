@@ -13,7 +13,7 @@ public final class DataBoxAccountCopyLogDetailsTests {
         DataBoxAccountCopyLogDetails model =
             BinaryData
                 .fromString(
-                    "{\"copyLogDetailsType\":\"DataBox\",\"accountName\":\"y\",\"copyLogLink\":\"pvgqzcjrvxdjzlm\",\"copyVerboseLogLink\":\"xkvugfhzov\"}")
+                    "{\"copyLogDetailsType\":\"DataBox\",\"accountName\":\"zksmondj\",\"copyLogLink\":\"uxvypomgkopkwh\",\"copyVerboseLogLink\":\"v\"}")
                 .toObject(DataBoxAccountCopyLogDetails.class);
     }
 
