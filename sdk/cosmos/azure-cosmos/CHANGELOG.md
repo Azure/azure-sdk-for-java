@@ -11,6 +11,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Enabled connection warm-up to continue in a best-effort manner to other regions in case of address resolution errors for a particular region - See [PR 35323](https://github.com/Azure/azure-sdk-for-java/pull/35323)
 
 #### Other Changes
 

@@ -25,6 +25,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -178,6 +179,18 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                                 addressInformation,
                                                                 containerLinkToCollection.getRight(),
                                                                 connectionsPerEndpointCountForContainer).then();
+                                                    })
+                                                    // onErrorResume helps to fallback in case of gateway issues when doing address resolution
+                                                    // requests for a specific region
+                                                    // this ensures connection warm up can move onto subsequent regions if configured
+                                                    .onErrorResume(throwable -> {
+                                                        // no particular reason to have specific handling for a CosmosException type
+                                                        // since any error thrown in the connection warmup flow is eventually swallowed
+                                                        // downstream
+                                                        Throwable unwrappedThrowable = Exceptions.unwrap(throwable);
+                                                        logger.warn("An exception occurred when resolving addresses for region : {}",
+                                                                readEndpoint, unwrappedThrowable);
+                                                        return Flux.empty();
                                                     });
                                             }
 
