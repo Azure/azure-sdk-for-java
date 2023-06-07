@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
-import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.TextAnalyticsWarning;
 import com.azure.core.util.IterableStream;
 
@@ -22,7 +21,6 @@ public final class AbstractiveSummaryResultPropertiesHelper {
      * instance.
      */
     public interface AbstractiveSummaryResultAccessor {
-        void setDetectedLanguage(AbstractiveSummaryResult documentResult, DetectedLanguage detectedLanguage);
         void setWarnings(AbstractiveSummaryResult documentResult, IterableStream<TextAnalyticsWarning> warnings);
         void setSummaries(AbstractiveSummaryResult documentResult, IterableStream<AbstractiveSummary> summaries);
     }
@@ -34,10 +32,6 @@ public final class AbstractiveSummaryResultPropertiesHelper {
      */
     public static void setAccessor(final AbstractiveSummaryResultAccessor abstractiveSummaryResultAccessor) {
         accessor = abstractiveSummaryResultAccessor;
-    }
-
-    public static void setDetectedLanguage(AbstractiveSummaryResult documentResult, DetectedLanguage detectedLanguage) {
-        accessor.setDetectedLanguage(documentResult, detectedLanguage);
     }
 
     public static void setWarnings(AbstractiveSummaryResult documentResult,

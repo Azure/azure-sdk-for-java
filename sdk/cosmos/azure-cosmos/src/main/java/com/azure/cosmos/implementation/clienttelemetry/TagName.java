@@ -20,7 +20,8 @@ public enum TagName {
     IsForceRefresh("IsForceRefresh", 1 << 11),
     IsForceCollectionRoutingMapRefresh("IsForceCollectionRoutingMapRefresh",  1 << 12),
     PartitionId("PartitionId", 1 << 13),
-    ReplicaId("ReplicaId", 1 << 14);
+    ReplicaId("ReplicaId", 1 << 14),
+    OperationSubStatusCode("OperationSubStatusCode", 1 << 15);
 
     private final int value;
     private final String stringValue;

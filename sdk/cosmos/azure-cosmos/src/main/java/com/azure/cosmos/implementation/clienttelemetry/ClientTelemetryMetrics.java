@@ -83,12 +83,10 @@ public final class ClientTelemetryMetrics {
         CompositeMeterRegistry registry = new CompositeMeterRegistry();
         if (logger.isTraceEnabled()) {
             registry.config().onMeterAdded(
-                (meter) -> {
-                    logger.trace(
-                        "Meter '{}' added. Callstack: {}",
-                        meter.getId().getName(),
-                        convertStackTraceToString(new IllegalStateException("Dummy")));
-                }
+                (meter) -> logger.trace(
+                    "Meter '{}' added. Callstack: {}",
+                    meter.getId().getName(),
+                    convertStackTraceToString(new IllegalStateException("Dummy")))
             );
         }
 
@@ -135,6 +133,7 @@ public final class ClientTelemetryMetrics {
             client,
             diagnosticsContext,
             diagnosticsContext.getStatusCode(),
+            diagnosticsContext.getSubStatusCode(),
             diagnosticsContext.getMaxItemCount(),
             diagnosticsContext.getActualItemCount(),
             diagnosticsContext.getContainerName(),
@@ -154,6 +153,7 @@ public final class ClientTelemetryMetrics {
         CosmosAsyncClient client,
         CosmosDiagnosticsContext diagnosticsContext,
         int statusCode,
+        int subStatusCode,
         Integer maxItemCount,
         Integer actualItemCount,
         String containerId,
@@ -187,6 +187,7 @@ public final class ClientTelemetryMetrics {
         Tags operationTags = createOperationTags(
             metricTagNames,
             statusCode,
+            subStatusCode,
             containerId,
             databaseId,
             operationType,
@@ -263,6 +264,7 @@ public final class ClientTelemetryMetrics {
     private static Tags createOperationTags(
         EnumSet<TagName> metricTagNames,
         int statusCode,
+        int subStatusCode,
         String containerId,
         String databaseId,
         String operationType,
@@ -301,6 +303,10 @@ public final class ClientTelemetryMetrics {
 
         if (metricTagNames.contains(TagName.OperationStatusCode)) {
             effectiveTags.add(Tag.of(TagName.OperationStatusCode.toString(), String.valueOf(statusCode)));
+        }
+
+        if (metricTagNames.contains(TagName.OperationSubStatusCode)) {
+            effectiveTags.add(Tag.of(TagName.OperationSubStatusCode.toString(), String.valueOf(subStatusCode)));
         }
 
         if (metricTagNames.contains(TagName.ConsistencyLevel)) {

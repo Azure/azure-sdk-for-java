@@ -159,6 +159,24 @@ public class ReadmeSamples {
         // END: readme-sample-deleteRoomWithRoomId
     }
 
+
+    public void listRooms() {
+        RoomsClient roomsClient = createRoomsClientWithConnectionString();
+
+        // BEGIN: readme-sample-listRooms
+        try {
+            PagedIterable<CommunicationRoom> rooms = roomsClient.listRooms();
+
+            for (CommunicationRoom room : rooms) {
+                System.out.println("Room ID: " + room.getRoomId());
+            }
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        // END: readme-sample-listRooms
+    }
+
+
     public void addOrUpdateRoomParticipantsWithRoomId() {
 
         RoomsClient roomsClient = createRoomsClientWithConnectionString();
