@@ -84,18 +84,16 @@ public final class StorageError implements XmlSerializable<StorageError> {
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String message = null;
+                    StorageError deserializedStorageError = new StorageError();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Message".equals(elementName.getLocalPart())) {
-                            message = reader.getStringElement();
+                            deserializedStorageError.message = reader.getStringElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    StorageError deserializedStorageError = new StorageError();
-                    deserializedStorageError.message = message;
 
                     return deserializedStorageError;
                 });

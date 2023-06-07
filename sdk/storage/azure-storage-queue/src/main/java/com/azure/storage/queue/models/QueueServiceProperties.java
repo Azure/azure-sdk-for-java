@@ -10,7 +10,7 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -33,63 +33,10 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      */
     private QueueMetrics minuteMetrics;
 
-    static final class CorsWrapper implements XmlSerializable<CorsWrapper> {
-        private final List<QueueCorsRule> items;
-
-        private CorsWrapper(List<QueueCorsRule> items) {
-            this.items = items;
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-            return toXml(xmlWriter, null);
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Cors" : rootElementName;
-            xmlWriter.writeStartElement(rootElementName);
-            if (items != null) {
-                for (QueueCorsRule element : items) {
-                    xmlWriter.writeXml(element, "CorsRule");
-                }
-            }
-            return xmlWriter.writeEndElement();
-        }
-
-        public static CorsWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
-            return fromXml(xmlReader, null);
-        }
-
-        public static CorsWrapper fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Cors" : rootElementName;
-            return xmlReader.readObject(
-                    rootElementName,
-                    reader -> {
-                        List<QueueCorsRule> items = null;
-
-                        while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                            String elementName = reader.getElementName().getLocalPart();
-
-                            if ("CorsRule".equals(elementName)) {
-                                if (items == null) {
-                                    items = new ArrayList<>();
-                                }
-
-                                items.add(QueueCorsRule.fromXml(reader));
-                            } else {
-                                reader.nextElement();
-                            }
-                        }
-                        return new CorsWrapper(items);
-                    });
-        }
-    }
-
     /*
      * The set of CORS rules.
      */
-    private CorsWrapper cors;
+    private List<QueueCorsRule> cors = new LinkedList<>();
 
     /** Creates an instance of QueueServiceProperties class. */
     public QueueServiceProperties() {}
@@ -161,9 +108,9 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      */
     public List<QueueCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new CorsWrapper(new ArrayList<QueueCorsRule>());
+            this.cors = new LinkedList<>();
         }
-        return this.cors.items;
+        return this.cors;
     }
 
     /**
@@ -173,7 +120,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      * @return the QueueServiceProperties object itself.
      */
     public QueueServiceProperties setCors(List<QueueCorsRule> cors) {
-        this.cors = new CorsWrapper(cors);
+        this.cors = cors;
         return this;
     }
 
@@ -189,7 +136,13 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
         xmlWriter.writeXml(this.analyticsLogging, "Logging");
         xmlWriter.writeXml(this.hourMetrics, "HourMetrics");
         xmlWriter.writeXml(this.minuteMetrics, "MinuteMetrics");
-        xmlWriter.writeXml(this.cors);
+        if (this.cors != null) {
+            xmlWriter.writeStartElement("Cors");
+            for (QueueCorsRule element : this.cors) {
+                xmlWriter.writeXml(element, "CorsRule");
+            }
+            xmlWriter.writeEndElement();
+        }
         return xmlWriter.writeEndElement();
     }
 
@@ -222,30 +175,36 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    QueueAnalyticsLogging analyticsLogging = null;
-                    QueueMetrics hourMetrics = null;
-                    QueueMetrics minuteMetrics = null;
-                    CorsWrapper cors = null;
+                    QueueServiceProperties deserializedQueueServiceProperties = new QueueServiceProperties();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Logging".equals(elementName.getLocalPart())) {
-                            analyticsLogging = QueueAnalyticsLogging.fromXml(reader, "Logging");
+                            deserializedQueueServiceProperties.analyticsLogging =
+                                    QueueAnalyticsLogging.fromXml(reader, "Logging");
                         } else if ("HourMetrics".equals(elementName.getLocalPart())) {
-                            hourMetrics = QueueMetrics.fromXml(reader, "HourMetrics");
+                            deserializedQueueServiceProperties.hourMetrics =
+                                    QueueMetrics.fromXml(reader, "HourMetrics");
                         } else if ("MinuteMetrics".equals(elementName.getLocalPart())) {
-                            minuteMetrics = QueueMetrics.fromXml(reader, "MinuteMetrics");
+                            deserializedQueueServiceProperties.minuteMetrics =
+                                    QueueMetrics.fromXml(reader, "MinuteMetrics");
                         } else if ("Cors".equals(elementName.getLocalPart())) {
-                            cors = CorsWrapper.fromXml(reader);
+                            if (deserializedQueueServiceProperties.cors == null) {
+                                deserializedQueueServiceProperties.cors = new LinkedList<>();
+                            }
+                            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                                elementName = reader.getElementName();
+                                if ("CorsRule".equals(elementName.getLocalPart())) {
+                                    deserializedQueueServiceProperties.cors.add(
+                                            QueueCorsRule.fromXml(reader, "CorsRule"));
+                                } else {
+                                    reader.skipElement();
+                                }
+                            }
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueServiceProperties deserializedQueueServiceProperties = new QueueServiceProperties();
-                    deserializedQueueServiceProperties.analyticsLogging = analyticsLogging;
-                    deserializedQueueServiceProperties.hourMetrics = hourMetrics;
-                    deserializedQueueServiceProperties.minuteMetrics = minuteMetrics;
-                    deserializedQueueServiceProperties.cors = cors;
 
                     return deserializedQueueServiceProperties;
                 });

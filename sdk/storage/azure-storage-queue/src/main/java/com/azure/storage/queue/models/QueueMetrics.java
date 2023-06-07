@@ -166,30 +166,23 @@ public final class QueueMetrics implements XmlSerializable<QueueMetrics> {
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String version = null;
-                    boolean enabled = false;
-                    Boolean includeApis = null;
-                    QueueRetentionPolicy retentionPolicy = null;
+                    QueueMetrics deserializedQueueMetrics = new QueueMetrics();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Version".equals(elementName.getLocalPart())) {
-                            version = reader.getStringElement();
+                            deserializedQueueMetrics.version = reader.getStringElement();
                         } else if ("Enabled".equals(elementName.getLocalPart())) {
-                            enabled = reader.getBooleanElement();
+                            deserializedQueueMetrics.enabled = reader.getBooleanElement();
                         } else if ("IncludeAPIs".equals(elementName.getLocalPart())) {
-                            includeApis = reader.getNullableElement(Boolean::parseBoolean);
+                            deserializedQueueMetrics.includeApis = reader.getNullableElement(Boolean::parseBoolean);
                         } else if ("RetentionPolicy".equals(elementName.getLocalPart())) {
-                            retentionPolicy = QueueRetentionPolicy.fromXml(reader, "RetentionPolicy");
+                            deserializedQueueMetrics.retentionPolicy =
+                                    QueueRetentionPolicy.fromXml(reader, "RetentionPolicy");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueMetrics deserializedQueueMetrics = new QueueMetrics();
-                    deserializedQueueMetrics.enabled = enabled;
-                    deserializedQueueMetrics.version = version;
-                    deserializedQueueMetrics.includeApis = includeApis;
-                    deserializedQueueMetrics.retentionPolicy = retentionPolicy;
 
                     return deserializedQueueMetrics;
                 });

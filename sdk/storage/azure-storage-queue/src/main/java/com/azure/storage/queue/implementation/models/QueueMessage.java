@@ -86,18 +86,16 @@ public final class QueueMessage implements XmlSerializable<QueueMessage> {
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String messageText = null;
+                    QueueMessage deserializedQueueMessage = new QueueMessage();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("MessageText".equals(elementName.getLocalPart())) {
-                            messageText = reader.getStringElement();
+                            deserializedQueueMessage.messageText = reader.getStringElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueMessage deserializedQueueMessage = new QueueMessage();
-                    deserializedQueueMessage.messageText = messageText;
 
                     return deserializedQueueMessage;
                 });

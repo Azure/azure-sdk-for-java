@@ -270,42 +270,31 @@ public final class QueueMessageItemInternal implements XmlSerializable<QueueMess
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String messageId = null;
-                    OffsetDateTime insertionTime = null;
-                    OffsetDateTime expirationTime = null;
-                    String popReceipt = null;
-                    OffsetDateTime timeNextVisible = null;
-                    long dequeueCount = 0L;
-                    String messageText = null;
+                    QueueMessageItemInternal deserializedQueueMessageItemInternal = new QueueMessageItemInternal();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("MessageId".equals(elementName.getLocalPart())) {
-                            messageId = reader.getStringElement();
+                            deserializedQueueMessageItemInternal.messageId = reader.getStringElement();
                         } else if ("InsertionTime".equals(elementName.getLocalPart())) {
-                            insertionTime = reader.getNullableElement(DateTimeRfc1123::new).getDateTime();
+                            deserializedQueueMessageItemInternal.setInsertionTime(
+                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
                         } else if ("ExpirationTime".equals(elementName.getLocalPart())) {
-                            expirationTime = reader.getNullableElement(DateTimeRfc1123::new).getDateTime();
+                            deserializedQueueMessageItemInternal.setExpirationTime(
+                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
                         } else if ("PopReceipt".equals(elementName.getLocalPart())) {
-                            popReceipt = reader.getStringElement();
+                            deserializedQueueMessageItemInternal.popReceipt = reader.getStringElement();
                         } else if ("TimeNextVisible".equals(elementName.getLocalPart())) {
-                            timeNextVisible = reader.getNullableElement(DateTimeRfc1123::new).getDateTime();
+                            deserializedQueueMessageItemInternal.setTimeNextVisible(
+                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
                         } else if ("DequeueCount".equals(elementName.getLocalPart())) {
-                            dequeueCount = reader.getLongElement();
+                            deserializedQueueMessageItemInternal.dequeueCount = reader.getLongElement();
                         } else if ("MessageText".equals(elementName.getLocalPart())) {
-                            messageText = reader.getStringElement();
+                            deserializedQueueMessageItemInternal.messageText = reader.getStringElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueMessageItemInternal deserializedQueueMessageItemInternal = new QueueMessageItemInternal();
-                    deserializedQueueMessageItemInternal.messageId = messageId;
-                    deserializedQueueMessageItemInternal.setInsertionTime(insertionTime);
-                    deserializedQueueMessageItemInternal.setExpirationTime(expirationTime);
-                    deserializedQueueMessageItemInternal.popReceipt = popReceipt;
-                    deserializedQueueMessageItemInternal.setTimeNextVisible(timeNextVisible);
-                    deserializedQueueMessageItemInternal.dequeueCount = dequeueCount;
-                    deserializedQueueMessageItemInternal.messageText = messageText;
 
                     return deserializedQueueMessageItemInternal;
                 });

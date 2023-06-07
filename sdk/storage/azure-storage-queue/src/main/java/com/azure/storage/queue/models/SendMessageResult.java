@@ -217,34 +217,27 @@ public final class SendMessageResult implements XmlSerializable<SendMessageResul
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String messageId = null;
-                    OffsetDateTime insertionTime = null;
-                    OffsetDateTime expirationTime = null;
-                    String popReceipt = null;
-                    OffsetDateTime timeNextVisible = null;
+                    SendMessageResult deserializedSendMessageResult = new SendMessageResult();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("MessageId".equals(elementName.getLocalPart())) {
-                            messageId = reader.getStringElement();
+                            deserializedSendMessageResult.messageId = reader.getStringElement();
                         } else if ("InsertionTime".equals(elementName.getLocalPart())) {
-                            insertionTime = reader.getNullableElement(DateTimeRfc1123::new).getDateTime();
+                            deserializedSendMessageResult.setInsertionTime(
+                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
                         } else if ("ExpirationTime".equals(elementName.getLocalPart())) {
-                            expirationTime = reader.getNullableElement(DateTimeRfc1123::new).getDateTime();
+                            deserializedSendMessageResult.setExpirationTime(
+                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
                         } else if ("PopReceipt".equals(elementName.getLocalPart())) {
-                            popReceipt = reader.getStringElement();
+                            deserializedSendMessageResult.popReceipt = reader.getStringElement();
                         } else if ("TimeNextVisible".equals(elementName.getLocalPart())) {
-                            timeNextVisible = reader.getNullableElement(DateTimeRfc1123::new).getDateTime();
+                            deserializedSendMessageResult.setTimeNextVisible(
+                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
                         } else {
                             reader.skipElement();
                         }
                     }
-                    SendMessageResult deserializedSendMessageResult = new SendMessageResult();
-                    deserializedSendMessageResult.messageId = messageId;
-                    deserializedSendMessageResult.setInsertionTime(insertionTime);
-                    deserializedSendMessageResult.setExpirationTime(expirationTime);
-                    deserializedSendMessageResult.popReceipt = popReceipt;
-                    deserializedSendMessageResult.setTimeNextVisible(timeNextVisible);
 
                     return deserializedSendMessageResult;
                 });

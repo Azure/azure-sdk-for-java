@@ -116,22 +116,18 @@ public final class QueueRetentionPolicy implements XmlSerializable<QueueRetentio
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    boolean enabled = false;
-                    Integer days = null;
+                    QueueRetentionPolicy deserializedQueueRetentionPolicy = new QueueRetentionPolicy();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Enabled".equals(elementName.getLocalPart())) {
-                            enabled = reader.getBooleanElement();
+                            deserializedQueueRetentionPolicy.enabled = reader.getBooleanElement();
                         } else if ("Days".equals(elementName.getLocalPart())) {
-                            days = reader.getNullableElement(Integer::parseInt);
+                            deserializedQueueRetentionPolicy.days = reader.getNullableElement(Integer::parseInt);
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueRetentionPolicy deserializedQueueRetentionPolicy = new QueueRetentionPolicy();
-                    deserializedQueueRetentionPolicy.enabled = enabled;
-                    deserializedQueueRetentionPolicy.days = days;
 
                     return deserializedQueueRetentionPolicy;
                 });

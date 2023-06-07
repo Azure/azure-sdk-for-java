@@ -208,34 +208,26 @@ public final class PeekedMessageItemInternal implements XmlSerializable<PeekedMe
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String messageId = null;
-                    OffsetDateTime insertionTime = null;
-                    OffsetDateTime expirationTime = null;
-                    long dequeueCount = 0L;
-                    String messageText = null;
+                    PeekedMessageItemInternal deserializedPeekedMessageItemInternal = new PeekedMessageItemInternal();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("MessageId".equals(elementName.getLocalPart())) {
-                            messageId = reader.getStringElement();
+                            deserializedPeekedMessageItemInternal.messageId = reader.getStringElement();
                         } else if ("InsertionTime".equals(elementName.getLocalPart())) {
-                            insertionTime = reader.getNullableElement(DateTimeRfc1123::new).getDateTime();
+                            deserializedPeekedMessageItemInternal.setInsertionTime(
+                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
                         } else if ("ExpirationTime".equals(elementName.getLocalPart())) {
-                            expirationTime = reader.getNullableElement(DateTimeRfc1123::new).getDateTime();
+                            deserializedPeekedMessageItemInternal.setExpirationTime(
+                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
                         } else if ("DequeueCount".equals(elementName.getLocalPart())) {
-                            dequeueCount = reader.getLongElement();
+                            deserializedPeekedMessageItemInternal.dequeueCount = reader.getLongElement();
                         } else if ("MessageText".equals(elementName.getLocalPart())) {
-                            messageText = reader.getStringElement();
+                            deserializedPeekedMessageItemInternal.messageText = reader.getStringElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    PeekedMessageItemInternal deserializedPeekedMessageItemInternal = new PeekedMessageItemInternal();
-                    deserializedPeekedMessageItemInternal.messageId = messageId;
-                    deserializedPeekedMessageItemInternal.setInsertionTime(insertionTime);
-                    deserializedPeekedMessageItemInternal.setExpirationTime(expirationTime);
-                    deserializedPeekedMessageItemInternal.dequeueCount = dequeueCount;
-                    deserializedPeekedMessageItemInternal.messageText = messageText;
 
                     return deserializedPeekedMessageItemInternal;
                 });

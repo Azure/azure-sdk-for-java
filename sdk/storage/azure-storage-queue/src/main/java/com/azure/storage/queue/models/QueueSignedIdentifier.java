@@ -112,22 +112,19 @@ public final class QueueSignedIdentifier implements XmlSerializable<QueueSignedI
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String id = null;
-                    QueueAccessPolicy accessPolicy = null;
+                    QueueSignedIdentifier deserializedQueueSignedIdentifier = new QueueSignedIdentifier();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Id".equals(elementName.getLocalPart())) {
-                            id = reader.getStringElement();
+                            deserializedQueueSignedIdentifier.id = reader.getStringElement();
                         } else if ("AccessPolicy".equals(elementName.getLocalPart())) {
-                            accessPolicy = QueueAccessPolicy.fromXml(reader, "AccessPolicy");
+                            deserializedQueueSignedIdentifier.accessPolicy =
+                                    QueueAccessPolicy.fromXml(reader, "AccessPolicy");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueSignedIdentifier deserializedQueueSignedIdentifier = new QueueSignedIdentifier();
-                    deserializedQueueSignedIdentifier.id = id;
-                    deserializedQueueSignedIdentifier.accessPolicy = accessPolicy;
 
                     return deserializedQueueSignedIdentifier;
                 });

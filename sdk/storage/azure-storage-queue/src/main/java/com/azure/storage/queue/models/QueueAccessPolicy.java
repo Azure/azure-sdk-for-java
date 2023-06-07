@@ -138,26 +138,20 @@ public final class QueueAccessPolicy implements XmlSerializable<QueueAccessPolic
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    OffsetDateTime startsOn = null;
-                    OffsetDateTime expiresOn = null;
-                    String permissions = null;
+                    QueueAccessPolicy deserializedQueueAccessPolicy = new QueueAccessPolicy();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Start".equals(elementName.getLocalPart())) {
-                            startsOn = reader.getNullableElement(OffsetDateTime::parse);
+                            deserializedQueueAccessPolicy.startsOn = reader.getNullableElement(OffsetDateTime::parse);
                         } else if ("Expiry".equals(elementName.getLocalPart())) {
-                            expiresOn = reader.getNullableElement(OffsetDateTime::parse);
+                            deserializedQueueAccessPolicy.expiresOn = reader.getNullableElement(OffsetDateTime::parse);
                         } else if ("Permission".equals(elementName.getLocalPart())) {
-                            permissions = reader.getStringElement();
+                            deserializedQueueAccessPolicy.permissions = reader.getStringElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueAccessPolicy deserializedQueueAccessPolicy = new QueueAccessPolicy();
-                    deserializedQueueAccessPolicy.startsOn = startsOn;
-                    deserializedQueueAccessPolicy.expiresOn = expiresOn;
-                    deserializedQueueAccessPolicy.permissions = permissions;
 
                     return deserializedQueueAccessPolicy;
                 });

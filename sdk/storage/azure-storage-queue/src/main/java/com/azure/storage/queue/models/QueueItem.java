@@ -120,27 +120,24 @@ public final class QueueItem implements XmlSerializable<QueueItem> {
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String name = null;
-                    Map<String, String> metadata = null;
+                    QueueItem deserializedQueueItem = new QueueItem();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Name".equals(elementName.getLocalPart())) {
-                            name = reader.getStringElement();
+                            deserializedQueueItem.name = reader.getStringElement();
                         } else if ("Metadata".equals(elementName.getLocalPart())) {
-                            if (metadata == null) {
-                                metadata = new LinkedHashMap<>();
+                            if (deserializedQueueItem.metadata == null) {
+                                deserializedQueueItem.metadata = new LinkedHashMap<>();
                             }
                             while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                                metadata.put(reader.getElementName().getLocalPart(), reader.getStringElement());
+                                deserializedQueueItem.metadata.put(
+                                        reader.getElementName().getLocalPart(), reader.getStringElement());
                             }
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueItem deserializedQueueItem = new QueueItem();
-                    deserializedQueueItem.name = name;
-                    deserializedQueueItem.metadata = metadata;
 
                     return deserializedQueueItem;
                 });

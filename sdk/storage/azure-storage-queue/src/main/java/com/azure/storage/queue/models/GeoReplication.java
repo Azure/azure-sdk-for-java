@@ -127,22 +127,20 @@ public final class GeoReplication implements XmlSerializable<GeoReplication> {
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    GeoReplicationStatus status = null;
-                    OffsetDateTime lastSyncTime = null;
+                    GeoReplication deserializedGeoReplication = new GeoReplication();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Status".equals(elementName.getLocalPart())) {
-                            status = reader.getNullableElement(GeoReplicationStatus::fromString);
+                            deserializedGeoReplication.status =
+                                    reader.getNullableElement(GeoReplicationStatus::fromString);
                         } else if ("LastSyncTime".equals(elementName.getLocalPart())) {
-                            lastSyncTime = reader.getNullableElement(DateTimeRfc1123::new).getDateTime();
+                            deserializedGeoReplication.setLastSyncTime(
+                                    reader.getNullableElement(DateTimeRfc1123::new).getDateTime());
                         } else {
                             reader.skipElement();
                         }
                     }
-                    GeoReplication deserializedGeoReplication = new GeoReplication();
-                    deserializedGeoReplication.status = status;
-                    deserializedGeoReplication.setLastSyncTime(lastSyncTime);
 
                     return deserializedGeoReplication;
                 });

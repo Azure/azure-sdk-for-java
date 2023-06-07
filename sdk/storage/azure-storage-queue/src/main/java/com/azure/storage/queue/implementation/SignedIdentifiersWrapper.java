@@ -10,7 +10,7 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import javax.xml.stream.XMLStreamException;
 
@@ -70,7 +70,7 @@ public final class SignedIdentifiersWrapper implements XmlSerializable<SignedIde
 
                         if ("SignedIdentifier".equals(elementName)) {
                             if (items == null) {
-                                items = new ArrayList<>();
+                                items = new LinkedList<>();
                             }
 
                             items.add(QueueSignedIdentifier.fromXml(reader));

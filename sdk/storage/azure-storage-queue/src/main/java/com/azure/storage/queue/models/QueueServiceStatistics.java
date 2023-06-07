@@ -86,18 +86,17 @@ public final class QueueServiceStatistics implements XmlSerializable<QueueServic
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    GeoReplication geoReplication = null;
+                    QueueServiceStatistics deserializedQueueServiceStatistics = new QueueServiceStatistics();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("GeoReplication".equals(elementName.getLocalPart())) {
-                            geoReplication = GeoReplication.fromXml(reader, "GeoReplication");
+                            deserializedQueueServiceStatistics.geoReplication =
+                                    GeoReplication.fromXml(reader, "GeoReplication");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueServiceStatistics deserializedQueueServiceStatistics = new QueueServiceStatistics();
-                    deserializedQueueServiceStatistics.geoReplication = geoReplication;
 
                     return deserializedQueueServiceStatistics;
                 });

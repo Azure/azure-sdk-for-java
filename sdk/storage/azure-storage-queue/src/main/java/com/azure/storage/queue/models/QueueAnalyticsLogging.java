@@ -191,34 +191,25 @@ public final class QueueAnalyticsLogging implements XmlSerializable<QueueAnalyti
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String version = null;
-                    boolean delete = false;
-                    boolean read = false;
-                    boolean write = false;
-                    QueueRetentionPolicy retentionPolicy = null;
+                    QueueAnalyticsLogging deserializedQueueAnalyticsLogging = new QueueAnalyticsLogging();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Version".equals(elementName.getLocalPart())) {
-                            version = reader.getStringElement();
+                            deserializedQueueAnalyticsLogging.version = reader.getStringElement();
                         } else if ("Delete".equals(elementName.getLocalPart())) {
-                            delete = reader.getBooleanElement();
+                            deserializedQueueAnalyticsLogging.delete = reader.getBooleanElement();
                         } else if ("Read".equals(elementName.getLocalPart())) {
-                            read = reader.getBooleanElement();
+                            deserializedQueueAnalyticsLogging.read = reader.getBooleanElement();
                         } else if ("Write".equals(elementName.getLocalPart())) {
-                            write = reader.getBooleanElement();
+                            deserializedQueueAnalyticsLogging.write = reader.getBooleanElement();
                         } else if ("RetentionPolicy".equals(elementName.getLocalPart())) {
-                            retentionPolicy = QueueRetentionPolicy.fromXml(reader, "RetentionPolicy");
+                            deserializedQueueAnalyticsLogging.retentionPolicy =
+                                    QueueRetentionPolicy.fromXml(reader, "RetentionPolicy");
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueAnalyticsLogging deserializedQueueAnalyticsLogging = new QueueAnalyticsLogging();
-                    deserializedQueueAnalyticsLogging.version = version;
-                    deserializedQueueAnalyticsLogging.delete = delete;
-                    deserializedQueueAnalyticsLogging.read = read;
-                    deserializedQueueAnalyticsLogging.write = write;
-                    deserializedQueueAnalyticsLogging.retentionPolicy = retentionPolicy;
 
                     return deserializedQueueAnalyticsLogging;
                 });

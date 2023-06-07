@@ -11,10 +11,11 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-import java.util.ArrayList;
-import java.util.List;
+
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
+import java.util.LinkedList;
+import java.util.List;
 
 /** The object returned when calling List Queues on a Queue Service. */
 @Fluent
@@ -39,63 +40,10 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      */
     private int maxResults;
 
-    static final class QueuesWrapper implements XmlSerializable<QueuesWrapper> {
-        private final List<QueueItem> items;
-
-        private QueuesWrapper(List<QueueItem> items) {
-            this.items = items;
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-            return toXml(xmlWriter, null);
-        }
-
-        @Override
-        public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Queues" : rootElementName;
-            xmlWriter.writeStartElement(rootElementName);
-            if (items != null) {
-                for (QueueItem element : items) {
-                    xmlWriter.writeXml(element, "Queue");
-                }
-            }
-            return xmlWriter.writeEndElement();
-        }
-
-        public static QueuesWrapper fromXml(XmlReader xmlReader) throws XMLStreamException {
-            return fromXml(xmlReader, null);
-        }
-
-        public static QueuesWrapper fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-            rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "Queues" : rootElementName;
-            return xmlReader.readObject(
-                    rootElementName,
-                    reader -> {
-                        List<QueueItem> items = null;
-
-                        while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                            String elementName = reader.getElementName().getLocalPart();
-
-                            if ("Queue".equals(elementName)) {
-                                if (items == null) {
-                                    items = new ArrayList<>();
-                                }
-
-                                items.add(QueueItem.fromXml(reader));
-                            } else {
-                                reader.nextElement();
-                            }
-                        }
-                        return new QueuesWrapper(items);
-                    });
-        }
-    }
-
     /*
      * The QueueItems property.
      */
-    private QueuesWrapper queueItems;
+    private List<QueueItem> queueItems = new LinkedList<>();
 
     /*
      * The NextMarker property.
@@ -192,9 +140,9 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      */
     public List<QueueItem> getQueueItems() {
         if (this.queueItems == null) {
-            this.queueItems = new QueuesWrapper(new ArrayList<QueueItem>());
+            this.queueItems = new LinkedList<>();
         }
-        return this.queueItems.items;
+        return this.queueItems;
     }
 
     /**
@@ -204,7 +152,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      * @return the ListQueuesSegmentResponse object itself.
      */
     public ListQueuesSegmentResponse setQueueItems(List<QueueItem> queueItems) {
-        this.queueItems = new QueuesWrapper(queueItems);
+        this.queueItems = queueItems;
         return this;
     }
 
@@ -241,7 +189,13 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
         xmlWriter.writeStringElement("Prefix", this.prefix);
         xmlWriter.writeStringElement("Marker", this.marker);
         xmlWriter.writeIntElement("MaxResults", this.maxResults);
-        xmlWriter.writeXml(this.queueItems);
+        if (this.queueItems != null) {
+            xmlWriter.writeStartElement("Queues");
+            for (QueueItem element : this.queueItems) {
+                xmlWriter.writeXml(element, "Queue");
+            }
+            xmlWriter.writeEndElement();
+        }
         xmlWriter.writeStringElement("NextMarker", this.nextMarker);
         return xmlWriter.writeEndElement();
     }
@@ -276,36 +230,37 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String serviceEndpoint = reader.getStringAttribute(null, "ServiceEndpoint");
-                    String prefix = null;
-                    String marker = null;
-                    int maxResults = 0;
-                    QueuesWrapper queueItems = null;
-                    String nextMarker = null;
+                    ListQueuesSegmentResponse deserializedListQueuesSegmentResponse = new ListQueuesSegmentResponse();
+                    deserializedListQueuesSegmentResponse.serviceEndpoint =
+                            reader.getStringAttribute(null, "ServiceEndpoint");
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("Prefix".equals(elementName.getLocalPart())) {
-                            prefix = reader.getStringElement();
+                            deserializedListQueuesSegmentResponse.prefix = reader.getStringElement();
                         } else if ("Marker".equals(elementName.getLocalPart())) {
-                            marker = reader.getStringElement();
+                            deserializedListQueuesSegmentResponse.marker = reader.getStringElement();
                         } else if ("MaxResults".equals(elementName.getLocalPart())) {
-                            maxResults = reader.getIntElement();
+                            deserializedListQueuesSegmentResponse.maxResults = reader.getIntElement();
                         } else if ("Queues".equals(elementName.getLocalPart())) {
-                            queueItems = QueuesWrapper.fromXml(reader);
+                            if (deserializedListQueuesSegmentResponse.queueItems == null) {
+                                deserializedListQueuesSegmentResponse.queueItems = new LinkedList<>();
+                            }
+                            while (reader.nextElement() != XmlToken.END_ELEMENT) {
+                                elementName = reader.getElementName();
+                                if ("Queue".equals(elementName.getLocalPart())) {
+                                    deserializedListQueuesSegmentResponse.queueItems.add(
+                                            QueueItem.fromXml(reader, "Queue"));
+                                } else {
+                                    reader.skipElement();
+                                }
+                            }
                         } else if ("NextMarker".equals(elementName.getLocalPart())) {
-                            nextMarker = reader.getStringElement();
+                            deserializedListQueuesSegmentResponse.nextMarker = reader.getStringElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    ListQueuesSegmentResponse deserializedListQueuesSegmentResponse = new ListQueuesSegmentResponse();
-                    deserializedListQueuesSegmentResponse.serviceEndpoint = serviceEndpoint;
-                    deserializedListQueuesSegmentResponse.prefix = prefix;
-                    deserializedListQueuesSegmentResponse.maxResults = maxResults;
-                    deserializedListQueuesSegmentResponse.nextMarker = nextMarker;
-                    deserializedListQueuesSegmentResponse.marker = marker;
-                    deserializedListQueuesSegmentResponse.queueItems = queueItems;
 
                     return deserializedListQueuesSegmentResponse;
                 });

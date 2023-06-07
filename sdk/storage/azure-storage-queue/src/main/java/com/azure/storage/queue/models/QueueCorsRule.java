@@ -211,34 +211,24 @@ public final class QueueCorsRule implements XmlSerializable<QueueCorsRule> {
         return xmlReader.readObject(
                 finalRootElementName,
                 reader -> {
-                    String allowedOrigins = null;
-                    String allowedMethods = null;
-                    String allowedHeaders = null;
-                    String exposedHeaders = null;
-                    int maxAgeInSeconds = 0;
+                    QueueCorsRule deserializedQueueCorsRule = new QueueCorsRule();
                     while (reader.nextElement() != XmlToken.END_ELEMENT) {
                         QName elementName = reader.getElementName();
 
                         if ("AllowedOrigins".equals(elementName.getLocalPart())) {
-                            allowedOrigins = reader.getStringElement();
+                            deserializedQueueCorsRule.allowedOrigins = reader.getStringElement();
                         } else if ("AllowedMethods".equals(elementName.getLocalPart())) {
-                            allowedMethods = reader.getStringElement();
+                            deserializedQueueCorsRule.allowedMethods = reader.getStringElement();
                         } else if ("AllowedHeaders".equals(elementName.getLocalPart())) {
-                            allowedHeaders = reader.getStringElement();
+                            deserializedQueueCorsRule.allowedHeaders = reader.getStringElement();
                         } else if ("ExposedHeaders".equals(elementName.getLocalPart())) {
-                            exposedHeaders = reader.getStringElement();
+                            deserializedQueueCorsRule.exposedHeaders = reader.getStringElement();
                         } else if ("MaxAgeInSeconds".equals(elementName.getLocalPart())) {
-                            maxAgeInSeconds = reader.getIntElement();
+                            deserializedQueueCorsRule.maxAgeInSeconds = reader.getIntElement();
                         } else {
                             reader.skipElement();
                         }
                     }
-                    QueueCorsRule deserializedQueueCorsRule = new QueueCorsRule();
-                    deserializedQueueCorsRule.allowedOrigins = allowedOrigins;
-                    deserializedQueueCorsRule.allowedMethods = allowedMethods;
-                    deserializedQueueCorsRule.allowedHeaders = allowedHeaders;
-                    deserializedQueueCorsRule.exposedHeaders = exposedHeaders;
-                    deserializedQueueCorsRule.maxAgeInSeconds = maxAgeInSeconds;
 
                     return deserializedQueueCorsRule;
                 });
