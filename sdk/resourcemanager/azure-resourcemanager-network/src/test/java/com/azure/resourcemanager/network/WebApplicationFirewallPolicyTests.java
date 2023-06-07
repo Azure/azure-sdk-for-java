@@ -24,9 +24,13 @@ public class WebApplicationFirewallPolicyTests extends NetworkManagementTest {
                 .withNewResourceGroup(rgName)
                 .create();
 
+        defaultPolicy.refresh();
+
+        Assertions.assertNotNull(defaultPolicy.getPolicySettings());
         Assertions.assertEquals(WebApplicationFirewallMode.DETECTION, defaultPolicy.mode());
         Assertions.assertTrue(defaultPolicy.isRequestBodyInspectionEnabled());
         Assertions.assertEquals(128, defaultPolicy.requestBodySizeLimitInKb());
+        Assertions.assertEquals(100, defaultPolicy.fileUploadSizeLimitInMb());
         Assertions.assertTrue(defaultPolicy.isEnabled());
 
         // custom waf policy
@@ -36,28 +40,41 @@ public class WebApplicationFirewallPolicyTests extends NetworkManagementTest {
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .withDetectionMode()
-                .enablePolicy()
                 .withBotProtection()
                 .withInspectRequestBody()
                 .withRequestBodySizeLimitInKb(128)
                 .withFileUploadSizeLimitInMb(100)
                 .create();
 
+        policy.refresh();
+
         Assertions.assertEquals(WebApplicationFirewallMode.DETECTION, policy.mode());
         Assertions.assertTrue(policy.isRequestBodyInspectionEnabled());
         Assertions.assertEquals(128, policy.requestBodySizeLimitInKb());
         Assertions.assertEquals(100, policy.fileUploadSizeLimitInMb());
         Assertions.assertTrue(policy.isEnabled());
+        Assertions.assertEquals("0.1",
+            policy.getManagedRules().managedRuleSets()
+                .stream()
+                .filter(managedRuleSet -> managedRuleSet.ruleSetType().equals("Microsoft_BotManagerRuleSet"))
+                .findFirst().get().ruleSetVersion());
 
         policy.update()
             .withPreventionMode()
-            .withBotProtection("0.1")
+            .withBotProtection("1.0")
             .withoutInspectRequestBody()
+            .disablePolicy()
             .apply();
+
+        policy.refresh();
 
         Assertions.assertEquals(WebApplicationFirewallMode.PREVENTION, policy.mode());
         Assertions.assertFalse(policy.isRequestBodyInspectionEnabled());
-        Assertions.assertNull(policy.requestBodySizeLimitInKb());
-        Assertions.assertNull(policy.fileUploadSizeLimitInMb());
+        Assertions.assertFalse(policy.isEnabled());
+        Assertions.assertEquals("1.0",
+            policy.getManagedRules().managedRuleSets()
+                .stream()
+                .filter(managedRuleSet -> managedRuleSet.ruleSetType().equals("Microsoft_BotManagerRuleSet"))
+                .findFirst().get().ruleSetVersion());
     }
 }

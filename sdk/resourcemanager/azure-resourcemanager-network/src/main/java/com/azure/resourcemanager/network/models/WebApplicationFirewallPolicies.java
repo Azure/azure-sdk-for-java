@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.network.models;
 
+import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -15,6 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 
+/** Entry point to Web Application Firewall Policy management API in Azure. */
+@Fluent
 public interface WebApplicationFirewallPolicies
     extends SupportsCreating<WebApplicationFirewallPolicy.DefinitionStages.Blank>,
     SupportsListing<WebApplicationFirewallPolicy>,

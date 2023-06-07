@@ -9,12 +9,14 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResour
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 
 /** Entry point for Web Application Firewall Policy. */
 public interface WebApplicationFirewallPolicy
     extends GroupableResource<NetworkManager, WebApplicationFirewallPolicyInner>,
-    Updatable<WebApplicationFirewallPolicy.UpdateStages.Update> {
+    Updatable<WebApplicationFirewallPolicy.Update>,
+    Refreshable<WebApplicationFirewallPolicy> {
 
     /** @return mode of the Web Application Firewall Policy */
     WebApplicationFirewallMode mode();
@@ -24,14 +26,12 @@ public interface WebApplicationFirewallPolicy
 
     /**
      * Max request body size limit in KB.
-     * Null if {@link WebApplicationFirewallPolicy#isRequestBodyInspectionEnabled()} is false
      *
      * @return request body size limit in KB */
     Integer requestBodySizeLimitInKb();
 
     /**
      * Max file upload size limit, in MB.
-     * Null if {@link WebApplicationFirewallPolicy#isRequestBodyInspectionEnabled()} is false
      *
      * @return file upload limit in MB
      */
@@ -46,8 +46,14 @@ public interface WebApplicationFirewallPolicy
     /** @return whether this policy is enabled */
     boolean isEnabled();
 
-    interface Definitions
-        extends DefinitionStages.WithCreate {
+    /**
+     * The entirety of the Web Application Firewall Policy definition.
+     */
+    interface Definition
+        extends DefinitionStages.Blank,
+        DefinitionStages.WithGroup,
+        DefinitionStages.WithCreate,
+        DefinitionStages.WithRequestBodyOrCreate {
     }
 
     /** Grouping of Web Application Gateway stages. */
@@ -128,6 +134,15 @@ public interface WebApplicationFirewallPolicy
             /**
              * Enables request body inspection.
              *
+             * When your WAF receives a request that's over the size limit, the behavior depends on
+             * the mode of your WAF and the version of the managed ruleset you use.
+             * <ul>
+             *     <li>When your WAF policy is in prevention mode, WAF logs and blocks requests that are over the size limit.</li>
+             *     <li>When your WAF policy is in detection mode, WAF inspects the body up to the limit specified and ignores the rest.
+             *              If the Content-Length header is present and is greater than the file upload limit,
+             *              WAF ignores the entire body and logs the request.</li>
+             * </ul>
+             *
              * @return the next stage of the definition
              */
             WithRequestBodyOrCreate withInspectRequestBody();
@@ -147,6 +162,10 @@ public interface WebApplicationFirewallPolicy
             /**
              * Specifies the max request body size for the Web Application Firewall policy.
              *
+             * The maximum request body size field is specified in kilobytes and controls overall request size limit
+             * excluding any file uploads. This field has a minimum value of 8 KB and a maximum value of 128 KB.
+             * The default value for request body size is 128 KB.
+             *
              * @param limitInKb max request body size in KB
              * @return the next stage of the definition
              */
@@ -154,6 +173,19 @@ public interface WebApplicationFirewallPolicy
 
             /**
              * Specifies the max file upload size for the Web Application Firewall policy.
+             *
+             * The file upload limit field is specified in MB and it governs the maximum allowed file upload size.
+             * Only requests with Content-Type of multipart/form-data are considered for file uploads. For content to be
+             * considered as a file upload, it has to be a part of a multipart form with a filename header.For all other
+             * content types, the request body size limit applies.
+             *
+             * This field can have a minimum value of 1 MB and the following maximums:
+             * <ul>
+             *     <li>100 MB for v1 Medium WAF gateways</li>
+             *     <li>500 MB for v1 Large WAF gateways</li>
+             *     <li>750 MB for v2 WAF gateways</li>
+             * </ul>
+             * The default value for file upload limit is 100 MB.
              *
              * @param limitInMb max file upload size in MB
              * @return the next stage of the definition
@@ -171,8 +203,7 @@ public interface WebApplicationFirewallPolicy
             WithMode,
             WithState,
             WithBotProtection,
-            WithInspectRequestBody,
-            WithRequestBody {
+            WithInspectRequestBody {
         }
     }
 
@@ -237,6 +268,13 @@ public interface WebApplicationFirewallPolicy
              *     </a>
              */
             Update withBotProtection(String version);
+
+            /**
+             * Specifies that the Web Application Firewall Policy to use Bot protection against malicious bots.
+             *
+             * @return the next stage of the update
+             */
+            Update withBotProtection();
         }
 
         /**
@@ -246,12 +284,23 @@ public interface WebApplicationFirewallPolicy
             /**
              * Enables request body inspection.
              *
+             * When your WAF receives a request that's over the size limit, the behavior depends on
+             * the mode of your WAF and the version of the managed ruleset you use.
+             * <ul>
+             *     <li>When your WAF policy is in prevention mode, WAF logs and blocks requests that are over the size limit.</li>
+             *     <li>When your WAF policy is in detection mode, WAF inspects the body up to the limit specified and ignores the rest.
+             *              If the Content-Length header is present and is greater than the file upload limit,
+             *              WAF ignores the entire body and logs the request.</li>
+             * </ul>
+             *
              * @return the next stage of the update
              */
             WithRequestBodyOrUpdate withInspectRequestBody();
 
             /**
              * Disables request body inspection.
+             * Turning off the request body inspection allows for messages larger than 128 KB to be sent to WAF,
+             * but the message body isn't inspected for vulnerabilities.
              *
              * @return the next stage of the update
              */
@@ -271,6 +320,10 @@ public interface WebApplicationFirewallPolicy
             /**
              * Specifies the max request body size for the Web Application Firewall policy.
              *
+             * The maximum request body size field is specified in kilobytes and controls overall request size limit
+             * excluding any file uploads. This field has a minimum value of 8 KB and a maximum value of 128 KB.
+             * The default value for request body size is 128 KB.
+             *
              * @param limitInKb max request body size in KB
              * @return the next stage of the update
              */
@@ -279,22 +332,35 @@ public interface WebApplicationFirewallPolicy
             /**
              * Specifies the max file upload size for the Web Application Firewall policy.
              *
+             * The file upload limit field is specified in MB and it governs the maximum allowed file upload size.
+             * Only requests with Content-Type of multipart/form-data are considered for file uploads. For content to be
+             * considered as a file upload, it has to be a part of a multipart form with a filename header.For all other
+             * content types, the request body size limit applies.
+             *
+             * This field can have a minimum value of 1 MB and the following maximums:
+             * <ul>
+             *     <li>100 MB for v1 Medium WAF gateways</li>
+             *     <li>500 MB for v1 Large WAF gateways</li>
+             *     <li>750 MB for v2 WAF gateways</li>
+             * </ul>
+             * The default value for file upload limit is 100 MB.
+             *
              * @param limitInMb max file upload size in MB
              * @return the next stage of the update
              */
             WithRequestBodyOrUpdate withFileUploadSizeLimitInMb(int limitInMb);
         }
+    }
 
-        /** The template for a Web Application Firewall Policy update operation,
-         * containing all the settings that can be modified. */
-        interface Update
-            extends Appliable<WebApplicationFirewallPolicy>,
-            UpdateWithTags<WebApplicationFirewallPolicy>,
-            WithMode,
-            WithState,
-            WithBotProtection,
-            WithInspectRequestBody,
-            WithRequestBody {
-        }
+    /** The template for a Web Application Firewall Policy update operation,
+     *  containing all the settings that can be modified. */
+    interface Update
+        extends Appliable<WebApplicationFirewallPolicy>,
+        UpdateWithTags<WebApplicationFirewallPolicy>,
+        UpdateStages.WithMode,
+        UpdateStages.WithState,
+        UpdateStages.WithBotProtection,
+        UpdateStages.WithInspectRequestBody,
+        UpdateStages.WithRequestBody {
     }
 }

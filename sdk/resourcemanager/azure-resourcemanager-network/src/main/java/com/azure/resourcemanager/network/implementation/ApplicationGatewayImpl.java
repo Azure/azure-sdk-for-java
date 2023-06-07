@@ -48,6 +48,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
@@ -616,6 +617,30 @@ class ApplicationGatewayImpl
             // Ok to create the object
             return CreationState.NeedToCreate;
         }
+    }
+
+    @Override
+    public ApplicationGatewayImpl withExistingWebApplicationFirewallPolicy(WebApplicationFirewallPolicy wafPolicy) {
+        // TODO (caoxiaofei, 2023-06-08 09:59)
+        throw new UnsupportedOperationException("method [withExistingWebApplicationFirewallPolicy] not implemented in class [com.azure.resourcemanager.network.implementation.ApplicationGatewayImpl]");
+    }
+
+    @Override
+    public ApplicationGatewayImpl withExistingWebApplicationFirewallPolicy(String resourceId) {
+        // TODO (caoxiaofei, 2023-06-08 09:59)
+        throw new UnsupportedOperationException("method [withExistingWebApplicationFirewallPolicy] not implemented in class [com.azure.resourcemanager.network.implementation.ApplicationGatewayImpl]");
+    }
+
+    @Override
+    public ApplicationGatewayImpl withNewWebApplicationFirewallPolicy(String name) {
+        // TODO (caoxiaofei, 2023-06-08 09:59)
+        throw new UnsupportedOperationException("method [withNewWebApplicationFirewallPolicy] not implemented in class [com.azure.resourcemanager.network.implementation.ApplicationGatewayImpl]");
+    }
+
+    @Override
+    public ApplicationGatewayImpl withNewWebApplicationFirewallPolicy(Creatable<WebApplicationFirewallPolicy> creatable) {
+        // TODO (caoxiaofei, 2023-06-08 09:59)
+        throw new UnsupportedOperationException("method [withNewWebApplicationFirewallPolicy] not implemented in class [com.azure.resourcemanager.network.implementation.ApplicationGatewayImpl]");
     }
 
     enum CreationState {
@@ -1401,6 +1426,12 @@ class ApplicationGatewayImpl
             }
         }
         return listener;
+    }
+
+    @Override
+    public WebApplicationFirewallPolicy webApplicationFirewallPolicy() {
+        // TODO (caoxiaofei, 2023-06-08 09:59)
+        throw new UnsupportedOperationException("method [webApplicationFirewallPolicy] not implemented in class [com.azure.resourcemanager.network.implementation.ApplicationGatewayImpl]");
     }
 
     @Override

@@ -26,6 +26,7 @@ import com.azure.resourcemanager.network.implementation.PublicIpPrefixesImpl;
 import com.azure.resourcemanager.network.implementation.RouteFiltersImpl;
 import com.azure.resourcemanager.network.implementation.RouteTablesImpl;
 import com.azure.resourcemanager.network.implementation.VirtualNetworkGatewaysImpl;
+import com.azure.resourcemanager.network.implementation.WebApplicationFirewallPoliciesImpl;
 import com.azure.resourcemanager.network.models.ApplicationGateways;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroups;
 import com.azure.resourcemanager.network.models.DdosProtectionPlans;
@@ -296,10 +297,11 @@ public final class NetworkManager extends Manager<NetworkManagementClient> {
         return this.networkProfiles;
     }
 
+    /** @return entry point to web application firewall policies management */
     public WebApplicationFirewallPolicies webApplicationFirewallPolicies() {
         if (this.webApplicationFirewallPolicies == null) {
-            // todo(xiaofei)
+            this.webApplicationFirewallPolicies = new WebApplicationFirewallPoliciesImpl(this);
         }
-        return null;
+        return this.webApplicationFirewallPolicies;
     }
 }
