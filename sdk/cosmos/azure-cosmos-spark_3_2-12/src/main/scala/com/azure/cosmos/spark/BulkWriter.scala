@@ -370,12 +370,12 @@ class BulkWriter(container: CosmosAsyncContainer,
               TimeUnit.MILLISECONDS),
             Schedulers.boundedElastic())
           .subscribeOn(Schedulers.boundedElastic())
-          .subscribe()
+          .block()
 
       } else {
         deferredRetryMono
           .subscribeOn(Schedulers.boundedElastic())
-          .subscribe()
+          .block()
       }
 
       isGettingRetried.set(true)
