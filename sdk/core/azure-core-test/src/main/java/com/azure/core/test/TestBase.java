@@ -277,9 +277,9 @@ public abstract class TestBase implements BeforeEachCallback {
      * <li>Otherwise, the name of the HttpClient class should match env variable.</li>
      * </ul>
      *
-     * Environment values currently supported are: "ALL", "netty", "okhttp" which is case insensitive.
+     * Environment values currently supported are: "ALL", "jdk", "netty", "okhttp" which is case insensitive.
      * Use comma to separate http clients want to test.
-     * e.g. {@code set AZURE_TEST_HTTP_CLIENTS = NettyAsyncHttpClient, OkHttpAsyncHttpClient}
+     * e.g. {@code set AZURE_TEST_HTTP_CLIENTS = JdkHttpClient, NettyAsyncHttpClient, OkHttpAsyncHttpClient}
      *
      * @param client Http client needs to check
      * @return Boolean indicates whether filters out the client or not.
