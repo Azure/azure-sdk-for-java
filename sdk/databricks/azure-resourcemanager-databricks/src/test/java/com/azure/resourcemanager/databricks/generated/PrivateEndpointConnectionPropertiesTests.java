@@ -9,6 +9,7 @@ import com.azure.resourcemanager.databricks.models.PrivateEndpoint;
 import com.azure.resourcemanager.databricks.models.PrivateEndpointConnectionProperties;
 import com.azure.resourcemanager.databricks.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.databricks.models.PrivateLinkServiceConnectionStatus;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class PrivateEndpointConnectionPropertiesTests {
@@ -17,13 +18,14 @@ public final class PrivateEndpointConnectionPropertiesTests {
         PrivateEndpointConnectionProperties model =
             BinaryData
                 .fromString(
-                    "{\"privateEndpoint\":{\"id\":\"gxsabkyq\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"jitcjczdzevn\",\"actionRequired\":\"krwpdap\"},\"provisioningState\":\"Failed\"}")
+                    "{\"privateEndpoint\":{\"id\":\"mutduqktaps\"},\"groupIds\":[\"cuertu\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"o\",\"actionsRequired\":\"qw\"},\"provisioningState\":\"Succeeded\"}")
                 .toObject(PrivateEndpointConnectionProperties.class);
+        Assertions.assertEquals("cuertu", model.groupIds().get(0));
         Assertions
             .assertEquals(
                 PrivateLinkServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("jitcjczdzevn", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("krwpdap", model.privateLinkServiceConnectionState().actionRequired());
+        Assertions.assertEquals("o", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("qw", model.privateLinkServiceConnectionState().actionsRequired());
     }
 
     @org.junit.jupiter.api.Test
@@ -31,16 +33,18 @@ public final class PrivateEndpointConnectionPropertiesTests {
         PrivateEndpointConnectionProperties model =
             new PrivateEndpointConnectionProperties()
                 .withPrivateEndpoint(new PrivateEndpoint())
+                .withGroupIds(Arrays.asList("cuertu"))
                 .withPrivateLinkServiceConnectionState(
                     new PrivateLinkServiceConnectionState()
                         .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
-                        .withDescription("jitcjczdzevn")
-                        .withActionRequired("krwpdap"));
+                        .withDescription("o")
+                        .withActionsRequired("qw"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
+        Assertions.assertEquals("cuertu", model.groupIds().get(0));
         Assertions
             .assertEquals(
                 PrivateLinkServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("jitcjczdzevn", model.privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("krwpdap", model.privateLinkServiceConnectionState().actionRequired());
+        Assertions.assertEquals("o", model.privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("qw", model.privateLinkServiceConnectionState().actionsRequired());
     }
 }

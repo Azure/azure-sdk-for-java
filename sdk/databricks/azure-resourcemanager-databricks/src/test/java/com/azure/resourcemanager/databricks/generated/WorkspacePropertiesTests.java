@@ -27,101 +27,99 @@ public final class WorkspacePropertiesTests {
         WorkspaceProperties model =
             BinaryData
                 .fromString(
-                    "{\"managedResourceGroupId\":\"hdbihan\",\"parameters\":{\"amlWorkspaceId\":{\"type\":\"String\",\"value\":\"bj\"},\"customVirtualNetworkId\":{\"type\":\"Bool\",\"value\":\"ithxqhabifpi\"},\"customPublicSubnetName\":{\"type\":\"Bool\",\"value\":\"zb\"},\"customPrivateSubnetName\":{\"type\":\"Object\",\"value\":\"pqxu\"},\"enableNoPublicIp\":{\"type\":\"Bool\",\"value\":true},\"loadBalancerBackendPoolName\":{\"type\":\"Bool\",\"value\":\"b\"},\"loadBalancerId\":{\"type\":\"Object\",\"value\":\"xvd\"},\"natGatewayName\":{\"type\":\"Object\",\"value\":\"rtfw\"},\"publicIpName\":{\"type\":\"String\",\"value\":\"gaudcc\"},\"prepareEncryption\":{\"type\":\"String\",\"value\":false},\"encryption\":{\"type\":\"Bool\"},\"requireInfrastructureEncryption\":{\"type\":\"String\",\"value\":true},\"storageAccountName\":{\"type\":\"String\",\"value\":\"napczwlokjy\"},\"storageAccountSkuName\":{\"type\":\"Object\",\"value\":\"vnipjox\"},\"vnetAddressPrefix\":{\"type\":\"Object\",\"value\":\"hgejspodma\"},\"resourceTags\":{\"type\":\"String\",\"value\":\"datadeh\"}},\"provisioningState\":\"Created\",\"uiDefinitionUri\":\"ahuxinpm\",\"authorizations\":[{\"principalId\":\"b9ea483e-c7cb-4551-94a7-4080d0ce0eb6\",\"roleDefinitionId\":\"0b0b6bcc-8097-4e8f-a3d1-069c0a123285\"},{\"principalId\":\"57aa17f9-c759-4e99-8a18-93ac71b51725\",\"roleDefinitionId\":\"80546bc5-d619-41e0-9568-fd0d44ceb327\"},{\"principalId\":\"799c8db6-26cd-45b9-919d-7ddfb207fc8f\",\"roleDefinitionId\":\"5ec90243-32bc-4342-96bf-472f60924500\"}],\"createdBy\":{\"oid\":\"fa7610f7-177e-49d8-994a-89169bace4f0\",\"puid\":\"ixjsprozvcputeg\",\"applicationId\":\"1d60707c-30e5-44ee-ab00-e368d4cc2a4a\"},\"updatedBy\":{\"oid\":\"baee5194-113f-4690-ab7e-57afcc1a7edf\",\"puid\":\"datscmd\",\"applicationId\":\"77a1e544-3cb5-4baa-a3a7-a251629de348\"},\"createdDateTime\":\"2021-06-13T21:33:31Z\",\"workspaceId\":\"suuv\",\"workspaceUrl\":\"jozkrwfndiod\",\"storageAccountIdentity\":{\"principalId\":\"bbeaf97b-b4cf-4603-8579-7c831666ccdf\",\"tenantId\":\"59155f7a-6bad-4715-afa2-47c590e5e292\",\"type\":\"ej\"},\"encryption\":{\"entities\":{}},\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Updating\"},\"id\":\"psoacctazakljl\",\"name\":\"hbcryffdfdosyge\",\"type\":\"paojakhmsbzjh\"}],\"publicNetworkAccess\":\"Enabled\",\"requiredNsgRules\":\"NoAzureDatabricksRules\"}")
+                    "{\"managedResourceGroupId\":\"hiv\",\"parameters\":{\"amlWorkspaceId\":{\"type\":\"Bool\",\"value\":\"b\"},\"customVirtualNetworkId\":{\"type\":\"Object\",\"value\":\"xvd\"},\"customPublicSubnetName\":{\"type\":\"Object\",\"value\":\"rtfw\"},\"customPrivateSubnetName\":{\"type\":\"String\",\"value\":\"gaudcc\"},\"enableNoPublicIp\":{\"type\":\"String\",\"value\":false},\"loadBalancerBackendPoolName\":{\"type\":\"Bool\",\"value\":\"ejhkry\"},\"loadBalancerId\":{\"type\":\"Bool\",\"value\":\"pczwlo\"},\"natGatewayName\":{\"type\":\"Object\",\"value\":\"mkkvnip\"},\"publicIpName\":{\"type\":\"String\",\"value\":\"jnchgej\"},\"prepareEncryption\":{\"type\":\"String\",\"value\":true},\"encryption\":{\"type\":\"Object\"},\"requireInfrastructureEncryption\":{\"type\":\"Bool\",\"value\":false},\"storageAccountName\":{\"type\":\"Bool\",\"value\":\"yahux\"},\"storageAccountSkuName\":{\"type\":\"String\",\"value\":\"qnjaqwix\"},\"vnetAddressPrefix\":{\"type\":\"String\",\"value\":\"ozvcput\"},\"resourceTags\":{\"type\":\"Object\",\"value\":\"datawmfdatscmdvpjhul\"}},\"provisioningState\":\"Ready\",\"uiDefinitionUri\":\"mkjozkrwf\",\"authorizations\":[{\"principalId\":\"423825c0-d7b7-43df-9531-f0a89709749a\",\"roleDefinitionId\":\"5ee36843-2071-404d-8a89-ef90b190dfbc\"},{\"principalId\":\"9943af85-f67d-4113-8d2d-ce32b16a7041\",\"roleDefinitionId\":\"158a0eb5-2a85-446f-a91c-3c8cd7b09c4e\"}],\"createdBy\":{\"oid\":\"8757365e-9e99-4485-a785-c82ecd83fe50\",\"puid\":\"pslwejdpvw\",\"applicationId\":\"c8612b79-6663-486e-876e-8cdbdaa4007b\"},\"updatedBy\":{\"oid\":\"fd76275f-1599-46e7-a79a-0311ba4af930\",\"puid\":\"soacctazakl\",\"applicationId\":\"b80d575a-7890-4055-b4cd-a7697defdf0b\"},\"createdDateTime\":\"2021-05-05T03:41:54Z\",\"workspaceId\":\"cr\",\"workspaceUrl\":\"fdfdosygexpa\",\"storageAccountIdentity\":{\"principalId\":\"d7418a12-4ee4-4a80-a3ab-2ab139635f88\",\"tenantId\":\"10f2fbb2-2353-4deb-96de-440f0dc1ef57\",\"type\":\"msbzjhcrz\"},\"managedDiskIdentity\":{\"principalId\":\"47df26cd-98fe-41ba-ae19-790bbbdba738\",\"tenantId\":\"bf8147fe-9bba-456c-95f6-97934ef9f2c9\",\"type\":\"lxaolthqtrgqjbp\"},\"diskEncryptionSetId\":\"fsinzgvfcjrwzoxx\",\"encryption\":{\"entities\":{}},\"privateEndpointConnections\":[{\"properties\":{\"groupIds\":[],\"provisioningState\":\"Creating\"},\"id\":\"it\",\"name\":\"np\",\"type\":\"qfpjk\"},{\"properties\":{\"groupIds\":[],\"provisioningState\":\"Deleting\"},\"id\":\"pdvhpfxxypin\",\"name\":\"nmayhuybb\",\"type\":\"podepoo\"},{\"properties\":{\"groupIds\":[],\"provisioningState\":\"Deleting\"},\"id\":\"amiheognarxz\",\"name\":\"theotusiv\",\"type\":\"evcciqihnhun\"},{\"properties\":{\"groupIds\":[],\"provisioningState\":\"Failed\"},\"id\":\"rnfygxgispem\",\"name\":\"tzfkufubl\",\"type\":\"ofx\"}],\"publicNetworkAccess\":\"Disabled\",\"requiredNsgRules\":\"AllRules\"}")
                 .toObject(WorkspaceProperties.class);
-        Assertions.assertEquals("hdbihan", model.managedResourceGroupId());
-        Assertions.assertEquals("bj", model.parameters().amlWorkspaceId().value());
-        Assertions.assertEquals("ithxqhabifpi", model.parameters().customVirtualNetworkId().value());
-        Assertions.assertEquals("zb", model.parameters().customPublicSubnetName().value());
-        Assertions.assertEquals("pqxu", model.parameters().customPrivateSubnetName().value());
-        Assertions.assertEquals(true, model.parameters().enableNoPublicIp().value());
-        Assertions.assertEquals("b", model.parameters().loadBalancerBackendPoolName().value());
-        Assertions.assertEquals("xvd", model.parameters().loadBalancerId().value());
-        Assertions.assertEquals("rtfw", model.parameters().natGatewayName().value());
-        Assertions.assertEquals("gaudcc", model.parameters().publicIpName().value());
-        Assertions.assertEquals(false, model.parameters().prepareEncryption().value());
-        Assertions.assertEquals(true, model.parameters().requireInfrastructureEncryption().value());
-        Assertions.assertEquals("napczwlokjy", model.parameters().storageAccountName().value());
-        Assertions.assertEquals("vnipjox", model.parameters().storageAccountSkuName().value());
-        Assertions.assertEquals("hgejspodma", model.parameters().vnetAddressPrefix().value());
-        Assertions.assertEquals("ahuxinpm", model.uiDefinitionUri());
+        Assertions.assertEquals("hiv", model.managedResourceGroupId());
+        Assertions.assertEquals("b", model.parameters().amlWorkspaceId().value());
+        Assertions.assertEquals("xvd", model.parameters().customVirtualNetworkId().value());
+        Assertions.assertEquals("rtfw", model.parameters().customPublicSubnetName().value());
+        Assertions.assertEquals("gaudcc", model.parameters().customPrivateSubnetName().value());
+        Assertions.assertEquals(false, model.parameters().enableNoPublicIp().value());
+        Assertions.assertEquals("ejhkry", model.parameters().loadBalancerBackendPoolName().value());
+        Assertions.assertEquals("pczwlo", model.parameters().loadBalancerId().value());
+        Assertions.assertEquals("mkkvnip", model.parameters().natGatewayName().value());
+        Assertions.assertEquals("jnchgej", model.parameters().publicIpName().value());
+        Assertions.assertEquals(true, model.parameters().prepareEncryption().value());
+        Assertions.assertEquals(false, model.parameters().requireInfrastructureEncryption().value());
+        Assertions.assertEquals("yahux", model.parameters().storageAccountName().value());
+        Assertions.assertEquals("qnjaqwix", model.parameters().storageAccountSkuName().value());
+        Assertions.assertEquals("ozvcput", model.parameters().vnetAddressPrefix().value());
+        Assertions.assertEquals("mkjozkrwf", model.uiDefinitionUri());
         Assertions
             .assertEquals(
-                UUID.fromString("b9ea483e-c7cb-4551-94a7-4080d0ce0eb6"), model.authorizations().get(0).principalId());
+                UUID.fromString("423825c0-d7b7-43df-9531-f0a89709749a"), model.authorizations().get(0).principalId());
         Assertions
             .assertEquals(
-                UUID.fromString("0b0b6bcc-8097-4e8f-a3d1-069c0a123285"),
+                UUID.fromString("5ee36843-2071-404d-8a89-ef90b190dfbc"),
                 model.authorizations().get(0).roleDefinitionId());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(RequiredNsgRules.NO_AZURE_DATABRICKS_RULES, model.requiredNsgRules());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(RequiredNsgRules.ALL_RULES, model.requiredNsgRules());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         WorkspaceProperties model =
             new WorkspaceProperties()
-                .withManagedResourceGroupId("hdbihan")
+                .withManagedResourceGroupId("hiv")
                 .withParameters(
                     new WorkspaceCustomParameters()
-                        .withAmlWorkspaceId(new WorkspaceCustomStringParameter().withValue("bj"))
-                        .withCustomVirtualNetworkId(new WorkspaceCustomStringParameter().withValue("ithxqhabifpi"))
-                        .withCustomPublicSubnetName(new WorkspaceCustomStringParameter().withValue("zb"))
-                        .withCustomPrivateSubnetName(new WorkspaceCustomStringParameter().withValue("pqxu"))
-                        .withEnableNoPublicIp(new WorkspaceCustomBooleanParameter().withValue(true))
-                        .withLoadBalancerBackendPoolName(new WorkspaceCustomStringParameter().withValue("b"))
-                        .withLoadBalancerId(new WorkspaceCustomStringParameter().withValue("xvd"))
-                        .withNatGatewayName(new WorkspaceCustomStringParameter().withValue("rtfw"))
-                        .withPublicIpName(new WorkspaceCustomStringParameter().withValue("gaudcc"))
-                        .withPrepareEncryption(new WorkspaceCustomBooleanParameter().withValue(false))
+                        .withAmlWorkspaceId(new WorkspaceCustomStringParameter().withValue("b"))
+                        .withCustomVirtualNetworkId(new WorkspaceCustomStringParameter().withValue("xvd"))
+                        .withCustomPublicSubnetName(new WorkspaceCustomStringParameter().withValue("rtfw"))
+                        .withCustomPrivateSubnetName(new WorkspaceCustomStringParameter().withValue("gaudcc"))
+                        .withEnableNoPublicIp(new WorkspaceCustomBooleanParameter().withValue(false))
+                        .withLoadBalancerBackendPoolName(new WorkspaceCustomStringParameter().withValue("ejhkry"))
+                        .withLoadBalancerId(new WorkspaceCustomStringParameter().withValue("pczwlo"))
+                        .withNatGatewayName(new WorkspaceCustomStringParameter().withValue("mkkvnip"))
+                        .withPublicIpName(new WorkspaceCustomStringParameter().withValue("jnchgej"))
+                        .withPrepareEncryption(new WorkspaceCustomBooleanParameter().withValue(true))
                         .withEncryption(new WorkspaceEncryptionParameter())
-                        .withRequireInfrastructureEncryption(new WorkspaceCustomBooleanParameter().withValue(true))
-                        .withStorageAccountName(new WorkspaceCustomStringParameter().withValue("napczwlokjy"))
-                        .withStorageAccountSkuName(new WorkspaceCustomStringParameter().withValue("vnipjox"))
-                        .withVnetAddressPrefix(new WorkspaceCustomStringParameter().withValue("hgejspodma")))
-                .withUiDefinitionUri("ahuxinpm")
+                        .withRequireInfrastructureEncryption(new WorkspaceCustomBooleanParameter().withValue(false))
+                        .withStorageAccountName(new WorkspaceCustomStringParameter().withValue("yahux"))
+                        .withStorageAccountSkuName(new WorkspaceCustomStringParameter().withValue("qnjaqwix"))
+                        .withVnetAddressPrefix(new WorkspaceCustomStringParameter().withValue("ozvcput")))
+                .withUiDefinitionUri("mkjozkrwf")
                 .withAuthorizations(
                     Arrays
                         .asList(
                             new WorkspaceProviderAuthorization()
-                                .withPrincipalId(UUID.fromString("b9ea483e-c7cb-4551-94a7-4080d0ce0eb6"))
-                                .withRoleDefinitionId(UUID.fromString("0b0b6bcc-8097-4e8f-a3d1-069c0a123285")),
+                                .withPrincipalId(UUID.fromString("423825c0-d7b7-43df-9531-f0a89709749a"))
+                                .withRoleDefinitionId(UUID.fromString("5ee36843-2071-404d-8a89-ef90b190dfbc")),
                             new WorkspaceProviderAuthorization()
-                                .withPrincipalId(UUID.fromString("57aa17f9-c759-4e99-8a18-93ac71b51725"))
-                                .withRoleDefinitionId(UUID.fromString("80546bc5-d619-41e0-9568-fd0d44ceb327")),
-                            new WorkspaceProviderAuthorization()
-                                .withPrincipalId(UUID.fromString("799c8db6-26cd-45b9-919d-7ddfb207fc8f"))
-                                .withRoleDefinitionId(UUID.fromString("5ec90243-32bc-4342-96bf-472f60924500"))))
+                                .withPrincipalId(UUID.fromString("9943af85-f67d-4113-8d2d-ce32b16a7041"))
+                                .withRoleDefinitionId(UUID.fromString("158a0eb5-2a85-446f-a91c-3c8cd7b09c4e"))))
                 .withCreatedBy(new CreatedBy())
                 .withUpdatedBy(new CreatedBy())
                 .withStorageAccountIdentity(new ManagedIdentityConfiguration())
+                .withManagedDiskIdentity(new ManagedIdentityConfiguration())
                 .withEncryption(new WorkspacePropertiesEncryption().withEntities(new EncryptionEntitiesDefinition()))
-                .withPublicNetworkAccess(PublicNetworkAccess.ENABLED)
-                .withRequiredNsgRules(RequiredNsgRules.NO_AZURE_DATABRICKS_RULES);
+                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED)
+                .withRequiredNsgRules(RequiredNsgRules.ALL_RULES);
         model = BinaryData.fromObject(model).toObject(WorkspaceProperties.class);
-        Assertions.assertEquals("hdbihan", model.managedResourceGroupId());
-        Assertions.assertEquals("bj", model.parameters().amlWorkspaceId().value());
-        Assertions.assertEquals("ithxqhabifpi", model.parameters().customVirtualNetworkId().value());
-        Assertions.assertEquals("zb", model.parameters().customPublicSubnetName().value());
-        Assertions.assertEquals("pqxu", model.parameters().customPrivateSubnetName().value());
-        Assertions.assertEquals(true, model.parameters().enableNoPublicIp().value());
-        Assertions.assertEquals("b", model.parameters().loadBalancerBackendPoolName().value());
-        Assertions.assertEquals("xvd", model.parameters().loadBalancerId().value());
-        Assertions.assertEquals("rtfw", model.parameters().natGatewayName().value());
-        Assertions.assertEquals("gaudcc", model.parameters().publicIpName().value());
-        Assertions.assertEquals(false, model.parameters().prepareEncryption().value());
-        Assertions.assertEquals(true, model.parameters().requireInfrastructureEncryption().value());
-        Assertions.assertEquals("napczwlokjy", model.parameters().storageAccountName().value());
-        Assertions.assertEquals("vnipjox", model.parameters().storageAccountSkuName().value());
-        Assertions.assertEquals("hgejspodma", model.parameters().vnetAddressPrefix().value());
-        Assertions.assertEquals("ahuxinpm", model.uiDefinitionUri());
+        Assertions.assertEquals("hiv", model.managedResourceGroupId());
+        Assertions.assertEquals("b", model.parameters().amlWorkspaceId().value());
+        Assertions.assertEquals("xvd", model.parameters().customVirtualNetworkId().value());
+        Assertions.assertEquals("rtfw", model.parameters().customPublicSubnetName().value());
+        Assertions.assertEquals("gaudcc", model.parameters().customPrivateSubnetName().value());
+        Assertions.assertEquals(false, model.parameters().enableNoPublicIp().value());
+        Assertions.assertEquals("ejhkry", model.parameters().loadBalancerBackendPoolName().value());
+        Assertions.assertEquals("pczwlo", model.parameters().loadBalancerId().value());
+        Assertions.assertEquals("mkkvnip", model.parameters().natGatewayName().value());
+        Assertions.assertEquals("jnchgej", model.parameters().publicIpName().value());
+        Assertions.assertEquals(true, model.parameters().prepareEncryption().value());
+        Assertions.assertEquals(false, model.parameters().requireInfrastructureEncryption().value());
+        Assertions.assertEquals("yahux", model.parameters().storageAccountName().value());
+        Assertions.assertEquals("qnjaqwix", model.parameters().storageAccountSkuName().value());
+        Assertions.assertEquals("ozvcput", model.parameters().vnetAddressPrefix().value());
+        Assertions.assertEquals("mkjozkrwf", model.uiDefinitionUri());
         Assertions
             .assertEquals(
-                UUID.fromString("b9ea483e-c7cb-4551-94a7-4080d0ce0eb6"), model.authorizations().get(0).principalId());
+                UUID.fromString("423825c0-d7b7-43df-9531-f0a89709749a"), model.authorizations().get(0).principalId());
         Assertions
             .assertEquals(
-                UUID.fromString("0b0b6bcc-8097-4e8f-a3d1-069c0a123285"),
+                UUID.fromString("5ee36843-2071-404d-8a89-ef90b190dfbc"),
                 model.authorizations().get(0).roleDefinitionId());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, model.publicNetworkAccess());
-        Assertions.assertEquals(RequiredNsgRules.NO_AZURE_DATABRICKS_RULES, model.requiredNsgRules());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
+        Assertions.assertEquals(RequiredNsgRules.ALL_RULES, model.requiredNsgRules());
     }
 }

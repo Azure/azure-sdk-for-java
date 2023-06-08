@@ -16,13 +16,13 @@ public final class VirtualNetworkPeeringListTests {
         VirtualNetworkPeeringList model =
             BinaryData
                 .fromString(
-                    "{\"value\":[{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":false,\"useRemoteGateways\":true,\"peeringState\":\"Disconnected\",\"provisioningState\":\"Failed\"},\"id\":\"hb\",\"name\":\"xhejjzzvdud\",\"type\":\"wdslfhotwmcy\"},{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"peeringState\":\"Disconnected\",\"provisioningState\":\"Deleting\"},\"id\":\"h\",\"name\":\"nltyfsoppusuesnz\",\"type\":\"dejbavo\"},{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":true,\"useRemoteGateways\":false,\"peeringState\":\"Disconnected\",\"provisioningState\":\"Succeeded\"},\"id\":\"dndnvow\",\"name\":\"ujjugwdkcglh\",\"type\":\"lazjdyggdtjixhbk\"}],\"nextLink\":\"fqweykhmene\"}")
+                    "{\"value\":[{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":false,\"useRemoteGateways\":true,\"peeringState\":\"Initiated\",\"provisioningState\":\"Succeeded\"},\"id\":\"ez\",\"name\":\"v\",\"type\":\"hxmzsbbzoggig\"},{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":false,\"useRemoteGateways\":true,\"peeringState\":\"Disconnected\",\"provisioningState\":\"Deleting\"},\"id\":\"ptkoenkoukn\",\"name\":\"udwtiukbl\",\"type\":\"ngkpocipazy\"},{\"properties\":{\"allowVirtualNetworkAccess\":true,\"allowForwardedTraffic\":true,\"allowGatewayTransit\":false,\"useRemoteGateways\":true,\"peeringState\":\"Initiated\",\"provisioningState\":\"Updating\"},\"id\":\"evqzntypmrbp\",\"name\":\"zcdrqjsdpydnfyhx\",\"type\":\"eoejzic\"},{\"properties\":{\"allowVirtualNetworkAccess\":false,\"allowForwardedTraffic\":false,\"allowGatewayTransit\":true,\"useRemoteGateways\":true,\"peeringState\":\"Disconnected\",\"provisioningState\":\"Succeeded\"},\"id\":\"khaj\",\"name\":\"eyeam\",\"type\":\"p\"}],\"nextLink\":\"g\"}")
                 .toObject(VirtualNetworkPeeringList.class);
         Assertions.assertEquals(true, model.value().get(0).allowVirtualNetworkAccess());
-        Assertions.assertEquals(true, model.value().get(0).allowForwardedTraffic());
+        Assertions.assertEquals(false, model.value().get(0).allowForwardedTraffic());
         Assertions.assertEquals(false, model.value().get(0).allowGatewayTransit());
         Assertions.assertEquals(true, model.value().get(0).useRemoteGateways());
-        Assertions.assertEquals("fqweykhmene", model.nextLink());
+        Assertions.assertEquals("g", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -34,25 +34,30 @@ public final class VirtualNetworkPeeringListTests {
                         .asList(
                             new VirtualNetworkPeeringInner()
                                 .withAllowVirtualNetworkAccess(true)
-                                .withAllowForwardedTraffic(true)
+                                .withAllowForwardedTraffic(false)
                                 .withAllowGatewayTransit(false)
                                 .withUseRemoteGateways(true),
                             new VirtualNetworkPeeringInner()
                                 .withAllowVirtualNetworkAccess(true)
                                 .withAllowForwardedTraffic(false)
-                                .withAllowGatewayTransit(true)
+                                .withAllowGatewayTransit(false)
                                 .withUseRemoteGateways(true),
                             new VirtualNetworkPeeringInner()
                                 .withAllowVirtualNetworkAccess(true)
+                                .withAllowForwardedTraffic(true)
+                                .withAllowGatewayTransit(false)
+                                .withUseRemoteGateways(true),
+                            new VirtualNetworkPeeringInner()
+                                .withAllowVirtualNetworkAccess(false)
                                 .withAllowForwardedTraffic(false)
                                 .withAllowGatewayTransit(true)
-                                .withUseRemoteGateways(false)))
-                .withNextLink("fqweykhmene");
+                                .withUseRemoteGateways(true)))
+                .withNextLink("g");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkPeeringList.class);
         Assertions.assertEquals(true, model.value().get(0).allowVirtualNetworkAccess());
-        Assertions.assertEquals(true, model.value().get(0).allowForwardedTraffic());
+        Assertions.assertEquals(false, model.value().get(0).allowForwardedTraffic());
         Assertions.assertEquals(false, model.value().get(0).allowGatewayTransit());
         Assertions.assertEquals(true, model.value().get(0).useRemoteGateways());
-        Assertions.assertEquals("fqweykhmene", model.nextLink());
+        Assertions.assertEquals("g", model.nextLink());
     }
 }

@@ -13,14 +13,14 @@ public final class AddressSpaceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddressSpace model =
-            BinaryData.fromString("{\"addressPrefixes\":[\"f\",\"okeyyienj\"]}").toObject(AddressSpace.class);
-        Assertions.assertEquals("f", model.addressPrefixes().get(0));
+            BinaryData.fromString("{\"addressPrefixes\":[\"kevle\",\"gz\"]}").toObject(AddressSpace.class);
+        Assertions.assertEquals("kevle", model.addressPrefixes().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AddressSpace model = new AddressSpace().withAddressPrefixes(Arrays.asList("f", "okeyyienj"));
+        AddressSpace model = new AddressSpace().withAddressPrefixes(Arrays.asList("kevle", "gz"));
         model = BinaryData.fromObject(model).toObject(AddressSpace.class);
-        Assertions.assertEquals("f", model.addressPrefixes().get(0));
+        Assertions.assertEquals("kevle", model.addressPrefixes().get(0));
     }
 }

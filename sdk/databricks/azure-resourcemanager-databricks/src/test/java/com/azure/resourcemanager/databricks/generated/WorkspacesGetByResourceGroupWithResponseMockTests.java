@@ -33,7 +33,7 @@ public final class WorkspacesGetByResourceGroupWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"managedResourceGroupId\":\"amdecte\",\"parameters\":{},\"provisioningState\":\"Running\",\"uiDefinitionUri\":\"refovgmkqsleyyvx\",\"authorizations\":[],\"createdBy\":{\"oid\":\"a24d3027-b587-4902-8ed1-de5c97fb8521\",\"puid\":\"attpngjcrcczsq\",\"applicationId\":\"9500a8d6-7236-4fbe-81c2-abfd0d6d2509\"},\"updatedBy\":{\"oid\":\"2b2b65ae-2a7d-45b3-b1cb-a3ef0b2941dd\",\"puid\":\"daj\",\"applicationId\":\"c710c81c-3361-494a-a044-15e17197eda0\"},\"createdDateTime\":\"2021-09-30T19:57Z\",\"workspaceId\":\"unqecanoae\",\"workspaceUrl\":\"fhyhltrpmopjmcma\",\"storageAccountIdentity\":{\"principalId\":\"460cedbf-cd45-43db-967f-395e5de22098\",\"tenantId\":\"9232079e-bc78-421c-baac-1129753a0ca2\",\"type\":\"hfuiuaodsfc\"},\"encryption\":{},\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Enabled\",\"requiredNsgRules\":\"NoAzureDatabricksRules\"},\"sku\":{\"name\":\"zmyzydagf\",\"tier\":\"xbezyiuokktwh\"},\"location\":\"xw\",\"tags\":{\"mbsureximo\":\"q\",\"fksymddystki\":\"yocf\"},\"id\":\"uxh\",\"name\":\"yudxorrqnbp\",\"type\":\"czvyifq\"}";
+            "{\"properties\":{\"managedResourceGroupId\":\"slpvlop\",\"parameters\":{},\"provisioningState\":\"Ready\",\"uiDefinitionUri\":\"m\",\"authorizations\":[],\"createdBy\":{\"oid\":\"c37ec0eb-5fcf-45a4-ae1d-fe0e71eec7a9\",\"puid\":\"deoj\",\"applicationId\":\"1304327b-8166-4cf0-a689-3ad13822d27c\"},\"updatedBy\":{\"oid\":\"9d632ff5-c609-4ec0-a601-86a6a47e6d2f\",\"puid\":\"hsmtxpsiebtfhvp\",\"applicationId\":\"0e9e2939-6907-4cb0-9d80-519cb831ba5e\"},\"createdDateTime\":\"2021-07-15T16:58:50Z\",\"workspaceId\":\"krdqmh\",\"workspaceUrl\":\"dhtldwkyz\",\"storageAccountIdentity\":{\"principalId\":\"3e4d5959-ec1f-4f19-ac22-b9f0108364d0\",\"tenantId\":\"7e91680d-0316-4e3c-84d7-b6679dde3de0\",\"type\":\"ncwscwsvlxoto\"},\"managedDiskIdentity\":{\"principalId\":\"e6a9e1e2-8d99-4b7a-8344-9910599bb1d7\",\"tenantId\":\"a8465cfc-3de9-4500-9de2-2166608ffc79\",\"type\":\"pqsxvnmicy\"},\"diskEncryptionSetId\":\"ceoveilovno\",\"encryption\":{},\"privateEndpointConnections\":[],\"publicNetworkAccess\":\"Disabled\",\"requiredNsgRules\":\"AllRules\"},\"sku\":{\"name\":\"k\",\"tier\":\"x\"},\"location\":\"bttk\",\"tags\":{\"jtoqne\":\"wpn\",\"abgy\":\"mclfplphoxuscr\"},\"id\":\"psbjta\",\"name\":\"qugxywpmueefjzwf\",\"type\":\"kqujidsuyono\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,16 +64,16 @@ public final class WorkspacesGetByResourceGroupWithResponseMockTests {
         Workspace response =
             manager
                 .workspaces()
-                .getByResourceGroupWithResponse("fyexfwhy", "cibvyvdcsitynn", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse("plgmgsxnk", "zkd", com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("xw", response.location());
-        Assertions.assertEquals("q", response.tags().get("mbsureximo"));
-        Assertions.assertEquals("zmyzydagf", response.sku().name());
-        Assertions.assertEquals("xbezyiuokktwh", response.sku().tier());
-        Assertions.assertEquals("amdecte", response.managedResourceGroupId());
-        Assertions.assertEquals("refovgmkqsleyyvx", response.uiDefinitionUri());
-        Assertions.assertEquals(PublicNetworkAccess.ENABLED, response.publicNetworkAccess());
-        Assertions.assertEquals(RequiredNsgRules.NO_AZURE_DATABRICKS_RULES, response.requiredNsgRules());
+        Assertions.assertEquals("bttk", response.location());
+        Assertions.assertEquals("wpn", response.tags().get("jtoqne"));
+        Assertions.assertEquals("k", response.sku().name());
+        Assertions.assertEquals("x", response.sku().tier());
+        Assertions.assertEquals("slpvlop", response.managedResourceGroupId());
+        Assertions.assertEquals("m", response.uiDefinitionUri());
+        Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.publicNetworkAccess());
+        Assertions.assertEquals(RequiredNsgRules.ALL_RULES, response.requiredNsgRules());
     }
 }
