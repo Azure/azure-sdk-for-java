@@ -4,6 +4,7 @@
 module com.azure.identity {
     requires transitive com.azure.core;
 
+    requires com.azure.json;
     requires com.microsoft.aad.msal4j;
     requires msal4j.persistence.extension;
     requires com.sun.jna;
@@ -12,6 +13,4 @@ module com.azure.identity {
     requires java.xml;
 
     exports com.azure.identity;
-
-    opens com.azure.identity.implementation to com.fasterxml.jackson.databind;
 }

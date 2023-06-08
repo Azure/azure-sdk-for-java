@@ -8,10 +8,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.implementation.intellij.IntelliJKdbxDatabase;
-import com.fasterxml.jackson.core.TreeNode;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
 import com.microsoft.aad.msal4jextensions.persistence.CacheFileAccessor;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
@@ -31,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -48,12 +48,8 @@ public class IntelliJCacheAccessor {
     private static final ClientLogger LOGGER = new ClientLogger(IntelliJCacheAccessor.class);
     public static final String INTELLIJ_TOOLKIT_CACHE = "azure-toolkit.cache";
     private final String keePassDatabasePath;
-    private static final byte[] CRYPTO_KEY = new byte[] {0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
+    private static final byte[] CRYPTO_KEY = new byte[]{0x50, 0x72, 0x6f, 0x78, 0x79, 0x20, 0x43, 0x6f, 0x6e, 0x66,
         0x69, 0x67, 0x20, 0x53, 0x65, 0x63};
-
-    private static final ObjectMapper DEFAULT_MAPPER = new ObjectMapper();
-    private static final ObjectMapper DONT_FAIL_ON_UNKNOWN_PROPERTIES_MAPPER = new ObjectMapper()
-        .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
     /**
      * Creates an instance of {@link IntelliJCacheAccessor}
@@ -109,17 +105,40 @@ public class IntelliJCacheAccessor {
         return null;
     }
 
-    private String parseRefreshTokenFromJson(String jsonString) {
-        try {
-            JsonNode jsonNode =  DEFAULT_MAPPER.readTree(jsonString);
-            TreeNode refreshTokenNode =  jsonNode.get("RefreshToken");
-            TreeNode baseNode = refreshTokenNode.get(refreshTokenNode.fieldNames().next());
-            TreeNode refreshToken = baseNode.get("secret");
-            String tokenString = refreshToken.toString();
-            if (tokenString.startsWith("\"")) {
-                return tokenString.substring(1, tokenString.length() - 1);
+    private static String parseRefreshTokenFromJson(String jsonString) {
+        try (JsonReader jsonReader = JsonProviders.createReader(jsonString)) {
+            // Initialize reading.
+            jsonReader.nextToken();
+            while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = jsonReader.getFieldName();
+                jsonReader.nextToken();
+
+                // Read until we reach the refresh token JSON field.
+                if ("RefreshToken".equals(fieldName)) {
+                    // The next token will be the sub JSON object that contains the secret.
+                    jsonReader.nextToken();
+                    while (jsonReader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = jsonReader.getFieldName();
+                        jsonReader.nextToken();
+
+                        if ("secret".equals(fieldName)) {
+                            String tokenString = jsonReader.getString();
+                            return tokenString.startsWith("\"")
+                                ? tokenString.substring(1, tokenString.length() - 1)
+                                : tokenString;
+                        } else {
+                            jsonReader.skipChildren();
+                        }
+                    }
+                    jsonReader.nextToken();
+
+                } else {
+                    jsonReader.skipChildren();
+                }
             }
-            return tokenString;
+
+            LOGGER.verbose("IntelliJCredential => Refresh Token not found.");
+            return null;
         } catch (Exception e) {
             LOGGER.verbose("IntelliJCredential => Refresh Token not found: " + e.getMessage());
             return null;
@@ -129,35 +148,36 @@ public class IntelliJCacheAccessor {
     /**
      * Get the Device Code credential details of Azure Tools plugin in the IntelliJ IDE.
      *
-     * @return the {@link JsonNode} holding the authentication details.
+     * @return the JSON Map holding the authentication details.
      * @throws IOException If an I/O error occurs.
      */
-    public JsonNode getDeviceCodeCredentials() throws IOException {
+    public Map<String, Object> getDeviceCodeCredentials() throws IOException {
+        String jsonCred;
         if (Platform.isMac()) {
             KeyChainAccessor accessor = new KeyChainAccessor(null, "ADAuthManager", "cachedAuthResult");
-            String jsonCred  = new String(accessor.read(), StandardCharsets.UTF_8);
-
-            return DEFAULT_MAPPER.readTree(jsonCred);
+            jsonCred = new String(accessor.read(), StandardCharsets.UTF_8);
         } else if (Platform.isLinux()) {
             LinuxKeyRingAccessor accessor = new LinuxKeyRingAccessor(
                 "com.intellij.credentialStore.Credential",
                 "service", "ADAuthManager",
                 "account", "cachedAuthResult");
 
-            String jsonCred  = new String(accessor.read(), StandardCharsets.UTF_8);
+            jsonCred = new String(accessor.read(), StandardCharsets.UTF_8);
 
             // If the JSON credential begins with 'cachedAuthResult@' create a substring with 'cachedAuthResult@'
             // removed.
             if (jsonCred.startsWith("cachedAuthResult@")) {
                 jsonCred = jsonCred.substring("cachedAuthResult@".length());
             }
-
-            return DEFAULT_MAPPER.readTree(jsonCred);
         } else if (Platform.isWindows()) {
-            return getCredentialFromKdbx();
+            jsonCred = getCredentialFromKdbx();
         } else {
             throw LOGGER.logExceptionAsError(new RuntimeException(String.format("OS %s Platform not supported.",
-                    Platform.getOSType())));
+                Platform.getOSType())));
+        }
+
+        try (JsonReader jsonReader = JsonProviders.createReader(jsonCred)) {
+            return jsonReader.readMap(JsonReader::readUntyped);
         }
     }
 
@@ -189,12 +209,11 @@ public class IntelliJCacheAccessor {
         return servicePrincipalDetails;
     }
 
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private JsonNode getCredentialFromKdbx() throws IOException {
+    private String getCredentialFromKdbx() throws IOException {
         if (CoreUtils.isNullOrEmpty(keePassDatabasePath)) {
             throw new CredentialUnavailableException("The KeePass database path is either empty or not configured."
-                           + " Please configure it on the builder. It is required to use "
-                           + "IntelliJ credential on the windows platform.");
+                + " Please configure it on the builder. It is required to use "
+                + "IntelliJ credential on the windows platform.");
         }
         String extractedpwd = getKdbxPassword();
 
@@ -213,7 +232,7 @@ public class IntelliJCacheAccessor {
             byte[] decrypted = cipher.doFinal(dataToDecrypt, dataOffset, dataToDecrypt.length - dataOffset);
             password = new String(decrypted, StandardCharsets.UTF_8);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException
-                | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
+                 | InvalidAlgorithmParameterException | IllegalBlockSizeException | BadPaddingException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException("Unable to access cache.", e));
         }
 
@@ -223,10 +242,10 @@ public class IntelliJCacheAccessor {
             String jsonToken = kdbxDatabase.getDatabaseEntryValue("ADAuthManager");
             if (CoreUtils.isNullOrEmpty(jsonToken)) {
                 throw new CredentialUnavailableException("No credentials found in the cache."
-                        + " Please login with IntelliJ Azure Tools plugin in the IDE.");
+                    + " Please login with IntelliJ Azure Tools plugin in the IDE.");
             }
 
-            return DEFAULT_MAPPER.readTree(jsonToken);
+            return jsonToken;
         } catch (Exception e) {
             throw LOGGER.logExceptionAsError(new RuntimeException("Failed to read KeePass database.", e));
         }
@@ -258,6 +277,7 @@ public class IntelliJCacheAccessor {
 
     /**
      * Get the auth host of the specified {@code azureEnvironment}.
+     *
      * @param azureEnvironment the specified Azure Environment
      * @return the auth host.
      */
@@ -280,12 +300,16 @@ public class IntelliJCacheAccessor {
 
     /**
      * Parse the auth details of the specified file.
+     *
      * @param file the file input;
      * @return the parsed {@link IntelliJAuthMethodDetails} from the file input.
      * @throws IOException when invalid file path is specified.
      */
     public IntelliJAuthMethodDetails parseAuthMethodDetails(File file) throws IOException {
-        return DONT_FAIL_ON_UNKNOWN_PROPERTIES_MAPPER.readValue(file, IntelliJAuthMethodDetails.class);
+        try (JsonReader jsonReader = JsonProviders.createReader(Files.newBufferedReader(file.toPath(),
+            StandardCharsets.UTF_8))) {
+            return IntelliJAuthMethodDetails.fromJson(jsonReader);
+        }
     }
 
     /**
@@ -297,8 +321,7 @@ public class IntelliJCacheAccessor {
     public IntelliJAuthMethodDetails getAuthDetailsIfAvailable() throws IOException {
         File authFile = null;
         for (String metadataPath : getAzureToolsForIntelliJPluginConfigPaths()) {
-            String authMethodDetailsPath =
-                Paths.get(metadataPath, "AuthMethodDetails.json").toString();
+            String authMethodDetailsPath = Paths.get(metadataPath, "AuthMethodDetails.json").toString();
             authFile = new File(authMethodDetailsPath);
             if (authFile.exists()) {
                 break;

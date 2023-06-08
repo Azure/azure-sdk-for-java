@@ -3,9 +3,8 @@
 
 package com.azure.identity.implementation;
 
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,8 +15,6 @@ import java.time.temporal.ChronoUnit;
 
 public class MSITokenTests {
     private OffsetDateTime expected = OffsetDateTime.of(2020, 1, 10, 15, 3, 28, 0, ZoneOffset.UTC);
-
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Test
     public void canParseLong() {
@@ -42,8 +39,8 @@ public class MSITokenTests {
             + "  \"token_type\": \"Bearer\"\n"
             + "}";
         MSIToken token;
-        try {
-            token = SERIALIZER.deserialize(json, MSIToken.class, SerializerEncoding.JSON);
+        try (JsonReader jsonReader = JsonProviders.createReader(json)) {
+            token = MSIToken.fromJson(jsonReader);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -62,7 +59,7 @@ public class MSITokenTests {
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token2.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
-        Assert.assertTrue(ChronoUnit.HOURS.between(OffsetDateTime.now(), token4.getExpiresAt()) == 12L);
+        Assert.assertEquals(12L, ChronoUnit.HOURS.between(OffsetDateTime.now(), token4.getExpiresAt()));
     }
 
     @Test
@@ -76,7 +73,7 @@ public class MSITokenTests {
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token2.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
-        Assert.assertTrue(ChronoUnit.HOURS.between(OffsetDateTime.now(), token4.getExpiresAt()) == 24L);
+        Assert.assertEquals(24L, ChronoUnit.HOURS.between(OffsetDateTime.now(), token4.getExpiresAt()));
 
         token = new MSIToken("fake_token", "12/20/2019 4:58:20 AM +00:00", null);
         token2 = new MSIToken("fake_token", null, "12/20/2019 4:58:20 AM +00:00");
@@ -88,7 +85,7 @@ public class MSITokenTests {
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token2.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
-        Assert.assertTrue(ChronoUnit.HOURS.between(OffsetDateTime.now(), token4.getExpiresAt()) == 29L);
+        Assert.assertEquals(29L, ChronoUnit.HOURS.between(OffsetDateTime.now(), token4.getExpiresAt()));
 
         token = new MSIToken("fake_token", "1/1/2020 0:00:00 PM +00:00", null);
         token2 = new MSIToken("fake_token", null, "1/1/2020 0:00:00 PM +00:00");
@@ -100,6 +97,6 @@ public class MSITokenTests {
         Assert.assertEquals(expected.toEpochSecond(), token.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token2.getExpiresAt().toEpochSecond());
         Assert.assertEquals(expected.toEpochSecond(), token3.getExpiresAt().toEpochSecond());
-        Assert.assertTrue(ChronoUnit.HOURS.between(OffsetDateTime.now(), token4.getExpiresAt()) == 61L);
+        Assert.assertEquals(61L, ChronoUnit.HOURS.between(OffsetDateTime.now(), token4.getExpiresAt()));
     }
 }

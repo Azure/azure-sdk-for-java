@@ -8,7 +8,6 @@ import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.identity.CredentialUnavailableException;
 import com.azure.identity.DeviceCodeInfo;
 import com.azure.identity.implementation.util.IdentityConstants;
@@ -16,9 +15,10 @@ import com.azure.identity.implementation.util.IdentitySslUtil;
 import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.implementation.util.LoggingUtil;
 import com.azure.identity.implementation.util.ScopeUtil;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.microsoft.aad.msal4j.AppTokenProviderParameters;
+import com.microsoft.aad.msal4j.AuthorizationCodeParameters;
 import com.microsoft.aad.msal4j.ClaimsRequest;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ClientCredentialParameters;
@@ -60,6 +60,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
@@ -266,9 +267,9 @@ public class IdentityClient extends IdentityClientBase {
                                          + "authentication unavailable. ADFS tenant/authorities are not supported.")));
                 }
                 try {
-                    JsonNode intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
+                    Map<String, Object> intelliJCredentials = cacheAccessor.getDeviceCodeCredentials();
 
-                    String refreshToken = intelliJCredentials.get("refreshToken").textValue();
+                    String refreshToken = Objects.toString(intelliJCredentials.get("refreshToken"), null);
 
                     RefreshTokenParameters.RefreshTokenParametersBuilder refreshTokenParametersBuilder =
                         RefreshTokenParameters.builder(new HashSet<>(request.getScopes()), refreshToken);
@@ -474,13 +475,14 @@ public class IdentityClient extends IdentityClientBase {
                                 try {
                                     LOGGER.verbose("Azure Powershell Authentication => Attempting to deserialize the "
                                         + "received response from Azure Powershell.");
-                                    Map<String, String> objectMap = SERIALIZER_ADAPTER.deserialize(out, Map.class,
-                                        SerializerEncoding.JSON);
-                                    String accessToken = objectMap.get("Token");
-                                    String time = objectMap.get("ExpiresOn");
-                                    OffsetDateTime expiresOn = OffsetDateTime.parse(time)
-                                        .withOffsetSameInstant(ZoneOffset.UTC);
-                                    return Mono.just(new AccessToken(accessToken, expiresOn));
+                                    try (JsonReader jsonReader = JsonProviders.createReader(out)) {
+                                        Map<String, String> objectMap = jsonReader.readMap(JsonReader::getString);
+                                        String accessToken = objectMap.get("Token");
+                                        String time = objectMap.get("ExpiresOn");
+                                        OffsetDateTime expiresOn = OffsetDateTime.parse(time)
+                                            .withOffsetSameInstant(ZoneOffset.UTC);
+                                        return Mono.just(new AccessToken(accessToken, expiresOn));
+                                    }
                                 } catch (IOException e) {
                                     return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, options,
                                         new CredentialUnavailableException(
@@ -903,8 +905,9 @@ public class IdentityClient extends IdentityClientBase {
                 connection.setRequestProperty("Metadata", "true");
                 connection.connect();
 
-                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                    SerializerEncoding.JSON);
+                try (JsonReader jsonReader = JsonProviders.createReader(connection.getInputStream())) {
+                    return MSIToken.fromJson(jsonReader);
+                }
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -974,9 +977,9 @@ public class IdentityClient extends IdentityClientBase {
 
                 connection.connect();
 
-                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                    SerializerEncoding.JSON);
-
+                try (JsonReader jsonReader = JsonProviders.createReader(connection.getInputStream())) {
+                    return MSIToken.fromJson(jsonReader);
+                }
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -1064,8 +1067,9 @@ public class IdentityClient extends IdentityClientBase {
 
                 connection.connect();
 
-                return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                    SerializerEncoding.JSON);
+                try (JsonReader jsonReader = JsonProviders.createReader(connection.getInputStream())) {
+                    return MSIToken.fromJson(jsonReader);
+                }
             } finally {
                 if (connection != null) {
                     connection.disconnect();
@@ -1118,8 +1122,9 @@ public class IdentityClient extends IdentityClientBase {
                     connection.setRequestProperty("User-Agent", userAgent);
                     connection.connect();
 
-                    return SERIALIZER_ADAPTER.deserialize(connection.getInputStream(), MSIToken.class,
-                        SerializerEncoding.JSON);
+                    try (JsonReader jsonReader = JsonProviders.createReader(connection.getInputStream())) {
+                        return MSIToken.fromJson(jsonReader);
+                    }
                 } catch (IOException exception) {
                     if (connection == null) {
                         throw LOGGER.logExceptionAsError(new RuntimeException(
