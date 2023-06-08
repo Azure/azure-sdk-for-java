@@ -1,20 +1,21 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosRetryStrategy;
+import com.azure.cosmos.models.CosmosRegionSwitchHint;
 
 import java.time.Duration;
 
 public final class RetryStrategyConfiguration {
 
-    private CosmosRetryStrategy.RegionSwitchHint regionSwitchHint;
+    private CosmosRegionSwitchHint regionSwitchHint;
     private Duration endToEndTimeout;
 
     public RetryStrategyConfiguration() {
-        this.regionSwitchHint = CosmosRetryStrategy.RegionSwitchHint.NONE;
+        this.regionSwitchHint = CosmosRegionSwitchHint.NONE;
         this.endToEndTimeout = null;
     }
 
-    public void setRegionSwitchHint(CosmosRetryStrategy.RegionSwitchHint regionSwitchHint) {
+    public void setRegionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
         this.regionSwitchHint = regionSwitchHint;
     }
 
@@ -22,7 +23,7 @@ public final class RetryStrategyConfiguration {
         this.endToEndTimeout = endToEndTimeout;
     }
 
-    public CosmosRetryStrategy.RegionSwitchHint getRegionSwitchHint() {
+    public CosmosRegionSwitchHint getRegionSwitchHint() {
         return regionSwitchHint;
     }
 

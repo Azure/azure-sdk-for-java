@@ -10,27 +10,8 @@ public final class CosmosRetryStrategy {
         this.retryStrategyConfiguration = retryStrategyConfiguration;
     }
 
+    // TODO: Do not expose
     public RetryStrategyConfiguration getRetryStrategyConfiguration() {
         return retryStrategyConfiguration;
-    }
-
-    public static final class RegionSwitchHint {
-
-        private final String hintRepresentation;
-
-        public static final RegionSwitchHint NONE =
-                new RegionSwitchHint("none");
-        public static final RegionSwitchHint LOCAL_REGION_PREFERRED =
-                new RegionSwitchHint("localRegionPreferred");
-        public static final RegionSwitchHint REMOTE_REGION_PREFERRED =
-                new RegionSwitchHint("remoteRegionPreferred");
-
-        private RegionSwitchHint(String hintRepresentation) {
-            this.hintRepresentation = hintRepresentation;
-        }
-
-        public String getHintRepresentation() {
-            return hintRepresentation;
-        }
     }
 }

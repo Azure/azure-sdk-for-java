@@ -1,6 +1,7 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.RetryStrategyConfiguration;
+import com.azure.cosmos.models.CosmosRegionSwitchHint;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,10 +23,10 @@ public final class CosmosRetryStrategyBuilder {
     }
 
     /**
-     * Sets the {@link com.azure.cosmos.CosmosRetryStrategy.RegionSwitchHint} which specifies for
+     * Sets the {@link CosmosRegionSwitchHint} which specifies for
      * an operation whether internal retry policies should prioritize a local region or a remote region.
      * */
-    public CosmosRetryStrategyBuilder setRegionSwitchHint(CosmosRetryStrategy.RegionSwitchHint regionSwitchHint) {
+    public CosmosRetryStrategyBuilder setRegionSwitchHint(CosmosRegionSwitchHint regionSwitchHint) {
         retryStrategyConfiguration.setRegionSwitchHint(regionSwitchHint);
         return this;
     }
