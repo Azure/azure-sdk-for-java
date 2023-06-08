@@ -3,6 +3,7 @@
 ## 1.41.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added a base class `KeyCredential` for `AzureKeyCredential` to deviate `Azure` endpoint and credential.  
 
 ### Breaking Changes
 

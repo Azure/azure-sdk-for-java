@@ -5,6 +5,7 @@
 ### Features Added
 
 ### Breaking Changes
+- Removed `NonAzureOpenAIKeyCredential` and `NonAzureOpenAIKeyCredentialPolicy`. Replace by Azure Core `KeyCredential` and `KeyCredentialPolicy`.
 
 ### Bugs Fixed
 
