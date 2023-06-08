@@ -12,11 +12,11 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.LicenseType;
 import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 import com.azure.resourcemanager.devcenter.models.Pool;
+import com.azure.resourcemanager.devcenter.models.StopOnDisconnectEnableStatus;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
@@ -35,7 +35,7 @@ public final class PoolsListByProjectMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"devBoxDefinitionName\":\"iwrxgkn\",\"networkConnectionName\":\"vyi\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\"},\"location\":\"vpgshoxgsgbp\",\"tags\":{\"gaqvlgafcqusrd\":\"djtxvzflbq\",\"duy\":\"etnwsdtutnw\",\"ewipm\":\"vuzhyr\"},\"id\":\"ekdxuku\",\"name\":\"gsjj\",\"type\":\"undxgketw\"}]}";
+            "{\"value\":[{\"properties\":{\"healthStatus\":\"Pending\",\"healthStatusDetails\":[],\"provisioningState\":\"Deleting\",\"devBoxDefinitionName\":\"clrcivtsox\",\"networkConnectionName\":\"kenx\",\"licenseType\":\"Windows_Client\",\"localAdministrator\":\"Disabled\",\"stopOnDisconnect\":{\"status\":\"Enabled\",\"gracePeriodMinutes\":2052756160}},\"location\":\"nqqs\",\"tags\":{\"vmm\":\"ao\",\"itgvkx\":\"npqfrtqlkzmeg\"},\"id\":\"zyqdrfegcealzx\",\"name\":\"hcans\",\"type\":\"moy\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -64,13 +64,16 @@ public final class PoolsListByProjectMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Pool> response =
-            manager.pools().listByProject("azkmtgguwp", "jrajcivm", 1977689221, Context.NONE);
+            manager.pools().listByProject("wivkxo", "zunbixx", 535878702, com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vpgshoxgsgbp", response.iterator().next().location());
-        Assertions.assertEquals("djtxvzflbq", response.iterator().next().tags().get("gaqvlgafcqusrd"));
-        Assertions.assertEquals("iwrxgkn", response.iterator().next().devBoxDefinitionName());
-        Assertions.assertEquals("vyi", response.iterator().next().networkConnectionName());
+        Assertions.assertEquals("nqqs", response.iterator().next().location());
+        Assertions.assertEquals("ao", response.iterator().next().tags().get("vmm"));
+        Assertions.assertEquals("clrcivtsox", response.iterator().next().devBoxDefinitionName());
+        Assertions.assertEquals("kenx", response.iterator().next().networkConnectionName());
         Assertions.assertEquals(LicenseType.WINDOWS_CLIENT, response.iterator().next().licenseType());
         Assertions.assertEquals(LocalAdminStatus.DISABLED, response.iterator().next().localAdministrator());
+        Assertions
+            .assertEquals(StopOnDisconnectEnableStatus.ENABLED, response.iterator().next().stopOnDisconnect().status());
+        Assertions.assertEquals(2052756160, response.iterator().next().stopOnDisconnect().gracePeriodMinutes());
     }
 }

@@ -18,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = JobSecrets.class)
 @JsonTypeName("JobSecrets")
 @JsonSubTypes({
+    @JsonSubTypes.Type(name = "DataBoxCustomerDisk", value = CustomerDiskJobSecrets.class),
     @JsonSubTypes.Type(name = "DataBoxDisk", value = DataBoxDiskJobSecrets.class),
     @JsonSubTypes.Type(name = "DataBoxHeavy", value = DataBoxHeavyJobSecrets.class),
     @JsonSubTypes.Type(name = "DataBox", value = DataboxJobSecrets.class)

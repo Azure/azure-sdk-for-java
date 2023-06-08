@@ -2,13 +2,9 @@
 
 ## 1.0.0-beta.2 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+- Reverted internal sync stack changes until enhancement is released.
 
 ## 1.0.0-beta.1 (2023-03-06)
 

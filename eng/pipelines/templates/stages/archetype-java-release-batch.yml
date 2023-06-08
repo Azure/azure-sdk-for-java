@@ -270,7 +270,10 @@ stages:
 
                   # Apply the version increment to each library, which only updates the version_client.txt file,
                   # and then call to update_versions will then apply all of the updates.
+                  # TODO Remove the git config gc.auto 0 when https://github.com/Azure/azure-sdk-tools/issues/6294
+                  # is added to the sparse-checkout.yml
                   - pwsh: |
+                      git config gc.auto 0
                       $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
                       $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
                       python --version
@@ -289,7 +292,6 @@ stages:
                       PRBranchName: increment-package-version-${{ parameters.ServiceDirectory }}-$(Build.BuildId)
                       CommitMsg: "Increment package versions for ${{ parameters.ServiceDirectory }} releases"
                       PRTitle: "Increment versions for ${{ parameters.ServiceDirectory }} releases"
-                      PRLabels: "auto-merge"
                       CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
 
         - deployment: PublishDocsMs

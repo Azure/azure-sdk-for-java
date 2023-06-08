@@ -18,14 +18,14 @@ public final class RulesEngineActionTests {
         RulesEngineAction model =
             BinaryData
                 .fromString(
-                    "{\"requestHeaderActions\":[{\"headerActionType\":\"Append\",\"headerName\":\"pxebmnzbt\",\"value\":\"jpglkfgohdne\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"phsdyhto\",\"value\":\"ikdowwquuvx\"},{\"headerActionType\":\"Append\",\"headerName\":\"clvit\",\"value\":\"qzonosggbhcohf\"},{\"headerActionType\":\"Delete\",\"headerName\":\"sjnkal\",\"value\":\"tiiswacffg\"},{\"headerActionType\":\"Append\",\"headerName\":\"zzewkfvhqcrai\",\"value\":\"pnppfuf\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}}")
+                    "{\"requestHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"beldawkzbaliourq\",\"value\":\"kauhashsfwxo\"},{\"headerActionType\":\"Overwrite\",\"headerName\":\"w\",\"value\":\"cugicjoox\"}],\"responseHeaderActions\":[{\"headerActionType\":\"Delete\",\"headerName\":\"wpucwwfvovbv\",\"value\":\"uecivyhz\"},{\"headerActionType\":\"Append\",\"headerName\":\"uojgj\",\"value\":\"jueiotwmcdytd\"},{\"headerActionType\":\"Append\",\"headerName\":\"it\",\"value\":\"rjaw\"}],\"routeConfigurationOverride\":{\"@odata.type\":\"RouteConfiguration\"}}")
                 .toObject(RulesEngineAction.class);
-        Assertions.assertEquals(HeaderActionType.APPEND, model.requestHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("pxebmnzbt", model.requestHeaderActions().get(0).headerName());
-        Assertions.assertEquals("jpglkfgohdne", model.requestHeaderActions().get(0).value());
+        Assertions.assertEquals(HeaderActionType.DELETE, model.requestHeaderActions().get(0).headerActionType());
+        Assertions.assertEquals("beldawkzbaliourq", model.requestHeaderActions().get(0).headerName());
+        Assertions.assertEquals("kauhashsfwxo", model.requestHeaderActions().get(0).value());
         Assertions.assertEquals(HeaderActionType.DELETE, model.responseHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("phsdyhto", model.responseHeaderActions().get(0).headerName());
-        Assertions.assertEquals("ikdowwquuvx", model.responseHeaderActions().get(0).value());
+        Assertions.assertEquals("wpucwwfvovbv", model.responseHeaderActions().get(0).headerName());
+        Assertions.assertEquals("uecivyhz", model.responseHeaderActions().get(0).value());
     }
 
     @org.junit.jupiter.api.Test
@@ -36,35 +36,35 @@ public final class RulesEngineActionTests {
                     Arrays
                         .asList(
                             new HeaderAction()
-                                .withHeaderActionType(HeaderActionType.APPEND)
-                                .withHeaderName("pxebmnzbt")
-                                .withValue("jpglkfgohdne")))
+                                .withHeaderActionType(HeaderActionType.DELETE)
+                                .withHeaderName("beldawkzbaliourq")
+                                .withValue("kauhashsfwxo"),
+                            new HeaderAction()
+                                .withHeaderActionType(HeaderActionType.OVERWRITE)
+                                .withHeaderName("w")
+                                .withValue("cugicjoox")))
                 .withResponseHeaderActions(
                     Arrays
                         .asList(
                             new HeaderAction()
                                 .withHeaderActionType(HeaderActionType.DELETE)
-                                .withHeaderName("phsdyhto")
-                                .withValue("ikdowwquuvx"),
+                                .withHeaderName("wpucwwfvovbv")
+                                .withValue("uecivyhz"),
                             new HeaderAction()
                                 .withHeaderActionType(HeaderActionType.APPEND)
-                                .withHeaderName("clvit")
-                                .withValue("qzonosggbhcohf"),
-                            new HeaderAction()
-                                .withHeaderActionType(HeaderActionType.DELETE)
-                                .withHeaderName("sjnkal")
-                                .withValue("tiiswacffg"),
+                                .withHeaderName("uojgj")
+                                .withValue("jueiotwmcdytd"),
                             new HeaderAction()
                                 .withHeaderActionType(HeaderActionType.APPEND)
-                                .withHeaderName("zzewkfvhqcrai")
-                                .withValue("pnppfuf")))
+                                .withHeaderName("it")
+                                .withValue("rjaw")))
                 .withRouteConfigurationOverride(new RouteConfiguration());
         model = BinaryData.fromObject(model).toObject(RulesEngineAction.class);
-        Assertions.assertEquals(HeaderActionType.APPEND, model.requestHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("pxebmnzbt", model.requestHeaderActions().get(0).headerName());
-        Assertions.assertEquals("jpglkfgohdne", model.requestHeaderActions().get(0).value());
+        Assertions.assertEquals(HeaderActionType.DELETE, model.requestHeaderActions().get(0).headerActionType());
+        Assertions.assertEquals("beldawkzbaliourq", model.requestHeaderActions().get(0).headerName());
+        Assertions.assertEquals("kauhashsfwxo", model.requestHeaderActions().get(0).value());
         Assertions.assertEquals(HeaderActionType.DELETE, model.responseHeaderActions().get(0).headerActionType());
-        Assertions.assertEquals("phsdyhto", model.responseHeaderActions().get(0).headerName());
-        Assertions.assertEquals("ikdowwquuvx", model.responseHeaderActions().get(0).value());
+        Assertions.assertEquals("wpucwwfvovbv", model.responseHeaderActions().get(0).headerName());
+        Assertions.assertEquals("uecivyhz", model.responseHeaderActions().get(0).value());
     }
 }

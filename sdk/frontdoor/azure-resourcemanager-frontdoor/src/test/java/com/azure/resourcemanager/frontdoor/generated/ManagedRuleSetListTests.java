@@ -17,10 +17,10 @@ public final class ManagedRuleSetListTests {
         ManagedRuleSetList model =
             BinaryData
                 .fromString(
-                    "{\"managedRuleSets\":[{\"ruleSetType\":\"tbvkayhmtnvyq\",\"ruleSetVersion\":\"atkzwpcnpw\",\"ruleSetAction\":\"Log\",\"exclusions\":[],\"ruleGroupOverrides\":[]},{\"ruleSetType\":\"vvsccyajguq\",\"ruleSetVersion\":\"hwyg\",\"ruleSetAction\":\"Block\",\"exclusions\":[],\"ruleGroupOverrides\":[]}]}")
+                    "{\"managedRuleSets\":[{\"ruleSetType\":\"ryo\",\"ruleSetVersion\":\"psoacctazakljl\",\"ruleSetAction\":\"Log\",\"exclusions\":[],\"ruleGroupOverrides\":[]},{\"ruleSetType\":\"fdfdosygexpa\",\"ruleSetVersion\":\"jakhmsbzjh\",\"ruleSetAction\":\"Block\",\"exclusions\":[],\"ruleGroupOverrides\":[]},{\"ruleSetType\":\"hlxaolthqtr\",\"ruleSetVersion\":\"qjbpfzfsin\",\"ruleSetAction\":\"Block\",\"exclusions\":[],\"ruleGroupOverrides\":[]}]}")
                 .toObject(ManagedRuleSetList.class);
-        Assertions.assertEquals("tbvkayhmtnvyq", model.managedRuleSets().get(0).ruleSetType());
-        Assertions.assertEquals("atkzwpcnpw", model.managedRuleSets().get(0).ruleSetVersion());
+        Assertions.assertEquals("ryo", model.managedRuleSets().get(0).ruleSetType());
+        Assertions.assertEquals("psoacctazakljl", model.managedRuleSets().get(0).ruleSetVersion());
         Assertions.assertEquals(ManagedRuleSetActionType.LOG, model.managedRuleSets().get(0).ruleSetAction());
     }
 
@@ -32,20 +32,26 @@ public final class ManagedRuleSetListTests {
                     Arrays
                         .asList(
                             new ManagedRuleSet()
-                                .withRuleSetType("tbvkayhmtnvyq")
-                                .withRuleSetVersion("atkzwpcnpw")
+                                .withRuleSetType("ryo")
+                                .withRuleSetVersion("psoacctazakljl")
                                 .withRuleSetAction(ManagedRuleSetActionType.LOG)
                                 .withExclusions(Arrays.asList())
                                 .withRuleGroupOverrides(Arrays.asList()),
                             new ManagedRuleSet()
-                                .withRuleSetType("vvsccyajguq")
-                                .withRuleSetVersion("hwyg")
+                                .withRuleSetType("fdfdosygexpa")
+                                .withRuleSetVersion("jakhmsbzjh")
+                                .withRuleSetAction(ManagedRuleSetActionType.BLOCK)
+                                .withExclusions(Arrays.asList())
+                                .withRuleGroupOverrides(Arrays.asList()),
+                            new ManagedRuleSet()
+                                .withRuleSetType("hlxaolthqtr")
+                                .withRuleSetVersion("qjbpfzfsin")
                                 .withRuleSetAction(ManagedRuleSetActionType.BLOCK)
                                 .withExclusions(Arrays.asList())
                                 .withRuleGroupOverrides(Arrays.asList())));
         model = BinaryData.fromObject(model).toObject(ManagedRuleSetList.class);
-        Assertions.assertEquals("tbvkayhmtnvyq", model.managedRuleSets().get(0).ruleSetType());
-        Assertions.assertEquals("atkzwpcnpw", model.managedRuleSets().get(0).ruleSetVersion());
+        Assertions.assertEquals("ryo", model.managedRuleSets().get(0).ruleSetType());
+        Assertions.assertEquals("psoacctazakljl", model.managedRuleSets().get(0).ruleSetVersion());
         Assertions.assertEquals(ManagedRuleSetActionType.LOG, model.managedRuleSets().get(0).ruleSetAction());
     }
 }

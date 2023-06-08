@@ -1,5 +1,17 @@
 ## Release History
 
+### 4.19.0-beta.1 (Unreleased)
+
+#### Features Added
+* Added support for priority based throttling - See [PR 35238](https://github.com/Azure/azure-sdk-for-java/pull/35238)
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Addressed `NullPointerException` in `CosmosDataItemSource` constructor when Spark runtime initialization hasn't completed yet. - See [PR 35201](https://github.com/Azure/azure-sdk-for-java/pull/35201)
+
+#### Other Changes
+
 ### 4.18.2 (2023-05-16)
 
 #### Bugs Fixed

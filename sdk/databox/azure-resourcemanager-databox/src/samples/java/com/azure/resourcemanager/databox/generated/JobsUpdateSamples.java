@@ -22,7 +22,7 @@ import java.util.Map;
 /** Samples for Jobs Update. */
 public final class JobsUpdateSamples {
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsPatchCmk.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatchCmk.json
      */
     /**
      * Sample code: JobsPatchCmk.
@@ -33,7 +33,8 @@ public final class JobsUpdateSamples {
         JobResource resource =
             manager
                 .jobs()
-                .getByResourceGroupWithResponse("SdkRg7937", "SdkJob1735", null, com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "YourResourceGroupName", "TestJobName1", null, com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -42,14 +43,14 @@ public final class JobsUpdateSamples {
                     .withKeyEncryptionKey(
                         new KeyEncryptionKey()
                             .withKekType(KekType.CUSTOMER_MANAGED)
-                            .withKekUrl("https://sdkkeyvault.vault.azure.net/keys/SSDKEY/")
+                            .withKekUrl("https://xxx.xxx.xx")
                             .withKekVaultResourceId(
-                                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.KeyVault/vaults/SDKKeyVault")))
+                                "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.KeyVault/vaults/YourKeyVaultName")))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsPatchSystemAssignedToUserAssigned.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatchSystemAssignedToUserAssigned.json
      */
     /**
      * Sample code: JobsPatchSystemAssignedToUserAssigned.
@@ -60,7 +61,8 @@ public final class JobsUpdateSamples {
         JobResource resource =
             manager
                 .jobs()
-                .getByResourceGroupWithResponse("SdkRg9765", "SdkJob2965", null, com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "YourResourceGroupName", "TestJobName1", null, com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -69,7 +71,7 @@ public final class JobsUpdateSamples {
                     .withType("SystemAssigned,UserAssigned")
                     .withUserAssignedIdentities(
                         mapOf(
-                            "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sdkIdentity",
+                            "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity",
                             new UserAssignedIdentity())))
             .withDetails(
                 new UpdateJobDetails()
@@ -82,15 +84,15 @@ public final class JobsUpdateSamples {
                                     .withUserAssigned(
                                         new UserAssignedProperties()
                                             .withResourceId(
-                                                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.ManagedIdentity/userAssignedIdentities/sdkIdentity")))
-                            .withKekUrl("https://sdkkeyvault.vault.azure.net/keys/SSDKEY/")
+                                                "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.ManagedIdentity/userAssignedIdentities/testIdentity")))
+                            .withKekUrl("https://xxx.xxx.xx")
                             .withKekVaultResourceId(
-                                "/subscriptions/fa68082f-8ff7-4a25-95c7-ce9da541242f/resourceGroups/akvenkat/providers/Microsoft.KeyVault/vaults/SDKKeyVault")))
+                                "/subscriptions/YourSubscriptionId/resourceGroups/YourResourceGroupName/providers/Microsoft.KeyVault/vaults/YourKeyVaultName")))
             .apply();
     }
 
     /*
-     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2021-03-01/examples/JobsPatch.json
+     * x-ms-original-file: specification/databox/resource-manager/Microsoft.DataBox/stable/2022-12-01/examples/JobsPatch.json
      */
     /**
      * Sample code: JobsPatch.
@@ -101,7 +103,8 @@ public final class JobsUpdateSamples {
         JobResource resource =
             manager
                 .jobs()
-                .getByResourceGroupWithResponse("SdkRg5154", "SdkJob952", "details", com.azure.core.util.Context.NONE)
+                .getByResourceGroupWithResponse(
+                    "YourResourceGroupName", "TestJobName1", "details", com.azure.core.util.Context.NONE)
                 .getValue();
         resource
             .update()
@@ -109,19 +112,19 @@ public final class JobsUpdateSamples {
                 new UpdateJobDetails()
                     .withContactDetails(
                         new ContactDetails()
-                            .withContactName("Update Job")
-                            .withPhone("1234567890")
-                            .withPhoneExtension("1234")
-                            .withEmailList(Arrays.asList("testing@microsoft.com")))
+                            .withContactName("XXXX XXXX")
+                            .withPhone("0000000000")
+                            .withPhoneExtension("")
+                            .withEmailList(Arrays.asList("xxxx@xxxx.xxx")))
                     .withShippingAddress(
                         new ShippingAddress()
-                            .withStreetAddress1("16 TOWNSEND ST")
-                            .withStreetAddress2("Unit 1")
-                            .withCity("San Francisco")
-                            .withStateOrProvince("CA")
-                            .withCountry("US")
+                            .withStreetAddress1("XXXX XXXX")
+                            .withStreetAddress2("XXXX XXXX")
+                            .withCity("XXXX XXXX")
+                            .withStateOrProvince("XX")
+                            .withCountry("XX")
                             .withPostalCode("fakeTokenPlaceholder")
-                            .withCompanyName("Microsoft")
+                            .withCompanyName("XXXX XXXX")
                             .withAddressType(AddressType.COMMERCIAL)))
             .apply();
     }

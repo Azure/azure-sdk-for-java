@@ -63,7 +63,7 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
     public interface GenerateCostDetailsReportsService {
         @Headers({"Content-Type: application/json"})
         @Post("/{scope}/providers/Microsoft.CostManagement/generateCostDetailsReport")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> createOperation(
             @HostParam("$host") String endpoint,
@@ -95,7 +95,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.
@@ -142,7 +143,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.
@@ -187,7 +189,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.
@@ -220,7 +223,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.
@@ -256,7 +260,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.
@@ -281,7 +286,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.
@@ -307,7 +313,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.
@@ -332,7 +339,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.
@@ -360,7 +368,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.
@@ -385,7 +394,8 @@ public final class GenerateCostDetailsReportsClientImpl implements GenerateCostD
      * operation will provide a 202 response with a 'Location' header if the operation is still in progress. Once the
      * report generation operation completes, the polling endpoint will provide a 200 response along with details on the
      * report blob(s) that are available for download. The details on the file(s) available for download will be
-     * available in the polling response body.
+     * available in the polling response body. To Understand cost details (formerly known as usage details) fields found
+     * in files ,see https://learn.microsoft.com/azure/cost-management-billing/automate/understand-usage-details-fields.
      *
      * @param scope The ARM Resource ID for subscription, resource group, billing account, or other billing scopes. For
      *     details, see https://aka.ms/costmgmt/scopes.

@@ -11,7 +11,6 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.ImageVersion;
 import java.nio.ByteBuffer;
@@ -31,7 +30,7 @@ public final class ImageVersionsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"name\":\"ybar\",\"publishedDate\":\"2021-06-21T23:29Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":462603095,\"provisioningState\":\"MovingResources\"},\"id\":\"qgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"}";
+            "{\"properties\":{\"name\":\"wdxsm\",\"publishedDate\":\"2021-01-12T14:00:36Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1445033324,\"provisioningState\":\"Accepted\"},\"id\":\"fnynszqujizdvoqy\",\"name\":\"ibyowbblgyavutp\",\"type\":\"hjoxo\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -62,8 +61,7 @@ public final class ImageVersionsGetWithResponseMockTests {
         ImageVersion response =
             manager
                 .imageVersions()
-                .getWithResponse(
-                    "mbtxhwgf", "srtawcoezbr", "ubskhudygoookkq", "qjbvleorfmlu", "qtqzfavyv", Context.NONE)
+                .getWithResponse("qonmacj", "k", "izsh", "vcimpev", "gmblrri", com.azure.core.util.Context.NONE)
                 .getValue();
     }
 }

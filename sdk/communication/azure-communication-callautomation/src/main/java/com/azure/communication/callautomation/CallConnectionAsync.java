@@ -26,7 +26,6 @@ import com.azure.communication.callautomation.models.CallParticipant;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallInvite;
-import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.MuteParticipantsOptions;
 import com.azure.communication.callautomation.models.MuteParticipantsResult;
@@ -130,28 +129,27 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> hangUp(boolean isForEveryone) {
-        HangUpOptions hangUpOptions = new HangUpOptions(isForEveryone);
-        return hangUpWithResponse(hangUpOptions).flatMap(FluxUtil::toMono);
+        return hangUpWithResponse(isForEveryone).flatMap(FluxUtil::toMono);
     }
 
     /**
      * Hangup a call.
      *
-     * @param hangUpOptions options to hang up
+     * @param isForEveryone determine if the call is handed up for all participants.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response with Void.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> hangUpWithResponse(HangUpOptions hangUpOptions) {
-        return withContext(context -> hangUpWithResponseInternal(hangUpOptions, context));
+    public Mono<Response<Void>> hangUpWithResponse(boolean isForEveryone) {
+        return withContext(context -> hangUpWithResponseInternal(isForEveryone, context));
     }
 
-    Mono<Response<Void>> hangUpWithResponseInternal(HangUpOptions hangUpOptions, Context context) {
+    Mono<Response<Void>> hangUpWithResponseInternal(boolean isForEveryone, Context context) {
         try {
             context = context == null ? Context.NONE : context;
 
-            return (hangUpOptions.getIsForEveryone() ? callConnectionInternal.terminateCallWithResponseAsync(
+            return (isForEveryone ? callConnectionInternal.terminateCallWithResponseAsync(
                     callConnectionId,
                     UUID.randomUUID(),
                     DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()),
@@ -248,7 +246,7 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TransferCallResult> transferCallToParticipant(CommunicationIdentifier targetParticipant) {
-        
+
         if (targetParticipant instanceof CommunicationUserIdentifier) {
             return transferCallToParticipantWithResponse(new TransferCallToParticipantOptions((CommunicationUserIdentifier) targetParticipant, null)).flatMap(FluxUtil::toMono);
         } else if (targetParticipant instanceof PhoneNumberIdentifier) {

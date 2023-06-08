@@ -4,12 +4,10 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
 /** Samples for FirewallRules Get. */
 public final class FirewallRulesGetSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCacheFirewallRuleGet.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCacheFirewallRuleGet.json
      */
     /**
      * Sample code: RedisCacheFirewallRuleGet.
@@ -22,6 +20,6 @@ public final class FirewallRulesGetSamples {
             .manager()
             .serviceClient()
             .getFirewallRules()
-            .getWithResponse("rg1", "cache1", "rule1", Context.NONE);
+            .getWithResponse("rg1", "cache1", "rule1", com.azure.core.util.Context.NONE);
     }
 }

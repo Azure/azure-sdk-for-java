@@ -13,16 +13,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ScansCreateOrUpdate {
     public static void main(String[] args) {
-        ScansClient client =
+        ScansClient scansClient =
                 new PurviewScanningClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
                         .buildScansClient();
+        // BEGIN:com.azure.analytics.purview.scanning.generated.scanscreateorupdate.scanscreateorupdate
         BinaryData body =
                 BinaryData.fromString(
                         "{\"kind\":\"AzureStorageCredential\",\"properties\":{\"collection\":{\"type\":\"CollectionReference\",\"referenceName\":\"Collection-rZX\"},\"connectedVia\":null,\"credential\":{\"credentialType\":\"AccountKey\",\"referenceName\":\"CredentialAKV\"},\"scanRulesetName\":\"AzureStorage\",\"scanRulesetType\":\"System\"}}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                client.createOrUpdateWithResponse("myDataSource", "myScanName", body, requestOptions);
+                scansClient.createOrUpdateWithResponse("myDataSource", "myScanName", body, requestOptions);
+        // END:com.azure.analytics.purview.scanning.generated.scanscreateorupdate.scanscreateorupdate
     }
 }

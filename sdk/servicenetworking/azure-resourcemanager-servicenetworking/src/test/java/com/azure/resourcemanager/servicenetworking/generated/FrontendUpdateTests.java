@@ -5,45 +5,24 @@
 package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.servicenetworking.models.FrontendIpAddressVersion;
-import com.azure.resourcemanager.servicenetworking.models.FrontendMode;
-import com.azure.resourcemanager.servicenetworking.models.FrontendPropertiesIpAddress;
 import com.azure.resourcemanager.servicenetworking.models.FrontendUpdate;
-import com.azure.resourcemanager.servicenetworking.models.FrontendUpdateProperties;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FrontendUpdateTests {
-    @Test
-    public void testDeserialize() {
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
         FrontendUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"aajrm\":\"pimexgstxgcpodg\",\"clwhijcoejctbz\":\"djwzrlov\"},\"properties\":{\"mode\":\"public\",\"ipAddressVersion\":\"IPv4\",\"publicIPAddress\":{\"id\":\"bkbfkgukdkex\"}}}")
-                .toObject(FrontendUpdate.class);
-        Assertions.assertEquals("pimexgstxgcpodg", model.tags().get("aajrm"));
-        Assertions.assertEquals(FrontendMode.PUBLIC, model.properties().mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV4, model.properties().ipAddressVersion());
-        Assertions.assertEquals("bkbfkgukdkex", model.properties().publicIpAddress().id());
+            BinaryData.fromString("{\"tags\":{\"bmqj\":\"coofsxlzev\"}}").toObject(FrontendUpdate.class);
+        Assertions.assertEquals("coofsxlzev", model.tags().get("bmqj"));
     }
 
-    @Test
-    public void testSerialize() {
-        FrontendUpdate model =
-            new FrontendUpdate()
-                .withTags(mapOf("aajrm", "pimexgstxgcpodg", "clwhijcoejctbz", "djwzrlov"))
-                .withProperties(
-                    new FrontendUpdateProperties()
-                        .withMode(FrontendMode.PUBLIC)
-                        .withIpAddressVersion(FrontendIpAddressVersion.IPV4)
-                        .withPublicIpAddress(new FrontendPropertiesIpAddress().withId("bkbfkgukdkex")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FrontendUpdate model = new FrontendUpdate().withTags(mapOf("bmqj", "coofsxlzev"));
         model = BinaryData.fromObject(model).toObject(FrontendUpdate.class);
-        Assertions.assertEquals("pimexgstxgcpodg", model.tags().get("aajrm"));
-        Assertions.assertEquals(FrontendMode.PUBLIC, model.properties().mode());
-        Assertions.assertEquals(FrontendIpAddressVersion.IPV4, model.properties().ipAddressVersion());
-        Assertions.assertEquals("bkbfkgukdkex", model.properties().publicIpAddress().id());
+        Assertions.assertEquals("coofsxlzev", model.tags().get("bmqj"));
     }
 
     @SuppressWarnings("unchecked")

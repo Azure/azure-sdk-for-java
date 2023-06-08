@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("IsNotNull")
 @Fluent
 public final class IsNotNullAdvancedFilter extends AdvancedFilter {
+    /** Creates an instance of IsNotNullAdvancedFilter class. */
+    public IsNotNullAdvancedFilter() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public IsNotNullAdvancedFilter withKey(String key) {

@@ -151,6 +151,15 @@ public final class PrivateEndpointConnectionInner extends SubResource {
     }
 
     /**
+     * Get the privateEndpointLocation property: The location of the private endpoint.
+     *
+     * @return the privateEndpointLocation value.
+     */
+    public String privateEndpointLocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointLocation();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.

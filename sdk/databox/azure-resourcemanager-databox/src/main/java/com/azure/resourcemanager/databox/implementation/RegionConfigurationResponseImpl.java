@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.databox.implementation;
 
 import com.azure.resourcemanager.databox.fluent.models.RegionConfigurationResponseInner;
+import com.azure.resourcemanager.databox.models.DatacenterAddressResponse;
 import com.azure.resourcemanager.databox.models.RegionConfigurationResponse;
 import com.azure.resourcemanager.databox.models.ScheduleAvailabilityResponse;
 import com.azure.resourcemanager.databox.models.TransportAvailabilityResponse;
@@ -26,6 +27,10 @@ public final class RegionConfigurationResponseImpl implements RegionConfiguratio
 
     public TransportAvailabilityResponse transportAvailabilityResponse() {
         return this.innerModel().transportAvailabilityResponse();
+    }
+
+    public DatacenterAddressResponse datacenterAddressResponse() {
+        return this.innerModel().datacenterAddressResponse();
     }
 
     public RegionConfigurationResponseInner innerModel() {

@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.redis.fluent.models.RedisPatchScheduleInner;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
 import com.azure.resourcemanager.redis.models.DefaultName;
@@ -15,7 +14,7 @@ import java.util.Arrays;
 /** Samples for PatchSchedules CreateOrUpdate. */
 public final class PatchSchedulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2022-06-01/examples/RedisCachePatchSchedulesCreateOrUpdate.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2023-04-01/examples/RedisCachePatchSchedulesCreateOrUpdate.json
      */
     /**
      * Sample code: RedisCachePatchSchedulesCreateOrUpdate.
@@ -41,6 +40,6 @@ public final class PatchSchedulesCreateOrUpdateSamples {
                                     .withStartHourUtc(12)
                                     .withMaintenanceWindow(Duration.parse("PT5H")),
                                 new ScheduleEntry().withDayOfWeek(DayOfWeek.TUESDAY).withStartHourUtc(12))),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

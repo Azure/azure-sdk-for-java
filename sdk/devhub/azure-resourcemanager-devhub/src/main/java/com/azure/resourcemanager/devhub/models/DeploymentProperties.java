@@ -44,6 +44,10 @@ public final class DeploymentProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> overrides;
 
+    /** Creates an instance of DeploymentProperties class. */
+    public DeploymentProperties() {
+    }
+
     /**
      * Get the manifestType property: Determines the type of manifests within the repository.
      *
