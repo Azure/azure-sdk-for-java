@@ -34,7 +34,21 @@ public enum FaultInjectionOperationType {
     /**
      * Patch item.
      */
-    PATCH_ITEM
-
-    // Add support for metadata request type
+    PATCH_ITEM,
+    /**
+     * Read container.
+     */
+    METADATA_REQUEST_CONTAINER,
+    /**
+     * Read database account.
+     */
+    METADATA_REQUEST_DATABASE_ACCOUNT,
+    /**
+     * Query query plan.
+     */
+    METADATA_REQUEST_QUERY_PLAN,
+    /**
+     * Refresh server addresses.
+     */
+    METADATA_REQUEST_REFRESH_ADDRESSES
 }

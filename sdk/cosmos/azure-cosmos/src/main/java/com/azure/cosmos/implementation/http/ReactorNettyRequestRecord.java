@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import reactor.netty.http.client.HttpClientState;
 
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Represents the timeline of various events in the lifetime of a reactor netty request response.
@@ -22,6 +23,7 @@ import java.time.Instant;
  * </ul></p>
  */
 public final class ReactorNettyRequestRecord {
+    private static final AtomicLong instanceCount = new AtomicLong();
 
     private volatile Instant timeCreated;
     private volatile Instant timeConnected;
@@ -30,6 +32,11 @@ public final class ReactorNettyRequestRecord {
     private volatile Instant timeSent;
     private volatile Instant timeReceived;
     private volatile Instant timeCompleted;
+    private final long transportRequestId;
+
+    public ReactorNettyRequestRecord() {
+        this.transportRequestId = instanceCount.incrementAndGet();
+    }
 
     /**
      * Gets request created instant.
@@ -185,5 +192,9 @@ public final class ReactorNettyRequestRecord {
                 new RequestTimeline.Event("received",
                     timeReceived, timeCompletedOrNow));
         }
+    }
+
+    public long getTransportRequestId() {
+        return transportRequestId;
     }
 }

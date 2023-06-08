@@ -8,6 +8,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.IRequestRecord;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestRecord;
 import com.azure.cosmos.implementation.faultinjection.IRntbdServerErrorInjector;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 
 import java.time.Duration;
 import java.util.function.Consumer;
@@ -33,7 +34,8 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
 
         RntbdRequestArgs requestArgs = requestRecord.args();
 
-        FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(requestArgs);
+        FaultInjectionServerErrorRule serverResponseDelayRule =
+            this.ruleStore.findServerResponseDelayRule(this.createFaultInjectionRequestArgs(requestArgs));
         if (serverResponseDelayRule != null) {
 
             if (serverResponseDelayRule.getResult() != null
@@ -61,7 +63,8 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
                                                                  Consumer<Duration> writeRequestWithDelayConsumer) {
         RntbdRequestArgs requestArgs = requestRecord.args();
 
-        FaultInjectionServerErrorRule serverResponseDelayRule = this.ruleStore.findRntbdServerResponseDelayRule(requestArgs);
+        FaultInjectionServerErrorRule serverResponseDelayRule =
+            this.ruleStore.findServerResponseDelayRule(this.createFaultInjectionRequestArgs(requestArgs));
         if (serverResponseDelayRule != null) {
 
             if (serverResponseDelayRule.getResult() == null
@@ -89,7 +92,7 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
         RntbdRequestArgs requestArgs = requestRecord.args();
 
         FaultInjectionServerErrorRule serverResponseErrorRule =
-            this.ruleStore.findRntbdServerResponseErrorRule(requestArgs);
+            this.ruleStore.findServerResponseErrorRule(this.createFaultInjectionRequestArgs(requestArgs));
 
         if (serverResponseErrorRule != null) {
             requestArgs.serviceRequest().faultInjectionRequestContext
@@ -116,7 +119,7 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
         RntbdRequestArgs requestArgs = requestRecord.args();
 
         FaultInjectionServerErrorRule serverConnectionDelayRule =
-            this.ruleStore.findRntbdServerConnectionDelayRule(requestArgs);
+            this.ruleStore.findServerConnectionDelayRule(this.createFaultInjectionRequestArgs(requestArgs));
 
         if (serverConnectionDelayRule != null) {
             requestArgs.serviceRequest().faultInjectionRequestContext
@@ -128,5 +131,14 @@ public class RntbdServerErrorInjector implements IRntbdServerErrorInjector {
         }
 
         return false;
+    }
+
+    private FaultInjectionRequestArgs createFaultInjectionRequestArgs(RntbdRequestArgs rntbdRequestArgs) {
+        return new FaultInjectionRequestArgs(
+            rntbdRequestArgs.transportRequestId(),
+            rntbdRequestArgs.physicalAddressUri().getURI(),
+            rntbdRequestArgs.physicalAddressUri().isPrimary(),
+            rntbdRequestArgs.serviceRequest(),
+            FaultInjectionConnectionType.DIRECT);
     }
 }

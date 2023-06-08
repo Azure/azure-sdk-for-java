@@ -6,7 +6,6 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.apachecommons.lang.NotImplementedException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -15,6 +14,7 @@ import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
 import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
+import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
@@ -25,8 +25,10 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import com.azure.cosmos.models.CosmosContainerIdentity;
+import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -60,6 +62,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
     private final HttpClient httpClient;
     private final QueryCompatibilityMode queryCompatibilityMode;
     private final GlobalEndpointManager globalEndpointManager;
+    private final GatewayServerErrorInjector gatewayServerErrorInjector;
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
     private ThroughputControlStore throughputControlStore;
@@ -108,6 +111,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
         this.httpClient = httpClient;
         this.sessionContainer = sessionContainer;
+        this.gatewayServerErrorInjector = new GatewayServerErrorInjector();
     }
 
     void setGatewayServiceConfigurationReader(GatewayServiceConfigurationReader gatewayServiceConfigurationReader) {
@@ -228,7 +232,6 @@ public class RxGatewayStoreModel implements RxStoreModel {
     public Mono<RxDocumentServiceResponse> performRequestInternal(RxDocumentServiceRequest request, HttpMethod method, URI requestUri) {
 
         try {
-
             HttpHeaders httpHeaders = this.getHttpRequestHeaders(request.getHeaders());
 
             Flux<byte[]> contentAsByteArray = request.getContentAsByteArrayFlux();
@@ -246,7 +249,70 @@ public class RxGatewayStoreModel implements RxStoreModel {
                 responseTimeout = Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
             }
 
-            Mono<HttpResponse> httpResponseMono = this.httpClient.send(httpRequest, responseTimeout);
+            Mono<HttpResponse> httpResponseMono =
+                Mono.just(responseTimeout)
+                    .flatMap(effectiveResponseTimeout -> {
+                        if (this.gatewayServerErrorInjector != null) {
+                            Utils.ValueHolder<CosmosException> exceptionToBeInjected = new Utils.ValueHolder<>();
+                            Utils.ValueHolder<Duration> delayToBeInjected = new Utils.ValueHolder<>();
+
+                            if (this.gatewayServerErrorInjector.injectGatewayServerResponseError(
+                                httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
+                                httpRequest.uri(),
+                                request,
+                                exceptionToBeInjected)) {
+                                return Mono.error(exceptionToBeInjected.v);
+                            }
+
+                            if (this.gatewayServerErrorInjector.injectGatewayServerConnectionDelay(
+                                httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
+                                httpRequest.uri(),
+                                request,
+                                delayToBeInjected)) {
+                                // TODO: wire up the connection acquire timeout from configs
+                                Duration connectionAcquireTimeout = Duration.ofSeconds(45);
+                                if (delayToBeInjected.v.toMillis() >= connectionAcquireTimeout.toMillis()) {
+                                    return Mono.delay(connectionAcquireTimeout)
+                                        .then(Mono.error(new ConnectTimeoutException()));
+                                } else {
+                                    return Mono.delay(delayToBeInjected.v)
+                                        .then(this.httpClient.send(httpRequest, effectiveResponseTimeout));
+                                }
+                            }
+
+                            if (this.gatewayServerErrorInjector.injectGatewayServerResponseDelayBeforeProcessing(
+                                httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
+                                httpRequest.uri(),
+                                request,
+                                delayToBeInjected)) {
+                                if (delayToBeInjected.v.toMillis() >= effectiveResponseTimeout.toMillis()) {
+                                    return Mono.delay(effectiveResponseTimeout)
+                                        .then(Mono.error(new ReadTimeoutException()));
+                                } else {
+                                    return Mono.delay(delayToBeInjected.v)
+                                        .then(this.httpClient.send(httpRequest, effectiveResponseTimeout));
+                                }
+                            }
+
+                            if (this.gatewayServerErrorInjector.injectGatewayServerResponseDelayAfterProcessing(
+                                httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
+                                httpRequest.uri(),
+                                request,
+                                delayToBeInjected)) {
+                                if (delayToBeInjected.v.toMillis() >= effectiveResponseTimeout.toMillis()) {
+                                    return this.httpClient.send(httpRequest, effectiveResponseTimeout)
+                                        .delayElement(delayToBeInjected.v)
+                                        .then(Mono.error(new ReadTimeoutException()));
+                                } else {
+                                    return this.httpClient.send(httpRequest, effectiveResponseTimeout)
+                                        .delayElement(delayToBeInjected.v);
+                                }
+                            }
+                        }
+
+                        return this.httpClient.send(httpRequest, effectiveResponseTimeout);
+                    });
+
             return toDocumentServiceResponse(httpResponseMono, request, httpRequest);
 
         } catch (Exception e) {
@@ -537,7 +603,7 @@ public class RxGatewayStoreModel implements RxStoreModel {
 
     @Override
     public void configureFaultInjectorProvider(IFaultInjectorProvider injectorProvider) {
-        throw new NotImplementedException("configureFaultInjectorProvider is not supported in RxGatewayStoreModel");
+        this.gatewayServerErrorInjector.registerServerErrorInjector(injectorProvider.getGatewayServerErrorInjector());
     }
 
     @Override

@@ -20,6 +20,8 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
+import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
+import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
@@ -51,6 +53,7 @@ public class GlobalAddressResolver implements IAddressResolver {
     private final RxPartitionKeyRangeCache routingMapProvider;
     private final int maxEndpoints;
     private final GatewayServiceConfigurationReader serviceConfigReader;
+    private final GatewayServerErrorInjector gatewayServerErrorInjector;
     final Map<URI, EndpointCache> addressCacheByEndpoint;
     private final boolean tcpConnectionEndpointRediscoveryEnabled;
     private ApiType apiType;
@@ -86,6 +89,7 @@ public class GlobalAddressResolver implements IAddressResolver {
         this.maxEndpoints = maxBackupReadEndpoints + 2; // for write and alternate write getEndpoint (during failover)
         this.addressCacheByEndpoint = new ConcurrentHashMap<>();
         this.apiType = apiType;
+        this.gatewayServerErrorInjector = new GatewayServerErrorInjector();
 
         for (URI endpoint : endpointManager.getWriteEndpoints()) {
             this.getOrAddEndpoint(endpoint);
@@ -251,6 +255,10 @@ public class GlobalAddressResolver implements IAddressResolver {
         }
     }
 
+    public void configureFaultInjectorProvider(IFaultInjectorProvider faultInjectorProvider) {
+        this.gatewayServerErrorInjector.registerServerErrorInjector(faultInjectorProvider.getGatewayServerErrorInjector());
+    }
+
     private IAddressResolver getAddressResolver(RxDocumentServiceRequest rxDocumentServiceRequest) {
         URI endpoint = this.endpointManager.resolveServiceEndpoint(rxDocumentServiceRequest);
         return this.getOrAddEndpoint(endpoint).addressResolver;
@@ -268,7 +276,8 @@ public class GlobalAddressResolver implements IAddressResolver {
                 this.apiType,
                 this.endpointManager,
                 this.connectionPolicy,
-                this.proactiveOpenConnectionsProcessor);
+                this.proactiveOpenConnectionsProcessor,
+                this.gatewayServerErrorInjector);
             AddressResolver addressResolver = new AddressResolver();
             addressResolver.initializeCaches(this.collectionCache, this.routingMapProvider, gatewayAddressCache);
             EndpointCache cache = new EndpointCache();

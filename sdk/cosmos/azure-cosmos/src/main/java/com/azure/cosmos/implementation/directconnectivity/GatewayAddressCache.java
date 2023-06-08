@@ -42,12 +42,15 @@ import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import com.azure.cosmos.implementation.caches.AsyncCacheNonBlocking;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.OpenConnectionTask;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenConnectionsProcessor;
+import com.azure.cosmos.implementation.faultinjection.GatewayServerErrorInjector;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import io.netty.channel.ConnectTimeoutException;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.timeout.ReadTimeoutException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -105,6 +108,7 @@ public class GatewayAddressCache implements IAddressCache {
     private final ConnectionPolicy connectionPolicy;
     private final boolean replicaAddressValidationEnabled;
     private final Set<Uri.HealthStatus> replicaValidationScopes;
+    private final GatewayServerErrorInjector gatewayServerErrorInjector;
 
     public GatewayAddressCache(
         DiagnosticsClientContext clientContext,
@@ -117,7 +121,8 @@ public class GatewayAddressCache implements IAddressCache {
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+        GatewayServerErrorInjector gatewayServerErrorInjector) {
 
         this.clientContext = clientContext;
         try {
@@ -168,6 +173,7 @@ public class GatewayAddressCache implements IAddressCache {
         if (this.replicaAddressValidationEnabled) {
             this.replicaValidationScopes.add(Uri.HealthStatus.UnhealthyPending);
         }
+        this.gatewayServerErrorInjector = gatewayServerErrorInjector;
     }
 
     public GatewayAddressCache(
@@ -180,7 +186,8 @@ public class GatewayAddressCache implements IAddressCache {
         ApiType apiType,
         GlobalEndpointManager globalEndpointManager,
         ConnectionPolicy connectionPolicy,
-        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor) {
+        ProactiveOpenConnectionsProcessor proactiveOpenConnectionsProcessor,
+        GatewayServerErrorInjector gatewayServerErrorInjector) {
         this(clientContext,
                 serviceEndpoint,
                 protocol,
@@ -191,7 +198,8 @@ public class GatewayAddressCache implements IAddressCache {
                 apiType,
                 globalEndpointManager,
                 connectionPolicy,
-                proactiveOpenConnectionsProcessor);
+                proactiveOpenConnectionsProcessor,
+                gatewayServerErrorInjector);
     }
 
     @Override
@@ -394,15 +402,79 @@ public class GatewayAddressCache implements IAddressCache {
         Instant addressCallStartTime = Instant.now();
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, targetEndpoint, targetEndpoint.getPort(), httpHeaders);
 
-        Mono<HttpResponse> httpResponseMono;
-        if (tokenProvider.getAuthorizationTokenType() != AuthorizationTokenType.AadToken) {
-            httpResponseMono = this.httpClient.send(httpRequest,
-                Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds()));
-        } else {
+        Duration responseTimeout= Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds());
+        Mono<HttpResponse> httpResponseMono =
+            Mono.just(httpRequest)
+                .flatMap(effectiveResponseTimeout -> {
+                    if (this.gatewayServerErrorInjector != null) {
+                        Utils.ValueHolder<CosmosException> exceptionToBeInjected = new Utils.ValueHolder<>();
+                        Utils.ValueHolder<Duration> delayToBeInjected = new Utils.ValueHolder<>();
+
+                        if (this.gatewayServerErrorInjector.injectGatewayServerResponseError(
+                            httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
+                            httpRequest.uri(),
+                            request,
+                            exceptionToBeInjected)) {
+                            return Mono.error(exceptionToBeInjected.v);
+                        }
+
+                        if (this.gatewayServerErrorInjector.injectGatewayServerConnectionDelay(
+                            httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
+                            httpRequest.uri(),
+                            request,
+                            delayToBeInjected)) {
+                            // TODO: wire up the connection acquire timeout from configs
+                            Duration connectionAcquireTimeout = Duration.ofSeconds(45);
+                            if (delayToBeInjected.v.toMillis() >= connectionAcquireTimeout.toMillis()) {
+                                return Mono.delay(connectionAcquireTimeout)
+                                    .then(Mono.error(new ConnectTimeoutException()));
+                            } else {
+                                return Mono.delay(delayToBeInjected.v)
+                                    .then(
+                                        this.httpClient.send(
+                                            httpRequest,
+                                            Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
+                            }
+                        }
+
+                        if (this.gatewayServerErrorInjector.injectGatewayServerResponseDelayBeforeProcessing(
+                            httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
+                            httpRequest.uri(),
+                            request,
+                            delayToBeInjected)) {
+                            if (delayToBeInjected.v.toMillis() >= responseTimeout.toMillis()) {
+                                return Mono.delay(responseTimeout)
+                                    .then(this.httpClient.send(
+                                        httpRequest,
+                                        Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
+                            } else {
+                                return Mono.delay(delayToBeInjected.v)
+                                    .then(this.httpClient.send(httpRequest, responseTimeout));
+                            }
+                        }
+
+                        if (this.gatewayServerErrorInjector.injectGatewayServerResponseDelayAfterProcessing(
+                            httpRequest.reactorNettyRequestRecord().getTransportRequestId(),
+                            httpRequest.uri(),
+                            request,
+                            delayToBeInjected)) {
+                            if (delayToBeInjected.v.toMillis() >= responseTimeout.toMillis()) {
+                                return this.httpClient.send(httpRequest, responseTimeout)
+                                    .delayElement(delayToBeInjected.v)
+                                    .then(Mono.error(new ReadTimeoutException()));
+                            } else {
+                                return this.httpClient.send(httpRequest, responseTimeout).delayElement(delayToBeInjected.v);
+                            }
+                        }
+                    }
+
+                    return this.httpClient.send(httpRequest, responseTimeout);
+                });
+
+        if (tokenProvider.getAuthorizationTokenType() == AuthorizationTokenType.AadToken) {
             httpResponseMono = tokenProvider
                 .populateAuthorizationHeader(httpHeaders)
-                .flatMap(valueHttpHeaders -> this.httpClient.send(httpRequest,
-                    Duration.ofSeconds(Configs.getAddressRefreshResponseTimeoutInSeconds())));
+                .then(httpResponseMono);
         }
 
         Mono<RxDocumentServiceResponse> dsrObs = HttpClientUtils.parseResponseAsync(request, clientContext, httpResponseMono, httpRequest);

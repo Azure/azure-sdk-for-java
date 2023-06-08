@@ -75,9 +75,9 @@ public class FaultInjectionRuleStore {
             });
     }
 
-    public FaultInjectionServerErrorRule findRntbdServerResponseDelayRule(RntbdRequestArgs requestArgs) {
+    public FaultInjectionServerErrorRule findServerResponseDelayRule(FaultInjectionRequestArgs requestArgs) {
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverResponseDelayRuleSet) {
-            if (serverResponseDelayRule.getConnectionType() == FaultInjectionConnectionType.DIRECT
+            if (serverResponseDelayRule.getConnectionType() == requestArgs.getConnectionType()
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }
@@ -86,9 +86,9 @@ public class FaultInjectionRuleStore {
         return null;
     }
 
-    public FaultInjectionServerErrorRule findRntbdServerResponseErrorRule(RntbdRequestArgs requestArgs) {
+    public FaultInjectionServerErrorRule findServerResponseErrorRule(FaultInjectionRequestArgs requestArgs) {
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverResponseErrorRuleSet) {
-            if (serverResponseDelayRule.getConnectionType() == FaultInjectionConnectionType.DIRECT
+            if (serverResponseDelayRule.getConnectionType() == requestArgs.getConnectionType()
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }
@@ -97,9 +97,9 @@ public class FaultInjectionRuleStore {
         return null;
     }
 
-    public FaultInjectionServerErrorRule findRntbdServerConnectionDelayRule(RntbdRequestArgs requestArgs) {
+    public FaultInjectionServerErrorRule findServerConnectionDelayRule(FaultInjectionRequestArgs requestArgs) {
         for (FaultInjectionServerErrorRule serverResponseDelayRule : this.serverConnectionDelayRuleSet) {
-            if (serverResponseDelayRule.getConnectionType() == FaultInjectionConnectionType.DIRECT
+            if (serverResponseDelayRule.getConnectionType() == requestArgs.getConnectionType()
                 && serverResponseDelayRule.isApplicable(requestArgs)) {
                 return serverResponseDelayRule;
             }

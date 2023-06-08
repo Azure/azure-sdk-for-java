@@ -62,10 +62,10 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         this.connectionType = connectionType;
     }
 
-    public boolean isApplicable(RntbdRequestArgs requestArgs) {
+    public boolean isApplicable(FaultInjectionRequestArgs requestArgs) {
         if (!this.isValid()) {
-            requestArgs.serviceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
-                requestArgs.transportRequestId(),
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
                 String.format(
                     "%s[Disable or Duration reached. StartTime: %s, ExpireTime: %s]",
                     this.id,
@@ -81,9 +81,9 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
             return false;
         }
 
-        if (!this.result.isApplicable(this.id, requestArgs.serviceRequest())) {
-            requestArgs.serviceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
-                requestArgs.transportRequestId(),
+        if (!this.result.isApplicable(this.id, requestArgs.getServiceRequest())) {
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
                 this.id + "[Per operation apply limit reached]"
             );
             return false;
@@ -92,8 +92,8 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
         long evaluationCount = this.evaluationCount.incrementAndGet();
         boolean withinHitLimit = this.hitLimit == null || evaluationCount <= this.hitLimit;
         if (!withinHitLimit) {
-            requestArgs.serviceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
-                requestArgs.transportRequestId(),
+            requestArgs.getServiceRequest().faultInjectionRequestContext.recordFaultInjectionRuleEvaluation(
+                requestArgs.getTransportRequestId(),
                 this.id + "[Hit Limit reached]"
             );
             return false;
@@ -102,7 +102,7 @@ public class FaultInjectionServerErrorRule implements IFaultInjectionRuleInterna
 
             // track hit count details, key will be operationType-resourceType
             String name =
-                requestArgs.serviceRequest().getOperationType().toString() + "-" + requestArgs.serviceRequest().getResourceType().toString();
+                requestArgs.getServiceRequest().getOperationType().toString() + "-" + requestArgs.getServiceRequest().getResourceType().toString();
             this.hitCountDetails.compute(name, (key, count) -> {
                 if (count == null) {
                     count = 0L;

@@ -4467,9 +4467,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         checkNotNull(injectorProvider, "Argument 'injectorProvider' can not be null");
         if (this.connectionPolicy.getConnectionMode() == ConnectionMode.DIRECT) {
             this.storeModel.configureFaultInjectorProvider(injectorProvider);
-        } else {
-            throw new IllegalArgumentException("configureFaultInjectorProvider is not supported for gateway mode");
         }
+
+        this.gatewayProxy.configureFaultInjectorProvider(injectorProvider);
+        this.addressResolver.configureFaultInjectorProvider(injectorProvider);
     }
 
     @Override

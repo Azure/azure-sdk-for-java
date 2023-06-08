@@ -10,5 +10,9 @@ public enum FaultInjectionConnectionType {
     /***
      * Direct connection type.
      */
-    DIRECT
+    DIRECT,
+    /***
+     * Gateway connection type.
+     */
+    GATEWAY
 }
