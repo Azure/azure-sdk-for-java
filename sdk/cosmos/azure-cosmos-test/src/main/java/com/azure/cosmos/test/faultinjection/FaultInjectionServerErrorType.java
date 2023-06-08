@@ -38,6 +38,10 @@ public enum FaultInjectionServerErrorType {
     /** simulate high channel acquisition, when it is over connection timeout, can simulate connectionTimeoutException */
     CONNECTION_DELAY,
     /**
+     * Simulate service unavailable(503)
+     */
+    SERVICE_UNAVAILABLE,
+    /**
      * simulate 410-1002 due to staled addresses.
      */
     STALED_ADDRESSES_PARTITION_IS_GONE

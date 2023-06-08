@@ -6,7 +6,6 @@ package com.azure.cosmos.test.implementation.faultinjection;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 
 import java.net.URI;

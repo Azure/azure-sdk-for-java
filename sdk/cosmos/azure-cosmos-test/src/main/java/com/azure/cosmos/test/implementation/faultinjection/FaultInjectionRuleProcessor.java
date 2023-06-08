@@ -270,7 +270,7 @@ public class FaultInjectionRuleProcessor {
 
     private FaultInjectionConnectionType getEffectiveConnectionType(FaultInjectionRule rule) {
         FaultInjectionConnectionType connectionType = rule.getCondition().getConnectionType();
-        if(rule.getCondition().getOperationType() != null
+        if (rule.getCondition().getOperationType() != null
             && this.isMetadataRequest(rule.getCondition().getOperationType())) {
             connectionType = FaultInjectionConnectionType.GATEWAY;
         }
