@@ -16,7 +16,6 @@ public class FaultInjectionConditionInternal {
     private final String containerResourceId;
 
     private OperationType operationType;
-    private ResourceType resourceType;
     private List<URI> regionEndpoints;
     private List<URI> physicalAddresses;
     private List<IFaultInjectionConditionValidator> validators;
@@ -39,7 +38,6 @@ public class FaultInjectionConditionInternal {
     }
 
     public void setResourceType(ResourceType resourceType) {
-        this.resourceType = resourceType;
         if (resourceType != null) {
             this.validators.add(new ResourceTypeValidator(resourceType));
         }
