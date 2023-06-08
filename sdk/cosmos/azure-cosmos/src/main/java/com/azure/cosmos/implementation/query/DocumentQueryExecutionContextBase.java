@@ -135,20 +135,17 @@ implements IDocumentQueryExecutionContext<T> {
                         .getCosmosQueryRequestOptionsAccessor()
                         .getRetryStrategy(cosmosQueryRequestOptions);
 
-        RetryStrategyConfiguration retryStrategyConfiguration = null;
+        RetryStrategyConfiguration retryStrategyConfig = null;
 
         if (retryStrategy != null) {
-            retryStrategyConfiguration = retryStrategy
-                    .getRetryStrategyConfigs()
-                    .getOrDefault(CosmosRetryStrategy.OperationType.READ, new RetryStrategyConfiguration());
-
-            request.requestContext.setRetryStrategyConfiguration(retryStrategyConfiguration);
+            retryStrategyConfig = retryStrategy.getRetryStrategyConfiguration();
+            request.requestContext.setRetryStrategyConfiguration(retryStrategy.getRetryStrategyConfiguration());
         }
 
         if (endToEndOperationLatencyConfig != null) {
 
-            if (retryStrategyConfiguration != null) {
-                retryStrategyConfiguration.setEndToEndOperationTimeout(
+            if (retryStrategyConfig != null) {
+                retryStrategyConfig.setEndToEndOperationTimeout(
                         endToEndOperationLatencyConfig.getEndToEndOperationTimeout());
             }
 

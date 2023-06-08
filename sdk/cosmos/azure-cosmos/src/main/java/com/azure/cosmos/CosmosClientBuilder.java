@@ -800,6 +800,12 @@ public class CosmosClientBuilder implements
         return this;
     }
 
+    /**
+     * Sets the {@link CosmosRetryStrategy} on the client.
+     * <br>
+     * DISCLAIMER: Setting {@link CosmosRetryStrategy} will modify retry behavior
+     * of all operations or workload which is executed through the instance of the client.
+     * */
     public CosmosClientBuilder retryStrategy(CosmosRetryStrategy retryStrategy) {
         this.retryStrategy = retryStrategy;
         return this;
