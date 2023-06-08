@@ -4,6 +4,7 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
@@ -343,6 +344,11 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
+    /**
+     * Sets the {@link CosmosRetryStrategy} instance to be used for the request. This
+     * will override the behavior of the  {@link CosmosRetryStrategy} instance configured
+     * through {@link CosmosClientBuilder} instance.
+     * */
     public CosmosQueryRequestOptions setCosmosRetryStrategy(CosmosRetryStrategy retryStrategy) {
         this.retryStrategy = retryStrategy;
         return this;

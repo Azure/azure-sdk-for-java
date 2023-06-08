@@ -396,6 +396,16 @@ public class CosmosItemRequestOptions {
         return this;
     }
 
+    /**
+     * Sets the {@link CosmosRetryStrategy} instance to be used for the request. This
+     * will override the behavior of the  {@link CosmosRetryStrategy} instance configured
+     * through {@link CosmosClientBuilder} instance.
+     * */
+    public CosmosItemRequestOptions setCosmosRetryStrategy(CosmosRetryStrategy retryStrategy) {
+        this.retryStrategy = retryStrategy;
+        return this;
+    }
+
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
