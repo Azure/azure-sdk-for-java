@@ -23,7 +23,7 @@ public final class CosmosRegionSwitchHint {
     }
 
     public static CosmosRegionSwitchHint fromString(String hintRepresentation) {
-        checkNotNull(hintRepresentation, "Argument 'name' must not be null.");
+        checkNotNull(hintRepresentation, "Argument 'hintRepresentation' must not be null.");
 
         String normalizedName = hintRepresentation.trim().toLowerCase(Locale.ROOT);
         switch (normalizedName) {
