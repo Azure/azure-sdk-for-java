@@ -1,0 +1,7 @@
+emit:
+  - "@azure-tools/typespec-java"
+options:
+  "@azure-tools/typespec-java":
+    emitter-output-dir: "{cwd}"
+    namespace: com.azure.ai.contentsafety
+    examples-directory: examples
