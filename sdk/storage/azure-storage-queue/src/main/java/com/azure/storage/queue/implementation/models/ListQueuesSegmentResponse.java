@@ -11,7 +11,7 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -42,7 +42,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
     /*
      * The QueueItems property.
      */
-    private List<QueueItem> queueItems = new LinkedList<>();
+    private List<QueueItem> queueItems = new ArrayList<>();
 
     /*
      * The NextMarker property.
@@ -139,7 +139,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
      */
     public List<QueueItem> getQueueItems() {
         if (this.queueItems == null) {
-            this.queueItems = new LinkedList<>();
+            this.queueItems = new ArrayList<>();
         }
         return this.queueItems;
     }
@@ -243,7 +243,7 @@ public final class ListQueuesSegmentResponse implements XmlSerializable<ListQueu
                             deserializedListQueuesSegmentResponse.maxResults = reader.getIntElement();
                         } else if ("Queues".equals(elementName.getLocalPart())) {
                             if (deserializedListQueuesSegmentResponse.queueItems == null) {
-                                deserializedListQueuesSegmentResponse.queueItems = new LinkedList<>();
+                                deserializedListQueuesSegmentResponse.queueItems = new ArrayList<>();
                             }
                             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                                 elementName = reader.getElementName();

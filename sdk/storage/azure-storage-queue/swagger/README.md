@@ -32,6 +32,7 @@ custom-types-subpackage: models
 generic-response-type: true
 use-input-stream-for-binary: true
 no-custom-headers: true
+disable-client-builder: true
 stream-style-serialization: true
 ```
 

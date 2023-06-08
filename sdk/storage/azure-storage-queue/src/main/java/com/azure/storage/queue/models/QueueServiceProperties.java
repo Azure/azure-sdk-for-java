@@ -10,7 +10,7 @@ import com.azure.xml.XmlReader;
 import com.azure.xml.XmlSerializable;
 import com.azure.xml.XmlToken;
 import com.azure.xml.XmlWriter;
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLStreamException;
@@ -36,7 +36,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
     /*
      * The set of CORS rules.
      */
-    private List<QueueCorsRule> cors = new LinkedList<>();
+    private List<QueueCorsRule> cors = new ArrayList<>();
 
     /** Creates an instance of QueueServiceProperties class. */
     public QueueServiceProperties() {}
@@ -108,7 +108,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
      */
     public List<QueueCorsRule> getCors() {
         if (this.cors == null) {
-            this.cors = new LinkedList<>();
+            this.cors = new ArrayList<>();
         }
         return this.cors;
     }
@@ -190,7 +190,7 @@ public final class QueueServiceProperties implements XmlSerializable<QueueServic
                                     QueueMetrics.fromXml(reader, "MinuteMetrics");
                         } else if ("Cors".equals(elementName.getLocalPart())) {
                             if (deserializedQueueServiceProperties.cors == null) {
-                                deserializedQueueServiceProperties.cors = new LinkedList<>();
+                                deserializedQueueServiceProperties.cors = new ArrayList<>();
                             }
                             while (reader.nextElement() != XmlToken.END_ELEMENT) {
                                 elementName = reader.getElementName();

@@ -116,7 +116,7 @@ public final class AzureQueueStorageImpl {
      * @param url The URL of the service account, queue or message that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
-    AzureQueueStorageImpl(String url, String version) {
+    public AzureQueueStorageImpl(String url, String version) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -133,7 +133,7 @@ public final class AzureQueueStorageImpl {
      * @param url The URL of the service account, queue or message that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
-    AzureQueueStorageImpl(HttpPipeline httpPipeline, String url, String version) {
+    public AzureQueueStorageImpl(HttpPipeline httpPipeline, String url, String version) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, version);
     }
 
@@ -145,7 +145,8 @@ public final class AzureQueueStorageImpl {
      * @param url The URL of the service account, queue or message that is the target of the desired operation.
      * @param version Specifies the version of the operation to use for this request.
      */
-    AzureQueueStorageImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url, String version) {
+    public AzureQueueStorageImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String url, String version) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.url = url;
