@@ -1,6 +1,7 @@
-package com.azure.cosmos.models;
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 
-import com.azure.cosmos.CosmosRetryStrategy;
+package com.azure.cosmos.models;
 
 import java.util.Locale;
 import java.util.StringJoiner;
