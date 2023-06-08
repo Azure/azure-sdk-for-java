@@ -3,10 +3,11 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.core.http.policy.RetryStrategy;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosRetryStrategy;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
+import com.azure.cosmos.models.CosmosRegionSwitchHint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
@@ -22,25 +23,31 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private final TimeoutHelper waitTimeTimeoutHelper;
     private final AtomicInteger retryCount;
     private Duration currentBackoff;
-    private RetryContext retryContext;
+    private final RetryContext retryContext;
+    private final RxDocumentServiceRequest request;
 
     // TODO: Figure out a way to use RetryStrategyConfiguration to map
     // TODO: specific values for wait time, initial backoff, max backoff, backoff multiplier
-    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliSeconds, RetryStrategyConfiguration retryStrategyConfiguration) {
-        this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(waitTimeInMilliSeconds));
-        this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
+    public SessionTokenMismatchRetryPolicy(RxDocumentServiceRequest request) {
+
+        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
+
+        if (endToEndOperationLatencyPolicyConfig != null && endToEndOperationLatencyPolicyConfig.isEnabled()) {
+            Duration endToEndOperationTimeout = endToEndOperationLatencyPolicyConfig.getEndToEndOperationTimeout();
+            // TODO: Extract divisors as a config???
+            this.waitTimeTimeoutHelper = new TimeoutHelper(endToEndOperationTimeout.dividedBy(2));
+            this.maximumBackoff = endToEndOperationTimeout.dividedBy(20);
+        } else {
+            this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs()));
+            this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
+        }
+
+        this.request = request;
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
+        // TODO: Should be fairly low when compared to end-to-end timeout, default to JVM config
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
-        this.retryContext = retryContext;
-    }
-
-    public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliSeconds) {
-        this(retryContext, waitTimeInMilliSeconds, null);
-    }
-
-    public SessionTokenMismatchRetryPolicy(RetryContext retryContext) {
-        this(retryContext, Configs.getSessionTokenMismatchDefaultWaitTimeInMs());
+        this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
     }
 
     @Override
@@ -67,6 +74,16 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
                 "SessionTokenMismatchRetryPolicy not retrying because it has exceeded " +
                     "the time limit. Retry count = {}",
                 this.retryCount);
+
+            return Mono.just(ShouldRetryResult.noRetry());
+        }
+
+        RetryStrategyConfiguration retryStrategyConfig = request.requestContext.getRetryStrategyConfiguration();
+        CosmosRegionSwitchHint regionSwitchHint = retryStrategyConfig.getRegionSwitchHint();
+
+        if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED && request.requestContext.isRequestForFirstPreferedOrAvailableRegion) {
+            LOGGER.warn("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for a local region and " +
+                    "fallback to remote region is preferred ");
 
             return Mono.just(ShouldRetryResult.noRetry());
         }
@@ -107,5 +124,10 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         }
 
         return backoff;
+    }
+
+    private void computeRetryWindow(RxDocumentServiceRequest request) {
+
+
     }
 }
