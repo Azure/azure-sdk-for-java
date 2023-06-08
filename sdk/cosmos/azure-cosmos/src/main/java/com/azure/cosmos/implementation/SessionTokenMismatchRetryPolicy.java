@@ -24,6 +24,8 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private Duration currentBackoff;
     private RetryContext retryContext;
 
+    // TODO: Figure out a way to use RetryStrategyConfiguration to map
+    // TODO: specific values for wait time, initial backoff, max backoff, backoff multiplier
     public SessionTokenMismatchRetryPolicy(RetryContext retryContext, int waitTimeInMilliSeconds, RetryStrategyConfiguration retryStrategyConfiguration) {
         this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(waitTimeInMilliSeconds));
         this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
