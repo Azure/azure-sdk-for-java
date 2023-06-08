@@ -381,7 +381,7 @@ public interface WebApplicationFirewallPolicy
      *  containing all the settings that can be modified. */
     interface Update
         extends Appliable<WebApplicationFirewallPolicy>,
-        UpdateWithTags<WebApplicationFirewallPolicy>,
+        Resource.UpdateWithTags<WebApplicationFirewallPolicy>,
         UpdateStages.WithMode,
         UpdateStages.WithState,
         UpdateStages.WithBotProtection,
