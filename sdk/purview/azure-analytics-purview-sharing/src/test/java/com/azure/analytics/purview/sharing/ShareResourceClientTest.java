@@ -16,7 +16,6 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
-@SuppressWarnings("unused")
 public class ShareResourceClientTest extends PurviewShareTestBase {
 
     @Override

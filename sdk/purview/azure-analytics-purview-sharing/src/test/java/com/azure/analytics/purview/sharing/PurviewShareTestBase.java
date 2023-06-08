@@ -23,6 +23,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.polling.SyncPoller;
@@ -118,7 +119,7 @@ class PurviewShareTestBase extends TestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             receivedSharesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                    .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             receivedSharesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
@@ -136,7 +137,7 @@ class PurviewShareTestBase extends TestBase {
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
             sentSharesClientbuilder.httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                    .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             sentSharesClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
                     .credential(new DefaultAzureCredentialBuilder().build());
@@ -156,7 +157,7 @@ class PurviewShareTestBase extends TestBase {
         if (getTestMode() == TestMode.PLAYBACK) {
             shareResourcesClientbuilder
                     .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+                    .credential(new MockTokenCredential());
         } else if (getTestMode() == TestMode.RECORD) {
             shareResourcesClientbuilder
                     .addPolicy(interceptorManager.getRecordPolicy())
