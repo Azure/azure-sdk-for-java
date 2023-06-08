@@ -129,7 +129,7 @@ public class AppConfigurationEndpoint {
      */
     public boolean triggerRefresh() {
         for (ConfigStore configStore : configStores) {
-            if (configStore.getEndpoint().startsWith(endpoint) && configStore.getMonitoring().isEnabled()) {
+            if (configStore.containsEndpoint(endpoint) && configStore.getMonitoring().isEnabled()) {
                 return true;
             }
         }

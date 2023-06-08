@@ -165,6 +165,10 @@ public final class ConfigStore {
         this.featureFlags = featureFlags;
     }
 
+    public boolean containsEndpoint(String endpoint) {
+        return endpoints.stream().anyMatch(storeEndpoint -> storeEndpoint.equalsIgnoreCase(endpoint));
+    }
+
     /**
      * @throws IllegalStateException Connection String URL endpoint is invalid
      */
