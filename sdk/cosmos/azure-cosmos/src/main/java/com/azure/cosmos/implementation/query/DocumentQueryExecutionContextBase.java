@@ -139,7 +139,7 @@ implements IDocumentQueryExecutionContext<T> {
 
         if (retryStrategy != null) {
             retryStrategyConfig = retryStrategy.getRetryStrategyConfiguration();
-            request.requestContext.setRetryStrategyConfiguration(retryStrategy.getRetryStrategyConfiguration());
+            request.requestContext.setRetryStrategyConfiguration(retryStrategyConfig);
         }
 
         if (endToEndOperationLatencyConfig != null) {
