@@ -10,6 +10,7 @@
 
 ### Breaking Changes
 
+- Changed property `type` in `ContainerConfiguration` from string type to enum type `ContainerType`.
 - Remove the following methods in `JobOperations`.
    - `getAllJobsLifetimeStatistics()`.
    - `getAllJobsLifetimeStatistics(Iterable<BatchClientBehavior> additionalBehaviors)`.
