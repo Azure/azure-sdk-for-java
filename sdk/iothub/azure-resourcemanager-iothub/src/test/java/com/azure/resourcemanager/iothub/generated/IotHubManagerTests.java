@@ -37,9 +37,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class IotHubManagerTests extends TestBase {
@@ -103,11 +103,10 @@ public class IotHubManagerTests extends TestBase {
                 .withProperties(
                     new IotHubProperties()
                         .withIpFilterRules(Arrays.asList())
-                        .withEventHubEndpoints(new HashMap<String, EventHubProperties>(){{
-                            put("events", new EventHubProperties()
+                        .withEventHubEndpoints(mapOf("events",
+                            new EventHubProperties()
                                 .withRetentionTimeInDays(1L)
-                                .withPartitionCount(2));
-                        }})
+                                .withPartitionCount(2)))
                         .withRouting(new RoutingProperties()
                             .withEndpoints(new RoutingEndpoints()
                                 .withEventHubs(Arrays.asList())
@@ -122,21 +121,17 @@ public class IotHubManagerTests extends TestBase {
                                     .withSource(RoutingSource.DEVICE_MESSAGES)
                                     .withCondition("true")
                                     .withIsEnabled(true)
-                                    .withEndpointNames(new ArrayList<String>(){{
-                                        add("events");
-                                    }})))
-                        .withStorageEndpoints(new HashMap<String, StorageEndpointProperties>(){{
-                            put("$default", new StorageEndpointProperties()
+                                    .withEndpointNames(Arrays.asList("events"))))
+                        .withStorageEndpoints(mapOf("$default",
+                            new StorageEndpointProperties()
                                 .withSasTtlAsIso8601(Duration.ofHours(1L))
                                 .withConnectionString(StringUtil.EMPTY_STRING)
-                                .withContainerName(StringUtil.EMPTY_STRING));
-                        }})
-                        .withMessagingEndpoints(new HashMap<String, MessagingEndpointProperties>(){{
-                            put("fileNotifications", new MessagingEndpointProperties()
+                                .withContainerName(StringUtil.EMPTY_STRING)))
+                        .withMessagingEndpoints(mapOf("fileNotifications",
+                            new MessagingEndpointProperties()
                                 .withLockDurationAsIso8601(Duration.ofMillis(1L))
                                 .withTtlAsIso8601(Duration.ofHours(1L))
-                                .withMaxDeliveryCount(10));
-                        }})
+                                .withMaxDeliveryCount(10)))
                         .withEnableFileUploadNotifications(false)
                         .withCloudToDevice(new CloudToDeviceProperties()
                             .withMaxDeliveryCount(10)
@@ -166,5 +161,16 @@ public class IotHubManagerTests extends TestBase {
 
     private static String randomPadding() {
         return String.format("%05d", Math.abs(RANDOM.nextInt() % 100000));
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
