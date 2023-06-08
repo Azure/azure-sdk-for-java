@@ -16,7 +16,7 @@ param testApplicationSecret string
 param baseName string = resourceGroup().name
 
 @description('The location of the resource. By default, this is the same as the resource group.')
-param location string = resourceGroup().location
+param location string = 'westus2'
 
 @description('A new GUID used to identify the role assignment')
 param roleNameGuid string = newGuid()
