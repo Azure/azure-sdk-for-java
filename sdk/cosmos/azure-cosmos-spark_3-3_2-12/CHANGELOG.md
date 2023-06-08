@@ -3,6 +3,7 @@
 ### 4.19.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added support for priority based throttling - See [PR 35238](https://github.com/Azure/azure-sdk-for-java/pull/35238)
 
 #### Breaking Changes
 

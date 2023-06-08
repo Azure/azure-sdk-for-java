@@ -117,6 +117,14 @@ public final class CosmosMetricTagName {
         EnumSet.of(TagName.OperationStatusCode));
 
     /**
+     * Operation sub-status code.
+     * Applicable to operations
+     */
+    public static final CosmosMetricTagName OPERATION_SUB_STATUS_CODE = new CosmosMetricTagName(
+        "OperationSubStatusCode",
+        EnumSet.of(TagName.OperationSubStatusCode));
+
+    /**
      * Operation type
      * Applicable to operations
      */
@@ -195,6 +203,7 @@ public final class CosmosMetricTagName {
             case "serviceendpoint": return CosmosMetricTagName.SERVICE_ENDPOINT;
             case "regionname": return CosmosMetricTagName.REGION_NAME;
             case "operationstatuscode": return CosmosMetricTagName.OPERATION_STATUS_CODE;
+            case "operationsubstatuscode": return CosmosMetricTagName.OPERATION_SUB_STATUS_CODE;
             case "operation": return CosmosMetricTagName.OPERATION;
             case "requeststatuscode": return CosmosMetricTagName.REQUEST_STATUS_CODE;
             case "requestoperationtype": return CosmosMetricTagName.REQUEST_OPERATION_TYPE;
@@ -254,6 +263,7 @@ public final class CosmosMetricTagName {
             .add(CosmosMetricTagName.SERVICE_ENDPOINT.name)
             .add(CosmosMetricTagName.REGION_NAME.name)
             .add(CosmosMetricTagName.OPERATION_STATUS_CODE.name)
+            .add(CosmosMetricTagName.OPERATION_SUB_STATUS_CODE.name)
             .add(CosmosMetricTagName.OPERATION.name)
             .add(CosmosMetricTagName.REQUEST_STATUS_CODE.name)
             .add(CosmosMetricTagName.REQUEST_OPERATION_TYPE.name)
