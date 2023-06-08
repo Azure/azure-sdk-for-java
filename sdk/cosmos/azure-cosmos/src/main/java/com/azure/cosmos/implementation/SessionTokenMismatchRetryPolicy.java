@@ -125,9 +125,4 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
 
         return backoff;
     }
-
-    private void computeRetryWindow(RxDocumentServiceRequest request) {
-
-
-    }
 }
