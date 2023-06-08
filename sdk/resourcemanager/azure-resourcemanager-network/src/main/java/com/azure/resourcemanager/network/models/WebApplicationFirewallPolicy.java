@@ -11,6 +11,9 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Flux;
+
+import java.util.List;
 
 /** Entry point for Web Application Firewall Policy. */
 public interface WebApplicationFirewallPolicy
@@ -46,6 +49,12 @@ public interface WebApplicationFirewallPolicy
     /** @return whether this policy is enabled */
     boolean isEnabled();
 
+    /** @return a list of application gateways associated with this Web Application Firewall Policy */
+    List<ApplicationGateway> getAssociatedApplicationGateways();
+
+    /** @return {@link Flux} of application gateways associated with this Web Application Firewall Policy */
+    Flux<ApplicationGateway> getAssociatedApplicationGatewaysAsync();
+
     /**
      * The entirety of the Web Application Firewall Policy definition.
      */
@@ -71,18 +80,26 @@ public interface WebApplicationFirewallPolicy
          */
         interface WithMode {
             /**
-             * Specify that the mode of the Web Application Firewall be Detection.
+             * Specify that the mode of the Web Application Firewall Policy be Detection.
              *
              * @return the next stage of the definition
              */
             WithCreate withDetectionMode();
 
             /**
-             * Specify that the mode of the Web Application Firewall be Protection.
+             * Specify that the mode of the Web Application Firewall Policy be Protection.
              *
              * @return the next stage of the definition
              */
             WithCreate withPreventionMode();
+
+            /**
+             * Specify the mode of the Web Application Firewall.
+             *
+             * @param mode the mode of the policy
+             * @return the next stage of the definition
+             */
+            WithCreate withMode(WebApplicationFirewallMode mode);
         }
 
         /**
@@ -214,18 +231,26 @@ public interface WebApplicationFirewallPolicy
          */
         interface WithMode {
             /**
-             * Specify that the mode of the Web Application Firewall be Detection.
+             * Specify that the mode of the Web Application Firewall Policy be Detection.
              *
              * @return the next stage of the update
              */
             Update withDetectionMode();
 
             /**
-             * Specify that the mode of the Web Application Firewall be Protection.
+             * Specify that the mode of the Web Application Firewall Policy be Protection.
              *
              * @return the next stage of the update
              */
             Update withPreventionMode();
+
+            /**
+             * Specify the mode of the Web Application Firewall Policy.
+             *
+             * @param mode the mode of the policy
+             * @return the next stage of the update
+             */
+            Update withMode(WebApplicationFirewallMode mode);
         }
 
         /**

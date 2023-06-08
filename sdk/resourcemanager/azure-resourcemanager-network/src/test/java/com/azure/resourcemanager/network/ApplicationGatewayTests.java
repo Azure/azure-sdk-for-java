@@ -23,6 +23,7 @@ import com.azure.resourcemanager.network.models.ManagedServiceIdentityUserAssign
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.ResourceIdentityType;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallMode;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
@@ -511,7 +512,6 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         String appGatewayName = generateRandomResourceName("agwaf", 15);
         String appPublicIp = generateRandomResourceName("pip", 15);
         String wafPolicyName = generateRandomResourceName("waf", 15);
-        String wafPolicyName2 = generateRandomResourceName("waf", 15);
 
         PublicIpAddress pip =
             networkManager
@@ -551,16 +551,27 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .withExistingWebApplicationFirewallPolicy(wafPolicy)
                 .create();
 
-        Assertions.assertNotNull(appGateway.webApplicationFirewallPolicy());
-        Assertions.assertEquals(wafPolicy.id(), appGateway.webApplicationFirewallPolicy().id());
+        Assertions.assertNotNull(appGateway.getWebApplicationFirewallPolicy());
         Assertions.assertNull(appGateway.webApplicationFirewallConfiguration());
 
+        wafPolicy.refresh();
+        // check association
+        Assertions.assertEquals(appGateway.id(), wafPolicy.getAssociatedApplicationGateways().iterator().next().id());
+        Assertions.assertEquals(wafPolicy.id(), appGateway.getWebApplicationFirewallPolicy().id());
+
         appGateway.update()
-            .withNewWebApplicationFirewallPolicy(wafPolicyName2)
+            .withNewWebApplicationFirewallPolicy(false, WebApplicationFirewallMode.PREVENTION)
             .apply();
 
-        Assertions.assertNotNull(appGateway.webApplicationFirewallPolicy());
-        Assertions.assertNotEquals(appGateway.webApplicationFirewallPolicy().id(), wafPolicy.id());
+        WebApplicationFirewallPolicy newPolicy = appGateway.getWebApplicationFirewallPolicy();
+
+        Assertions.assertNotNull(newPolicy);
+        Assertions.assertFalse(newPolicy.isEnabled());
+        Assertions.assertEquals(WebApplicationFirewallMode.PREVENTION, newPolicy.mode());
+        Assertions.assertNotEquals(newPolicy.id(), wafPolicy.id());
+        // check updated association
+        Assertions.assertEquals(appGateway.id(), newPolicy.getAssociatedApplicationGateways().iterator().next().id());
+        Assertions.assertEquals(newPolicy.id(), appGateway.getWebApplicationFirewallPolicy().id());
     }
 
     private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {

@@ -8,7 +8,6 @@ import com.azure.resourcemanager.network.fluent.WebApplicationFirewallPoliciesCl
 import com.azure.resourcemanager.network.fluent.models.WebApplicationFirewallPolicyInner;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicies;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
-import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 
 /** Implementation for {@link WebApplicationFirewallPolicies}. */

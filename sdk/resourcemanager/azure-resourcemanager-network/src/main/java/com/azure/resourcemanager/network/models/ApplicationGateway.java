@@ -12,10 +12,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+import reactor.core.publisher.Mono;
+
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
-import reactor.core.publisher.Mono;
 
 /** Entry point for application gateway management API in Azure. */
 public interface ApplicationGateway
@@ -183,8 +184,11 @@ public interface ApplicationGateway
      */
     ApplicationGatewayListener listenerByPortNumber(int portNumber);
 
-    /** @return Web Application Firewall Policy associated with the application gateway */
-    WebApplicationFirewallPolicy webApplicationFirewallPolicy();
+    /** @return Web Application Firewall Policy (if any) associated with the application gateway */
+    WebApplicationFirewallPolicy getWebApplicationFirewallPolicy();
+
+    /** @return {@link Mono} of Web Application Firewall Policy (if any) associated with the application gateway */
+    Mono<WebApplicationFirewallPolicy> getWebApplicationFirewallPolicyAsync();
 
     /** Grouping of application gateway definition stages. */
     interface DefinitionStages {
@@ -413,7 +417,16 @@ public interface ApplicationGateway
              * @param enabled enable the firewall when created
              * @param mode Web application firewall mode.
              * @return the next stage of the definition
+             * @deprecated No further investments will be made on legacy WAF configuration.
+             *             You are strongly encouraged to upgrade from legacy WAF configuration to WAF Policy for
+             *             easier management, better scale, and a richer feature set at no additional cost.
+             *             More <a href="https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/upgrade-ag-waf-policy">
+             *                 upgrade-ag-waf-policy
+             *                 </a>
+             *
+             * @see WithWebApplicationFirewallPolicy
              */
+            @Deprecated
             WithCreate withWebApplicationFirewall(boolean enabled, ApplicationGatewayFirewallMode mode);
 
             /**
@@ -421,7 +434,15 @@ public interface ApplicationGateway
              *
              * @param webApplicationFirewallConfiguration Web application firewall configuration
              * @return the next stage of the definition
+             * @deprecated No further investments will be made on legacy WAF configuration.
+             *             You are strongly encouraged to upgrade from legacy WAF configuration to WAF Policy for
+             *             easier management, better scale, and a richer feature set at no additional cost.
+             *             More <a href="https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/upgrade-ag-waf-policy">
+             *                 upgrade-ag-waf-policy
+             *                 </a>
+             * @see WithWebApplicationFirewallPolicy
              */
+            @Deprecated
             WithCreate withWebApplicationFirewall(
                 ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration);
         }
@@ -560,7 +581,8 @@ public interface ApplicationGateway
          */
         interface WithWebApplicationFirewallPolicy {
             /**
-             * Associates an existing Web Application Firewall Policy.
+             * Associates an existing Web Application Firewall Policy with the application gateway.
+             * The new association will remove and replace previous WAF policy association (if any).
              *
              * @param wafPolicy existing Web Application Firewall Policy
              * @return the next stage of the definition
@@ -568,7 +590,8 @@ public interface ApplicationGateway
             WithCreate withExistingWebApplicationFirewallPolicy(WebApplicationFirewallPolicy wafPolicy);
 
             /**
-             * Associates an existing Web Application Firewall Policy.
+             * Associates an existing Web Application Firewall Policy with the application gateway.
+             * The new association will remove and replace previous WAF policy association (if any).
              *
              * @param resourceId existing Web Application Firewall Policy
              * @return the next stage of the definition
@@ -576,15 +599,18 @@ public interface ApplicationGateway
             WithCreate withExistingWebApplicationFirewallPolicy(String resourceId);
 
             /**
-             * Associates a new Web Application Firewall Policy.
+             * Associates a new Web Application Firewall Policy with the application gateway.
+             * The new association will remove and replace previous WAF policy association (if any).
              *
-             * @param name name of the new Web Application Firewall Policy
-             * @return the next stage of the definition
+             * @param enable whether to enable the policy or not
+             * @param mode the Web Application Firewall mode
+             * @return the next stage of the update
              */
-            WithCreate withNewWebApplicationFirewallPolicy(String name);
+            WithCreate withNewWebApplicationFirewallPolicy(boolean enable, WebApplicationFirewallMode mode);
 
             /**
-             * Associates a new Web Application Firewall Policy.
+             * Associates a new Web Application Firewall Policy with the application gateway.
+             * The new association will remove and replace previous WAF policy association (if any).
              *
              * @param creatable full definition of the new Web Application Firewall Policy
              * @return the next stage of the definition
@@ -975,8 +1001,16 @@ public interface ApplicationGateway
              * Specifies webApplicationFirewallConfiguration.
              *
              * @param config Web application firewall configuration
-             * @return the next update stage
+             * @return the next stage of the update
+             * @deprecated No further investments will be made on legacy WAF configuration.
+             *             You are strongly encouraged to upgrade from legacy WAF configuration to WAF Policy for
+             *             easier management, better scale, and a richer feature set at no additional cost.
+             *             More <a href="https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/upgrade-ag-waf-policy">
+             *                 upgrade-ag-waf-policy
+             *                 </a>
+             * @see WithWebApplicationFirewallPolicy
              */
+            @Deprecated
             Update withWebApplicationFirewall(ApplicationGatewayWebApplicationFirewallConfiguration config);
         }
 
@@ -1254,7 +1288,7 @@ public interface ApplicationGateway
          */
         interface WithWebApplicationFirewallPolicy {
             /**
-             * Associates an existing Web Application Firewall Policy.
+             * Associates an existing Web Application Firewall Policy with the application gateway.
              * The newly associated policy will replace the previous associated one(if any) on the gateway.
              *
              * @param wafPolicy existing Web Application Firewall Policy
@@ -1263,7 +1297,7 @@ public interface ApplicationGateway
             Update withExistingWebApplicationFirewallPolicy(WebApplicationFirewallPolicy wafPolicy);
 
             /**
-             * Associates an existing Web Application Firewall Policy.
+             * Associates an existing Web Application Firewall Policy with the application gateway.
              * The newly associated policy will replace the previous associated one(if any) on the gateway.
              *
              * @param resourceId existing Web Application Firewall Policy
@@ -1272,16 +1306,17 @@ public interface ApplicationGateway
             Update withExistingWebApplicationFirewallPolicy(String resourceId);
 
             /**
-             * Associates a new Web Application Firewall Policy.
+             * Associates a new Web Application Firewall Policy with the application gateway.
              * The newly associated policy will replace the previous associated one(if any) on the gateway.
              *
-             * @param name name of the new Web Application Firewall Policy
+             * @param enable whether to enable the policy or not
+             * @param mode the Web Application Firewall mode
              * @return the next stage of the update
              */
-            Update withNewWebApplicationFirewallPolicy(String name);
+            Update withNewWebApplicationFirewallPolicy(boolean enable, WebApplicationFirewallMode mode);
 
             /**
-             * Associates a new Web Application Firewall Policy.
+             * Associates a new Web Application Firewall Policy with the application gateway.
              * The newly associated policy will replace the previous associated one(if any) on the gateway.
              *
              * @param creatable full definition of the new Web Application Firewall Policy

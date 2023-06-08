@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayAuthenticationCertificateInner;
@@ -48,6 +49,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.models.WebApplicationFirewallMode;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
@@ -98,6 +100,9 @@ class ApplicationGatewayImpl
     private ApplicationGatewayFrontendImpl defaultPublicFrontend;
 
     private Map<String, String> creatablePipsByFrontend;
+    private String creatableWafPolicy;
+    // whether legacy waf configuration is explicitly specified by the user during creation
+    boolean legacyWafConfigurationSpecified = false;
 
     ApplicationGatewayImpl(String name, final ApplicationGatewayInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
@@ -283,6 +288,13 @@ class ApplicationGatewayImpl
 
     @Override
     protected void beforeCreating() {
+        ensureNoMixedWaf();
+        if (this.creatableWafPolicy != null) {
+            Resource resource = this.taskResult(this.creatableWafPolicy);
+            withExistingWebApplicationFirewallPolicy(resource.id());
+        }
+        this.creatableWafPolicy = null;
+
         // Process created PIPs
         for (Entry<String, String> frontendPipPair : this.creatablePipsByFrontend.entrySet()) {
             Resource createdPip = this.<Resource>taskResult(frontendPipPair.getValue());
@@ -427,6 +439,25 @@ class ApplicationGatewayImpl
         ApplicationGatewayBackendImpl backend = this.defineBackend(name);
         backend.attach();
         return backend;
+    }
+
+    private void ensureNoMixedWaf() {
+        String errorMessage = "Can't have a mixture of legacy WAF configuration and WAF policy. "
+            + "If you are using legacy WAF configuration, you are strongly encouraged to upgrade to WAF Policy "
+            + "for easier management, better scale, and a richer feature set at no additional cost. "
+            + "See https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/upgrade-ag-waf-policy";
+        if (this.creatableWafPolicy != null || this.innerModel().firewallPolicy() != null) {
+            if (isInCreateMode()) {
+                if (this.legacyWafConfigurationSpecified) {
+                    throw new IllegalStateException(errorMessage);
+                }
+            } else {
+                if (this.innerModel().webApplicationFirewallConfiguration() != null) {
+                    throw new IllegalStateException(errorMessage);
+                }
+            }
+            this.innerModel().withWebApplicationFirewallConfiguration(null);
+        }
     }
 
     private ApplicationGatewayIpConfigurationImpl ensureDefaultIPConfig() {
@@ -621,26 +652,43 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withExistingWebApplicationFirewallPolicy(WebApplicationFirewallPolicy wafPolicy) {
-        // TODO (caoxiaofei, 2023-06-08 09:59)
-        throw new UnsupportedOperationException("method [withExistingWebApplicationFirewallPolicy] not implemented in class [com.azure.resourcemanager.network.implementation.ApplicationGatewayImpl]");
+        ensureWafV2();
+        if (wafPolicy != null) {
+            return withExistingWebApplicationFirewallPolicy(wafPolicy.id());
+        }
+        return this;
     }
 
     @Override
     public ApplicationGatewayImpl withExistingWebApplicationFirewallPolicy(String resourceId) {
-        // TODO (caoxiaofei, 2023-06-08 09:59)
-        throw new UnsupportedOperationException("method [withExistingWebApplicationFirewallPolicy] not implemented in class [com.azure.resourcemanager.network.implementation.ApplicationGatewayImpl]");
+        ensureWafV2();
+        if (resourceId != null) {
+            this.innerModel().withFirewallPolicy(new SubResource().withId(resourceId));
+        }
+        return this;
     }
 
     @Override
-    public ApplicationGatewayImpl withNewWebApplicationFirewallPolicy(String name) {
-        // TODO (caoxiaofei, 2023-06-08 09:59)
-        throw new UnsupportedOperationException("method [withNewWebApplicationFirewallPolicy] not implemented in class [com.azure.resourcemanager.network.implementation.ApplicationGatewayImpl]");
+    public ApplicationGatewayImpl withNewWebApplicationFirewallPolicy(boolean enable, WebApplicationFirewallMode mode) {
+        ensureWafV2();
+        WebApplicationFirewallPolicy.DefinitionStages.WithCreate wafPolicyCreatable = this.manager().webApplicationFirewallPolicies()
+            .define(this.manager().resourceManager().internalContext().randomResourceName("wafpolicy", 14))
+            .withRegion(region())
+            .withExistingResourceGroup(this.resourceGroupName())
+            .withMode(mode);
+        if (enable) {
+            wafPolicyCreatable.enablePolicy();
+        } else {
+            wafPolicyCreatable.disablePolicy();
+        }
+        return withNewWebApplicationFirewallPolicy(wafPolicyCreatable);
     }
 
     @Override
     public ApplicationGatewayImpl withNewWebApplicationFirewallPolicy(Creatable<WebApplicationFirewallPolicy> creatable) {
-        // TODO (caoxiaofei, 2023-06-08 09:59)
-        throw new UnsupportedOperationException("method [withNewWebApplicationFirewallPolicy] not implemented in class [com.azure.resourcemanager.network.implementation.ApplicationGatewayImpl]");
+        ensureWafV2();
+        this.creatableWafPolicy = this.addDependency(creatable);
+        return this;
     }
 
     enum CreationState {
@@ -658,7 +706,6 @@ class ApplicationGatewayImpl
     }
 
     // Withers (fluent)
-
     @Override
     public ApplicationGatewayImpl withDisabledSslProtocol(ApplicationGatewaySslProtocol protocol) {
         if (protocol != null) {
@@ -729,6 +776,7 @@ class ApplicationGatewayImpl
                     .withFirewallMode(mode)
                     .withRuleSetType("OWASP")
                     .withRuleSetVersion("3.0"));
+        this.legacyWafConfigurationSpecified = true;
         return this;
     }
 
@@ -736,6 +784,7 @@ class ApplicationGatewayImpl
     public ApplicationGatewayImpl withWebApplicationFirewall(
         ApplicationGatewayWebApplicationFirewallConfiguration config) {
         this.innerModel().withWebApplicationFirewallConfiguration(config);
+        this.legacyWafConfigurationSpecified = true;
         return this;
     }
 
@@ -1429,9 +1478,20 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public WebApplicationFirewallPolicy webApplicationFirewallPolicy() {
-        // TODO (caoxiaofei, 2023-06-08 09:59)
-        throw new UnsupportedOperationException("method [webApplicationFirewallPolicy] not implemented in class [com.azure.resourcemanager.network.implementation.ApplicationGatewayImpl]");
+    public WebApplicationFirewallPolicy getWebApplicationFirewallPolicy() {
+        return getWebApplicationFirewallPolicyAsync().block();
+    }
+
+    @Override
+    public Mono<WebApplicationFirewallPolicy> getWebApplicationFirewallPolicyAsync() {
+        if (this.innerModel().firewallPolicy() == null
+            || CoreUtils.isNullOrEmpty(this.innerModel().firewallPolicy().id())) {
+            return Mono.empty();
+        }
+        return this
+            .manager()
+            .webApplicationFirewallPolicies()
+            .getByIdAsync(this.innerModel().firewallPolicy().id());
     }
 
     @Override
@@ -1758,6 +1818,12 @@ class ApplicationGatewayImpl
             && sku != ApplicationGatewaySkuName.STANDARD_SMALL && sku != ApplicationGatewaySkuName.STANDARD_MEDIUM
             && sku != ApplicationGatewaySkuName.STANDARD_LARGE && sku != ApplicationGatewaySkuName.WAF_MEDIUM
             && sku != ApplicationGatewaySkuName.WAF_LARGE;
+    }
+
+    private void ensureWafV2() {
+        if (this.tier() != ApplicationGatewayTier.WAF_V2) {
+            throw new IllegalStateException("WAF policy can only be used with WAF_V2 tier");
+        }
     }
 
     private static class AddedRuleCollection {

@@ -3,8 +3,10 @@
 
 package com.azure.resourcemanager.network.implementation;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.WebApplicationFirewallPolicyInner;
+import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ManagedRuleSet;
 import com.azure.resourcemanager.network.models.ManagedRulesDefinition;
 import com.azure.resourcemanager.network.models.PolicySettings;
@@ -13,9 +15,11 @@ import com.azure.resourcemanager.network.models.WebApplicationFirewallMode;
 import com.azure.resourcemanager.network.models.WebApplicationFirewallPolicy;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Implementation of the {@link WebApplicationFirewallPolicy} interface.
@@ -74,14 +78,32 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
     }
 
     @Override
+    public List<ApplicationGateway> getAssociatedApplicationGateways() {
+        return getAssociatedApplicationGatewaysAsync().collectList().block();
+    }
+
+    @Override
+    public Flux<ApplicationGateway> getAssociatedApplicationGatewaysAsync() {
+        if (CoreUtils.isNullOrEmpty(this.innerModel().applicationGateways())) {
+            return Flux.empty();
+        }
+        return Flux.fromIterable(this.innerModel().applicationGateways())
+            .flatMap(applicationGatewayInner -> manager().applicationGateways().getByIdAsync(applicationGatewayInner.id()));
+    }
+
+    @Override
     public WebApplicationFirewallPolicyImpl withDetectionMode() {
-        ensurePolicySettings().withMode(WebApplicationFirewallMode.DETECTION);
-        return this;
+        return withMode(WebApplicationFirewallMode.DETECTION);
     }
 
     @Override
     public WebApplicationFirewallPolicyImpl withPreventionMode() {
-        ensurePolicySettings().withMode(WebApplicationFirewallMode.PREVENTION);
+        return withMode(WebApplicationFirewallMode.PREVENTION);
+    }
+
+    @Override
+    public WebApplicationFirewallPolicyImpl withMode(WebApplicationFirewallMode mode) {
+        ensurePolicySettings().withMode(mode);
         return this;
     }
 
@@ -136,10 +158,7 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
 
     @Override
     public WebApplicationFirewallPolicyImpl withInspectRequestBody() {
-        ensurePolicySettings()
-            .withRequestBodyCheck(true)
-            .withRequestBodyEnforcement(true)
-            .withFileUploadEnforcement(true);
+        ensurePolicySettings().withRequestBodyCheck(true);
         return this;
     }
 
