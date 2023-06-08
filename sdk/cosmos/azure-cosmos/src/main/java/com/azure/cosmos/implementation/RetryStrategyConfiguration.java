@@ -18,15 +18,15 @@ public final class RetryStrategyConfiguration {
         this.regionSwitchHint = regionSwitchHint;
     }
 
-    void setEndToEndOperationTimeout(Duration endToEndTimeout) {
+    public void setEndToEndOperationTimeout(Duration endToEndTimeout) {
         this.endToEndTimeout = endToEndTimeout;
     }
 
-    CosmosRetryStrategy.RegionSwitchHint getRegionSwitchHint() {
+    public CosmosRetryStrategy.RegionSwitchHint getRegionSwitchHint() {
         return regionSwitchHint;
     }
 
-    Duration getEndToEndTimeout() {
+    public Duration getEndToEndTimeout() {
         return endToEndTimeout;
     }
 }

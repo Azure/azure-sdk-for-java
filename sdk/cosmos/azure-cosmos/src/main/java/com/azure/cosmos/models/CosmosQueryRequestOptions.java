@@ -857,6 +857,13 @@ public class CosmosQueryRequestOptions {
 
                     options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
                 }
+
+                @Override
+                public CosmosRetryStrategy getRetryStrategy(CosmosQueryRequestOptions options) {
+                    return options.retryStrategy;
+                }
+
+
             });
     }
 

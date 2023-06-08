@@ -1963,6 +1963,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceResponse> responseObservable =
                 requestObs.flatMap(request -> {
                     CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+                    RetryStrategyConfiguration retryStrategyConfig = getRetryStrategyConfiguration(request, options);
+
+                    request.requestContext.setRetryStrategyConfiguration(retryStrategyConfig);
+
                     Mono<RxDocumentServiceResponse> rxDocumentServiceResponseMono = create(request, requestRetryPolicy, getOperationContextAndListenerTuple(options));
                     return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, rxDocumentServiceResponseMono);
                 });
@@ -2025,6 +2029,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             Mono<RxDocumentServiceResponse> responseObservable = reqObs.flatMap(request -> {
                 CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+
+                RetryStrategyConfiguration retryStrategyConfig = getRetryStrategyConfiguration(request, options);
+                request.requestContext.setRetryStrategyConfiguration(retryStrategyConfig);
+
                 return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, upsert(request, retryPolicyInstance, getOperationContextAndListenerTuple(options)));
             });
 
@@ -2145,6 +2153,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<ResourceResponse<Document>> resourceResponseMono = replace(request, retryPolicyInstance)
                 .map(resp -> toResourceResponse(resp, Document.class));
             CosmosEndToEndOperationLatencyPolicyConfig endToEndPolicyConfig = getEndToEndOperationLatencyPolicyConfig(options);
+
+            RetryStrategyConfiguration retryStrategyConfig = getRetryStrategyConfiguration(request, options);
+            request.requestContext.setRetryStrategyConfiguration(retryStrategyConfig);
+
             return getRxDocumentServiceResponseMonoWithE2ETimeout(request, endToEndPolicyConfig, resourceResponseMono);
         });
     }
