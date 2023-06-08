@@ -10,7 +10,8 @@ stages:
         - name: azure-resourcemanager-digitaltwins
           groupId: com.azure.resourcemanager
           safeName: azureresourcemanagerdigitaltwins
-      Clouds: 'Public'
+      Clouds: 'Preview'
+      Location: westus2
       # Only run tests on Windows to save cost.
       MatrixFilters:
         - pool=.*(win).*
