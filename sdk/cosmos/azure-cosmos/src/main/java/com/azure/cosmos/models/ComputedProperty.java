@@ -2,9 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a computed property definition for a Cosmos DB container.

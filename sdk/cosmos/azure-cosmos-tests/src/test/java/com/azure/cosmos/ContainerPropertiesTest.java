@@ -27,7 +27,6 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Ignore
 public class ContainerPropertiesTest extends TestSuiteBase {
 
     private String preExistingDatabaseId = CosmosDatabaseForTest.generateId();
@@ -40,20 +39,20 @@ public class ContainerPropertiesTest extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"emulator"}, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = {"simple"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
         client = getClientBuilder().buildClient();
         createdDatabase = createSyncDatabase(client, preExistingDatabaseId);
     }
 
-    @AfterClass(groups = {"emulator"}, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = {"simple"}, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
         safeDeleteSyncDatabase(createdDatabase);
         safeCloseSyncClient(client);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void testComputedProperties() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
