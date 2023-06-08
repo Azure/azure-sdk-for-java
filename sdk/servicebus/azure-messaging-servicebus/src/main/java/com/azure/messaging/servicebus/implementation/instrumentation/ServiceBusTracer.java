@@ -127,7 +127,9 @@ public final class ServiceBusTracer {
             String errorCondition = null;
             if (throwable instanceof AmqpException) {
                 AmqpException exception = (AmqpException) throwable;
-                errorCondition = exception.getErrorCondition().getErrorCondition();
+                if (exception.getErrorCondition() != null) {
+                    errorCondition = exception.getErrorCondition().getErrorCondition();
+                }
             }
 
             try {

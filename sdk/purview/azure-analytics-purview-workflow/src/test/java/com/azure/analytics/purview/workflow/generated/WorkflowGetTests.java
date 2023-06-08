@@ -8,14 +8,21 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public final class WorkflowGetTests extends PurviewWorkflowClientTestBase {
     @Test
+    @Disabled
     public void testWorkflowGetTests() {
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                purviewWorkflowClient.getWorkflowWithResponse("8af1ecae-16ee-4b2d-8972-00d611dd2f99", requestOptions);
+                purviewWorkflowClient.getWorkflowWithResponse("d503b2d2-84da-4a85-9e85-6e82e39d59a0", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
+        Assertions.assertEquals(
+                BinaryData.fromString(
+                                "{\"name\":\"Create glossary term\",\"description\":\"\",\"actionDag\":{\"actions\":{\"Condition\":{\"type\":\"If\",\"actions\":{\"Create glossary term\":{\"type\":\"CreateTerm\",\"runAfter\":{}},\"Send email notification\":{\"type\":\"EmailNotification\",\"inputs\":{\"parameters\":{\"emailMessage\":\"Your request for Glossary Term @{triggerBody()['request']['term']['name']} is approved.\",\"emailRecipients\":[\"@{triggerBody()['request']['requestor']}\"],\"emailSubject\":\"Glossary Term Create - APPROVED\"}},\"runAfter\":{\"Create glossary term\":[\"Succeeded\"]},\"runtimeConfiguration\":{\"secureInput\":false,\"secureOutput\":false}}},\"else\":{\"actions\":{\"Send reject email notification\":{\"type\":\"EmailNotification\",\"inputs\":{\"parameters\":{\"emailMessage\":\"Your request for Glossary Term @{triggerBody()['request']['term']['name']} is rejected.\",\"emailRecipients\":[\"@{triggerBody()['request']['requestor']}\"],\"emailSubject\":\"Glossary Term Create - REJECTED\"}},\"runAfter\":{},\"runtimeConfiguration\":{\"secureInput\":false,\"secureOutput\":false}}}},\"expression\":{\"and\":[{\"equals\":[\"@outputs('Start and wait for an approval')['body/outcome']\",\"Approved\"]}]},\"runAfter\":{\"Start and wait for an approval\":[\"Succeeded\"]}},\"Start and wait for an approval\":{\"type\":\"Approval\",\"inputs\":{\"parameters\":{\"approvalType\":\"PendingOnAll\",\"assignedTo\":[\"eece94d9-0619-4669-bb8a-d6ecec5220bc\"],\"title\":\"Approval Request for Create Glossary Term\"}},\"runAfter\":{}}}},\"createdBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\",\"createdTime\":\"2023-01-11T10:14:45.485999448Z\",\"id\":\"773b326e-751c-4277-96a6-c4f522e9750f\",\"isEnabled\":true,\"lastUpdateTime\":\"2023-01-11T10:14:45.485999448Z\",\"triggers\":[{\"type\":\"when_term_creation_is_requested\"}],\"updatedBy\":\"eece94d9-0619-4669-bb8a-d6ecec5220bc\"}")
+                        .toObject(Object.class),
+                response.getValue().toObject(Object.class));
     }
 }

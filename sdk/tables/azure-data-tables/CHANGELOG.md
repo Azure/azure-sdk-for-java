@@ -9,6 +9,16 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Migrate test recordings to assets repo
+ 
+## 12.3.11 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
 
 ## 12.3.10 (2023-04-17)
 
