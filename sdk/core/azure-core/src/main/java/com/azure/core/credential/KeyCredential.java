@@ -11,7 +11,7 @@ import java.util.Objects;
  * Represents a credential that uses a key to authenticate.
  */
 public class KeyCredential {
-    // AzureKeyCredential is a commonly used credential type, use a static logger.
+    // KeyCredential is a commonly used credential type, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(KeyCredential.class);
     private volatile String key;
 
