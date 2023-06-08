@@ -8,6 +8,33 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Represents a computed property definition for a Cosmos DB container.
+ *
+ * Below is an example of how to use {@link ComputedProperty} in the context of creating a container.
+ * <!-- src_embed com.azure.cosmos.computedProperty.createContainer -->
+ * <pre>
+ * List&lt;ComputedProperty&gt; computedProperties = new ArrayList&lt;&gt;&#40;
+ *         Arrays.asList&#40;
+ *                 new ComputedProperty&#40;&quot;lowerName&quot;, &quot;SELECT VALUE LOWER&#40;c.name&#41; FROM c&quot;&#41;
+ *         &#41;
+ * &#41;;
+ * containerProperties.setComputedProperties&#40;computedProperties&#41;;
+ * database.createContainer&#40;containerProperties&#41;;
+ * </pre>
+ * <!-- end com.azure.cosmos.computedProperty.createContainer -->
+ *
+ * Below is an example of how to use {@link ComputedProperty} in the context of replacing a container.
+ * <!-- src_embed com.azure.cosmos.computedProperty.replaceContainer -->
+ * <pre>
+ * CosmosContainerProperties containerProperties = getCollectionDefinition&#40;containerName&#41;;
+ * List&lt;ComputedProperty&gt; computedProperties = new ArrayList&lt;&gt;&#40;
+ *         Arrays.asList&#40;
+ *                 new ComputedProperty&#40;&quot;upperName&quot;, &quot;SELECT VALUE UPPER&#40;c.name&#41; FROM c&quot;&#41;
+ *         &#41;
+ * &#41;;
+ * container = database.getContainer&#40;containerName&#41;;
+ * container.replace&#40;containerProperties&#41;;
+ * </pre>
+ * <!-- end com.azure.cosmos.computedProperty.replaceContainer -->
  */
 public final class ComputedProperty {
     @JsonProperty("name")

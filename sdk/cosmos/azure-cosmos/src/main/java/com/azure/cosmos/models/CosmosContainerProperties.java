@@ -192,7 +192,7 @@ public final class CosmosContainerProperties {
     /**
      * Sets the computedProperties for this container in the Azure Cosmos DB service.
      * For more information on how to use computed properties visit
-     * <a href="https://learn.microsoft.com/en-us/azure/cosmos-db/nosql/query/computed-properties">Computed Properties in Azure Cosmos DB</a>
+     * <a href="https://learn.microsoft.com/azure/cosmos-db/nosql/query/computed-properties">Computed Properties in Azure Cosmos DB</a>
      *
      * @param computedProperties the computedProperties.
      * @return the CosmosContainerProperties.
