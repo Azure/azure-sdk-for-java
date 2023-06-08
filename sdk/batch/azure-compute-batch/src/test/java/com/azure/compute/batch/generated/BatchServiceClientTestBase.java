@@ -14,6 +14,9 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
@@ -42,7 +45,7 @@ import com.azure.core.credential.TokenCredential;
 import org.junit.Assert;
 
 
-class BatchServiceClientTestBase extends TestBase {
+class BatchServiceClientTestBase extends TestProxyTestBase {
     protected BatchServiceClientBuilder batchClientBuilder;
 
     protected ApplicationsClient applicationsClient;
@@ -65,6 +68,8 @@ class BatchServiceClientTestBase extends TestBase {
 
     protected ComputeNodeExtensionsClient computeNodeExtensionsClient;
 
+    protected static List<TestProxySanitizer> testProxySanitizers = new ArrayList<TestProxySanitizer>();
+
 	static final int MAX_LEN_ID = 64;
 
 	public enum AuthMode {
@@ -73,6 +78,7 @@ class BatchServiceClientTestBase extends TestBase {
 	
     @Override
     protected void beforeTest() {
+        super.beforeTest();
     	batchClientBuilder =
                 new BatchServiceClientBuilder()
                         .endpoint(Configuration.getGlobalConfiguration().get("AZURE_BATCH_ENDPOINT", "endpoint"))
@@ -84,6 +90,8 @@ class BatchServiceClientTestBase extends TestBase {
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
         	batchClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
+            testProxySanitizers.add(new TestProxySanitizer("$..state", "FOO", TestProxySanitizerType.BODY_KEY));
+            interceptorManager.addSanitizers(testProxySanitizers);
         }
 
         authenticateClient(AuthMode.AAD);
