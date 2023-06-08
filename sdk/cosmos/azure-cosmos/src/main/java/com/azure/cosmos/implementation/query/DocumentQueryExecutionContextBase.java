@@ -6,6 +6,7 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosRetryStrategy;
+import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -134,7 +135,7 @@ implements IDocumentQueryExecutionContext<T> {
                         .getCosmosQueryRequestOptionsAccessor()
                         .getRetryStrategy(cosmosQueryRequestOptions);
 
-        RetryStrategyConfiguration retryStrategyConfiguration = new RetryStrategyConfiguration();
+        RetryStrategyConfiguration retryStrategyConfiguration = null;
 
         if (retryStrategy != null) {
             retryStrategyConfiguration = retryStrategy
@@ -145,7 +146,12 @@ implements IDocumentQueryExecutionContext<T> {
         }
 
         if (endToEndOperationLatencyConfig != null) {
-            retryStrategyConfiguration.setEndToEndOperationTimeout(endToEndOperationLatencyConfig.getEndToEndOperationTimeout());
+
+            if (retryStrategyConfiguration != null) {
+                retryStrategyConfiguration.setEndToEndOperationTimeout(
+                        endToEndOperationLatencyConfig.getEndToEndOperationTimeout());
+            }
+
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
 

@@ -2841,6 +2841,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     request.getHeaders().put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, operationContext.getCorrelationActivityId());
                     listener.requestListener(operationContext, request);
 
+                    if (request.requestContext.getRetryStrategyConfiguration() == null) {
+                        RetryStrategyConfiguration retryStrategyConfig = RxDocumentClientImpl
+                                .this.getRetryStrategyConfiguration(request, null);
+
+                        request.requestContext.setRetryStrategyConfiguration(retryStrategyConfig);
+                    }
+
                     return RxDocumentClientImpl.this.query(request).single().doOnNext(
                         response -> listener.responseListener(operationContext, response)
                     ).doOnError(
