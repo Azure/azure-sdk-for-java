@@ -33,6 +33,7 @@ public class BlobStorageStressRunner {
             run(builder, true);
         } catch (Exception e) {
             System.err.println("Critical failure.");
+            e.printStackTrace();
         }
     }
 
