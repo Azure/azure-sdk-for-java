@@ -86,6 +86,7 @@ public class AddressRepositoryIT {
         // test findById (ID id) cross partition
         final Address result = repository.findById(TEST_ADDRESS1_PARTITION1.getPostalCode()).get();
         assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics().toString().contains("\"requestOperationType\":\"Query\"")).isTrue();
         assertThat(result).isEqualTo(TEST_ADDRESS1_PARTITION1);
     }
 

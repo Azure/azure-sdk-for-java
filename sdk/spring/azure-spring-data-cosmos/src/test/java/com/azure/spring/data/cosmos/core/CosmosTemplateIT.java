@@ -232,6 +232,7 @@ public class CosmosTemplateIT {
             NOT_EXIST_ID, BasicItem.class);
         assertThat(nullResult).isNull();
         assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics().toString().contains("\"requestOperationType\":\"Read\"")).isTrue();
     }
 
     @Test
