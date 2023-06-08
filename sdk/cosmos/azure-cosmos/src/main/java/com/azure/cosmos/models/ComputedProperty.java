@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -35,20 +36,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * <!-- end com.azure.cosmos.computedProperty.replaceContainer -->
  */
 public final class ComputedProperty {
-    @JsonProperty("name")
-    private String name;
-
-    @JsonProperty("query")
-    private String query;
-
-    private ComputedProperty() { }
+    private final String name;
+    private final String query;
 
     /**
      * Instantiates a new Computed properties with name and query.
      * @param name the name of the computed property.
      * @param query the query used to evaluate the value for the computed property.
      */
-    public ComputedProperty(String name, String query) {
+    @JsonCreator
+    public ComputedProperty(@JsonProperty("name") String name, @JsonProperty("query") String query) {
         this.name = name;
         this.query = query;
     }
