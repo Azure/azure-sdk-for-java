@@ -68,7 +68,7 @@ public class DigitalTwinsTests extends TestBase {
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void test() {
+    public void testDigitalTwinsDescription() {
         DigitalTwinsDescription digitalTwinsDescription = null;
         try {
             String digitalTwinsName = "digitalTwin" + randomPadding();
