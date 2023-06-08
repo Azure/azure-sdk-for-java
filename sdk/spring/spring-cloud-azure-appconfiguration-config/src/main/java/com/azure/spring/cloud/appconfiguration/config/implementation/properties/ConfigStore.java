@@ -21,7 +21,7 @@ public final class ConfigStore {
 
     private static final String DEFAULT_KEYS = "/application/";
 
-    private String endpoint; // Config store endpoint
+    private String endpoint = ""; // Config store endpoint
 
     private List<String> endpoints = new ArrayList<>();
 

@@ -5,12 +5,10 @@ package com.azure.spring.cloud.appconfiguration.config.web.implementation;
 import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.DATA;
 import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.SYNC_TOKEN;
 import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.VALIDATION_CODE_KEY;
-import static com.azure.spring.cloud.appconfiguration.config.web.implementation.AppConfigurationWebConstants.VALIDATION_TOPIC;
 
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -19,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.AccessToken;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring.PushNotification;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
