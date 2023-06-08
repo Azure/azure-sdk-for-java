@@ -153,13 +153,12 @@ public class SimpleCosmosRepository<T, ID extends Serializable> implements Cosmo
                 return CosmosBulkOperations.getCreateItemOperation(entity,
                     new PartitionKey(information.getPartitionKeyFieldValue(entity)));
             } else {
-                return CosmosBulkOperations.getReplaceItemOperation(this.information.getId(entity).toString(),
+                return CosmosBulkOperations.getReplaceItemOperation(information.getId(entity).toString(),
                     entity, new PartitionKey(information.getPartitionKeyFieldValue(entity)));
             }
         });
 
-        return (Iterable<S>) operation.insertAll(this.information.getContainerName(), this.information.getJavaType(),
-            cosmosItemOperationFlux);
+        return operation.insertAll(this.information.getContainerName(), information.getJavaType(), cosmosItemOperationFlux);
     }
 
     /**

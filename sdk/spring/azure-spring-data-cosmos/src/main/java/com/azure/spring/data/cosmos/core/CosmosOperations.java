@@ -172,7 +172,7 @@ public interface CosmosOperations {
      * @param <T> type class of domain type
      * @return the inserted item
      */
-    <S extends T, T> Iterable<T> insertAll(String containerName, Class<T> domainType, Flux<CosmosItemOperation> cosmosItemOperationFlux);
+    <S extends T, T> Iterable<S> insertAll(String containerName, Class<T> domainType, Flux<CosmosItemOperation> cosmosItemOperationFlux);
 
     /**
      * Inserts item

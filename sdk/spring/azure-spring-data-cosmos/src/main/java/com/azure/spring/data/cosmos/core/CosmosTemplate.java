@@ -243,10 +243,10 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return toDomainObject(domainType, response.getItem());
     }
 
-    public <S extends T, T> Iterable<T> insertAll(String containerName, Class<T> domainType, Flux<CosmosItemOperation> cosmosItemOperationFlux) {
+    public <S extends T, T> Iterable<S> insertAll(String containerName, Class<T> domainType, Flux<CosmosItemOperation> cosmosItemOperationFlux) {
         Assert.notNull(cosmosItemOperationFlux, "entities to be deleted should not be null");
 
-        return this.getCosmosAsyncClient()
+        return (Iterable<S>) this.getCosmosAsyncClient()
             .getDatabase(this.getDatabaseName())
             .getContainer(containerName)
             .executeBulkOperations(cosmosItemOperationFlux)
@@ -823,7 +823,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 .executeBulkOperations(cosmosItemOperationFlux)
                 .flatMap(r -> {
                     return Flux.just(r.getResponse().getItem(domainType));
-                }).toIterable();
+                }).collectList().block();
         } else {
             return results.stream()
                 .map(item -> deleteItem(item, finalContainerName, domainType))
