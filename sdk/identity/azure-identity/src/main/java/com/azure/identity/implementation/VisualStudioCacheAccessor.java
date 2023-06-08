@@ -6,18 +6,20 @@ package com.azure.identity.implementation;
 import com.azure.core.util.CoreUtils;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.CredentialUnavailableException;
-import com.fasterxml.jackson.core.json.JsonReadFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.azure.json.JsonOptions;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import com.microsoft.aad.msal4jextensions.persistence.mac.KeyChainAccessor;
 import com.sun.jna.Platform;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 /**
@@ -27,14 +29,13 @@ public class VisualStudioCacheAccessor {
     private static final String PLATFORM_NOT_SUPPORTED_ERROR = "Platform could not be determined for VS Code"
         + " credential authentication.";
     private static final Pattern REFRESH_TOKEN_PATTERN = Pattern.compile("^[-_.a-zA-Z0-9]+$");
+    private static final JsonOptions LENIENT_OPTIONS = new JsonOptions()
+        .setAllowComments(true)
+        .setAllowTrailingCommas(true)
+        .setAllowUnescapedControlCharacters(true);
 
-    private static final ObjectMapper MAPPER = new ObjectMapper()
-        .configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true)
-        .configure(JsonReadFeature.ALLOW_JAVA_COMMENTS.mappedFeature(), true)
-        .configure(JsonReadFeature.ALLOW_TRAILING_COMMA.mappedFeature(), true);
-
-    private JsonNode getUserSettings() {
-        JsonNode output;
+    private Map<String, Object> getUserSettings() {
+        Map<String, Object> output;
         String homeDir = System.getProperty("user.home");
         String settingsPath;
         try {
@@ -55,8 +56,11 @@ public class VisualStudioCacheAccessor {
         return output;
     }
 
-    static JsonNode readJsonFile(String path) throws IOException {
-        return MAPPER.readTree(new File(path));
+    static Map<String, Object> readJsonFile(String path) throws IOException {
+        try (JsonReader jsonReader = JsonProviders.createReader(Files.newBufferedReader(new File(path).toPath(),
+            StandardCharsets.UTF_8), LENIENT_OPTIONS)) {
+            return jsonReader.readMap(JsonReader::readUntyped);
+        }
     }
 
     /**
@@ -65,20 +69,15 @@ public class VisualStudioCacheAccessor {
      * @return a Map containing VS Code user settings
      */
     public Map<String, String> getUserSettingsDetails() {
-        JsonNode userSettings = getUserSettings();
+        Map<String, Object> userSettings = getUserSettings();
         Map<String, String> details = new HashMap<>();
 
         String tenant = null;
         String cloud = "AzureCloud";
 
-        if (userSettings != null && !userSettings.isNull()) {
-            if (userSettings.has("azure.tenant")) {
-                tenant = userSettings.get("azure.tenant").asText();
-            }
-
-            if (userSettings.has("azure.cloud")) {
-                cloud = userSettings.get("azure.cloud").asText();
-            }
+        if (userSettings != null) {
+            tenant = Objects.toString(userSettings.get("azure.tenant"), null);
+            cloud = Objects.toString(userSettings.get("azure.cloud"), null);
         }
 
         if (!CoreUtils.isNullOrEmpty(tenant)) {

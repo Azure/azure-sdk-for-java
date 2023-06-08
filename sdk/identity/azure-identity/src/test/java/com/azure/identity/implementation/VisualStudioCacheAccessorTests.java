@@ -3,23 +3,24 @@
 
 package com.azure.identity.implementation;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class VisualStudioCacheAccessorTests {
+import java.util.Map;
+
+public class Vigit asualStudioCacheAccessorTests {
 
     @Test
     public void testReadJsonFile() throws Exception {
         // setup
-        JsonNode jsonRead = VisualStudioCacheAccessor.readJsonFile(getPath("settings.json"));
-        Assert.assertEquals("first", jsonRead.get("editor.suggestSelection").asText());
-        Assert.assertEquals("/Contents/Home", jsonRead.get("java.home").asText());
+        Map<String, Object> jsonRead = VisualStudioCacheAccessor.readJsonFile(getPath("settings.json"));
+        Assert.assertEquals("first", String.valueOf(jsonRead.get("editor.suggestSelection")));
+        Assert.assertEquals("/Contents/Home", String.valueOf(jsonRead.get("java.home")));
         Assert.assertEquals(12, jsonRead.size());
     }
 
     private String getPath(String filename) {
-        String path =  getClass().getClassLoader().getResource(filename).getPath();
+        String path = getClass().getClassLoader().getResource(filename).getPath();
         if (path.contains(":")) {
             path = path.substring(1);
         }
