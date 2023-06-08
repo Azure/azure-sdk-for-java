@@ -4,6 +4,11 @@
 
 ### Features Added
 
+- Supported `WebApplicationFirewallPolicy` for Web Application Firewall Policy.
+- Supported associating `ApplicationGateway` with `WebApplicationFirewallPolicy`.
+- Deprecated `withWebApplicationFirewall` in `ApplicationGateway` since no further investments will be made on legacy 
+  WAF configuration.
+
 ### Breaking Changes
 
 ### Bugs Fixed
