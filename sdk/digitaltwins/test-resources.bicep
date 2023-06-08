@@ -64,7 +64,6 @@ resource eventHubNamespaceAuthRules 'Microsoft.EventHub/namespaces/Authorization
         ]
     }
 }
-
 resource eventHubNamespaceEventHubAuthRules 'Microsoft.EventHub/namespaces/eventhubs/authorizationRules@2017-04-01' = {
     name: '${eventHubNamespaceEventHub.name}/owner'
     properties: {
