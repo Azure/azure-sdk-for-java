@@ -40,7 +40,7 @@ public class SearchTests extends TestBase {
         resourceManager = ResourceManager
             .configure().withLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC))
             .authenticate(credential, profile)
-            .withSubscription("faa080af-c1d8-40ad-9cce-e1a450ca5b57");
+            .withDefaultSubscription();
 
         // use AZURE_RESOURCE_GROUP_NAME if run in LIVE CI
         String testResourceGroup = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
