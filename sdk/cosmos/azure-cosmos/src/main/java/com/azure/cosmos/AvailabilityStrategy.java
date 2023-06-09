@@ -17,6 +17,14 @@ public abstract class AvailabilityStrategy {
      */
     int numberOfRegionsToTry;
 
+    /**
+     * Gets effective retry regions. This API also gives the preferred regions configured and the regions to exclude
+     * from the preferred regions. Use this to specify the regions to retry on.
+     *
+     * @param preferredRegions the preferred regions
+     * @param excludeRegions   the regions to exclude from the preferred regions
+     * @return the effective retry regions
+     */
     public abstract List<String> getEffectiveRetryRegions(List<String> preferredRegions, List<String> excludeRegions);
 
     int getNumberOfRegionsToTry() {
