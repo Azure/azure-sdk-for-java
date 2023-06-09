@@ -19,7 +19,7 @@ public final class CosmosDiagnosticsSystemUsageSnapshot {
     private final String systemCpuLoad;
     private final int availableProcessors;
 
-    private final ImmutableMap<String, String> map;
+    private final ImmutableMap<String, Object> map;
 
     public CosmosDiagnosticsSystemUsageSnapshot(
         String systemCpuLoad,
@@ -35,11 +35,11 @@ public final class CosmosDiagnosticsSystemUsageSnapshot {
         this.usedMemory = usedMemory;
         this.availableMemory = availableMemory;
         this.availableProcessors = availableProcessors;
-        ImmutableMap.Builder<String, String> builder = ImmutableMap.<String, String>builder();
+        ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
         builder.put("CPU", systemCpuLoad);
         builder.put("Memory used", usedMemory);
         builder.put("Memory available", availableMemory);
-        builder.put("Processor count", String.valueOf(availableProcessors));
+        builder.put("Processor count", availableProcessors);
         this.map = builder.build();
     }
 
@@ -75,5 +75,5 @@ public final class CosmosDiagnosticsSystemUsageSnapshot {
         return availableProcessors;
     }
 
-    public Map<String, String> toMap() { return this.map; }
+    public Map<String, Object> toMap() { return this.map; }
 }

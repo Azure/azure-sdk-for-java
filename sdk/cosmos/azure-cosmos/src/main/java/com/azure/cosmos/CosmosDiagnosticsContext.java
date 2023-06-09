@@ -75,7 +75,7 @@ public final class CosmosDiagnosticsContext {
     private String cachedRequestDiagnostics = null;
     private final AtomicBoolean isCompleted = new AtomicBoolean(false);
 
-    private Map<String, String> systemUsage;
+    private Map<String, Object> systemUsage;
 
     private Double samplingRateSnapshot;
 
@@ -376,9 +376,9 @@ public final class CosmosDiagnosticsContext {
      * a custom {@link CosmosDiagnosticsHandler}
      * @return the system usage
      */
-    public Map<String, String> getSystemUsage() {
+    public Map<String, Object> getSystemUsage() {
         synchronized (this.spanName) {
-            Map<String, String> snapshot = this.systemUsage;
+            Map<String, Object> snapshot = this.systemUsage;
             if (snapshot != null) {
                 return snapshot;
             }
