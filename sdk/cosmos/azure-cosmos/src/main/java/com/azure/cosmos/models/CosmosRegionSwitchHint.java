@@ -7,7 +7,7 @@ import java.util.Objects;
 
 /**
  * {@link CosmosRegionSwitchHint} encapsulates hints which guide SDK-internal
- * retry policies on how to switch retries to a different.
+ * retry policies on how early to switch retries to a different region.
  */
 public final class CosmosRegionSwitchHint {
 
