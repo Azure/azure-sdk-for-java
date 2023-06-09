@@ -26,7 +26,7 @@ module com.azure.cosmos {
     requires micrometer.core;
     //  This is only required by guava shaded libraries
     requires java.logging;
-    requires HdrHistogram;
+	requires HdrHistogram;
 
     // public API surface area
     exports com.azure.cosmos;
