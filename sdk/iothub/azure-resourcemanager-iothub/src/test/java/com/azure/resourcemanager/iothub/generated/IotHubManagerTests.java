@@ -91,8 +91,9 @@ public class IotHubManagerTests extends TestBase {
     public void testIotHubDescription() {
         IotHubDescription iotHubDescription = null;
         try {
-            String descriptionName = "iotHub" + randomPadding();
+            String iothubName = "iotHub" + randomPadding();
 
+            // embedmeStart
             Map<String, EventHubProperties> eventHubEndpointsMap = new HashMap<>();
             eventHubEndpointsMap.put("events", new EventHubProperties()
                 .withRetentionTimeInDays(1L).withPartitionCount(2));
@@ -109,9 +110,8 @@ public class IotHubManagerTests extends TestBase {
                 .withTtlAsIso8601(Duration.ofHours(1L))
                 .withMaxDeliveryCount(10));
 
-            // embedmeStart
             iotHubDescription = iotHubManager.iotHubResources()
-                .define(descriptionName)
+                .define(iothubName)
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withSku(new IotHubSkuInfo().withName(IotHubSku.F1).withCapacity(1L))
@@ -145,7 +145,7 @@ public class IotHubManagerTests extends TestBase {
             // embedmeEnd
             iotHubDescription.refresh();
 
-            Assertions.assertEquals(iotHubDescription.name(), descriptionName);
+            Assertions.assertEquals(iotHubDescription.name(), iothubName);
             Assertions.assertEquals(iotHubDescription.name(), iotHubManager.iotHubResources().getById(iotHubDescription.id()).name());
             Assertions.assertTrue(iotHubManager.iotHubResources().list().stream().count() > 0);
         } finally {
