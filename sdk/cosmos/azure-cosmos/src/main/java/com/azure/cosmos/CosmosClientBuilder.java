@@ -133,7 +133,7 @@ public class CosmosClientBuilder implements
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
-    private CosmosRetryStrategy retryStrategy;
+    private CosmosSessionRetryOptions sessionRetryStrategy;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -801,18 +801,23 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the {@link CosmosRetryStrategy} on the client.
-     * <br>
-     * DISCLAIMER: Setting {@link CosmosRetryStrategy} will modify retry behavior
+     * Sets the {@link CosmosSessionRetryOptions} on the client.
+     * <p>
+     * This setting helps in optimizing retry behavior associated with
+     * <i>NOT_FOUND / READ_SESSION_NOT_AVAILABLE</i> scenarios which happen when the effective
+     * consistency used is Session Consistency and a request that goes to a region
+     * does not have recent enough data which the request is looking for.
+     * <p>
+     * DISCLAIMER: Setting {@link CosmosSessionRetryOptions} will modify retry behavior
      * of all operations or workload which is executed through the instance of the client.
      * */
-    public CosmosClientBuilder retryStrategy(CosmosRetryStrategy retryStrategy) {
-        this.retryStrategy = retryStrategy;
+    public CosmosClientBuilder sessionRetryStrategy(CosmosSessionRetryOptions retryStrategy) {
+        this.sessionRetryStrategy = retryStrategy;
         return this;
     }
 
-    CosmosRetryStrategy getRetryStrategy() {
-        return this.retryStrategy;
+    CosmosSessionRetryOptions getSessionRetryStrategy() {
+        return this.sessionRetryStrategy;
     }
 
     /**

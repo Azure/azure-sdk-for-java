@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
-import com.azure.cosmos.CosmosRetryStrategy;
+import com.azure.cosmos.CosmosSessionRetryOptions;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
@@ -47,7 +47,7 @@ public class RequestOptions {
     private String trackingId;
     private boolean nonIdempotentWriteRetriesEnabled = false;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyConfig;
-    private CosmosRetryStrategy retryStrategy;
+    private CosmosSessionRetryOptions retryStrategy;
 
 
     /**
@@ -453,13 +453,5 @@ public class RequestOptions {
 
     public CosmosEndToEndOperationLatencyPolicyConfig getCosmosEndToEndLatencyPolicyConfig(){
         return this.endToEndOperationLatencyConfig;
-    }
-
-    public void setCosmosRetryStrategy(CosmosRetryStrategy retryStrategy) {
-        this.retryStrategy = retryStrategy;
-    }
-
-    public CosmosRetryStrategy getRetryStrategy() {
-        return this.retryStrategy;
     }
 }

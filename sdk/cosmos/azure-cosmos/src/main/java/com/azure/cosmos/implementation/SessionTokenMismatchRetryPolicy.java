@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosSessionRetryOptions;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
 import com.azure.cosmos.models.CosmosRegionSwitchHint;
 import org.slf4j.Logger;
@@ -78,11 +79,12 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        RetryStrategyConfiguration retryStrategyConfig = request.requestContext.getRetryStrategyConfiguration();
-        CosmosRegionSwitchHint regionSwitchHint = retryStrategyConfig.getRegionSwitchHint();
+        CosmosSessionRetryOptions sessionRetryOptions = request.requestContext.getSessionRetryOptions();
+        CosmosRegionSwitchHint regionSwitchHint = sessionRetryOptions.getRegionSwitchHint();
 
-        if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED && request.requestContext.isRequestForFirstPreferedOrAvailableRegion) {
-            LOGGER.warn("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for a local region and " +
+        if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED &&
+                request.requestContext.isRequestForFirstPreferedOrAvailableRegion) {
+            LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for a local region and " +
                     "fallback to remote region is preferred ");
 
             return Mono.just(ShouldRetryResult.noRetry());

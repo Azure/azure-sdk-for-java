@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.CosmosSessionRetryOptions;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.StoreResult;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
@@ -46,7 +47,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public volatile boolean replicaAddressValidationEnabled = Configs.isReplicaAddressValidationEnabled();
     private final Set<Uri> failedEndpoints = ConcurrentHashMap.newKeySet();
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
-    private RetryStrategyConfiguration retryStrategyConfiguration;
+    private CosmosSessionRetryOptions sessionRetryOptions;
     // For cancelled rntbd requests, track the response as OperationCancelledException which later will be used to populate the cosmosDiagnostics
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
     public volatile boolean isRequestForFirstPreferedOrAvailableRegion;
@@ -138,16 +139,16 @@ public class DocumentServiceRequestContext implements Cloneable {
         return endToEndOperationLatencyPolicyConfig;
     }
 
-    public RetryStrategyConfiguration getRetryStrategyConfiguration() {
-        return retryStrategyConfiguration;
+    public CosmosSessionRetryOptions getSessionRetryOptions() {
+        return sessionRetryOptions;
     }
 
     public void setEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig) {
         this.endToEndOperationLatencyPolicyConfig = endToEndOperationLatencyPolicyConfig;
     }
 
-    public void setRetryStrategyConfiguration(RetryStrategyConfiguration retryStrategyConfiguration) {
-        this.retryStrategyConfiguration = retryStrategyConfiguration;
+    public void setSessionRetryOptions(CosmosSessionRetryOptions sessionRetryOptions) {
+        this.sessionRetryOptions = sessionRetryOptions;
     }
 }
 

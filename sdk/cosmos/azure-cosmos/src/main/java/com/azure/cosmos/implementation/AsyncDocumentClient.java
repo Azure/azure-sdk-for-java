@@ -7,7 +7,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.CosmosRetryStrategy;
+import com.azure.cosmos.CosmosSessionRetryOptions;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -102,7 +102,7 @@ public interface AsyncDocumentClient {
         CosmosClientTelemetryConfig clientTelemetryConfig;
         private String clientCorrelationId = null;
         private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
-        private CosmosRetryStrategy retryStrategy;
+        private CosmosSessionRetryOptions retryStrategy;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -244,7 +244,7 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withRetryStrategy(CosmosRetryStrategy retryStrategy) {
+        public Builder withRetryStrategy(CosmosSessionRetryOptions retryStrategy) {
             this.retryStrategy = retryStrategy;
             return this;
         }

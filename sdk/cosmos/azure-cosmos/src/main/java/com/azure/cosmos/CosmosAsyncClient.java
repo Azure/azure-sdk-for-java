@@ -119,7 +119,7 @@ public final class CosmosAsyncClient implements Closeable {
         this.proactiveContainerInitConfig = builder.getProactiveContainerInitConfig();
         this.nonIdempotentWriteRetryPolicy = builder.getNonIdempotentWriteRetryPolicy();
         CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = builder.getEndToEndOperationConfig();
-        CosmosRetryStrategy retryStrategy = builder.getRetryStrategy();
+        CosmosSessionRetryOptions retryStrategy = builder.getSessionRetryStrategy();
 
         CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
             .createSnapshot(

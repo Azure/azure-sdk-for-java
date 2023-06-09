@@ -6,7 +6,6 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.CosmosRetryStrategy;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
@@ -42,7 +41,6 @@ public class CosmosItemRequestOptions {
     private Boolean nonIdempotentWriteRetriesEnabled;
     private boolean useTrackingIds;
     private CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig;
-    private CosmosRetryStrategy retryStrategy;
 
     /**
      * copy constructor
@@ -396,16 +394,6 @@ public class CosmosItemRequestOptions {
         return this;
     }
 
-    /**
-     * Sets the {@link CosmosRetryStrategy} instance to be used for the request. This
-     * will override the behavior of the  {@link CosmosRetryStrategy} instance configured
-     * through {@link CosmosClientBuilder} instance.
-     * */
-    public CosmosItemRequestOptions setCosmosRetryStrategy(CosmosRetryStrategy retryStrategy) {
-        this.retryStrategy = retryStrategy;
-        return this;
-    }
-
     RequestOptions toRequestOptions() {
         RequestOptions requestOptions = new RequestOptions();
         requestOptions.setIfMatchETag(getIfMatchETag());
@@ -425,7 +413,6 @@ public class CosmosItemRequestOptions {
             requestOptions.setNonIdempotentWriteRetriesEnabled(this.nonIdempotentWriteRetriesEnabled);
         }
         requestOptions.setCosmosEndToEndLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig);
-        requestOptions.setCosmosRetryStrategy(retryStrategy);
         if(this.customOptions != null) {
             for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
                 requestOptions.setHeader(entry.getKey(), entry.getValue());

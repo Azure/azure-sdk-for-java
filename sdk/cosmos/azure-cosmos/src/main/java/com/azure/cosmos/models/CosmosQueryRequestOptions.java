@@ -4,11 +4,9 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.CosmosRetryStrategy;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -60,7 +58,6 @@ public class CosmosQueryRequestOptions {
     private Function<JsonNode, ?> itemFactoryMethod;
     private String queryName;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
-    private CosmosRetryStrategy retryStrategy;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
 
     /**
@@ -341,16 +338,6 @@ public class CosmosQueryRequestOptions {
      */
     public CosmosQueryRequestOptions setCosmosEndToEndOperationLatencyPolicyConfig(CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
         this.cosmosEndToEndOperationLatencyPolicyConfig = cosmosEndToEndOperationLatencyPolicyConfig;
-        return this;
-    }
-
-    /**
-     * Sets the {@link CosmosRetryStrategy} instance to be used for the request. This
-     * will override the behavior of the  {@link CosmosRetryStrategy} instance configured
-     * through {@link CosmosClientBuilder} instance.
-     * */
-    public CosmosQueryRequestOptions setCosmosRetryStrategy(CosmosRetryStrategy retryStrategy) {
-        this.retryStrategy = retryStrategy;
         return this;
     }
 
@@ -815,7 +802,6 @@ public class CosmosQueryRequestOptions {
                         requestOptions.setDiagnosticsThresholds(queryRequestOptions.thresholds);
                     }
                     requestOptions.setCosmosEndToEndLatencyPolicyConfig(queryRequestOptions.cosmosEndToEndOperationLatencyPolicyConfig);
-                    requestOptions.setCosmosRetryStrategy(queryRequestOptions.retryStrategy);
 
                     if (queryRequestOptions.customOptions != null) {
                         for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
@@ -863,12 +849,6 @@ public class CosmosQueryRequestOptions {
 
                     options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
                 }
-
-                @Override
-                public CosmosRetryStrategy getRetryStrategy(CosmosQueryRequestOptions options) {
-                    return options.retryStrategy;
-                }
-
 
             });
     }

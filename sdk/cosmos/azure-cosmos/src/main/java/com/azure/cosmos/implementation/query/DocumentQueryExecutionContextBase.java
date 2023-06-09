@@ -5,8 +5,6 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.CosmosRetryStrategy;
-import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -14,7 +12,6 @@ import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ReplicatedResourceClientUtils;
 import com.azure.cosmos.implementation.ResourceType;
-import com.azure.cosmos.implementation.RetryStrategyConfiguration;
 import com.azure.cosmos.implementation.RuntimeConstants.MediaTypes;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.RxDocumentServiceResponse;
@@ -130,25 +127,7 @@ implements IDocumentQueryExecutionContext<T> {
                 getCosmosQueryRequestOptionsAccessor()
                 .getEndToEndOperationLatencyPolicyConfig(cosmosQueryRequestOptions);
 
-        CosmosRetryStrategy retryStrategy = ImplementationBridgeHelpers
-                        .CosmosQueryRequestOptionsHelper
-                        .getCosmosQueryRequestOptionsAccessor()
-                        .getRetryStrategy(cosmosQueryRequestOptions);
-
-        RetryStrategyConfiguration retryStrategyConfig = null;
-
-        if (retryStrategy != null) {
-            retryStrategyConfig = retryStrategy.getRetryStrategyConfiguration();
-            request.requestContext.setRetryStrategyConfiguration(retryStrategyConfig);
-        }
-
         if (endToEndOperationLatencyConfig != null) {
-
-            if (retryStrategyConfig != null) {
-                retryStrategyConfig.setEndToEndOperationTimeout(
-                        endToEndOperationLatencyConfig.getEndToEndOperationTimeout());
-            }
-
             request.requestContext.setEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyConfig);
         }
 
