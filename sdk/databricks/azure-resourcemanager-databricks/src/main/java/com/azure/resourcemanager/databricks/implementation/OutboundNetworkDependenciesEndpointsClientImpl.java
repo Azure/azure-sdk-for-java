@@ -62,8 +62,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
     public interface OutboundNetworkDependenciesEndpointsService {
         @Headers({"Content-Type: application/json"})
         @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks"
-                + "/workspaces/{workspaceName}/outboundNetworkDependenciesEndpoints")
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Databricks/workspaces/{workspaceName}/outboundNetworkDependenciesEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorInfoException.class)
         Mono<Response<List<OutboundEnvironmentEndpointInner>>> list(
@@ -81,7 +80,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      *
      * <p>Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must
      * configure outbound access with these endpoints. For more information, see
-     * https://docs.microsoft.com/azure/databricks/administration-guide/cloud-configurations/azure/udr.
+     * https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -113,6 +112,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -122,7 +122,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -134,7 +134,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      *
      * <p>Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must
      * configure outbound access with these endpoints. For more information, see
-     * https://docs.microsoft.com/azure/databricks/administration-guide/cloud-configurations/azure/udr.
+     * https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -167,6 +167,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2023-02-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -174,7 +175,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -185,7 +186,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      *
      * <p>Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must
      * configure outbound access with these endpoints. For more information, see
-     * https://docs.microsoft.com/azure/databricks/administration-guide/cloud-configurations/azure/udr.
+     * https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -205,7 +206,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      *
      * <p>Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must
      * configure outbound access with these endpoints. For more information, see
-     * https://docs.microsoft.com/azure/databricks/administration-guide/cloud-configurations/azure/udr.
+     * https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
@@ -227,7 +228,7 @@ public final class OutboundNetworkDependenciesEndpointsClientImpl
      *
      * <p>Gets the list of endpoints that VNET Injected Workspace calls Azure Databricks Control Plane. You must
      * configure outbound access with these endpoints. For more information, see
-     * https://docs.microsoft.com/azure/databricks/administration-guide/cloud-configurations/azure/udr.
+     * https://docs.microsoft.com/en-us/azure/databricks/administration-guide/cloud-configurations/azure/udr.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
