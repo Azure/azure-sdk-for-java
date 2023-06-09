@@ -12,6 +12,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.test.InterceptorManager;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -75,7 +76,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 	public enum AuthMode {
 	        AAD, SharedKey
 	    }
-	
+
     @Override
     protected void beforeTest() {
         super.beforeTest();
@@ -90,8 +91,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
                     .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
         	batchClientBuilder.addPolicy(interceptorManager.getRecordPolicy());
-            testProxySanitizers.add(new TestProxySanitizer("$..state", "FOO", TestProxySanitizerType.BODY_KEY));
-            interceptorManager.addSanitizers(testProxySanitizers);
+            addTestSanitizersAndRules(interceptorManager);
         }
 
         authenticateClient(AuthMode.AAD);
@@ -107,7 +107,12 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         computeNodesClient = batchClientBuilder.buildComputeNodesClient();
         computeNodeExtensionsClient = batchClientBuilder.buildComputeNodeExtensionsClient();
     }
-    
+
+    public static void addTestSanitizersAndRules(InterceptorManager interceptorManager) {
+        testProxySanitizers.add(new TestProxySanitizer("$..httpUrl", "REDACTED", TestProxySanitizerType.BODY_KEY));
+        interceptorManager.addSanitizers(testProxySanitizers);
+    }
+
     void authenticateClient(AuthMode auth) {
 	    if (getTestMode() == TestMode.RECORD) {
             if (auth == AuthMode.AAD) {
@@ -146,7 +151,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         }
         return out.toString();
     }
-    
+
     BatchPool createIfNotExistIaaSPool(String poolId) throws Exception {
         // Create a pool with 3 Small VMs
         String poolVmSize = "STANDARD_D1_V2";
@@ -155,7 +160,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
         // 10 minutes
         long poolSteadyTimeoutInSeconds = 10 * 60 * 1000;
         PoolClient poolClient = batchClientBuilder.buildPoolClient();
-        
+
 
         // Check if pool exists
         if (!poolExists(poolClient, poolId)) {
@@ -172,7 +177,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
          // Need VNet to allow security to inject NSGs
             NetworkConfiguration networkConfiguration = createNetworkConfiguration();
-            
+
             BatchPool poolToAdd = new BatchPool();
             poolToAdd.setId(poolId).setTargetDedicatedNodes(poolVmCount).setVmSize(poolVmSize)
             		 .setVirtualMachineConfiguration(configuration)
@@ -180,13 +185,13 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
             		 .setNetworkConfiguration(networkConfiguration);
 
             poolClient.add(poolToAdd);
-        } 
+        }
         else {
         	System.out.println(String.format("The %s already exists.", poolId));
             //logger.log(createLogRecord(Level.INFO, String.format("The %s already exists.", poolId)));
         }
-        
-        
+
+
         long startTime = System.currentTimeMillis();
         long elapsedTime = 0L;
         boolean steady = false;
@@ -208,7 +213,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
         return pool;
     }
-    
+
    NetworkConfiguration createNetworkConfiguration(){
     	Configuration localConfig = Configuration.getGlobalConfiguration();
         String vnetName = localConfig.get("AZURE_VNET", "");
@@ -227,12 +232,12 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
         	PagedIterable<Network> networks = manager.networks().listByResourceGroup(vnetResourceGroup);
         	boolean networksFound = false;
-        	
+
         	for (Network network: networks) {
         		networksFound = true;
         		break;
         	}
-        	
+
         	if (!networksFound) {
         		Network network = manager.networks().define(vnetName)
         				.withRegion(localConfig.get("AZURE_BATCH_REGION"))
@@ -252,7 +257,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
 
         return new NetworkConfiguration().setSubnetId(vNetResourceId);
     }
-    
+
     void threadSleepInRecordMode(long millis) throws InterruptedException {
         // Called for long timeouts which should only happen in Record mode.
         // Speeds up the tests in Playback mode.
@@ -260,7 +265,7 @@ class BatchServiceClientTestBase extends TestProxyTestBase {
             Thread.sleep(millis);
         }
     }
-    
+
     static boolean poolExists(PoolClient poolClient, String poolId) {
     	try {
             poolClient.exists(poolId);
