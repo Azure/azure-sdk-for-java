@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.test.TestMode;
 import com.azure.core.test.models.NetworkCallError;
 import com.azure.core.test.models.NetworkCallRecord;
 import com.azure.core.test.models.RecordedData;
@@ -99,7 +100,8 @@ public class TextReplacementPolicy implements HttpPipelinePolicy {
                     if (body != null && body.contains("<Status>InProgress</Status>")
                         || Integer.parseInt(responseData.get(STATUS_CODE)) == HttpURLConnection.HTTP_MOVED_TEMP) {
                         logger.info("Waiting for a response or redirection.");
-                    } else {
+                    }
+                    else if(recordedData != null) { // when using testproxy, recordedData will be set to null
                         recordedData.addNetworkCall(networkCallRecord);
                     }
 

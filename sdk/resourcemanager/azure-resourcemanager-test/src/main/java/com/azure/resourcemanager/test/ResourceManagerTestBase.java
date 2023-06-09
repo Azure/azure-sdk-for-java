@@ -15,6 +15,7 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.utils.ResourceNamer;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
@@ -67,7 +68,7 @@ import java.util.stream.Collectors;
 /**
  * Test base for resource manager SDK.
  */
-public abstract class ResourceManagerTestBase extends TestBase {
+public abstract class ResourceManagerTestBase extends TestProxyTestBase {
     private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
     private static final String ZERO_SUBSCRIPTION = ZERO_UUID;
     private static final String ZERO_TENANT = ZERO_UUID;
