@@ -37,6 +37,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -91,6 +92,23 @@ public class IotHubManagerTests extends TestBase {
         IotHubDescription iotHubDescription = null;
         try {
             String descriptionName = "iotHub" + randomPadding();
+
+            Map<String, EventHubProperties> eventHubEndpointsMap = new HashMap<>();
+            eventHubEndpointsMap.put("events", new EventHubProperties()
+                .withRetentionTimeInDays(1L).withPartitionCount(2));
+
+            Map<String, StorageEndpointProperties> storageEndpointsMap = new HashMap<>();
+            storageEndpointsMap.put("$default", new StorageEndpointProperties()
+                .withSasTtlAsIso8601(Duration.ofHours(1L))
+                .withConnectionString(StringUtil.EMPTY_STRING)
+                .withContainerName(StringUtil.EMPTY_STRING));
+
+            Map<String, MessagingEndpointProperties> messagingEndpointsMap = new HashMap<>();
+            messagingEndpointsMap.put("fileNotifications", new MessagingEndpointProperties()
+                .withLockDurationAsIso8601(Duration.ofMinutes(1L))
+                .withTtlAsIso8601(Duration.ofHours(1L))
+                .withMaxDeliveryCount(10));
+
             // embedmeStart
             iotHubDescription = iotHubManager.iotHubResources()
                 .define(descriptionName)
@@ -100,14 +118,7 @@ public class IotHubManagerTests extends TestBase {
                 .withIdentity(new ArmIdentity().withType(ResourceIdentityType.NONE))
                 .withProperties(
                     new IotHubProperties()
-                        .withEventHubEndpoints(
-                            new HashMap<String, EventHubProperties>() {
-                                {
-                                    put("events", new EventHubProperties()
-                                        .withRetentionTimeInDays(1L)
-                                        .withPartitionCount(2));
-                                }
-                            })
+                        .withEventHubEndpoints(eventHubEndpointsMap)
                         .withRouting(new RoutingProperties()
                             .withFallbackRoute(
                                 new FallbackRouteProperties()
@@ -116,24 +127,8 @@ public class IotHubManagerTests extends TestBase {
                                     .withCondition("true")
                                     .withIsEnabled(true)
                                     .withEndpointNames(Arrays.asList("events"))))
-                        .withStorageEndpoints(
-                            new HashMap<String, StorageEndpointProperties>() {
-                                {
-                                    put("$default", new StorageEndpointProperties()
-                                        .withSasTtlAsIso8601(Duration.ofHours(1L))
-                                        .withConnectionString(StringUtil.EMPTY_STRING)
-                                        .withContainerName(StringUtil.EMPTY_STRING));
-                                }
-                            })
-                        .withMessagingEndpoints(
-                            new HashMap<String, MessagingEndpointProperties>() {
-                                {
-                                    put("fileNotifications", new MessagingEndpointProperties()
-                                        .withLockDurationAsIso8601(Duration.ofMinutes(1L))
-                                        .withTtlAsIso8601(Duration.ofHours(1L))
-                                        .withMaxDeliveryCount(10));
-                                }
-                            })
+                        .withStorageEndpoints(storageEndpointsMap)
+                        .withMessagingEndpoints(messagingEndpointsMap)
                         .withEnableFileUploadNotifications(false)
                         .withCloudToDevice(new CloudToDeviceProperties()
                             .withMaxDeliveryCount(10)
