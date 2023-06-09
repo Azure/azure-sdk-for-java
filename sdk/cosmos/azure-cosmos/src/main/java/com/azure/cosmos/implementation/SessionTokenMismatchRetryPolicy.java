@@ -80,10 +80,14 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         }
 
         CosmosSessionRetryOptions sessionRetryOptions = request.requestContext.getSessionRetryOptions();
-        CosmosRegionSwitchHint regionSwitchHint = sessionRetryOptions.getRegionSwitchHint();
+        CosmosRegionSwitchHint regionSwitchHint = ImplementationBridgeHelpers
+                .CosmosSessionRetryOptionsHelper
+                .getCosmosSessionRetryOptionsAccessor()
+                .getRegionSwitchHint(sessionRetryOptions);
 
         if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERED &&
                 request.requestContext.isRequestForFirstPreferedOrAvailableRegion) {
+
             LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for a local region and " +
                     "fallback to remote region is preferred ");
 

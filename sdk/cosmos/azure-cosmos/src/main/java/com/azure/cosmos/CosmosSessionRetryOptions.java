@@ -3,6 +3,7 @@
 
 package com.azure.cosmos;
 
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.CosmosRegionSwitchHint;
 
 /**
@@ -18,8 +19,12 @@ public final class CosmosSessionRetryOptions {
         this.regionSwitchHint = regionSwitchHint;
     }
 
-    // TODO: Do not expose
-    public CosmosRegionSwitchHint getRegionSwitchHint() {
-        return regionSwitchHint;
+    static void initialize() {
+        ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.setSessionRetryOptionsAccessor(new ImplementationBridgeHelpers.CosmosSessionRetryOptionsHelper.CosmosSessionRetryOptionsAccessor() {
+            @Override
+            public CosmosRegionSwitchHint getRegionSwitchHint(CosmosSessionRetryOptions sessionRetryOptions) {
+                return sessionRetryOptions.regionSwitchHint;
+            }
+        });
     }
 }
