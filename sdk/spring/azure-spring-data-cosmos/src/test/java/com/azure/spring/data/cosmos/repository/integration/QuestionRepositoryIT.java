@@ -5,7 +5,6 @@ package com.azure.spring.data.cosmos.repository.integration;
 import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.common.ResponseDiagnosticsTestUtils;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
-import com.azure.spring.data.cosmos.core.ResponseDiagnostics;
 import com.azure.spring.data.cosmos.domain.Question;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.QuestionRepository;
