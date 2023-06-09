@@ -849,7 +849,6 @@ public class CosmosQueryRequestOptions {
 
                     options.setCancelledRequestDiagnosticsTracker(cancelledRequestDiagnosticsTracker);
                 }
-
             });
     }
 
