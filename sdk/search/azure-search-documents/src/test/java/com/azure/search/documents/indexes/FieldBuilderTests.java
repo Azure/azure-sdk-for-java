@@ -29,6 +29,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -303,5 +304,41 @@ public class FieldBuilderTests {
     private List<SearchField> sortByFieldName(List<SearchField> fields) {
         fields.sort(Comparator.comparing(SearchField::getName));
         return fields;
+    }
+
+    @Test
+    public void onlyAnalyzerNameSetsOnlyAnalyzerName() {
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(OnlyAnalyzerName.class, null);
+
+        assertEquals(1, fields.size());
+
+        SearchField field = fields.get(0);
+        assertEquals("onlyAnalyzer", field.getAnalyzerName().toString());
+        assertNull(field.getIndexAnalyzerName());
+        assertNull(field.getSearchAnalyzerName());
+    }
+
+    @SuppressWarnings("unused")
+    public static final class OnlyAnalyzerName {
+        @SearchableField(analyzerName = "onlyAnalyzer")
+        public String onlyAnalyzer;
+    }
+
+    @Test
+    public void indexAndSearchAnalyzersSetCorrectly() {
+        List<SearchField> fields = SearchIndexClient.buildSearchFields(IndexAndSearchAnalyzerNames.class, null);
+
+        assertEquals(1, fields.size());
+
+        SearchField field = fields.get(0);
+        assertNull(field.getAnalyzerName());
+        assertEquals("indexAnalyzer", field.getIndexAnalyzerName().toString());
+        assertEquals("searchAnalyzer", field.getSearchAnalyzerName().toString());
+    }
+
+    @SuppressWarnings("unused")
+    public static final class IndexAndSearchAnalyzerNames {
+        @SearchableField(indexAnalyzerName = "indexAnalyzer", searchAnalyzerName = "searchAnalyzer")
+        public String indexAndSearchAnalyzer;
     }
 }

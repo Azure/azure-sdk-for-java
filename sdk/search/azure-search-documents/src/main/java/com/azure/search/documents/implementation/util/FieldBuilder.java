@@ -291,11 +291,11 @@ public final class FieldBuilder {
                     searchableField.analyzerName()));
             }
             if (!searchableField.searchAnalyzerName().isEmpty()) {
-                searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
+                searchField.setSearchAnalyzerName(LexicalAnalyzerName.fromString(
                     searchableField.searchAnalyzerName()));
             }
             if (!searchableField.indexAnalyzerName().isEmpty()) {
-                searchField.setAnalyzerName(LexicalAnalyzerName.fromString(
+                searchField.setIndexAnalyzerName(LexicalAnalyzerName.fromString(
                     searchableField.indexAnalyzerName()));
             }
             if (searchableField.synonymMapNames().length != 0) {

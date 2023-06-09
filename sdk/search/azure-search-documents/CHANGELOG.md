@@ -4,6 +4,8 @@
 
 ### Other Changes
 
+- Properly set Index and Search Analyzer names in FieldBuilder
+
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
