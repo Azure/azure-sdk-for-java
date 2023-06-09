@@ -16,11 +16,11 @@ public final class GroupIdInformationInnerTests {
         GroupIdInformationInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"groupId\":\"sfqpteehz\",\"requiredMembers\":[\"pyqr\",\"mzinpvswjdk\",\"rsoodqxhcrmnoh\"],\"requiredZoneNames\":[\"kwh\",\"soifiyipjxsqw\"]},\"id\":\"gr\",\"name\":\"bznorcjxvsnby\",\"type\":\"qabnmoc\"}")
+                    "{\"properties\":{\"groupId\":\"gtzxdpn\",\"requiredMembers\":[\"qwxrjfeallnw\"],\"requiredZoneNames\":[\"isnjampmngnz\",\"c\"]},\"id\":\"aqw\",\"name\":\"ochcbonqvpkvl\",\"type\":\"xnj\"}")
                 .toObject(GroupIdInformationInner.class);
-        Assertions.assertEquals("sfqpteehz", model.properties().groupId());
-        Assertions.assertEquals("pyqr", model.properties().requiredMembers().get(0));
-        Assertions.assertEquals("kwh", model.properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("gtzxdpn", model.properties().groupId());
+        Assertions.assertEquals("qwxrjfeallnw", model.properties().requiredMembers().get(0));
+        Assertions.assertEquals("isnjampmngnz", model.properties().requiredZoneNames().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +29,12 @@ public final class GroupIdInformationInnerTests {
             new GroupIdInformationInner()
                 .withProperties(
                     new GroupIdInformationProperties()
-                        .withGroupId("sfqpteehz")
-                        .withRequiredMembers(Arrays.asList("pyqr", "mzinpvswjdk", "rsoodqxhcrmnoh"))
-                        .withRequiredZoneNames(Arrays.asList("kwh", "soifiyipjxsqw")));
+                        .withGroupId("gtzxdpn")
+                        .withRequiredMembers(Arrays.asList("qwxrjfeallnw"))
+                        .withRequiredZoneNames(Arrays.asList("isnjampmngnz", "c")));
         model = BinaryData.fromObject(model).toObject(GroupIdInformationInner.class);
-        Assertions.assertEquals("sfqpteehz", model.properties().groupId());
-        Assertions.assertEquals("pyqr", model.properties().requiredMembers().get(0));
-        Assertions.assertEquals("kwh", model.properties().requiredZoneNames().get(0));
+        Assertions.assertEquals("gtzxdpn", model.properties().groupId());
+        Assertions.assertEquals("qwxrjfeallnw", model.properties().requiredMembers().get(0));
+        Assertions.assertEquals("isnjampmngnz", model.properties().requiredZoneNames().get(0));
     }
 }
