@@ -20,6 +20,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Implementation of the {@link WebApplicationFirewallPolicy} interface.
@@ -121,17 +122,7 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
 
     @Override
     public WebApplicationFirewallPolicyImpl withBotProtection() {
-        boolean existBotDetection = ensureManagedRules()
-            .managedRuleSets()
-            .stream()
-            .anyMatch(ruleSet -> BOT_DETECTION_RULE_SET_TYPE.equals(ruleSet.ruleSetType()));
-        if (!existBotDetection) {
-            ensureManagedRules().managedRuleSets().add(
-                new ManagedRuleSet()
-                    .withRuleSetType(BOT_DETECTION_RULE_SET_TYPE)
-                    .withRuleSetVersion(BOT_DETECTION_RULE_SET_VERSION_DEFAULT));
-        }
-        return this;
+        return withBotProtection(BOT_DETECTION_RULE_SET_VERSION_DEFAULT);
     }
 
     @Override
@@ -143,27 +134,36 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
 
     @Override
     public WebApplicationFirewallPolicyImpl withBotProtection(String version) {
-        if (version == null) {
-            return withBotProtection();
+        String versionOrDefault = CoreUtils.isNullOrEmpty(version) ? BOT_DETECTION_RULE_SET_VERSION_DEFAULT : version;
+        Optional<ManagedRuleSet> ruleSetOptional = ensureManagedRules()
+            .managedRuleSets()
+            .stream()
+            .filter(ruleSet -> BOT_DETECTION_RULE_SET_TYPE.equals(ruleSet.ruleSetType()))
+            .findFirst();
+
+        if (ruleSetOptional.isPresent()) {
+            ManagedRuleSet ruleSet = ruleSetOptional.get();
+            // if Bot Protection rule present, only set non-null new version
+            if (version != null) {
+                ruleSet.withRuleSetVersion(version);
+            }
         } else {
-            ensureManagedRules()
-                .managedRuleSets()
-                .stream()
-                .filter(ruleSet -> BOT_DETECTION_RULE_SET_TYPE.equals(ruleSet.ruleSetType()))
-                .findFirst()
-                .ifPresent(ruleSet -> ruleSet.withRuleSetVersion(version));
+            ensureManagedRules().managedRuleSets().add(
+                new ManagedRuleSet()
+                    .withRuleSetType(BOT_DETECTION_RULE_SET_TYPE)
+                    .withRuleSetVersion(versionOrDefault));
         }
         return this;
     }
 
     @Override
-    public WebApplicationFirewallPolicyImpl withInspectRequestBody() {
+    public WebApplicationFirewallPolicyImpl enableRequestBodyInspection() {
         ensurePolicySettings().withRequestBodyCheck(true);
         return this;
     }
 
     @Override
-    public WebApplicationFirewallPolicyImpl withoutInspectRequestBody() {
+    public WebApplicationFirewallPolicyImpl disableRequestBodyInspection() {
         ensurePolicySettings().withRequestBodyCheck(false);
         return this;
     }

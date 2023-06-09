@@ -49,7 +49,12 @@ public interface WebApplicationFirewallPolicy
     /** @return whether this policy is enabled */
     boolean isEnabled();
 
-    /** @return a list of application gateways associated with this Web Application Firewall Policy */
+    /**
+     * Get a list of application gateways associated with this Web Application Firewall Policy.
+     *
+     *
+     * @return a list of application gateways associated with this Web Application Firewall Policy
+     */
     List<ApplicationGateway> getAssociatedApplicationGateways();
 
     /** @return {@link Flux} of application gateways associated with this Web Application Firewall Policy */
@@ -137,7 +142,7 @@ public interface WebApplicationFirewallPolicy
              *
              * @param version the version of the rule, e.g. 0.1, 1.0
              * @return the next stage of the update
-             * @see <a href="https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/bot-protection">
+             * @see <a href="https://learn.microsoft.com/azure/web-application-firewall/ag/bot-protection">
              *     Bot Protection
              *     </a>
              */
@@ -162,7 +167,7 @@ public interface WebApplicationFirewallPolicy
              *
              * @return the next stage of the definition
              */
-            WithRequestBodyOrCreate withInspectRequestBody();
+            WithRequestBodyOrCreate enableRequestBodyInspection();
         }
 
         /**
@@ -288,7 +293,7 @@ public interface WebApplicationFirewallPolicy
              *
              * @param version the version of the rule, e.g. 0.1, 1.0
              * @return the next stage of the update
-             * @see <a href="https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/bot-protection">
+             * @see <a href="https://learn.microsoft.com/azure/web-application-firewall/ag/bot-protection">
              *     Bot Protection
              *     </a>
              */
@@ -320,7 +325,7 @@ public interface WebApplicationFirewallPolicy
              *
              * @return the next stage of the update
              */
-            WithRequestBodyOrUpdate withInspectRequestBody();
+            WithRequestBodyOrUpdate enableRequestBodyInspection();
 
             /**
              * Disables request body inspection.
@@ -329,7 +334,7 @@ public interface WebApplicationFirewallPolicy
              *
              * @return the next stage of the update
              */
-            Update withoutInspectRequestBody();
+            Update disableRequestBodyInspection();
         }
 
         /**

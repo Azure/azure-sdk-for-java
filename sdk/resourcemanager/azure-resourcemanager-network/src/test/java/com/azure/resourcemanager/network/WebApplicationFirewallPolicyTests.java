@@ -41,7 +41,7 @@ public class WebApplicationFirewallPolicyTests extends NetworkManagementTest {
                 .withExistingResourceGroup(rgName)
                 .withDetectionMode()
                 .withBotProtection()
-                .withInspectRequestBody()
+                .enableRequestBodyInspection()
                 .withRequestBodySizeLimitInKb(128)
                 .withFileUploadSizeLimitInMb(100)
                 .create();
@@ -62,7 +62,7 @@ public class WebApplicationFirewallPolicyTests extends NetworkManagementTest {
         policy.update()
             .withPreventionMode()
             .withBotProtection("1.0")
-            .withoutInspectRequestBody()
+            .disableRequestBodyInspection()
             .disablePolicy()
             .apply();
 

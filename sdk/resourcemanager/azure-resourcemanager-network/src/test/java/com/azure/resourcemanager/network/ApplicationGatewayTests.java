@@ -537,7 +537,6 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
                 .define(appGatewayName)
                 .withRegion(Region.US_EAST)
                 .withExistingResourceGroup(rgName)
-                // Request routing rules
                 .defineRequestRoutingRule("rule1")
                 .fromPublicFrontend()
                 .fromFrontendHttpPort(80)
@@ -560,18 +559,55 @@ public class ApplicationGatewayTests extends NetworkManagementTest {
         Assertions.assertEquals(wafPolicy.id(), appGateway.getWebApplicationFirewallPolicy().id());
 
         appGateway.update()
-            .withNewWebApplicationFirewallPolicy(false, WebApplicationFirewallMode.PREVENTION)
+            .withNewWebApplicationFirewallPolicy(WebApplicationFirewallMode.PREVENTION)
             .apply();
 
         WebApplicationFirewallPolicy newPolicy = appGateway.getWebApplicationFirewallPolicy();
 
         Assertions.assertNotNull(newPolicy);
-        Assertions.assertFalse(newPolicy.isEnabled());
+        Assertions.assertTrue(newPolicy.isEnabled());
         Assertions.assertEquals(WebApplicationFirewallMode.PREVENTION, newPolicy.mode());
         Assertions.assertNotEquals(newPolicy.id(), wafPolicy.id());
         // check updated association
         Assertions.assertEquals(appGateway.id(), newPolicy.getAssociatedApplicationGateways().iterator().next().id());
         Assertions.assertEquals(newPolicy.id(), appGateway.getWebApplicationFirewallPolicy().id());
+
+        // invalid application gateway with mixed legacy WAF configuration and WAF policy
+        String invalidPolicyName = "invalid";
+
+        Assertions.assertThrows(IllegalStateException.class, () -> {
+            networkManager.applicationGateways()
+                .define("invalid")
+                .withRegion(Region.US_EAST)
+                .withExistingResourceGroup(rgName)
+                .defineRequestRoutingRule("rule1")
+                .fromPublicFrontend()
+                .fromFrontendHttpPort(80)
+                .toBackendHttpPort(8080)
+                .toBackendIPAddress("11.1.1.1")
+                .toBackendIPAddress("11.1.1.2")
+                .attach()
+                .withNewPublicIpAddress()
+                .withTier(ApplicationGatewayTier.WAF_V2)
+                .withSize(ApplicationGatewaySkuName.WAF_V2)
+                // mixed legacy WAF configuration and WAF policy
+                .withNewWebApplicationFirewallPolicy(
+                    networkManager
+                        .webApplicationFirewallPolicies()
+                        .define(invalidPolicyName)
+                        .withRegion(Region.US_EAST)
+                        .withExistingResourceGroup(rgName))
+                .withWebApplicationFirewall(true, ApplicationGatewayFirewallMode.PREVENTION)
+                .create();
+        });
+
+        // assert no policy is created
+        Assertions.assertTrue(
+            networkManager
+                .webApplicationFirewallPolicies()
+                .listByResourceGroup(rgName)
+                .stream()
+                .noneMatch(policy -> policy.name().equals(invalidPolicyName)));
     }
 
     private String createKeyVaultCertificate(String servicePrincipal, String identityPrincipal) {

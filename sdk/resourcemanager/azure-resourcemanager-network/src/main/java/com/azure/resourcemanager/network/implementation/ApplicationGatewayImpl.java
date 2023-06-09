@@ -287,8 +287,12 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    protected void beforeCreating() {
+    public void beforeGroupCreateOrUpdate() {
         ensureNoMixedWaf();
+    }
+
+    @Override
+    protected void beforeCreating() {
         if (this.creatableWafPolicy != null) {
             Resource resource = this.taskResult(this.creatableWafPolicy);
             withExistingWebApplicationFirewallPolicy(resource.id());
@@ -445,7 +449,7 @@ class ApplicationGatewayImpl
         String errorMessage = "Can't have a mixture of legacy WAF configuration and WAF policy. "
             + "If you are using legacy WAF configuration, you are strongly encouraged to upgrade to WAF Policy "
             + "for easier management, better scale, and a richer feature set at no additional cost. "
-            + "See https://learn.microsoft.com/en-us/azure/web-application-firewall/ag/upgrade-ag-waf-policy";
+            + "See https://learn.microsoft.com/azure/web-application-firewall/ag/upgrade-ag-waf-policy";
         if (this.creatableWafPolicy != null || this.innerModel().firewallPolicy() != null) {
             if (isInCreateMode()) {
                 if (this.legacyWafConfigurationSpecified) {
@@ -669,18 +673,13 @@ class ApplicationGatewayImpl
     }
 
     @Override
-    public ApplicationGatewayImpl withNewWebApplicationFirewallPolicy(boolean enable, WebApplicationFirewallMode mode) {
+    public ApplicationGatewayImpl withNewWebApplicationFirewallPolicy(WebApplicationFirewallMode mode) {
         ensureWafV2();
         WebApplicationFirewallPolicy.DefinitionStages.WithCreate wafPolicyCreatable = this.manager().webApplicationFirewallPolicies()
             .define(this.manager().resourceManager().internalContext().randomResourceName("wafpolicy", 14))
             .withRegion(region())
             .withExistingResourceGroup(this.resourceGroupName())
             .withMode(mode);
-        if (enable) {
-            wafPolicyCreatable.enablePolicy();
-        } else {
-            wafPolicyCreatable.disablePolicy();
-        }
         return withNewWebApplicationFirewallPolicy(wafPolicyCreatable);
     }
 
