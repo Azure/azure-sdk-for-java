@@ -133,7 +133,7 @@ public class CosmosClientBuilder implements
     private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
-    private CosmosSessionRetryOptions sessionRetryStrategy;
+    private CosmosSessionRetryOptions sessionRetryOptions;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -811,13 +811,13 @@ public class CosmosClientBuilder implements
      * DISCLAIMER: Setting {@link CosmosSessionRetryOptions} will modify retry behavior
      * of all operations or workload which is executed through the instance of the client.
      * */
-    public CosmosClientBuilder sessionRetryStrategy(CosmosSessionRetryOptions retryStrategy) {
-        this.sessionRetryStrategy = retryStrategy;
+    public CosmosClientBuilder sessionRetryOptions(CosmosSessionRetryOptions sessionRetryOptions) {
+        this.sessionRetryOptions = sessionRetryOptions;
         return this;
     }
 
-    CosmosSessionRetryOptions getSessionRetryStrategy() {
-        return this.sessionRetryStrategy;
+    CosmosSessionRetryOptions getSessionRetryOptions() {
+        return this.sessionRetryOptions;
     }
 
     /**

@@ -244,7 +244,7 @@ public interface AsyncDocumentClient {
             return this;
         }
 
-        public Builder withRetryStrategy(CosmosSessionRetryOptions retryStrategy) {
+        public Builder withSessionRetryOptions(CosmosSessionRetryOptions retryStrategy) {
             this.retryStrategy = retryStrategy;
             return this;
         }

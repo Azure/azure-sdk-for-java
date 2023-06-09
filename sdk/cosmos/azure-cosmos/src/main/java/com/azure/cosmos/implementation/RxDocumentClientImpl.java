@@ -223,7 +223,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                com.azure.cosmos.CosmosSessionRetryOptions sessionRetryOptions) {
+                                CosmosSessionRetryOptions sessionRetryOptions) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -262,7 +262,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                com.azure.cosmos.CosmosSessionRetryOptions sessionRetryOptions) {
+                                CosmosSessionRetryOptions sessionRetryOptions) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -300,7 +300,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 CosmosClientTelemetryConfig clientTelemetryConfig,
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                                com.azure.cosmos.CosmosSessionRetryOptions sessionRetryOptions) {
+                                CosmosSessionRetryOptions sessionRetryOptions) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -376,7 +376,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          CosmosClientTelemetryConfig clientTelemetryConfig,
                          String clientCorrelationId,
                          CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
-                         com.azure.cosmos.CosmosSessionRetryOptions sessionRetryOptions) {
+                         CosmosSessionRetryOptions sessionRetryOptions) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
