@@ -18,9 +18,9 @@ public class ShareResourcesList {
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("accountName.purview.azure.com/share")
                         .buildClient();
-        // BEGIN:com.azure.analytics.purview.sharing.generated.shareresourcesgetallshareresources.shareresourceslist
+        // BEGIN:com.azure.analytics.purview.sharing.generated.shareresourceslistshareresources.shareresourceslist
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = shareResourcesClient.getAllShareResources(requestOptions);
-        // END:com.azure.analytics.purview.sharing.generated.shareresourcesgetallshareresources.shareresourceslist
+        PagedIterable<BinaryData> response = shareResourcesClient.listShareResources(requestOptions);
+        // END:com.azure.analytics.purview.sharing.generated.shareresourceslistshareresources.shareresourceslist
     }
 }

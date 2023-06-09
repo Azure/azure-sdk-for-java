@@ -196,7 +196,7 @@ SentSharesClient sentSharesClient =
                 .endpoint("https://<my-account-name>.purview.azure.com/share")
                 .buildClient();
 
-PagedIterable<BinaryData> sentShareResults = sentSharesClient.getAllSentShares(
+PagedIterable<BinaryData> sentShareResults = sentSharesClient.listSentShares(
                 "/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/provider-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage",
                 new RequestOptions());
 
@@ -252,7 +252,7 @@ String sentShareId = "<sent-share-id>";
 
 RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/sentAt desc");
 PagedIterable<BinaryData> response =
-        sentSharesClient.getAllSentShareInvitations(sentShareId, requestOptions);
+        sentSharesClient.listSentShareInvitations(sentShareId, requestOptions);
 ```
 
 #### Delete a Sent Share Invitation
@@ -297,7 +297,7 @@ ReceivedSharesClient receivedSharesClient =
                 .buildClient();
 
 RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
-PagedIterable<BinaryData> response = receivedSharesClient.getAllDetachedReceivedShares(requestOptions);
+PagedIterable<BinaryData> response = receivedSharesClient.listDetachedReceivedShares(requestOptions);
 ```
 
 #### Attach a Receive Share
@@ -312,7 +312,7 @@ ReceivedSharesClient receivedSharesClient =
                 .buildClient();
 
 RequestOptions listRequestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
-PagedIterable<BinaryData> listResponse = receivedSharesClient.getAllDetachedReceivedShares(listRequestOptions);
+PagedIterable<BinaryData> listResponse = receivedSharesClient.listDetachedReceivedShares(listRequestOptions);
 
 Optional<BinaryData> detachedReceivedShare = listResponse.stream().findFirst();
 
@@ -372,7 +372,7 @@ ReceivedSharesClient receivedSharesClient =
 
 RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
 PagedIterable<BinaryData> response =
-        receivedSharesClient.getAllAttachedReceivedShares(
+        receivedSharesClient.listAttachedReceivedShares(
                 "/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/consumer-storage-rg/providers/Microsoft.Storage/storageAccounts/consumerstorage",
                 requestOptions);
 
@@ -414,7 +414,7 @@ ShareResourcesClient shareResourcesClient =
                 .endpoint("https://<my-account-name>.purview.azure.com/share")
                 .buildClient();
 
-PagedIterable<BinaryData> shareResourceResults = shareResourcesClient.getAllShareResources(new RequestOptions());
+PagedIterable<BinaryData> shareResourceResults = shareResourcesClient.listShareResources(new RequestOptions());
  
 List<ShareResource> shareResources = shareResourceResults.stream()
     .map(binaryData -> binaryData.toObject(ShareResource.class))

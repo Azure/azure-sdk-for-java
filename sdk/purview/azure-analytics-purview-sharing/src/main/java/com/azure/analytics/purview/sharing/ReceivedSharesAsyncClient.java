@@ -178,8 +178,8 @@ public final class ReceivedSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
-        return this.serviceClient.getAllAttachedReceivedSharesAsync(referenceName, requestOptions);
+    public PagedFlux<BinaryData> listAttachedReceivedShares(String referenceName, RequestOptions requestOptions) {
+        return this.serviceClient.listAttachedReceivedSharesAsync(referenceName, requestOptions);
     }
 
     /**
@@ -216,8 +216,8 @@ public final class ReceivedSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllDetachedReceivedShares(RequestOptions requestOptions) {
-        return this.serviceClient.getAllDetachedReceivedSharesAsync(requestOptions);
+    public PagedFlux<BinaryData> listDetachedReceivedShares(RequestOptions requestOptions) {
+        return this.serviceClient.listDetachedReceivedSharesAsync(requestOptions);
     }
 
     /**

@@ -29,7 +29,7 @@ public class ShareResourceClientTest extends PurviewShareTestBase {
         SentShare sentShare = super.createSentShare(sentShareId);
 
         PagedIterable<BinaryData> shareResources = super.shareResourcesClient
-                .getAllShareResources(new RequestOptions());
+                .listShareResources(new RequestOptions());
 
         String sentShareResource = ((InPlaceSentShare) sentShare).getArtifact().getStoreReference().getReferenceName();
 

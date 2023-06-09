@@ -120,7 +120,7 @@ public final class ReadmeSamples {
                         .endpoint("https://<my-account-name>.purview.azure.com/share")
                         .buildClient();
 
-        PagedIterable<BinaryData> sentShareResults = sentSharesClient.getAllSentShares(
+        PagedIterable<BinaryData> sentShareResults = sentSharesClient.listSentShares(
                         "/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/provider-storage-rg/providers/Microsoft.Storage/storageAccounts/providerstorage",
                         new RequestOptions());
         
@@ -192,7 +192,7 @@ public final class ReadmeSamples {
 
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/sentAt desc");
         PagedIterable<BinaryData> response =
-                sentSharesClient.getAllSentShareInvitations(sentShareId, requestOptions);
+                sentSharesClient.listSentShareInvitations(sentShareId, requestOptions);
         // END: com.azure.analytics.purview.sharing.getAllSentShareInvitations
     }
     
@@ -246,7 +246,7 @@ public final class ReadmeSamples {
                         .buildClient();
 
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
-        PagedIterable<BinaryData> response = receivedSharesClient.getAllDetachedReceivedShares(requestOptions);
+        PagedIterable<BinaryData> response = receivedSharesClient.listDetachedReceivedShares(requestOptions);
         // END: com.azure.analytics.purview.sharing.getAllDetachedReceivedShares
     }
 
@@ -259,7 +259,7 @@ public final class ReadmeSamples {
                         .buildClient();
 
         RequestOptions listRequestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
-        PagedIterable<BinaryData> listResponse = receivedSharesClient.getAllDetachedReceivedShares(listRequestOptions);
+        PagedIterable<BinaryData> listResponse = receivedSharesClient.listDetachedReceivedShares(listRequestOptions);
 
         Optional<BinaryData> detachedReceivedShare = listResponse.stream().findFirst();
 
@@ -315,7 +315,7 @@ public final class ReadmeSamples {
 
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
         PagedIterable<BinaryData> response =
-                receivedSharesClient.getAllAttachedReceivedShares(
+                receivedSharesClient.listAttachedReceivedShares(
                         "/subscriptions/de06c3a0-4610-4ca0-8cbb-bbdac204bd65/resourceGroups/consumer-storage-rg/providers/Microsoft.Storage/storageAccounts/consumerstorage",
                         requestOptions);
 
@@ -349,7 +349,7 @@ public final class ReadmeSamples {
                         .endpoint("https://<my-account-name>.purview.azure.com/share")
                         .buildClient();
 
-        PagedIterable<BinaryData> shareResourceResults = shareResourcesClient.getAllShareResources(new RequestOptions());
+        PagedIterable<BinaryData> shareResourceResults = shareResourcesClient.listShareResources(new RequestOptions());
  
         List<ShareResource> shareResources = shareResourceResults.stream()
             .map(binaryData -> binaryData.toObject(ShareResource.class))

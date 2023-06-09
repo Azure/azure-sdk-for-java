@@ -24,7 +24,7 @@ directive:
       from: "SentShares_Delete",
       to: "SentShares_DeleteSentShare",
       from: "SentShares_List",
-      to: "SentShares_GetAllSentShares",
+      to: "SentShares_ListSentShares",
       from: "SentShares_GetInvitation",
       to: "SentShares_GetSentShareInvitation",
       from: "SentShares_CreateInvitation",
@@ -32,7 +32,7 @@ directive:
       from: "SentShares_DeleteInvitation",
       to: "SentShares_DeleteSentShareInvitation",
       from: "SentShares_ListInvitations",
-      to: "SentShares_GetAllSentShareInvitations",
+      to: "SentShares_ListSentShareInvitations",
       from: "SentShares_NotifyUserInvitation",
       to: "SentShares_NotifyUserSentShareInvitation",
       from: "ReceivedShares_Get",
@@ -42,10 +42,10 @@ directive:
       from: "ReceivedShares_Delete",
       to: "ReceivedShares_DeleteReceivedShare",
       from: "ReceivedShares_ListAttached",
-      to: "ReceivedShares_GetAllAttachedReceivedShares",
+      to: "ReceivedShares_ListAttachedReceivedShares",
       from: "ReceivedShares_ListDetached",
-      to: "ReceivedShares_GetAllDetachedReceivedShares",
+      to: "ReceivedShares_ListDetachedReceivedShares",
       from: "ShareResources_List",
-      to: "ShareResources_GetAllShareResources"
+      to: "ShareResources_ListShareResources"
     ]
 ```

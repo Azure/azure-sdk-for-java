@@ -16,7 +16,7 @@ public final class ShareResourcesListTests extends PurviewShareClientTestBase {
     @Disabled
     public void testShareResourcesListTests() {
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = shareResourcesClient.getAllShareResources(requestOptions);
+        PagedIterable<BinaryData> response = shareResourcesClient.listShareResources(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
         Assertions.assertEquals(
                 "Wed, 12 July 2022 18:04:32 GMT",

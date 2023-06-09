@@ -68,8 +68,8 @@ public final class SentSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllSentShares(String referenceName, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.getAllSentShares(referenceName, requestOptions));
+    public PagedIterable<BinaryData> listSentShares(String referenceName, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listSentShares(referenceName, requestOptions));
     }
 
     /**
@@ -212,8 +212,8 @@ public final class SentSharesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.getAllSentShareInvitations(sentShareId, requestOptions));
+    public PagedIterable<BinaryData> listSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listSentShareInvitations(sentShareId, requestOptions));
     }
 
     /**

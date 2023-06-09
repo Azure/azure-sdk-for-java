@@ -70,8 +70,8 @@ public final class SentSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllSentShares(String referenceName, RequestOptions requestOptions) {
-        return this.serviceClient.getAllSentSharesAsync(referenceName, requestOptions);
+    public PagedFlux<BinaryData> listSentShares(String referenceName, RequestOptions requestOptions) {
+        return this.serviceClient.listSentSharesAsync(referenceName, requestOptions);
     }
 
     /**
@@ -214,8 +214,8 @@ public final class SentSharesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
-        return this.serviceClient.getAllSentShareInvitationsAsync(sentShareId, requestOptions);
+    public PagedFlux<BinaryData> listSentShareInvitations(String sentShareId, RequestOptions requestOptions) {
+        return this.serviceClient.listSentShareInvitationsAsync(sentShareId, requestOptions);
     }
 
     /**

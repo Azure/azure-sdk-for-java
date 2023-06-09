@@ -72,7 +72,7 @@ public final class ShareResourcesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllShareResources(
+        Mono<Response<BinaryData>> listShareResources(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -91,7 +91,7 @@ public final class ShareResourcesImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getAllShareResourcesNext(
+        Mono<Response<BinaryData>> listShareResourcesNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("endpoint") String endpoint,
                 @HeaderParam("Accept") String accept,
@@ -140,11 +140,11 @@ public final class ShareResourcesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getAllShareResourcesSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listShareResourcesSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getAllShareResources(
+                                service.listShareResources(
                                         this.client.getEndpoint(),
                                         this.client.getServiceVersion().getVersion(),
                                         accept,
@@ -201,15 +201,15 @@ public final class ShareResourcesImpl {
      * @return a page of ShareResource results as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> getAllShareResourcesAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listShareResourcesAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> getAllShareResourcesSinglePageAsync(requestOptions),
-                nextLink -> getAllShareResourcesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listShareResourcesSinglePageAsync(requestOptions),
+                nextLink -> listShareResourcesNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -252,8 +252,8 @@ public final class ShareResourcesImpl {
      * @return a page of ShareResource results as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> getAllShareResources(RequestOptions requestOptions) {
-        return new PagedIterable<>(getAllShareResourcesAsync(requestOptions));
+    public PagedIterable<BinaryData> listShareResources(RequestOptions requestOptions) {
+        return new PagedIterable<>(listShareResourcesAsync(requestOptions));
     }
 
     /**
@@ -286,12 +286,12 @@ public final class ShareResourcesImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> getAllShareResourcesNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listShareResourcesNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.getAllShareResourcesNext(
+                                service.listShareResourcesNext(
                                         nextLink, this.client.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->

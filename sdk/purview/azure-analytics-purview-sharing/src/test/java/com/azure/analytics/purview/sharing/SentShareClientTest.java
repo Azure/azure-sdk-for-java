@@ -86,7 +86,7 @@ class SentShareClientTest extends PurviewShareTestBase {
         SentShare sentShare = super.createSentShare(sentShareId);
 
         PagedIterable<BinaryData> sentShares = super.sentSharesClient
-                .getAllSentShares(super.providerStorageAccountResourceId, new RequestOptions());
+                .listSentShares(super.providerStorageAccountResourceId, new RequestOptions());
 
         assertTrue(sentShares.stream().findAny().isPresent());
         assertTrue(sentShares.stream().map(binaryData -> binaryData.toObject(SentShare.class))
@@ -146,7 +146,7 @@ class SentShareClientTest extends PurviewShareTestBase {
         super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);
 
         PagedIterable<BinaryData> invitations = super.sentSharesClient
-                .getAllSentShareInvitations(sentShareId.toString(), new RequestOptions());
+                .listSentShareInvitations(sentShareId.toString(), new RequestOptions());
 
         assertTrue(invitations.stream().findAny().isPresent());
         assertTrue(invitations.stream().map(binaryData -> binaryData.toObject(ServiceInvitation.class))
