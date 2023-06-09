@@ -10,6 +10,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Migrate test recordings to assets repo.
 
 ## 12.0.0-beta.19 (2022-05-06)
 

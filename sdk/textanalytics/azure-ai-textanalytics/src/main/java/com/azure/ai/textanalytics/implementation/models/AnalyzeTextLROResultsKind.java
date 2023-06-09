@@ -53,6 +53,14 @@ public final class AnalyzeTextLROResultsKind extends ExpandableStringEnum<Analyz
             fromString("AbstractiveSummarizationLROResults");
 
     /**
+     * Creates a new instance of AnalyzeTextLROResultsKind value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AnalyzeTextLROResultsKind() {}
+
+    /**
      * Creates or finds a AnalyzeTextLROResultsKind from its string representation.
      *
      * @param name a name to look for.

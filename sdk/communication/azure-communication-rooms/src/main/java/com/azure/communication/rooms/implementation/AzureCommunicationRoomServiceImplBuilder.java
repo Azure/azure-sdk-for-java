@@ -235,7 +235,7 @@ public final class AzureCommunicationRoomServiceImplBuilder
     @Generated
     public AzureCommunicationRoomServiceImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-03-31-preview";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-06-14";
         SerializerAdapter localSerializerAdapter =
                 (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         AzureCommunicationRoomServiceImpl client =

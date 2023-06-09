@@ -7,7 +7,7 @@ package com.azure.resourcemanager.databricks.generated;
 /** Samples for Workspaces GetByResourceGroup. */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/preview/2021-04-01-preview/examples/WorkspaceGet.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceGet.json
      */
     /**
      * Sample code: Get a workspace.
@@ -19,7 +19,20 @@ public final class WorkspacesGetByResourceGroupSamples {
     }
 
     /*
-     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/preview/2021-04-01-preview/examples/WorkspaceGetParameters.json
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceManagedDiskEncryptionGet.json
+     */
+    /**
+     * Sample code: Get a workspace with Customer-Managed Key (CMK) encryption for Managed Disks.
+     *
+     * @param manager Entry point to AzureDatabricksManager.
+     */
+    public static void getAWorkspaceWithCustomerManagedKeyCMKEncryptionForManagedDisks(
+        com.azure.resourcemanager.databricks.AzureDatabricksManager manager) {
+        manager.workspaces().getByResourceGroupWithResponse("rg", "myWorkspace", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/databricks/resource-manager/Microsoft.Databricks/stable/2023-02-01/examples/WorkspaceGetParameters.json
      */
     /**
      * Sample code: Get a workspace with custom parameters.

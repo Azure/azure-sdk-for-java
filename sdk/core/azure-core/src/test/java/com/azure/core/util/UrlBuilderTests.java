@@ -804,17 +804,19 @@ public class UrlBuilderTests {
 
     @Test
     public void fluxParallelParsing() {
-        Mono<Long> mono = Flux.range(0, 20000)
+        AtomicInteger callCount = new AtomicInteger();
+        Mono<Void> mono = Flux.range(0, 20000)
             .parallel()
-            .runOn(Schedulers.boundedElastic())
-            .map(i -> UrlBuilder.parse("https://example" + i + ".com"))
-            .sequential()
-            .count();
+            .runOn(Schedulers.parallel())
+            .map(i -> {
+                callCount.incrementAndGet();
+                return UrlBuilder.parse("https://example" + i + ".com");
+            })
+            .then()
+            .timeout(Duration.ofSeconds(10));
 
-        StepVerifier.create(mono)
-            .assertNext(count -> assertEquals(20000, count))
-            .expectComplete()
-            .verify(Duration.ofSeconds(10));
+        StepVerifier.create(mono).verifyComplete();
+        assertEquals(20000, callCount.get());
     }
 
     @Test
