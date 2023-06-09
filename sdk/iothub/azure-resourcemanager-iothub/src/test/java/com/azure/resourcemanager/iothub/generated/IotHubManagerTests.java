@@ -93,7 +93,7 @@ public class IotHubManagerTests extends TestBase {
         try {
             String iothubName = "iotHub" + randomPadding();
 
-            // embedmeStart
+            // @embedmeStart
             Map<String, EventHubProperties> eventHubEndpointsMap = new HashMap<>();
             eventHubEndpointsMap.put("events", new EventHubProperties()
                 .withRetentionTimeInDays(1L).withPartitionCount(2));
@@ -142,7 +142,7 @@ public class IotHubManagerTests extends TestBase {
                         .withEnableDataResidency(false)
                 )
                 .create();
-            // embedmeEnd
+            // @embedmeEnd
             iotHubDescription.refresh();
 
             Assertions.assertEquals(iotHubDescription.name(), iothubName);
