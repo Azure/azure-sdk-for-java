@@ -5,7 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 /**
  * Constants used for processing Azure App Configuration Config info.
  */
-public class AppConfigurationConstants {
+public final class AppConfigurationConstants {
 
     private AppConfigurationConstants() {
         throw new IllegalStateException("You can not initialize AppConfigurationConstants utility class.");
