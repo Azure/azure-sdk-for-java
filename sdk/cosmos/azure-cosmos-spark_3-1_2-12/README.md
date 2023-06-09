@@ -29,6 +29,7 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 #### azure-cosmos-spark_3-1_2-12
 | Connector    | Supported Spark Versions | Minimum Java Version | Supported Scala Versions | Supported Databricks Runtimes |
 |--------------| ------------------------ | -------------------- | -----------------------  | ----------------------------- |
+| 4.19.0       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
 | 4.18.2       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
 | 4.18.1       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
 | 4.18.0       | 3.1.1 - 3.1.2            | 8                    | 2.12                     | 8.\*, 9.\*                    |
