@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.cfg.MapperConfig;
 import com.fasterxml.jackson.databind.introspect.AccessorNamingStrategy;
 import com.fasterxml.jackson.databind.introspect.AnnotatedClass;
 import com.fasterxml.jackson.databind.introspect.AnnotatedMethod;
+import com.fasterxml.jackson.databind.type.LogicalType;
 
 /**
  * Utility methods for Jackson Databind types when it's known that the version is 2.12+.
@@ -27,7 +28,16 @@ final class JacksonDatabind212 {
      * @return The updated {@link ObjectMapper}.
      */
     static ObjectMapper mutateXmlCoercions(ObjectMapper mapper) {
-        mapper.coercionConfigDefaults().setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
+        // https://github.com/FasterXML/jackson-dataformat-xml/pull/585/files fixed array and collection elements
+        // with coercion to be handled by the coercion config below which is a backwards compatibility breaking
+        // change for us. Handle empty string items within an array or collection as empty string.
+        mapper.coercionConfigFor(LogicalType.Array)
+            .setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsEmpty);
+        mapper.coercionConfigFor(LogicalType.Collection)
+            .setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsEmpty);
+
+        mapper.coercionConfigDefaults()
+            .setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
         return mapper;
     }
 
