@@ -26,7 +26,6 @@ import com.azure.resourcemanager.iothub.models.IotHubProperties;
 import com.azure.resourcemanager.iothub.models.IotHubSku;
 import com.azure.resourcemanager.iothub.models.IotHubSkuInfo;
 import com.azure.resourcemanager.iothub.models.MessagingEndpointProperties;
-import com.azure.resourcemanager.iothub.models.RoutingEndpoints;
 import com.azure.resourcemanager.iothub.models.RoutingProperties;
 import com.azure.resourcemanager.iothub.models.RoutingSource;
 import com.azure.resourcemanager.iothub.models.ResourceIdentityType;
