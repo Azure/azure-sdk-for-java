@@ -45,7 +45,7 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     public void onSubscribe(Subscription s) {
         // Only set the Subscription if one has not been previously set.
         // Any additional Subscriptions will be cancelled.
-        if (Operators.validate(this.subscription, s)) {
+        if (Operators.validate(subscription, s)) {
             subscription = s;
 
             s.request(1);
@@ -105,13 +105,14 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
 
     private void onErrorInternal(Throwable throwable) {
         State state = this.state;
+        // code 2 and greater are completion states which means the error should be dropped as we already completed.
         if (state.code >= 2) {
             Operators.onErrorDropped(throwable, Context.of(emitter.contextView()));
         }
 
         if (state == State.WRITING) {
             this.state = State.ERROR_DURING_WRITE;
-            error = throwable;
+            this.error = throwable;
         } else {
             this.state = State.ERROR;
             resetRequest(throwable);
@@ -127,6 +128,8 @@ public class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer> {
     @Override
     public synchronized void onComplete() {
         State state = this.state;
+        // code 2 and greater are completion states which means the erroneous complete should be dropped as we already
+        // completed.
         if (state.code >= 2) {
             // Already completed, just return as there is no cleanup processing to do.
             return;

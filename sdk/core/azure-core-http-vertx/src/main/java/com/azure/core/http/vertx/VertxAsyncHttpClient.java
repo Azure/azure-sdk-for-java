@@ -13,6 +13,7 @@ import com.azure.core.http.vertx.implementation.VertxRequestWriteSubscriber;
 import com.azure.core.implementation.util.BinaryDataContent;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.ByteArrayContent;
+import com.azure.core.implementation.util.ByteBufferContent;
 import com.azure.core.implementation.util.FileContent;
 import com.azure.core.implementation.util.SerializableContent;
 import com.azure.core.implementation.util.StringContent;
@@ -136,6 +137,15 @@ class VertxAsyncHttpClient implements HttpClient {
             vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(content)), result -> {
                 if (result.succeeded()) {
                     reportProgress(content.length, progressReporter);
+                } else {
+                    sink.error(result.cause());
+                }
+            });
+        } else if (bodyContent instanceof ByteBufferContent) {
+            long contentLength = bodyContent.getLength();
+            vertxRequest.send(Buffer.buffer(Unpooled.wrappedBuffer(bodyContent.toByteBuffer())), result -> {
+                if (result.succeeded()) {
+                    reportProgress(contentLength, progressReporter);
                 } else {
                     sink.error(result.cause());
                 }
