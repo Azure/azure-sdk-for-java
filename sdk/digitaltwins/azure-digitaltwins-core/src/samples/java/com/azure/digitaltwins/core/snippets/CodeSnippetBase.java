@@ -69,6 +69,18 @@ public abstract class CodeSnippetBase {
     public abstract void publishComponentTelemetryWithResponse();
     //endregion TelemetrySnippets
 
+    //region Import APIs
+    public abstract void createImportJob();
+    public abstract void createImportJobWithResponse();
+    public abstract void deleteImportJob();
+    public abstract void deleteImportJobWithResponse();
+    public abstract void cancelImportJob();
+    public abstract void cancelImportJobWithResponse();
+    public abstract void getImportJob();
+    public abstract void getImportJobWithResponse();
+    public abstract void listImportJobs();
+    //endregion Import APIs
+
     /**
      * Implementation not provided for this method
      *
