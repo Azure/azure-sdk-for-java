@@ -4,7 +4,9 @@
 package com.azure.cosmos;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The type Threshold based retry availability strategy.
@@ -75,8 +77,16 @@ public class ThresholdBasedAvailabilityStrategy extends AvailabilityStrategy{
 
     @Override
     public List<String> getEffectiveRetryRegions(List<String> preferredRegions, List<String> excludeRegions) {
-        preferredRegions.removeAll(excludeRegions); // remove all mutates the original list
-        return preferredRegions.subList(0, this.numberOfRegionsToTry);
+        if (excludeRegions == null) {
+            return preferredRegions
+                .subList(0, this.numberOfRegionsToTry);
+        }
+
+        return preferredRegions
+            .stream()
+            .filter(region -> !excludeRegions.contains(region))
+            .collect(Collectors.toList())
+            .subList(0, Math.min(numberOfRegionsToTry, preferredRegions.size()));
     }
 
 }

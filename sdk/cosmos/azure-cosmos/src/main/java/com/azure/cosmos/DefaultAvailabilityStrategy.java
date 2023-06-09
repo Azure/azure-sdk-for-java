@@ -24,7 +24,10 @@ public class DefaultAvailabilityStrategy extends AvailabilityStrategy {
             return preferredRegions;
         }
         // return preferredRegions without excludeRegions
-        return preferredRegions.stream().filter(region -> !excludeRegions.contains(region)).collect(Collectors.toList());
+        return preferredRegions.stream()
+            .filter(region -> !excludeRegions.contains(region))
+            .collect(Collectors.toList())
+            .subList(0, Math.min(numberOfRegionsToTry, preferredRegions.size()));
     }
 
     int getNumberOfRegionsToTry() {

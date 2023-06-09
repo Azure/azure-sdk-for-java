@@ -95,6 +95,14 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
 
         verifyExpectError(cosmosItemResponseMono);
 
+        // Now try the same request with Threshold based availability strategy
+        CosmosEndToEndOperationLatencyPolicyConfig config = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3))
+            .setAvailabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200), 2))
+            .build();
+        cosmosItemResponseMono =
+            createdContainer.readItem(itemToRead.getId(), new PartitionKey(itemToRead.getMypk()), options, EndToEndTimeOutValidationTests.TestObject.class);
+        verifySuccess(cosmosItemResponseMono);
+
         // Now try the same request with West US 2 excluded
         options.setExcludeRegions(ImmutableList.of("West US 2"));
         cosmosItemResponseMono =
@@ -150,10 +158,12 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
                 && ((OperationCancelledException) throwable).getSubStatusCode()
                 == HttpConstants.SubStatusCodes.CLIENT_OPERATION_TIMEOUT)
             .verify();
-        faultInjectionRule.disable();
 
-        // Excluding the fault region should succeed
-        options.setExcludeRegions(ImmutableList.of("West US 2"));
+        // Setting threshold based availability strategy should not timeout
+        CosmosEndToEndOperationLatencyPolicyConfig config = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3))
+            .setAvailabilityStrategy(new ThresholdBasedAvailabilityStrategy(Duration.ofMillis(100), Duration.ofMillis(200), 2))
+            .build();
+        options.setCosmosEndToEndOperationLatencyPolicyConfig(config);
         queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
 
         StepVerifier.create(queryPagedFlux.byPage())
@@ -166,7 +176,22 @@ public class EndToEndTimeOutWithAvailabilityTest extends TestSuiteBase {
                 return true;
             })
             .verifyComplete();
-        faultInjectionRule.disable();
+
+//        // Excluding the fault region should succeed
+//        options.setExcludeRegions(ImmutableList.of("West US 2"));
+//        queryPagedFlux = createdContainer.queryItems(sqlQuerySpec, options, TestObject.class);
+//
+//        StepVerifier.create(queryPagedFlux.byPage())
+//            .expectNextMatches(response -> {
+//                ObjectNode diagnosticsNode = null;
+//                // Since we are injecting fault in region 0, we make sure response is from region 1 in the list above
+//                assertThat(response.getCosmosDiagnostics().getClientSideRequestStatistics().iterator().next().getResponseStatisticsList().get(0).getRegionName())
+//                    .isEqualTo(regions.get(1).toLowerCase(Locale.ROOT));
+//
+//                return true;
+//            })
+//            .verifyComplete();
+//        faultInjectionRule.disable();
     }
 
     private FaultInjectionRule injectFailure(

@@ -63,6 +63,11 @@ public final class CosmosEndToEndOperationLatencyPolicyConfig {
         return availabilityStrategy;
     }
 
+    /**
+     * Gets end to end feed operation timeout.
+     *
+     * @return the end to end feed operation timeout
+     */
     public Duration getEndToEndFeedOperationTimeout() {
         return this.endToEndFeedOperationTimeout;
     }
