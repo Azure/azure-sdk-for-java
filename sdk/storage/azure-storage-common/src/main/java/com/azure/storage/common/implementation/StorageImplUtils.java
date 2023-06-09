@@ -30,9 +30,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+import java.util.function.Supplier;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
@@ -441,6 +444,16 @@ public class StorageImplUtils {
             }
 
             return new AbstractMap.SimpleImmutableEntry<>(key, value);
+        }
+    }
+
+    public static <T> T submitThreadPool(Supplier<T> operation, Duration timeout) {
+        try {
+            return timeout != null
+                ? THREAD_POOL.submit(operation::get).get(timeout.toMillis(), TimeUnit.MILLISECONDS) : operation.get();
+
+        }  catch (InterruptedException | ExecutionException | TimeoutException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 

@@ -216,6 +216,12 @@ public final class QueueServiceClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public QueueServiceClient buildClient() {
+        if (processMessageDecodingErrorAsyncHandler != null && processMessageDecodingErrorHandler != null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Either processMessageDecodingError or processMessageDecodingAsyncError should be specified"
+                    + "but not both.")
+            );
+        }
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
         return new QueueServiceClient(createAzureQueueStorageImpl(serviceVersion), accountName, serviceVersion,
             messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);

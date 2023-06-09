@@ -21,13 +21,12 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.queue.implementation.AzureQueueStorageImpl;
-import com.azure.storage.queue.implementation.models.MessageIdsUpdateHeaders;
 import com.azure.storage.queue.implementation.models.MessagesDequeueHeaders;
 import com.azure.storage.queue.implementation.models.MessagesPeekHeaders;
 import com.azure.storage.queue.implementation.models.PeekedMessageItemInternal;
 import com.azure.storage.queue.implementation.models.QueueMessage;
 import com.azure.storage.queue.implementation.models.QueueMessageItemInternal;
-import com.azure.storage.queue.implementation.models.QueuesGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.util.ModelHelper;
 import com.azure.storage.queue.implementation.util.QueueSasImplUtil;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueMessageDecodingError;
@@ -44,7 +43,6 @@ import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
-import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -503,8 +501,13 @@ public final class QueueAsyncClient {
 
     Mono<Response<QueueProperties>> getPropertiesWithResponse(Context context) {
         context = context == null ? Context.NONE : context;
-        return client.getQueues().getPropertiesWithResponseAsync(queueName, null, null, context)
-            .map(this::getQueuePropertiesResponse);
+        return client.getQueues().getPropertiesWithResponseAsync(queueName, null, null, context).map(
+            response -> {
+                QueueProperties properties = new QueueProperties(
+                    response.getDeserializedHeaders().getXMsMeta(),
+                    response.getDeserializedHeaders().getXMsApproximateMessagesCount());
+                return new SimpleResponse<>(response, properties);
+            });
     }
 
     /**
@@ -976,7 +979,7 @@ public final class QueueAsyncClient {
         Integer visibilityTimeoutInSeconds = (visibilityTimeout == null) ? null : (int) visibilityTimeout.getSeconds();
         Integer timeToLiveInSeconds = (timeToLive == null) ? null : (int) timeToLive.getSeconds();
         Context finalContext  = context == null ? Context.NONE : context;
-        return encodeMessage(message)
+        return Mono.just(ModelHelper.encodeMessage(message, messageEncoding))
             .flatMap(messageText -> {
                 QueueMessage queueMessage = new QueueMessage().setMessageText(messageText);
                 return client.getMessages()
@@ -985,19 +988,6 @@ public final class QueueAsyncClient {
                     .map(response -> new SimpleResponse<>(response, response.getValue().get(0)));
             });
 
-    }
-
-    private Mono<String> encodeMessage(BinaryData message) {
-        Objects.requireNonNull(message, "'message' cannot be null.");
-        switch (messageEncoding) {
-            case NONE:
-                return Mono.just(message.toString());
-            case BASE64:
-                return Mono.just(Base64.getEncoder().encodeToString(message.toBytes()));
-            default:
-                return FluxUtil.monoError(
-                    LOGGER, new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
-        }
     }
 
     /**
@@ -1133,27 +1123,27 @@ public final class QueueAsyncClient {
         if (queueMessageInternalItems == null) {
             queueMessageInternalItems = Collections.emptyList();
         }
+
+        // creating queue client to pass in when the catch block is executed
+        QueueClient queueClient = new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding,
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
         return Flux.fromIterable(queueMessageInternalItems)
             .flatMapSequential(queueMessageItemInternal ->
-                transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding)
+                Mono.just(ModelHelper.transformQueueMessageItemInternal(queueMessageItemInternal, messageEncoding))
                 .onErrorResume(IllegalArgumentException.class, e -> {
                     if (processMessageDecodingErrorAsyncHandler != null) {
-                        return transformQueueMessageItemInternal(
-                            queueMessageItemInternal, QueueMessageEncoding.NONE)
+                        return Mono.just(ModelHelper.transformQueueMessageItemInternal(
+                            queueMessageItemInternal, QueueMessageEncoding.NONE))
                             .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
-                                new QueueMessageDecodingError(
-                                    this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler),
-                                    messageItem, null, e)))
+                                new QueueMessageDecodingError(this, queueClient, messageItem, null, e)))
                             .then(Mono.empty());
                     } else if (processMessageDecodingErrorHandler != null) {
-                        return transformQueueMessageItemInternal(
-                            queueMessageItemInternal, QueueMessageEncoding.NONE)
+                        return Mono.just(ModelHelper.transformQueueMessageItemInternal(
+                            queueMessageItemInternal, QueueMessageEncoding.NONE))
                             .flatMap(messageItem -> {
                                 try {
                                     processMessageDecodingErrorHandler.accept(
-                                        new QueueMessageDecodingError(
-                                            this, new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, null, processMessageDecodingErrorHandler),
-                                            messageItem, null, e));
+                                        new QueueMessageDecodingError(this, queueClient, messageItem, null, e));
                                     return Mono.<QueueMessageItem>empty();
                                 } catch (RuntimeException re) {
                                     return FluxUtil.<QueueMessageItem>monoError(LOGGER, re);
@@ -1171,40 +1161,6 @@ public final class QueueAsyncClient {
                 queueMessageItems,
                 null,
                 response.getDeserializedHeaders()));
-    }
-
-    private static Mono<QueueMessageItem> transformQueueMessageItemInternal(
-        QueueMessageItemInternal queueMessageItemInternal, QueueMessageEncoding messageEncoding) {
-        QueueMessageItem queueMessageItem = new QueueMessageItem()
-            .setMessageId(queueMessageItemInternal.getMessageId())
-            .setDequeueCount(queueMessageItemInternal.getDequeueCount())
-            .setExpirationTime(queueMessageItemInternal.getExpirationTime())
-            .setInsertionTime(queueMessageItemInternal.getInsertionTime())
-            .setPopReceipt(queueMessageItemInternal.getPopReceipt())
-            .setTimeNextVisible(queueMessageItemInternal.getTimeNextVisible());
-        return decodeMessageBody(queueMessageItemInternal.getMessageText(), messageEncoding)
-            .map(queueMessageItem::setBody)
-            .switchIfEmpty(Mono.just(queueMessageItem));
-    }
-
-    private static Mono<BinaryData> decodeMessageBody(String messageText, QueueMessageEncoding messageEncoding) {
-        if (messageText == null) {
-            return Mono.empty();
-        }
-
-        switch (messageEncoding) {
-            case NONE:
-                return Mono.just(BinaryData.fromString(messageText));
-            case BASE64:
-                try {
-                    return Mono.just(BinaryData.fromBytes(Base64.getDecoder().decode(messageText)));
-                } catch (IllegalArgumentException e) {
-                    return FluxUtil.monoError(LOGGER, e);
-                }
-            default:
-                return FluxUtil.monoError(
-                    LOGGER, new IllegalArgumentException("Unsupported message encoding=" + messageEncoding));
-        }
     }
 
     /**
@@ -1294,27 +1250,28 @@ public final class QueueAsyncClient {
         if (peekedMessageInternalItems == null) {
             peekedMessageInternalItems = Collections.emptyList();
         }
+
+        // creating queue client to pass in when the catch block is executed
+        QueueClient queueClient = new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding,
+            processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+
         return Flux.fromIterable(peekedMessageInternalItems)
             .flatMapSequential(peekedMessageItemInternal ->
-                transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding)
+                Mono.just(ModelHelper.transformPeekedMessageItemInternal(peekedMessageItemInternal, messageEncoding))
                     .onErrorResume(IllegalArgumentException.class, e -> {
                         if (processMessageDecodingErrorAsyncHandler != null) {
-                            return transformPeekedMessageItemInternal(
-                                peekedMessageItemInternal, QueueMessageEncoding.NONE)
+                            return Mono.just(ModelHelper.transformPeekedMessageItemInternal(
+                                peekedMessageItemInternal, QueueMessageEncoding.NONE))
                                 .flatMap(messageItem -> processMessageDecodingErrorAsyncHandler.apply(
-                                    new QueueMessageDecodingError(
-                                        this,  new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler),
-                                        null, messageItem, e)))
+                                    new QueueMessageDecodingError(this, queueClient, null, messageItem, e)))
                                 .then(Mono.empty());
                         } else if (processMessageDecodingErrorHandler != null) {
-                            return transformPeekedMessageItemInternal(
-                                peekedMessageItemInternal, QueueMessageEncoding.NONE)
+                            return Mono.just(ModelHelper.transformPeekedMessageItemInternal(
+                                peekedMessageItemInternal, QueueMessageEncoding.NONE))
                                 .flatMap(messageItem -> {
                                     try {
                                         processMessageDecodingErrorHandler.accept(
-                                            new QueueMessageDecodingError(
-                                                this,  new QueueClient(client, queueName, accountName, serviceVersion, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler),
-                                                null, messageItem, e));
+                                            new QueueMessageDecodingError(this,  queueClient, null, messageItem, e));
                                         return Mono.<PeekedMessageItem>empty();
                                     } catch (RuntimeException re) {
                                         return FluxUtil.<PeekedMessageItem>monoError(LOGGER, re);
@@ -1332,18 +1289,6 @@ public final class QueueAsyncClient {
                 peekedMessageItems,
                 null,
                 response.getDeserializedHeaders()));
-    }
-
-    private static Mono<PeekedMessageItem> transformPeekedMessageItemInternal(
-        PeekedMessageItemInternal peekedMessageItemInternal, QueueMessageEncoding messageEncoding) {
-        PeekedMessageItem peekedMessageItem = new PeekedMessageItem()
-            .setMessageId(peekedMessageItemInternal.getMessageId())
-            .setDequeueCount(peekedMessageItemInternal.getDequeueCount())
-            .setExpirationTime(peekedMessageItemInternal.getExpirationTime())
-            .setInsertionTime(peekedMessageItemInternal.getInsertionTime());
-        return decodeMessageBody(peekedMessageItemInternal.getMessageText(), messageEncoding)
-            .map(peekedMessageItem::setBody)
-            .switchIfEmpty(Mono.just(peekedMessageItem));
     }
 
     /**
@@ -1450,7 +1395,13 @@ public final class QueueAsyncClient {
         visibilityTimeout = visibilityTimeout == null ? Duration.ZERO : visibilityTimeout;
         return client.getMessageIds().updateWithResponseAsync(queueName, messageId, popReceipt,
                 (int) visibilityTimeout.getSeconds(), null, null, message, context)
-            .map(this::getUpdatedMessageResponse);
+            .map(response -> {
+                UpdateMessageResult result = new UpdateMessageResult(
+                    response.getDeserializedHeaders().getXMsPopreceipt(),
+                    response.getDeserializedHeaders().getXMsTimeNextVisible());
+
+                return new SimpleResponse<>(response, result);
+            });
     }
 
     /**
@@ -1623,32 +1574,6 @@ public final class QueueAsyncClient {
     public String generateSas(QueueServiceSasSignatureValues queueServiceSasSignatureValues, Context context) {
         return new QueueSasImplUtil(queueServiceSasSignatureValues, getQueueName())
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
-    }
-
-    /*
-     * Maps the HTTP headers returned from the service to the expected response type
-     * @param response Service response
-     * @return Mapped response
-     */
-    private Response<QueueProperties> getQueuePropertiesResponse(
-        ResponseBase<QueuesGetPropertiesHeaders, Void> response) {
-        QueuesGetPropertiesHeaders propertiesHeaders = response.getDeserializedHeaders();
-        QueueProperties properties = new QueueProperties(propertiesHeaders.getXMsMeta(),
-            propertiesHeaders.getXMsApproximateMessagesCount());
-        return new SimpleResponse<>(response, properties);
-    }
-
-    /*
-     * Maps the HTTP headers returned from the service to the expected response type
-     * @param response Service response
-     * @return Mapped response
-     */
-    private Response<UpdateMessageResult> getUpdatedMessageResponse(
-        ResponseBase<MessageIdsUpdateHeaders, Void> response) {
-        MessageIdsUpdateHeaders headers = response.getDeserializedHeaders();
-        UpdateMessageResult updateMessageResult = new UpdateMessageResult(headers.getXMsPopreceipt(),
-            headers.getXMsTimeNextVisible());
-        return new SimpleResponse<>(response, updateMessageResult);
     }
 
     AzureQueueStorageImpl getAzureQueueStorage() {

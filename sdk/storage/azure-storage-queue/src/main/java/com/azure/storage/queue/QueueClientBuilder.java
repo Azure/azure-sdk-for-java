@@ -193,8 +193,16 @@ public final class QueueClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public QueueClient buildClient() {
-        QueueAsyncClient asyncClient = buildAsyncClient();
-        return new QueueClient(asyncClient.getAzureQueueStorage(), queueName, accountName, version, messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
+        StorageImplUtils.assertNotNull("queueName", queueName);
+        if (processMessageDecodingErrorAsyncHandler != null && processMessageDecodingErrorHandler != null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Either processMessageDecodingError or processMessageDecodingAsyncError should be specified"
+                    + "but not both.")
+            );
+        }
+        QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
+        return new QueueClient(createAzureQueueStorageImpl(serviceVersion), queueName, accountName, serviceVersion,
+            messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
     /**
@@ -223,21 +231,8 @@ public final class QueueClientBuilder implements
                     + "but not both.")
             );
         }
-
         QueueServiceVersion serviceVersion = version != null ? version : QueueServiceVersion.getLatest();
-
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
-
-        AzureQueueStorageImpl azureQueueStorage = new AzureQueueStorageImplBuilder()
-            .url(endpoint)
-            .pipeline(pipeline)
-            .version(serviceVersion.getVersion())
-            .buildClient();
-
-        return new QueueAsyncClient(azureQueueStorage, queueName, accountName, serviceVersion,
+        return new QueueAsyncClient(createAzureQueueStorageImpl(serviceVersion), queueName, accountName, serviceVersion,
             messageEncoding, processMessageDecodingErrorAsyncHandler, processMessageDecodingErrorHandler);
     }
 
@@ -704,5 +699,18 @@ public final class QueueClientBuilder implements
     public QueueClientBuilder serviceVersion(QueueServiceVersion version) {
         this.version = version;
         return this;
+    }
+
+    private AzureQueueStorageImpl createAzureQueueStorageImpl(QueueServiceVersion version) {
+        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
+            storageSharedKeyCredential, tokenCredential, azureSasCredential, sasToken,
+            endpoint, retryOptions, coreRetryOptions, logOptions,
+            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
+
+        return new AzureQueueStorageImplBuilder()
+            .url(endpoint)
+            .pipeline(pipeline)
+            .version(version.getVersion())
+            .buildClient();
     }
 }
