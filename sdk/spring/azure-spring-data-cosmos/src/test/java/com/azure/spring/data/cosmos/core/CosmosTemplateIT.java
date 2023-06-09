@@ -42,6 +42,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.assertj.core.util.Lists;
 import org.junit.Before;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -967,6 +968,7 @@ public class CosmosTemplateIT {
         assertNotNull(throughput);
         assertEquals(Integer.parseInt(TestConstants.AUTOSCALE_MAX_THROUGHPUT),
             throughput.getProperties().getAutoscaleMaxThroughput());
+        collectionManager.deleteContainer(autoScaleSampleInfo);
     }
 
     @Test
@@ -987,6 +989,7 @@ public class CosmosTemplateIT {
         final CosmosAsyncDatabase database = client.getDatabase(configuredThroughputDbName);
         final ThroughputResponse response = database.readThroughput().block();
         assertEquals(expectedRequestUnits, response.getProperties().getManualThroughput());
+        deleteDatabaseIfExists(configuredThroughputDbName);
     }
 
     @Test

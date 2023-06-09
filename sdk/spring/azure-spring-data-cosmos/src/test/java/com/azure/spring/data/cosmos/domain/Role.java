@@ -25,7 +25,7 @@ import java.util.Objects;
         TestConstants.EXCLUDED_PATH_2,
     })
 @Container(containerName = TestConstants.ROLE_COLLECTION_NAME,
-    autoCreateContainer = false)
+    autoCreateContainer = false, ru = TestConstants.DEFAULT_MINIMUM_RU)
 public class Role {
     @Id
     String id;
