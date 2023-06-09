@@ -5,6 +5,7 @@ package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.NetworkManager;
+import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.WebApplicationFirewallPolicyInner;
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ManagedRuleSet;
@@ -19,8 +20,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the {@link WebApplicationFirewallPolicy} interface.
@@ -79,17 +82,25 @@ public class WebApplicationFirewallPolicyImpl extends GroupableResourceImpl<
     }
 
     @Override
+    public List<String> getAssociatedApplicationGatewayIds() {
+        if (CoreUtils.isNullOrEmpty(this.innerModel().applicationGateways())) {
+            return Collections.emptyList();
+        }
+        return this.innerModel().applicationGateways()
+            .stream()
+            .map(ApplicationGatewayInner::id)
+            .collect(Collectors.toList());
+    }
+
+    @Override
     public List<ApplicationGateway> getAssociatedApplicationGateways() {
         return getAssociatedApplicationGatewaysAsync().collectList().block();
     }
 
     @Override
     public Flux<ApplicationGateway> getAssociatedApplicationGatewaysAsync() {
-        if (CoreUtils.isNullOrEmpty(this.innerModel().applicationGateways())) {
-            return Flux.empty();
-        }
-        return Flux.fromIterable(this.innerModel().applicationGateways())
-            .flatMap(applicationGatewayInner -> manager().applicationGateways().getByIdAsync(applicationGatewayInner.id()));
+        return Flux.fromIterable(getAssociatedApplicationGatewayIds())
+            .flatMap(applicationGatewayId -> manager().applicationGateways().getByIdAsync(applicationGatewayId));
     }
 
     @Override

@@ -49,15 +49,22 @@ public interface WebApplicationFirewallPolicy
     /** @return whether this policy is enabled */
     boolean isEnabled();
 
+    /** @return a list of application gateway resource ids associated with this Web Application Firewall Policy */
+    List<String> getAssociatedApplicationGatewayIds();
+
     /**
-     * Get a list of application gateways associated with this Web Application Firewall Policy.
-     *
+     * Get a list of application gateways associated with this Web Application Firewall Policy by calling REST API.
      *
      * @return a list of application gateways associated with this Web Application Firewall Policy
      */
     List<ApplicationGateway> getAssociatedApplicationGateways();
 
-    /** @return {@link Flux} of application gateways associated with this Web Application Firewall Policy */
+    /**
+     * Get a list of application gateways associated with this Web Application Firewall Policy by calling REST API
+     * in async manner.
+     *
+     * @return {@link Flux} of application gateways associated with this Web Application Firewall Policy
+     */
     Flux<ApplicationGateway> getAssociatedApplicationGatewaysAsync();
 
     /**

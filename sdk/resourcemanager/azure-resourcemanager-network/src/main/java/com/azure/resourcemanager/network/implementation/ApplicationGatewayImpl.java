@@ -3,7 +3,6 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.ApplicationGatewaysClient;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayAuthenticationCertificateInner;
@@ -1477,14 +1476,21 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public String getWebApplicationFirewallPolicyId() {
+        if (this.innerModel().firewallPolicy() == null) {
+            return null;
+        }
+        return this.innerModel().firewallPolicy().id();
+    }
+
+    @Override
     public WebApplicationFirewallPolicy getWebApplicationFirewallPolicy() {
         return getWebApplicationFirewallPolicyAsync().block();
     }
 
     @Override
     public Mono<WebApplicationFirewallPolicy> getWebApplicationFirewallPolicyAsync() {
-        if (this.innerModel().firewallPolicy() == null
-            || CoreUtils.isNullOrEmpty(this.innerModel().firewallPolicy().id())) {
+        if (getWebApplicationFirewallPolicyId() == null) {
             return Mono.empty();
         }
         return this

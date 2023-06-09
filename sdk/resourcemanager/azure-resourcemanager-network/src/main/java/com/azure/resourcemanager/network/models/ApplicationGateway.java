@@ -184,10 +184,22 @@ public interface ApplicationGateway
      */
     ApplicationGatewayListener listenerByPortNumber(int portNumber);
 
-    /** @return Web Application Firewall Policy (if any) associated with the application gateway */
+    /** @return resource id of the Web Application Firewall Policy (if any) associated with the application gateway */
+    String getWebApplicationFirewallPolicyId();
+
+    /**
+     * Get the Web Application Firewall Policy (if any) associated with the application gateway by calling REST API.
+     *
+     * @return Web Application Firewall Policy (if any) associated with the application gateway
+     */
     WebApplicationFirewallPolicy getWebApplicationFirewallPolicy();
 
-    /** @return {@link Mono} of Web Application Firewall Policy (if any) associated with the application gateway */
+    /**
+     * Get the Web Application Firewall Policy (if any) associated with the application gateway by calling REST API
+     * in async manner.
+     *
+     * @return {@link Mono} of Web Application Firewall Policy (if any) associated with the application gateway
+     */
     Mono<WebApplicationFirewallPolicy> getWebApplicationFirewallPolicyAsync();
 
     /** Grouping of application gateway definition stages. */
