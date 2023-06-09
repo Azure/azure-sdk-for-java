@@ -45,7 +45,7 @@ import java.util.Random;
 public class IotHubManagerTests extends TestBase {
 
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_EAST;
+    private static final Region REGION = Region.US_WEST2;
     private String resourceGroupName = "rg" + randomPadding();
     private IotHubManager iotHubManager;
     private ResourceManager resourceManager;
@@ -129,7 +129,7 @@ public class IotHubManagerTests extends TestBase {
                                 .withContainerName(StringUtil.EMPTY_STRING)))
                         .withMessagingEndpoints(mapOf("fileNotifications",
                             new MessagingEndpointProperties()
-                                .withLockDurationAsIso8601(Duration.ofMillis(1L))
+                                .withLockDurationAsIso8601(Duration.ofMinutes(1L))
                                 .withTtlAsIso8601(Duration.ofHours(1L))
                                 .withMaxDeliveryCount(10)))
                         .withEnableFileUploadNotifications(false)
@@ -137,7 +137,7 @@ public class IotHubManagerTests extends TestBase {
                             .withMaxDeliveryCount(10)
                             .withDefaultTtlAsIso8601(Duration.ofHours(1L))
                             .withFeedback(new FeedbackProperties()
-                                .withLockDurationAsIso8601(Duration.ofHours(1L))
+                                .withLockDurationAsIso8601(Duration.ofMinutes(1L))
                                 .withTtlAsIso8601(Duration.ofHours(1L))
                                 .withMaxDeliveryCount(10)))
                         .withFeatures(Capabilities.NONE)
