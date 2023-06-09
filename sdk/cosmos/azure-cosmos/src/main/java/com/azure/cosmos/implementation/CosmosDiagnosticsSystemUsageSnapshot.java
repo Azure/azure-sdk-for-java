@@ -1,6 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos;
+package com.azure.cosmos.implementation;
+
+import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -14,7 +19,9 @@ public final class CosmosDiagnosticsSystemUsageSnapshot {
     private final String systemCpuLoad;
     private final int availableProcessors;
 
-    CosmosDiagnosticsSystemUsageSnapshot(
+    private final ImmutableMap<String, Object> map;
+
+    public CosmosDiagnosticsSystemUsageSnapshot(
         String systemCpuLoad,
         String usedMemory,
         String availableMemory,
@@ -28,6 +35,12 @@ public final class CosmosDiagnosticsSystemUsageSnapshot {
         this.usedMemory = usedMemory;
         this.availableMemory = availableMemory;
         this.availableProcessors = availableProcessors;
+        ImmutableMap.Builder<String, Object> builder = ImmutableMap.builder();
+        builder.put("CPU", systemCpuLoad);
+        builder.put("Memory used", usedMemory);
+        builder.put("Memory available", availableMemory);
+        builder.put("Processor count", availableProcessors);
+        this.map = builder.build();
     }
 
     /**
@@ -61,4 +74,6 @@ public final class CosmosDiagnosticsSystemUsageSnapshot {
     public int getAvailableProcessors() {
         return availableProcessors;
     }
+
+    public Map<String, Object> toMap() { return this.map; }
 }
