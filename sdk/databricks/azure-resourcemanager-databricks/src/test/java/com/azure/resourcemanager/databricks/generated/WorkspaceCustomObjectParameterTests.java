@@ -12,13 +12,13 @@ public final class WorkspaceCustomObjectParameterTests {
     public void testDeserialize() throws Exception {
         WorkspaceCustomObjectParameter model =
             BinaryData
-                .fromString("{\"type\":\"String\",\"value\":\"datamvtzfkufub\"}")
+                .fromString("{\"type\":\"String\",\"value\":\"datawjfeusnhutjel\"}")
                 .toObject(WorkspaceCustomObjectParameter.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WorkspaceCustomObjectParameter model = new WorkspaceCustomObjectParameter().withValue("datamvtzfkufub");
+        WorkspaceCustomObjectParameter model = new WorkspaceCustomObjectParameter().withValue("datawjfeusnhutjel");
         model = BinaryData.fromObject(model).toObject(WorkspaceCustomObjectParameter.class);
     }
 }

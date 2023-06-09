@@ -24,6 +24,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.databricks.fluent.AzureDatabricksManagementClient;
+import com.azure.resourcemanager.databricks.implementation.AccessConnectorsImpl;
 import com.azure.resourcemanager.databricks.implementation.AzureDatabricksManagementClientBuilder;
 import com.azure.resourcemanager.databricks.implementation.OperationsImpl;
 import com.azure.resourcemanager.databricks.implementation.OutboundNetworkDependenciesEndpointsImpl;
@@ -31,6 +32,7 @@ import com.azure.resourcemanager.databricks.implementation.PrivateEndpointConnec
 import com.azure.resourcemanager.databricks.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.databricks.implementation.VNetPeeringsImpl;
 import com.azure.resourcemanager.databricks.implementation.WorkspacesImpl;
+import com.azure.resourcemanager.databricks.models.AccessConnectors;
 import com.azure.resourcemanager.databricks.models.Operations;
 import com.azure.resourcemanager.databricks.models.OutboundNetworkDependenciesEndpoints;
 import com.azure.resourcemanager.databricks.models.PrivateEndpointConnections;
@@ -60,6 +62,8 @@ public final class AzureDatabricksManager {
     private OutboundNetworkDependenciesEndpoints outboundNetworkDependenciesEndpoints;
 
     private VNetPeerings vNetPeerings;
+
+    private AccessConnectors accessConnectors;
 
     private final AzureDatabricksManagementClient clientObject;
 
@@ -226,7 +230,7 @@ public final class AzureDatabricksManager {
                 .append("-")
                 .append("com.azure.resourcemanager.databricks")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.4");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -356,6 +360,18 @@ public final class AzureDatabricksManager {
             this.vNetPeerings = new VNetPeeringsImpl(clientObject.getVNetPeerings(), this);
         }
         return vNetPeerings;
+    }
+
+    /**
+     * Gets the resource collection API of AccessConnectors. It manages AccessConnector.
+     *
+     * @return Resource collection API of AccessConnectors.
+     */
+    public AccessConnectors accessConnectors() {
+        if (this.accessConnectors == null) {
+            this.accessConnectors = new AccessConnectorsImpl(clientObject.getAccessConnectors(), this);
+        }
+        return accessConnectors;
     }
 
     /**
