@@ -75,11 +75,6 @@ public class RntbdConnectionErrorInjector {
                     // There is no specific physical addresses being defined in the rule,
                     // Inject connect error to rntbd endpoint with matching region endpoint
                     if (rule.getRegionEndpoints() != null && rule.getRegionEndpoints().size() > 0) {
-                        System.out.println("region endpoint in the rule" + rule.getRegionEndpoints());
-                        this.endpointProvider.list()
-                            .forEach(rntbdEndpoint -> {
-                                System.out.println("Endpoint in the list " + rntbdEndpoint.serviceEndpoint());
-                            });
                         return Flux.fromIterable(rule.getRegionEndpoints())
                             .flatMap(regionEndpoint -> {
                                 return Flux.fromIterable(

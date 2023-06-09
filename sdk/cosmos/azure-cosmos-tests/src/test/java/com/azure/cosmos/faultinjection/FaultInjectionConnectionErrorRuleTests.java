@@ -67,7 +67,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         super(clientBuilder);
     }
 
-    @BeforeClass(groups = {"multi-region"}, timeOut = TIMEOUT)
+    @BeforeClass(groups = {"multi-region", "simple"}, timeOut = TIMEOUT)
     public void beforeClass() {
         try {
             client = getClientBuilder().buildAsyncClient();
@@ -280,7 +280,7 @@ public class FaultInjectionConnectionErrorRuleTests extends TestSuiteBase {
         }
     }
 
-    @Test(groups = {"simple"}, timeOut = TIMEOUT)
+    @Test(groups = {"multi-region"}, timeOut = TIMEOUT)
     public void connectionCloseError_NoEndpoint_NoWarmup() {
         client = new CosmosClientBuilder()
             .endpoint(TestConfigurations.HOST)
