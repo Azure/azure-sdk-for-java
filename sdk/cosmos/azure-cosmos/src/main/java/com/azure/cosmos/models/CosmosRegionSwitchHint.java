@@ -33,23 +33,6 @@ public final class CosmosRegionSwitchHint {
         this.hintRepresentation = hintRepresentation;
     }
 
-//    public static CosmosRegionSwitchHint fromString(String hintRepresentation) {
-//        checkNotNull(hintRepresentation, "Argument 'hintRepresentation' must not be null.");
-//
-//        String normalizedName = hintRepresentation.trim().toLowerCase(Locale.ROOT);
-//        switch (normalizedName) {
-//            case "localregionprefered": return CosmosRegionSwitchHint.LOCAL_REGION_PREFERED;
-//            case "remoteregionprefered": return CosmosRegionSwitchHint.REMOTE_REGION_PREFERED;
-//            default:
-//                String errorMessage = String.format(
-//                        "Argument 'hintRepresentation' has invalid value '%s' - valid values are: %s",
-//                        hintRepresentation,
-//                        getValidValues());
-//
-//                throw new IllegalArgumentException(errorMessage);
-//        }
-//    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,11 +45,4 @@ public final class CosmosRegionSwitchHint {
     public int hashCode() {
         return Objects.hash(hintRepresentation);
     }
-
-//    private static String getValidValues() {
-//        return new StringJoiner(", ")
-//                .add(CosmosRegionSwitchHint.LOCAL_REGION_PREFERED.hintRepresentation)
-//                .add(CosmosRegionSwitchHint.REMOTE_REGION_PREFERED.hintRepresentation)
-//                .toString();
-//    }
 }
