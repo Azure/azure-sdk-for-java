@@ -1,17 +1,23 @@
-# Azure Cognitive Service - Text Analytics for Java
+git # Azure Cognitive Service - Text Analytics for Java
 
 > see https://aka.ms/autorest
 
+This is the AutoRest configuration file for Text Analytics.
+
+---
+## Getting Started
+To build the SDK for Text Analytics, simply [Install AutoRest](https://aka.ms/autorest) and
+in this folder, run:
+
+> `autorest`
+
+To see additional help and options, run:
+
+> `autorest --help`
+
+
 ### Setup
 ```ps
-Fork and clone https://github.com/Azure/autorest.java 
-Add a system envirement variable, `AUTOREST_HOME=C:\work\autorestHome`, which contains all autorest related pacakges.
-such as `@autorest_core`, `@autorest_java`, `@autorest_modelerfour`. 
-
-git checkout main
-git submodule update --init --recursive
-mvn package -Dlocal
-npm install
 npm install -g autorest
 ```
 
@@ -21,29 +27,34 @@ cd <swagger-folder>
 autorest
 ```
 
-Alternately, for using the specific autorest java version, use `--use:@autorest/java@{specific-version}`. The version 
-will be downloaded and compiled locally in `AUTOREST_HOME`.
-
-```ps
-cd <swagger-folder>
-autorest --java --use:@autorest/java@4.1.17 README.md
-```
-
-### Code generation settings
-``` yaml
-use: '@autorest/java@4.1.17'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/53240ebc58b3c4e99de723194032064db1d97e63/specification/cognitiveservices/data-plane/Language/stable/2023-04-01/analyzetext.json
-java: true
-output-folder: ..\
-generate-client-as-impl: true
+## Configuration
+```yaml
 namespace: com.azure.ai.textanalytics
-generate-client-interfaces: false
-enable-sync-stack: true
-license-header: MICROSOFT_MIT_SMALL
-add-context-parameter: true
+input-file: 
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/53240ebc58b3c4e99de723194032064db1d97e63/specification/cognitiveservices/data-plane/Language/stable/2023-04-01/analyzetext.json
 models-subpackage: implementation.models
 custom-types-subpackage: models
-context-client-method-parameter: true
+```
+
+### Code Generation
+``` yaml
+output-folder: ..\
+java: true
+use: '@autorest/java@4.1.17'
+enable-sync-stack: true
+generate-client-interfaces: false
+generate-client-as-impl: true
 service-interface-as-public: true
+license-header: MICROSOFT_MIT_SMALL
+add-context-parameter: true
+context-client-method-parameter: true
 generic-response-type: true
+```
+
+### Renames
+```yaml
+directive:
+  - rename-model:
+      from: RelationType
+      to: HealthcareEntityRelationType
 ```
