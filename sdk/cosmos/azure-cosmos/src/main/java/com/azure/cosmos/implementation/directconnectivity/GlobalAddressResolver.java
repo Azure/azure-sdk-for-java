@@ -23,6 +23,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.ProactiveOpenCon
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.CosmosContainerIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -163,16 +164,16 @@ public class GlobalAddressResolver implements IAddressResolver {
                                                         AddressInformation addressInformation =
                                                             collectionToAddresses.right;
 
-                                                        Map<String, Integer> containerLinkToMinConnectionsMap = ImplementationBridgeHelpers
+                                                        Map<CosmosContainerIdentity, ContainerDirectConnectionMetadata> containerPropertiesMap = ImplementationBridgeHelpers
                                                             .CosmosContainerProactiveInitConfigHelper
                                                             .getCosmosContainerProactiveInitConfigAccessor()
-                                                            .getContainerLinkToMinConnectionsMap(proactiveContainerInitConfig);
+                                                            .getContainerPropertiesMap(proactiveContainerInitConfig);
 
-                                                        int connectionsPerEndpointCountForContainer = containerLinkToMinConnectionsMap
-                                                            .getOrDefault(
-                                                                containerLinkToCollection.left,
-                                                                Configs.getMinConnectionPoolSizePerEndpoint()
-                                                            );
+                                                        ContainerDirectConnectionMetadata containerDirectConnectionMetadata = containerPropertiesMap
+                                                                .get(cosmosContainerIdentity);
+
+                                                        int connectionsPerEndpointCountForContainer = containerDirectConnectionMetadata
+                                                                .getMinConnectionPoolSizePerEndpointForContainer();
 
                                                         return this.submitOpenConnectionInternal(
                                                                 endpointCache,

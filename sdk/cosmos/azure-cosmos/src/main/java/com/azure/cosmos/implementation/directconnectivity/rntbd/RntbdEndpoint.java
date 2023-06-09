@@ -305,6 +305,11 @@ public interface RntbdEndpoint extends AutoCloseable {
             return this.options.timeoutDetectionOnWriteTimeLimit().toNanos();
         }
 
+        @JsonProperty
+        public int minConnectionPoolSizePerEndpoint() {
+            return this.options.minConnectionPoolSizePerEndpoint();
+        }
+
         @Override
         public String toString() {
             return RntbdObjectMapper.toString(this);
