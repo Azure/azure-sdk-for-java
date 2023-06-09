@@ -3,50 +3,70 @@
 
 package com.azure.cosmos.models;
 
-import java.util.Locale;
-import java.util.StringJoiner;
+import java.util.Objects;
 
-import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
-
+/**
+ * {@link CosmosRegionSwitchHint} encapsulates hints which guide SDK-internal
+ * retry policies on how to switch retries to a different.
+ */
 public final class CosmosRegionSwitchHint {
 
     private final String hintRepresentation;
 
-    public static final CosmosRegionSwitchHint NONE =
-            new CosmosRegionSwitchHint("none");
-    public static final CosmosRegionSwitchHint LOCAL_REGION_PREFERRED =
+    /**
+     * {@link  CosmosRegionSwitchHint#LOCAL_REGION_PREFERED} corresponds to a hint
+     * which will result in internal retry policies biasing the local region more
+     * than remote regions.
+     * */
+    public static final CosmosRegionSwitchHint LOCAL_REGION_PREFERED =
             new CosmosRegionSwitchHint("localRegionPrefered");
-    public static final CosmosRegionSwitchHint REMOTE_REGION_PREFERRED =
+
+    /**
+     * {@link CosmosRegionSwitchHint#REMOTE_REGION_PREFERED} corresponds to a hint
+     * which will result in internal retry policies biasing remote regions more
+     * than a local region.
+     * */
+    public static final CosmosRegionSwitchHint REMOTE_REGION_PREFERED =
             new CosmosRegionSwitchHint("remoteRegionPrefered");
 
     private CosmosRegionSwitchHint(String hintRepresentation) {
         this.hintRepresentation = hintRepresentation;
     }
 
-    public static CosmosRegionSwitchHint fromString(String hintRepresentation) {
-        checkNotNull(hintRepresentation, "Argument 'hintRepresentation' must not be null.");
+//    public static CosmosRegionSwitchHint fromString(String hintRepresentation) {
+//        checkNotNull(hintRepresentation, "Argument 'hintRepresentation' must not be null.");
+//
+//        String normalizedName = hintRepresentation.trim().toLowerCase(Locale.ROOT);
+//        switch (normalizedName) {
+//            case "localregionprefered": return CosmosRegionSwitchHint.LOCAL_REGION_PREFERED;
+//            case "remoteregionprefered": return CosmosRegionSwitchHint.REMOTE_REGION_PREFERED;
+//            default:
+//                String errorMessage = String.format(
+//                        "Argument 'hintRepresentation' has invalid value '%s' - valid values are: %s",
+//                        hintRepresentation,
+//                        getValidValues());
+//
+//                throw new IllegalArgumentException(errorMessage);
+//        }
+//    }
 
-        String normalizedName = hintRepresentation.trim().toLowerCase(Locale.ROOT);
-        switch (normalizedName) {
-            case "none": return CosmosRegionSwitchHint.NONE;
-            case "localregionprefered": return CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED;
-            case "remoteregionprefered": return CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED;
-
-            default:
-                String errorMessage = String.format(
-                        "Argument 'hintRepresentation' has invalid value '%s' - valid values are: %s",
-                        hintRepresentation,
-                        getValidValues());
-
-                throw new IllegalArgumentException(errorMessage);
-        }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CosmosRegionSwitchHint that = (CosmosRegionSwitchHint) o;
+        return Objects.equals(hintRepresentation, that.hintRepresentation);
     }
 
-    private static String getValidValues() {
-        return new StringJoiner(", ")
-                .add(CosmosRegionSwitchHint.NONE.hintRepresentation)
-                .add(CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED.hintRepresentation)
-                .add(CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED.hintRepresentation)
-                .toString();
+    @Override
+    public int hashCode() {
+        return Objects.hash(hintRepresentation);
     }
+
+//    private static String getValidValues() {
+//        return new StringJoiner(", ")
+//                .add(CosmosRegionSwitchHint.LOCAL_REGION_PREFERED.hintRepresentation)
+//                .add(CosmosRegionSwitchHint.REMOTE_REGION_PREFERED.hintRepresentation)
+//                .toString();
+//    }
 }

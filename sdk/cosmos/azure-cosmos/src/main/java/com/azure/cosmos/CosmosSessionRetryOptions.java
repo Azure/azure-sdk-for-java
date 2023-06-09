@@ -6,7 +6,9 @@ package com.azure.cosmos;
 import com.azure.cosmos.models.CosmosRegionSwitchHint;
 
 /**
- *
+ * {@link CosmosSessionRetryOptions} encapsulates hints which influence
+ * internal retry policies which are applied when the effective consistency
+ * used for the request is Session Consistency.
  * */
 public final class CosmosSessionRetryOptions {
 

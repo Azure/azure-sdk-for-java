@@ -801,15 +801,45 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Sets the {@link CosmosSessionRetryOptions} on the client.
+     * Sets the {@link CosmosSessionRetryOptions} instance on the client.
      * <p>
      * This setting helps in optimizing retry behavior associated with
-     * <i>NOT_FOUND / READ_SESSION_NOT_AVAILABLE</i> scenarios which happen when the effective
-     * consistency used is Session Consistency and a request that goes to a region
-     * does not have recent enough data which the request is looking for.
+     * <i>NOT_FOUND / READ_SESSION_NOT_AVAILABLE</i> (404 / 1002) scenarios which happen
+     * when the targeted consistency used by the request is Session Consistency and a
+     * request that goes to a region that does not have recent enough data which the
+     * request is looking for.
      * <p>
      * DISCLAIMER: Setting {@link CosmosSessionRetryOptions} will modify retry behavior
-     * of all operations or workload which is executed through the instance of the client.
+     * for all operations or workload executed through this instance of the client.
+     * <p>
+     * For multi-write accounts:
+     * <ol>
+     *     <li>
+     *         For a read request going to a local read region, it is possible to optimize
+     *         availability by having the request be retried on a remote write region.
+     *     </li>
+     *     <li>
+     *         For a write request going to a local write region, it may or may not help to
+     *         switch to a different write region right away.
+     *     </li>
+     * </ol>
+     * For single-write accounts:
+     * <ol>
+     *     <li>
+     *         If a read request goes to a read region, it is recommended to switch
+     *         to a remote region. The SDK will automatically retry on the write region
+     *         in this case.
+     *     </li>
+     *     <li>
+     *         For a write to a write region in a single-write account, READ_SESSION_NOT_AVAILABLE
+     *         does not apply since the write-region always has the most recent version of the data
+     *         and all writes go to the primary replica in this region. Therefore, this scenario is
+     *         devoid of replication lag between replicas or between regions.
+     *     </li>
+     * </ol>
+     *
+     * @param sessionRetryOptions The {@link CosmosSessionRetryOptions} instance.
+     * @return current CosmosClientBuilder
      * */
     public CosmosClientBuilder sessionRetryOptions(CosmosSessionRetryOptions sessionRetryOptions) {
         this.sessionRetryOptions = sessionRetryOptions;
