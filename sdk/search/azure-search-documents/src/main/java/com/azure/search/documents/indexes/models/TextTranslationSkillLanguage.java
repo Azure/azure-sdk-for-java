@@ -7,233 +7,199 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The language codes supported for input text by TextTranslationSkill. */
+/** Defines values for TextTranslationSkillLanguage. */
 public final class TextTranslationSkillLanguage extends ExpandableStringEnum<TextTranslationSkillLanguage> {
-    /** Afrikaans. */
+    /** Static value af for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage AF = fromString("af");
 
-    /** Arabic. */
+    /** Static value ar for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage AR = fromString("ar");
 
-    /** Bangla. */
+    /** Static value bn for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage BN = fromString("bn");
 
-    /** Bosnian (Latin). */
+    /** Static value bs for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage BS = fromString("bs");
 
-    /** Bulgarian. */
+    /** Static value bg for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage BG = fromString("bg");
 
-    /** Cantonese (Traditional). */
+    /** Static value yue for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage YUE = fromString("yue");
 
-    /** Catalan. */
+    /** Static value ca for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage CA = fromString("ca");
 
-    /** Chinese Simplified. */
+    /** Static value zh-Hans for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage ZH_HANS = fromString("zh-Hans");
 
-    /** Chinese Traditional. */
+    /** Static value zh-Hant for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage ZH_HANT = fromString("zh-Hant");
 
-    /** Croatian. */
+    /** Static value hr for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage HR = fromString("hr");
 
-    /** Czech. */
+    /** Static value cs for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage CS = fromString("cs");
 
-    /** Danish. */
+    /** Static value da for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage DA = fromString("da");
 
-    /** Dutch. */
+    /** Static value nl for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage NL = fromString("nl");
 
-    /** English. */
+    /** Static value en for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage EN = fromString("en");
 
-    /** Estonian. */
+    /** Static value et for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage ET = fromString("et");
 
-    /** Fijian. */
+    /** Static value fj for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage FJ = fromString("fj");
 
-    /** Filipino. */
+    /** Static value fil for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage FIL = fromString("fil");
 
-    /** Finnish. */
+    /** Static value fi for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage FI = fromString("fi");
 
-    /** French. */
+    /** Static value fr for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage FR = fromString("fr");
 
-    /** German. */
+    /** Static value de for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage DE = fromString("de");
 
-    /** Greek. */
+    /** Static value el for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage EL = fromString("el");
 
-    /** Haitian Creole. */
+    /** Static value ht for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage HT = fromString("ht");
 
-    /** Hebrew. */
+    /** Static value he for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage HE = fromString("he");
 
-    /** Hindi. */
+    /** Static value hi for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage HI = fromString("hi");
 
-    /** Hmong Daw. */
+    /** Static value mww for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage MWW = fromString("mww");
 
-    /** Hungarian. */
+    /** Static value hu for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage HU = fromString("hu");
 
-    /** Icelandic. */
+    /** Static value is for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage IS = fromString("is");
 
-    /** Indonesian. */
+    /** Static value id for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage ID = fromString("id");
 
-    /** Italian. */
+    /** Static value it for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage IT = fromString("it");
 
-    /** Japanese. */
+    /** Static value ja for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage JA = fromString("ja");
 
-    /** Kiswahili. */
+    /** Static value sw for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage SW = fromString("sw");
 
-    /** Klingon. */
+    /** Static value tlh for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage TLH = fromString("tlh");
 
-    /** Klingon (Latin script). */
-    public static final TextTranslationSkillLanguage TLH_LATN = fromString("tlh-Latn");
-
-    /** Klingon (Klingon script). */
-    public static final TextTranslationSkillLanguage TLH_PIQD = fromString("tlh-Piqd");
-
-    /** Korean. */
+    /** Static value ko for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage KO = fromString("ko");
 
-    /** Latvian. */
+    /** Static value lv for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage LV = fromString("lv");
 
-    /** Lithuanian. */
+    /** Static value lt for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage LT = fromString("lt");
 
-    /** Malagasy. */
+    /** Static value mg for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage MG = fromString("mg");
 
-    /** Malay. */
+    /** Static value ms for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage MS = fromString("ms");
 
-    /** Maltese. */
+    /** Static value mt for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage MT = fromString("mt");
 
-    /** Norwegian. */
+    /** Static value nb for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage NB = fromString("nb");
 
-    /** Persian. */
+    /** Static value fa for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage FA = fromString("fa");
 
-    /** Polish. */
+    /** Static value pl for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage PL = fromString("pl");
 
-    /** Portuguese. */
+    /** Static value pt for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage PT = fromString("pt");
 
-    /** Portuguese (Brazil). */
-    public static final TextTranslationSkillLanguage PT_BR = fromString("pt-br");
-
-    /** Portuguese (Portugal). */
-    public static final TextTranslationSkillLanguage PT_PT = fromString("pt-PT");
-
-    /** Queretaro Otomi. */
+    /** Static value otq for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage OTQ = fromString("otq");
 
-    /** Romanian. */
+    /** Static value ro for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage RO = fromString("ro");
 
-    /** Russian. */
+    /** Static value ru for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage RU = fromString("ru");
 
-    /** Samoan. */
+    /** Static value sm for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage SM = fromString("sm");
 
-    /** Serbian (Cyrillic). */
+    /** Static value sr-Cyrl for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage SR_CYRL = fromString("sr-Cyrl");
 
-    /** Serbian (Latin). */
+    /** Static value sr-Latn for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage SR_LATN = fromString("sr-Latn");
 
-    /** Slovak. */
+    /** Static value sk for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage SK = fromString("sk");
 
-    /** Slovenian. */
+    /** Static value sl for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage SL = fromString("sl");
 
-    /** Spanish. */
+    /** Static value es for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage ES = fromString("es");
 
-    /** Swedish. */
+    /** Static value sv for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage SV = fromString("sv");
 
-    /** Tahitian. */
+    /** Static value ty for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage TY = fromString("ty");
 
-    /** Tamil. */
+    /** Static value ta for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage TA = fromString("ta");
 
-    /** Telugu. */
+    /** Static value te for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage TE = fromString("te");
 
-    /** Thai. */
+    /** Static value th for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage TH = fromString("th");
 
-    /** Tongan. */
+    /** Static value to for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage TO = fromString("to");
 
-    /** Turkish. */
+    /** Static value tr for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage TR = fromString("tr");
 
-    /** Ukrainian. */
+    /** Static value uk for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage UK = fromString("uk");
 
-    /** Urdu. */
+    /** Static value ur for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage UR = fromString("ur");
 
-    /** Vietnamese. */
+    /** Static value vi for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage VI = fromString("vi");
 
-    /** Welsh. */
+    /** Static value cy for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage CY = fromString("cy");
 
-    /** Yucatec Maya. */
+    /** Static value yua for TextTranslationSkillLanguage. */
     public static final TextTranslationSkillLanguage YUA = fromString("yua");
-
-    /** Irish. */
-    public static final TextTranslationSkillLanguage GA = fromString("ga");
-
-    /** Kannada. */
-    public static final TextTranslationSkillLanguage KN = fromString("kn");
-
-    /** Maori. */
-    public static final TextTranslationSkillLanguage MI = fromString("mi");
-
-    /** Malayalam. */
-    public static final TextTranslationSkillLanguage ML = fromString("ml");
-
-    /** Punjabi. */
-    public static final TextTranslationSkillLanguage PA = fromString("pa");
-
-    /**
-     * Creates a new instance of TextTranslationSkillLanguage value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public TextTranslationSkillLanguage() {}
 
     /**
      * Creates or finds a TextTranslationSkillLanguage from its string representation.
@@ -241,6 +207,7 @@ public final class TextTranslationSkillLanguage extends ExpandableStringEnum<Tex
      * @param name a name to look for.
      * @return the corresponding TextTranslationSkillLanguage.
      */
+    @JsonCreator
     public static TextTranslationSkillLanguage fromString(String name) {
         return fromString(name, TextTranslationSkillLanguage.class);
     }

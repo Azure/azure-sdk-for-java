@@ -7,173 +7,25 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The language codes supported for input by ImageAnalysisSkill. */
+/** Defines values for ImageAnalysisSkillLanguage. */
 public final class ImageAnalysisSkillLanguage extends ExpandableStringEnum<ImageAnalysisSkillLanguage> {
-    /** Arabic. */
-    public static final ImageAnalysisSkillLanguage AR = fromString("ar");
-
-    /** Azerbaijani. */
-    public static final ImageAnalysisSkillLanguage AZ = fromString("az");
-
-    /** Bulgarian. */
-    public static final ImageAnalysisSkillLanguage BG = fromString("bg");
-
-    /** Bosnian Latin. */
-    public static final ImageAnalysisSkillLanguage BS = fromString("bs");
-
-    /** Catalan. */
-    public static final ImageAnalysisSkillLanguage CA = fromString("ca");
-
-    /** Czech. */
-    public static final ImageAnalysisSkillLanguage CS = fromString("cs");
-
-    /** Welsh. */
-    public static final ImageAnalysisSkillLanguage CY = fromString("cy");
-
-    /** Danish. */
-    public static final ImageAnalysisSkillLanguage DA = fromString("da");
-
-    /** German. */
-    public static final ImageAnalysisSkillLanguage DE = fromString("de");
-
-    /** Greek. */
-    public static final ImageAnalysisSkillLanguage EL = fromString("el");
-
-    /** English. */
+    /** Static value en for ImageAnalysisSkillLanguage. */
     public static final ImageAnalysisSkillLanguage EN = fromString("en");
 
-    /** Spanish. */
+    /** Static value es for ImageAnalysisSkillLanguage. */
     public static final ImageAnalysisSkillLanguage ES = fromString("es");
 
-    /** Estonian. */
-    public static final ImageAnalysisSkillLanguage ET = fromString("et");
-
-    /** Basque. */
-    public static final ImageAnalysisSkillLanguage EU = fromString("eu");
-
-    /** Finnish. */
-    public static final ImageAnalysisSkillLanguage FI = fromString("fi");
-
-    /** French. */
-    public static final ImageAnalysisSkillLanguage FR = fromString("fr");
-
-    /** Irish. */
-    public static final ImageAnalysisSkillLanguage GA = fromString("ga");
-
-    /** Galician. */
-    public static final ImageAnalysisSkillLanguage GL = fromString("gl");
-
-    /** Hebrew. */
-    public static final ImageAnalysisSkillLanguage HE = fromString("he");
-
-    /** Hindi. */
-    public static final ImageAnalysisSkillLanguage HI = fromString("hi");
-
-    /** Croatian. */
-    public static final ImageAnalysisSkillLanguage HR = fromString("hr");
-
-    /** Hungarian. */
-    public static final ImageAnalysisSkillLanguage HU = fromString("hu");
-
-    /** Indonesian. */
-    public static final ImageAnalysisSkillLanguage ID = fromString("id");
-
-    /** Italian. */
-    public static final ImageAnalysisSkillLanguage IT = fromString("it");
-
-    /** Japanese. */
+    /** Static value ja for ImageAnalysisSkillLanguage. */
     public static final ImageAnalysisSkillLanguage JA = fromString("ja");
 
-    /** Kazakh. */
-    public static final ImageAnalysisSkillLanguage KK = fromString("kk");
-
-    /** Korean. */
-    public static final ImageAnalysisSkillLanguage KO = fromString("ko");
-
-    /** Lithuanian. */
-    public static final ImageAnalysisSkillLanguage LT = fromString("lt");
-
-    /** Latvian. */
-    public static final ImageAnalysisSkillLanguage LV = fromString("lv");
-
-    /** Macedonian. */
-    public static final ImageAnalysisSkillLanguage MK = fromString("mk");
-
-    /** Malay Malaysia. */
-    public static final ImageAnalysisSkillLanguage MS = fromString("ms");
-
-    /** Norwegian (Bokmal). */
-    public static final ImageAnalysisSkillLanguage NB = fromString("nb");
-
-    /** Dutch. */
-    public static final ImageAnalysisSkillLanguage NL = fromString("nl");
-
-    /** Polish. */
-    public static final ImageAnalysisSkillLanguage PL = fromString("pl");
-
-    /** Dari. */
-    public static final ImageAnalysisSkillLanguage PRS = fromString("prs");
-
-    /** Portuguese-Brazil. */
-    public static final ImageAnalysisSkillLanguage PT_BR = fromString("pt-BR");
-
-    /** Portuguese-Portugal. */
+    /** Static value pt for ImageAnalysisSkillLanguage. */
     public static final ImageAnalysisSkillLanguage PT = fromString("pt");
 
-    /** Portuguese-Portugal. */
-    public static final ImageAnalysisSkillLanguage PT_PT = fromString("pt-PT");
-
-    /** Romanian. */
-    public static final ImageAnalysisSkillLanguage RO = fromString("ro");
-
-    /** Russian. */
-    public static final ImageAnalysisSkillLanguage RU = fromString("ru");
-
-    /** Slovak. */
-    public static final ImageAnalysisSkillLanguage SK = fromString("sk");
-
-    /** Slovenian. */
-    public static final ImageAnalysisSkillLanguage SL = fromString("sl");
-
-    /** Serbian - Cyrillic RS. */
-    public static final ImageAnalysisSkillLanguage SR_CYRL = fromString("sr-Cyrl");
-
-    /** Serbian - Latin RS. */
-    public static final ImageAnalysisSkillLanguage SR_LATN = fromString("sr-Latn");
-
-    /** Swedish. */
-    public static final ImageAnalysisSkillLanguage SV = fromString("sv");
-
-    /** Thai. */
-    public static final ImageAnalysisSkillLanguage TH = fromString("th");
-
-    /** Turkish. */
-    public static final ImageAnalysisSkillLanguage TR = fromString("tr");
-
-    /** Ukrainian. */
-    public static final ImageAnalysisSkillLanguage UK = fromString("uk");
-
-    /** Vietnamese. */
-    public static final ImageAnalysisSkillLanguage VI = fromString("vi");
-
-    /** Chinese Simplified. */
+    /** Static value zh for ImageAnalysisSkillLanguage. */
     public static final ImageAnalysisSkillLanguage ZH = fromString("zh");
-
-    /** Chinese Simplified. */
-    public static final ImageAnalysisSkillLanguage ZH_HANS = fromString("zh-Hans");
-
-    /** Chinese Traditional. */
-    public static final ImageAnalysisSkillLanguage ZH_HANT = fromString("zh-Hant");
-
-    /**
-     * Creates a new instance of ImageAnalysisSkillLanguage value.
-     *
-     * @deprecated Use the {@link #fromString(String)} factory method.
-     */
-    @Deprecated
-    public ImageAnalysisSkillLanguage() {}
 
     /**
      * Creates or finds a ImageAnalysisSkillLanguage from its string representation.
@@ -181,6 +33,7 @@ public final class ImageAnalysisSkillLanguage extends ExpandableStringEnum<Image
      * @param name a name to look for.
      * @return the corresponding ImageAnalysisSkillLanguage.
      */
+    @JsonCreator
     public static ImageAnalysisSkillLanguage fromString(String name) {
         return fromString(name, ImageAnalysisSkillLanguage.class);
     }
