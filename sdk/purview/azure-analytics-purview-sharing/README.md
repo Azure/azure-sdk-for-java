@@ -185,11 +185,11 @@ SentShare retrievedSentShare = sentSharesClient
         .toObject(SentShare.class);
 ```
 
-#### Get All Sent Shares
+#### List Sent Shares
 
 Data providers can also retrieve a list of the sent shares they have created.
 
-```java com.azure.analytics.purview.sharing.getAllSentShares
+```java com.azure.analytics.purview.sharing.listSentShares
 SentSharesClient sentSharesClient =
         new SentSharesClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -237,11 +237,11 @@ Response<BinaryData> sentShareInvitation =
         sentSharesClient.getSentShareInvitationWithResponse(sentShareId, sentShareInvitationId, new RequestOptions());
 ```
 
-#### Get All Sent Share Invitations
+#### List Sent Share Invitations
 
 Data providers can also retrieve a list of the sent share invitations they have created.
 
-```java com.azure.analytics.purview.sharing.getAllSentShareInvitations
+```java com.azure.analytics.purview.sharing.listSentShareInvitations
 SentSharesClient sentSharesClient =
         new SentSharesClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -285,11 +285,11 @@ ReceivedSharesClient receivedSharesClient =
                 .buildClient();
 ```
 
-#### Get All Detached Received Shares
+#### List Detached Received Shares
 
 To begin viewing data shared with them, a data consumer must first retrieve a list of detached received shares.  Within this list, they can identify a detached received share to attach.
 
-```java com.azure.analytics.purview.sharing.getAllDetachedReceivedShares
+```java com.azure.analytics.purview.sharing.listDetachedReceivedShares
 ReceivedSharesClient receivedSharesClient =
         new ReceivedSharesClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -359,11 +359,11 @@ Response<BinaryData> receivedShare =
         receivedSharesClient.getReceivedShareWithResponse("<received-share-id>", new RequestOptions());
 ```
 
-#### Get All Attached Received Shares
+#### List Attached Received Shares
 
 Data consumers can also retrieve a list of their attached received shares.
 
-```java com.azure.analytics.purview.sharing.getAllAttachedReceivedShares
+```java com.azure.analytics.purview.sharing.listAttachedReceivedShares
 ReceivedSharesClient receivedSharesClient =
         new ReceivedSharesClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
@@ -403,11 +403,11 @@ receivedSharesClient.beginDeleteReceivedShare("<received-share-id>", new Request
 
 The following code examples demonstrate how to use the Microsoft Azure Java SDK for Purview Sharing to view share resources.  A share resource is the underlying resource from which a provider shares data or the destination where a consumer attaches data shared with them.
 
-#### Get All Share Resources
+#### List Share Resources
 
 A list of share resources can be retrieved to view all resources within an account where sharing activities have taken place.
 
-```java com.azure.analytics.purview.sharing.getAllShareResources
+```java com.azure.analytics.purview.sharing.listShareResources
 ShareResourcesClient shareResourcesClient =
         new ShareResourcesClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())

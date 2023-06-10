@@ -24,7 +24,7 @@ public class ShareResourceClientTest extends PurviewShareTestBase {
     }
 
     @Test
-    void getAllShareResourcesTest() {
+    void listShareResourcesTest() {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         SentShare sentShare = super.createSentShare(sentShareId);
 

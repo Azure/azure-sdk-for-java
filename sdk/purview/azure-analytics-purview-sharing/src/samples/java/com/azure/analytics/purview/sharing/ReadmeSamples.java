@@ -112,8 +112,8 @@ public final class ReadmeSamples {
         // END: com.azure.analytics.purview.sharing.deleteSentShare
     }
     
-    public void getAllSentSharesSample() {
-        // BEGIN: com.azure.analytics.purview.sharing.getAllSentShares
+    public void listSentSharesSample() {
+        // BEGIN: com.azure.analytics.purview.sharing.listSentShares
         SentSharesClient sentSharesClient =
                 new SentSharesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
@@ -127,7 +127,7 @@ public final class ReadmeSamples {
         List<SentShare> sentShares = sentShareResults.stream()
             .map(binaryData -> binaryData.toObject(SentShare.class))
             .collect(Collectors.toList());
-        // END: com.azure.analytics.purview.sharing.getAllSentShares
+        // END: com.azure.analytics.purview.sharing.listSentShares
     }
 
     public void sendUserInvitationSample() {
@@ -181,7 +181,7 @@ public final class ReadmeSamples {
     }
 
     public void viewSentInvitationsSample() {
-        // BEGIN: com.azure.analytics.purview.sharing.getAllSentShareInvitations
+        // BEGIN: com.azure.analytics.purview.sharing.listSentShareInvitations
         SentSharesClient sentSharesClient =
                 new SentSharesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
@@ -193,7 +193,7 @@ public final class ReadmeSamples {
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/sentAt desc");
         PagedIterable<BinaryData> response =
                 sentSharesClient.listSentShareInvitations(sentShareId, requestOptions);
-        // END: com.azure.analytics.purview.sharing.getAllSentShareInvitations
+        // END: com.azure.analytics.purview.sharing.listSentShareInvitations
     }
     
     public void getSentInvitationSample() {
@@ -237,8 +237,8 @@ public final class ReadmeSamples {
         // END: com.azure.analytics.purview.sharing.createReceivedShareClient
     }
 
-    public void getAllDetachedReceivedSharesSample() {
-        // BEGIN: com.azure.analytics.purview.sharing.getAllDetachedReceivedShares
+    public void listDetachedReceivedSharesSample() {
+        // BEGIN: com.azure.analytics.purview.sharing.listDetachedReceivedShares
         ReceivedSharesClient receivedSharesClient =
                 new ReceivedSharesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
@@ -247,7 +247,7 @@ public final class ReadmeSamples {
 
         RequestOptions requestOptions = new RequestOptions().addQueryParam("$orderBy", "properties/createdAt desc");
         PagedIterable<BinaryData> response = receivedSharesClient.listDetachedReceivedShares(requestOptions);
-        // END: com.azure.analytics.purview.sharing.getAllDetachedReceivedShares
+        // END: com.azure.analytics.purview.sharing.listDetachedReceivedShares
     }
 
     public void attachReceivedShareSample() throws JsonMappingException, JsonProcessingException {
@@ -306,7 +306,7 @@ public final class ReadmeSamples {
     }
 
     public void listAttachedReceivedShareSample() {
-        // BEGIN: com.azure.analytics.purview.sharing.getAllAttachedReceivedShares
+        // BEGIN: com.azure.analytics.purview.sharing.listAttachedReceivedShares
         ReceivedSharesClient receivedSharesClient =
                 new ReceivedSharesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
@@ -326,7 +326,7 @@ public final class ReadmeSamples {
         }
 
         ReceivedShare receivedShareResponse = receivedShare.get().toObject(InPlaceReceivedShare.class);
-        // END: com.azure.analytics.purview.sharing.getAllAttachedReceivedShares
+        // END: com.azure.analytics.purview.sharing.listAttachedReceivedShares
     }
     
     public void deleteReceivedShareSample() {
@@ -341,8 +341,8 @@ public final class ReadmeSamples {
         // END: com.azure.analytics.purview.sharing.deleteReceivedShare
     }
 
-    public void getAllShareResourcesSample() {
-        // BEGIN: com.azure.analytics.purview.sharing.getAllShareResources
+    public void listShareResourcesSample() {
+        // BEGIN: com.azure.analytics.purview.sharing.listShareResources
         ShareResourcesClient shareResourcesClient =
                 new ShareResourcesClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
@@ -354,6 +354,6 @@ public final class ReadmeSamples {
         List<ShareResource> shareResources = shareResourceResults.stream()
             .map(binaryData -> binaryData.toObject(ShareResource.class))
             .collect(Collectors.toList());
-        // END: com.azure.analytics.purview.sharing.getAllShareResources
+        // END: com.azure.analytics.purview.sharing.listShareResources
     }
 }

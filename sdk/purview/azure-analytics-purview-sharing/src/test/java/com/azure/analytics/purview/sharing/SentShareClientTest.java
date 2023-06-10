@@ -80,7 +80,7 @@ class SentShareClientTest extends PurviewShareTestBase {
     }
 
     @Test
-    void getAllSentSharesTest() {
+    void listSentSharesTest() {
 
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         SentShare sentShare = super.createSentShare(sentShareId);
@@ -140,7 +140,7 @@ class SentShareClientTest extends PurviewShareTestBase {
     }
 
     @Test
-    void getAllSentShareServiceInvitations() {
+    void listSentShareServiceInvitations() {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         UUID sentShareInvitationId = UUID.fromString(testResourceNamer.randomUuid());
         super.createSentShareAndServiceInvitation(sentShareId, sentShareInvitationId);

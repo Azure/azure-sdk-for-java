@@ -35,7 +35,7 @@ class ReceivedShareClientTest extends PurviewShareTestBase {
     }
 
     @Test
-    void getAllDetachedShareTest() {
+    void listDetachedShareTest() {
         UUID sentShareId = UUID.fromString(testResourceNamer.randomUuid());
         UUID sentShareInvitationId = UUID.fromString(testResourceNamer.randomUuid());
 
