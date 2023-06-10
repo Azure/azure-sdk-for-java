@@ -4,6 +4,7 @@
 package com.azure.spring.data.cosmos.domain;
 
 import com.azure.cosmos.models.IndexingMode;
+import com.azure.spring.data.cosmos.common.TestConstants;
 import com.azure.spring.data.cosmos.core.mapping.Container;
 import com.azure.spring.data.cosmos.core.mapping.CosmosIndexingPolicy;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -11,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Objects;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Container
+@Container(ru = TestConstants.DEFAULT_MINIMUM_RU)
 @CosmosIndexingPolicy(mode = IndexingMode.CONSISTENT)
 public class ReactiveTeacher {
     private String id;
