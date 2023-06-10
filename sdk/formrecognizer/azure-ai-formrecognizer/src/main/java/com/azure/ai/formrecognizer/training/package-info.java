@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * <p> <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">Azure Form Recognizer</a>
+ * <p> <a href="https://aka.ms/form-recognizer-3.0.0">Azure Form Recognizer</a>
  * is a cloud-based service provided by Microsoft Azure that utilizes machine learning to extract information
  * from various types of forms. It is designed to automate the process of
  * form recognition, data extraction, and form understanding. Azure Form Recognizer can handle structured
@@ -44,9 +44,9 @@
  *
  * <p><strong>Note:</strong>This client only supports
  * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
- * Recommended to use a newer service version, @see com.azure.ai.formrecognizer.documentanalysis
- * .DocumentAnalysisClient and @see com.azure.ai.formrecognizer.documentanalysis.administration
- * .DocumentAdministrationClient.</p>
+ * Recommended to use a newer service version,
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient}.</p>
  *
  * <p><strong>Refer to the
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md">Migration guide</a> to use API versions 2022-08-31 and up.</strong></p>
@@ -151,6 +151,7 @@
  * <h2>Manage custom models</h2>
  *
  * <p>Operations that can be executed are:</p>
+ * <br/>
  * <ol>
  *     <li> Check the number of models in the FormRecognizer resource account, and the maximum number of models that
  *     can be stored. </li>
@@ -200,7 +201,8 @@
  * <p>For a suggested approach to extracting information from custom forms with known fields, see
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/v3/StronglyTypedRecognizedForm.java">strongly-typing a recognized form</a>.</p>
  *
- * @see com.azure.ai.formrecognizer.FormRecognizerClient
- * @see com.azure.ai.formrecognizer.FormRecognizerAsyncClient
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingClient}
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingAsyncClient}
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingClientBuilder}
  */
 package com.azure.ai.formrecognizer.training;

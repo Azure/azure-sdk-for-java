@@ -73,19 +73,32 @@ import static com.azure.core.util.FluxUtil.withContext;
  * <p>This client provides asynchronous methods to perform:</p>
  *
  * <ol>
- *     <li>Build a custom model: Extract data from your specific or unique documents by building custom models.</li>
- *     <li>Composed custom models: Creates a new model from document types of collection of existing models.</li>
- *     <li>Copy custom model: Copy a custom Form Recognizer model to a target Form Recognizer resource.</li>
- *     <li>Custom model management: Get detailed information, delete and list custom models.</li>
- *     <li>Operations management: Get detailed information and list operations on the Form Recognizer account.</li>
+ *     <li>Build a custom model: Extract data from your specific documents by building custom models using the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(String, DocumentModelBuildMode) beginBuidlDocumentModel}
+ *     method to provide a container SAS URL to your Azure Storage Blob container.</li>
+ *     <li>Composed custom models: Creates a new model from document types of collection of existing models using the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#beginComposeDocumentModel(List) beginComposeDocumentModel}
+ *     method.</li>
+ *     <li>Copy custom model: Copy a custom Form Recognizer model to a target Form Recognizer resource using the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#beginCopyDocumentModelTo(String, DocumentModelCopyAuthorization) beginCopyDocumentModelTo}
+ *     method.</li>
+ *     <li>Custom model management: Get detailed information, delete and list custom models using methods
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#getDocumentModel(String) getDocumentModel},
+ *     {@link DocumentModelAdministrationAsyncClient#listDocumentModels() listDocumentModels} and
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#deleteDocumentModel(String) deleteDocumentModel}
+ *     respectively.</li>
+ *     <li>Operations management: Get detailed information and list operations on the Form Recognizer account using
+ *     methods
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient#getOperation(String) getOperation}
+ *     and {@link DocumentModelAdministrationAsyncClient#listOperations()} respectively.</li>
  *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
  *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
  * <p><strong>Note:</strong>This client only supports
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
- * To use an older service version, @see com.azure.ai.formrecognizer.FormRecognizerClient and @see com.azure.ai
- * .formrecognizer.training.FormTrainingClient.</p>
+ * To use an older service version, {@link com.azure.ai.formrecognizer.FormRecognizerClient} and
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingClient}.</p>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
  * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient} is the
@@ -131,8 +144,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end readme-sample-createDocumentModelAdministrationAsyncClient  -->
  *
- * @see DocumentModelAdministrationClientBuilder
- * @see DocumentModelAdministrationClient
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration}
+ * {@link DocumentModelAdministrationClientBuilder}
+ * {@link DocumentModelAdministrationClient}
  */
 @ServiceClient(builder = DocumentModelAdministrationClientBuilder.class, isAsync = true)
 public final class DocumentModelAdministrationAsyncClient {

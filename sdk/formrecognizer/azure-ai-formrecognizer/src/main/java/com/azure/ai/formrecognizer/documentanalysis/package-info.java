@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">
+ * <p><a href="https://aka.ms/form-recognizer-3.0.0">
  * Azure Form Recognizer</a> is a cloud-based service provided by Microsoft Azure that utilizes machine learning to
  * extract information from various types of documents. Form Recognizer applies machine-learning-based optical
  * character recognition (OCR)  * and document understanding technologies to classify documents, extract text, tables,
@@ -47,8 +47,8 @@
  *
  * <p><strong>Note:</strong>This client only supports
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
- * To use an older service version, @see com.azure.ai.formrecognizer.FormRecognizerClient and @see com.azure.ai
- * .formrecognizer.training.FormTrainingClient.</p>
+ * To use an older service version, {@link com.azure.ai.formrecognizer.FormRecognizerClient} and
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingClient}.</p>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} is the synchronous service client and
@@ -291,8 +291,9 @@
  * </pre>
  * <!-- end readme-sample-build-analyze -->
  *
- * @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient
- * @see com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient
- * @see com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient}
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisAsyncClient}
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClientBuilder}
+ * {@link com.azure.ai.formrecognizer.documentanalysis.models.AnalyzeResult}
  */
 package com.azure.ai.formrecognizer.documentanalysis;

@@ -91,8 +91,8 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient.pipeline.instantiation -->
  *
- * @see DocumentAnalysisAsyncClient
- * @see DocumentAnalysisClient
+ * {@link DocumentAnalysisAsyncClient}
+ * {@link DocumentAnalysisClient}
  */
 @ServiceClientBuilder(serviceClients = {DocumentAnalysisAsyncClient.class, DocumentAnalysisClient.class})
 public final class DocumentAnalysisClientBuilder implements
@@ -332,7 +332,7 @@ public final class DocumentAnalysisClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated DocumentAnalysisClientBuilder object.
-     * @see HttpClientOptions
+     * {@link HttpClientOptions}
      */
     @Override
     public DocumentAnalysisClientBuilder clientOptions(ClientOptions clientOptions) {

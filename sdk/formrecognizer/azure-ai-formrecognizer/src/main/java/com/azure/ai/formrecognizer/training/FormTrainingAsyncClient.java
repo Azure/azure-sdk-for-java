@@ -68,18 +68,23 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <ol>
  *     <li>Train a custom model: Train a custom model to analyze and extract data from forms and documents specific to
- *     your business.</li>
- *     <li>Copy custom model: Copy a custom Form Recognizer model to a target Form Recognizer resource.</li>
- *     <li>List custom models: Get information about all custom models.</li>
+ *     your business using the {@link com.azure.ai.formrecognizer.training.FormTrainingAsyncClient#beginTraining(String, boolean) beginTraining}
+ *     method.</li>
+ *     <li>Copy custom model: Copy a custom Form Recognizer model to a target Form Recognizer resource using the
+ *     {@link com.azure.ai.formrecognizer.training.FormTrainingAsyncClient#beginCopyModel(String, CopyAuthorization) beginCopyModel}
+ *     method.</li>
+ *     <li>List custom models: Get information about all custom models using the
+ *     {@link com.azure.ai.formrecognizer.training.FormTrainingAsyncClient#getCustomModel(String) getCustomModel} and
+ *     {@link FormTrainingAsyncClient#listCustomModels() listCustomModels} methods respectively.</li>
  *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
  *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
  * <p><strong>Note:</strong>This client only supports
  * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
- * Recommended to use a newer service version, @see com.azure.ai.formrecognizer.documentanalysis
- * .DocumentAnalysisClient and @see com.azure.ai.formrecognizer.documentanalysis.administration
- * .DocumentAdministrationClient.</p>
+ * Recommended to use a newer service version,
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient} and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient}.</p>
  *
  * <p><strong>Refer to the
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md">Migration guide</a> to use API versions 2022-08-31 and up.</strong></p>
@@ -122,8 +127,9 @@ import static com.azure.core.util.FluxUtil.withContext;
  * </pre>
  * <!-- end readme-sample-createFormTrainingAsyncClient  -->
  *
- * @see FormTrainingClientBuilder
- * @see FormTrainingClient
+ * {@link com.azure.ai.formrecognizer.training}
+ * {@link FormTrainingClientBuilder}
+ * {@link FormTrainingClient}
  */
 @ServiceClient(builder = FormTrainingClientBuilder.class, isAsync = true)
 public final class FormTrainingAsyncClient {

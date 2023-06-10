@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 /**
- * <p><a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/?view=form-recog-3.0.0">Azure Form Recognizer</a>
+ * <p><a href="https://aka.ms/form-recognizer-3.0.0">Azure Form Recognizer</a>
  * is a cloud-based service provided by Microsoft Azure that utilizes machine learning to extract information
  * from various types of forms. It is designed to automate the process of
  * form recognition, data extraction, and form understanding. Azure Form Recognizer can handle structured
@@ -45,9 +45,9 @@
  *
  * <p><strong>Note:</strong>This client only supports
  * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
- * Recommended to use a newer service version, @see com.azure.ai.formrecognizer.documentanalysis
- * .DocumentAnalysisClient and @see com.azure.ai.formrecognizer.documentanalysis.administration
- * .DocumentAdministrationClient.</p>
+ * Recommended to use a newer service version,
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient}.</p>
  *
  * <p><strong>Refer to the
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md">Migration guide</a> to use API versions 2022-08-31 and up.</strong></p>
@@ -98,7 +98,7 @@
  *
  * <h2>Analyzing forms with prebuilt models</h2>
  *
- * <p><a href="https://learn.microsoft.com/en-us/azure/applied-ai-services/form-recognizer/concept-model-overview?view=form-recog-3.0.0#model-overview">Form Recognizer models</a>
+ * <p><a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/concept-model-overview?view=form-recog-3.0.0#model-overview">Form Recognizer models</a>
  * and their associated output to help you choose the best model to address your document scenario needs.</p>
  *
  * <p>You can use domain specific models or train a custom model tailored to your specific business needs and use cases.
@@ -172,7 +172,7 @@
  *
  * <p>
  * You can also extract data from a local receipt with prebuilt models using the
- * {@link com.azure.ai.formrecognizer.FormRecognizerClient#beginRecognizeReceipts(java.io.InputStream, long, com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions, com.azure.core.util.Context)}
+ * {@link com.azure.ai.formrecognizer.FormRecognizerClient#beginRecognizeReceipts(java.io.InputStream, long, com.azure.ai.formrecognizer.models.RecognizeReceiptsOptions, com.azure.core.util.Context) beginRecognizeReceipts}
  * method.</p>
  *
  * <p>For more information on which supported model you should use refer to
@@ -238,7 +238,8 @@
  * see
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/v3/StronglyTypedRecognizedForm.java">strongly-typing a recognized form</a>.</p>
  *
- * @see com.azure.ai.formrecognizer.FormRecognizerClient
- * @see com.azure.ai.formrecognizer.FormRecognizerAsyncClient
+ * {@link com.azure.ai.formrecognizer.FormRecognizerClient}
+ * {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient}
+ * {@link com.azure.ai.formrecognizer.FormRecognizerClientBuilder}
  */
 package com.azure.ai.formrecognizer;

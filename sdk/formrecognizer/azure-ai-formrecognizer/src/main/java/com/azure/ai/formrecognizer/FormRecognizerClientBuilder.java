@@ -91,8 +91,8 @@ import static com.azure.ai.formrecognizer.implementation.Utility.buildHttpPipeli
  * </pre>
  * <!-- end com.azure.ai.formrecognizer.v3.FormRecognizerClient.pipeline.instantiation -->
  *
- * @see FormRecognizerAsyncClient
- * @see FormRecognizerClient
+ * {@link FormRecognizerAsyncClient}
+ * {@link FormRecognizerClient}
  */
 @ServiceClientBuilder(serviceClients = {FormRecognizerAsyncClient.class, FormRecognizerClient.class})
 public final class FormRecognizerClientBuilder implements
@@ -306,7 +306,7 @@ public final class FormRecognizerClientBuilder implements
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
      * @return The updated FormRecognizerClientBuilder object.
-     * @see HttpClientOptions
+     * {@link HttpClientOptions}
      */
     @Override
     public FormRecognizerClientBuilder clientOptions(ClientOptions clientOptions) {

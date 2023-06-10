@@ -34,12 +34,21 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  *
  * <ol>
  *   <li>Custom Form Analysis: Extraction and analysis of data from forms and documents specific to distinct business
- *   data and use cases.</li>
+ *   data and use cases. Use the custom trained model by passing its modelId into the
+ *   {@link com.azure.ai.formrecognizer.FormRecognizerClient#beginRecognizeCustomForms(String, InputStream, long)
+ *   beginRecognizeCustomForms}
+ *   method.</li>
  *   <li>Prebuilt Model Analysis: Analyze receipts, business cards, invoices and other documents with
- *    <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/overview?view=form-recog-2.1.0&preserve-view=true#which-document-processing-model-should-i-use">supported prebuilt models</a></li>
- *    <li>Layout Analysis: Extraction and analysis of text, selection marks, tables, and bounding box coordinates, from forms and documents.</li>
- *    <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
- *    operation or registering callbacks to receive notifications when the analysis is complete.</li>
+ *   <a href="https://aka.ms/form-recognizer-service-2.1.0">supported prebuilt models</a>
+ *   Use the
+ *   {@link com.azure.ai.formrecognizer.FormRecognizerClient#beginRecognizeReceipts(InputStream, long, RecognizeReceiptsOptions, Context) beginRecognizeReceipts}
+ *   method to recognize receipt information.</li>
+ *   <li>Layout Analysis: Extraction and analysis of text, selection marks, tables, and bounding box coordinates,
+ *   from forms and documents. Use
+ *   {@link com.azure.ai.formrecognizer.FormRecognizerClient#beginRecognizeContent(InputStream, long) beginRecognizeContent}
+ *   method tpo perform layout analysis.</li>
+ *   <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
+ *   operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
  * <p><strong>Refer to the
@@ -83,8 +92,9 @@ import static com.azure.ai.formrecognizer.implementation.Utility.toFluxByteBuffe
  * </pre>
  * <!-- end readme-sample-createFormRecognizerClient  -->
  *
- * @see FormRecognizerClientBuilder
- * @see FormRecognizerAsyncClient
+ * {@link com.azure.ai.formrecognizer}
+ * {@link FormRecognizerClientBuilder}
+ * {@link FormRecognizerAsyncClient}
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class)
 public final class FormRecognizerClient {

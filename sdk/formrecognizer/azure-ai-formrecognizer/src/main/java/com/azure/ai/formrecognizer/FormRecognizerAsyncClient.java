@@ -38,6 +38,7 @@ import com.azure.core.util.polling.PollingContext;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Objects;
@@ -59,20 +60,28 @@ import static com.azure.core.util.FluxUtil.monoError;
  *
  * <ol>
  *   <li>Custom Form Analysis: Extraction and analysis of data from forms and documents specific to distinct business
- *   data and use cases.</li>
+ *   data and use cases. Use the custom trained model by passing its modelId into the
+ *   {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient#beginRecognizeCustomForms(String, Flux, long)
+ *   beginRecognizeCustomForms}
+ *   method.</li>
  *   <li>Prebuilt Model Analysis: Analyze receipts, business cards, invoices and other documents with
- *   <a href="https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/overview?view=form-recog-2.1.0&preserve-view=true#which-document-processing-model-should-i-use">supported prebuilt models</a></li>
+ *   <a href="https://aka.ms/form-recognizer-service-2.1.0">supported prebuilt models</a>
+ *   Use the {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient#beginRecognizeReceipts(Flux, long)
+ *   beginRecognizeReceipts}
+ *   method to recognize receipt information.</li>
  *   <li>Layout Analysis: Extraction and analysis of text, selection marks, tables, and bounding box coordinates,
- *   from forms and documents.</li>
+ *   from forms and documents. Use
+ *   {@link com.azure.ai.formrecognizer.FormRecognizerAsyncClient#beginRecognizeContent(Flux, long) beginRecognizeContent}
+ *   method tpo perform layout analysis.</li>
  *   <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
  *   operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
  *
  * <p><strong>Note:</strong>This client only supports
  * {@link com.azure.ai.formrecognizer.FormRecognizerServiceVersion#V2_1} and lower.
- * Recommended to use a newer service version, @see com.azure.ai.formrecognizer.documentanalysis
- * .DocumentAnalysisClient and @see com.azure.ai.formrecognizer.documentanalysis.administration
- * .DocumentAdministrationClient.</p>
+ * Recommended to use a newer service version,
+ * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} and
+ * {@link com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClient}.</p>
  *
  * <p><strong>Refer to the
  * <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/migration-guide.md">Migration guide</a> to use API versions 2022-08-31 and up.</strong></p>
@@ -115,8 +124,9 @@ import static com.azure.core.util.FluxUtil.monoError;
  * </pre>
  * <!-- end readme-sample-createFormRecognizerAsyncClient  -->
  *
- * @see FormRecognizerClientBuilder
- * @see FormRecognizerClient
+ * {@link com.azure.ai.formrecognizer}
+ * {@link FormRecognizerClientBuilder}
+ * {@link FormRecognizerClient}
  */
 @ServiceClient(builder = FormRecognizerClientBuilder.class, isAsync = true)
 public final class FormRecognizerAsyncClient {

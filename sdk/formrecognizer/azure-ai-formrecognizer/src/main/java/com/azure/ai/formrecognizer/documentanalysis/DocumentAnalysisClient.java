@@ -52,12 +52,23 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  *
  * <ol>
  *     <li>Custom Document Analysis: Classification, extraction and analysis of data from forms and documents specific
- *     to distinct business data and use cases.</li>
- *     <li>General Document Analysis: Extract text, tables, structure, and key-value pairs.</li>
+ *     to distinct business data and use cases. Use the custom trained model by passing its modelId into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
+ *     <li>General Document Analysis: Extract text, tables, structure, and key-value pairs. Use general document model
+ *     provided by the Form Recognizer service by passing modelId="rebuilt-document" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
  *     <li>Prebuilt Model Analysis: Analyze receipts, business cards, invoices, ID's, W2's and other documents with
- *     <a href="https://aka.ms/azsdk/formrecognizer/models">supported prebuilt models.</a></li>
+ *     <a href="https://aka.ms/azsdk/formrecognizer/models">supported prebuilt models. Use the prebuilt receipt model
+ *     provided by passing modelId="prebuilt-receipt" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</a></li>
  *     <li>Layout Analysis: Extract text, selection marks, and tables structures, along with their bounding box
- *     coordinates, from forms and documents.</li>
+ *     coordinates, from forms and documents. Use the layout analysis model provided the service by passing
+ *     modelId="prebuilt-layout" into the
+ *     {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient#beginAnalyzeDocument(String, BinaryData)}
+ *     method.</li>
  *     <li>Polling and Callbacks: It includes mechanisms for polling the service to check the status of an analysis
  *     operation or registering callbacks to receive notifications when the analysis is complete.</li>
  * </ol>
@@ -66,8 +77,8 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  *
  * <p><strong>Note:</strong>This client only supports
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisServiceVersion#V2022_08_31} and newer.
- * To use an older service version, @see com.azure.ai.formrecognizer.FormRecognizerClient and @see com.azure.ai
- * .formrecognizer.training.FormTrainingClient.</p>
+ * To use an older service version, {@link com.azure.ai.formrecognizer.FormRecognizerClient} and
+ * {@link com.azure.ai.formrecognizer.training.FormTrainingClient}.</p>
  *
  * <p>Service clients are the point of interaction for developers to use Azure Form Recognizer.
  * {@link com.azure.ai.formrecognizer.documentanalysis.DocumentAnalysisClient} is the synchronous service client and
@@ -108,8 +119,9 @@ import static com.azure.ai.formrecognizer.documentanalysis.implementation.util.U
  * </pre>
  * <!-- end readme-sample-createDocumentAnalysisClient  -->
  *
- * @see DocumentAnalysisClientBuilder
- * @see DocumentAnalysisAsyncClient
+ * {@link com.azure.ai.formrecognizer.documentanalysis}
+ * {@link DocumentAnalysisClientBuilder}
+ * {@link DocumentAnalysisAsyncClient}
  */
 @ServiceClient(builder = DocumentAnalysisClientBuilder.class)
 public final class DocumentAnalysisClient {
