@@ -6,6 +6,10 @@
 
 - Added the new share resource capability that allows listing resources associated with sent and received shares.
 
+### Breaking Changes
+
+- Renamed all client method starting with getAll to start with list.
+
 ### Other Changes
 
 - Reverted internal sync stack changes until enhancement is released.
