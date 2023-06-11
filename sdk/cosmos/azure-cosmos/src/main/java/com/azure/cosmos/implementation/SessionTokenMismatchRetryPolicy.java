@@ -70,6 +70,8 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         // to some possible local region (first region from preferredRegions) or
         // first read-available (for read requests) region or first write-available
         // (for write requests) region
+        // when sessionTokenMismatchRetryAttempt > 0, this is a request possibly routed to
+        // a different region which is not a local region
         boolean isRequestForPossibleLocalRegion = request.requestContext.sessionTokenMismatchRetryAttempt == 0;
 
         if (isRequestForPossibleLocalRegion) {
@@ -81,7 +83,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             //      to the write region then region switch using ClientRetryPolicy will route
             //      the retry to the same write region again, therefore the REMOTE_REGION_PREFERRED
             //      hint causes quicker switch to the same write region which is reasonable
-            if (!shouldRetryInLocalRegion(request, retryCount.get())) {
+            if (!shouldRetryInPossibleLocalRegion(request, retryCount.get())) {
 
                 LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for a local region and " +
                     "fallback to remote region is preferred ");
@@ -128,7 +130,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         return backoff;
     }
 
-    private boolean shouldRetryInLocalRegion(RxDocumentServiceRequest request, int localRegionRetryCountWhenRemoteRegionPreferred) {
+    private boolean shouldRetryInPossibleLocalRegion(RxDocumentServiceRequest request, int retryCountForRegion) {
 
         CosmosSessionRetryOptions sessionRetryOptions = request.requestContext.getSessionRetryOptions();
 
@@ -146,6 +148,6 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         }
 
         return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERED
-            && localRegionRetryCountWhenRemoteRegionPreferred == this.maxRetryAttemptsInLocalRegion.get());
+            && retryCountForRegion == this.maxRetryAttemptsInLocalRegion.get());
     }
 }
