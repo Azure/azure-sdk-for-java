@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosSessionRetryOptions;
 import com.azure.cosmos.implementation.directconnectivity.TimeoutHelper;
@@ -26,28 +25,16 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private Duration currentBackoff;
     private final RetryContext retryContext;
     private final RxDocumentServiceRequest request;
+    private final AtomicInteger maxRetryAttemptsInLocalRegion;
 
-    // TODO: Figure out a way to use RetryStrategyConfiguration to map
-    // TODO: specific values for wait time, initial backoff, max backoff, backoff multiplier
     public SessionTokenMismatchRetryPolicy(RxDocumentServiceRequest request) {
-
-        CosmosEndToEndOperationLatencyPolicyConfig endToEndOperationLatencyPolicyConfig = request.requestContext.getEndToEndOperationLatencyPolicyConfig();
-
-        if (endToEndOperationLatencyPolicyConfig != null && endToEndOperationLatencyPolicyConfig.isEnabled()) {
-            Duration endToEndOperationTimeout = endToEndOperationLatencyPolicyConfig.getEndToEndOperationTimeout();
-            // TODO: Extract divisors as a config???
-            this.waitTimeTimeoutHelper = new TimeoutHelper(endToEndOperationTimeout.dividedBy(2));
-            this.maximumBackoff = endToEndOperationTimeout.dividedBy(20);
-        } else {
-            this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs()));
-            this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
-        }
-
+        this.waitTimeTimeoutHelper = new TimeoutHelper(Duration.ofMillis(Configs.getSessionTokenMismatchDefaultWaitTimeInMs()));
+        this.maximumBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchMaximumBackoffTimeInMs());
         this.request = request;
         this.retryCount = new AtomicInteger();
         this.retryCount.set(0);
-        // TODO: Should be fairly low when compared to end-to-end timeout, default to JVM config
         this.currentBackoff = Duration.ofMillis(Configs.getSessionTokenMismatchInitialBackoffTimeInMs());
+        this.maxRetryAttemptsInLocalRegion = new AtomicInteger(Configs.getMaxRetriesLocalRegionWhenRemoteRegionPreferred());
         this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
     }
 
@@ -79,19 +66,16 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        CosmosSessionRetryOptions sessionRetryOptions = request.requestContext.getSessionRetryOptions();
-        CosmosRegionSwitchHint regionSwitchHint = ImplementationBridgeHelpers
-                .CosmosSessionRetryOptionsHelper
-                .getCosmosSessionRetryOptionsAccessor()
-                .getRegionSwitchHint(sessionRetryOptions);
+        boolean isRequestForFirstPreferredOrAvailableRegion = request.requestContext.isRequestForFirstPreferredOrAvailableRegion;
 
-        if (regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERED &&
-                request.requestContext.isRequestForFirstPreferedOrAvailableRegion) {
+        if (isRequestForFirstPreferredOrAvailableRegion) {
+            if (!shouldRetryInLocalRegion(request, retryCount.get())) {
 
-            LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for a local region and " +
+                LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for a local region and " +
                     "fallback to remote region is preferred ");
 
-            return Mono.just(ShouldRetryResult.noRetry());
+                return Mono.just(ShouldRetryResult.noRetry());
+            }
         }
 
         Duration effectiveBackoff = Duration.ZERO;
@@ -130,5 +114,17 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
         }
 
         return backoff;
+    }
+
+    private boolean shouldRetryInLocalRegion(RxDocumentServiceRequest request, int localRegionRetryCountWhenRemoteRegionPreferred) {
+        CosmosSessionRetryOptions sessionRetryOptions = request.requestContext.getSessionRetryOptions();
+
+        CosmosRegionSwitchHint regionSwitchHint = ImplementationBridgeHelpers
+            .CosmosSessionRetryOptionsHelper
+            .getCosmosSessionRetryOptionsAccessor()
+            .getRegionSwitchHint(sessionRetryOptions);
+
+        return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERED
+            && localRegionRetryCountWhenRemoteRegionPreferred == this.maxRetryAttemptsInLocalRegion.get());
     }
 }

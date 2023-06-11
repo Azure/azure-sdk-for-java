@@ -141,6 +141,9 @@ public class Configs {
     private static final String DEFENSIVE_WARMUP_CONCURRENCY = "COSMOS.DEFENSIVE_WARMUP_CONCURRENCY";
     private static final int DEFAULT_DEFENSIVE_WARMUP_CONCURRENCY = 1;
 
+    private static final String MAX_RETRIES_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = "COSMOS.MAX_RETRIES_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED";
+    private static final int DEFAULT_MAX_RETRIES_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED = 1;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -389,5 +392,10 @@ public class Configs {
 
     public static int getAggressiveWarmupConcurrency() {
         return getIntValue(System.getProperty(AGGRESSIVE_WARMUP_CONCURRENCY), DEFAULT_AGGRESSIVE_WARMUP_CONCURRENCY);
+    }
+
+    public static int getMaxRetriesLocalRegionWhenRemoteRegionPreferred() {
+        return getIntValue(System.getProperty(MAX_RETRIES_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED),
+                DEFAULT_MAX_RETRIES_LOCAL_REGION_WHEN_REMOTE_REGION_PREFERRED);
     }
 }
