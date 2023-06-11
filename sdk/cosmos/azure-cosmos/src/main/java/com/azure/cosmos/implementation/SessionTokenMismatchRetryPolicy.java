@@ -23,7 +23,7 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     private final TimeoutHelper waitTimeTimeoutHelper;
     private final AtomicInteger retryCount;
     private Duration currentBackoff;
-    private final RetryContext retryContext;
+    private RetryContext retryContext;
     private final RxDocumentServiceRequest request;
     private final AtomicInteger maxRetryAttemptsInLocalRegion;
 
@@ -143,11 +143,11 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             .getCosmosSessionRetryOptionsAccessor()
             .getRegionSwitchHint(sessionRetryOptions);
 
-        if (regionSwitchHint == null || regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERED) {
+        if (regionSwitchHint == null || regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERRED) {
             return true;
         }
 
-        return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERED
+        return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERRED
             && retryCountForRegion == this.maxRetryAttemptsInLocalRegion.get());
     }
 }

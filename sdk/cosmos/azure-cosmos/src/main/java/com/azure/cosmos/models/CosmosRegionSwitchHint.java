@@ -14,20 +14,20 @@ public final class CosmosRegionSwitchHint {
     private final String hintRepresentation;
 
     /**
-     * {@link  CosmosRegionSwitchHint#LOCAL_REGION_PREFERED} corresponds to a hint
+     * {@link  CosmosRegionSwitchHint#LOCAL_REGION_PREFERRED} corresponds to a hint
      * which will result in internal retry policies biasing the local region more
      * than remote regions.
      * */
-    public static final CosmosRegionSwitchHint LOCAL_REGION_PREFERED =
-            new CosmosRegionSwitchHint("localRegionPrefered");
+    public static final CosmosRegionSwitchHint LOCAL_REGION_PREFERRED =
+            new CosmosRegionSwitchHint("localRegionPreferred");
 
     /**
-     * {@link CosmosRegionSwitchHint#REMOTE_REGION_PREFERED} corresponds to a hint
+     * {@link CosmosRegionSwitchHint#REMOTE_REGION_PREFERRED} corresponds to a hint
      * which will result in internal retry policies biasing remote regions more
      * than a local region.
      * */
-    public static final CosmosRegionSwitchHint REMOTE_REGION_PREFERED =
-            new CosmosRegionSwitchHint("remoteRegionPrefered");
+    public static final CosmosRegionSwitchHint REMOTE_REGION_PREFERRED =
+            new CosmosRegionSwitchHint("remoteRegionPreferred");
 
     private CosmosRegionSwitchHint(String hintRepresentation) {
         this.hintRepresentation = hintRepresentation;
