@@ -37,10 +37,4 @@ public enum FaultInjectionServerErrorType {
 
     /** simulate high channel acquisition, when it is over connection timeout, can simulate connectionTimeoutException */
     CONNECTION_DELAY,
-
-    /**
-     * Injects a bad session token into the {@link com.azure.cosmos.implementation.NotFoundException} instance. It can
-     * be used to mimic READ_SESSION_NOT_AVAILABLE scenarios.
-     * */
-    BAD_SESSION_TOKEN
 }

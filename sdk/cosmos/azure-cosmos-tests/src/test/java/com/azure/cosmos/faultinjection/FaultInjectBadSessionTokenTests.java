@@ -100,7 +100,7 @@ public class FaultInjectBadSessionTokenTests extends TestSuiteBase {
                 .build();
 
         FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.BAD_SESSION_TOKEN)
+                .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
                 .build();
 
         FaultInjectionRule badSessionTokenRule = badSessionTokenRuleBuilder
@@ -161,7 +161,7 @@ public class FaultInjectBadSessionTokenTests extends TestSuiteBase {
         // internally a replica will be chosen at random for which fault
         // is injected but no more fault injections thereafter
         FaultInjectionServerErrorResult badSessionTokenServerErrorResult = FaultInjectionResultBuilders
-                .getResultBuilder(FaultInjectionServerErrorType.BAD_SESSION_TOKEN)
+                .getResultBuilder(FaultInjectionServerErrorType.READ_SESSION_NOT_AVAILABLE)
                 .times(1)
                 .build();
 
