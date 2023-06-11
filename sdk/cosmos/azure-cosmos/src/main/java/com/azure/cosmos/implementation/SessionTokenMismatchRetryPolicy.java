@@ -66,9 +66,21 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
             return Mono.just(ShouldRetryResult.noRetry());
         }
 
-        boolean isRequestForFirstPreferredOrAvailableRegion = request.requestContext.isRequestForFirstPreferredOrAvailableRegion;
+        // when sessionTokenMismatchRetryAttempt == 0, this is a request routed
+        // to some possible local region (first region from preferredRegions) or
+        // first read-available (for read requests) region or first write-available
+        // (for write requests) region
+        boolean isRequestForPossibleLocalRegion = request.requestContext.sessionTokenMismatchRetryAttempt == 0;
 
-        if (isRequestForFirstPreferredOrAvailableRegion) {
+        if (isRequestForPossibleLocalRegion) {
+            // when request is directed to a possible local region
+            // we should use the region-switch hint to determine
+            // to move to a different region
+            // special case of switching to the same region again:
+            //   1. for single-write account, if the original read request is directed
+            //      to the write region then region switch using ClientRetryPolicy will route
+            //      the retry to the same write region again, therefore the REMOTE_REGION_PREFERRED
+            //      hint causes quicker switch to the same write region which is reasonable
             if (!shouldRetryInLocalRegion(request, retryCount.get())) {
 
                 LOGGER.debug("SessionTokenMismatchRetryPolicy not retrying because it a retry attempt for a local region and " +
@@ -117,12 +129,21 @@ public class SessionTokenMismatchRetryPolicy implements IRetryPolicy {
     }
 
     private boolean shouldRetryInLocalRegion(RxDocumentServiceRequest request, int localRegionRetryCountWhenRemoteRegionPreferred) {
+
         CosmosSessionRetryOptions sessionRetryOptions = request.requestContext.getSessionRetryOptions();
+
+        if (sessionRetryOptions == null) {
+            return true;
+        }
 
         CosmosRegionSwitchHint regionSwitchHint = ImplementationBridgeHelpers
             .CosmosSessionRetryOptionsHelper
             .getCosmosSessionRetryOptionsAccessor()
             .getRegionSwitchHint(sessionRetryOptions);
+
+        if (regionSwitchHint == null || regionSwitchHint == CosmosRegionSwitchHint.LOCAL_REGION_PREFERED) {
+            return true;
+        }
 
         return !(regionSwitchHint == CosmosRegionSwitchHint.REMOTE_REGION_PREFERED
             && localRegionRetryCountWhenRemoteRegionPreferred == this.maxRetryAttemptsInLocalRegion.get());

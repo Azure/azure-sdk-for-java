@@ -371,6 +371,7 @@ public class ClientRetryPolicy extends DocumentClientRetryPolicy {
         this.locationEndpoint = this.globalEndpointManager.resolveServiceEndpoint(request);
         if (request.requestContext != null) {
             request.requestContext.routeToLocation(this.locationEndpoint);
+            request.requestContext.sessionTokenMismatchRetryAttempt = this.sessionTokenRetryCount;
         }
     }
 

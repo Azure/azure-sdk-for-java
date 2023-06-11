@@ -182,8 +182,6 @@ public class LocationCache {
 
         int locationIndex = Utils.getValueOrDefault(request.requestContext.locationIndexToRoute, 0);
 
-        request.requestContext.isRequestForFirstPreferredOrAvailableRegion = locationIndex == 0;
-
         boolean usePreferredLocations = request.requestContext.usePreferredLocations != null ? request.requestContext.usePreferredLocations : true;
         if(!usePreferredLocations || (request.getOperationType().isWriteOperation() && !this.canUseMultipleWriteLocations(request))) {
             // For non-document resource types in case of client can use multiple write locations
