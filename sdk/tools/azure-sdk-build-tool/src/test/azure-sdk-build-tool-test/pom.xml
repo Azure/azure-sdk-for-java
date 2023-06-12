@@ -86,7 +86,7 @@
                 <configuration>
                     <validateAzureSdkBomUsed>true</validateAzureSdkBomUsed>
                     <validateNoDeprecatedMicrosoftLibraryUsed>true</validateNoDeprecatedMicrosoftLibraryUsed>
-                    <validateBomVersionsAreUsed>false</validateBomVersionsAreUsed>
+                    <validateBomVersionsAreUsed>true</validateBomVersionsAreUsed>
                     <validateNoBetaLibraryUsed>true</validateNoBetaLibraryUsed>
                     <validateNoBetaApiUsed>true</validateNoBetaApiUsed>
                     <reportFile>./azure-sdk-usage-report.txt</reportFile>

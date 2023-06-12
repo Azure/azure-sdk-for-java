@@ -39,7 +39,7 @@ public class AzureSdkMojo extends AbstractMojo {
 
     public static AzureSdkMojo MOJO;
     private static final Logger LOGGER = Logger.getInstance();
-    private static final String APP_INSIGHTS_CONNECTION_STRING = "InstrumentationKey=bccfcc21-ff29-4316-9d65-dc40e7934e59;IngestionEndpoint=https://westus2-2.in.applicationinsights.azure.com/";
+    private static final String APP_INSIGHTS_CONNECTION_STRING = "InstrumentationKey=1d377c0e-44f8-4d56-bee7-7f13a3fef594;IngestionEndpoint=https://centralus-2.in.applicationinsights.azure.com/;LiveEndpoint=https://centralus.livediagnostics.monitor.azure.com/ ";
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
